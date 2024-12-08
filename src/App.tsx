@@ -9,7 +9,7 @@ function App() {
   return (
     <>
 
-      <h1>Board game event listings go here</h1>
+      <h1>Board game event listings will go here</h1>
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
