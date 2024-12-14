@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "2.5.0",
+    "jotai": "^2.10.3",
     "react": "19.0.0",
     "react-dom": "19.0.0"
   },

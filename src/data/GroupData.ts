@@ -1,5 +1,3 @@
-const GROUP_DATA = [];
-
 const EVENT_1 = {
   title: "High Interaction Board Games at Western Market Food Hall in DC",
   day: "Sunday",
@@ -24,7 +22,7 @@ const EVENT_3 = {
     "We play a variety of high interaction games with a focus on cooperative games, hidden identity games, and high interaction(German-style) Euros.",
 };
 
-const GROUP_1 = {
+export const GROUP_1 = {
   link: "https://www.meetup.com/beerbogglers/",
   events: [EVENT_1, EVENT_2, EVENT_3],
   title: "Beer & Board Games",
@@ -32,7 +30,7 @@ const GROUP_1 = {
     "Hi! This is a group for fun-loving, non-competitive people who enjoy playing party and board games. We have several wonderful venues where we can enjoy food and drinks while playing a few games. Don’t hesitate to bring any games you'd like to play (or feel free to come empty-handed).",
 };
 
-const GROUP_2 = {
+export const GROUP_2 = {
   link: "https://www.meetup.com/nontraditional-board-games/",
   events: [
     {
@@ -60,7 +58,7 @@ const GROUP_2 = {
     "Let's Play Some Games!",
 };
 
-const GROUP_3 = {
+export const GROUP_3 = {
   link: "https://www.meetup.com/board-games-at/",
   events: [
     {
@@ -80,7 +78,7 @@ const GROUP_3 = {
     "Let's Play Some Games!",
 };
 
-const CONVENTION_1 = {
+export const CONVENTION_1 = {
   title: "Congress of Gamers Winter Session",
   days: ["1/18/2025", "1/19/2025"],
 };
