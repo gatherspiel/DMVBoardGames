@@ -1,4 +1,5 @@
 export interface Event {
+  id: number;
   title: string;
   dayOfWeek: number;
   location: string;
@@ -6,6 +7,7 @@ export interface Event {
 }
 
 export interface Group {
+  id: number;
   events: Event[];
   link: string;
   title: string;
@@ -13,6 +15,7 @@ export interface Group {
 }
 
 export interface Convention {
+  id: number;
   title: string;
   date: Date;
 }

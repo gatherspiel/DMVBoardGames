@@ -1,36 +1,22 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import { EventListingPage } from "./events/EventListingPage.tsx";
 
+const sourceCodeLocation =
+  "https://github.com/Create-Third-Places/DMVBoardGames";
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <EventListingPage></EventListingPage>
-      <h1>Board game event listings go here</h1>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+      <p>
+        This page is a work in progress listing of board game events in the DMV
+        area. Email gulu@createthirdplaces.com to request an update to this list
+        or share feedback.
       </p>
+      <p>
+        To request a new feature or view the source code, go{" "}
+        <a href={sourceCodeLocation}>here:</a>
+      </p>
+
+      <EventListingPage></EventListingPage>
     </>
   );
 }
