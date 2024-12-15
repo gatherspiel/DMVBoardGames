@@ -1,4 +1,3 @@
-import { Group } from "./Group.tsx";
 import { fetchEventDataAtom } from "../state/EventState.ts";
 import { useAtom } from "jotai";
 
