@@ -77,7 +77,7 @@ export const GROUP_3 = {
         "We will be playing board games at Glory Days Grill in Alexandria . We don’t play typical games like scrabble or monopoly. We play Euro games like ticket to ride, Lords of Waterdeep, Wingspan, Cascadia and more.",
     },
   ],
-  title: "Alexandria Board Gaming",
+  title: "Alexandria Board Game Group",
   summary:
     "Like playing board games after meeting new people? Then we are the group for you. We are a friendly group and all are welcome. Feel free to bring your own games to play or just join in on the fun. Join us for dinner before hand if you like and then we will start games around 630pm. Glory days has $6 burgers on Monday’s and half price appetizers after 9pm. So come and join us for food, friends and games.",
 };
