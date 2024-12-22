@@ -70,6 +70,7 @@ export const GROUP_3 = {
   link: "https://www.meetup.com/board-games-at/",
   events: [
     {
+      id: 1,
       title: "Game Night at Glory Days",
       day: "Monday",
       location: "3141 Duke Street · Alexandria, VA",
@@ -87,6 +88,7 @@ export const GROUP_4 = {
   link: "https://www.meetup.com/rockville-gamers-we-have-cake/",
   events: [
     {
+      id: 1,
       title: "Sunday Boardgaming @ Panera",
       day: "Sunday",
       location: "1780 E Jefferson St · Rockville, MD",
@@ -152,6 +154,7 @@ export const GROUP_8 = {
   title: "Hyattsville-gaming-conclave",
   events: [
     {
+      id: 1,
       title: "Games Day",
       day: "Saturday",
       location: "See group on Meetup for location",
@@ -171,6 +174,7 @@ export const GROUP_9 = {
   title: "Alexandria-Arlington Regional Gaming Group",
   events: [
     {
+      id: 1,
       title: "December Grand Gaming Melee",
       day: "Saturday",
       location: "See group on Meetup for location",
@@ -229,6 +233,7 @@ export const GROUP_14 = {
   title: "Fun Times in the DMV",
   events: [
     {
+      id: 1,
       title: "Beer Graden & Board Games!",
       day: "Wednesday",
       location: "3181 Wilson Blvd · Arlington, VA",
@@ -256,6 +261,7 @@ export const GROUP_16 = {
   title: "Maryland and DC Area Game Night",
   events: [
     {
+      id: 1,
       title: "Monday Games at the Board and Brew in College Park",
       day: "Monday",
       location: "8150 Baltimore Ave · College Park, MD",
@@ -263,6 +269,7 @@ export const GROUP_16 = {
         "Come on out to the Board and Brew in College Park and play a great game with wonderful people while noshing some delectable edibles.",
     },
     {
+      id: 2,
       title: "College Park Thursdays: Have fun storming the Kastle!",
       day: "Thursday",
       location: "4748 Cherry Hill Rd · College Park, MD\n",
@@ -270,6 +277,7 @@ export const GROUP_16 = {
         "Hey hey everyone, our friendly local GAME KASTLE hosts board game night each and every Thursday starting at 5pm..",
     },
     {
+      id: 3,
       title: "Board Gaming at Play More Game Store, Gaithersburg, MD",
       day: "Thursday",
       location: "42 Bureau Dr · Gaithersburg, MD",
@@ -277,6 +285,7 @@ export const GROUP_16 = {
         "Come Join us at Play More Game Store, 42 Bureau Drive, Gaithersburg, MD for board gaming!.",
     },
     {
+      id: 4,
       title: "Rockville Gamers",
       day: "Friday",
       location: "355 Linthicum St · Rockville, MD",
@@ -284,6 +293,7 @@ export const GROUP_16 = {
         "We meet in Rockville United Church's large meeting room for Friday night gaming at 7:00PM. Lately, we've had four or five tables at 7, and a couple for a second game. Lots of room and outside food and drink are welcome. No alcohol! You can play as late as you like. Bring your own games or choose from among the club's library of almost 100 games.",
     },
     {
+      id: 5,
       title: "Games Club of Maryland Brunswick",
       day: "Saturday",
       location: "122 West Potomac Street, · Brunswick, MD",
@@ -327,6 +337,7 @@ export const GROUP_20 = {
   title: "Games & Comics Pair O'Dice Game Center",
   events: [
     {
+      id: 1,
       title: "Saturday All Day Gaming",
       day: "Saturday",
       location: "10385 Main Street · Fairfax, VA",
@@ -343,6 +354,7 @@ export const GROUP_21 = {
   title: "Reston Gaming Meetup Group",
   events: [
     {
+      id: 1,
       title: "Reston Plays Games",
       day: "Wednesday",
       location: "2310 Colts Neck Rd · Reston, VA",
@@ -350,6 +362,7 @@ export const GROUP_21 = {
         "Come out to the Reston Community Center and play some games! Party games? Strategy games? Tabletop role-playing games? This massive space can accommodate games for every interest. While the event starts at 5pm, feel free to roll in whenever you are able! If you have games to bring that you'd like to share or run, please do!",
     },
     {
+      id: 2,
       title: "Huzzah game night",
       day: "Thursday",
       location: "44927 George Washington Blvd · Ashburn, VA",
@@ -367,6 +380,7 @@ export const GROUP_22 = {
   title: "The Herndon Boardgame Group",
   events: [
     {
+      id: 1,
       title: "Eurogames and Amerithrash at the Herndon Library",
       day: "Saturday",
       location: "768 Center Street · Herndon, VA",
@@ -374,6 +388,7 @@ export const GROUP_22 = {
         "Join The Herndon Boardgame Group for a fun-filled day of Eurogames and Amerithrash style of gaming!",
     },
     {
+      id: 2,
       title: "Herndon/Ashburn Boardgaming Group Meetup",
       day: "Thursday",
       location: "43881 Waxpool Rd · Ashburn, VA",
@@ -415,6 +430,7 @@ export const GROUP_25 = {
   title: "Olney Board Games Meetup Group",
   events: [
     {
+      id: 1,
       title: "Monday Night Board Gaming at Brew Belly in Olney",
       day: "Monday",
       location: "Brew Belly · Olney, MD",

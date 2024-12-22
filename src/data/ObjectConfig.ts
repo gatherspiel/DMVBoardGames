@@ -1,7 +1,7 @@
 export interface Event {
   id: number;
   title: string;
-  dayOfWeek: number;
+  day: string;
   location: string;
   summary: string;
 }
