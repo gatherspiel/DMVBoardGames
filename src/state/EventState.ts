@@ -28,13 +28,15 @@ import {
   GROUP_24,
   GROUP_25,
 } from "../data/GroupData.ts";
+import { gameStores } from "../data/GameStoreData.ts";
+import { Group } from "../data/ObjectConfig.ts";
 const eventDataAtom = atom();
 //In the future, this atom will asynchronously fetch data from a backend API or cache.
 export const fetchEventDataAtom = atom(async (get) => {
   const response = await get(eventDataAtom);
   console.log(response);
 
-  const groups = [
+  const groups: Group[] = [
     GROUP_1,
     GROUP_2,
     GROUP_3,
@@ -71,8 +73,25 @@ export const fetchEventDataAtom = atom(async (get) => {
 
     return 0;
   });
+
+  const sortedGameStores = gameStores.slice();
+  console.log("Sorting game stores");
+
+  sortedGameStores.sort((a, b) => {
+    console.log("A");
+    if (a.name < b.name) {
+      return -1;
+    }
+    if (a.name > b.name) {
+      return 1;
+    }
+
+    return 0;
+  });
+
   return {
     groups: groups,
     conventions: [CONVENTION_1],
+    gameStores: sortedGameStores,
   };
 });
