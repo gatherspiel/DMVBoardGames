@@ -39,6 +39,19 @@ export function EventListingPage() {
           <p>Days: {convention.days.join()}</p>
         </div>
       ))}
+      <h1> Game stores </h1>
+      {data.gameStores.map((gameStore, index) => (
+        <div key={index}>
+          <h3>
+            {gameStore.link && gameStore.link !== "" ? (
+              <a href={gameStore.link}>{gameStore.name}</a>
+            ) : (
+              <p>{gameStore.name}</p>
+            )}
+          </h3>
+          <p>Location: {gameStore.location}</p>
+        </div>
+      ))}
     </div>
   );
 }

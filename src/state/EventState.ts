@@ -28,6 +28,7 @@ import {
   GROUP_24,
   GROUP_25,
 } from "../data/GroupData.ts";
+import { gameStores } from "../data/GameStoreData.ts";
 const eventDataAtom = atom();
 //In the future, this atom will asynchronously fetch data from a backend API or cache.
 export const fetchEventDataAtom = atom(async (get) => {
@@ -74,5 +75,6 @@ export const fetchEventDataAtom = atom(async (get) => {
   return {
     groups: groups,
     conventions: [CONVENTION_1],
+    gameStores: gameStores,
   };
 });

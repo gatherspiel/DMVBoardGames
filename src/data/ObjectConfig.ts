@@ -20,7 +20,9 @@ export interface Convention {
   date: Date;
 }
 
-export interface EventListingData {
-  groups: Group[];
-  conventions: Convention[];
+export interface GameStore {
+  id: number;
+  location: string;
+  name: string;
+  link: string;
 }
