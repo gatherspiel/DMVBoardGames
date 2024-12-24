@@ -8,9 +8,10 @@ export function GroupInfo({ group }: { group: Group }) {
     console.log(event);
     setShowInfo(!showInfo);
   };
-  const index = group.id;
+
+  const groupIndex = group.id;
   return (
-    <div key={index}>
+    <div key={groupIndex}>
       <h2>
         <a href={group.link}>{group.title}</a>
       </h2>
