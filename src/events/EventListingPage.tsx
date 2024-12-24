@@ -5,7 +5,7 @@ export function EventListingPage() {
   const [data, setData] = useAtom(fetchEventDataAtom);
   console.log(data + ":" + setData);
   return (
-    <div>
+    <div id="listing-page">
       <h1>Groups With Recurring events</h1>
       {data.groups.map((group) => (
         <GroupInfo group={group}></GroupInfo>
