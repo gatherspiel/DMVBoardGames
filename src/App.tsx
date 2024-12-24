@@ -6,11 +6,13 @@ const sourceCodeLocation =
 function App() {
   return (
     <>
-      <p>
-        This page is a work in progress listing of board game events in the DMV
-        area. Email gulu@createthirdplaces.com to request an update to this list
-        or share feedback.
-      </p>
+      <div id="event-page-info">
+        <p>
+          This page is a work in progress listing of board game events in the
+          DMV area. Email gulu@createthirdplaces.com to request an update to
+          this list or share feedback.
+        </p>
+      </div>
       <p>
         To request a new feature or view the source code, go{" "}
         <a href={sourceCodeLocation}>here:</a>
