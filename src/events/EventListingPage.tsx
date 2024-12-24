@@ -2,8 +2,7 @@ import { fetchEventDataAtom } from "../state/EventState.ts";
 import { useAtom } from "jotai";
 import { GroupInfo } from "./GroupInfo.tsx";
 export function EventListingPage() {
-  const [data, setData] = useAtom(fetchEventDataAtom);
-  console.log(data + ":" + setData);
+  const [data] = useAtom(fetchEventDataAtom);
   return (
     <div id="listing-page">
       <h1>Groups With Recurring events</h1>
