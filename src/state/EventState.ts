@@ -1,12 +1,11 @@
 import { atom } from "jotai";
-
+import { Event } from "../data/ObjectConfig.ts";
 import {
   CONVENTION_1,
   GROUP_1,
   GROUP_2,
   GROUP_3,
   GROUP_4,
-  GROUP_5,
   GROUP_6,
   GROUP_7,
   GROUP_8,
@@ -41,7 +40,6 @@ export const fetchEventDataAtom = atom(async (get) => {
     GROUP_2,
     GROUP_3,
     GROUP_4,
-    GROUP_5,
     GROUP_6,
     GROUP_7,
     GROUP_8,
@@ -78,7 +76,6 @@ export const fetchEventDataAtom = atom(async (get) => {
   console.log("Sorting game stores");
 
   sortedGameStores.sort((a, b) => {
-    console.log("A");
     if (a.name < b.name) {
       return -1;
     }
@@ -94,4 +91,49 @@ export const fetchEventDataAtom = atom(async (get) => {
     conventions: [CONVENTION_1],
     gameStores: sortedGameStores,
   };
+});
+
+export const searchStateAtom = atom({ day: "Any" });
+
+export const readWriteSearchState = atom(
+  (get) => get(searchStateAtom),
+  (get, set, update) => {
+    console.log(get);
+    // @ts-expect-error Ignore
+    set(searchStateAtom, update);
+  },
+);
+
+export const resultsAtom = atom(async (get) => {
+  const search = get(searchStateAtom);
+  const data = await get(fetchEventDataAtom);
+
+  const searchDay = search.day;
+
+  //TODO: Add isDefaultMethod here.
+  console.log(searchDay);
+  if (searchDay === "Any" || !searchDay) {
+    return data;
+  }
+  const eventCopy = JSON.parse(JSON.stringify(data));
+
+  const groupsToInclude: Group[] = [];
+
+  console.log("Updating events");
+  eventCopy.groups.forEach((group: Group) => {
+    const eventsToInclude: Event[] = [];
+    group.events.forEach((event: Event) => {
+      if (event.day === searchDay) {
+        //TODO: Add other search parameters here.
+        eventsToInclude.push(event);
+      }
+    });
+
+    if (eventsToInclude.length > 0) {
+      group.events = eventsToInclude;
+      groupsToInclude.push(group);
+    }
+  });
+  eventCopy.groups = groupsToInclude;
+  return eventCopy;
 });

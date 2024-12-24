@@ -87,5 +87,3 @@ export const gameStores: GameStore[] = [
     link: "https://www.dragonsconcord.com/",
   },
 ];
-
-console.log(gameStores);

@@ -17,7 +17,7 @@ const EVENT_2 = {
 };
 
 const EVENT_3 = {
-  id: 1,
+  id: 3,
   title: "Bring Your Own Game Night in DC at Nanny O’Briens",
   day: "Monday",
   location: "3319 Connecticut Avenue Northwest · Washington, DC",
@@ -99,24 +99,6 @@ export const GROUP_4 = {
   title: "Rockville Gamers - we have cake!",
   summary:
     "We're looking for some fun people to play games with! We welcome any local gamers of any age, in the Rockville, Silver Spring, Gaithersburg area.  We are primarily for playing in person, but we will adapt to online play as necessary.",
-};
-
-export const GROUP_5 = {
-  id: 5,
-  link: "https://www.meetup.com/fantasy-and-legacy-board-games-the-board-room-clarendon/",
-  events: [],
-  title: "Fantasy and Fun Board Games @ The Board Room (Clarendon)",
-  summary:
-    "This meetup is dedicated to  fantasy and / or legacy games going @ The Board Room in Arlington, VA. We typically meet on Sunday evenings at 6:30pm. \n" +
-    "Games we have been playing include:\n" +
-    "\n" +
-    "• Lovecraft: Arkham Horror, Eldritch Horror, Arkham Card Game, etc... anything with Cthulhu!!\n" +
-    "• Pandemic \n" +
-    "• Twilight Imperium\n" +
-    "• Dead of Winter\n" +
-    "• Battlestar Galactica\n" +
-    "\n" +
-    "And, if anyone is interested in playing a game, please let me know. We are always welcome to new adventures! ",
 };
 
 export const GROUP_6 = {
