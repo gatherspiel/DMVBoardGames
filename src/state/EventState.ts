@@ -29,12 +29,13 @@ import {
 } from "../data/GroupData.ts";
 import { gameStores } from "../data/GameStoreData.ts";
 import { Group } from "../data/ObjectConfig.ts";
-const eventDataAtom = atom();
+
+const backendDataAtom = atom('');
 //In the future, this atom will asynchronously fetch data from a backend API or cache.
 export const fetchEventDataAtom = atom(async (get) => {
-  const response = await get(eventDataAtom);
-  console.log(response);
 
+  const data = get(backendDataAtom);
+  console.log("Backend data:"+data);
   const groups: Group[] = [
     GROUP_1,
     GROUP_2,
@@ -73,8 +74,6 @@ export const fetchEventDataAtom = atom(async (get) => {
   });
 
   const sortedGameStores = gameStores.slice();
-  console.log("Sorting game stores");
-
   sortedGameStores.sort((a, b) => {
     if (a.name < b.name) {
       return -1;
@@ -111,7 +110,6 @@ export const resultsAtom = atom(async (get) => {
   const searchDay = search.day;
 
   //TODO: Add isDefaultMethod here.
-  console.log(searchDay);
   if (searchDay === "Any" || !searchDay) {
     return data;
   }

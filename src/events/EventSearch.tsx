@@ -33,7 +33,7 @@ export function EventSearch() {
       <h2>Search</h2>
 
       <form onSubmit={handleSubmit}>
-        <label for="days">Chose a day:</label>
+        <label htmlFor="days">Chose a day:</label>
         <select
           name="days"
           id="days"

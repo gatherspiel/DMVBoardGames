@@ -157,7 +157,7 @@ export const GROUP_9 = {
   events: [
     {
       id: 1,
-      title: "December Grand Gaming Melee",
+      title: "Grand Gaming Melee(Monthly)",
       day: "Saturday",
       location: "See group on Meetup for location",
       summary:
