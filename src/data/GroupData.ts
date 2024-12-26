@@ -157,7 +157,7 @@ export const GROUP_9 = {
   events: [
     {
       id: 1,
-      title: "December Grand Gaming Melee",
+      title: "Grand Gaming Melee(Monthly)",
       day: "Saturday",
       location: "See group on Meetup for location",
       summary:
@@ -424,9 +424,3 @@ export const GROUP_25 = {
     "The goal of this group is to bring people together through games. This is a social group to meet other adults who enjoy board games. Typical play is nontraditional board and card games. Join us to learn new games and share some of your favorites. We will provide some games but ask that you also bring games that you would like to teach and play. The Meetup will be at Brew Belly in Olney on Monday evenings. Food and drink are available for purchase and help support the kind folks at this restaurant who are willing to set aside tables for us to play.",
 };
 
-export const CONVENTION_1 = {
-  id: 1,
-  link: "http://emsps.com/cog/winter/index.html",
-  title: "Congress of Gamers Winter Session",
-  days: ["1/18/2025", "1/19/2025"],
-};
