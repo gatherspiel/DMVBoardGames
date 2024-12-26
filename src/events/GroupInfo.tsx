@@ -27,8 +27,8 @@ export function GroupInfo({ group }: { group: Group }) {
               : ""}
           </h3>
           <div>
-            {group.events.map((event, index) => (
-              <div key={index}>
+            {group.events.map((event) => (
+              <div key={event.id}>
                 <h4>{event.title}</h4>
                 <p>Summary: {event.summary}</p>
                 <p>Day: {event.day}</p>

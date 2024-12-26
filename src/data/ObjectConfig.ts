@@ -16,8 +16,9 @@ export interface Group {
 
 export interface Convention {
   id: number;
+  link: string
   title: string;
-  date: Date;
+  days: string[];
 }
 
 export interface GameStore {
