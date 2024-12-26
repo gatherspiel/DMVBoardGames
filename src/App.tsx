@@ -1,4 +1,3 @@
-import "./App.css";
 import { EventListingPage } from "./events/EventListingPage.tsx";
 
 const sourceCodeLocation =
@@ -14,7 +13,7 @@ function App() {
         </p>
         <p>
           To request a new feature or view the source code, go{" "}
-          <a href={sourceCodeLocation}>here:</a>
+          <a href={sourceCodeLocation}>here</a>
         </p>
       </div>
 

@@ -22,15 +22,13 @@ export function EventSearch() {
 
   function handleSubmit(e: Event) {
     e.preventDefault();
-
-    console.log("Setting search state to:" + day);
     setSearchState({
       day: day,
     });
   }
   return (
     <div>
-      <h2>Search</h2>
+      <h1>Search</h1>
 
       <form onSubmit={handleSubmit}>
         <label htmlFor="days">Chose a day:</label>

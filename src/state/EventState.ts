@@ -1,7 +1,5 @@
 import { atom } from "jotai";
-import { Event } from "../data/ObjectConfig.ts";
 import {
-  CONVENTION_1,
   GROUP_1,
   GROUP_2,
   GROUP_3,
@@ -27,8 +25,10 @@ import {
   GROUP_24,
   GROUP_25,
 } from "../data/GroupData.ts";
+import {CONVENTION_1} from "../data/ConventionData.ts";
 import { gameStores } from "../data/GameStoreData.ts";
 import { Group } from "../data/ObjectConfig.ts";
+import {findResults} from "../data/search/search.ts";
 
 const backendDataAtom = atom('');
 //In the future, this atom will asynchronously fetch data from a backend API or cache.
@@ -106,32 +106,5 @@ export const readWriteSearchState = atom(
 export const resultsAtom = atom(async (get) => {
   const search = get(searchStateAtom);
   const data = await get(fetchEventDataAtom);
-
-  const searchDay = search.day;
-
-  //TODO: Add isDefaultMethod here.
-  if (searchDay === "Any" || !searchDay) {
-    return data;
-  }
-  const eventCopy = JSON.parse(JSON.stringify(data));
-
-  const groupsToInclude: Group[] = [];
-
-  console.log("Updating events");
-  eventCopy.groups.forEach((group: Group) => {
-    const eventsToInclude: Event[] = [];
-    group.events.forEach((event: Event) => {
-      if (event.day === searchDay) {
-        //TODO: Add other search parameters here.
-        eventsToInclude.push(event);
-      }
-    });
-
-    if (eventsToInclude.length > 0) {
-      group.events = eventsToInclude;
-      groupsToInclude.push(group);
-    }
-  });
-  eventCopy.groups = groupsToInclude;
-  return eventCopy;
+  return findResults(data,search);
 });
