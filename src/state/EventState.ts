@@ -28,7 +28,7 @@ import {
 import {CONVENTION_1} from "../data/ConventionData.ts";
 import { gameStores } from "../data/GameStoreData.ts";
 import { Group } from "../data/ObjectConfig.ts";
-import {findResults} from "../data/search/search.ts";
+import {DEFAULT_SEARCH_PARAMETER, findResults} from "../data/search/search.ts";
 
 const backendDataAtom = atom('');
 //In the future, this atom will asynchronously fetch data from a backend API or cache.
@@ -92,7 +92,7 @@ export const fetchEventDataAtom = atom(async (get) => {
   };
 });
 
-export const searchStateAtom = atom({ day: "Any" });
+export const searchStateAtom = atom({ day: DEFAULT_SEARCH_PARAMETER, location: DEFAULT_SEARCH_PARAMETER });
 
 export const readWriteSearchState = atom(
   (get) => get(searchStateAtom),
@@ -108,3 +108,19 @@ export const resultsAtom = atom(async (get) => {
   const data = await get(fetchEventDataAtom);
   return findResults(data,search);
 });
+
+export const searchLocationsAtom = atom(async(get)=>{
+  const data = await get(fetchEventDataAtom);
+  const locations = new Set();
+  data.groups.forEach(group=>{
+    group.locations.split(",").forEach(location=>{
+      locations.add(location.trim())
+    });
+  })
+
+  const locationArray = Array.from(locations)
+
+  locationArray.sort();
+  locationArray.unshift(DEFAULT_SEARCH_PARAMETER)
+  return locationArray;
+})
