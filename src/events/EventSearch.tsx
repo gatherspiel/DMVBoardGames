@@ -3,14 +3,18 @@
 
 import { useState } from "react";
 
-import { useSetAtom } from "jotai";
-import { readWriteSearchState } from "../state/EventState.ts";
+import {useAtom, useSetAtom} from "jotai";
+import {readWriteSearchState, searchLocationsAtom} from "../state/EventState.ts";
+import {DEFAULT_SEARCH_PARAMETER} from "../data/search/search.ts";
 export function EventSearch() {
-  const [day, setDay] = useState("Any");
+  const [day, setDay] = useState(DEFAULT_SEARCH_PARAMETER);
+  const [location, setLocation] = useState(DEFAULT_SEARCH_PARAMETER);
 
   const setSearchState = useSetAtom(readWriteSearchState);
+
+  const [locations] = useAtom(searchLocationsAtom);
   const days = [
-    "Any",
+    DEFAULT_SEARCH_PARAMETER,
     "Sunday",
     "Monday",
     "Tuesday",
@@ -24,6 +28,7 @@ export function EventSearch() {
     e.preventDefault();
     setSearchState({
       day: day,
+      location: location
     });
   }
   return (
@@ -31,6 +36,20 @@ export function EventSearch() {
       <h1>Search</h1>
 
       <form onSubmit={handleSubmit}>
+
+        <label htmlFor="locations">Chose a location: </label>
+        <select
+          id="locations"
+          name="locations"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+        >
+          {locations.map((day, index) => (
+            <option key={index} value={day}>
+              {day}
+            </option>
+          ))}
+        </select>
         <label htmlFor="days">Chose a day:</label>
         <select
           name="days"

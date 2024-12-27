@@ -26,17 +26,16 @@ const EVENT_3 = {
 };
 
 export const GROUP_1 = {
+  events: [EVENT_1, EVENT_2, EVENT_3],
   id: 1,
   link: "https://www.meetup.com/beerbogglers/",
-  events: [EVENT_1, EVENT_2, EVENT_3],
+  locations: "Arlington, DC",
   title: "Beer & Board Games",
   summary:
     "Hi! This is a group for fun-loving, non-competitive people who enjoy playing party and board games. We have several wonderful venues where we can enjoy food and drinks while playing a few games. Don’t hesitate to bring any games you'd like to play (or feel free to come empty-handed).",
 };
 
 export const GROUP_2 = {
-  id: 2,
-  link: "https://www.meetup.com/nontraditional-board-games/",
   events: [
     {
       id: 1,
@@ -56,18 +55,22 @@ export const GROUP_2 = {
         "Grab a game or bring your own, this event is open play. Whether it is chucking dice, full of traitors, laying tiles, or only cards involved, it doesn't matter; as long as it is a fun game, let's get it to the table and play it.",
     },
   ],
-  title: "NonTraditional Board Games",
+  id: 2,
+  link: "https://www.meetup.com/nontraditional-board-games/",
+  locations: "Silver Spring",
   summary:
     "We are all about board games here. NonTraditional Board Games (NTBoardGames for short) is a group for people to come together, play board games, have fun, and meet new friends.\n" +
     "\n" +
     "There's nothing wrong with Monopoly or Scattergories, but this group is focused on games you might've not heard before. Some of the games you can expect to play are Lords of Xidit, Tortuga 1667, Eldritch Horror, and many more.\n" +
     "\n" +
     "Let's Play Some Games!",
+  title: "NonTraditional Board Games",
 };
 
 export const GROUP_3 = {
   id: 3,
   link: "https://www.meetup.com/board-games-at/",
+  locations:"Alexandria",
   events: [
     {
       id: 1,
@@ -86,6 +89,7 @@ export const GROUP_3 = {
 export const GROUP_4 = {
   id: 4,
   link: "https://www.meetup.com/rockville-gamers-we-have-cake/",
+  locations: "Rockville",
   events: [
     {
       id: 1,
@@ -104,6 +108,7 @@ export const GROUP_4 = {
 export const GROUP_6 = {
   id: 6,
   link: "https://www.meetup.com/mega-meeple-group/",
+  locations: "Alexandria",
   events: [],
   title: "Meeple Board Game Group",
   summary:
@@ -116,6 +121,7 @@ export const GROUP_7 = {
   id: 7,
   link: "https://www.meetup.com/fantasy-and-legacy-board-games-the-board-room-clarendon/",
   events: [],
+  locations: "Arlington",
   title: "Fantasy and Fun Board Games @ The Board Room (Clarendon)",
   summary:
     "This meetup is dedicated to  fantasy and / or legacy games going @ The Board Room in Arlington, VA. We typically meet on Sunday evenings at 6:30pm. \n" +
@@ -133,6 +139,7 @@ export const GROUP_7 = {
 export const GROUP_8 = {
   id: 8,
   link: "https://www.meetup.com/hyattsville-gaming-conclave/",
+  locations: "Hyattsville",
   title: "Hyattsville-gaming-conclave",
   events: [
     {
@@ -153,6 +160,7 @@ export const GROUP_8 = {
 export const GROUP_9 = {
   id: 9,
   link: "https://www.meetup.com/AARGGH/",
+  locations: "Arlington",
   title: "Alexandria-Arlington Regional Gaming Group",
   events: [
     {
@@ -171,6 +179,7 @@ export const GROUP_9 = {
 export const GROUP_10 = {
   id: 10,
   link: "https://www.meetup.com/alexandria-board-gaming/",
+  locations: "Alexandria",
   title: "Alexandria Board Gaming",
   events: [],
   summary:
@@ -180,6 +189,7 @@ export const GROUP_10 = {
 export const GROUP_11 = {
   id: 11,
   link: "https://www.meetup.com/dc-area-board-games/",
+  locations:"Arlington,Falls Church",
   title: "The DC Area Board Game Club",
   events: [],
   summary:
@@ -189,6 +199,7 @@ export const GROUP_11 = {
 export const GROUP_12 = {
   id: 12,
   link: "https://www.meetup.com/wr-board-game-friends-dc/",
+  locations: 'DC',
   title: "WR Board Game Friends (NOMA, DC)",
   events: [],
   summary:
@@ -201,6 +212,7 @@ export const GROUP_12 = {
 export const GROUP_13 = {
   id: 13,
   link: "https://www.meetup.com/rockville-strategy-games/",
+  locations: "Rockville",
   title: "Rockville Strategy Games",
   events: [],
   summary:
@@ -213,6 +225,7 @@ export const GROUP_14 = {
   id: 14,
   link: "https://www.meetup.com/Fun-Times-In-the-DMV/",
   title: "Fun Times in the DMV",
+  locations: "Arlington",
   events: [
     {
       id: 1,
@@ -230,6 +243,7 @@ export const GROUP_14 = {
 export const GROUP_15 = {
   id: 15,
   link: "https://www.meetup.com/boardgames-383/",
+  locations: "Springfield",
   title: "The Fairfax Board Game Group",
   events: [],
   summary:
@@ -239,6 +253,7 @@ export const GROUP_15 = {
 
 export const GROUP_16 = {
   id: 16,
+  locations: "Brunswick,College Park,Gaithersburg,Rockville",
   link: "https://www.meetup.com/dcgamenight/",
   title: "Maryland and DC Area Game Night",
   events: [
@@ -289,6 +304,7 @@ export const GROUP_16 = {
 export const GROUP_17 = {
   id: 17,
   link: "https://www.meetup.com/northern-virginia-weeknight-euros-and-more/",
+  locations: "Arlington",
   title: "Trains, Trade, Trouble: Eurogames and more",
   events: [],
   summary:
@@ -298,6 +314,7 @@ export const GROUP_17 = {
 export const GROUP_18 = {
   id: 18,
   link: "https://www.meetup.com/dc-gaming-group",
+  locations:"Brentwood,DC",
   title: "DC Gaming Group",
   events: [],
   summary:
@@ -307,6 +324,7 @@ export const GROUP_18 = {
 export const GROUP_19 = {
   id: 19,
   link: "https://www.meetup.com/fairfax-home-tabletop-board-games",
+  locations:"Fairfax",
   title: "Fairfax Home Tabletop Board Games",
   events: [],
   summary:
@@ -315,6 +333,7 @@ export const GROUP_19 = {
 
 export const GROUP_20 = {
   id: 20,
+  locations: "Fairfax",
   link: "https://www.meetup.com/games-comics-pair-odice-game-center/",
   title: "Games & Comics Pair O'Dice Game Center",
   events: [
@@ -334,6 +353,7 @@ export const GROUP_21 = {
   id: 21,
   link: "https://www.meetup.com/Reston-Gaming-Meetup-Group/",
   title: "Reston Gaming Meetup Group",
+  locations:"Ashburn,Reston",
   events: [
     {
       id: 1,
@@ -358,6 +378,7 @@ export const GROUP_21 = {
 
 export const GROUP_22 = {
   id: 22,
+  locations: "Ashburn,Herndon",
   link: "https://www.meetup.com/herndonboardgamegroup",
   title: "The Herndon Boardgame Group",
   events: [
@@ -387,6 +408,7 @@ export const GROUP_22 = {
 export const GROUP_23 = {
   id: 23,
   link: "https://www.meetup.com/leagueofextraordinarygamers",
+  locations: "Ashburn",
   title: "League of Extraordinary Gamers",
   events: [],
   summary:
@@ -400,6 +422,7 @@ export const GROUP_23 = {
 export const GROUP_24 = {
   id: 24,
   link: "https://www.meetup.com/gamers-of-the-abyss/",
+  locations:"Greenbelt,Silver Spring",
   title: "Gamers of the Abyss",
   events: [],
   summary:
@@ -409,6 +432,7 @@ export const GROUP_24 = {
 export const GROUP_25 = {
   id: 25,
   link: "https://www.meetup.com/olney-board-games-meetup-group/",
+  locations: "Olney",
   title: "Olney Board Games Meetup Group",
   events: [
     {

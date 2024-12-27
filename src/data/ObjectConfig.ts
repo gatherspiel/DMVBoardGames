@@ -9,6 +9,7 @@ export interface Event {
 export interface Group {
   id: number;
   events: Event[];
+  locations: string;
   link: string;
   title: string;
   summary: string;
