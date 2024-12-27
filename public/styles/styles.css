@@ -86,7 +86,6 @@ button:focus-visible {
 
 #root {
   flex: 1 0 100%;
-  padding-left:2rem;
   padding-top:3rem;
   text-align: start;
 }
@@ -104,6 +103,17 @@ button:focus-visible {
   text-align: start
 }
 
+#event-search {
+  padding-bottom: 2em;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+
+}
+
 .page-summary {
   padding-top: 20px;
+}
+
+.page-section {
+  padding-left:2em;
 }

@@ -5,7 +5,7 @@ const sourceCodeLocation =
 function App() {
   return (
     <>
-      <div id="event-page-info" className="page-summary">
+      <div id="event-page-info" className="page-summary page-section">
         <p>
           This page is a work in progress listing of board game events in the
           DMV area. Email gulu@createthirdplaces.com to request an update to

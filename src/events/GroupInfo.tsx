@@ -14,6 +14,7 @@ export function GroupInfo({ group }: { group: Group }) {
     <div key={groupIndex}>
       <h2>
         <a href={group.link}>{group.title}</a>
+        <span>:&nbsp;{group.locations.replaceAll(',',', ')}</span>
       </h2>
       <button onClick={updateShowInfo}>
         {showInfo ? "Hide info" : "Show info"}
