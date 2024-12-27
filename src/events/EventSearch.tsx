@@ -1,11 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
-import { useState } from "react";
+import {useState} from "react";
 
 import {useAtom, useSetAtom} from "jotai";
 import {readWriteSearchState, searchLocationsAtom} from "../state/EventState.ts";
 import {DEFAULT_SEARCH_PARAMETER} from "../data/search/search.ts";
+
 export function EventSearch() {
   const [day, setDay] = useState(DEFAULT_SEARCH_PARAMETER);
   const [location, setLocation] = useState(DEFAULT_SEARCH_PARAMETER);
@@ -32,8 +33,8 @@ export function EventSearch() {
     });
   }
   return (
-    <div>
-      <h1>Search</h1>
+    <div id="event-search" className="page-section">
+      <h1>Search Events</h1>
 
       <form onSubmit={handleSubmit}>
 
@@ -42,11 +43,13 @@ export function EventSearch() {
           id="locations"
           name="locations"
           value={location}
-          onChange={(e) => setLocation(e.target.value)}
+          onChange={(e) => {
+            setLocation(e.target.value)}
+        }
         >
-          {locations.map((day, index) => (
-            <option key={index} value={day}>
-              {day}
+          {locations.map((location, index) => (
+            <option key={index} value={location}>
+              {location === DEFAULT_SEARCH_PARAMETER ? "Any location" : location}
             </option>
           ))}
         </select>
@@ -59,11 +62,11 @@ export function EventSearch() {
         >
           {days.map((day, index) => (
             <option key={index} value={day}>
-              {day}
+              {day === DEFAULT_SEARCH_PARAMETER ? "Any day": day}
             </option>
           ))}
         </select>
-
+        <br></br>
         <button type="submit">Submit</button>
       </form>
     </div>

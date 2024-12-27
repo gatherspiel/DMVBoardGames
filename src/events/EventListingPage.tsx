@@ -18,33 +18,39 @@ export function EventListingPage() {
       <Suspense >
         <EventSearch></EventSearch>
       </Suspense>
-      <h1>Groups With Recurring events</h1>
 
-      {data.groups.map((group: Group) => (
-        <GroupInfo key={group.id} group={group}></GroupInfo>
-      ))}
-      <h1> Upcoming conventions</h1>
-      {data.conventions.map((convention) => (
-        <div key={convention.id}>
-          <h3>
-            <a href={convention.link}>{convention.title}</a>
-          </h3>
-          <p>Days: {convention.days.join()}</p>
-        </div>
-      ))}
-      <h1> Game stores </h1>
-      {data.gameStores.map((gameStore) => (
-        <div key={gameStore.id}>
-          <h3>
-            {gameStore.link && gameStore.link !== "" ? (
-              <a href={gameStore.link}>{gameStore.name}</a>
-            ) : (
-              <p>{gameStore.name}</p>
-            )}
-          </h3>
-          <p>Location: {gameStore.location}</p>
-        </div>
-      ))}
+      <div className="page-section">
+        <h1>Groups With Recurring events</h1>
+
+        {data.groups.length ===0 &&  (
+          <p>No events found</p>
+        )}
+        {data.groups.map((group: Group) => (
+          <GroupInfo key={group.id} group={group}></GroupInfo>
+        ))}
+        <h1> Upcoming conventions</h1>
+        {data.conventions.map((convention) => (
+          <div key={convention.id}>
+            <h3>
+              <a href={convention.link}>{convention.title}</a>
+            </h3>
+            <p>Days: {convention.days.join()}</p>
+          </div>
+        ))}
+        <h1> Game stores </h1>
+        {data.gameStores.map((gameStore) => (
+          <div key={gameStore.id}>
+            <h3>
+              {gameStore.link && gameStore.link !== "" ? (
+                <a href={gameStore.link}>{gameStore.name}</a>
+              ) : (
+                <p>{gameStore.name}</p>
+              )}
+            </h3>
+            <p>Location: {gameStore.location}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
