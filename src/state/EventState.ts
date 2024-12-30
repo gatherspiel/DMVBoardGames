@@ -24,18 +24,24 @@ import {
   GROUP_23,
   GROUP_24,
   GROUP_25,
+  GROUP_26,
+  GROUP_27,
+  GROUP_28,
 } from "../data/GroupData.ts";
-import {CONVENTION_1} from "../data/ConventionData.ts";
+import { CONVENTION_1 } from "../data/ConventionData.ts";
 import { gameStores } from "../data/GameStoreData.ts";
 import { Group } from "../data/ObjectConfig.ts";
-import {DEFAULT_SEARCH_PARAMETER, findResults} from "../data/search/search.ts";
+import {
+  DEFAULT_SEARCH_PARAMETER,
+  findResults,
+} from "../data/search/search.ts";
+import { gameRestaurants } from "../data/GameRestaurantData.ts";
 
-const backendDataAtom = atom('');
+const backendDataAtom = atom("");
 //In the future, this atom will asynchronously fetch data from a backend API or cache.
 export const fetchEventDataAtom = atom(async (get) => {
-
   const data = get(backendDataAtom);
-  console.log("Backend data:"+data);
+  console.log("Backend data:" + data);
   const groups: Group[] = [
     GROUP_1,
     GROUP_2,
@@ -61,6 +67,9 @@ export const fetchEventDataAtom = atom(async (get) => {
     GROUP_23,
     GROUP_24,
     GROUP_25,
+    GROUP_26,
+    GROUP_27,
+    GROUP_28,
   ];
   groups.sort((a, b) => {
     if (a.title < b.title) {
@@ -85,14 +94,29 @@ export const fetchEventDataAtom = atom(async (get) => {
     return 0;
   });
 
+  const sortedGameRestaurants = gameRestaurants.slice();
+  sortedGameRestaurants.sort((a, b) => {
+    if (a.name < b.name) {
+      return -1;
+    }
+    if (a.name > b.name) {
+      return 1;
+    }
+
+    return 0;
+  });
   return {
     groups: groups,
     conventions: [CONVENTION_1],
     gameStores: sortedGameStores,
+    gameRestaurants: sortedGameRestaurants,
   };
 });
 
-export const searchStateAtom = atom({ day: DEFAULT_SEARCH_PARAMETER, location: DEFAULT_SEARCH_PARAMETER });
+export const searchStateAtom = atom({
+  day: DEFAULT_SEARCH_PARAMETER,
+  location: DEFAULT_SEARCH_PARAMETER,
+});
 
 export const readWriteSearchState = atom(
   (get) => get(searchStateAtom),
@@ -106,21 +130,21 @@ export const readWriteSearchState = atom(
 export const resultsAtom = atom(async (get) => {
   const search = get(searchStateAtom);
   const data = await get(fetchEventDataAtom);
-  return findResults(data,search);
+  return findResults(data, search);
 });
 
-export const searchLocationsAtom = atom(async(get)=>{
+export const searchLocationsAtom = atom(async (get) => {
   const data = await get(fetchEventDataAtom);
   const locations = new Set();
-  data.groups.forEach(group=>{
-    group.locations.split(",").forEach(location=>{
-      locations.add(location.trim())
+  data.groups.forEach((group) => {
+    group.locations.split(",").forEach((location) => {
+      locations.add(location.trim());
     });
-  })
+  });
 
-  const locationArray = Array.from(locations)
+  const locationArray = Array.from(locations);
 
   locationArray.sort();
-  locationArray.unshift(DEFAULT_SEARCH_PARAMETER)
+  locationArray.unshift(DEFAULT_SEARCH_PARAMETER);
   return locationArray;
-})
+});

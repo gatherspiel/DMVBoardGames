@@ -6,25 +6,20 @@ import { useAtom } from "jotai";
 import { GroupInfo } from "./GroupInfo.tsx";
 import { EventSearch } from "./EventSearch.tsx";
 import { Group } from "../data/ObjectConfig.ts";
-import {Suspense} from "react";
+import { Suspense } from "react";
 
 export function EventListingPage() {
-
-
   const [data] = useAtom(resultsAtom);
   return (
     <div id="listing-page">
-
-      <Suspense >
+      <Suspense>
         <EventSearch></EventSearch>
       </Suspense>
 
       <div className="page-section">
         <h1>Groups With Recurring events</h1>
 
-        {data.groups.length ===0 &&  (
-          <p>No events found</p>
-        )}
+        {data.groups.length === 0 && <p>No events found</p>}
         {data.groups.map((group: Group) => (
           <GroupInfo key={group.id} group={group}></GroupInfo>
         ))}
@@ -48,6 +43,20 @@ export function EventListingPage() {
               )}
             </h3>
             <p>Location: {gameStore.location}</p>
+          </div>
+        ))}
+
+        <h1> Board Game Bars and Cafés </h1>
+        {data.gameRestaurants.map((gameRestaurant) => (
+          <div key={gameRestaurant.id}>
+            <h3>
+              {gameRestaurant.link && gameRestaurant.link !== "" ? (
+                <a href={gameRestaurant.link}>{gameRestaurant.name}</a>
+              ) : (
+                <p>{gameRestaurant.name}</p>
+              )}
+            </h3>
+            <p>Location: {gameRestaurant.location}</p>
           </div>
         ))}
       </div>

@@ -70,7 +70,7 @@ export const GROUP_2 = {
 export const GROUP_3 = {
   id: 3,
   link: "https://www.meetup.com/board-games-at/",
-  locations:"Alexandria",
+  locations: "Alexandria",
   events: [
     {
       id: 1,
@@ -189,7 +189,7 @@ export const GROUP_10 = {
 export const GROUP_11 = {
   id: 11,
   link: "https://www.meetup.com/dc-area-board-games/",
-  locations:"Arlington,Falls Church",
+  locations: "Arlington,Falls Church",
   title: "The DC Area Board Game Club",
   events: [],
   summary:
@@ -199,7 +199,7 @@ export const GROUP_11 = {
 export const GROUP_12 = {
   id: 12,
   link: "https://www.meetup.com/wr-board-game-friends-dc/",
-  locations: 'DC',
+  locations: "DC",
   title: "WR Board Game Friends (NOMA, DC)",
   events: [],
   summary:
@@ -314,7 +314,7 @@ export const GROUP_17 = {
 export const GROUP_18 = {
   id: 18,
   link: "https://www.meetup.com/dc-gaming-group",
-  locations:"Brentwood,DC",
+  locations: "Brentwood,DC",
   title: "DC Gaming Group",
   events: [],
   summary:
@@ -324,7 +324,7 @@ export const GROUP_18 = {
 export const GROUP_19 = {
   id: 19,
   link: "https://www.meetup.com/fairfax-home-tabletop-board-games",
-  locations:"Fairfax",
+  locations: "Fairfax",
   title: "Fairfax Home Tabletop Board Games",
   events: [],
   summary:
@@ -353,7 +353,7 @@ export const GROUP_21 = {
   id: 21,
   link: "https://www.meetup.com/Reston-Gaming-Meetup-Group/",
   title: "Reston Gaming Meetup Group",
-  locations:"Ashburn,Reston",
+  locations: "Ashburn,Reston",
   events: [
     {
       id: 1,
@@ -422,7 +422,7 @@ export const GROUP_23 = {
 export const GROUP_24 = {
   id: 24,
   link: "https://www.meetup.com/gamers-of-the-abyss/",
-  locations:"Greenbelt,Silver Spring",
+  locations: "Greenbelt,Silver Spring",
   title: "Gamers of the Abyss",
   events: [],
   summary:
@@ -448,3 +448,87 @@ export const GROUP_25 = {
     "The goal of this group is to bring people together through games. This is a social group to meet other adults who enjoy board games. Typical play is nontraditional board and card games. Join us to learn new games and share some of your favorites. We will provide some games but ask that you also bring games that you would like to teach and play. The Meetup will be at Brew Belly in Olney on Monday evenings. Food and drink are available for purchase and help support the kind folks at this restaurant who are willing to set aside tables for us to play.",
 };
 
+export const GROUP_26 = {
+  id: 26,
+  link: "https://www.meetup.com/Game-Nights-at-Crossroads/",
+  locations: "Manassas",
+  title: "Game Nights at Crossroads",
+  events: [
+    {
+      id: 1,
+      title: "Mental Monday Trivia Night",
+      day: "Monday",
+      location: "9412 Main St · Manassas, VA",
+      summary:
+        "Every week it's a different theme! We have done authors and their works, Changing Seasons, Animated Characters, and lots more. Form a team, but your team score is the amount of correct answers divided by number of team members.\n" +
+        "\n" +
+        "And, yes, there are prizes! If attendance is low, everyone gets something, but if it's big, the prizes are bigger, including gift cards!\n" +
+        "\n" +
+        "All questions are either created by us, or taken from one of our very many trivia games on hand. There will always be easy and hard questions, plus a fair range for every kind of player to be involved.",
+    },
+    {
+      id: 2,
+      title: "Advancd Strategy Game Night",
+      day: "Tuesday",
+      location: "9412 Main St · Manassas, VA",
+      summary:
+        "Have you ever been intimidated by a game? Glanced at it and ran for the hills (the ones without eyes)?\n" +
+        "\n" +
+        "Well Gamemeister Sam is here to take you by the hand (not literally, though, that would be weird) and guide you to the promised land. Where the sun is always shining and the air smells like warm root beer and heavy cardboard aficionado's are afforded every opportunity to gorge themselves in all manner of scintillating strategy games.",
+    },
+    {
+      id: 3,
+      title: "Disney's Lorcana TCG Wednesdays",
+      day: "Wednesday",
+      location: "9412 Main St · Manassas, VA",
+      summary:
+        "Every Wednesday at 6pm sharp, Sam will be hosting Disney's Lorcana TCG game nights! There will be prizes for the winners & lots of fun to be had!",
+    },
+    {
+      id: 4,
+      title: "Strategy Game Night",
+      day: "Thursday",
+      location: "9412 Main St · Manassas, VA",
+      summary:
+        "Thursday is becoming the favored week night for STRATEGY gamers here at Crossroads! We have played Mare Nostrum, Orleans, Gaia Project, and more. Bring your preferences, be ready to split if it's a larger group, and rely on us for an awesome variety of games from which to choose.",
+    },
+    {
+      id: 5,
+      title: "Card Sharks of Crossroads",
+      day: "Friday",
+      location: "9412 Main St · Manassas, VA",
+      summary:
+        "When it's getting late on a Friday and you don't have other plans, come over for some old-fashioned card-playing! We can play anything and everything, from Euchre and Pinochle to Hearts and Spades to Bridge and Rummy, and maybe even some Poker or Blackjack! It's up to whomever shows up. We'll get a table (or several) at the bar so the drinks (if you so desire) are handy!",
+    },
+    {
+      id: 6,
+      title: "Open Games Sunday",
+      day: "Sunday",
+      location: "9412 Main St · Manassas, VA",
+      summary:
+        "A weekly meetup for all gamers, from heavy strategy to light party games. Crossroads has a 1,400+ library of games, free to all paying customers (food, drink, or retail purchases qualify). Owner John (yours truly) will be on hand to host the event, and usually be able to sit and play as well!",
+    },
+  ],
+  summary:
+    "Crossroads Tabletop Tavern is a home away from home for tabletop gamers of all kinds...and to the gamer in everyone!",
+};
+
+export const GROUP_27 = {
+  id: 27,
+  link: "https://www.meetup.com/county-center-board-tabletop-games/",
+  locations: "Woodbridge",
+  title: "County CenterBoard and Tabletop Games",
+  events: [],
+  summary:
+    "Welcome! This group is for those interested in playing board and tabletop games. Events will be held at a private home near County Center, Woodbridge, VA (in Prince William County). Board games are my hobby and I started this group to play more games. If you are sociable, respectful, and like modern board games (or want to learn) then this group is possibly for you.",
+};
+
+export const GROUP_28 = {
+  id: 28,
+  link: "https://www.meetup.com/boardgamegroup/",
+  locations: "Woodbridge",
+  title: "The Prince William Boardgames Meetup Group",
+  events: [],
+  summary:
+    "This group is for anyone interested in playing board games, party games, card games, classic games, Euro games, etc. We're a pretty laid back group so we may play a lot of Euro games at one event and lots of party games at another. It just depends on what people want to play at that event. Go with the flow. We also try to do events that either mix games with something else or just something else for fun. Singles or couples, all are welcome..",
+};
