@@ -530,5 +530,24 @@ export const GROUP_28 = {
   title: "The Prince William Boardgames Meetup Group",
   events: [],
   summary:
-    "This group is for anyone interested in playing board games, party games, card games, classic games, Euro games, etc. We're a pretty laid back group so we may play a lot of Euro games at one event and lots of party games at another. It just depends on what people want to play at that event. Go with the flow. We also try to do events that either mix games with something else or just something else for fun. Singles or couples, all are welcome..",
+    "This group is for anyone interested in playing board games, party games, card games, classic games, Euro games, etc. We're a pretty laid back group so we may play a lot of Euro games at one event and lots of party games at another. It just depends on what people want to play at that event. Go with the flow. We also try to do events that either mix games with something else or just something else for fun. Singles or couples, all are welcome.",
+};
+
+export const GROUP_29 = {
+  id: 29,
+  link: "https://www.meetup.com/boardgames-food-friends/",
+  locations: "Alexandria",
+  title: "Boardgames, Food & Friends",
+  events: [
+    {
+      id: 1,
+      title: "Weekly Boardgame Throwdown!",
+      day: "Monday",
+      location: "3141 Duke St · Alexandria, VA",
+      summary:
+        "This our weekly game night event! We start at 6pm so that we can get dinner from Glory Days. Come join us and maybe meet some new friends as we play games ranging from Fluxx to Ricochet Robots to Ticket to Ride to Saboteur to Cards Against Humanity (and others).",
+    },
+  ],
+  summary:
+    "We are a fun group of people who enjoy meeting friends for some good food and boardgames of all types.",
 };
