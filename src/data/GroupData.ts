@@ -140,7 +140,7 @@ export const GROUP_8 = {
   id: 8,
   link: "https://www.meetup.com/hyattsville-gaming-conclave/",
   locations: "Hyattsville",
-  title: "Hyattsville-gaming-conclave",
+  title: "Hyattsville Gaming Conclave",
   events: [
     {
       id: 1,
@@ -517,7 +517,7 @@ export const GROUP_27 = {
   id: 27,
   link: "https://www.meetup.com/county-center-board-tabletop-games/",
   locations: "Woodbridge",
-  title: "County CenterBoard and Tabletop Games",
+  title: "County Center Board and Tabletop Games",
   events: [],
   summary:
     "Welcome! This group is for those interested in playing board and tabletop games. Events will be held at a private home near County Center, Woodbridge, VA (in Prince William County). Board games are my hobby and I started this group to play more games. If you are sociable, respectful, and like modern board games (or want to learn) then this group is possibly for you.",
@@ -550,4 +550,96 @@ export const GROUP_29 = {
   ],
   summary:
     "We are a fun group of people who enjoy meeting friends for some good food and boardgames of all types.",
+};
+
+export const GROUP_30 = {
+  id: 30,
+  link: "https://www.meetup.com/table-games-meetup/",
+  locations: "Alexandria,Frederick",
+  title: "Table Games Meetup",
+  events: [
+    {
+      id: 1,
+      title: "ALEXANDRIA Play & Learn Boardgames, Strategy, Card, Euro Games",
+      day: "Tuesday",
+      location: "7905 Hilltop Village Center Dr · Alexandria, VA",
+      summary:
+        "This meetup is for people that want to play table games: board games, strategy games, episodic RPGs, eurogames, card games and co-operative games. NOT A GAMER BUT WANT TO LEARN? We teach them all...",
+    },
+    {
+      id: 2,
+      title: "Frederick Play & Learn Boardgames, Strategy, Card, Euro Games",
+      day: "Thursday",
+      location: "5500 Buckeystown Pike #804 · Frederick, MD",
+      summary:
+        "This Buckeystowne meetup is for people that want to LEARN AND PLAY table games: board games, strategy games, episodic RPGs, eurogames, card games and co-operative games. NOT A GAMER BUT WANT TO LEARN? We teach them all...",
+    },
+  ],
+  summary:
+    "We are a fun group of people who enjoy meeting friends for some good food and boardgames of all types.",
+};
+
+export const GROUP_31 = {
+  id: 31,
+  link: "https://www.meetup.com/manassas-eat-chat-and-game-group/",
+  locations: "Chantilly",
+  title: "Manassas Eat & Chat and Game Group",
+  events: [
+    {
+      id: 1,
+      title: "Manassas Game Group Event!",
+      day: "Saturday",
+      location: "14361 Newbrook Dr · Chantilly , VA",
+      summary:
+        "Join us for a fun afternoon of board games, card games, etc! Bring your favorites or play a game that someone else brings.\n" +
+        "You are welcome to bring snacks (for yourself or to share) and non-alcoholic beverages.",
+    },
+  ],
+  summary:
+    "We are a fun group of people who enjoy meeting friends for some good food and boardgames of all types.",
+};
+
+export const GROUP_32 = {
+  id: 32,
+  link: "https://www.meetup.com/woodbridge-tabletop-game-night/",
+  locations: "Woodbridge",
+  title: "Woodbridge Tabletop Game Night",
+  events: [
+    {
+      id: 1,
+      title: "Game Night in Lake Ridge",
+      day: "Saturday",
+      location: "Lake Ridge, VA",
+      summary:
+        "Welcome! We're a group of gamers that play board games of varying levels of intensity and difficulty. Take a look" +
+        " below to see a sample of the board games we play, and you may also feel free to bring your own. If you don't " +
+        "know how to play, don't worry, we'll teach you! \nMelissa always has paper plates, napkins, cups, etc. on hand," +
+        " as well as water and soda, and everyone usually brings some kind of snack. You're not expected to, but it is" +
+        " always welcome.\n On the day of the event, an email will be sent with an address and parking instructions. " +
+        "If you don't get it by 4, please check your junk mail folder. Please note there will be a small and very friendly " +
+        "Shetland Sheepdog present.",
+    },
+  ],
+  summary:
+    "We are looking to make friends, have fun, and play board games! We have a wide selection and all our members are welcome to bring their own games. We are willing to teach and learn as needed and usually we have at least two and sometimes three games going at once. We also enjoy having themed game nights and even do occasional field trips to movies, game taverns, and more! ",
+};
+
+export const GROUP_33 = {
+  id: 33,
+  link: "https://www.meetup.com/Gaithersburg-Board-Games-Meetup-Group/",
+  locations: "Gaithersburg",
+  title: "Gaithersburg Board Games Meetup Group",
+  events: [
+    {
+      id: 1,
+      title: "Gaithersburg Games",
+      day: "Saturday",
+      location: "19965 Century Blvd · Germantown, MD",
+      summary:
+        "I invite everybody to join us for board games at Panera bread in Germantown on Century Blvd. We have all sorts of games. We welcome all kinds of gamers from the first timers, to old veterans. Feel free to bring any of your own games if you wish. Most of our members are always eager to learn new games. Of course we also like classics like Catan or Ticket To RIde, among others. You are free to arrive to the event at anytime, and leave whenever you have had enough games. There is no fee for this event. But I am sure that the restaurant would appreciate any patronage, and they are being kind enough to loan us their tables." +
+        "This event will repeat every final Saturday of each month.",
+    },
+  ],
+  summary:
+    "We are looking to make friends, have fun, and play board games! We have a wide selection and all our members are welcome to bring their own games. We are willing to teach and learn as needed and usually we have at least two and sometimes three games going at once. We also enjoy having themed game nights and even do occasional field trips to movies, game taverns, and more! ",
 };
