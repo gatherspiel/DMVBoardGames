@@ -17,12 +17,19 @@ export interface Group {
 
 export interface Convention {
   id: number;
-  link: string
+  link: string;
   title: string;
   days: string[];
 }
 
 export interface GameStore {
+  id: number;
+  location: string;
+  name: string;
+  link: string;
+}
+
+export interface GameRestaurant {
   id: number;
   location: string;
   name: string;

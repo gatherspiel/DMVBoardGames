@@ -12,15 +12,48 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+body {
+  margin: 0;
+  display: flex;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
 
-body {
-  margin: 0;
-  display: flex;
+#container {
+  align-items: start;
+  display:flex;
+  width: 100%;
+}
+
+#event-search {
+  padding-bottom: 2em;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+}
+
+#listing-page {
+  text-align: start
 }
 
 #navigation {
@@ -53,23 +86,16 @@ body {
   color: white;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  transition: border-color 0.25s;
+#page-info {
+  padding-top: 20px;
 }
-button:hover {
-  border-color: #646cff;
+
+#root {
+  flex: 1 0 100%;
+  padding-top:3rem;
+  text-align: start;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
+
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -82,32 +108,6 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
-
-#root {
-  flex: 1 0 100%;
-  padding-top:3rem;
-  text-align: start;
-}
-
-#page-info {
-  padding-top: 20px;
-}
-
-#container {
-  display:flex;
-  align-items: start;
-}
-
-#listing-page {
-  text-align: start
-}
-
-#event-search {
-  padding-bottom: 2em;
-  border-bottom: 1px solid black;
-  border-top: 1px solid black;
-
 }
 
 .page-summary {
