@@ -28,6 +28,9 @@ import {
   GROUP_27,
   GROUP_28,
   GROUP_29,
+  GROUP_30,
+  GROUP_31,
+  GROUP_32,
 } from "../data/GroupData.ts";
 import { CONVENTION_1 } from "../data/ConventionData.ts";
 import { gameStores } from "../data/GameStoreData.ts";
@@ -72,6 +75,9 @@ export const fetchEventDataAtom = atom(async (get) => {
     GROUP_27,
     GROUP_28,
     GROUP_29,
+    GROUP_30,
+    GROUP_31,
+    GROUP_32,
   ];
   groups.sort((a, b) => {
     if (a.title < b.title) {
