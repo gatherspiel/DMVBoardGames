@@ -6,6 +6,10 @@
     <link rel="stylesheet" href="/styles/eventListing.css">
     <meta name="viewport"          content="width=device-width, initial-scale=1.0" />
     <title>DMV Board Games</title>
+
+    <script type="module" src="/src/events/scripts/GroupData.js"></script>
+    <script src="src/events/scripts/eventListing.js" type="module"></script>
+
   </head>
   <body>
     <div id = "container">
@@ -14,8 +18,26 @@
           <a href="/designers.html">Local designers</a>
           <a href="/plans.html">Future plans</a>
         </div>
-      <div id="root"></div>
-      <script type="module" src="/src/main.tsx"></script>
+
+      <div id="root">
+        <div id='event-page-info' class="page-summary page-section">
+          <p>
+            This page is a work in progress listing of board game events in the
+            DMV area. Email gulu@createthirdplaces.com to request an update to
+            this list or share feedback.
+          </p>
+          <p>
+            To request a new feature or view the source code, go
+            <a href="https://github.com/Create-Third-Places/DMVBoardGames">here</a>
+          </p>
+        </div>
+
+      <div id="listing-page">
+        <div id="listing" class="page-section">
+
+        </div>
+
+      </div>
     </div>
   </body>
 </html>
