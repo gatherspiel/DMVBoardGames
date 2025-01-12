@@ -7,8 +7,13 @@
     <meta name="viewport"          content="width=device-width, initial-scale=1.0" />
     <title>DMV Board Games</title>
 
-    <script type="module" src="/src/events/scripts/GroupData.js"></script>
-    <script src="src/events/scripts/eventListing.js" type="module"></script>
+    <script type="module" src="/src/events/scripts/data/GameRestaurantData.js"></script>
+    <script type="module" src="/src/events/scripts/data/GameStoreData.js"></script>
+
+    <script type="module" src="/src/events/scripts/data/GroupData.js"></script>
+    <script type="module" src="/src/events/scripts/EventSearch.js"></script>
+
+    <script type="module" src="src/events/scripts/EventDisplay.js" ></script>
 
   </head>
   <body>
@@ -20,6 +25,10 @@
         </div>
 
       <div id="root">
+
+        <div id = "event-search" class="page-section">
+
+        </div>
         <div id='event-page-info' class="page-summary page-section">
           <p>
             This page is a work in progress listing of board game events in the
@@ -33,9 +42,18 @@
         </div>
 
       <div id="listing-page">
-        <div id="listing" class="page-section">
+        <div id="event-list" class="page-section">
+        </div>
+
+        <div id="convention-list" class="page-section">
 
         </div>
+
+        <div id="game-store-list" class="page-section">
+
+        </div>
+
+        <div id ="game-restaurant-list" class="page-section"></div>
 
       </div>
     </div>

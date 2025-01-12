@@ -1,5 +1,4 @@
-import { GameStore } from "./ObjectConfig.ts";
-export const gameStores: GameStore[] = [
+export const gameStores = [
   {
     id: 1,
     name: "Labyrinth Games & Puzzles",

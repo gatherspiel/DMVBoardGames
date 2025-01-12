@@ -25,8 +25,17 @@ const EVENT_3 = {
     "Hello again! After a long hiatus, the Monday meet up at Nanny O’Briens is back! We’ll have some games to play, but feel free to bring your favorites as well. Stop by for a game and a drink, and say hello! We’ll be in the back room",
 };
 
+const EVENT_4 = {
+  id: 4,
+  title:
+    "Bring Your Own Eurogames Night at the Crystal City Shops next to We the Pizza",
+  day: "Friday",
+  location: "2011 Crystal Drive · Arlington, VA",
+  summary: "We play a variety of game with a focus on Eurogames",
+};
+
 export const GROUP_1 = {
-  events: [EVENT_1, EVENT_2, EVENT_3],
+  events: [EVENT_1, EVENT_2, EVENT_3, EVENT_4],
   id: 1,
   link: "https://www.meetup.com/beerbogglers/",
   locations: "Arlington, DC",
@@ -644,6 +653,16 @@ export const GROUP_33 = {
     "We are looking to make friends, have fun, and play board games! We have a wide selection and all our members are welcome to bring their own games. We are willing to teach and learn as needed and usually we have at least two and sometimes three games going at once. We also enjoy having themed game nights and even do occasional field trips to movies, game taverns, and more! ",
 };
 
+export const GROUP_34 = {
+  id: 34,
+  link: "https://gcom.clubexpress.com/",
+  locations: "Maryland",
+  title: "Games Club of Maryland",
+  events: [],
+  summary:
+    "The Games Club of Maryland encourages game playing as a hobby. We play all sorts of games - European Strategy board games, card games, deck-builder games, RPG's, wargames. We play in person at local gaming groups across the Mid-Atlantic region and online, and we host or sponsor many gaming events each year. Our main goal is to have fun! We welcome all gamers from novice to experienced, and we have members of all ages and from various gaming and online backgrounds.",
+};
+
 export const GROUP_DATA = {
   GROUP_1,
   GROUP_2,
@@ -676,4 +695,6 @@ export const GROUP_DATA = {
   GROUP_30,
   GROUP_31,
   GROUP_32,
+  GROUP_33,
+  GROUP_34,
 };

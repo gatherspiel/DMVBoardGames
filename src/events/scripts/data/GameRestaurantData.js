@@ -1,6 +1,4 @@
-import { GameRestaurant } from "./ObjectConfig.ts";
-
-export const gameRestaurants: GameRestaurant[] = [
+export const gameRestaurants = [
   {
     id: 1,
     location: "8150 Baltimore Ave, College Park, MD 20740",
