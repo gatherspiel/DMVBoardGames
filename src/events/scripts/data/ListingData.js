@@ -1,7 +1,7 @@
 import { gameStores } from "./GameStoreData.js";
 import { gameRestaurants } from "./GameRestaurantData.js";
 import { GROUP_1, GROUP_DATA } from "./GroupData.js";
-import { CONVENTION_1 } from "./ConventionData.js";
+import { CONVENTION_1, CONVENTION_2 } from "./ConventionData.js";
 
 export function getData() {
   let groups = structuredClone(Object.values(GROUP_DATA));
@@ -42,7 +42,7 @@ export function getData() {
 
   return {
     groups: groups,
-    conventions: [CONVENTION_1],
+    conventions: [CONVENTION_1, CONVENTION_2],
     gameStores: sortedGameStores,
     gameRestaurants: sortedGameRestaurants,
   };

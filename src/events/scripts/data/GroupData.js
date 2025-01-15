@@ -663,6 +663,54 @@ export const GROUP_34 = {
     "The Games Club of Maryland encourages game playing as a hobby. We play all sorts of games - European Strategy board games, card games, deck-builder games, RPG's, wargames. We play in person at local gaming groups across the Mid-Atlantic region and online, and we host or sponsor many gaming events each year. Our main goal is to have fun! We welcome all gamers from novice to experienced, and we have members of all ages and from various gaming and online backgrounds.",
 };
 
+export const GROUP_35 = {
+  id: 35,
+  link: "https://www.meetup.com/round-hill-gaming/",
+  locations: "Purcellville",
+  title: "RTTG - Western Loudon Tabletop Games",
+  events: [
+    {
+      id: 1,
+      title: "Board games at Pville Library!",
+      day: "Sunday",
+      location: "220 E Main St · Purcellville, VA",
+      summary:
+        "Come play board games! Bring one to play and we will choose what to play. If there are enough people, we will break into groups and play multiple games! Games start within 15 minutes of the start time, so don’t be late!" +
+        "We play games like Ticket to Ride, Scythe, Splendor, 7 Wonders, Everdell, Twilight Imperium, Dominion, etc.",
+    },
+  ],
+  summary:
+    "Find people in and around western Loudoun County to play in person board games, table top role playing games, and other games. Join the Discord to be able to participate in choosing which games we play, and participate in more ad-hoc game sessions (sometimes people say \"hey I'm free tomorrow let's get together and game!",
+};
+
+export const GROUP_36 = {
+  id: 36,
+  link: "https://lu.ma/ts.gamenights",
+  locations: "Sheperdstown",
+  title: "Tri-State Game Nights",
+  events: [
+    {
+      id: 1,
+      title: "Weekly Wednesday",
+      day: "Wednesday",
+      location: "Swan Pond, West Virginia",
+      summary:
+        "Come play board games! Bring one to play and we will choose what to play. If there are enough people, we will break into groups and play multiple games! Games start within 15 minutes of the start time, so don’t be late!" +
+        "We play games like Ticket to Ride, Scythe, Splendor, 7 Wonders, Everdell, Twilight Imperium, Dominion, etc.",
+    },
+    {
+      id: 2,
+      title: "Public Night @ the Legion",
+      day: "Wednesday",
+      location: "Charles Town, West Virginia",
+      summary:
+        "The Charles Town American Legion opens their doors to our gaming community every other Friday, and we are able to gather on their second floor to play games. This is an open session style event where you may join and leave at any time (until our host locks up for the night). Grab your favorite games & friends and come say hi. Our events are open to the public - can't wait to meet you!",
+    },
+  ],
+  summary:
+    "In-person gaming events in the WV-VA-MD tristate intersection. Since 2020",
+};
+
 export const GROUP_DATA = {
   GROUP_1,
   GROUP_2,
@@ -697,4 +745,6 @@ export const GROUP_DATA = {
   GROUP_32,
   GROUP_33,
   GROUP_34,
+  GROUP_35,
+  GROUP_36,
 };
