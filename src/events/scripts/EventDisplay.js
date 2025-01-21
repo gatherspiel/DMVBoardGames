@@ -94,16 +94,23 @@ function getGroupHtml(group) {
 
 function displayEventList(groupData) {
   let html = "";
-  Object.values(groupData).forEach((group) => {
-    groupState["group-" + group.id] = {
-      groupData: group,
-      frontendState: {},
-    };
 
-    let groupHtml = "";
-    groupHtml = getGroupHtml(group);
-    html += groupHtml;
-  });
+  if(groupData && Object.values(groupData).length >0) {
+    Object.values(groupData).forEach((group) => {
+      groupState["group-" + group.id] = {
+        groupData: group,
+        frontendState: {},
+      };
+
+      let groupHtml = "";
+      groupHtml = getGroupHtml(group);
+      html += groupHtml;
+    });
+  } else {
+    html += `
+      <p>No events found.</p>
+    `
+  }
 
   document.querySelector("#event-list").innerHTML = html;
 }

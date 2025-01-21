@@ -711,6 +711,35 @@ export const GROUP_36 = {
     "In-person gaming events in the WV-VA-MD tristate intersection. Since 2020",
 };
 
+export const GROUP_37 = {
+  id: 37,
+  link: "https://www.meetup.com/potomac-tea-and-knife-society/",
+  locations: "Washington, DC",
+  title: "Tri-State Game Nights",
+  events: [
+    {
+      id: 1,
+      title: "Weekly Wednesday",
+      day: "Wednesday",
+      location: "Swan Pond, West Virginia",
+      summary:
+          "Come play board games! Bring one to play and we will choose what to play. If there are enough people, we will break into groups and play multiple games! Games start within 15 minutes of the start time, so don’t be late!" +
+          "We play games like Ticket to Ride, Scythe, Splendor, 7 Wonders, Everdell, Twilight Imperium, Dominion, etc.",
+    },
+    {
+      id: 2,
+      title: "Public Night @ the Legion",
+      day: "Wednesday",
+      location: "Charles Town, West Virginia",
+      summary:
+          "The Charles Town American Legion opens their doors to our gaming community every other Friday, and we are able to gather on their second floor to play games. This is an open session style event where you may join and leave at any time (until our host locks up for the night). Grab your favorite games & friends and come say hi. Our events are open to the public - can't wait to meet you!",
+    },
+  ],
+  summary:
+      "In-person gaming events in the WV-VA-MD tristate intersection. Since 2020",
+};
+
+
 export const GROUP_DATA = {
   GROUP_1,
   GROUP_2,
