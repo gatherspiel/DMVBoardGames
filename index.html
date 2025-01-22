@@ -14,6 +14,8 @@
     <script type="module" src="/src/events/scripts/EventSearch.js"></script>
 
     <script type="module" src="src/events/scripts/EventDisplay.js" ></script>
+    <script type="module" src="src/events/scripts/EventDisplayContainer.js"></script>
+    <script type="module" src="src/framework/utils.js"></script>
 
   </head>
   <body>
@@ -45,21 +47,11 @@
         </div>
 
 
-      <div id="listing-page">
-        <div id="event-list" class="page-section">
-        </div>
-
-        <div id="convention-list" class="page-section">
-
-        </div>
-
-        <div id="game-store-list" class="page-section">
-
-        </div>
-
-        <div id ="game-restaurant-list" class="page-section"></div>
+      <div data-container="root">
+        <script type="module" src="src/events/scripts/EventDisplayContainer.js"></script>
 
       </div>
+    </div>
     </div>
   </body>
 </html>

@@ -95,7 +95,7 @@ function getGroupHtml(group) {
 function displayEventList(groupData) {
   let html = "";
 
-  if(groupData && Object.values(groupData).length >0) {
+  if (groupData && Object.values(groupData).length > 0) {
     Object.values(groupData).forEach((group) => {
       groupState["group-" + group.id] = {
         groupData: group,
@@ -109,7 +109,7 @@ function displayEventList(groupData) {
   } else {
     html += `
       <p>No events found.</p>
-    `
+    `;
   }
 
   document.querySelector("#event-list").innerHTML = html;
@@ -179,7 +179,7 @@ function getRestaurantHtml(gameRestaurant) {
 }
 
 function displayGameRestaurantList(gameRestaurants) {
-  let html = `<h1> Board Game Bars and Caféss</h1>`;
+  let html = `<h1> Board Game Bars and Cafés</h1>`;
 
   Object.values(gameRestaurants).forEach((gameRestaurant) => {
     gameRestaurants["game-store-" + gameRestaurant.id] = {
@@ -195,7 +195,8 @@ function displayGameRestaurantList(gameRestaurants) {
 function updateSearch(groups) {
   updateLocations(groups);
 }
-function init() {
+
+export function createEventDisplay() {
   const data = getData();
 
   displayEventList(Object.values(data.groups));
@@ -212,5 +213,3 @@ function init() {
     displayEventList(Object.values(searchResults.groups));
   });
 }
-
-init();
