@@ -17,7 +17,7 @@ export function findResults(data, searchParams) {
   const eventCopy = JSON.parse(JSON.stringify(data));
   const groupsToInclude = [];
 
-  eventCopy.groups.forEach((group) => {
+  eventCopy.forEach((group) => {
     const eventsToInclude = [];
     group.events.forEach((event) => {
       if (eventMatch(event, searchParams, group)) {
