@@ -119,7 +119,6 @@ export class EventListComponent extends ListComponent {
     document.querySelector(`#${this.name}`).innerHTML = html;
     this.setupEventHandlers();
 
-    //TODO: Move duplicate code in event handler to shared function.
     document.addEventListener("search", (e) => {
       const searchParams = e.detail;
       const searchResults = findResults(data, searchParams);
