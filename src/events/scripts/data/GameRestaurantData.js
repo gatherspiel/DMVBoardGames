@@ -19,7 +19,7 @@ export const gameRestaurants = [
   },
   {
     id: 4,
-    location: "9412 Main St, Manassas, Virginia 20110, United States",
+    location: "9412 Main St, Manassas, Virginia 20110",
     name: "Crossroads Tabletop Tavern",
     link: "https://ttoptav.com/",
   },

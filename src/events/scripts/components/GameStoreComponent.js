@@ -1,11 +1,11 @@
-import { Component } from "../../../framework/Component.js";
+import { ListComponent } from "./shared/ListComponent.js";
 
-export class GameStoreComponent extends Component {
+export class GameStoreComponent extends ListComponent {
   constructor(parentNodeName, data) {
     super(parentNodeName, data);
   }
 
-  getGameStoreHtml(gameStore) {
+  getItemHtml(gameStore) {
     return `
     <div id = convention-${gameStore.id}>
      <h3>
@@ -14,21 +14,6 @@ export class GameStoreComponent extends Component {
     <p>Location: ${gameStore.location}</p>
     </div>
   `;
-  }
-
-  generateHtml(gameStores) {
-    let html = `<h1> Game Stores</h1>`;
-
-    Object.values(gameStores).forEach((gameStore) => {
-      gameStores["game-store-" + gameStore.id] = {
-        gameStore: gameStore,
-        frontendState: {},
-      };
-
-      const gameStoreHtml = this.getGameStoreHtml(gameStore);
-      html += gameStoreHtml;
-    });
-    return html;
   }
 
   static createComponent(parentNodeName, data) {

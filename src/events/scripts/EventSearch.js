@@ -48,7 +48,6 @@ function setupEventHandlers() {
   const searchForm = document.querySelector("form");
   searchForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    console.log("Submit:" + searchState.day + ":" + searchState.location);
 
     const searchEvent = new CustomEvent("search", {
       detail: {

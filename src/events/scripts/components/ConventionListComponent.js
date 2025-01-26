@@ -1,11 +1,11 @@
-import { Component } from "../../../framework/Component.js";
+import { ListComponent } from "./shared/ListComponent.js";
 
-export class ConventionListComponent extends Component {
+export class ConventionListComponent extends ListComponent {
   constructor(parentNodeName, data) {
     super(parentNodeName, data);
   }
 
-  getConventionHtml(convention) {
+  getItemHtml(convention) {
     return `
     <div id = convention-${convention.id}>
      <h3>
@@ -15,15 +15,6 @@ export class ConventionListComponent extends Component {
     
     </div>
   `;
-  }
-
-  generateHtml(conventionData) {
-    let html = `<h1> Upcoming conventions</h1>`;
-    Object.values(conventionData).forEach((convention) => {
-      const conventionHtml = this.getConventionHtml(convention);
-      html += conventionHtml;
-    });
-    return html;
   }
 
   static createComponent(parentNodeName, data) {
