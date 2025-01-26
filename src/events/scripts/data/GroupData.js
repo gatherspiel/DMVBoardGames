@@ -716,16 +716,24 @@ export const GROUP_37 = {
   link: "https://www.meetup.com/potomac-tea-and-knife-society/",
   locations: "Washington, DC",
   title: "Potomac Tea and Knife Society",
-  events: [
-  ],
+  events: [],
   summary:
-      "The Potomac Tea and Knife Society is a local gaming group which focuses mostly on organizing Diplomacy games. Generally, we have Diplomacy games about once a month (though Diplomacy is definitely not the only game we play and enjoy during these get-togethers).\n" +
-      "\n" +
-      "We are located all throughout Washington DC, Maryland, and Northern Virginia.\n" +
-      "\n" +
-      "Any and all interested players are welcome and invited! Whether you are an old hand looking to get into a game, or just interested in learning how to play, come to one of our gaming events.",
+    "The Potomac Tea and Knife Society is a local gaming group which focuses mostly on organizing Diplomacy games. Generally, we have Diplomacy games about once a month (though Diplomacy is definitely not the only game we play and enjoy during these get-togethers).\n" +
+    "\n" +
+    "We are located all throughout Washington DC, Maryland, and Northern Virginia.\n" +
+    "\n" +
+    "Any and all interested players are welcome and invited! Whether you are an old hand looking to get into a game, or just interested in learning how to play, come to one of our gaming events.",
 };
 
+export const GROUP_38 = {
+  id: 38,
+  link: "http://novaboardgamegroup.com/2025-Winter-OpenGameSessions.pdf",
+  locations: "Falls Church, Arlington",
+  title: "NOVA BoardGame Group",
+  events: [],
+  summary:
+    "Northern Virginia Board Game Group hosts public board game events in Arlington and Falls Church.",
+};
 
 export const GROUP_DATA = {
   GROUP_1,
@@ -763,5 +771,6 @@ export const GROUP_DATA = {
   GROUP_34,
   GROUP_35,
   GROUP_36,
-  GROUP_37
+  GROUP_37,
+  GROUP_38,
 };

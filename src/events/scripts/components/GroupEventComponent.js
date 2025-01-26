@@ -1,6 +1,7 @@
 import { Component } from "../../../framework/Component.js";
+import { getData } from "../data/ListingData.js";
 
-export class EventComponent extends Component {
+export class GroupEventComponent extends Component {
   constructor(parentNodeName, data) {
     super(parentNodeName, data);
   }
@@ -12,6 +13,6 @@ export class EventComponent extends Component {
   }
 
   static createComponent(parentNodeName, data) {
-    return new EventComponent(parentNodeName, data);
+    return new GroupEventComponent(parentNodeName, data);
   }
 }
