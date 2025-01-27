@@ -6,12 +6,15 @@ export const UNDEFINED_EVENT_LOCATION_PARAMETER =
 export function findResults(data, searchParams) {
   const searchDay = searchParams.day;
   const searchLocation = searchParams.location;
+
   //TODO: Add isDefaultMethod here.
   if (
     (searchDay === DEFAULT_SEARCH_PARAMETER || !searchDay) &&
     (searchLocation === DEFAULT_SEARCH_PARAMETER || !searchLocation)
   ) {
-    return data;
+    return {
+      groups: data,
+    };
   }
 
   const eventCopy = JSON.parse(JSON.stringify(data));
@@ -19,25 +22,28 @@ export function findResults(data, searchParams) {
 
   eventCopy.forEach((group) => {
     const eventsToInclude = [];
-    group.events.forEach((event) => {
+    group.data.events.forEach((event) => {
       if (eventMatch(event, searchParams, group)) {
         eventsToInclude.push(event);
       }
     });
 
     if (eventsToInclude.length > 0) {
-      group.events = eventsToInclude;
+      group.data.events = eventsToInclude;
       groupsToInclude.push(group);
     } else if (
-      group.locations &&
+      group.data.locations &&
       searchLocation !== DEFAULT_SEARCH_PARAMETER &&
-      group.locations.includes(searchLocation) &&
+      group.data.locations.includes(searchLocation) &&
       searchDay === DEFAULT_SEARCH_PARAMETER
     ) {
       groupsToInclude.push(group);
     }
   });
   eventCopy.groups = groupsToInclude;
+  groupsToInclude.forEach(function (group) {
+    group["frontendState"]["visibleEvents"] = group.data.events;
+  });
   return eventCopy;
 }
 
@@ -55,7 +61,7 @@ function eventMatch(event, searchParams, group) {
     !event.location ||
     event.location === UNDEFINED_EVENT_LOCATION_PARAMETER
   ) {
-    location = group.locations;
+    location = group.data.locations;
   }
   let locationMatch = false;
   if (
