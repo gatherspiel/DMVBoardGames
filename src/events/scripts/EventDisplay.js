@@ -1,7 +1,6 @@
 import { getData } from "./data/ListingData.js";
 import { updateLocations } from "./EventSearch.js";
-
-export const groupState = {};
+import { subscribeToGroupState } from "./components/EventListComponent.js";
 
 function updateSearch(groups) {
   updateLocations(groups);
@@ -13,19 +12,22 @@ export function createEventDisplay(
   gameStoreListComponent,
   gameRestaurantListComponent,
 ) {
+  //TODO: Add logic in framework folder to manage state update.
   const data = getData();
 
-  eventListComponent.renderWithUpdatedData(Object.values(data.groups));
+  subscribeToGroupState(eventListComponent);
+  const groupStateUpdateEvent = new CustomEvent("updateGroupState", {
+    detail: {
+      data: data.groups,
+    },
+  });
+  document.dispatchEvent(groupStateUpdateEvent);
 
-  conventionListComponent.renderWithUpdatedData(
-    Object.values(data.conventions),
-  );
+  conventionListComponent.updateData(Object.values(data.conventions));
 
-  gameStoreListComponent.renderWithUpdatedData(Object.values(data.gameStores));
+  gameStoreListComponent.updateData(Object.values(data.gameStores));
 
-  gameRestaurantListComponent.renderWithUpdatedData(
-    Object.values(data.gameRestaurants),
-  );
+  gameRestaurantListComponent.updateData(Object.values(data.gameRestaurants));
 
   updateSearch(data.groups);
 }
