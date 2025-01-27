@@ -1,6 +1,46 @@
 import { ListComponent } from "./shared/ListComponent.js";
-import { groupState } from "../EventDisplay.js";
+
 import { findResults } from "../data/search/search.js";
+
+//TODO: Create state management logic in framework folder to store state.
+export const groupState = {};
+
+const groupStateSubscribedComponents = [];
+
+function getGroupData(groupId) {
+  return groupState[groupId];
+}
+
+function getVisibleEvents(groupId) {
+  return (
+    groupState[groupId]["frontendState"]["visibleEvents"] ??
+    groupState[groupId]["data"]["events"]
+  );
+}
+
+//TODO: Prevent components from being added more than once.
+export function subscribeToGroupState(component) {
+  groupStateSubscribedComponents.push(component);
+}
+
+document.addEventListener("updateGroupState", (e) => {
+  const groups = e.detail.data;
+
+  groups.forEach(function (group) {
+    groupState["group-" + group.id] = {
+      data: group,
+      frontendState: {
+        isVisible: false,
+      },
+    };
+  });
+
+  //TODO: Add support for use cases where a component can require state from multiple sources of data.
+  groupStateSubscribedComponents.forEach(function (component) {
+    component.updateData(groupState);
+  });
+});
+
 export class EventListComponent extends ListComponent {
   constructor(parentNodeName, data) {
     super(parentNodeName, data);
@@ -27,7 +67,7 @@ export class EventListComponent extends ListComponent {
     this.updateGroupVisibilityState(groupId);
 
     const groupElement = document.querySelector("#" + groupId);
-    groupElement.innerHTML = this.getItemHtml(getGroupData(groupId));
+    groupElement.innerHTML = this.getItemHtml(getGroupData(groupId).data);
     this.addEventHandler(groupElement);
   }
 
@@ -40,11 +80,6 @@ export class EventListComponent extends ListComponent {
     );
   }
 
-  isVisible(groupId) {
-    const groupData = groupState[groupId]["frontendState"];
-    return groupData && groupData.isVisible;
-  }
-
   setupEventHandlers() {
     const groups = document.querySelectorAll(".event-group");
     groups.forEach((group) => {
@@ -54,6 +89,7 @@ export class EventListComponent extends ListComponent {
   getItemHtml(group) {
     let groupHtml = "";
     const groupId = "group-" + group.id;
+    const events = getVisibleEvents(groupId);
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
         <h2>
@@ -69,11 +105,11 @@ export class EventListComponent extends ListComponent {
             ? `
           <div>
           ${
-            group.events.length === 0
+            events === 0
               ? "Click on group link above for event information"
               : ""
           }
-          ${group.events
+          ${events
             .map((event) => {
               return `<div id=${groupId + "event-" + event.id}>
                     <h4>${event.title}</h4>
@@ -88,6 +124,7 @@ export class EventListComponent extends ListComponent {
         }
       </div>
     `;
+
     return groupHtml;
   }
 
@@ -96,13 +133,8 @@ export class EventListComponent extends ListComponent {
 
     if (groupData && Object.values(groupData).length > 0) {
       Object.values(groupData).forEach((group) => {
-        groupState["group-" + group.id] = {
-          groupData: group,
-          frontendState: {},
-        };
-
         let groupHtml = "";
-        groupHtml = this.getItemHtml(group);
+        groupHtml = this.getItemHtml(group.data);
         html += groupHtml;
       });
     } else {
@@ -114,19 +146,31 @@ export class EventListComponent extends ListComponent {
   }
 
   //TODO: Implement logic to setup event handlers in Component.js or another framework file.
-  renderWithUpdatedData(data) {
+  updateData(data) {
     const html = this.generateHtml(data);
     document.querySelector(`#${this.name}`).innerHTML = html;
     this.setupEventHandlers();
-
-    document.addEventListener("search", (e) => {
-      const searchParams = e.detail;
-      const searchResults = findResults(data, searchParams);
-      this.renderWithUpdatedData(Object.values(searchResults.groups));
-    });
   }
 
   static createComponent(parentNodeName, data) {
-    return new EventListComponent(parentNodeName, data);
+    const listComponent = new EventListComponent(parentNodeName, data);
+
+    //TODO: Implement addEventListener to framework folder and add logic to detect duplicate listeners.
+    document.addEventListener("search", (e) => {
+      const searchParams = e.detail;
+      const searchResults = findResults(
+        Object.values(groupState),
+        searchParams,
+      );
+
+      //TODO: Make sure frontend state is updated with visible groups and then render component.
+      searchResults.groups.forEach(function (group) {
+        groupState["group-" + group.data.id]["frontendState"]["visibleEvents"] =
+          group["frontendState"]["visibleEvents"];
+      });
+
+      listComponent.updateData(Object.values(searchResults.groups));
+    });
+    return listComponent;
   }
 }

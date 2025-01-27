@@ -23,7 +23,7 @@ export class Component {
     `;
   }
 
-  renderWithUpdatedData(data) {
+  updateData(data) {
     const html = this.generateHtml(data);
     document.querySelector(`#${this.name}`).innerHTML = html;
   }
