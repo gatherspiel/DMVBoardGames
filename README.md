@@ -12,6 +12,10 @@ This repo contains the source code for https://dmvboardgames.com/, a website to 
 -npm run build
 -npm run preview
 
+### Running unit tests
+
+-node --test
+
 
 
 

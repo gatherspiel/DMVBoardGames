@@ -72,3 +72,7 @@ function eventMatch(event, searchParams, group) {
   }
   return dayMatch && locationMatch;
 }
+
+export function getSearchResultGroups(searchResults) {
+  return searchResults.groups;
+}
