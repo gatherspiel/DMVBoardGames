@@ -238,7 +238,7 @@ export const GROUP_14 = {
   events: [
     {
       id: 1,
-      title: "Beer Graden & Board Games!",
+      title: "Beer Garden & Board Games!",
       day: "Wednesday",
       location: "3181 Wilson Blvd · Arlington, VA",
       summary:
@@ -365,7 +365,7 @@ export const GROUP_21 = {
   locations: "Ashburn,Reston",
   events: [
     {
-      id: 1,
+      id: 5,
       title: "Reston Plays Games",
       day: "Wednesday",
       location: "2310 Colts Neck Rd · Reston, VA",
@@ -690,7 +690,7 @@ export const GROUP_36 = {
   title: "Tri-State Game Nights",
   events: [
     {
-      id: 1,
+      id: 6,
       title: "Weekly Wednesday",
       day: "Wednesday",
       location: "Swan Pond, West Virginia",
@@ -699,7 +699,7 @@ export const GROUP_36 = {
         "We play games like Ticket to Ride, Scythe, Splendor, 7 Wonders, Everdell, Twilight Imperium, Dominion, etc.",
     },
     {
-      id: 2,
+      id: 10,
       title: "Public Night @ the Legion",
       day: "Wednesday",
       location: "Charles Town, West Virginia",

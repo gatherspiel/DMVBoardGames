@@ -3,10 +3,16 @@ export const DEFAULT_SEARCH_PARAMETER = "any";
 export const UNDEFINED_EVENT_LOCATION_PARAMETER =
   "See group on Meetup for location";
 
-export function findResults(data, searchParams) {
+const emptySearchResult = {
+  groups: [],
+};
+function findResults(data, searchParams) {
   const searchDay = searchParams.day;
   const searchLocation = searchParams.location;
 
+  if (!data || Object.keys(data).length === 0) {
+    return emptySearchResult;
+  }
   //TODO: Add isDefaultMethod here.
   if (
     (searchDay === DEFAULT_SEARCH_PARAMETER || !searchDay) &&
@@ -18,6 +24,7 @@ export function findResults(data, searchParams) {
   }
 
   const eventCopy = JSON.parse(JSON.stringify(data));
+
   const groupsToInclude = [];
 
   eventCopy.forEach((group) => {
@@ -73,6 +80,31 @@ function eventMatch(event, searchParams, group) {
   return dayMatch && locationMatch;
 }
 
-export function getSearchResultGroups(searchResults) {
+export function getSearchResultGroups(data, searchParams) {
+  const searchResults = findResults(data, searchParams);
   return searchResults.groups;
+}
+
+function getEvents(groups) {
+  let events = [];
+  groups.forEach((group) => {
+    const groupEvents = group.data.events;
+    const eventCount = Object.keys(groupEvents).length;
+    if (eventCount > 0) {
+      events = events.concat(Object.values(groupEvents));
+    }
+  });
+  return events;
+}
+
+export function countEvents(groups) {
+  return getEvents(groups).length;
+}
+
+export function getEventIds(groups) {
+  const ids = new Set();
+  getEvents(groups).forEach((event) => {
+    ids.add(event.id);
+  });
+  return ids;
 }
