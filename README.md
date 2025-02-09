@@ -16,6 +16,13 @@ This repo contains the source code for https://dmvboardgames.com/, a website to 
 
 -node --test
 
+### Running unit tests that have a specific word in their test file name
+node --test "**/*Event*"
+
+### Running unit tests with a specific test name pattern
+node --test --test-name-pattern="empty result"
+
+
 
 
 

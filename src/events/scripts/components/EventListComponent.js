@@ -1,6 +1,6 @@
 import { ListComponent } from "./shared/ListComponent.js";
 
-import { findResults } from "../data/search/search.js";
+import { getSearchResultGroups } from "../data/search/search.js";
 
 //TODO: Create state management logic in framework folder to store state.
 export const groupState = {};
@@ -105,7 +105,7 @@ export class EventListComponent extends ListComponent {
             ? `
           <div>
           ${
-            events === 0
+            events.length === 0
               ? "Click on group link above for event information"
               : ""
           }
@@ -158,18 +158,18 @@ export class EventListComponent extends ListComponent {
     //TODO: Implement addEventListener to framework folder and add logic to detect duplicate listeners.
     document.addEventListener("search", (e) => {
       const searchParams = e.detail;
-      const searchResults = findResults(
+      const groupResults = getSearchResultGroups(
         Object.values(groupState),
         searchParams,
       );
 
       //TODO: Make sure frontend state is updated with visible groups and then render component.
-      searchResults.groups.forEach(function (group) {
+      groupResults.forEach(function (group) {
         groupState["group-" + group.data.id]["frontendState"]["visibleEvents"] =
           group["frontendState"]["visibleEvents"];
       });
 
-      listComponent.updateData(Object.values(searchResults.groups));
+      listComponent.updateData(Object.values(groupResults));
     });
     return listComponent;
   }
