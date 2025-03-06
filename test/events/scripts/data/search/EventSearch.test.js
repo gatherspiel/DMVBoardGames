@@ -5,6 +5,7 @@ import {
   getEventIds,
   getSearchResultGroups,
 } from "../../../../../src/events/scripts/data/search/search.js";
+import { intersection } from "../../../../testUtils.js";
 import {
   ARLINGTON_SEARCH,
   DEFAULT_SEARCH_PARAMS,
@@ -31,7 +32,7 @@ describe("Event Search tests", () => {
 
     const expectedIds = new Set([1, 2]);
     const eventIds = getEventIds(groups);
-    assert.strictEqual(expectedIds.intersection(eventIds).size, 2);
+    assert.strictEqual(intersection(expectedIds, eventIds).length, 2);
   });
 
   it("Correct events are returned when location is specified and day is not", () => {
@@ -46,9 +47,9 @@ describe("Event Search tests", () => {
     const expectedIds = new Set([1, 2, 4, 6]);
     const eventIds = getEventIds(groups);
     assert.strictEqual(
-      expectedIds.intersection(eventIds).size,
+      intersection(expectedIds, eventIds).length,
       4,
-      JSON.stringify(Array.from(expectedIds.intersection(eventIds))),
+      JSON.stringify(intersection(expectedIds, eventIds)),
     );
   });
 
@@ -65,9 +66,9 @@ describe("Event Search tests", () => {
 
     const eventIds = getEventIds(groups);
     assert.strictEqual(
-      expectedIds.intersection(eventIds).size,
+      intersection(expectedIds, eventIds).length,
       6,
-      JSON.stringify(Array.from(expectedIds.intersection(eventIds))) +
+      JSON.stringify(intersection(expectedIds, eventIds)) +
         Array.from(eventIds),
     );
   });
@@ -81,10 +82,4 @@ describe("Event Search tests", () => {
       "Number of events is not correct",
     );
   });
-
-  /*
-  -Invalid day
-  -Invalid location
-  -Both day and location are specified.
-   */
 });
