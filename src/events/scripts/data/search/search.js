@@ -7,6 +7,8 @@ const emptySearchResult = {
   groups: [],
 };
 function findResults(data, searchParams) {
+
+  return null;
   const searchDay = searchParams.day;
   const searchLocation = searchParams.location;
 
