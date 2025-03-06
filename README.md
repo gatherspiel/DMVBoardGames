@@ -21,8 +21,3 @@ node --test "**/*Event*"
 
 ### Running unit tests with a specific test name pattern
 node --test --test-name-pattern="empty result"
-
-
-
-
-
