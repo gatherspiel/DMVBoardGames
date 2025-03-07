@@ -735,6 +735,16 @@ export const GROUP_38 = {
     "Northern Virginia Board Game Group hosts public board game events in Arlington and Falls Church.",
 };
 
+export const GROUP_39 = {
+  id: 39,
+  link: "https://groups.io/g/kgb",
+  locations: "Alexandria",
+  title: "Kingstowne Gaming Bridage",
+  events: [],
+  summary:
+    "Historical (war) boardgaming! If you like GMT, Columbia, Axis & Allies, SPI, AH, etc. games we meet 2-3x a month at the Kingstowne Center for Active Adults",
+};
+
 export const GROUP_DATA = {
   GROUP_1,
   GROUP_2,
@@ -773,4 +783,5 @@ export const GROUP_DATA = {
   GROUP_36,
   GROUP_37,
   GROUP_38,
+  GROUP_39,
 };
