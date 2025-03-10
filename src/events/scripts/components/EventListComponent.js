@@ -11,7 +11,6 @@ import {
   shouldRender,
   updateGroupVisibilityState,
   updateSearchResultState,
-  hasVisibleEvents,
 } from "../data/state/GroupState.js";
 
 //TODO: Create state management logic in framework folder to store state.
@@ -102,7 +101,7 @@ export class EventListComponent extends ListComponent {
     let visibleEvents = 0;
     if (groupData && Object.values(groupData).length > 0) {
       Object.values(groupData).forEach((group) => {
-        if (shouldRender(group) && hasVisibleEvents(group)) {
+        if (shouldRender(group)) {
           let groupHtml = "";
           groupHtml = this.getItemHtml(group.data);
           html += groupHtml;

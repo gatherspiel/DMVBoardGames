@@ -18,23 +18,12 @@ export function getGroupData(groupId) {
   return groupState[groupId];
 }
 
-export function hasVisibleEvents(group) {
-  const groupId = "group-" + group.id;
-
-  return true;
-  if (!groupState[groupId]?.["frontendState"]) {
-    return group.data["events"].length > 0;
-  }
-
-  return (
-    groupState[groupId]?.["frontendState"]?.["visibleEvents"] &&
-    groupState[groupId]["frontendState"]["visibleEvents"].length > 0
-  );
-}
-
 export function getVisibleEvents(groupId) {
-  if (!groupState[groupId]["frontendState"]) {
-    return [];
+  if (
+    !groupState[groupId]["frontendState"] ||
+    !groupState[groupId]["frontendState"]["visibleEvents"]
+  ) {
+    return groupState[groupId]["data"]["events"];
   }
   return groupState[groupId]["frontendState"]["visibleEvents"];
 }
@@ -79,10 +68,10 @@ export function updateSearchResultState(groupResults) {
 
   groupResults.forEach(function (group) {
     const key = "group-" + group.data.id;
-    groupState[key]["frontendState"]["visibleEvents"] =
-      group["frontendState"]["visibleEvents"];
+    console.log(group);
+    groupState[key]["frontendState"]["visibleEvents"] = group["data"]["events"];
     hiddenGroupIds.delete(key);
-    groupState[key]["frontendState"] = { isHidden: false };
+    groupState[key]["frontendState"].isHidden = false;
   });
   hiddenGroupIds.forEach(function (id) {
     groupState[id]["frontendState"] = { isHidden: true };
