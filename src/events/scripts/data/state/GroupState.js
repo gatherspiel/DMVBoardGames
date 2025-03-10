@@ -2,6 +2,8 @@ const groupState = {};
 
 const groupStateSubscribedComponents = [];
 
+const ARE_DETAILS_VISIBLE = "areDetailsVisible";
+
 //TODO: Prevent components from being added more than once.
 export function subscribeToGroupState(component) {
   groupStateSubscribedComponents.push(component);
@@ -52,7 +54,7 @@ export function shouldRender(group) {
 
 export function isVisible(groupId) {
   const groupData = groupState[groupId]["frontendState"];
-  return groupData && groupData.isVisible;
+  return groupData && groupData[ARE_DETAILS_VISIBLE];
 }
 
 export function getGroupList() {
@@ -60,7 +62,8 @@ export function getGroupList() {
 }
 
 export function updateGroupVisibilityState(groupId) {
-  groupState[groupId]["frontendState"].isVisible = !isVisible(groupId);
+  groupState[groupId]["frontendState"][ARE_DETAILS_VISIBLE] =
+    !isVisible(groupId);
 }
 
 export function updateSearchResultState(groupResults) {
@@ -68,7 +71,6 @@ export function updateSearchResultState(groupResults) {
 
   groupResults.forEach(function (group) {
     const key = "group-" + group.data.id;
-    console.log(group);
     groupState[key]["frontendState"]["visibleEvents"] = group["data"]["events"];
     hiddenGroupIds.delete(key);
     groupState[key]["frontendState"].isHidden = false;
