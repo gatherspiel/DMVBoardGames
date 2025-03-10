@@ -4,7 +4,7 @@ import {
   countEvents,
   getEventIds,
   getSearchResultGroups,
-} from "../../../../../src/events/scripts/data/search/search.js";
+} from "../../../../../src/events/scripts/data/search/EventSearch.js";
 import { intersection } from "../../../../testUtils.js";
 import {
   ARLINGTON_SEARCH,

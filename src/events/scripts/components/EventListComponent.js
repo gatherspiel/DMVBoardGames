@@ -1,44 +1,25 @@
 import { ListComponent } from "./shared/ListComponent.js";
 
-import { getSearchResultGroups } from "../data/search/search.js";
+import { getSearchResultGroups } from "../data/search/EventSearch.js";
+import {
+  getGroupData,
+  getGroupList,
+  getVisibleEvents,
+  initGroups,
+  updateSubscriberData,
+  isVisible,
+  shouldRender,
+  updateGroupVisibilityState,
+  updateSearchResultState,
+  hasVisibleEvents,
+} from "../data/state/GroupState.js";
 
 //TODO: Create state management logic in framework folder to store state.
-export const groupState = {};
-
-const groupStateSubscribedComponents = [];
-
-function getGroupData(groupId) {
-  return groupState[groupId];
-}
-
-function getVisibleEvents(groupId) {
-  return (
-    groupState[groupId]["frontendState"]["visibleEvents"] ??
-    groupState[groupId]["data"]["events"]
-  );
-}
-
-//TODO: Prevent components from being added more than once.
-export function subscribeToGroupState(component) {
-  groupStateSubscribedComponents.push(component);
-}
 
 document.addEventListener("updateGroupState", (e) => {
   const groups = e.detail.data;
-
-  groups.forEach(function (group) {
-    groupState["group-" + group.id] = {
-      data: group,
-      frontendState: {
-        isVisible: false,
-      },
-    };
-  });
-
-  //TODO: Add support for use cases where a component can require state from multiple sources of data.
-  groupStateSubscribedComponents.forEach(function (component) {
-    component.updateData(groupState);
-  });
+  initGroups(groups);
+  updateSubscriberData();
 });
 
 export class EventListComponent extends ListComponent {
@@ -50,21 +31,8 @@ export class EventListComponent extends ListComponent {
     console.log("Rendering");
   }
 
-  updateGroupVisibilityState(groupId) {
-    if (this.isVisible(groupId)) {
-      groupState[groupId]["frontendState"].isVisible = false;
-    } else {
-      groupState[groupId]["frontendState"].isVisible = true;
-    }
-  }
-
-  isVisible(groupId) {
-    const groupData = groupState[groupId]["frontendState"];
-    return groupData && groupData.isVisible;
-  }
-
   showHideHandler(groupId) {
-    this.updateGroupVisibilityState(groupId);
+    updateGroupVisibilityState(groupId);
 
     const groupElement = document.querySelector("#" + groupId);
     groupElement.innerHTML = this.getItemHtml(getGroupData(groupId).data);
@@ -98,10 +66,10 @@ export class EventListComponent extends ListComponent {
         </h2>  
         
         <button class='show-hide-button'>
-          ${this.isVisible(groupId) ? "Hide info" : "Show info"}
+          ${isVisible(groupId) ? "Hide info" : "Show info"}
         </button>
         ${
-          this.isVisible(groupId)
+          isVisible(groupId)
             ? `
           <div>
           ${
@@ -131,13 +99,19 @@ export class EventListComponent extends ListComponent {
   generateHtml(groupData) {
     let html = "";
 
+    let visibleEvents = 0;
     if (groupData && Object.values(groupData).length > 0) {
       Object.values(groupData).forEach((group) => {
-        let groupHtml = "";
-        groupHtml = this.getItemHtml(group.data);
-        html += groupHtml;
+        if (shouldRender(group) && hasVisibleEvents(group)) {
+          let groupHtml = "";
+          groupHtml = this.getItemHtml(group.data);
+          html += groupHtml;
+          visibleEvents++;
+        }
       });
-    } else {
+    }
+
+    if (visibleEvents === 0) {
       html += `
       <p>No events found.</p>
     `;
@@ -158,18 +132,11 @@ export class EventListComponent extends ListComponent {
     //TODO: Implement addEventListener to framework folder and add logic to detect duplicate listeners.
     document.addEventListener("search", (e) => {
       const searchParams = e.detail;
-      const groupResults = getSearchResultGroups(
-        Object.values(groupState),
-        searchParams,
-      );
+      const groupResults = getSearchResultGroups(getGroupList(), searchParams);
 
       //TODO: Make sure frontend state is updated with visible groups and then render component.
-      groupResults.forEach(function (group) {
-        groupState["group-" + group.data.id]["frontendState"]["visibleEvents"] =
-          group["frontendState"]["visibleEvents"];
-      });
-
-      listComponent.updateData(Object.values(groupResults));
+      updateSearchResultState(groupResults);
+      //listComponent.updateData(Object.values(groupResults));
     });
     return listComponent;
   }
