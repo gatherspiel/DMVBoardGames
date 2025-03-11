@@ -2,56 +2,64 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="/styles/styles.css">
-    <link rel="stylesheet" href="/styles/eventListing.css">
-    <link rel="icon" type="image/png" href="/styles/icon-exemple.png">
-    <meta name="viewport"          content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <link rel="stylesheet" href="/styles/eventListing.css" />
+    <link rel="icon" type="image/png" href="/styles/icon-exemple.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DMV Board Games</title>
 
-    <script type="module" src="/src/events/scripts/data/GameRestaurantData.js"></script>
-    <script type="module" src="/src/events/scripts/data/GameStoreData.js"></script>
+    <script
+      type="module"
+      src="/src/events/scripts/data/GameRestaurantData.js"
+    ></script>
+    <script
+      type="module"
+      src="/src/events/scripts/data/GameStoreData.js"
+    ></script>
 
     <script type="module" src="/src/events/scripts/data/GroupData.js"></script>
     <script type="module" src="/src/events/scripts/EventSearch.js"></script>
 
-    <script type="module" src="src/events/scripts/EventDisplay.js" ></script>
-    <script type="module" src="src/events/scripts/EventDisplayContainer.js"></script>
-
+    <script type="module" src="src/events/scripts/EventDisplay.js"></script>
+    <script
+      type="module"
+      src="src/events/scripts/EventDisplayContainer.js"
+    ></script>
   </head>
   <body>
-    <div id = "container">
-        <div id="navigation">
-          <a href="/index.html">Home</a>
-          <a href="/designers.html">Local designers</a>
-          <a href="/plans.html">Future plans</a>
-        </div>
+    <div id="container">
+      <div id="navigation">
+        <a href="/index.html">Home</a>
+        <a href="/designers.html">Local designers</a>
+        <a href="/plans.html">Future plans</a>
+      </div>
 
       <div id="root">
-
-        <div id='event-page-info' class="page-summary page-section">
+        <div id="event-page-info" class="page-summary page-section">
           <p>
-            This page is a work in progress listing of public board game groups, stores, and restaurants in the
-            DMV area. Email gulu@createthirdplaces.com to request an update to
-            this list or share feedback. All submitted groups must be active and have visible event information on their main
-            webpage without a login.
+            This page is a work in progress listing of public board game groups,
+            stores, and restaurants in the DMV area. Email
+            gulu@createthirdplaces.com to request an update to this list or
+            share feedback. All submitted groups must be active and have visible
+            event information on their main webpage without a login.
           </p>
           <p>
             To request a new feature or view the source code, go
-            <a href="https://github.com/Create-Third-Places/DMVBoardGames">here</a>
+            <a href="https://github.com/Create-Third-Places/DMVBoardGames"
+              >here</a
+            >
           </p>
         </div>
 
+        <div id="event-search" class="page-section"></div>
 
-        <div id = "event-search" class="page-section">
-
+        <div data-container="root">
+          <script
+            type="module"
+            src="src/events/scripts/EventDisplayContainer.js"
+          ></script>
         </div>
-
-
-      <div data-container="root">
-        <script type="module" src="src/events/scripts/EventDisplayContainer.js"></script>
-
       </div>
-    </div>
     </div>
   </body>
 </html>

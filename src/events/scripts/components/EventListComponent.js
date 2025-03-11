@@ -76,7 +76,7 @@ export class EventListComponent extends ListComponent {
     const showHideButton = groupElement.querySelector(".show-hide-button");
 
     showHideButton.addEventListener("click", () =>
-      this.showHideHandler(groupId),
+      this.showHideHandler(groupId)
     );
   }
 
@@ -160,7 +160,7 @@ export class EventListComponent extends ListComponent {
       const searchParams = e.detail;
       const groupResults = getSearchResultGroups(
         Object.values(groupState),
-        searchParams,
+        searchParams
       );
 
       //TODO: Make sure frontend state is updated with visible groups and then render component.

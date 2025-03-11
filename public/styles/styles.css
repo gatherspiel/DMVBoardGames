@@ -1,7 +1,8 @@
-html, body {
+html,
+body {
   width: 100%;
-  padding:0;
-  margin:0;
+  padding: 0;
+  margin: 0;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 
   line-height: 1.5;
@@ -42,7 +43,7 @@ h1 {
 
 #container {
   align-items: start;
-  display:flex;
+  display: flex;
   width: 100%;
 }
 
@@ -53,7 +54,7 @@ h1 {
 }
 
 #listing-page {
-  text-align: start
+  text-align: start;
 }
 
 #navigation {
@@ -63,7 +64,7 @@ h1 {
   flex: 1;
   padding-left: 32px;
   background-color: #333;
-  width:100%;
+  width: 100%;
 }
 
 #navigation > a {
@@ -77,8 +78,8 @@ h1 {
 }
 
 #navigation a.active {
-  background-color: #04AA6D;
-  color:white;
+  background-color: #04aa6d;
+  color: white;
 }
 
 #navigation > a:hover {
@@ -92,10 +93,9 @@ h1 {
 
 #root {
   flex: 1 0 100%;
-  padding-top:3rem;
+  padding-top: 3rem;
   text-align: start;
 }
-
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -115,5 +115,5 @@ h1 {
 }
 
 .page-section {
-  padding-left:2em;
+  padding-left: 2em;
 }
