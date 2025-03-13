@@ -90,9 +90,13 @@ nav a.active {
   color: white;
 }
 
-#navigation > a:hover,
-nav a:hover {
+#navigation > a:hover {
   background-color: #043baa77;
+  color: white;
+}
+
+nav a:hover {
+  background-color: var(--clr-lighter-blue);
   color: white;
 }
 
