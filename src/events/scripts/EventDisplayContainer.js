@@ -4,6 +4,7 @@ import { GameRestaurantComponent } from "./components/GameRestaurantComponent.js
 import { GameStoreComponent } from "./components/GameStoreComponent.js";
 import { ConventionListComponent } from "./components/ConventionListComponent.js";
 import "../../../public/styles/eventListing.css";
+import "../../../public/styles/styles.css";
 
 function init() {
   const eventListComponent = EventListComponent.createComponent("root", {

@@ -81,7 +81,7 @@ function getLocationSelect() {
               ? "Any location"
               : location.name
           }
-        </option>`,
+        </option>`
     )}`;
   return data;
 }
@@ -100,7 +100,8 @@ function getLocationHtml() {
 
 function init() {
   const html = `
-    <h1>Search Events</h1>
+    <h1>DMV Board Games</h1>
+    <h2>Search Events</h2>
       <form id='search-form'>
       
         <div>
@@ -118,7 +119,7 @@ function init() {
               (day, index) =>
                 `<option key=${index} value=${day}>
                 ${day === DEFAULT_SEARCH_PARAMETER ? "Any day" : day}
-              </option>`,
+              </option>`
             )}
           </select>
         </div>

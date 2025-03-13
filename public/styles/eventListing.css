@@ -1,3 +1,16 @@
+:root {
+  --clr-dark-blue: hsl(199, 100%, 20%);
+  --clr-darker-blue: hsl(199, 100%, 10%);
+  --clr-light-blue: hsl(199, 100%, 33%);
+  --clr-lighter-blue: hsl(199, 100%, 55%);
+}
+
 #event-page-info {
   text-align: start;
+}
+
+#search-form button {
+  background: white;
+  outline: 2px solid var(--clr-light-blue);
+  color: var(--clr-light-blue);
 }

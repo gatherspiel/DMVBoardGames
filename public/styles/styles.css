@@ -1,6 +1,7 @@
 html,
 body {
-  width: 100%;
+  /* width 100% was causing horizontal scrolling */
+  /* width: 100%; */
   padding: 0;
   margin: 0;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -15,7 +16,7 @@ body {
 }
 body {
   margin: 0;
-  display: flex;
+  /* display: flex; */
 }
 
 button {
@@ -29,7 +30,8 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: hsl(199, 100%, 20%);
+  color: hsl(199, 100%, 20%);
 }
 button:focus,
 button:focus-visible {
@@ -42,9 +44,52 @@ h1 {
 }
 
 #container {
-  align-items: start;
-  display: flex;
-  width: 100%;
+  /* align-items: start; */
+  /* display: flex; */
+  max-width: 65rem;
+  margin-inline: auto;
+}
+
+/* #navigation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  flex: 1;
+  padding-left: 32px;
+  background-color: #333;
+  width: 100dvw;
+} */
+
+/* #navigation > a {
+  color: #646cff;
+  float: left;
+  font-size: 17px;
+  font-weight: 500;
+  padding: 14px 16px;
+  text-align: center;
+  text-decoration: inherit;
+} */
+
+nav {
+  margin-block: 1rem;
+}
+
+nav a {
+  color: #646cff;
+  padding: 0.25rem 0.5rem;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+  margin-right: 1rem;
+}
+
+#navigation a.active {
+  background-color: #04aa6d;
+  color: white;
+}
+
+#navigation > a:hover {
+  background-color: #043baa77;
+  color: white;
 }
 
 #event-search {
@@ -55,36 +100,6 @@ h1 {
 
 #listing-page {
   text-align: start;
-}
-
-#navigation {
-  position: absolute;
-  top: 0;
-  left: 0;
-  flex: 1;
-  padding-left: 32px;
-  background-color: #333;
-  width: 100%;
-}
-
-#navigation > a {
-  color: #646cff;
-  float: left;
-  font-size: 17px;
-  font-weight: 500;
-  padding: 14px 16px;
-  text-align: center;
-  text-decoration: inherit;
-}
-
-#navigation a.active {
-  background-color: #04aa6d;
-  color: white;
-}
-
-#navigation > a:hover {
-  background-color: #043baa;
-  color: white;
 }
 
 #page-info {
@@ -110,10 +125,10 @@ h1 {
   }
 }
 
-.page-summary {
+/* .page-summary {
   padding-top: 20px;
 }
 
 .page-section {
   padding-left: 2em;
-}
+} */
