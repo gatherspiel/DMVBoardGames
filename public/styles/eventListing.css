@@ -5,9 +5,25 @@
   --clr-lighter-blue: hsl(199, 100%, 55%);
 }
 
-#event-page-info {
-  text-align: start;
+#hero-sec {
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
 }
+
+#hero-sec img {
+  max-width: 100%;
+}
+
+#hero-sec p {
+  max-width: 50ch;
+  line-height: 1.75;
+  color: var(--clr-dark-blue);
+}
+
+/* #event-page-info {
+  text-align: start;
+} */
 
 #search-form button {
   background: white;
