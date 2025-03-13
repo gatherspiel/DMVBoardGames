@@ -100,7 +100,6 @@ function getLocationHtml() {
 
 function init() {
   const html = `
-    <h1>DMV Board Games</h1>
     <h2>Search Events</h2>
       <form id='search-form'>
       
