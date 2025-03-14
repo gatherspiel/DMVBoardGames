@@ -78,7 +78,6 @@ nav a {
   border-radius: 5px;
   color: var(--clr-dark-blue);
   font-size: 1.25rem;
-  margin-right: 1rem;
   padding: 0.25rem 0.5rem 0.5rem;
   transition: all 0.3s ease;
   text-decoration: none;

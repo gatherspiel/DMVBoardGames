@@ -9,10 +9,13 @@
   align-items: center;
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 #hero-sec img {
-  max-width: 100%;
+  min-width: 350px;
+  width: 40vw;
+  max-width: 525px;
 }
 
 #hero-sec p {
