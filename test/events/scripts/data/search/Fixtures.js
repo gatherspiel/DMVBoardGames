@@ -1,22 +1,24 @@
-export const DEFAULT_SEARCH_PARAMS = {
+import { SearchParams } from "../../../../../src/events/scripts/data/search/model/SearchParams.js";
+
+export const DEFAULT_SEARCH_PARAMS = new SearchParams({
   day: "any",
   location: "any",
-};
+});
 
-export const ARLINGTON_SEARCH = {
+export const ARLINGTON_SEARCH = new SearchParams({
   day: "any",
   location: "Arlington",
-};
+});
 
-export const WEDNESDAY_SEARCH = {
+export const WEDNESDAY_SEARCH = new SearchParams({
   day: "Wednesday",
   location: "any",
-};
+});
 
-export const INVALID_DAY_SEARCh = {
+export const INVALID_DAY_SEARCh = new SearchParams({
   day: "Test",
   location: "any",
-};
+});
 
 export const GROUP_LIST_1 = [
   {

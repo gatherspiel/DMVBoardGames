@@ -1,6 +1,6 @@
-import { DEFAULT_SEARCH_PARAMETER } from "./search.js";
+import { DEFAULT_SEARCH_PARAMETER } from "./EventSearch.js";
 
-export const searchState = {
+export const eventSearchState = {
   day: DEFAULT_SEARCH_PARAMETER,
   location: DEFAULT_SEARCH_PARAMETER,
   locations: [

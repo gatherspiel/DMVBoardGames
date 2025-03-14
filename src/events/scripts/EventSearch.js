@@ -1,4 +1,4 @@
-import { searchState } from "./data/search/searchState.js";
+import { eventSearchState } from "./data/search/EventSearchState.js";
 
 const DEFAULT_SEARCH_PARAMETER = "any";
 
@@ -36,7 +36,7 @@ export function updateLocations(groups) {
     id++;
   });
 
-  searchState.locations = locationData;
+  eventSearchState.locations = locationData;
   refreshLocations();
 }
 
@@ -51,8 +51,8 @@ function setupEventHandlers() {
 
     const searchEvent = new CustomEvent("search", {
       detail: {
-        location: searchState.location,
-        day: searchState.day,
+        location: eventSearchState.location,
+        day: eventSearchState.day,
       },
     });
     document.dispatchEvent(searchEvent);
@@ -61,19 +61,19 @@ function setupEventHandlers() {
   const select = document.querySelector("#search-locations");
 
   select.addEventListener("change", (e) => {
-    searchState.location = e.target.value;
+    eventSearchState.location = e.target.value;
   });
 
   const searchDays = document.querySelector("#search-days");
 
   searchDays.addEventListener("change", (e) => {
-    searchState.day = e.target.value;
+    eventSearchState.day = e.target.value;
   });
 }
 
 function getLocationSelect() {
   const data = `
-    ${searchState.locations.map(
+    ${eventSearchState.locations.map(
       (location) =>
         `<option key=${location.index} value=${location.name}>
           ${
@@ -91,7 +91,7 @@ function getLocationHtml() {
     <select
       id="search-locations"
       name="locations"
-      value=${searchState.location}
+      value=${eventSearchState.location}
     >
 
     ${getLocationSelect()}
@@ -104,7 +104,7 @@ function init() {
       <form id='search-form'>
       
         <div>
-          ${getLocationHtml(searchState.locations)}
+          ${getLocationHtml(eventSearchState.locations)}
          
           &nbsp;
           <label htmlFor="days">Chose a day:</label>
@@ -112,7 +112,7 @@ function init() {
           <select
             name="days"
             id="search-days"
-            value=${searchState.day}
+            value=${eventSearchState.day}
           >
             ${days.map(
               (day, index) =>
