@@ -1,22 +1,14 @@
 html,
 body {
-  /* width 100% was causing horizontal scrolling */
-  /* width: 100%; */
   padding: 0;
   margin: 0;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-
   line-height: 1.5;
   font-weight: 400;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-body {
-  margin: 0;
-  /* display: flex; */
 }
 
 button {
@@ -44,8 +36,6 @@ h1 {
 }
 
 #container {
-  /* align-items: start; */
-  /* display: flex; */
   max-width: 65rem;
   margin-inline: auto;
 }
@@ -79,8 +69,8 @@ nav a {
   color: var(--clr-dark-blue);
   font-size: 1.25rem;
   padding: 0.25rem 0.5rem 0.5rem;
-  transition: all 0.3s ease;
   text-decoration: none;
+  transition: all 0.3s ease;
 }
 
 #navigation a.active,

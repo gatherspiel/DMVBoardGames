@@ -13,23 +13,17 @@
 }
 
 #hero-sec img {
-  min-width: 350px;
-  width: 40vw;
-  max-width: 525px;
+  width: clamp(350px, 40vw, 525px);
 }
 
 #hero-sec p {
-  max-width: 50ch;
-  line-height: 1.75;
   color: var(--clr-dark-blue);
+  line-height: 1.75;
+  max-width: 50ch;
 }
-
-/* #event-page-info {
-  text-align: start;
-} */
 
 #search-form button {
   background: white;
-  outline: 2px solid var(--clr-light-blue);
   color: var(--clr-light-blue);
+  outline: 2px solid var(--clr-light-blue);
 }
