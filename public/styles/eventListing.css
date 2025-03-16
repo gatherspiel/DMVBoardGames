@@ -22,6 +22,27 @@
   max-width: 50ch;
 }
 
+#event-search {
+  border-bottom: 1px solid var(--clr-dark-blue);
+  border-top: 1px solid var(--clr-dark-blue);
+  padding-block: 1rem;
+}
+
+#search-form {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+#search-form label {
+  color: var(--clr-lighter-blue);
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+#search-form select {
+  margin-right: 2rem;
+}
+
 #search-form button {
   background: white;
   color: var(--clr-light-blue);
