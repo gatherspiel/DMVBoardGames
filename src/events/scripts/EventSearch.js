@@ -77,7 +77,7 @@ function getLocationSelect() {
       (location) =>
         `<option key=${location.index} value=${location.name}>
           ${
-            location === DEFAULT_SEARCH_PARAMETER
+            location.name === DEFAULT_SEARCH_PARAMETER
               ? "Any location"
               : location.name
           }
@@ -87,7 +87,7 @@ function getLocationSelect() {
 }
 function getLocationHtml() {
   return ` 
-    <label>Chose a location: </label>
+    <label>Select location: </label>
     <select
       id="search-locations"
       name="locations"
@@ -100,15 +100,12 @@ function getLocationHtml() {
 
 function init() {
   const html = `
-    <h2>Search Events</h2>
       <form id='search-form'>
       
         <div>
           ${getLocationHtml(searchState.locations)}
          
-          &nbsp;
-          <label htmlFor="days">Chose a day:</label>
-          &nbsp;
+          <label htmlFor="days">Select day:</label>
           <select
             name="days"
             id="search-days"
@@ -122,8 +119,7 @@ function init() {
             )}
           </select>
         </div>
-        <br></br>
-        <button type="submit">Submit</button>
+        <button type="submit">SEARCH EVENTS</button>
       </form>
   `;
   document.querySelector("#event-search").innerHTML = html;
