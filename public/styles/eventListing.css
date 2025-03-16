@@ -31,6 +31,7 @@
 #search-form {
   align-items: center;
   display: flex;
+  gap: 4rem;
   justify-content: center;
 }
 
@@ -39,12 +40,14 @@
   font-weight: 600;
   margin-right: 0.5rem;
 }
+
 #search-form select {
   border-color: var(--clr-light-blue);
   border-radius: 5px;
   color: var(--clr-light-blue);
+  cursor: pointer;
   font-weight: 600;
-  margin-right: 2rem;
+  margin-right: 1.25rem;
   padding: 0.25rem;
 }
 
@@ -54,7 +57,17 @@ select:focus-visible {
 }
 
 #search-form button {
-  background: white;
-  color: var(--clr-light-blue);
-  outline: 2px solid var(--clr-light-blue);
+  background-color: var(--clr-lighter-blue);
+  color: white;
+  font-size: 1.25rem;
+  outline: 1px solid var(--clr-light-blue);
+  padding-block: 1rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+#search-form button:hover,
+#search-form button:focus-visible {
+  background-color: white;
+  color: var(--clr-lighter-blue);
 }
