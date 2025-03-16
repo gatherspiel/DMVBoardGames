@@ -1,6 +1,6 @@
-import { getData } from "./data/ListingData.js";
+import { getData } from "./data/json/ListingData.js";
 import { updateLocations } from "./EventSearch.js";
-import { subscribeToGroupState } from "./components/EventListComponent.js";
+import { subscribeToGroupState } from "./data/state/GroupState.js";
 
 function updateSearch(groups) {
   updateLocations(groups);
