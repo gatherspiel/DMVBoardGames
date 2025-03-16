@@ -101,23 +101,25 @@ function getLocationHtml() {
 function init() {
   const html = `
       <form id='search-form'>
-      
-        <div>
-          ${getLocationHtml(searchState.locations)}
-         
-          <label htmlFor="days">Select day:</label>
-          <select
-            name="days"
-            id="search-days"
-            value=${searchState.day}
-          >
-            ${days.map(
-              (day, index) =>
-                `<option key=${index} value=${day}>
-                ${day === DEFAULT_SEARCH_PARAMETER ? "Any day" : day}
-              </option>`
-            )}
-          </select>
+        <div id='search-input-wrapper'>
+          <div>
+            ${getLocationHtml(searchState.locations)}
+          </div>
+          <div>
+            <label htmlFor="days">Select day:</label>
+            <select
+              name="days"
+              id="search-days"
+              value=${searchState.day}
+            >
+              ${days.map(
+                (day, index) =>
+                  `<option key=${index} value=${day}>
+                    ${day === DEFAULT_SEARCH_PARAMETER ? "Any day" : day}
+                   </option>`
+              )}
+            </select>
+          </div>
         </div>
         <button type="submit">SEARCH EVENTS</button>
       </form>
