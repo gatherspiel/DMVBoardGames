@@ -44,7 +44,7 @@ export class EventListComponent extends ListComponent {
     const showHideButton = groupElement.querySelector(".show-hide-button");
 
     showHideButton.addEventListener("click", () =>
-      this.showHideHandler(groupId),
+      this.showHideHandler(groupId)
     );
   }
 
@@ -131,8 +131,10 @@ export class EventListComponent extends ListComponent {
 
     //TODO: Implement addEventListener to framework folder and add logic to detect duplicate listeners.
     document.addEventListener("search", (e) => {
+
       const searchParams = new SearchParams(e.detail);
       const groupResults = getSearchResultGroups(getGroupList(), searchParams);
+
 
       updateSearchResultState(groupResults);
     });
