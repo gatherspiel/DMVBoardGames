@@ -24,5 +24,19 @@ node --test --test-name-pattern="empty result"
 
 
 
+## Development proccess
+
+-Create a branch with the latest changes from the main branch.
+-Submit a PR with your changes.
+-After the PR is merged, the changes should be verified by running locally or using the test branch
+-Once the changes are verified, a PR should be submitted from the main branch to the prod branch. Once the PR is merged, the changes will be automatically deployed to dmvboardgames.com
+
+## Other guidelines
+- Keep PRs as small as possible. Large features should be broken down into multiple PRs when possible.
+- If a PR has UI changes, it is helpful to include a screenshot of the chagne in the PR.
+
+
+
+
 
 
