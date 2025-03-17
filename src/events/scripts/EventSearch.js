@@ -101,6 +101,7 @@ function getLocationHtml() {
 function init() {
   const html = `
       <form id='search-form'>
+
         <div id='search-input-wrapper'>
           <div>
             ${getLocationHtml(searchState.locations)}
@@ -120,6 +121,7 @@ function init() {
               )}
             </select>
           </div>
+
         </div>
         <button type="submit">SEARCH EVENTS</button>
       </form>
