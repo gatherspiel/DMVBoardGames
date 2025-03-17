@@ -1,20 +1,14 @@
-html, body {
-  width: 100%;
-  padding:0;
-  margin:0;
+html,
+body {
+  padding: 0;
+  margin: 0;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-
   line-height: 1.5;
   font-weight: 400;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-body {
-  margin: 0;
-  display: flex;
 }
 
 button {
@@ -28,7 +22,8 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: hsl(199, 100%, 20%);
+  color: hsl(199, 100%, 20%);
 }
 button:focus,
 button:focus-visible {
@@ -41,19 +36,8 @@ h1 {
 }
 
 #container {
-  align-items: start;
-  display:flex;
-  width: 100%;
-}
-
-#event-search {
-  padding-bottom: 2em;
-  border-bottom: 1px solid black;
-  border-top: 1px solid black;
-}
-
-#listing-page {
-  text-align: start
+  max-width: 65rem;
+  margin-inline: auto;
 }
 
 #navigation {
@@ -63,7 +47,7 @@ h1 {
   flex: 1;
   padding-left: 32px;
   background-color: #333;
-  width:100%;
+  width: 100dvw;
 }
 
 #navigation > a {
@@ -76,14 +60,43 @@ h1 {
   text-decoration: inherit;
 }
 
-#navigation a.active {
-  background-color: #04AA6D;
-  color:white;
+nav {
+  margin-block: 1rem;
+}
+
+nav a {
+  border-radius: 5px;
+  color: var(--clr-dark-blue);
+  font-size: 1.25rem;
+  padding: 0.25rem 0.5rem 0.5rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+#navigation a.active,
+nav a.active {
+  background-color: #04aa6d;
+  color: white;
 }
 
 #navigation > a:hover {
-  background-color: #043baa;
+  background-color: #043baa77;
   color: white;
+}
+
+nav a:hover {
+  background-color: var(--clr-lighter-blue);
+  color: white;
+}
+
+#event-search {
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  padding-bottom: 2em;
+}
+
+#listing-page {
+  text-align: start;
 }
 
 #page-info {
@@ -92,10 +105,9 @@ h1 {
 
 #root {
   flex: 1 0 100%;
-  padding-top:3rem;
+  padding-top: 3rem;
   text-align: start;
 }
-
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -110,10 +122,10 @@ h1 {
   }
 }
 
-.page-summary {
+/* .page-summary {
   padding-top: 20px;
 }
 
 .page-section {
-  padding-left:2em;
-}
+  padding-left: 2em;
+} */

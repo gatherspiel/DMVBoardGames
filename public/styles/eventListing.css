@@ -1,3 +1,29 @@
-#event-page-info {
-  text-align: start
+:root {
+  --clr-dark-blue: hsl(199, 100%, 20%);
+  --clr-darker-blue: hsl(199, 100%, 10%);
+  --clr-light-blue: hsl(199, 100%, 33%);
+  --clr-lighter-blue: hsl(206, 100%, 52%);
+}
+
+#hero-sec {
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+#hero-sec img {
+  width: clamp(350px, 40vw, 525px);
+}
+
+#hero-sec p {
+  color: var(--clr-dark-blue);
+  line-height: 1.75;
+  max-width: 50ch;
+}
+
+#search-form button {
+  background: white;
+  color: var(--clr-light-blue);
+  outline: 2px solid var(--clr-light-blue);
 }
