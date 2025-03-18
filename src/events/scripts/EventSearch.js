@@ -2,7 +2,7 @@ import { eventSearchState } from "./data/search/EventSearchState.js";
 
 const DEFAULT_SEARCH_PARAMETER = "any";
 
-const days = [
+const DAYS_IN_WEEK = [
   DEFAULT_SEARCH_PARAMETER,
   "Sunday",
   "Monday",
@@ -81,7 +81,7 @@ function getLocationSelect() {
               ? "Any location"
               : location.name
           }
-        </option>`
+        </option>`,
     )}`;
   return data;
 }
@@ -104,20 +104,20 @@ function init() {
 
         <div id='search-input-wrapper'>
           <div>
-            ${getLocationHtml(searchState.locations)}
+            ${getLocationHtml(eventSearchState.locations)}
           </div>
           <div>
             <label htmlFor="days">Select day:</label>
             <select
               name="days"
               id="search-days"
-              value=${searchState.day}
+              value=${eventSearchState.day}
             >
-              ${days.map(
+              ${DAYS_IN_WEEK.map(
                 (day, index) =>
                   `<option key=${index} value=${day}>
                     ${day === DEFAULT_SEARCH_PARAMETER ? "Any day" : day}
-                   </option>`
+                   </option>`,
               )}
             </select>
           </div>
