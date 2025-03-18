@@ -89,12 +89,6 @@ nav a:hover {
   color: white;
 }
 
-#event-search {
-  border-bottom: 1px solid black;
-  border-top: 1px solid black;
-  padding-bottom: 2em;
-}
-
 #listing-page {
   text-align: start;
 }
