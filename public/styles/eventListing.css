@@ -22,8 +22,59 @@
   max-width: 50ch;
 }
 
-#search-form button {
-  background: white;
+#event-search {
+  border-bottom: 1px solid var(--clr-lighter-blue);
+  border-top: 1px solid var(--clr-lighter-blue);
+  padding-block: 1.5rem;
+}
+
+#search-form {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rem;
+  justify-content: center;
+}
+
+#search-input-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#search-form label {
+  color: var(--clr-lighter-blue);
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+#search-form select {
+  border-color: var(--clr-light-blue);
+  border-radius: 5px;
   color: var(--clr-light-blue);
-  outline: 2px solid var(--clr-light-blue);
+  cursor: pointer;
+  font-weight: 600;
+  margin-right: 1.25rem;
+  padding: 0.5rem;
+}
+
+select:focus,
+select:focus-visible {
+  outline: 1px solid var(--clr-light-blue);
+}
+
+#search-form button {
+  background-color: var(--clr-lighter-blue);
+  color: white;
+  font-size: 1.25rem;
+  outline: 1px solid var(--clr-light-blue);
+  padding-block: 1rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+#search-form button:hover,
+#search-form button:focus-visible {
+  background-color: white;
+  color: var(--clr-lighter-blue);
 }
