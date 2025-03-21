@@ -10,7 +10,7 @@ export function createEventDisplay(
   eventListComponent,
   conventionListComponent,
   gameStoreListComponent,
-  gameRestaurantListComponent,
+  gameRestaurantListComponent
 ) {
   //TODO: Add logic in framework folder to manage state update.
   const data = getData();
