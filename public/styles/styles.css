@@ -64,7 +64,8 @@ nav {
   margin-block: 1rem;
 }
 
-nav a {
+nav a,
+#jump-to a {
   border-radius: 5px;
   color: var(--clr-dark-blue);
   font-size: 1.25rem;
@@ -74,7 +75,8 @@ nav a {
 }
 
 #navigation a.active,
-nav a.active {
+nav a.active,
+#jump-to a.active {
   background-color: #04aa6d;
   color: white;
 }
@@ -84,7 +86,8 @@ nav a.active {
   color: white;
 }
 
-nav a:hover {
+nav a:hover,
+#jump-to a:hover {
   background-color: var(--clr-lighter-blue);
   color: white;
 }
