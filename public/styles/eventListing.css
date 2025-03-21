@@ -78,3 +78,21 @@ select:focus-visible {
   background-color: white;
   color: var(--clr-lighter-blue);
 }
+
+#jump-to {
+  border-bottom: 1px solid var(--clr-lighter-blue);
+  padding-block: 0.5rem;
+  /* the padding-inline helps on small screens */
+  padding-inline: 5rem;
+  text-align: center;
+}
+
+#jump-to p {
+  color: var(--clr-lighter-blue);
+  display: inline-block;
+  font-weight: 600;
+}
+
+#jump-to a {
+  text-wrap: nowrap;
+}
