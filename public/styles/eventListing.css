@@ -23,7 +23,6 @@
 }
 
 #event-search {
-  border-bottom: 1px solid var(--clr-lighter-blue);
   border-top: 1px solid var(--clr-lighter-blue);
   padding-block: 1.5rem;
 }
@@ -167,5 +166,3 @@ h3 {
     padding-top: 1.5rem;
   }
 }
-
-/* swap jump to and search sections, lose border bottom on search sec */
