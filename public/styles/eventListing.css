@@ -137,7 +137,7 @@ h3 {
 
 #no-event {
   font-size: 1rem;
-  margin: 0 0 0 3rem;
+  margin: 0 0 0 9.5rem;
 }
 
 .event p:nth-child(2),
@@ -149,9 +149,23 @@ h3 {
 .event p:nth-child(5) {
   font-size: 1rem;
   max-width: 65ch;
-  margin-top: 0.5rem;
   margin-left: 3rem;
+  margin-top: 0.5rem;
 }
 
-/* todo: look at sm screen, adj font size for event info */
+@media screen and (width < 32em) {
+  #no-event {
+    margin: 0 0 0 3rem;
+  }
+
+  .event-group button {
+    margin-left: 2rem;
+  }
+
+  .event-group {
+    border-bottom: 1px solid var(--clr-lighter-blue);
+    padding-top: 1.5rem;
+  }
+}
+
 /* swap jump to and search sections, lose border bottom on search sec */
