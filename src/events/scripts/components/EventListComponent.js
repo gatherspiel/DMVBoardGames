@@ -73,16 +73,17 @@ export class EventListComponent extends ListComponent {
           <div>
           ${
             events.length === 0
-              ? "Click on group link above for event information"
+              ? `<p id="no-event">Click on group link above for event information</p>`
               : ""
           }
           ${events
             .map((event) => {
               return `<div id=${groupId + "event-" + event.id} class="event">
-                    <h4>${event.title}</h4>
-                    <p>Summary: ${event.summary}</p>
+                    <h3>${event.title}</h3>
                     <p>Day: ${event.day}</p>
                     <p>Location: ${event.location}</p>
+                    </br>
+                    <p>Summary: ${event.summary}</p>
                   </div>`;
             })
             .join(" ")} 

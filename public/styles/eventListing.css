@@ -99,6 +99,7 @@ select:focus-visible {
 
 .event-group button {
   color: var(--clr-dark-blue);
+  min-width: 113px;
   outline: 1px solid var(--clr-lighter-blue);
 }
 
@@ -123,11 +124,34 @@ select:focus-visible {
   font-weight: 600;
 }
 
-h4 {
+h3 {
   color: var(--clr-dark-blue);
-  margin-left: 2rem;
+  margin: 0.5rem 0 0 3rem;
 }
 
 .event {
   border-bottom: 1px solid var(--clr-lighter-blue);
+  position: relative;
+  transform: translate;
 }
+
+#no-event {
+  font-size: 1rem;
+  margin: 0 0 0 3rem;
+}
+
+.event p:nth-child(2),
+.event p:nth-child(3) {
+  color: var(--clr-light-blue);
+  margin: 0.5rem 0 0 3rem;
+}
+
+.event p:nth-child(5) {
+  font-size: 1rem;
+  max-width: 65ch;
+  margin-top: 0.5rem;
+  margin-left: 3rem;
+}
+
+/* todo: look at sm screen, adj font size for event info */
+/* swap jump to and search sections, lose border bottom on search sec */
