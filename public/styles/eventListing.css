@@ -96,3 +96,38 @@ select:focus-visible {
 #jump-to a {
   text-wrap: nowrap;
 }
+
+.event-group button {
+  color: var(--clr-dark-blue);
+  outline: 1px solid var(--clr-lighter-blue);
+}
+
+.event-group h2,
+.event-group p {
+  display: inline-block;
+  margin-left: 2rem;
+}
+
+.event-group a {
+  color: var(--clr-light-blue);
+}
+
+.event-group a:hover,
+.event-group a:focus-visible {
+  color: var(--clr-dark-blue);
+}
+
+.event-group p {
+  color: var(--clr-dark-blue);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+h4 {
+  color: var(--clr-dark-blue);
+  margin-left: 2rem;
+}
+
+.event {
+  border-bottom: 1px solid var(--clr-lighter-blue);
+}
