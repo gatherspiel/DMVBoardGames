@@ -24,7 +24,7 @@ window.onload = function () {
         body: JSON.stringify({
           email: email,
           password: password,
-          data: data,
+          data: JSON.parse(data),
         }),
       });
       console.log(response);
