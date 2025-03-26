@@ -60,33 +60,34 @@ export class EventListComponent extends ListComponent {
     const events = getVisibleEvents(groupId);
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
-        <h2>
-          <a href=${group.link}>${group.title}</a>
-          <span>:&nbsp;${group.locations.replaceAll(",", ", ")}</span>
-        </h2>  
-        
         <button class='show-hide-button'>
           ${isVisible(groupId) ? "Hide info" : "Show info"}
         </button>
+        <h2>
+          <a href=${group.link}>${group.title}</a>
+        </h2>  
+          <p>${group.locations.replaceAll(",", ", ")}</p>        
         ${
           isVisible(groupId)
             ? `
           <div>
           ${
             events.length === 0
-              ? "Click on group link above for event information"
+              ? `<p id="no-event">Click on group link above for event information</p>`
               : ""
           }
           ${events
             .map((event) => {
-              return `<div id=${groupId + "event-" + event.id}>
-                    <h4>${event.title}</h4>
-                    <p>Summary: ${event.summary}</p>
+              return `<div id=${groupId + "event-" + event.id} class="event">
+                    <h3>${event.title}</h3>
                     <p>Day: ${event.day}</p>
                     <p>Location: ${event.location}</p>
+                    </br>
+                    <p>Summary: ${event.summary}</p>
                   </div>`;
             })
-            .join(" ")}  
+            .join(" ")} 
+            </div> 
           `
             : ``
         }
@@ -131,12 +132,8 @@ export class EventListComponent extends ListComponent {
 
     //TODO: Implement addEventListener to framework folder and add logic to detect duplicate listeners.
     document.addEventListener("search", (e) => {
-
-
       const searchParams = new SearchParams(e.detail);
       const groupResults = getSearchResultGroups(getGroupList(), searchParams);
-
-
 
       updateSearchResultState(groupResults);
     });
