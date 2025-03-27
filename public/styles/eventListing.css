@@ -5,6 +5,10 @@
   --clr-lighter-blue: hsl(206, 100%, 52%);
 }
 
+* {
+  scroll-padding: 1.5rem;
+}
+
 #hero-sec {
   align-items: center;
   display: flex;
@@ -108,23 +112,30 @@ select:focus-visible {
   margin-left: 2rem;
 }
 
-.event-group a {
+a {
   color: var(--clr-light-blue);
 }
 
+.conv-list-item a:hover,
+.conv-list-item a:focus-visible,
 .event-group a:hover,
-.event-group a:focus-visible {
+.event-group a:focus-visible,
+.game-restaurant-list-item a:hover,
+.game-restaurant-list-item a:focus-visible,
+.game-store-list-item a:hover,
+.game-store-list-item a:focus-visible {
   color: var(--clr-dark-blue);
 }
 
-.event-group p {
+.page-section p {
   color: var(--clr-dark-blue);
   font-size: 1.25rem;
   font-weight: 600;
 }
 
-h3 {
+.page-section h3 {
   color: var(--clr-dark-blue);
+  font-size: 1.5rem;
   margin: 0.5rem 0 0 3rem;
 }
 
@@ -150,6 +161,16 @@ h3 {
   max-width: 65ch;
   margin-left: 3rem;
   margin-top: 0.5rem;
+}
+
+.conv-list-item > *,
+.game-store-list-item > *,
+.game-restaurant-list-item > * {
+  display: inline-block;
+}
+
+h3:not(.event h3) {
+  margin: 0 1rem 0 0;
 }
 
 @media screen and (width < 32em) {
