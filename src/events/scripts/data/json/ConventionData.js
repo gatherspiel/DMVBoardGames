@@ -1,9 +1,10 @@
 export const CONVENTION_1 = {
   id: 1,
-  link: "http://emsps.com/cog/winter/index.html",
-  title: "Congress of Gamers Winter Session",
-  days: ["1/18/2025", "1/19/2025"],
+  link: "http://emsps.com/cog/spring/index.html", // Updated link
+  title: "Congress of Gamers Spring Session",      // Updated title
+  days: ["5/3/2025", "5/4/2025"],
 };
+
 
 export const CONVENTION_2 = {
   id: 2,
