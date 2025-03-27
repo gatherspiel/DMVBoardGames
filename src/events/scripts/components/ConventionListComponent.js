@@ -7,11 +7,11 @@ export class ConventionListComponent extends ListComponent {
 
   getItemHtml(convention) {
     return `
-    <div id = convention-${convention.id}>
+    <div id = convention-${convention.id} class="conv-list-item">
      <h3>
         <a href=${convention.link}>${convention.title}</a>
       </h3>
-      <p>Days: ${convention.days.join()}</p>
+      <p>Days: ${convention.days.join(", ")}</p>
     
     </div>
   `;
