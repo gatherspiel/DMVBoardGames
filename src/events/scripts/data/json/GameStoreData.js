@@ -85,4 +85,10 @@ export const gameStores = [
     name: "Dragons Concord",
     link: "https://www.dragonsconcord.com/",
   },
+  {
+    id: 15,
+    location: "10385 Main St. Fairfax, VA 22030",
+    name: "Paradise Games and Gifts",
+    link: "https://www.gcpairodice.com/",
+  },
 ];
