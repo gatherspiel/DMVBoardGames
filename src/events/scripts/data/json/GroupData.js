@@ -693,7 +693,7 @@ export const GROUP_36 = {
       id: 6,
       title: "Weekly Wednesday",
       day: "Wednesday",
-      location: "Home location, Jefferson County, West Virginia 25443",
+      location: "Home location, Jefferson County, WV 25443",
       summary:
         "Come play board games! Bring one to play and we will choose what to play. If there are enough people, we will break into groups and play multiple games! Games start within 15 minutes of the start time, so don’t be late!" +
         "We play games like Ticket to Ride, Scythe, Splendor, 7 Wonders, Everdell, Twilight Imperium, Dominion, etc.",

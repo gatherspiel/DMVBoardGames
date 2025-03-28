@@ -2,7 +2,7 @@ export const gameStores = [
   {
     id: 1,
     name: "Labyrinth Games & Puzzles",
-    location: "645 Pennsylvania Ave. SE, Washington, DC 20003",
+    location: "645 Pennsylvania Ave. SE, Washington,DC 20003",
     link: "https://www.labyrinthdc.com/",
   },
   {
@@ -32,7 +32,7 @@ export const gameStores = [
   },
   {
     id: 6,
-    location: "11406-B Georgia Ave, Silver Spring, MD 20902",
+    location: "11406-B Georgia Ave, Silver Spring,MD 20902",
     name: "Dice City Games",
     link: "https://dicecitygames.tcgplayerpro.com/",
   },
@@ -44,13 +44,13 @@ export const gameStores = [
   },
   {
     id: 8,
-    location: "11772 Parklawn Dr, Rockville, MD 20852",
+    location: "11772 Parklawn Dr, Rockville,MD 20852",
     name: "Dream Wizards",
     link: "https://www.dreamwizards.com/",
   },
   {
     id: 9,
-    location: "6701 Loisdale Rd #15, Springfield, VA 22150",
+    location: "6701 Loisdale Rd #15, Springfield,VA 22150",
     name: "Curio Cavern",
     link: "https://curiocavern.com/",
   },
@@ -62,13 +62,13 @@ export const gameStores = [
   },
   {
     id: 11,
-    location: "29 Catoctin Cir NE, Leesburg, VA 20176",
+    location: "29 Catoctin Cir NE, Leesburg,VA 20176",
     name: "Creative Pursuit Games",
     link: "https://sites.google.com/view/creativepursuitgames",
   },
   {
     id: 12,
-    location: "44927 George Washington Blvd Ste 135, Ashburn, VA 20147",
+    location: "44927 George Washington Blvd Ste 135,Ashburn,VA 20147",
     name: "Huzzah Hobbies",
     link: "https://huzzahhobbies.com/",
   },
@@ -81,13 +81,13 @@ export const gameStores = [
   },
   {
     id: 14,
-    location: "11215 Lee Hwy Ste L, Fairfax, VA 22030",
+    location: "11215 Lee Hwy Ste L, Fairfax,VA 22030",
     name: "Dragons Concord",
     link: "https://www.dragonsconcord.com/",
   },
   {
     id: 15,
-    location: "10385 Main St. Fairfax, VA 22030",
+    location: "10385 Main St., Fairfax, VA 22030",
     name: "Paradise Games and Gifts",
     link: "https://www.gcpairodice.com/",
   },
