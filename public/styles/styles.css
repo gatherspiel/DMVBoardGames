@@ -93,6 +93,10 @@ nav a:hover,
   color: white;
 }
 
+nav a:last-child {
+  text-wrap: nowrap;
+}
+
 #page-info {
   padding-top: 50px;
 }

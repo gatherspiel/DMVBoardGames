@@ -196,13 +196,21 @@ h3:not(.event h3) {
 }
 
 @media screen and (width < 32em) {
+  #hero-sec p {
+    text-align: center;
+  }
+
+  #search-days {
+    margin-top: 1rem;
+  }
+
+  #search-form {
+    gap: 2rem;
+  }
+
   #no-event {
     margin: 0;
   }
-
-  /* .event-group button {
-    margin-left: 2rem;
-  } */
 
   .event-group {
     border-bottom: 1px solid var(--clr-lighter-blue);
