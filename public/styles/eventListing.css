@@ -182,6 +182,10 @@ h3:not(.event h3) {
     text-align: center;
   }
 
+  #search-days {
+    margin-top: 1rem;
+  }
+
   .event-group h2 {
     font-size: 1.25rem;
   }
@@ -200,9 +204,17 @@ h3:not(.event h3) {
     text-align: center;
   }
 
-  #search-days {
-    margin-top: 1rem;
+  #root {
+    padding: 0;
   }
+
+  #jump-to {
+    padding-block: 0 1.5rem;
+  }
+
+  /* #search-days {
+    margin-top: 1rem;
+  } */
 
   #search-form {
     gap: 2rem;
@@ -229,5 +241,9 @@ h3:not(.event h3) {
   .event p:nth-child(5),
   .event h3 {
     margin-left: 0rem;
+  }
+
+  .page-section {
+    text-align: center;
   }
 }
