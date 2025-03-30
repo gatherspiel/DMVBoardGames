@@ -196,6 +196,7 @@ h3:not(.event h3) {
 
   #root h1 {
     font-size: 2rem;
+    margin-right: 0.75rem;
   }
 }
 
@@ -211,10 +212,6 @@ h3:not(.event h3) {
   #jump-to {
     padding-block: 0 1.5rem;
   }
-
-  /* #search-days {
-    margin-top: 1rem;
-  } */
 
   #search-form {
     gap: 2rem;
