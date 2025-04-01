@@ -1,6 +1,7 @@
 html,
 body {
-  padding: 0;
+  padding-inline: 1rem;
+  padding-block-end: 3rem;
   margin: 0;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -92,18 +93,12 @@ nav a:hover,
   color: white;
 }
 
-#listing-page {
-  text-align: start;
+nav a:last-child {
+  text-wrap: nowrap;
 }
 
 #page-info {
-  padding-top: 20px;
-}
-
-#root {
-  flex: 1 0 100%;
-  padding-top: 3rem;
-  text-align: start;
+  padding-top: 50px;
 }
 
 @media (prefers-color-scheme: light) {

@@ -2,7 +2,7 @@ const EVENT_1 = {
   id: 1,
   title: "High Interaction Board Games at Western Market Food Hall in DC",
   day: "Sunday",
-  location: "2000 Pennsylvania Avenue NW #3500 · Washington, DC",
+  location: "2000 Pennsylvania Avenue NW #3500, Washington, DC 20006",
   summary:
     "We play a variety of high interaction games with a focus on cooperative games, hidden identity games, and high interaction(German-style) Euros.",
 };
@@ -11,7 +11,7 @@ const EVENT_2 = {
   id: 2,
   title: "Board Game Night @ Board Room in Clarendon, Wed, 6:30-10:00",
   day: "Wednesday",
-  location: "925 N Garfield St · Arlington, VA",
+  location: "925 N Garfield St, Arlington, VA 22201",
   summary:
     "Let's play board games. Not the ones your ancestors played but the really cool ones of the new millennium. We play everything from fun, social games to light to heavy strategy games.",
 };
@@ -20,7 +20,7 @@ const EVENT_3 = {
   id: 3,
   title: "Bring Your Own Game Night in DC at Nanny O’Briens",
   day: "Monday",
-  location: "3319 Connecticut Avenue Northwest · Washington, DC",
+  location: "3319 Connecticut Avenue Northwest, Washington, DC 20008",
   summary:
     "Hello again! After a long hiatus, the Monday meet up at Nanny O’Briens is back! We’ll have some games to play, but feel free to bring your favorites as well. Stop by for a game and a drink, and say hello! We’ll be in the back room",
 };
@@ -30,7 +30,7 @@ const EVENT_4 = {
   title:
     "Bring Your Own Eurogames Night at the Crystal City Shops next to We the Pizza",
   day: "Friday",
-  location: "2011 Crystal Drive · Arlington, VA",
+  location: "2100 Crystal Drive, Arlington, VA 22202",
   summary: "We play a variety of game with a focus on Eurogames",
 };
 
@@ -50,7 +50,7 @@ export const GROUP_2 = {
       id: 1,
       title: "Board Games @ Third Hill Brewing Co.",
       day: "Tuesday",
-      location: "8216 Georgia Ave · Silver Spring, MD",
+      location: "8216 Georgia Ave, Silver Spring, MD 20910",
       summary:
         "Come out to Third Hill Brewing Company and play some board games! Serving food with their variety of drinks so come and fuel up for the games.\n" +
         "\n",
@@ -59,7 +59,7 @@ export const GROUP_2 = {
       id: 2,
       title: "Board Games @ Silver Spring Library",
       day: "Saturday",
-      location: "900 Wayne Ave · Silver Spring, MD",
+      location: "900 Wayne Ave, Silver Spring, MD 20910",
       summary:
         "Grab a game or bring your own, this event is open play. Whether it is chucking dice, full of traitors, laying tiles, or only cards involved, it doesn't matter; as long as it is a fun game, let's get it to the table and play it.",
     },
@@ -85,7 +85,7 @@ export const GROUP_3 = {
       id: 1,
       title: "Game Night at Glory Days",
       day: "Monday",
-      location: "3141 Duke Street · Alexandria, VA",
+      location: "3141 Duke Street, Alexandria, VA 22314",
       summary:
         "We will be playing board games at Glory Days Grill in Alexandria . We don’t play typical games like scrabble or monopoly. We play Euro games like ticket to ride, Lords of Waterdeep, Wingspan, Cascadia and more.",
     },
@@ -104,7 +104,7 @@ export const GROUP_4 = {
       id: 1,
       title: "Sunday Boardgaming @ Panera",
       day: "Sunday",
-      location: "1780 E Jefferson St · Rockville, MD",
+      location: "1780 E Jefferson St, Rockville, MD 20852",
       summary:
         "Open gaming at Panera! New players welcome. We have many games on hand or you can bring your own. We are happy to teach or learn one of yours.",
     },
@@ -240,7 +240,7 @@ export const GROUP_14 = {
       id: 1,
       title: "Beer Garden & Board Games!",
       day: "Wednesday",
-      location: "3181 Wilson Blvd · Arlington, VA",
+      location: "3181 Wilson Blvd, Arlington, VA 22201",
       summary:
         "Best darn night ever! Lots of games. Even more laughs. Come and find out for yourself. New members or members who just haven't been out to a meetup are strongly encouraged to come.",
     },
@@ -270,7 +270,7 @@ export const GROUP_16 = {
       id: 1,
       title: "Monday Games at the Board and Brew in College Park",
       day: "Monday",
-      location: "8150 Baltimore Ave · College Park, MD",
+      location: "8150 Baltimore Ave, College Park, MD 20740",
       summary:
         "Come on out to the Board and Brew in College Park and play a great game with wonderful people while noshing some delectable edibles.",
     },
@@ -278,7 +278,7 @@ export const GROUP_16 = {
       id: 2,
       title: "College Park Thursdays: Have fun storming the Kastle!",
       day: "Thursday",
-      location: "4748 Cherry Hill Rd · College Park, MD\n",
+      location: "4748 Cherry Hill Rd, College Park, MD 20740",
       summary:
         "Hey hey everyone, our friendly local GAME KASTLE hosts board game night each and every Thursday starting at 5pm..",
     },
@@ -286,7 +286,7 @@ export const GROUP_16 = {
       id: 3,
       title: "Board Gaming at Play More Game Store, Gaithersburg, MD",
       day: "Thursday",
-      location: "42 Bureau Dr · Gaithersburg, MD",
+      location: "42 Bureau Dr, Gaithersburg, MD 20878",
       summary:
         "Come Join us at Play More Game Store, 42 Bureau Drive, Gaithersburg, MD for board gaming!.",
     },
@@ -294,7 +294,7 @@ export const GROUP_16 = {
       id: 4,
       title: "Rockville Gamers",
       day: "Friday",
-      location: "355 Linthicum St · Rockville, MD",
+      location: "355 Linthicum St, Rockville, MD 20851",
       summary:
         "We meet in Rockville United Church's large meeting room for Friday night gaming at 7:00PM. Lately, we've had four or five tables at 7, and a couple for a second game. Lots of room and outside food and drink are welcome. No alcohol! You can play as late as you like. Bring your own games or choose from among the club's library of almost 100 games.",
     },
@@ -302,7 +302,7 @@ export const GROUP_16 = {
       id: 5,
       title: "Games Club of Maryland Brunswick",
       day: "Saturday",
-      location: "122 West Potomac Street, · Brunswick, MD",
+      location: "122 West Potomac Street, Brunswick, MD 21716",
       summary: "Open board gaming for everyone.",
     },
   ],
@@ -350,7 +350,7 @@ export const GROUP_20 = {
       id: 1,
       title: "Saturday All Day Gaming",
       day: "Saturday",
-      location: "10385 Main Street · Fairfax, VA",
+      location: "10385 Main Street, Fairfax, VA 22030",
       summary: "Free to play board gaming all day until we close",
     },
   ],
@@ -368,7 +368,7 @@ export const GROUP_21 = {
       id: 5,
       title: "Reston Plays Games",
       day: "Wednesday",
-      location: "2310 Colts Neck Rd · Reston, VA",
+      location: "2310 Colts Neck Rd, Reston, VA 20191",
       summary:
         "Come out to the Reston Community Center and play some games! Party games? Strategy games? Tabletop role-playing games? This massive space can accommodate games for every interest. While the event starts at 5pm, feel free to roll in whenever you are able! If you have games to bring that you'd like to share or run, please do!",
     },
@@ -376,7 +376,7 @@ export const GROUP_21 = {
       id: 2,
       title: "Huzzah game night",
       day: "Thursday",
-      location: "44927 George Washington Blvd · Ashburn, VA",
+      location: "44927 George Washington Blvd, Ashburn, VA 20147",
       summary:
         "Come join us for some fun and games at Huzzah Hobbies! We play a variety of games such as strategy, co-ops, or party games. This is a great way to meet new people, play some new games, and have some fun at the same time!",
     },
@@ -395,7 +395,7 @@ export const GROUP_22 = {
       id: 1,
       title: "Eurogames and Amerithrash at the Herndon Library",
       day: "Saturday",
-      location: "768 Center Street · Herndon, VA",
+      location: "768 Center Street, Herndon, VA 20170",
       summary:
         "Join The Herndon Boardgame Group for a fun-filled day of Eurogames and Amerithrash style of gaming!",
     },
@@ -403,7 +403,7 @@ export const GROUP_22 = {
       id: 2,
       title: "Herndon/Ashburn Boardgaming Group Meetup",
       day: "Thursday",
-      location: "43881 Waxpool Rd · Ashburn, VA",
+      location: "43881 Waxpool Rd, Ashburn, VA 20147",
       summary:
         "Welcome, all, for another meetup at the lodge for another night of boardgaming! Open to anyone in either the Ashburn or Herndon Boardgaming groups and their guests. Bring whatever you want in the way of games, and we'll deal with food when we see how many are interested. I won't be there until 7:45, but John will be there at 7pm. The lodge officially closes at 11pm, so there will be a \"don't start new games after 10:30\" rule in effect. Hope to see everyone there!",
     },
@@ -448,7 +448,7 @@ export const GROUP_25 = {
       id: 1,
       title: "Monday Night Board Gaming at Brew Belly in Olney",
       day: "Monday",
-      location: "Brew Belly · Olney, MD",
+      location: "Brew Belly, Olney, MD 20832",
       summary:
         "Join us between 6:00 and 9:30 to play nontraditional board games at Brew Belly restaurant in Olney, MD. Some games will be provided but please do bring along games you are interested in playing",
     },
@@ -467,7 +467,7 @@ export const GROUP_26 = {
       id: 1,
       title: "Mental Monday Trivia Night",
       day: "Monday",
-      location: "9412 Main St · Manassas, VA",
+      location: "9412 Main St, Manassas, VA 20110",
       summary:
         "Every week it's a different theme! We have done authors and their works, Changing Seasons, Animated Characters, and lots more. Form a team, but your team score is the amount of correct answers divided by number of team members.\n" +
         "\n" +
@@ -479,7 +479,7 @@ export const GROUP_26 = {
       id: 2,
       title: "Advancd Strategy Game Night",
       day: "Tuesday",
-      location: "9412 Main St · Manassas, VA",
+      location: "9412 Main St, Manassas, VA 20110",
       summary:
         "Have you ever been intimidated by a game? Glanced at it and ran for the hills (the ones without eyes)?\n" +
         "\n" +
@@ -489,7 +489,7 @@ export const GROUP_26 = {
       id: 3,
       title: "Disney's Lorcana TCG Wednesdays",
       day: "Wednesday",
-      location: "9412 Main St · Manassas, VA",
+      location: "9412 Main St, Manassas, VA 20110",
       summary:
         "Every Wednesday at 6pm sharp, Sam will be hosting Disney's Lorcana TCG game nights! There will be prizes for the winners & lots of fun to be had!",
     },
@@ -497,7 +497,7 @@ export const GROUP_26 = {
       id: 4,
       title: "Strategy Game Night",
       day: "Thursday",
-      location: "9412 Main St · Manassas, VA",
+      location: "9412 Main St, Manassas, VA 20110",
       summary:
         "Thursday is becoming the favored week night for STRATEGY gamers here at Crossroads! We have played Mare Nostrum, Orleans, Gaia Project, and more. Bring your preferences, be ready to split if it's a larger group, and rely on us for an awesome variety of games from which to choose.",
     },
@@ -505,7 +505,7 @@ export const GROUP_26 = {
       id: 5,
       title: "Card Sharks of Crossroads",
       day: "Friday",
-      location: "9412 Main St · Manassas, VA",
+      location: "9412 Main St, Manassas, VA 20110",
       summary:
         "When it's getting late on a Friday and you don't have other plans, come over for some old-fashioned card-playing! We can play anything and everything, from Euchre and Pinochle to Hearts and Spades to Bridge and Rummy, and maybe even some Poker or Blackjack! It's up to whomever shows up. We'll get a table (or several) at the bar so the drinks (if you so desire) are handy!",
     },
@@ -513,7 +513,7 @@ export const GROUP_26 = {
       id: 6,
       title: "Open Games Sunday",
       day: "Sunday",
-      location: "9412 Main St · Manassas, VA",
+      location: "9412 Main St, Manassas, VA 20110",
       summary:
         "A weekly meetup for all gamers, from heavy strategy to light party games. Crossroads has a 1,400+ library of games, free to all paying customers (food, drink, or retail purchases qualify). Owner John (yours truly) will be on hand to host the event, and usually be able to sit and play as well!",
     },
@@ -552,7 +552,7 @@ export const GROUP_29 = {
       id: 1,
       title: "Weekly Boardgame Throwdown!",
       day: "Monday",
-      location: "3141 Duke St · Alexandria, VA",
+      location: "3141 Duke St,Alexandria, VA 22314",
       summary:
         "This our weekly game night event! We start at 6pm so that we can get dinner from Glory Days. Come join us and maybe meet some new friends as we play games ranging from Fluxx to Ricochet Robots to Ticket to Ride to Saboteur to Cards Against Humanity (and others).",
     },
@@ -571,7 +571,7 @@ export const GROUP_30 = {
       id: 1,
       title: "ALEXANDRIA Play & Learn Boardgames, Strategy, Card, Euro Games",
       day: "Tuesday",
-      location: "7905 Hilltop Village Center Dr · Alexandria, VA",
+      location: "7905 Hilltop Village Center Dr, Alexandria, VA 22314",
       summary:
         "This meetup is for people that want to play table games: board games, strategy games, episodic RPGs, eurogames, card games and co-operative games. NOT A GAMER BUT WANT TO LEARN? We teach them all...",
     },
@@ -579,7 +579,7 @@ export const GROUP_30 = {
       id: 2,
       title: "Frederick Play & Learn Boardgames, Strategy, Card, Euro Games",
       day: "Thursday",
-      location: "5500 Buckeystown Pike #804 · Frederick, MD",
+      location: "5500 Buckeystown Pike #804, Frederick, MD 21703",
       summary:
         "This Buckeystowne meetup is for people that want to LEARN AND PLAY table games: board games, strategy games, episodic RPGs, eurogames, card games and co-operative games. NOT A GAMER BUT WANT TO LEARN? We teach them all...",
     },
@@ -592,13 +592,13 @@ export const GROUP_31 = {
   id: 31,
   link: "https://www.meetup.com/manassas-eat-chat-and-game-group/",
   locations: "Chantilly",
-  title: "Manassas Eat & Chat and Game Group",
+  title: "Chantilly Tabletop Gaming Group",
   events: [
     {
       id: 1,
-      title: "Manassas Game Group Event!",
+      title: "Chantilly Game Group Event!",
       day: "Saturday",
-      location: "14361 Newbrook Dr · Chantilly , VA",
+      location: "14361 Newbrook Dr, Chantilly, VA 20151",
       summary:
         "Join us for a fun afternoon of board games, card games, etc! Bring your favorites or play a game that someone else brings.\n" +
         "You are welcome to bring snacks (for yourself or to share) and non-alcoholic beverages.",
@@ -618,7 +618,7 @@ export const GROUP_32 = {
       id: 1,
       title: "Game Night in Lake Ridge",
       day: "Saturday",
-      location: "Lake Ridge, VA",
+      location: "Home location, Lake Ridge, VA 22191",
       summary:
         "Welcome! We're a group of gamers that play board games of varying levels of intensity and difficulty. Take a look" +
         " below to see a sample of the board games we play, and you may also feel free to bring your own. If you don't " +
@@ -643,7 +643,7 @@ export const GROUP_33 = {
       id: 1,
       title: "Gaithersburg Games",
       day: "Saturday",
-      location: "19965 Century Blvd · Germantown, MD",
+      location: "19965 Century Blvd, Germantown, MD 20874",
       summary:
         "I invite everybody to join us for board games at Panera bread in Germantown on Century Blvd. We have all sorts of games. We welcome all kinds of gamers from the first timers, to old veterans. Feel free to bring any of your own games if you wish. Most of our members are always eager to learn new games. Of course we also like classics like Catan or Ticket To RIde, among others. You are free to arrive to the event at anytime, and leave whenever you have had enough games. There is no fee for this event. But I am sure that the restaurant would appreciate any patronage, and they are being kind enough to loan us their tables." +
         "This event will repeat every final Saturday of each month.",
@@ -673,7 +673,7 @@ export const GROUP_35 = {
       id: 1,
       title: "Board games at Pville Library!",
       day: "Sunday",
-      location: "220 E Main St · Purcellville, VA",
+      location: "220 E Main St, Purcellville, VA 20132",
       summary:
         "Come play board games! Bring one to play and we will choose what to play. If there are enough people, we will break into groups and play multiple games! Games start within 15 minutes of the start time, so don’t be late!" +
         "We play games like Ticket to Ride, Scythe, Splendor, 7 Wonders, Everdell, Twilight Imperium, Dominion, etc.",
@@ -693,7 +693,7 @@ export const GROUP_36 = {
       id: 6,
       title: "Weekly Wednesday",
       day: "Wednesday",
-      location: "Swan Pond, West Virginia",
+      location: "Home location, Jefferson County, WV 25443",
       summary:
         "Come play board games! Bring one to play and we will choose what to play. If there are enough people, we will break into groups and play multiple games! Games start within 15 minutes of the start time, so don’t be late!" +
         "We play games like Ticket to Ride, Scythe, Splendor, 7 Wonders, Everdell, Twilight Imperium, Dominion, etc.",
@@ -702,7 +702,7 @@ export const GROUP_36 = {
       id: 10,
       title: "Public Night @ the Legion",
       day: "Wednesday",
-      location: "Charles Town, West Virginia",
+      location: "225 W Washington St #1531, Charles Town, WV 25414",
       summary:
         "The Charles Town American Legion opens their doors to our gaming community every other Friday, and we are able to gather on their second floor to play games. This is an open session style event where you may join and leave at any time (until our host locks up for the night). Grab your favorite games & friends and come say hi. Our events are open to the public - can't wait to meet you!",
     },

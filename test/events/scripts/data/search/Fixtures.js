@@ -519,7 +519,7 @@ export const GROUP_LIST_2 = [
           id: 2,
           title: "College Park Thursdays: Have fun storming the Kastle!",
           day: "Thursday",
-          location: "4748 Cherry Hill Rd · College Park, MD\n",
+          location: "4748 Cherry Hill Rd, College Park, MD",
           summary:
             "Hey hey everyone, our friendly local GAME KASTLE hosts board game night each and every Thursday starting at 5pm..",
         },

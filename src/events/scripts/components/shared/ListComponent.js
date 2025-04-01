@@ -8,12 +8,12 @@ export class ListComponent extends Component {
 
   getItemHtml(data) {
     console.warn(
-      "getItemHtml should be implemented in the child component class",
+      "getItemHtml should be implemented in the child component class"
     );
   }
 
   generateHtml(data) {
-    let html = `<h1> ${this.title}</h1>`;
+    let html = `<h1>${this.title}</h1>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
