@@ -1,3 +1,10 @@
+:root {
+  --clr-dark-blue: hsl(199, 100%, 20%);
+  --clr-darker-blue: hsl(199, 100%, 10%);
+  --clr-light-blue: hsl(199, 100%, 33%);
+  --clr-lighter-blue: hsl(206, 100%, 52%);
+}
+
 html,
 body {
   padding-inline: 1rem;
@@ -10,6 +17,8 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-padding: 1.5rem;
+  scroll-behavior: smooth;
 }
 
 button {
@@ -22,10 +31,12 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: hsl(199, 100%, 20%);
   color: hsl(199, 100%, 20%);
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -41,24 +52,8 @@ h1 {
   margin-inline: auto;
 }
 
-#navigation {
-  position: absolute;
-  top: 0;
-  left: 0;
-  flex: 1;
-  padding-left: 32px;
-  background-color: #333;
-  width: 100dvw;
-}
-
-#navigation > a {
-  color: #646cff;
-  float: left;
-  font-size: 17px;
-  font-weight: 500;
-  padding: 14px 16px;
-  text-align: center;
-  text-decoration: inherit;
+a {
+  color: var(--clr-light-blue);
 }
 
 nav {
@@ -75,15 +70,9 @@ nav a,
   transition: all 0.3s ease;
 }
 
-#navigation a.active,
 nav a.active,
 #jump-to a.active {
   background-color: #04aa6d;
-  color: white;
-}
-
-#navigation > a:hover {
-  background-color: #043baa77;
   color: white;
 }
 
