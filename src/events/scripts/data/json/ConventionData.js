@@ -1,11 +1,3 @@
-export const CONVENTION_1 = {
-  id: 1,
-  link: "http://emsps.com/cog/spring/index.html", // Updated link
-  title: "Congress of Gamers Spring Session",      // Updated title
-  days: ["5/3/2025", "5/4/2025"],
-};
-
-
 export const CONVENTION_2 = {
   id: 2,
   link: "https://tabletop.events/conventions/circle-dc-2025",
@@ -35,5 +27,5 @@ export const CONVENTION_5 = {
 };
 
 export function getConventionData() {
-  return [CONVENTION_1, CONVENTION_2, CONVENTION_3, CONVENTION_4, CONVENTION_5];
+  return [CONVENTION_2, CONVENTION_3, CONVENTION_4, CONVENTION_5];
 }
