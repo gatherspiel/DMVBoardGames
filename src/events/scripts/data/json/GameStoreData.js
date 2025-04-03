@@ -6,12 +6,6 @@ export const gameStores = [
     link: "https://www.labyrinthdc.com/",
   },
   {
-    id: 2,
-    location: "700 N Washington St, Alexandria, VA 22314",
-    name: "Your Hobby Place",
-    link: "",
-  },
-  {
     id: 3,
     location: "586 S Washington St, Falls Church, VA 22046",
     name: "Victory Comics",
