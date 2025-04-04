@@ -115,6 +115,12 @@ select:focus-visible {
 .game-store-list-item a:focus-visible {
   color: var(--clr-dark-blue);
 }
+.game-store-list-item{
+  margin: 20px 0px;
+}
+.game-store-list-item p{
+  display: inline;
+}
 
 .page-section h3 {
   color: var(--clr-dark-blue);
