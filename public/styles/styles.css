@@ -85,6 +85,29 @@ nav a:last-child {
   text-wrap: nowrap;
 }
 
+#jump-to {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#jump-to p {
+  white-space: nowrap;
+}
+
+#info-btn-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 15px;
+}
+
+
 #page-info {
   padding-top: 50px;
 }
@@ -99,6 +122,29 @@ nav a:last-child {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+@media (max-width: 768px) {
+  #jump-to {
+    width: fit-content;
+    flex-wrap: wrap;
+  }
+
+  #info-btn-list {
+    width: fit-content;
+    gap: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  #jump-to {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  #info-btn-list {
+    flex-direction: column;
   }
 }
 

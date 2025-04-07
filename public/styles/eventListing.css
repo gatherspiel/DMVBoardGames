@@ -29,7 +29,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 4rem;
-  justify-content: center;
 }
 
 #search-input-wrapper {
@@ -173,8 +172,12 @@ h3:not(.event h3) {
     text-align: center;
   }
 
-  #search-days {
-    margin-top: 1rem;
+  #search-form {
+    justify-content: center;
+  }
+
+  #search-locations {
+    margin-bottom: 1rem;
   }
 
   .event-group h2 {

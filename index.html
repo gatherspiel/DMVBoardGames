@@ -1,72 +1,69 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="/styles/styles.css" />
-    <link rel="stylesheet" href="/styles/eventListing.css" />
-    <link rel="icon" type="image/png" href="/styles/icon-exemple.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DMV Board Games</title>
 
-    <script type="module" src="/src/events/scripts/data/json/GameRestaurantData.js"></script>
-    <script type="module" src="/src/events/scripts/data/json/GameStoreData.js"></script>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="/styles/styles.css" />
+  <link rel="stylesheet" href="/styles/eventListing.css" />
+  <link rel="icon" type="image/png" href="/styles/icon-exemple.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DMV Board Games</title>
+
+  <script type="module" src="/src/events/scripts/data/json/GameRestaurantData.js"></script>
+  <script type="module" src="/src/events/scripts/data/json/GameStoreData.js"></script>
 
 
 
 
-    <script type="module" src="/src/events/scripts/data/json/GroupData.js"></script>
-    <script type="module" src="/src/events/scripts/EventSearch.js"></script>
+  <script type="module" src="/src/events/scripts/data/json/GroupData.js"></script>
+  <script type="module" src="/src/events/scripts/EventSearch.js"></script>
 
-    <script type="module" src="src/events/scripts/EventDisplay.js"></script>
-    <script
-      type="module"
-      src="src/events/scripts/EventDisplayContainer.js"
-    ></script>
-  </head>
-  <body>
-    <div id="container">
-      <nav>
-        <a href="/index.html">Home</a>
-        <a href="/designers.html">Local designers</a>
-        <a href="/plans.html">Future plans</a>
-      </nav>
+  <script type="module" src="src/events/scripts/EventDisplay.js"></script>
+  <script type="module" src="src/events/scripts/EventDisplayContainer.js"></script>
+</head>
 
-      <div id="hero-sec">
-        <img
-          src="public/DMV_board_games_site_pic_600.png"
-          alt="DMV Board Games"
-        />
-        <div id="para-wrapper">
+<body>
+  <div id="container">
+    <nav>
+      <a href="/index.html">Home</a>
+      <a href="/designers.html">Local designers</a>
+      <a href="/plans.html">Future plans</a>
+    </nav>
+
+    <div id="hero-sec">
+      <div id="para-wrapper">
         <p>
           This page is a work in progress listing of public board game groups, conventions
           stores, and restaurants in the DMV area. Email
           gulu@createthirdplaces.com to request an update to this list or share
           feedback. All submitted items must information visible on their main website without requiring a login.
-          <p>
-            To request a new feature or view the source code, go
+        <p>
+          To request a new feature or view the source code, go
           <a href="https://github.com/Create-Third-Places/DMVBoardGames">here</a>
-          </p>
+        </p>
         </p>
       </div>
-        
-      </div>
-      <div id="root">
 
-        <div id="jump-to">
-          <p>Click for more info about:</p>
+      <img src="public/DMV_board_games_site_pic_600.png" alt="DMV Board Games" />
+
+    </div>
+    <div id="root">
+
+      <div id="jump-to">
+        <p>Click for more info about:</p>
+        <div id="info-btn-list">
           <a href="#convention-list">Conventions</a>
           <a href="#game-store">Game Stores</a>
           <a href="#game-restaurant-list">Bars And Cafés</a>
         </div>
-        <div id="event-search" class="page-section"></div>
+      </div>
+      <div id="event-search" class="page-section"></div>
 
-        <div data-container="root">
-          <script
-            type="module"
-            src="src/events/scripts/EventDisplayContainer.js"
-          ></script>
-        </div>
+      <div data-container="root">
+        <script type="module" src="src/events/scripts/EventDisplayContainer.js"></script>
       </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
