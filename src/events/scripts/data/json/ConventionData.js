@@ -5,13 +5,6 @@ export const CONVENTION_2 = {
   days: ["3/28/2025", "3/29/2025", "3/30/2025"],
 };
 
-export const CONVENTION_3 = {
-  id: 3,
-  link: "https://awesome-con.com/tabletop-gaming/",
-  title: "AwesomeCon Tabletop Gaming",
-  days: ["4/6/2025", "4/7/2025", "4/8/2025"],
-};
-
 export const CONVENTION_4 = {
   id: 4,
   link: "https://final3con.com/",
@@ -27,5 +20,5 @@ export const CONVENTION_5 = {
 };
 
 export function getConventionData() {
-  return [CONVENTION_2, CONVENTION_3, CONVENTION_4, CONVENTION_5];
+  return [CONVENTION_2, CONVENTION_4, CONVENTION_5];
 }
