@@ -1,64 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-  
-  <link rel="stylesheet" href="/styles/styles.css">
-  <link rel="icon" type="image/png" href="/styles/icon-exemple.png">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
 
-</head>
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <link rel="icon" type="image/png" href="/styles/icon-exemple.png" />
+  </head>
   <body>
-    <div id = "container">
-      <div id="navigation">
+    <div id="container">
+      <nav>
         <a href="/index.html">Home</a>
         <a href="/designers.html">Local designers</a>
         <a href="/plans.html">Future plans</a>
-      </div>
+      </nav>
     </div>
 
     <div id="root">
-
-      <div id ='page-info' class='page-section'>
-        <p> This website is a work in progress with the goals of promoting in person board games in the DC area and helping people find
-          local events. The code is open source and the website will be run as a noncommercial entity.
+      <div id="page-info" class="page-section">
+        <p>
+          This website is a work in progress with the goals of promoting in
+          person board games in the DC area and helping people find local
+          events. The code is open source and the website will be run as a
+          noncommercial entity.
         </p>
-        Email gulu@createthirdplaces.com if you want to contribute or share suggestions.
+
+
 
       </div>
 
-      <div class = 'page-section'>
+      <div class="page-section">
         Updates in the near future will focus on the following features.
         <ul>
           <li>Updating the styling and UI of the website.</li>
-          <li>Adding more information about board game events in the DC. </li>
+
+          <li>Adding more information about board game events in the DC area. </li>
+
           <li>Improved ability to search for events and groups.</li>
-          <li>Support for hosting events. </li>
+          <li>Support for hosting events.</li>
         </ul>
 
-        The source code can be seen <a href="https://github.com/Create-Third-Places/DMVBoardGames/tree/prod"> here</a>
 
-        <p> If you are interested in helping in one of these specific areas, email gulu@createthirdplaces.com</p>
+
+        The source code for the DMV Board games website UI can be seen <a href="https://github.com/Create-Third-Places/DMVBoardGames/tree/prod"> here</a>
+
+        <p>If you are interested in contributing, look for more information <a href="https://github.com/Create-Third-Places"> here. Email gulu@createthirdplaces.com if you have
+        questions or you want to share suggestions.</a></p>
+
         <ul>
-          <li>Styling using CSS.</li>
-          <li>JavaScript for interactive content.</li>
-          <li>Helping raise money to support the costs of the site. The site will be run as a non-commercial entity.</li>
-
-          <li>Evaluating and implementing technologies for the website. Right now, the frontend site is built with Vite, vanilla JavaScript, and vanilla CSS.
-            However, there are other options for the frontend that might be better. The website will also need a backend and alternatives to Node.js
-            and PostgreSQL should be evaluated.</li>
+          <li>User Interface</li>
           <ul>
-            <li>CSS: Right now, the website is using vanilla CSS. Sass, Tailwind, and other CSS tools should be evaluated.</li>
-            <li>Vite: Vite appears to be the most popular new tool for building frontend assets. However, there might be other options.</li>
-            <li>Backend API: The website needs a backend API, and it should be decoupled from the UI as much as possible.
-              There are a variety of programing languages and frameworks that can be used. Languages that would be a good
-              fit for the backend include Elixir, Golang, JavaScript(Node.js), PHP, or Rust. </li>
+            <li>Styling using CSS.</li>
+            <li>JavaScript for interactive content.</li>
+            <li>Evaluating and implementing technologies for the website. Right now, the frontend site is built with Vite, vanilla JavaScript, and vanilla CSS.
+              However, there are other options for the frontend that might be better.</li>
+          </ul>
+          <li>Backend and infrastructure. The website will use a shared open source backend and shared infrastructure This backend will also be used to support other websites for creating
+          and hosting in person events</li>
+          <ul>
+            <li>Backend API: The website will use a backend API written in Java. The source code can be seen  <a href="https://github.com/Create-Third-Places/backend"> here</a>  </li>
+            <li>Database creation using PostgreSQL or another open source relational database tool. The source code can be seen  <a href="https://github.com/Create-Third-Places/database"> here</a></li>
             <li> Kubernetes or another open source container orchestration tool. The goal is to deploy and run the website without a dependency
               on a specific cloud provider.</li>
-            <li>Database creation using PostgreSQL or another open source relational database tool.</li>
             <li>Terraform or another infrastructure as code tool to create and manage infrastructure. </li>
+
             <li>CI/CD using Jenkins or another open source tool.</li>
           </ul>
+          <li>Helping raise money to support the costs of the site. dmvboardgames.com and any shared backend or infrastructure code created for this
+            project will be run as non-commercial entities. All code created for this project will also be open source.</li>
+
+
         </ul>
       </div>
     </div>

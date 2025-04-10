@@ -1,10 +1,3 @@
-:root {
-  --clr-dark-blue: hsl(199, 100%, 20%);
-  --clr-darker-blue: hsl(199, 100%, 10%);
-  --clr-light-blue: hsl(199, 100%, 33%);
-  --clr-lighter-blue: hsl(206, 100%, 52%);
-}
-
 #hero-sec {
   align-items: center;
   display: flex;
@@ -20,6 +13,10 @@
   color: var(--clr-dark-blue);
   line-height: 1.75;
   max-width: 50ch;
+}
+
+#root {
+  padding-top: 1.5rem;
 }
 
 #event-search {
@@ -108,24 +105,33 @@ select:focus-visible {
   margin-left: 2rem;
 }
 
-.event-group a {
-  color: var(--clr-light-blue);
-}
-
+.conv-list-item a:hover,
+.conv-list-item a:focus-visible,
 .event-group a:hover,
-.event-group a:focus-visible {
+.event-group a:focus-visible,
+.game-restaurant-list-item a:hover,
+.game-restaurant-list-item a:focus-visible,
+.game-store-list-item a:hover,
+.game-store-list-item a:focus-visible {
   color: var(--clr-dark-blue);
 }
+.game-store-list-item{
+  margin: 20px 0px;
+}
+.game-store-list-item p{
+  display: inline;
+}
 
-.event-group p {
+.page-section h3 {
+  color: var(--clr-dark-blue);
+  font-size: 1.5rem;
+  margin: 0.5rem 0 0 3rem;
+}
+
+.page-section p {
   color: var(--clr-dark-blue);
   font-size: 1.25rem;
   font-weight: 600;
-}
-
-h3 {
-  color: var(--clr-dark-blue);
-  margin: 0.5rem 0 0 3rem;
 }
 
 .event {
@@ -152,17 +158,80 @@ h3 {
   margin-top: 0.5rem;
 }
 
-@media screen and (width < 32em) {
-  #no-event {
-    margin: 0 0 0 3rem;
+.conv-list-item > *,
+.game-store-list-item > *,
+.game-restaurant-list-item > * {
+  display: inline-block;
+}
+
+h3:not(.event h3) {
+  margin: 0 1rem 0 0;
+}
+
+@media screen and (width < 50em) {
+  nav {
+    text-align: center;
   }
 
-  .event-group button {
-    margin-left: 2rem;
+  #search-days {
+    margin-top: 1rem;
+  }
+
+  .event-group h2 {
+    font-size: 1.25rem;
+  }
+
+  .page-section h3 {
+    font-size: 1.25rem;
+  }
+
+  #root h1 {
+    font-size: 2rem;
+    margin-right: 0.75rem;
+  }
+}
+
+@media screen and (width < 32em) {
+  #hero-sec p {
+    text-align: center;
+  }
+
+  #root {
+    padding: 0;
+  }
+
+  #jump-to {
+    padding-block: 0 1.5rem;
+  }
+
+  #search-form {
+    gap: 2rem;
+  }
+
+  #no-event {
+    margin: 0;
   }
 
   .event-group {
     border-bottom: 1px solid var(--clr-lighter-blue);
     padding-top: 1.5rem;
+    text-align: center;
+  }
+
+  .event-group h2,
+  .event-group p {
+    display: block;
+    margin-left: 0;
+  }
+
+  .event p:nth-child(2),
+  .event p:nth-child(3),
+  .event p:nth-child(5),
+  .event h3 {
+    margin-left: 0rem;
+  }
+
+  .page-section {
+    text-align: center;
   }
 }

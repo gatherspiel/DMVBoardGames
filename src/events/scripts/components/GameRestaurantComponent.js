@@ -7,7 +7,7 @@ export class GameRestaurantComponent extends ListComponent {
 
   getItemHtml(gameRestaurant) {
     return `
-    <div id = convention-${gameRestaurant.id}>
+    <div id = convention-${gameRestaurant.id} class="game-restaurant-list-item">
      <h3>
         <a href=${gameRestaurant.link}>${gameRestaurant.name}</a>
       </h3>
