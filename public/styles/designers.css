@@ -1,0 +1,24 @@
+#page-info p {
+  background: var(--clr-lighter-blue);
+  border-radius: 10px;
+  color: white;
+  padding: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+#designers-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+}
+
+.left-col > h2,
+.right-col > h2 {
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.left-col > *,
+.right-col > * {
+  max-width: 35ch;
+}
