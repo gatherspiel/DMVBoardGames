@@ -3,7 +3,7 @@ import { gameRestaurants } from "./GameRestaurantData.js";
 import { GROUP_DATA } from "./GroupData.js";
 import { getConventionData } from "./ConventionData.js";
 
-export function getData() {
+export function getGroups() {
   let groups = structuredClone(Object.values(GROUP_DATA));
   groups.sort((a, b) => {
     if (a.title < b.title) {
@@ -15,6 +15,10 @@ export function getData() {
 
     return 0;
   });
+  return groups;
+}
+export function getData() {
+  let groups = getGroups();
 
   const sortedGameStores = gameStores.slice();
   sortedGameStores.sort((a, b) => {

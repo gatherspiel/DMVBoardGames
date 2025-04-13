@@ -31,6 +31,11 @@ This repo contains the source code for https://dmvboardgames.com/, a website to 
 3. After the PR is merged, the changes should be verified by running locally or using the test branch. A deployment will then automatically be attempted, and changes will be visible at https://test.dmvboardgames.com/ if the deployment is successful.
 4. Once the changes are verified, a PR should be submitted from the main branch to the prod branch. Once the PR is merged, the changes will be automatically deployed to dmvboardgames.com
 
+
+## Testing
+
+- To test with the production API, set the DEPLOY_ENV variable to prod
+
 ## Other guidelines
 - Keep PRs as small as possible. Large features should be broken down into multiple PRs when possible.
 - If a PR has UI changes, it is helpful to include a screenshot of the change in the PR.

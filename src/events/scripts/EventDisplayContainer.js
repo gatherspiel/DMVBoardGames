@@ -19,7 +19,7 @@ function init() {
       nodeName: ["convention-list"],
       classNames: ["page-section"],
       title: "Upcoming Conventions",
-    }
+    },
   );
 
   const gameStoreComponent = GameStoreComponent.createComponent("root", {
@@ -34,13 +34,13 @@ function init() {
       nodeName: ["game-restaurant-list"],
       classNames: ["page-section"],
       title: "Board Game Bars and Cafés",
-    }
+    },
   );
   createEventDisplay(
     eventListComponent,
     conventionListComponent,
     gameStoreComponent,
-    gameRestaurantListComponent
+    gameRestaurantListComponent,
   );
 }
 

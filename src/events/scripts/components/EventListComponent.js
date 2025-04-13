@@ -3,12 +3,9 @@ import { ListComponent } from "./shared/ListComponent.js";
 import { getSearchResultGroups } from "../data/search/EventSearch.js";
 import {
   getGroupData,
-  getGroupList,
-  getVisibleEvents,
   initGroups,
   updateSubscriberData,
   isVisible,
-  shouldRender,
   updateGroupVisibilityState,
   updateSearchResultState,
 } from "../data/state/GroupState.js";
@@ -44,7 +41,7 @@ export class EventListComponent extends ListComponent {
     const showHideButton = groupElement.querySelector(".show-hide-button");
 
     showHideButton.addEventListener("click", () =>
-      this.showHideHandler(groupId)
+      this.showHideHandler(groupId),
     );
   }
 
@@ -54,10 +51,12 @@ export class EventListComponent extends ListComponent {
       this.addEventHandler(group);
     });
   }
-  getItemHtml(group) {
+  getItemHtml(groupId, group) {
+    console.log("Hi");
     let groupHtml = "";
-    const groupId = "group-" + group.id;
-    const events = getVisibleEvents(groupId);
+
+    console.log(group);
+    const events = group.events;
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
         <button class='show-hide-button'>
@@ -102,13 +101,12 @@ export class EventListComponent extends ListComponent {
 
     let visibleEvents = 0;
     if (groupData && Object.values(groupData).length > 0) {
-      Object.values(groupData).forEach((group) => {
-        if (shouldRender(group)) {
-          let groupHtml = "";
-          groupHtml = this.getItemHtml(group.data);
-          html += groupHtml;
-          visibleEvents++;
-        }
+      Object.keys(groupData).forEach((groupId) => {
+        const group = groupData[groupId];
+        let groupHtml = "";
+        groupHtml = this.getItemHtml(groupId, group);
+        html += groupHtml;
+        visibleEvents++;
       });
     }
 
@@ -133,9 +131,9 @@ export class EventListComponent extends ListComponent {
     //TODO: Implement addEventListener to framework folder and add logic to detect duplicate listeners.
     document.addEventListener("search", (e) => {
       const searchParams = new SearchParams(e.detail);
-      const groupResults = getSearchResultGroups(getGroupList(), searchParams);
-
-      updateSearchResultState(groupResults);
+      getSearchResultGroups(searchParams).then((groupResults) => {
+        updateSearchResultState(groupResults);
+      });
     });
     return listComponent;
   }
