@@ -24,7 +24,7 @@ This repo contains the source code for https://dmvboardgames.com/, a website to 
 
 
 
-## Development proccess
+## Development process
 
 1. Create a branch with the latest changes from the main branch.
 2. Submit a PR with your changes.
@@ -33,7 +33,7 @@ This repo contains the source code for https://dmvboardgames.com/, a website to 
 
 ## Other guidelines
 - Keep PRs as small as possible. Large features should be broken down into multiple PRs when possible.
-- If a PR has UI changes, it is helpful to include a screenshot of the chagne in the PR.
+- If a PR has UI changes, it is helpful to include a screenshot of the change in the PR.
 
 
 
