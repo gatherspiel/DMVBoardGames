@@ -1,6 +1,6 @@
 import { ListComponent } from "./shared/ListComponent.js";
 
-import { getSearchResultGroups } from "../data/search/EventSearch.js";
+import { getSearchResultGroups } from "../data/search/SearchAPI.js";
 import {
   getGroupData,
   initGroups,
@@ -52,10 +52,8 @@ export class EventListComponent extends ListComponent {
     });
   }
   getItemHtml(groupId, group) {
-    console.log("Hi");
     let groupHtml = "";
 
-    console.log(group);
     const events = group.events;
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
@@ -65,7 +63,7 @@ export class EventListComponent extends ListComponent {
         <h2>
           <a href=${group.link}>${group.title}</a>
         </h2>  
-          <p>${group.locations.replaceAll(",", ", ")}</p>        
+          <p>${group.locations.join(", ")}</p>        
         ${
           isVisible(groupId)
             ? `

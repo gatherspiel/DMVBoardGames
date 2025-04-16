@@ -1,4 +1,4 @@
-import { eventSearchState } from "./data/search/EventSearchState.js";
+import { eventSearchState } from "../data/state/EventSearchState.js";
 
 const DEFAULT_SEARCH_PARAMETER = "any";
 
@@ -13,30 +13,22 @@ const DAYS_IN_WEEK = [
   "Saturday",
 ];
 
-export function updateLocations(groups) {
-  const locations = new Set();
-  groups.forEach((group) => {
-    group.locations.split(",").forEach((location) => {
-      locations.add(location.trim());
-    });
-  });
-
-  const locationArray = Array.from(locations);
-
-  locationArray.sort();
-  locationArray.unshift(DEFAULT_SEARCH_PARAMETER);
+export function updateCities(cities) {
+  const cityArray = Array.from(cities);
+  cityArray.sort();
+  cityArray.unshift(DEFAULT_SEARCH_PARAMETER);
 
   let id = 0;
-  const locationData = [];
-  locationArray.map((location) => {
-    locationData.push({
+  const cityData = [];
+  cityArray.map((location) => {
+    cityData.push({
       id: id,
       name: location,
     });
     id++;
   });
 
-  eventSearchState.locations = locationData;
+  eventSearchState.cities = cityData;
   refreshLocations();
 }
 
@@ -51,7 +43,7 @@ function setupEventHandlers() {
 
     const searchEvent = new CustomEvent("search", {
       detail: {
-        location: eventSearchState.location,
+        city: eventSearchState.city,
         day: eventSearchState.day,
       },
     });
@@ -61,7 +53,7 @@ function setupEventHandlers() {
   const select = document.querySelector("#search-locations");
 
   select.addEventListener("change", (e) => {
-    eventSearchState.location = e.target.value;
+    eventSearchState.city = e.target.value;
   });
 
   const searchDays = document.querySelector("#search-days");
@@ -73,7 +65,7 @@ function setupEventHandlers() {
 
 function getLocationSelect() {
   const data = `
-    ${eventSearchState.locations.map(
+    ${eventSearchState.cities.map(
       (location) =>
         `<option key=${location.index} value=${location.name}>
           ${
@@ -91,7 +83,7 @@ function getLocationHtml() {
     <select
       id="search-locations"
       name="locations"
-      value=${eventSearchState.location}
+      value=${eventSearchState.cities}
     >
 
     ${getLocationSelect()}
@@ -104,7 +96,7 @@ function init() {
 
         <div id='search-input-wrapper'>
           <div>
-            ${getLocationHtml(eventSearchState.locations)}
+            ${getLocationHtml(eventSearchState.cities)}
           </div>
           <div>
             <label htmlFor="days">Select day:</label>

@@ -1,10 +1,11 @@
-import { updateLocations } from "./EventSearch.js";
 import { subscribeToGroupState } from "./data/state/GroupState.js";
 import { SearchParams } from "./data/search/model/SearchParams.js";
-import { getSearchResultGroups } from "./data/search/EventSearch.js";
-function updateSearch(groups) {
-  updateLocations(groups);
-}
+import {
+  getSearchCities,
+  getSearchResultGameLocations,
+  getSearchResultGroups,
+} from "./data/search/SearchAPI.js";
+import { updateCities } from "./components/EventSearchComponent.js";
 
 export function createEventDisplay(
   eventListComponent,
@@ -14,7 +15,6 @@ export function createEventDisplay(
 ) {
   getSearchResultGroups(new SearchParams({ day: null, location: null })).then(
     (data) => {
-      console.log("Data:" + JSON.stringify(data));
       subscribeToGroupState(eventListComponent);
       const groupStateUpdateEvent = new CustomEvent("updateGroupState", {
         detail: {
@@ -22,16 +22,16 @@ export function createEventDisplay(
         },
       });
       document.dispatchEvent(groupStateUpdateEvent);
-
-      conventionListComponent.updateData(Object.values(data.conventions));
-
-      gameStoreListComponent.updateData(Object.values(data.gameStores));
-
-      gameRestaurantListComponent.updateData(
-        Object.values(data.gameRestaurants),
-      );
-
-      updateSearch(data.groups);
     },
   );
+
+  getSearchResultGameLocations().then((data) => {
+    conventionListComponent.updateData(Object.values(data.conventions));
+    gameStoreListComponent.updateData(Object.values(data.gameStores));
+    gameRestaurantListComponent.updateData(Object.values(data.gameRestaurants));
+  });
+
+  getSearchCities().then((data) => {
+    updateCities(data);
+  });
 }

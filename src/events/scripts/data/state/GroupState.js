@@ -48,8 +48,9 @@ export function updateSearchResultState(groupResults) {
     groupState[key] = {
       events: group["events"],
       locations: group.cities || group.locations,
-      link: group.link,
-      title: group.title,
+      url: group.url,
+      title: group.name,
+      summary: group.summary,
       isHidden: false,
     };
   });

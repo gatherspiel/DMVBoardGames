@@ -1,7 +1,7 @@
-import { gameStores } from "./GameStoreData.js";
-import { gameRestaurants } from "./GameRestaurantData.js";
-import { GROUP_DATA } from "./GroupData.js";
-import { getConventionData } from "./ConventionData.js";
+import { gameStores } from "./MockGameStoreData.js";
+import { gameRestaurants } from "./MockGameRestaurantData.js";
+import { GROUP_DATA } from "./MockGroupData.js";
+import { getConventionData } from "./MockConventionData.js";
 
 export function getGroups() {
   let groups = structuredClone(Object.values(GROUP_DATA));
@@ -17,9 +17,8 @@ export function getGroups() {
   });
   return groups;
 }
-export function getData() {
-  let groups = getGroups();
 
+export function getGameStores() {
   const sortedGameStores = gameStores.slice();
   sortedGameStores.sort((a, b) => {
     if (a.name < b.name) {
@@ -31,7 +30,10 @@ export function getData() {
 
     return 0;
   });
+  return sortedGameStores;
+}
 
+export function getGameRestaurants() {
   const sortedGameRestaurants = gameRestaurants.slice();
   sortedGameRestaurants.sort((a, b) => {
     if (a.name < b.name) {
@@ -43,11 +45,16 @@ export function getData() {
 
     return 0;
   });
+  return sortedGameRestaurants;
+}
+
+export function getData() {
+  let groups = getGroups();
 
   return {
     groups: groups,
     conventions: getConventionData(),
-    gameStores: sortedGameStores,
-    gameRestaurants: sortedGameRestaurants,
+    gameStores: getGameStores(),
+    gameRestaurants: getGameRestaurants(),
   };
 }

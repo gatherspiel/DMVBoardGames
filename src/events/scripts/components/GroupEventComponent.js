@@ -1,5 +1,5 @@
 import { Component } from "../../../framework/Component.js";
-import { getData } from "../data/mock/ListingData.js";
+import { getData } from "../data/mock/MockPageData.js";
 
 export class GroupEventComponent extends Component {
   constructor(parentNodeName, data) {
