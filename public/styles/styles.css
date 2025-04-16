@@ -86,7 +86,7 @@ nav a:last-child {
 }
 
 #page-info {
-  padding-top: 50px;
+  padding-top: 8px;
 }
 
 @media (prefers-color-scheme: light) {
