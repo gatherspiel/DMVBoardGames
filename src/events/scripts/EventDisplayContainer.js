@@ -1,10 +1,46 @@
-import { createEventDisplay } from "./EventDisplay.js";
 import { EventListComponent } from "./components/EventListComponent.js";
 import { GameRestaurantComponent } from "./components/GameRestaurantComponent.js";
 import { GameStoreComponent } from "./components/GameStoreComponent.js";
 import { ConventionListComponent } from "./components/ConventionListComponent.js";
 import "../../../public/styles/eventListing.css";
 import "../../../public/styles/styles.css";
+import {
+  getSearchCities,
+  getSearchResultGameLocations,
+  getSearchResultGroups,
+} from "./data/search/SearchAPI.js";
+import { SearchParams } from "./data/search/model/SearchParams.js";
+import { subscribeToGroupState } from "./data/state/GroupState.js";
+import { updateCities } from "./components/EventSearch/EventSearchHandlers.js";
+
+function createEventDisplay(
+  eventListComponent,
+  conventionListComponent,
+  gameStoreListComponent,
+  gameRestaurantListComponent,
+) {
+  getSearchResultGroups(new SearchParams({ day: null, location: null })).then(
+    (data) => {
+      subscribeToGroupState(eventListComponent);
+      const groupStateUpdateEvent = new CustomEvent("updateGroupState", {
+        detail: {
+          data: data,
+        },
+      });
+      document.dispatchEvent(groupStateUpdateEvent);
+    },
+  );
+
+  getSearchResultGameLocations().then((data) => {
+    conventionListComponent.updateData(Object.values(data.conventions));
+    gameStoreListComponent.updateData(Object.values(data.gameStores));
+    gameRestaurantListComponent.updateData(Object.values(data.gameRestaurants));
+  });
+
+  getSearchCities().then((data) => {
+    updateCities(data);
+  });
+}
 
 function init() {
   const eventListComponent = EventListComponent.createComponent("root", {
