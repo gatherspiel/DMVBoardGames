@@ -31,8 +31,9 @@ export class EventListComponent extends ListComponent {
   showHideHandler(groupId) {
     updateGroupVisibilityState(groupId);
 
-    const groupElement = document.querySelector("#" + groupId);
-    groupElement.innerHTML = this.getItemHtml(getGroupData(groupId).data);
+    const groupElement = document.querySelector(`#${groupId}`);
+    console.log(groupId);
+    groupElement.innerHTML = this.getItemHtml(groupId, getGroupData(groupId));
     this.addEventHandler(groupElement);
   }
 
@@ -54,7 +55,7 @@ export class EventListComponent extends ListComponent {
   getItemHtml(groupId, group) {
     let groupHtml = "";
 
-    const events = group.events;
+    const events = group.events || [];
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
         <button class='show-hide-button'>
@@ -76,8 +77,8 @@ export class EventListComponent extends ListComponent {
           ${events
             .map((event) => {
               return `<div id=${groupId + "event-" + event.id} class="event">
-                    <h3>${event.title}</h3>
-                    <p>Day: ${event.day}</p>
+                    <h3>${event.name}</h3>
+                    <p>Day: ${event.day.charAt(0).toUpperCase() + event.day.slice(1)}</p>
                     <p>Location: ${event.location}</p>
                     </br>
                     <p>Summary: ${event.summary}</p>
@@ -98,6 +99,7 @@ export class EventListComponent extends ListComponent {
     let html = "";
 
     let visibleEvents = 0;
+    console.log(groupData);
     if (groupData && Object.values(groupData).length > 0) {
       Object.keys(groupData).forEach((groupId) => {
         const group = groupData[groupId];

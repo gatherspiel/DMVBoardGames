@@ -12,7 +12,7 @@ export function subscribeToGroupState(component) {
 export function updateSubscriberData() {
   //TODO: Add support for use cases where a component can require state from multiple sources of data.
   groupStateSubscribedComponents.forEach(function (component) {
-    component.updateData(Object.values(groupState));
+    component.updateData(groupState);
   });
 }
 
@@ -34,7 +34,7 @@ export function getGroupList() {
 }
 
 export function updateGroupVisibilityState(groupId) {
-  groupState[groupId]["frontendState"][IS_VISIBLE] = !isVisible(groupId);
+  groupState[groupId][IS_VISIBLE] = !isVisible(groupId);
 }
 
 export function updateSearchResultState(groupResults) {
@@ -44,7 +44,8 @@ export function updateSearchResultState(groupResults) {
 
   Object.keys(groupResults).forEach(function (groupId) {
     const group = groupResults[groupId];
-    const key = group.id;
+
+    const key = `group-${group.id}`;
     groupState[key] = {
       events: group["events"],
       locations: group.cities || group.locations,
@@ -54,6 +55,8 @@ export function updateSearchResultState(groupResults) {
       isHidden: false,
     };
   });
+
+  console.log(groupState);
 
   updateSubscriberData();
 }

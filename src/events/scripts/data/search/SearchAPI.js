@@ -48,62 +48,49 @@ function getEventsQueryUrl(searchParams) {
   return url;
 }
 
-export async function getSearchResultGroups(searchParams) {
-  if (import.meta.env.VITE_USE_API_MOCK === "false") {
-    const url = getEventsQueryUrl(searchParams);
-    const response = await fetch(url);
+async function getData(queryUrl, mockFunction) {
+  try {
+    if (import.meta.env.VITE_USE_API_MOCK === "false") {
+      const response = await fetch(queryUrl);
+      if (response.status !== 200) {
+        console.log("Did not retrieve data from API. Mock data will be used");
+        return mockFunction();
+      }
 
-    if (response.status !== 200) {
-      console.log("Did not retrieve events from API. Mock data will be used");
-      return getGroups();
+      const result = await response.json();
+      return result;
     }
-    const result = await response.json();
-
-    return result.groupData;
-  } else {
-    console.log("Using mock data for search API");
-    return getGroups();
+  } catch (e) {
+    console.log(
+      `Error when calling endpoint: ${queryUrl}. A mock will be used`,
+    );
   }
+  return mockFunction();
+}
+
+export async function getSearchResultGroups(searchParams) {
+  const data = await getData(getEventsQueryUrl(searchParams), getGroups);
+  console.log(data);
+  return data.groupData;
 }
 
 export async function getSearchResultGameLocations() {
-  if (import.meta.env.VITE_USE_API_MOCK === "false") {
-    const url = getLocationsQueryUrl();
-    const response = await fetch(url);
-
-    if (response.status !== 200) {
-      console.log(
-        "Did not retrieve locations from API. Mock data will be used",
-      );
-      return {
-        conventions: getConventionData(),
-        gameRestaurants: getGameRestaurants(),
-        gameStores: getGameStores(),
-      };
-    }
-    const result = await response.json();
-    return result;
-  }
-  return {
-    conventions: getConventionData(),
-    restaurants: getGameRestaurants(),
-    gameStores: getGameStores(),
+  const mockFunction = function () {
+    return {
+      conventions: getConventionData(),
+      gameRestaurants: getGameRestaurants(),
+      gameStores: getGameStores(),
+    };
   };
+  const data = await getData(getLocationsQueryUrl(), mockFunction);
+  return data;
 }
 
 export async function getSearchCities() {
-  if (import.meta.env.VITE_USE_API_MOCK === "false") {
-    const url = getCitiesQueryUrl();
-    const response = await fetch(url);
+  const mockFunction = function () {
+    return MOCK_CITY_LIST;
+  };
 
-    if (response.status !== 200) {
-      console.log(
-        "Did not retrieve list of cities locations from API. Mock data will be used",
-      );
-      return MOCK_CITY_LIST;
-    }
-    const result = await response.json();
-    return result;
-  }
-  return MOCK_CITY_LIST;
+  const data = await getData(getCitiesQueryUrl(), mockFunction);
+  return data;
 }

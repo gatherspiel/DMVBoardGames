@@ -1,21 +1,10 @@
 import { gameStores } from "./MockGameStoreData.js";
 import { gameRestaurants } from "./MockGameRestaurantData.js";
-import { GROUP_DATA } from "./MockGroupData.js";
+import { MOCK_GROUP_DATA } from "./MockGroupData.js";
 import { getConventionData } from "./MockConventionData.js";
 
 export function getGroups() {
-  let groups = structuredClone(Object.values(GROUP_DATA));
-  groups.sort((a, b) => {
-    if (a.title < b.title) {
-      return -1;
-    }
-    if (a.title > b.title) {
-      return 1;
-    }
-
-    return 0;
-  });
-  return groups;
+  return MOCK_GROUP_DATA;
 }
 
 export function getGameStores() {
