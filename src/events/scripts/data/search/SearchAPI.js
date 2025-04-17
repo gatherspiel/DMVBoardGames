@@ -70,7 +70,6 @@ async function getData(queryUrl, mockFunction) {
 
 export async function getSearchResultGroups(searchParams) {
   const data = await getData(getEventsQueryUrl(searchParams), getGroups);
-  console.log(data);
   return data.groupData;
 }
 

@@ -6,7 +6,6 @@ export class ConventionListComponent extends ListComponent {
   }
 
   getItemHtml(convention) {
-    console.log(convention);
     return `
     <div id = convention-${convention.id} class="conv-list-item">
      <h3>

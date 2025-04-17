@@ -1,6 +1,7 @@
 import { getSearchResultGroups } from "../../data/search/SearchAPI.js";
 import {
   getGroupData,
+  GROUP_STATE_NAME,
   isVisible,
   updateGroupVisibilityState,
   updateSearchResultState,
@@ -8,6 +9,7 @@ import {
 import { SearchParams } from "../../data/search/model/SearchParams.js";
 import { setupEventHandlers } from "./EventListHandlers.js";
 import { ListComponent } from "../../../../framework/Component/ListComponent.js";
+import { updateState } from "../../../../framework/State/StateManager.js";
 
 export class EventListComponent extends ListComponent {
   constructor(parentNodeName, data) {
@@ -90,7 +92,6 @@ export class EventListComponent extends ListComponent {
     let html = "";
 
     let visibleEvents = 0;
-    console.log(groupData);
     if (groupData && Object.values(groupData).length > 0) {
       Object.keys(groupData).forEach((groupId) => {
         const group = groupData[groupId];
@@ -127,11 +128,9 @@ export class EventListComponent extends ListComponent {
     document.addEventListener("search", (e) => {
       const searchParams = new SearchParams(e.detail);
       getSearchResultGroups(searchParams).then((groupResults) => {
-        updateSearchResultState(groupResults);
+        updateState(GROUP_STATE_NAME, updateSearchResultState, groupResults);
       });
     });
     return listComponent;
   }
 }
-
-//setupEventHandlers();

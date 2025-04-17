@@ -1,4 +1,3 @@
-import { eventSearchState } from "./EventSearchState.js";
 import {
   CITY_UPDATED,
   COMPONENT_NAME,
@@ -22,21 +21,19 @@ export class EventSearchComponent extends Component {
     document.addEventListener(
       getCustomEventName(COMPONENT_NAME, CITY_UPDATED),
       (e) => {
-        console.log("Update");
         document.querySelector("#" + SEARCH_CITY_ID).innerHTML =
           getLocationSelect();
       },
     );
   }
 
-  generateHtml() {
-    console.log("Hi");
+  generateHtml(eventSearchState) {
     return `
       <form id='search-form'>
 
         <div id='search-input-wrapper'>
           <div>
-            ${getCityHtml(eventSearchState.cities)}
+            ${getCityHtml(eventSearchState)}
           </div>
           <div>
             <label htmlFor="days">Select day:</label>
@@ -61,7 +58,7 @@ export class EventSearchComponent extends Component {
   }
 }
 
-function getLocationSelect() {
+function getLocationSelect(eventSearchState) {
   const data = `
     ${eventSearchState.cities.map(
       (location) =>
@@ -76,7 +73,7 @@ function getLocationSelect() {
   return data;
 }
 
-function getCityHtml() {
+function getCityHtml(eventSearchState) {
   return ` 
     <label>Select city: </label>
     <select
@@ -85,6 +82,6 @@ function getCityHtml() {
       value=${eventSearchState.cities}
     >
 
-    ${getLocationSelect()}
+    ${getLocationSelect(eventSearchState)}
     </select>`;
 }

@@ -9,6 +9,10 @@ export class Component {
     Component.components[this.name] = this;
   }
 
+  registerState(stateName) {
+    this.stateName = stateName;
+  }
+
   getNode() {
     return document.querySelector(`[${CONTAINER_ROOT_KEY}=${this.parentNode}]`);
   }
@@ -37,7 +41,6 @@ export class Component {
   createEventHandlers() {}
 
   render() {
-    console.log("Rendering");
     this.renderRoot();
     this.createEventHandlers();
   }

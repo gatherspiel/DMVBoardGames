@@ -3,11 +3,7 @@ const groupState = {};
 const groupStateSubscribedComponents = [];
 
 const IS_VISIBLE = "isVisible";
-
-//TODO: Prevent components from being added more than once.
-export function subscribeToGroupState(component) {
-  groupStateSubscribedComponents.push(component);
-}
+export const GROUP_STATE_NAME = "groupState";
 
 export function updateSubscriberData() {
   //TODO: Add support for use cases where a component can require state from multiple sources of data.
@@ -34,6 +30,7 @@ export function updateGroupVisibilityState(groupId) {
 }
 
 export function updateSearchResultState(groupResults) {
+  const updatedGroupState = {};
   Object.keys(groupState).forEach(function (key) {
     delete groupState[key];
   });
@@ -42,7 +39,7 @@ export function updateSearchResultState(groupResults) {
     const group = groupResults[groupId];
 
     const key = `group-${group.id}`;
-    groupState[key] = {
+    updatedGroupState[key] = {
       events: group["events"],
       locations: group.cities || group.locations,
       url: group.url,
@@ -51,8 +48,5 @@ export function updateSearchResultState(groupResults) {
       isHidden: false,
     };
   });
-
-  console.log(groupState);
-
-  updateSubscriberData();
+  return updatedGroupState;
 }

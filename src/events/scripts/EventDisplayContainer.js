@@ -10,13 +10,17 @@ import {
   getSearchResultGroups,
 } from "./data/search/SearchAPI.js";
 import { SearchParams } from "./data/search/model/SearchParams.js";
-import { subscribeToGroupState } from "./data/state/GroupState.js";
 import {
-  subscribeToSearchState,
-  updateCities,
-} from "./components/EventSearch/EventSearchState.js";
+  GROUP_STATE_NAME,
+  updateSearchResultState,
+} from "./data/state/GroupState.js";
+import { updateCities } from "./components/EventSearch/EventSearchState.js";
 import { EventSearchComponent } from "./components/EventSearch/EventSearchComponent.js";
-import { eventSearchState } from "./components/EventSearch/EventSearchState.js";
+import {
+  subscribeToState,
+  updateState,
+} from "../../framework/State/StateManager.js";
+import { SEARCH_COMPONENT_STATE } from "./components/EventSearch/Constants.js";
 
 function createEventDisplay(
   searchComponent,
@@ -25,12 +29,12 @@ function createEventDisplay(
   gameStoreListComponent,
   gameRestaurantListComponent,
 ) {
-  searchComponent.updateData(eventSearchState);
-  subscribeToSearchState(searchComponent);
+  subscribeToState(SEARCH_COMPONENT_STATE, searchComponent);
+  subscribeToState(GROUP_STATE_NAME, eventListComponent);
 
   getSearchResultGroups(new SearchParams({ day: null, location: null })).then(
     (data) => {
-      subscribeToGroupState(eventListComponent);
+      updateState(GROUP_STATE_NAME, updateSearchResultState, data);
       const groupStateUpdateEvent = new CustomEvent("updateGroupState", {
         detail: {
           data: data,
@@ -47,7 +51,7 @@ function createEventDisplay(
   });
 
   getSearchCities().then((data) => {
-    updateCities(data);
+    updateState(SEARCH_COMPONENT_STATE, updateCities, data);
   });
 }
 
