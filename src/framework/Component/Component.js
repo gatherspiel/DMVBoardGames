@@ -21,7 +21,6 @@ export class Component {
     const id = this.data.nodeName;
     const classNames = this.data.classNames;
     const parentNode = this.getNode(this.parentNode);
-    console.log("Rendering:" + this.data.classNames);
     parentNode.innerHTML += `
       <div id=${id} class=${classNames.join(" ")}   
       </div>   

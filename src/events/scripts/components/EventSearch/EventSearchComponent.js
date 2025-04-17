@@ -62,7 +62,7 @@ function getLocationSelect(eventSearchState) {
   const data = `
     ${eventSearchState.cities.map(
       (location) =>
-        `<option key=${location.index} value=${location.name}>
+        `<option key=${location.index} value="${location.name}">
           ${
             location.name === DEFAULT_SEARCH_PARAMETER
               ? "Any location"

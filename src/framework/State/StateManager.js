@@ -23,8 +23,11 @@ export function updateState(stateName, updateFunction, data) {
     createState(stateName);
   }
 
+  if (!data) {
+    data = states[stateName].data;
+  }
+
   states[stateName].data = {
-    ...states[stateName][data],
     ...updateFunction(data),
   };
 
@@ -33,4 +36,6 @@ export function updateState(stateName, updateFunction, data) {
   });
 }
 
-export function 
+export function getState(stateName) {
+  return states[stateName].data;
+}

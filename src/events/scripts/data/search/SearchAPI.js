@@ -40,9 +40,10 @@ function getEventsQueryUrl(searchParams) {
 
     let params = [];
     Object.keys(paramMap).forEach(function (param) {
-      params.push(param + "=" + paramMap[param]);
+      params.push(param + "=" + paramMap[param].replace(" ", "%20"));
     });
     queryString += params.join("&");
+    console.log(queryString);
     url += queryString;
   }
   return url;

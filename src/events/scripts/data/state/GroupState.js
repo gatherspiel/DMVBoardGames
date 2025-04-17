@@ -1,3 +1,7 @@
+import {
+  getState,
+  updateState,
+} from "../../../../framework/State/StateManager.js";
 const groupState = {};
 
 const groupStateSubscribedComponents = [];
@@ -12,21 +16,21 @@ export function updateSubscriberData() {
   });
 }
 
-export function getGroupData(groupId) {
-  return groupState[groupId];
-}
-
 export function initGroups(groups) {
   updateSearchResultState(groups);
 }
 
 export function isVisible(groupId) {
-  const groupData = groupState[groupId];
-  return groupData && groupData[IS_VISIBLE];
+  const state = getState(GROUP_STATE_NAME);
+  return state[groupId][IS_VISIBLE];
 }
 
 export function updateGroupVisibilityState(groupId) {
-  groupState[groupId][IS_VISIBLE] = !isVisible(groupId);
+  const update = function (groupState) {
+    groupState[groupId][IS_VISIBLE] = !isVisible(groupId);
+    return groupState;
+  };
+  updateState(GROUP_STATE_NAME, update);
 }
 
 export function updateSearchResultState(groupResults) {

@@ -1,6 +1,5 @@
 import { getSearchResultGroups } from "../../data/search/SearchAPI.js";
 import {
-  getGroupData,
   GROUP_STATE_NAME,
   isVisible,
   updateGroupVisibilityState,
@@ -18,16 +17,11 @@ export class EventListComponent extends ListComponent {
   }
 
   render(componentState) {
-    console.log("Rendering");
+    console.error("Rendering");
   }
 
   showHideHandler(groupId) {
     updateGroupVisibilityState(groupId);
-
-    const groupElement = document.querySelector(`#${groupId}`);
-    console.log(groupId);
-    groupElement.innerHTML = this.getItemHtml(groupId, getGroupData(groupId));
-    this.addEventHandler(groupElement);
   }
 
   addEventHandler(groupElement) {
@@ -89,6 +83,7 @@ export class EventListComponent extends ListComponent {
   }
 
   generateHtml(groupData) {
+    console.log("Generating HTML for group data");
     let html = "";
 
     let visibleEvents = 0;
