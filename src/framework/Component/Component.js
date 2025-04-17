@@ -9,6 +9,10 @@ export class Component {
     Component.components[this.name] = this;
   }
 
+  registerState(stateName) {
+    this.stateName = stateName;
+  }
+
   getNode() {
     return document.querySelector(`[${CONTAINER_ROOT_KEY}=${this.parentNode}]`);
   }
@@ -26,14 +30,18 @@ export class Component {
   updateData(data) {
     const html = this.generateHtml(data);
     document.querySelector(`#${this.name}`).innerHTML = html;
+    this.createEventHandlers();
   }
 
   generateHtml() {
     console.warn(`Component ${this.name} is missing a generateHtml method`);
   }
 
+  createEventHandlers() {}
+
   render() {
     this.renderRoot();
+    this.createEventHandlers();
   }
 
   static components = {};

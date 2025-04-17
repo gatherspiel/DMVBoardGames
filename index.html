@@ -8,20 +8,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DMV Board Games</title>
 
-    <script type="module" src="/src/events/scripts/data/json/GameRestaurantData.js"></script>
-    <script type="module" src="/src/events/scripts/data/json/GameStoreData.js"></script>
+    <script type="module" src="/src/events/scripts/data/mock/MockGameRestaurantData.js"></script>
+    <script type="module" src="/src/events/scripts/data/mock/MockGameStoreData.js"></script>
+    <script type="module" src="/src/events/scripts/initData.js"></script>
 
 
 
 
-    <script type="module" src="/src/events/scripts/data/json/GroupData.js"></script>
-    <script type="module" src="/src/events/scripts/EventSearch.js"></script>
+    <script type="module" src="/src/events/scripts/data/mock/MockGroupData.js"></script>
+    <script type="module" src="/src/events/scripts/components/EventSearch/EventSearchComponent.js"></script>
+    <script type="module" src="/src/events/scripts/components/EventList/EventListComponent.js"></script>
 
-    <script type="module" src="src/events/scripts/EventDisplay.js"></script>
-    <script
-      type="module"
-      src="src/events/scripts/EventDisplayContainer.js"
-    ></script>
+
   </head>
   <body>
     <div id="container">
@@ -61,10 +59,35 @@
         <div id="event-search" class="page-section"></div>
 
         <div data-container="root">
-          <script
-            type="module"
-            src="src/events/scripts/EventDisplayContainer.js"
-          ></script>
+          <event-search-component id="eventList" class="page-section">
+
+          </event-search-component>
+
+          <div id="event-list" class="page-section">
+            <event-list-component>
+
+            </event-list-component>
+          </div>
+
+          <div id="convention-list" class="page-section">
+            <convention-list-component data-test="testing">
+              <p></p>
+            </convention-list-component>
+          </div>
+
+          <div id="game-restaurant-list" class="page-section">
+            <game-restaurant-list-component>
+
+            </game-restaurant-list-component>
+          </div>
+
+          <div id="game-store" class="page-section">
+            <game-store-list-component>
+
+            </game-store-list-component>
+          </div>
+
+
         </div>
       </div>
     </div>
