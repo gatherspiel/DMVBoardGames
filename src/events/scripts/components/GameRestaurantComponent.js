@@ -1,8 +1,14 @@
-import { ListComponent } from "./shared/ListComponent.js";
+import {
+  createComponentState,
+  createState,
+  subscribeToState,
+} from "../../../framework/State/StateManager.js";
 
-export class GameRestaurantComponent extends ListComponent {
-  constructor(parentNodeName, data) {
-    super(parentNodeName, data);
+export const GAME_RESTAURANT_STATE = "gameRestaurantListState";
+export class GameRestaurantComponent extends HTMLElement {
+  constructor() {
+    super();
+    createComponentState(GAME_RESTAURANT_STATE, this);
   }
 
   getItemHtml(gameRestaurant) {
@@ -16,7 +22,24 @@ export class GameRestaurantComponent extends ListComponent {
   `;
   }
 
-  static createComponent(parentNodeName, data) {
-    return new GameRestaurantComponent(parentNodeName, data);
+  generateHtml(data) {
+    let html = `<h1>Board Game Bars and Cafés</h1>`;
+    Object.values(data).forEach((item) => {
+      const itemHtml = this.getItemHtml(item);
+      html += itemHtml;
+    });
+    return html;
   }
+
+  updateData(data) {
+    const html = this.generateHtml(data);
+    this.innerHTML = html;
+  }
+}
+
+if (!customElements.get("game-restaurant-list-component")) {
+  customElements.define(
+    "game-restaurant-list-component",
+    GameRestaurantComponent,
+  );
 }

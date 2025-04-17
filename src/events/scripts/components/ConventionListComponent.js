@@ -1,15 +1,22 @@
-import { ListComponent } from "./shared/ListComponent.js";
+import {
+  createComponentState,
+  createState,
+  subscribeToState,
+} from "../../../framework/State/StateManager.js";
 
-export class ConventionListComponent extends ListComponent {
-  constructor(parentNodeName, data) {
-    super(parentNodeName, data);
+export const CONVENTION_LIST_STATE = "conventionListState";
+export class ConventionListComponent extends HTMLElement {
+  constructor() {
+    super();
+
+    createComponentState(CONVENTION_LIST_STATE, this);
   }
 
   getItemHtml(convention) {
     return `
     <div id = convention-${convention.id} class="conv-list-item">
      <h3>
-        <a href=${convention.link}>${convention.title}</a>
+        <a href=${convention.link}>${convention.name}</a>
       </h3>
       <p>Days: ${convention.days.join(", ")}</p>
     
@@ -17,7 +24,21 @@ export class ConventionListComponent extends ListComponent {
   `;
   }
 
-  static createComponent(parentNodeName, data) {
-    return new ConventionListComponent(parentNodeName, data);
+  generateHtml(data) {
+    let html = `<h1>Upcoming conventions</h1>`;
+    Object.values(data).forEach((item) => {
+      const itemHtml = this.getItemHtml(item);
+      html += itemHtml;
+    });
+    return html;
   }
+
+  updateData(data) {
+    const html = this.generateHtml(data);
+    this.innerHTML = html;
+  }
+}
+
+if (!customElements.get("convention-list-component")) {
+  customElements.define("convention-list-component", ConventionListComponent);
 }

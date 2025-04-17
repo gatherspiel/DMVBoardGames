@@ -16,6 +16,13 @@ window.onload = function () {
     const password = document.getElementById("password").value;
     const data = document.getElementById("data").value;
 
+    const { authData, authError } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    console.log(authData);
+
     const url = SERVER_URL + ENDPOINT;
     try {
       console.log("Attempting to save data");
@@ -31,11 +38,6 @@ window.onload = function () {
     } catch (error) {
       console.log(error.message);
     }
-
-    const { authData, authError } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
 
     console.log(authData);
   }
