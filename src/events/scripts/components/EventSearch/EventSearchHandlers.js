@@ -1,24 +1,27 @@
 import { eventSearchState } from "./EventSearchState.js";
+import { SEARCH_CITY_ID } from "./Constants.js";
 import {
-  CITY_UPDATED,
-  COMPONENT_NAME,
-  DEFAULT_SEARCH_PARAMETER,
-  SEARCH_CITY_ID,
-} from "./Constants.js";
-import { dispatchCustomEvent } from "../../../../framework/EventHandlerFactory.js";
+  createState,
+  subscribeToState,
+  updateState,
+} from "../../../../framework/State/StateManager.js";
+import { SEARCH_REQUEST_STATE } from "../../data/search/EventSearchAPI.js";
+import { EventSearchAPI } from "../../data/search/EventSearchAPI.js";
+
+createState(SEARCH_REQUEST_STATE);
+subscribeToState(SEARCH_REQUEST_STATE, new EventSearchAPI());
 
 export function setupEventHandlers() {
   const searchForm = document.querySelector("form");
   searchForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const searchEvent = new CustomEvent("search", {
-      detail: {
+    updateState(SEARCH_REQUEST_STATE, function () {
+      return {
         city: eventSearchState.city,
         day: eventSearchState.day,
-      },
+      };
     });
-    document.dispatchEvent(searchEvent);
   });
 
   const select = document.querySelector("#" + SEARCH_CITY_ID);

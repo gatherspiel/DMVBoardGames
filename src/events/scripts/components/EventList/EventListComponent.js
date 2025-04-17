@@ -1,29 +1,24 @@
-import { getSearchResultGroups } from "../../data/search/SearchAPI.js";
 import {
   GROUP_STATE_NAME,
   isVisible,
   updateGroupVisibilityState,
-  updateSearchResultState,
 } from "../../data/state/GroupState.js";
-import { SearchParams } from "../../data/search/model/SearchParams.js";
 import { setupEventHandlers } from "./EventListHandlers.js";
-import { ListComponent } from "../../../../framework/Component/ListComponent.js";
-import { updateState } from "../../../../framework/State/StateManager.js";
+import { subscribeToState } from "../../../../framework/State/StateManager.js";
 
-export class EventListComponent extends ListComponent {
-  constructor(parentNodeName, data) {
+export class EventListComponent extends HTMLElement {
+  constructor() {
+    super();
+    subscribeToState(GROUP_STATE_NAME, this);
     setupEventHandlers();
-    super(parentNodeName, data);
   }
 
-  render(componentState) {
-    console.error("Rendering");
-  }
-
+  //TODO: Move logic to handler class
   showHideHandler(groupId) {
     updateGroupVisibilityState(groupId);
   }
 
+  //TODO: Move logic to handler class
   addEventHandler(groupElement) {
     const groupId = groupElement.id;
     const showHideButton = groupElement.querySelector(".show-hide-button");
@@ -83,8 +78,7 @@ export class EventListComponent extends ListComponent {
   }
 
   generateHtml(groupData) {
-    console.log("Generating HTML for group data");
-    let html = "";
+    let html = ``;
 
     let visibleEvents = 0;
     if (groupData && Object.values(groupData).length > 0) {
@@ -105,13 +99,13 @@ export class EventListComponent extends ListComponent {
     return html;
   }
 
-  //TODO: Implement logic to setup event handlers in Component.js or another framework file.
   updateData(data) {
     const html = this.generateHtml(data);
-    document.querySelector(`#${this.name}`).innerHTML = html;
+    this.innerHTML = html;
     this.setupEventHandlers();
   }
 
+  //TODO: Delete
   static createComponent(parentNodeName, data) {
     const listComponent = new EventListComponent(
       parentNodeName,
@@ -119,13 +113,10 @@ export class EventListComponent extends ListComponent {
       setupEventHandlers,
     );
 
-    //TODO: Implement addEventListener to framework folder and add logic to detect duplicate listeners.
-    document.addEventListener("search", (e) => {
-      const searchParams = new SearchParams(e.detail);
-      getSearchResultGroups(searchParams).then((groupResults) => {
-        updateState(GROUP_STATE_NAME, updateSearchResultState, groupResults);
-      });
-    });
     return listComponent;
   }
+}
+
+if (!customElements.get("event-list-component")) {
+  customElements.define("event-list-component", EventListComponent);
 }

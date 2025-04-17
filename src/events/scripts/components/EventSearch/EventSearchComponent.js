@@ -4,27 +4,27 @@ import {
   DAYS_IN_WEEK,
   DEFAULT_SEARCH_PARAMETER,
   SEARCH_CITY_ID,
+  SEARCH_COMPONENT_STATE,
 } from "./Constants.js";
 
 import { setupEventHandlers } from "./EventSearchHandlers.js";
+import { registerComponent } from "../../../../framework/EventHandlerFactory.js";
 import {
-  getCustomEventName,
-  registerComponent,
-} from "../../../../framework/EventHandlerFactory.js";
-import { Component } from "../../../../framework/Component/Component.js";
+  getState,
+  subscribeToState,
+} from "../../../../framework/State/StateManager.js";
+import { getCustomEventName } from "../../../../framework/EventHandlerFactory.js";
 
 registerComponent(COMPONENT_NAME);
 
-export class EventSearchComponent extends Component {
-  createEventHandlers() {
-    setupEventHandlers();
-    document.addEventListener(
-      getCustomEventName(COMPONENT_NAME, CITY_UPDATED),
-      (e) => {
-        document.querySelector("#" + SEARCH_CITY_ID).innerHTML =
-          getLocationSelect();
-      },
-    );
+export class EventSearchComponent extends HTMLElement {
+  constructor() {
+    super();
+    subscribeToState(SEARCH_COMPONENT_STATE, this);
+  }
+
+  connectedCallback() {
+    this.innerHTML = this.generateHtml(getState(SEARCH_COMPONENT_STATE));
   }
 
   generateHtml(eventSearchState) {
@@ -33,7 +33,7 @@ export class EventSearchComponent extends Component {
 
         <div id='search-input-wrapper'>
           <div>
-            ${getCityHtml(eventSearchState)}
+            ${this.getCityHtml(eventSearchState)}
           </div>
           <div>
             <label htmlFor="days">Select day:</label>
@@ -56,11 +56,23 @@ export class EventSearchComponent extends Component {
       </form>
   `;
   }
-}
 
-function getLocationSelect(eventSearchState) {
-  const data = `
-    ${eventSearchState.cities.map(
+  getCityHtml(eventSearchState) {
+    return ` 
+    <label>Select city: </label>
+    <select
+      id=${SEARCH_CITY_ID}
+      name="cities"
+      value=${eventSearchState.cities}
+    >
+
+    ${this.getLocationSelect(eventSearchState)}
+    </select>`;
+  }
+
+  getLocationSelect(eventSearchState) {
+    const data = `
+    ${eventSearchState.cities?.map(
       (location) =>
         `<option key=${location.index} value="${location.name}">
           ${
@@ -70,18 +82,24 @@ function getLocationSelect(eventSearchState) {
           }
         </option>`,
     )}`;
-  return data;
+    return data;
+  }
+
+  updateData(state) {
+    this.innerHTML = this.generateHtml(state);
+    setupEventHandlers();
+
+    //TODO: See if this can be deleted.
+    document.addEventListener(
+      getCustomEventName(COMPONENT_NAME, CITY_UPDATED),
+      (e) => {
+        console.log("Updating?");
+        document.querySelector("#" + SEARCH_CITY_ID).innerHTML =
+          this.getLocationSelect();
+      },
+    );
+  }
 }
-
-function getCityHtml(eventSearchState) {
-  return ` 
-    <label>Select city: </label>
-    <select
-      id=${SEARCH_CITY_ID}
-      name="cities"
-      value=${eventSearchState.cities}
-    >
-
-    ${getLocationSelect(eventSearchState)}
-    </select>`;
+if (!customElements.get("event-search-component")) {
+  customElements.define("event-search-component", EventSearchComponent);
 }

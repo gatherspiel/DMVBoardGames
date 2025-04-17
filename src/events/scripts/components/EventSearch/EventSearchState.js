@@ -1,4 +1,4 @@
-import { DEFAULT_SEARCH_PARAMETER } from "../../data/search/SearchAPI.js";
+import { DEFAULT_SEARCH_PARAMETER } from "./Constants.js";
 
 export const eventSearchState = {
   day: DEFAULT_SEARCH_PARAMETER,

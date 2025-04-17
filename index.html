@@ -10,17 +10,16 @@
 
     <script type="module" src="/src/events/scripts/data/mock/MockGameRestaurantData.js"></script>
     <script type="module" src="/src/events/scripts/data/mock/MockGameStoreData.js"></script>
+    <script type="module" src="/src/events/scripts/initData.js"></script>
 
 
 
 
     <script type="module" src="/src/events/scripts/data/mock/MockGroupData.js"></script>
     <script type="module" src="/src/events/scripts/components/EventSearch/EventSearchComponent.js"></script>
+    <script type="module" src="/src/events/scripts/components/EventList/EventListComponent.js"></script>
 
-    <script
-      type="module"
-      src="src/events/scripts/EventDisplayContainer.js"
-    ></script>
+
   </head>
   <body>
     <div id="container">
@@ -60,10 +59,35 @@
         <div id="event-search" class="page-section"></div>
 
         <div data-container="root">
-          <script
-            type="module"
-            src="src/events/scripts/EventDisplayContainer.js"
-          ></script>
+          <event-search-component id="eventList" class="page-section">
+
+          </event-search-component>
+
+          <div id="event-list" class="page-section">
+            <event-list-component>
+
+            </event-list-component>
+          </div>
+
+          <div id="convention-list" class="page-section">
+            <convention-list-component>
+
+            </convention-list-component>
+          </div>
+
+          <div id="game-restaurant-list" class="page-section">
+            <game-restaurant-list-component>
+
+            </game-restaurant-list-component>
+          </div>
+
+          <div id="game-store" class="page-section">
+            <game-store-list-component>
+
+            </game-store-list-component>
+          </div>
+
+
         </div>
       </div>
     </div>

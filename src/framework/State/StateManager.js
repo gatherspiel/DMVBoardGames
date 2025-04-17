@@ -14,8 +14,10 @@ export function subscribeToState(stateName, component) {
   if (!(stateName in states)) {
     createState(stateName);
   }
-  component.registerState(stateName);
-  states[stateName].subscribers.push(component);
+
+  if (!states[stateName].subscribers.includes(component)) {
+    states[stateName].subscribers.push(component);
+  }
 }
 
 export function updateState(stateName, updateFunction, data) {
