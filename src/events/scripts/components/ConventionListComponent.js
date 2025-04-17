@@ -1,4 +1,5 @@
 import {
+  createComponentState,
   createState,
   subscribeToState,
 } from "../../../framework/State/StateManager.js";
@@ -8,9 +9,7 @@ export class ConventionListComponent extends HTMLElement {
   constructor() {
     super();
 
-    //Move to createComponentState function in framework folder.
-    createState(CONVENTION_LIST_STATE);
-    subscribeToState(CONVENTION_LIST_STATE, this);
+    createComponentState(CONVENTION_LIST_STATE, this);
   }
 
   getItemHtml(convention) {

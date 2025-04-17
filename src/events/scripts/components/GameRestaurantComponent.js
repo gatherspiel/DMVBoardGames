@@ -1,4 +1,5 @@
 import {
+  createComponentState,
   createState,
   subscribeToState,
 } from "../../../framework/State/StateManager.js";
@@ -7,8 +8,7 @@ export const GAME_RESTAURANT_STATE = "gameRestaurantListState";
 export class GameRestaurantComponent extends HTMLElement {
   constructor() {
     super();
-    createState(GAME_RESTAURANT_STATE);
-    subscribeToState(GAME_RESTAURANT_STATE, this);
+    createComponentState(GAME_RESTAURANT_STATE, this);
   }
 
   getItemHtml(gameRestaurant) {

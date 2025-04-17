@@ -10,6 +10,11 @@ export function createState(stateName) {
   };
 }
 
+export function createComponentState(stateName, component) {
+  createState(stateName);
+  subscribeToState(stateName, component);
+}
+
 export function subscribeToState(stateName, component) {
   if (!(stateName in states)) {
     createState(stateName);

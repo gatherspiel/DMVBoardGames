@@ -1,8 +1,9 @@
 
 This repo contains the source code for https://dmvboardgames.com/, a website to find public board game events in the DMV area.
 
-## How to run locally
-
+## How to run locally with mocks
+Note: This enables the UI to run locally without the API by using mocks. The mocks consist of hardcoded data that will simulate API responses which may not be reflect the actual UI state.
+They should only be used when attempting to test UI changes that do not depend on API results.
 ### Setup
 - npm install
 - npm install --save-dev --save-exact prettier
@@ -12,6 +13,9 @@ This repo contains the source code for https://dmvboardgames.com/, a website to 
 - npm run build
 - npm run preview
 
+## How to run locally with API and database.
+- Follow the same setup steps as the previous seciton
+- See the following instructions for runing the API and database: https://github.com/Create-Third-Places/development
 ### Running unit tests
 
 - node --test

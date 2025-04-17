@@ -1,39 +1,12 @@
-import {
-  GROUP_STATE_NAME,
-  isVisible,
-  updateGroupVisibilityState,
-} from "../../data/state/GroupState.js";
-import { setupEventHandlers } from "./EventListHandlers.js";
+import { GROUP_STATE_NAME, isVisible } from "../../data/state/GroupState.js";
 import { subscribeToState } from "../../../../framework/State/StateManager.js";
-
+import { setupEventHandlers } from "./EventListHandlers.js";
 export class EventListComponent extends HTMLElement {
   constructor() {
     super();
     subscribeToState(GROUP_STATE_NAME, this);
-    setupEventHandlers();
   }
 
-  //TODO: Move logic to handler class
-  showHideHandler(groupId) {
-    updateGroupVisibilityState(groupId);
-  }
-
-  //TODO: Move logic to handler class
-  addEventHandler(groupElement) {
-    const groupId = groupElement.id;
-    const showHideButton = groupElement.querySelector(".show-hide-button");
-
-    showHideButton.addEventListener("click", () =>
-      this.showHideHandler(groupId),
-    );
-  }
-
-  setupEventHandlers() {
-    const groups = document.querySelectorAll(".event-group");
-    groups.forEach((group) => {
-      this.addEventHandler(group);
-    });
-  }
   getItemHtml(groupId, group) {
     let groupHtml = "";
 
@@ -102,18 +75,7 @@ export class EventListComponent extends HTMLElement {
   updateData(data) {
     const html = this.generateHtml(data);
     this.innerHTML = html;
-    this.setupEventHandlers();
-  }
-
-  //TODO: Delete
-  static createComponent(parentNodeName, data) {
-    const listComponent = new EventListComponent(
-      parentNodeName,
-      data,
-      setupEventHandlers,
-    );
-
-    return listComponent;
+    setupEventHandlers();
   }
 }
 

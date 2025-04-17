@@ -1,4 +1,5 @@
 import {
+  createComponentState,
   createState,
   subscribeToState,
 } from "../../../framework/State/StateManager.js";
@@ -8,8 +9,7 @@ export const GAME_STORE_LIST_STATE = "gameStoreListState";
 export class GameStoreListComponent extends HTMLElement {
   constructor() {
     super();
-    createState(GAME_STORE_LIST_STATE);
-    subscribeToState(GAME_STORE_LIST_STATE, this);
+    createComponentState(GAME_STORE_LIST_STATE, this);
   }
 
   getItemHtml(gameStore) {
