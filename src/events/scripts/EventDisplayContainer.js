@@ -1,4 +1,4 @@
-import { EventListComponent } from "./components/EventListComponent.js";
+import { EventListComponent } from "./components/EventList/EventListComponent.js";
 import { GameRestaurantComponent } from "./components/GameRestaurantComponent.js";
 import { GameStoreComponent } from "./components/GameStoreComponent.js";
 import { ConventionListComponent } from "./components/ConventionListComponent.js";
@@ -11,14 +11,23 @@ import {
 } from "./data/search/SearchAPI.js";
 import { SearchParams } from "./data/search/model/SearchParams.js";
 import { subscribeToGroupState } from "./data/state/GroupState.js";
-import { updateCities } from "./components/EventSearch/EventSearchHandlers.js";
+import {
+  subscribeToSearchState,
+  updateCities,
+} from "./components/EventSearch/EventSearchState.js";
+import { EventSearchComponent } from "./components/EventSearch/EventSearchComponent.js";
+import { eventSearchState } from "./components/EventSearch/EventSearchState.js";
 
 function createEventDisplay(
+  searchComponent,
   eventListComponent,
   conventionListComponent,
   gameStoreListComponent,
   gameRestaurantListComponent,
 ) {
+  searchComponent.updateData(eventSearchState);
+  subscribeToSearchState(searchComponent);
+
   getSearchResultGroups(new SearchParams({ day: null, location: null })).then(
     (data) => {
       subscribeToGroupState(eventListComponent);
@@ -43,6 +52,11 @@ function createEventDisplay(
 }
 
 function init() {
+  const searchComponent = new EventSearchComponent("root", {
+    nodeName: "EventSearchComponent",
+    classNames: ["event-search"],
+  });
+
   const eventListComponent = EventListComponent.createComponent("root", {
     nodeName: "event-list",
     classNames: ["page-section"],
@@ -73,6 +87,7 @@ function init() {
     },
   );
   createEventDisplay(
+    searchComponent,
     eventListComponent,
     conventionListComponent,
     gameStoreComponent,

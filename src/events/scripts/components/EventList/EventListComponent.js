@@ -1,26 +1,17 @@
-import { ListComponent } from "./shared/ListComponent.js";
-
-import { getSearchResultGroups } from "../data/search/SearchAPI.js";
+import { getSearchResultGroups } from "../../data/search/SearchAPI.js";
 import {
   getGroupData,
-  initGroups,
-  updateSubscriberData,
   isVisible,
   updateGroupVisibilityState,
   updateSearchResultState,
-} from "../data/state/GroupState.js";
-import { SearchParams } from "../data/search/model/SearchParams.js";
-
-//TODO: Create state management logic in framework folder to store state.
-
-document.addEventListener("updateGroupState", (e) => {
-  const groups = e.detail.data;
-  initGroups(groups);
-  updateSubscriberData();
-});
+} from "../../data/state/GroupState.js";
+import { SearchParams } from "../../data/search/model/SearchParams.js";
+import { setupEventHandlers } from "./EventListHandlers.js";
+import { ListComponent } from "../../../../framework/Component/ListComponent.js";
 
 export class EventListComponent extends ListComponent {
   constructor(parentNodeName, data) {
+    setupEventHandlers();
     super(parentNodeName, data);
   }
 
@@ -126,7 +117,11 @@ export class EventListComponent extends ListComponent {
   }
 
   static createComponent(parentNodeName, data) {
-    const listComponent = new EventListComponent(parentNodeName, data);
+    const listComponent = new EventListComponent(
+      parentNodeName,
+      data,
+      setupEventHandlers,
+    );
 
     //TODO: Implement addEventListener to framework folder and add logic to detect duplicate listeners.
     document.addEventListener("search", (e) => {
@@ -138,3 +133,5 @@ export class EventListComponent extends ListComponent {
     return listComponent;
   }
 }
+
+//setupEventHandlers();

@@ -1,4 +1,4 @@
-import { eventSearchState } from "../../data/state/EventSearchState.js";
+import { eventSearchState } from "./EventSearchState.js";
 import {
   CITY_UPDATED,
   COMPONENT_NAME,
@@ -11,9 +11,55 @@ import { setupEventHandlers } from "./EventSearchHandlers.js";
 import {
   getCustomEventName,
   registerComponent,
-} from "../EventHandlerFactory.js";
+} from "../../../../framework/EventHandlerFactory.js";
+import { Component } from "../../../../framework/Component/Component.js";
 
 registerComponent(COMPONENT_NAME);
+
+export class EventSearchComponent extends Component {
+  createEventHandlers() {
+    setupEventHandlers();
+    document.addEventListener(
+      getCustomEventName(COMPONENT_NAME, CITY_UPDATED),
+      (e) => {
+        console.log("Update");
+        document.querySelector("#" + SEARCH_CITY_ID).innerHTML =
+          getLocationSelect();
+      },
+    );
+  }
+
+  generateHtml() {
+    console.log("Hi");
+    return `
+      <form id='search-form'>
+
+        <div id='search-input-wrapper'>
+          <div>
+            ${getCityHtml(eventSearchState.cities)}
+          </div>
+          <div>
+            <label htmlFor="days">Select day:</label>
+            <select
+              name="days"
+              id="search-days"
+              value=${eventSearchState.day}
+            >
+              ${DAYS_IN_WEEK.map(
+                (day, index) =>
+                  `<option key=${index} value=${day}>
+                    ${day === DEFAULT_SEARCH_PARAMETER ? "Any day" : day}
+                   </option>`,
+              )}
+            </select>
+          </div>
+
+        </div>
+        <button type="submit">SEARCH EVENTS</button>
+      </form>
+  `;
+  }
+}
 
 function getLocationSelect() {
   const data = `
@@ -42,46 +88,3 @@ function getCityHtml() {
     ${getLocationSelect()}
     </select>`;
 }
-
-function init() {
-  const html = `
-      <form id='search-form'>
-
-        <div id='search-input-wrapper'>
-          <div>
-            ${getCityHtml(eventSearchState.cities)}
-          </div>
-          <div>
-            <label htmlFor="days">Select day:</label>
-            <select
-              name="days"
-              id="search-days"
-              value=${eventSearchState.day}
-            >
-              ${DAYS_IN_WEEK.map(
-                (day, index) =>
-                  `<option key=${index} value=${day}>
-                    ${day === DEFAULT_SEARCH_PARAMETER ? "Any day" : day}
-                   </option>`,
-              )}
-            </select>
-          </div>
-
-        </div>
-        <button type="submit">SEARCH EVENTS</button>
-      </form>
-  `;
-  document.querySelector("#event-search").innerHTML = html;
-}
-
-document.addEventListener(
-  getCustomEventName(COMPONENT_NAME, CITY_UPDATED),
-  (e) => {
-    console.log(SEARCH_CITY_ID);
-    document.querySelector("#" + SEARCH_CITY_ID).innerHTML =
-      getLocationSelect();
-  },
-);
-
-init();
-setupEventHandlers();

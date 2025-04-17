@@ -17,6 +17,7 @@ export class Component {
     const id = this.data.nodeName;
     const classNames = this.data.classNames;
     const parentNode = this.getNode(this.parentNode);
+    console.log("Rendering:" + this.data.classNames);
     parentNode.innerHTML += `
       <div id=${id} class=${classNames.join(" ")}   
       </div>   
@@ -26,14 +27,19 @@ export class Component {
   updateData(data) {
     const html = this.generateHtml(data);
     document.querySelector(`#${this.name}`).innerHTML = html;
+    this.createEventHandlers();
   }
 
   generateHtml() {
     console.warn(`Component ${this.name} is missing a generateHtml method`);
   }
 
+  createEventHandlers() {}
+
   render() {
+    console.log("Rendering");
     this.renderRoot();
+    this.createEventHandlers();
   }
 
   static components = {};

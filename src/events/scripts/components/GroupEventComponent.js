@@ -1,4 +1,4 @@
-import { Component } from "../../../framework/Component.js";
+import { Component } from "../../../framework/Component/Component.js";
 import { getData } from "../data/mock/MockPageData.js";
 
 export class GroupEventComponent extends Component {

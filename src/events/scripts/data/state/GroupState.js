@@ -29,10 +29,6 @@ export function isVisible(groupId) {
   return groupData && groupData[IS_VISIBLE];
 }
 
-export function getGroupList() {
-  return Object.values(groupState);
-}
-
 export function updateGroupVisibilityState(groupId) {
   groupState[groupId][IS_VISIBLE] = !isVisible(groupId);
 }

@@ -1,4 +1,4 @@
-import { ListComponent } from "./shared/ListComponent.js";
+import { ListComponent } from "../../../framework/Component/ListComponent.js";
 
 export class ConventionListComponent extends ListComponent {
   constructor(parentNodeName, data) {
@@ -6,10 +6,11 @@ export class ConventionListComponent extends ListComponent {
   }
 
   getItemHtml(convention) {
+    console.log(convention);
     return `
     <div id = convention-${convention.id} class="conv-list-item">
      <h3>
-        <a href=${convention.link}>${convention.title}</a>
+        <a href=${convention.link}>${convention.name}</a>
       </h3>
       <p>Days: ${convention.days.join(", ")}</p>
     

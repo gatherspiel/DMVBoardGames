@@ -1,4 +1,4 @@
-import { ListComponent } from "./shared/ListComponent.js";
+import { ListComponent } from "../../../framework/Component/ListComponent.js";
 
 export class GameStoreComponent extends ListComponent {
   constructor(parentNodeName, data) {

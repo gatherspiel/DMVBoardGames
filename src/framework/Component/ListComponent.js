@@ -1,14 +1,19 @@
-import { Component } from "../../../../framework/Component.js";
+import { Component } from "./Component.js";
 
 export class ListComponent extends Component {
   constructor(parentNodeName, data) {
+    if (!data.constructor == Object) {
+      console.error(
+        "List component data must be a dictionary of key value pairs",
+      );
+    }
     super(parentNodeName, data);
     this.title = data.title;
   }
 
   getItemHtml(data) {
     console.warn(
-      "getItemHtml should be implemented in the child component class"
+      "getItemHtml should be implemented in the child component class",
     );
   }
 
