@@ -6,7 +6,9 @@ function showHideHandler(groupId) {
 
 function addEventHandler(groupElement) {
   const groupId = groupElement.id;
-  const showHideButton = document.querySelector(".show-hide-button");
+  const showHideButton = document.querySelector(
+    `#${groupId} .show-hide-button`,
+  );
 
   showHideButton.addEventListener("click", () => showHideHandler(groupId));
 }
