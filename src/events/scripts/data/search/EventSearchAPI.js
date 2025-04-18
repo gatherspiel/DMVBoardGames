@@ -22,9 +22,10 @@ export const CITY_PARAM = "city";
 export const DAY_PARAM = "day";
 export const MOCK_CITY_LIST = ["Arlington", "DC"];
 
+const SEARCH_EVENT_PATH = `searchEvents`;
 export class EventSearchAPI {
   getEventsQueryUrl(searchParams) {
-    let url = `${import.meta.env.VITE_API_ROOT}searchEvents`;
+    let url = `${import.meta.env.VITE_API_ROOT}${SEARCH_EVENT_PATH}`;
 
     const paramMap = {};
     if (searchParams.day && searchParams.day !== DEFAULT_SEARCH_PARAMETER) {
