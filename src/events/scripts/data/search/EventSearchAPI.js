@@ -77,7 +77,8 @@ function getLocationsQueryUrl() {
 async function getData(queryUrl, mockFunction) {
   try {
     if (import.meta.env.VITE_USE_API_MOCK === "false") {
-      const response = await fetch(queryUrl);
+      //The replace call is a workaround for an issue with url strings containing double quotes"
+      const response = await fetch(queryUrl.replace(/"/g, ""));
       if (response.status !== 200) {
         console.log("Did not retrieve data from API. Mock data will be used");
         return mockFunction();
