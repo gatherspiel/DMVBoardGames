@@ -24,7 +24,7 @@ export const MOCK_CITY_LIST = ["Arlington", "DC"];
 
 export class EventSearchAPI {
   getEventsQueryUrl(searchParams) {
-    let url = import.meta.env.VITE_API_ROOT + "searchEvents";
+    let url = `${import.meta.env.VITE_API_ROOT}searchEvents`;
 
     const paramMap = {};
     if (searchParams.day && searchParams.day !== DEFAULT_SEARCH_PARAMETER) {
