@@ -1,0 +1,13 @@
+#page-info p {
+  background: hsl(from var(--clr-lighter-blue) h s l / 0.1);
+  border-radius: 10px;
+  color: var(--clr-dark-blue);
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 1rem;
+  /* text-wrap: pretty; */
+}
+
+p {
+  color: var(--clr-dark-blue);
+}
