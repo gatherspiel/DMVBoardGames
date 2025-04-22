@@ -9,7 +9,6 @@ export class EventListComponent extends HTMLElement {
 
   getItemHtml(groupId, group) {
     let groupHtml = "";
-
     const events = group.events || [];
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
@@ -17,7 +16,7 @@ export class EventListComponent extends HTMLElement {
           ${isVisible(groupId) ? "Hide info" : "Show info"}
         </button>
         <h2>
-          <a href=${group.link}>${group.title}</a>
+          <a href=${group.url}>${group.title}</a>
         </h2>  
           <p>${group.locations.join(", ")}</p>        
         ${
