@@ -1,4 +1,4 @@
-# Descriptiopn.
+# Description
 
 Include a summary of the change and the relevant issue. Include a screenshot if a UI change was made.
 
