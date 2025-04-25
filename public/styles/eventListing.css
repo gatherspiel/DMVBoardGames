@@ -132,6 +132,18 @@ select:focus-visible {
   font-weight: 600;
 }
 
+.event-summary {
+  margin-left:2rem;
+}
+
+.event-summary p {
+  margin-left: 1rem;
+  background: hsl(from var(--clr-lighter-blue) h s l / 0.1);
+  border-radius: 10px;
+  color: var(--clr-dark-blue);
+  padding: 2rem;
+}
+
 .event {
   border-bottom: 1px solid var(--clr-lighter-blue);
   position: relative;
