@@ -16,7 +16,7 @@ export class ConventionListComponent extends HTMLElement {
     return `
     <div id = convention-${convention.id} class="conv-list-item">
      <h3>
-        <a href=${convention.link}>${convention.name}</a>
+        <a href=${convention.url}>${convention.name}</a>
       </h3>
       <p>Days: ${convention.days.join(", ")}</p>
     
