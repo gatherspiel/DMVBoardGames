@@ -8,18 +8,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DMV Board Games</title>
 
-    <script type="module" src="/src/events/scripts/data/mock/MockGameRestaurantData.js"></script>
-    <script type="module" src="/src/events/scripts/data/mock/MockGameStoreData.js"></script>
+    <script
+      type="module"
+      src="/src/events/scripts/data/mock/MockGameRestaurantData.js"
+    ></script>
+    <script
+      type="module"
+      src="/src/events/scripts/data/mock/MockGameStoreData.js"
+    ></script>
     <script type="module" src="/src/events/scripts/initData.js"></script>
 
-
-
-
-    <script type="module" src="/src/events/scripts/data/mock/MockGroupData.js"></script>
-    <script type="module" src="/src/events/scripts/components/EventSearch/EventSearchComponent.js"></script>
-    <script type="module" src="/src/events/scripts/components/EventList/EventListComponent.js"></script>
-
-
+    <script
+      type="module"
+      src="/src/events/scripts/data/mock/MockGroupData.js"
+    ></script>
+    <script
+      type="module"
+      src="/src/events/scripts/components/EventSearch/EventSearchComponent.js"
+    ></script>
+    <script
+      type="module"
+      src="/src/events/scripts/components/EventList/EventListComponent.js"
+    ></script>
   </head>
   <body>
     <div id="container">
@@ -31,25 +41,26 @@
 
       <div id="hero-sec">
         <div id="para-wrapper">
-        <p>
-          This page is a work in progress listing of public board game groups, conventions
-          stores, and restaurants in the DMV area. Email
-          gulu@createthirdplaces.com to request an update to this list or share
-          feedback. All submitted items must information visible on their main website without requiring a login.
+          <p>
+            This page is a work in progress listing of public board game groups,
+            conventions stores, and restaurants in the DMV area. Email
+            gulu@createthirdplaces.com to request an update to this list or
+            share feedback. All submitted items must information visible on
+            their main website without requiring a login.
+          </p>
           <p>
             To request a new feature or view the source code, go
-          <a href="https://github.com/Create-Third-Places/DMVBoardGames">here</a>
+            <a href="https://github.com/Create-Third-Places/DMVBoardGames"
+              >here</a
+            >
           </p>
-        </p>
         </div>
         <img
-        src="public/DMV_board_games_site_pic_600.png"
-        alt="DMV Board Games"
-      />
-        
+          src="public/DMV_board_games_site_pic_600.png"
+          alt="DMV Board Games"
+        />
       </div>
       <div id="root">
-
         <div id="jump-to">
           <p>Click for more info about:</p>
           <a href="#convention-list">Conventions</a>
@@ -60,13 +71,10 @@
 
         <div data-container="root">
           <event-search-component id="eventList" class="page-section">
-
           </event-search-component>
 
           <div id="event-list" class="page-section">
-            <event-list-component>
-
-            </event-list-component>
+            <event-list-component> </event-list-component>
           </div>
 
           <div id="convention-list" class="page-section">
@@ -76,18 +84,12 @@
           </div>
 
           <div id="game-restaurant-list" class="page-section">
-            <game-restaurant-list-component>
-
-            </game-restaurant-list-component>
+            <game-restaurant-list-component> </game-restaurant-list-component>
           </div>
 
           <div id="game-store" class="page-section">
-            <game-store-list-component>
-
-            </game-store-list-component>
+            <game-store-list-component> </game-store-list-component>
           </div>
-
-
         </div>
       </div>
     </div>
