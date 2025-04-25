@@ -22,6 +22,7 @@ export class EventListComponent extends HTMLElement {
         ${
           isVisible(groupId)
             ? `
+          <div class="event-summary"><p>${group.summary}</p></div>
           <div>
           ${
             events.length === 0
