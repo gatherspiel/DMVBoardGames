@@ -15,7 +15,7 @@ export class GameRestaurantComponent extends HTMLElement {
     return `
     <div id = convention-${gameRestaurant.id} class="game-restaurant-list-item">
      <h3>
-        <a href=${gameRestaurant.link}>${gameRestaurant.name}</a>
+        <a href=${gameRestaurant.url}>${gameRestaurant.name}</a>
       </h3>
     <p>Location: ${gameRestaurant.location}</p>
     </div>
