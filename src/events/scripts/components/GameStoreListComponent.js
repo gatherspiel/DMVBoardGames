@@ -16,7 +16,7 @@ export class GameStoreListComponent extends HTMLElement {
     return `
     <div id = convention-${gameStore.id} class="game-store-list-item">
      <h3>
-        <a href=${gameStore.link}>${gameStore.name}</a>
+        <a href=${gameStore.url}>${gameStore.name}</a>
       </h3>
     <p>Location: ${gameStore.location}</p>
     </div>
