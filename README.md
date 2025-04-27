@@ -53,7 +53,7 @@ They should only be used when attempting to test UI changes that do not depend o
 - Add support for users being able to create groups and events. Users besides site admins should be limited to creating two groups.
 - New groups and events will need to be approved by an admin at first before they show up on the homepage of dmvboardgames.com. This will probably be temporary until the site is in a more complete state.
 - Events should be filtered by the search criteria on the UI. By default, only events for the next week will be shown.
-- 
+  
 - Add support for new account creation without manual action by a site admin.   
 
 
