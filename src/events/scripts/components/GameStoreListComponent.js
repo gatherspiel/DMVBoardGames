@@ -2,7 +2,7 @@ import {
   createComponentState,
   createState,
   subscribeToState,
-} from "../../../framework/State/StateManager.js";
+} from "../../../framework/state/StateManager.js";
 
 export const GAME_STORE_LIST_STATE = "gameStoreListState";
 

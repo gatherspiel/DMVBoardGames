@@ -1,5 +1,5 @@
 import { GROUP_STATE_NAME, isVisible } from "../../data/state/GroupState.js";
-import { subscribeToState } from "../../../../framework/State/StateManager.js";
+import { subscribeToState } from "../../../../framework/state/StateManager.js";
 import { setupEventHandlers } from "./EventListHandlers.js";
 export class EventListComponent extends HTMLElement {
   constructor() {

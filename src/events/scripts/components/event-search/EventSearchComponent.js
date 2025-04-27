@@ -12,7 +12,7 @@ import { registerComponent } from "../../../../framework/EventHandlerFactory.js"
 import {
   getState,
   subscribeToState,
-} from "../../../../framework/State/StateManager.js";
+} from "../../../../framework/state/StateManager.js";
 import { getCustomEventName } from "../../../../framework/EventHandlerFactory.js";
 
 registerComponent(COMPONENT_NAME);
