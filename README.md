@@ -35,6 +35,27 @@ They should only be used when attempting to test UI changes that do not depend o
 - See the following instructions for runing the API and database: https://github.com/Create-Third-Places/development
 
 
+## Future changes
+
+### Group pages
+ - Each group has a page at https://dmvboardgames.com/group/{group name} with group and event information.
+ - Each group has a page at https://dmvboardgames.com/group/{group name}/edit for editing group information that will be accessible by admins
+ - Each event has a page at https://dmvboardgames.com/group/{group name}/event/{event name} with event information.
+ - Each group has a page at https://dmvboardgames.com/group/{group name}/event/{event name}/edit for editing event information that will be accessible by admins
+
+### Authentication
+
+- Support for users logging in once and make multiple edits when they have admin permissions.
+
+
+### Creating groups and events
+
+- Add support for users being able to create groups and events. Users besides site admins should be limited to creating two groups.
+- New groups and events will need to be approved by an admin at first before they show up on the homepage of dmvboardgames.com. This will probably be temporary until the site is in a more complete state.
+- Events should be filtered by the search criteria on the UI. By default, only events for the next week will be shown.
+- 
+- Add support for new account creation without manual action by a site admin.   
+
 
 ## Testing
 
