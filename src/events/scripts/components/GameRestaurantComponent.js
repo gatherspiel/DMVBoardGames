@@ -2,7 +2,7 @@ import {
   createComponentState,
   createState,
   subscribeToState,
-} from "../../../framework/State/StateManager.js";
+} from "../../../framework/state/StateManager.js";
 
 export const GAME_RESTAURANT_STATE = "gameRestaurantListState";
 export class GameRestaurantComponent extends HTMLElement {

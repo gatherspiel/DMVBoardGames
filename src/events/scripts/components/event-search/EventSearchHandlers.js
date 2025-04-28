@@ -4,7 +4,7 @@ import {
   createState,
   subscribeToState,
   updateState,
-} from "../../../../framework/State/StateManager.js";
+} from "../../../../framework/state/StateManager.js";
 import { SEARCH_REQUEST_STATE } from "../../data/search/EventSearchAPI.js";
 import { EventSearchAPI } from "../../data/search/EventSearchAPI.js";
 

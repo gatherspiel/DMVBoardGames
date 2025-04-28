@@ -4,16 +4,16 @@ import {
   getGroups,
 } from "../mock/MockPageData.js";
 import { getConventionData } from "../mock/MockConventionData.js";
-import { DEFAULT_SEARCH_PARAMETER } from "../../components/EventSearch/Constants.js";
+import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.js";
 
-import { updateState } from "../../../../framework/State/StateManager.js";
+import { updateState } from "../../../../framework/state/StateManager.js";
 import {
   GROUP_STATE_NAME,
   updateSearchResultState,
 } from "../state/GroupState.js";
 import { CONVENTION_LIST_STATE } from "../../components/ConventionListComponent.js";
-import { SEARCH_COMPONENT_STATE } from "../../components/EventSearch/Constants.js";
-import { updateCities } from "../../components/EventSearch/EventSearchState.js";
+import { SEARCH_COMPONENT_STATE } from "../../components/event-search/Constants.js";
+import { updateCities } from "../../components/event-search/EventSearchState.js";
 import { GAME_RESTAURANT_STATE } from "../../components/GameRestaurantComponent.js";
 import { GAME_STORE_LIST_STATE } from "../../components/GameStoreListComponent.js";
 
@@ -25,8 +25,7 @@ export const MOCK_CITY_LIST = ["Arlington", "DC"];
 const SEARCH_EVENT_PATH = `searchEvents`;
 export class EventSearchAPI {
   getEventsQueryUrl(searchParams) {
-    let url = `${import.meta.env.VITE_API_ROOT}${SEARCH_EVENT_PATH}`;
-
+    let url = import.meta.env.VITE_API_ROOT + "searchEvents";
     const paramMap = {};
     if (searchParams.day && searchParams.day !== DEFAULT_SEARCH_PARAMETER) {
       paramMap[DAY_PARAM] = searchParams.day;
@@ -58,6 +57,7 @@ export class EventSearchAPI {
       this.getEventsQueryUrl(searchParams),
       getGroups,
     );
+
     updateState(
       GROUP_STATE_NAME,
       updateSearchResultState,
