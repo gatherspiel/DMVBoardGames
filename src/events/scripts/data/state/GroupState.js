@@ -1,7 +1,7 @@
 import {
   getState,
   updateState,
-} from "../../../../framework/State/StateManager.js";
+} from "../../../../framework/state/StateManager.js";
 const groupState = {};
 
 const groupStateSubscribedComponents = [];

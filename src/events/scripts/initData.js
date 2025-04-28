@@ -1,9 +1,9 @@
-import { updateState } from "../../framework/State/StateManager.js";
+import { updateState } from "../../framework/state/StateManager.js";
 import {
   getSearchResultGameLocations,
   SEARCH_REQUEST_STATE,
 } from "./data/search/EventSearchAPI.js";
-import { eventSearchState } from "./components/EventSearch/EventSearchState.js";
+import { eventSearchState } from "./components/event-search/EventSearchState.js";
 import { getSearchCities } from "./data/search/EventSearchAPI.js";
 
 window.onload = (event) => {
