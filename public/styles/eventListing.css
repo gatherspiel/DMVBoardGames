@@ -19,6 +19,7 @@
   color: var(--clr-dark-blue);
   line-height: 1.75;
   max-width: 50ch;
+  font-weight: 600;
 }
 
 #root {
