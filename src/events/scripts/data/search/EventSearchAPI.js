@@ -67,11 +67,11 @@ export class EventSearchAPI {
 }
 
 function getCitiesQueryUrl() {
-  return import.meta.env.VITE_API_ROOT + "listCities";
+  return import.meta.env.VITE_API_ROOT + "listCities?area=dmv";
 }
 
 function getLocationsQueryUrl() {
-  return import.meta.env.VITE_API_ROOT + "searchLocations";
+  return import.meta.env.VITE_API_ROOT + "searchLocations?area=dmv";
 }
 
 async function getData(queryUrl, mockFunction) {
