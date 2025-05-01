@@ -5,8 +5,9 @@ import {
 } from "./data/search/EventSearchAPI.js";
 import { eventSearchState } from "./components/event-search/EventSearchState.js";
 import { getSearchCities } from "./data/search/EventSearchAPI.js";
+import { setLoadFunction } from "../../framework/state/DataInit.js";
 
-window.onload = (event) => {
+const loadFunction = (event) => {
   updateState(SEARCH_REQUEST_STATE, function () {
     return {
       city: eventSearchState.city,
@@ -17,3 +18,5 @@ window.onload = (event) => {
   getSearchResultGameLocations();
   getSearchCities();
 };
+
+setLoadFunction(loadFunction);
