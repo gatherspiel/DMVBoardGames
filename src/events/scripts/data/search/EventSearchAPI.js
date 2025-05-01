@@ -25,7 +25,7 @@ export const MOCK_CITY_LIST = ["Arlington", "DC"];
 const SEARCH_EVENT_PATH = `searchEvents`;
 export class EventSearchAPI {
   getEventsQueryUrl(searchParams) {
-    let url = import.meta.env.VITE_API_ROOT + "searchEvents";
+    let url = import.meta.env.VITE_API_ROOT + "/searchEvents";
     const paramMap = {};
     if (searchParams.day && searchParams.day !== DEFAULT_SEARCH_PARAMETER) {
       paramMap[DAY_PARAM] = searchParams.day;
@@ -67,11 +67,11 @@ export class EventSearchAPI {
 }
 
 function getCitiesQueryUrl() {
-  return import.meta.env.VITE_API_ROOT + "listCities?area=dmv";
+  return import.meta.env.VITE_API_ROOT + "/listCities?area=dmv";
 }
 
 function getLocationsQueryUrl() {
-  return import.meta.env.VITE_API_ROOT + "searchLocations?area=dmv";
+  return import.meta.env.VITE_API_ROOT + "/searchLocations?area=dmv";
 }
 
 async function getData(queryUrl, mockFunction) {
