@@ -1,8 +1,4 @@
-import {
-  createComponentState,
-  createState,
-  subscribeToState,
-} from "../../../framework/state/StateManager.js";
+import { createComponentState } from "../../../framework/state/ComponentStateManager.js";
 
 export const CONVENTION_LIST_STATE = "conventionListState";
 export class ConventionListComponent extends HTMLElement {

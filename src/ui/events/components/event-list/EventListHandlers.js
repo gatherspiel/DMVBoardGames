@@ -1,4 +1,4 @@
-import { updateGroupVisibilityState } from "../../data/state/GroupState.js";
+import { updateGroupVisibilityState } from "../../data/state/SearchResultGroupState.js";
 
 function showHideHandler(groupId) {
   updateGroupVisibilityState(groupId);

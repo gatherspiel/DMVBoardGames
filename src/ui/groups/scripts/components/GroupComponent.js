@@ -1,8 +1,12 @@
-import { getParameter } from "../../../framework/util/urlParmUtils.js";
-import { GROUP_NAME_PARAM } from "../../Constants.js";
+import { getParameter } from "../../../../framework/util/urlParmUtils.js";
+import { GET_GROUP_REQUEST_STATE, GROUP_NAME_PARAM } from "../../Constants.js";
+import { addLoadFunction } from "../../../../framework/state/LoadManager.js";
 
 export class GroupComponent extends HTMLElement {
   constructor() {
+    addLoadFunction(GET_GROUP_REQUEST_STATE, function () {
+      //createS
+    });
     super();
   }
 

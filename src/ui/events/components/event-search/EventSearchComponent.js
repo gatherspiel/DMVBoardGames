@@ -7,24 +7,45 @@ import {
   SEARCH_COMPONENT_STATE,
 } from "./Constants.js";
 
+import { createComponentState } from "../../../../framework/state/ComponentStateManager.js";
 import { setupEventHandlers } from "./EventSearchHandlers.js";
 import { registerComponent } from "../../../../framework/EventHandlerFactory.js";
-import {
-  getState,
-  subscribeToState,
-} from "../../../../framework/state/StateManager.js";
-import { getCustomEventName } from "../../../../framework/EventHandlerFactory.js";
 
+import { getCustomEventName } from "../../../../framework/EventHandlerFactory.js";
+import { addLoadFunction } from "../../../../framework/state/LoadManager.js";
+import {
+  createRequestState,
+  subscribeToRequestState,
+  updateRequestState,
+} from "../../../../framework/state/RequestStateManager.js";
+import {
+  EventSearchAPI,
+  getSearchCities,
+  getSearchResultGameLocations,
+  SEARCH_REQUEST_STATE,
+} from "../../data/search/EventSearchAPI.js";
+import { eventSearchState } from "./EventSearchState.js";
+import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.js";
 registerComponent(COMPONENT_NAME);
 
 export class EventSearchComponent extends HTMLElement {
   constructor() {
     super();
-    subscribeToState(SEARCH_COMPONENT_STATE, this);
-  }
 
-  connectedCallback() {
-    this.innerHTML = this.generateHtml(getState(SEARCH_COMPONENT_STATE));
+    subscribeToComponentState(SEARCH_COMPONENT_STATE, this);
+
+    addLoadFunction(SEARCH_REQUEST_STATE, function () {
+      createRequestState(SEARCH_REQUEST_STATE);
+      subscribeToRequestState(SEARCH_REQUEST_STATE, new EventSearchAPI());
+      updateRequestState(SEARCH_REQUEST_STATE, function () {
+        return {
+          city: eventSearchState.location,
+          day: eventSearchState.day,
+        };
+      });
+      getSearchResultGameLocations();
+      getSearchCities();
+    });
   }
 
   generateHtml(eventSearchState) {
