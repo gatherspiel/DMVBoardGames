@@ -3,6 +3,7 @@ import {
   subscribeToState,
   updateState,
 } from "./StateManagerUtils.js";
+import { addLoadFunction } from "./LoadManager.js";
 
 const states = {};
 const responseCache = {};
@@ -42,6 +43,41 @@ export function updateRequestState(stateName, updateFunction, data) {
   });
 }
 
-export function getRequestState(stateName) {
-  return states[stateName].data;
+export function initStateOnLoad(config) {
+  addLoadFunction(config.stateName, function () {
+    createRequestState(config.stateName);
+    subscribeToRequestState(config.stateName, config.dataSource);
+    updateRequestState(config.stateName, function () {
+      return config.requestData;
+    });
+
+    if (config.dependencyUpdates) {
+      config.dependencyUpdates();
+    }
+  });
+}
+
+export async function getResponseData(
+  queryUrl,
+  mockFunction,
+  useMockByDefault,
+) {
+  try {
+    if (!useMockByDefault || useMockByDefault === "false") {
+      //The replace call is a workaround for an issue with url strings containing double quotes"
+      const response = await fetch(queryUrl.replace(/"/g, ""));
+      if (response.status !== 200) {
+        console.log("Did not retrieve data from API. Mock data will be used");
+        return mockFunction();
+      }
+
+      const result = await response.json();
+      return result;
+    }
+  } catch (e) {
+    console.log(
+      `Error when calling endpoint: ${queryUrl}. A mock will be used`,
+    );
+  }
+  return mockFunction();
 }

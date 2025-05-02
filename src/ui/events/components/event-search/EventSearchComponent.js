@@ -7,17 +7,11 @@ import {
   SEARCH_COMPONENT_STATE,
 } from "./Constants.js";
 
-import { createComponentState } from "../../../../framework/state/ComponentStateManager.js";
 import { setupEventHandlers } from "./EventSearchHandlers.js";
 import { registerComponent } from "../../../../framework/EventHandlerFactory.js";
 
 import { getCustomEventName } from "../../../../framework/EventHandlerFactory.js";
-import { addLoadFunction } from "../../../../framework/state/LoadManager.js";
-import {
-  createRequestState,
-  subscribeToRequestState,
-  updateRequestState,
-} from "../../../../framework/state/RequestStateManager.js";
+
 import {
   EventSearchAPI,
   getSearchCities,
@@ -26,6 +20,8 @@ import {
 } from "../../data/search/EventSearchAPI.js";
 import { eventSearchState } from "./EventSearchState.js";
 import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.js";
+import { initStateOnLoad } from "../../../../framework/state/RequestStateManager.js";
+
 registerComponent(COMPONENT_NAME);
 
 export class EventSearchComponent extends HTMLElement {
@@ -34,17 +30,17 @@ export class EventSearchComponent extends HTMLElement {
 
     subscribeToComponentState(SEARCH_COMPONENT_STATE, this);
 
-    addLoadFunction(SEARCH_REQUEST_STATE, function () {
-      createRequestState(SEARCH_REQUEST_STATE);
-      subscribeToRequestState(SEARCH_REQUEST_STATE, new EventSearchAPI());
-      updateRequestState(SEARCH_REQUEST_STATE, function () {
-        return {
-          city: eventSearchState.location,
-          day: eventSearchState.day,
-        };
-      });
-      getSearchResultGameLocations();
-      getSearchCities();
+    initStateOnLoad({
+      stateName: SEARCH_REQUEST_STATE,
+      dataSource: new EventSearchAPI(),
+      requestData: {
+        city: eventSearchState.location,
+        day: eventSearchState.day,
+      },
+      dependencyUpdates: function () {
+        getSearchResultGameLocations();
+        getSearchCities();
+      },
     });
   }
 

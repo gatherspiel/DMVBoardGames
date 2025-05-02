@@ -1,13 +1,25 @@
 import { getParameter } from "../../../../framework/util/urlParmUtils.js";
-import { GET_GROUP_REQUEST_STATE, GROUP_NAME_PARAM } from "../../Constants.js";
-import { addLoadFunction } from "../../../../framework/state/LoadManager.js";
+import {
+  GET_GROUP_REQUEST_STATE,
+  GROUP_COMPONENT_STATE,
+  GROUP_NAME_PARAM,
+} from "../../Constants.js";
+import { initStateOnLoad } from "../../../../framework/state/RequestStateManager.js";
+import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.js";
+import { GroupRequestAPI } from "../data/GroupRequestAPI.js";
 
 export class GroupComponent extends HTMLElement {
   constructor() {
-    addLoadFunction(GET_GROUP_REQUEST_STATE, function () {
-      //createS
-    });
     super();
+
+    subscribeToComponentState(GROUP_COMPONENT_STATE.this);
+    initStateOnLoad({
+      stateName: GET_GROUP_REQUEST_STATE,
+      dataSource: new GroupRequestAPI(),
+      requestData: {
+        groupName: getParameter(GROUP_NAME_PARAM),
+      },
+    });
   }
 
   //TODO: Add loading animation

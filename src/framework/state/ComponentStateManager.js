@@ -12,7 +12,6 @@ export function createComponentState(stateName, component) {
 }
 
 export function subscribeToComponentState(stateName, component) {
-  console.log("Subscribing with component:" + component);
   subscribeToState(stateName, component, states);
 }
 
