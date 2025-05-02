@@ -3,29 +3,32 @@ import {
   getGameStores,
   getGroups,
 } from "../mock/MockPageData.js";
+
+import { API_ROOT } from "../../../../utils/params.js";
 import { getConventionData } from "../mock/MockConventionData.js";
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.js";
 
-import { updateState } from "../../../../framework/state/StateManager.js";
+import { updateComponentState } from "../../../../framework/state/ComponentStateManager.js";
 import {
   GROUP_STATE_NAME,
   updateSearchResultState,
-} from "../state/GroupState.js";
+} from "../state/SearchResultGroupState.js";
 import { CONVENTION_LIST_STATE } from "../../components/ConventionListComponent.js";
 import { SEARCH_COMPONENT_STATE } from "../../components/event-search/Constants.js";
 import { updateCities } from "../../components/event-search/EventSearchState.js";
 import { GAME_RESTAURANT_STATE } from "../../components/GameRestaurantComponent.js";
 import { GAME_STORE_LIST_STATE } from "../../components/GameStoreListComponent.js";
+import { getData } from "../mock/MockPageData.js";
+import { getResponseData } from "../../../../framework/state/RequestStateManager.js";
 
 export const SEARCH_REQUEST_STATE = "searchRequestState";
 export const CITY_PARAM = "city";
 export const DAY_PARAM = "day";
 export const MOCK_CITY_LIST = ["Arlington", "DC"];
 
-const SEARCH_EVENT_PATH = `searchEvents`;
 export class EventSearchAPI {
   getEventsQueryUrl(searchParams) {
-    let url = import.meta.env.VITE_API_ROOT + "/searchEvents";
+    let url = API_ROOT + "searchEvents";
     const paramMap = {};
     if (searchParams.day && searchParams.day !== DEFAULT_SEARCH_PARAMETER) {
       paramMap[DAY_PARAM] = searchParams.day;
@@ -52,47 +55,29 @@ export class EventSearchAPI {
     return url;
   }
 
-  async updateData(searchParams) {
-    const groupResults = await getData(
+  async retrieveData(searchParams) {
+    return await getResponseData(
       this.getEventsQueryUrl(searchParams),
       getGroups,
+      import.meta.env.VITE_USE_API_MOCK,
     );
+  }
 
-    updateState(
+  async updateData(response) {
+    updateComponentState(
       GROUP_STATE_NAME,
       updateSearchResultState,
-      groupResults.groupData,
+      response.groupData,
     );
   }
 }
 
 function getCitiesQueryUrl() {
-  return import.meta.env.VITE_API_ROOT + "/listCities?area=dmv";
+  return API_ROOT + "listCities?area=dmv";
 }
 
 function getLocationsQueryUrl() {
-  return import.meta.env.VITE_API_ROOT + "/searchLocations?area=dmv";
-}
-
-async function getData(queryUrl, mockFunction) {
-  try {
-    if (import.meta.env.VITE_USE_API_MOCK === "false") {
-      //The replace call is a workaround for an issue with url strings containing double quotes"
-      const response = await fetch(queryUrl.replace(/"/g, ""));
-      if (response.status !== 200) {
-        console.log("Did not retrieve data from API. Mock data will be used");
-        return mockFunction();
-      }
-
-      const result = await response.json();
-      return result;
-    }
-  } catch (e) {
-    console.log(
-      `Error when calling endpoint: ${queryUrl}. A mock will be used`,
-    );
-  }
-  return mockFunction();
+  return API_ROOT + "searchLocations?area=dmv";
 }
 
 export function getSearchResultGameLocations() {
@@ -104,14 +89,18 @@ export function getSearchResultGameLocations() {
     };
   };
 
-  getData(getLocationsQueryUrl(), mockFunction).then((data) => {
-    updateState(CONVENTION_LIST_STATE, function () {
+  getResponseData(
+    getLocationsQueryUrl(),
+    mockFunction,
+    import.meta.env.VITE_USE_API_MOCK,
+  ).then((data) => {
+    updateComponentState(CONVENTION_LIST_STATE, function () {
       return data.conventions;
     });
-    updateState(GAME_RESTAURANT_STATE, function () {
+    updateComponentState(GAME_RESTAURANT_STATE, function () {
       return data.gameRestaurants;
     });
-    updateState(GAME_STORE_LIST_STATE, function () {
+    updateComponentState(GAME_STORE_LIST_STATE, function () {
       return data.gameStores;
     });
   });
@@ -122,7 +111,11 @@ export function getSearchCities() {
     return MOCK_CITY_LIST;
   };
 
-  getData(getCitiesQueryUrl(), mockFunction).then(function (data) {
-    updateState(SEARCH_COMPONENT_STATE, updateCities, data);
+  getResponseData(
+    getCitiesQueryUrl(),
+    mockFunction,
+    import.meta.env.VITE_USE_API_MOCK,
+  ).then(function (data) {
+    updateComponentState(SEARCH_COMPONENT_STATE, updateCities, data);
   });
 }
