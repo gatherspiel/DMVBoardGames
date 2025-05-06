@@ -8,6 +8,7 @@ const supabase = createClient(
 const SERVER_URL = "http://localhost:7070/";
 const ENDPOINT = "admin/saveData";
 window.onload = function () {
+  console.log("Setting window.onLoad function for admin interface");
   let form = document.getElementById("loginForm");
 
   async function saveData() {

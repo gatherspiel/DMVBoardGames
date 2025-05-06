@@ -9,22 +9,39 @@ import {
 
 import { setupEventHandlers } from "./EventSearchHandlers.js";
 import { registerComponent } from "../../../../framework/EventHandlerFactory.js";
-import {
-  getState,
-  subscribeToState,
-} from "../../../../framework/state/StateManager.js";
+
 import { getCustomEventName } from "../../../../framework/EventHandlerFactory.js";
+
+import {
+  EventSearchAPI,
+  getSearchCities,
+  getSearchResultGameLocations,
+  SEARCH_REQUEST_STATE,
+} from "../../data/search/EventSearchAPI.js";
+import { eventSearchState } from "./EventSearchState.js";
+import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.js";
+import { initStateOnLoad } from "../../../../framework/state/RequestStateManager.js";
 
 registerComponent(COMPONENT_NAME);
 
 export class EventSearchComponent extends HTMLElement {
   constructor() {
     super();
-    subscribeToState(SEARCH_COMPONENT_STATE, this);
-  }
 
-  connectedCallback() {
-    this.innerHTML = this.generateHtml(getState(SEARCH_COMPONENT_STATE));
+    subscribeToComponentState(SEARCH_COMPONENT_STATE, this);
+
+    initStateOnLoad({
+      stateName: SEARCH_REQUEST_STATE,
+      dataSource: new EventSearchAPI(),
+      requestData: {
+        city: eventSearchState.location,
+        day: eventSearchState.day,
+      },
+      dependencyUpdates: function () {
+        getSearchResultGameLocations();
+        getSearchCities();
+      },
+    });
   }
 
   generateHtml(eventSearchState) {

@@ -1,27 +1,14 @@
 import {
-  getState,
-  updateState,
-} from "../../../../framework/state/StateManager.js";
-const groupState = {};
-
-const groupStateSubscribedComponents = [];
+  getComponentState,
+  updateComponentState,
+} from "../../../../framework/state/ComponentStateManager.js";
+const searchResultGroupState = {};
 
 const IS_VISIBLE = "isVisible";
-export const GROUP_STATE_NAME = "groupState";
-
-export function updateSubscriberData() {
-  //TODO: Add support for use cases where a component can require state from multiple sources of data.
-  groupStateSubscribedComponents.forEach(function (component) {
-    component.updateData(groupState);
-  });
-}
-
-export function initGroups(groups) {
-  updateSearchResultState(groups);
-}
+export const GROUP_STATE_NAME = "searchResultGroupState";
 
 export function isVisible(groupId) {
-  const state = getState(GROUP_STATE_NAME);
+  const state = getComponentState(GROUP_STATE_NAME);
   return state[groupId][IS_VISIBLE];
 }
 
@@ -30,13 +17,13 @@ export function updateGroupVisibilityState(groupId) {
     groupState[groupId][IS_VISIBLE] = !isVisible(groupId);
     return groupState;
   };
-  updateState(GROUP_STATE_NAME, update);
+  updateComponentState(GROUP_STATE_NAME, update);
 }
 
 export function updateSearchResultState(groupResults) {
   const updatedGroupState = {};
-  Object.keys(groupState).forEach(function (key) {
-    delete groupState[key];
+  Object.keys(searchResultGroupState).forEach(function (key) {
+    delete searchResultGroupState[key];
   });
 
   Object.keys(groupResults).forEach(function (groupId) {
