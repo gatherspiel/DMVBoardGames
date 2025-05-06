@@ -28,7 +28,7 @@ export const MOCK_CITY_LIST = ["Arlington", "DC"];
 
 export class EventSearchAPI {
   getEventsQueryUrl(searchParams) {
-    let url = API_ROOT + "searchEvents";
+    let url = API_ROOT + "/searchEvents";
     const paramMap = {};
     if (searchParams.day && searchParams.day !== DEFAULT_SEARCH_PARAMETER) {
       paramMap[DAY_PARAM] = searchParams.day;
@@ -73,11 +73,11 @@ export class EventSearchAPI {
 }
 
 function getCitiesQueryUrl() {
-  return API_ROOT + "listCities?area=dmv";
+  return API_ROOT + "/listCities?area=dmv";
 }
 
 function getLocationsQueryUrl() {
-  return API_ROOT + "searchLocations?area=dmv";
+  return API_ROOT + "/searchLocations?area=dmv";
 }
 
 export function getSearchResultGameLocations() {
