@@ -10,7 +10,7 @@ import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constant
 
 import { updateComponentState } from "../../../../framework/state/ComponentStateManager.js";
 import {
-  GROUP_STATE_NAME,
+  GROUP_SEARCH_RESULT_STATE_NAME,
   updateSearchResultState,
 } from "../state/SearchResultGroupState.js";
 import { CONVENTION_LIST_STATE } from "../../components/ConventionListComponent.js";
@@ -63,7 +63,7 @@ export class EventSearchAPI {
 
   async updateData(response) {
     updateComponentState(
-      GROUP_STATE_NAME,
+      GROUP_SEARCH_RESULT_STATE_NAME,
       updateSearchResultState,
       response.groupData,
     );

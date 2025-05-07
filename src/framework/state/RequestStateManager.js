@@ -60,7 +60,7 @@ export function initStateOnLoad(config) {
 export async function getResponseData(queryUrl, mockSettings) {
   try {
     if (
-      !mockSettings.useMockByDefault ||
+      !mockSettings?.useMockByDefault ||
       mockSettings.useMockByDefault === "false"
     ) {
       //The replace call is a workaround for an issue with url strings containing double quotes"

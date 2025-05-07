@@ -1,4 +1,5 @@
 export function createState(stateName, states) {
+  console.log(states);
   if (stateName in states) {
     console.warn(`State with name ${stateName} already exists`);
   }
@@ -20,7 +21,7 @@ export function subscribeToState(stateName, item, states) {
 
 export function updateState(stateName, updateFunction, states, data) {
   if (!(stateName in states)) {
-    createState(stateName);
+    createState(stateName, states);
   }
 
   if (!data) {

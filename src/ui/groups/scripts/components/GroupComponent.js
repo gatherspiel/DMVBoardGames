@@ -12,16 +12,26 @@ export class GroupComponent extends HTMLElement {
   constructor() {
     super();
 
-    subscribeToComponentState(GROUP_COMPONENT_STATE.this);
+    subscribeToComponentState(GROUP_COMPONENT_STATE, this);
     initStateOnLoad({
       stateName: GET_GROUP_REQUEST_STATE,
       dataSource: new GroupRequestAPI(),
       requestData: {
-        groupName: getParameter(GROUP_NAME_PARAM),
+        name: getParameter(GROUP_NAME_PARAM),
       },
     });
   }
 
+  updateData(groupData) {
+    console.log("Updating");
+    this.innerHTML = `
+      <h1><a href=${groupData.url}>${groupData.name}</a></h1>
+      
+      <p>${groupData.summary}</p>
+      
+      <p>${groupData.eventData}</p>
+    `;
+  }
   //TODO: Add loading animation
   connectedCallback() {
     const groupParameter = getParameter(GROUP_NAME_PARAM);
