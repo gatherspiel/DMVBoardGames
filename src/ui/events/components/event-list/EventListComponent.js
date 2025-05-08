@@ -4,6 +4,8 @@ import {
 } from "../../data/state/SearchResultGroupState.js";
 import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.js";
 import { setupEventHandlers } from "./EventListHandlers.js";
+import { createJSONProp } from "../../../../framework/components/utils/ComponentUtils.js";
+
 export class EventListComponent extends HTMLElement {
   constructor() {
     super();
@@ -26,6 +28,8 @@ export class EventListComponent extends HTMLElement {
           isVisible(groupId)
             ? `
           <div class="event-summary"><p>${group.summary}</p></div>
+          
+         
           <div>
           ${
             events.length === 0
@@ -34,13 +38,16 @@ export class EventListComponent extends HTMLElement {
           }
           ${events
             .map((event) => {
-              return `<div id=${groupId + "event-" + event.id} class="event">
-                    <h3>${event.name}</h3>
-                    <p>Day: ${event.day.charAt(0).toUpperCase() + event.day.slice(1)}</p>
-                    <p>Location: ${event.location}</p>
-                    </br>
-                    <p>Summary: ${event.summary}</p>
-                  </div>`;
+              return `
+
+                <event-component
+                  key = ${groupId + "event-" + event.id}
+                  data =${createJSONProp(event)}
+                >
+      
+                </event-component>
+     
+               </div>`;
             })
             .join(" ")} 
             </div> 
@@ -48,6 +55,7 @@ export class EventListComponent extends HTMLElement {
             : ``
         }
       </div>
+   
     `;
 
     return groupHtml;
