@@ -27,7 +27,6 @@ export function subscribeToComponentState(stateName, component) {
  * @param data Data that should be passed to updateFunction.
  */
 export function updateComponentState(stateName, updateFunction, data) {
-  console.log("States:" + states);
   updateState(stateName, updateFunction, states, data);
 }
 
