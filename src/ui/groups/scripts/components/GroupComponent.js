@@ -23,13 +23,18 @@ export class GroupComponent extends HTMLElement {
   }
 
   updateData(groupData) {
-    console.log("Updating");
     this.innerHTML = `
       <h1><a href=${groupData.url}>${groupData.name}</a></h1>
       
       <p>${groupData.summary}</p>
       
-      <p>${groupData.eventData}</p>
+
+      ${
+        groupData.eventData.length === 0
+          ? `<p id="no-event">Click on group link above for event information</p>`
+          : `<p>${groupData.eventData}</p>`
+      }
+      
     `;
   }
   //TODO: Add loading animation

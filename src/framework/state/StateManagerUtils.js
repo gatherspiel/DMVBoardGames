@@ -1,5 +1,4 @@
 export function createState(stateName, states) {
-  console.log(states);
   if (stateName in states) {
     console.warn(`State with name ${stateName} already exists`);
   }

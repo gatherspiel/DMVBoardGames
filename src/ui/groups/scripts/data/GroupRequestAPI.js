@@ -9,7 +9,6 @@ export class GroupRequestAPI {
   }
 
   async retrieveData(requestParams) {
-    console.log("Request params:" + JSON.stringify(requestParams));
     return await getResponseData(this.getGroupsQueryUrl(requestParams));
   }
 
@@ -21,6 +20,5 @@ export class GroupRequestAPI {
       },
       response,
     );
-    console.log("Response:" + response);
   }
 }
