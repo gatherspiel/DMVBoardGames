@@ -1,5 +1,5 @@
 import {
-  GROUP_STATE_NAME,
+  GROUP_SEARCH_RESULT_STATE_NAME,
   isVisible,
 } from "../../data/state/SearchResultGroupState.js";
 import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.js";
@@ -7,7 +7,7 @@ import { setupEventHandlers } from "./EventListHandlers.js";
 export class EventListComponent extends HTMLElement {
   constructor() {
     super();
-    subscribeToComponentState(GROUP_STATE_NAME, this);
+    subscribeToComponentState(GROUP_SEARCH_RESULT_STATE_NAME, this);
   }
 
   getItemHtml(groupId, group) {

@@ -105,16 +105,6 @@ export class EventSearchComponent extends HTMLElement {
   updateData(state) {
     this.innerHTML = this.generateHtml(state);
     setupEventHandlers();
-
-    //TODO: See if this can be deleted.
-    document.addEventListener(
-      getCustomEventName(COMPONENT_NAME, CITY_UPDATED),
-      (e) => {
-        console.log("Updating?");
-        document.querySelector("#" + SEARCH_CITY_ID).innerHTML =
-          this.getLocationSelect();
-      },
-    );
   }
 }
 if (!customElements.get("event-search-component")) {

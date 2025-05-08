@@ -2,13 +2,12 @@ import {
   getComponentState,
   updateComponentState,
 } from "../../../../framework/state/ComponentStateManager.js";
-const searchResultGroupState = {};
 
 const IS_VISIBLE = "isVisible";
-export const GROUP_STATE_NAME = "searchResultGroupState";
+export const GROUP_SEARCH_RESULT_STATE_NAME = "searchResultGroupState";
 
 export function isVisible(groupId) {
-  const state = getComponentState(GROUP_STATE_NAME);
+  const state = getComponentState(GROUP_SEARCH_RESULT_STATE_NAME);
   return state[groupId][IS_VISIBLE];
 }
 
@@ -17,14 +16,11 @@ export function updateGroupVisibilityState(groupId) {
     groupState[groupId][IS_VISIBLE] = !isVisible(groupId);
     return groupState;
   };
-  updateComponentState(GROUP_STATE_NAME, update);
+  updateComponentState(GROUP_SEARCH_RESULT_STATE_NAME, update);
 }
 
 export function updateSearchResultState(groupResults) {
   const updatedGroupState = {};
-  Object.keys(searchResultGroupState).forEach(function (key) {
-    delete searchResultGroupState[key];
-  });
 
   Object.keys(groupResults).forEach(function (groupId) {
     const group = groupResults[groupId];

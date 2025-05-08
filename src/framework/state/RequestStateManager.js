@@ -57,18 +57,17 @@ export function initStateOnLoad(config) {
   });
 }
 
-export async function getResponseData(
-  queryUrl,
-  mockFunction,
-  useMockByDefault,
-) {
+export async function getResponseData(queryUrl, mockSettings) {
   try {
-    if (!useMockByDefault || useMockByDefault === "false") {
+    if (
+      !mockSettings?.useMockByDefault ||
+      mockSettings.useMockByDefault === "false"
+    ) {
       //The replace call is a workaround for an issue with url strings containing double quotes"
       const response = await fetch(queryUrl.replace(/"/g, ""));
       if (response.status !== 200) {
         console.log("Did not retrieve data from API. Mock data will be used");
-        return mockFunction();
+        return mockSettings.mockFunction();
       }
 
       const result = await response.json();
@@ -79,5 +78,5 @@ export async function getResponseData(
       `Error when calling endpoint: ${queryUrl}. A mock will be used`,
     );
   }
-  return mockFunction();
+  return mockSettings.mockFunction();
 }
