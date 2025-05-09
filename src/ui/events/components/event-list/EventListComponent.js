@@ -41,7 +41,7 @@ export class EventListComponent extends HTMLElement {
               return `
 
                 <event-component
-                  key = ${groupId + "event-" + event.id}
+                  key = ${group.id + "event-" + event.id}
                   data =${createJSONProp(event)}
                 >
       

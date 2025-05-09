@@ -4,7 +4,14 @@ import {
 } from "../../../../framework/state/ComponentStateManager.js";
 
 const IS_VISIBLE = "isVisible";
+const NAME = "title";
 export const GROUP_SEARCH_RESULT_STATE_NAME = "searchResultGroupState";
+
+export function getGroupName(groupId) {
+  const state = getComponentState(GROUP_SEARCH_RESULT_STATE_NAME);
+  console.log(state);
+  return state[groupId][NAME];
+}
 
 export function isVisible(groupId) {
   const state = getComponentState(GROUP_SEARCH_RESULT_STATE_NAME);
