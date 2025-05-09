@@ -5,7 +5,7 @@ import { GROUP_COMPONENT_STATE } from "../../Constants.js";
 
 export class GroupRequestAPI {
   getGroupsQueryUrl(requestParams) {
-    return API_ROOT + `/groups/?name=${requestParams.name}`;
+    return API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`;
   }
 
   async retrieveData(requestParams) {
