@@ -1,4 +1,6 @@
 .env
 .idea
 dist/
+dist_groups/
+dist_main/
 node_modules/
