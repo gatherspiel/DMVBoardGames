@@ -9,18 +9,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, "index.html"),
-        groups: resolve(__dirname, "public/groups.html"),
+        groups: resolve(__dirname, "groups.html"),
       },
-      output: [
-        {
-          name: "main",
-          dir: "dist_main",
-        },
-        {
-          name: "groups",
-          dir: "dist_groups",
-        },
-      ],
     },
   },
 });
