@@ -20,7 +20,7 @@ export function subscribeToState(stateName, item, states) {
 
 export function updateState(stateName, updateFunction, states, data) {
   if (!(stateName in states)) {
-    createState(stateName);
+    createState(stateName, states);
   }
 
   if (!data) {

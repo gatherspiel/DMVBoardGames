@@ -29,7 +29,15 @@
       type="module"
       src="/src/ui/events/components/event-list/EventListComponent.js"
     ></script>
-
+    <script
+      type="module"
+      src="/src/framework/components/EventComponent.js"
+      >
+    </script>
+    <script
+      type="module"
+      src="/src/ui/static/navbarComponent.js"
+    ></script>
     <script
       type="module"
       src="/src/framework/state/LoadManager.js"
@@ -37,15 +45,10 @@
   </head>
   <body>
     <div id="container">
-      <nav>
-        <a href="/index.html">Home</a>
-        <a href="/designers.html">Local designers</a>
-        <a href="/print_and_play.html">Print and Play</a>
-        <a href="/plans.html">Future plans</a>
-        <a href="/useful_links.html">Useful Links</a>
-      </nav>
+      <navbar-component></navbar-component>
 
       <div id="hero-sec">
+
         <div id="para-wrapper">
           <p>
             This page is a work in progress listing of public board game groups,

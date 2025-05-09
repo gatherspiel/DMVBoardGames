@@ -2,14 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Group Information</title>
+
+  <link rel="stylesheet" href="/styles/styles.css">
+  <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
+
+  <script
+    type="module"
+    src="/src/framework/components/EventComponent.js"
+  > </script>
+
   <script
     type="module"
     src="/src/ui/groups/scripts/components/GroupComponent.js"
   ></script>
+  <script
+    type="module"
+    src="/src/ui/static/navbarComponent.js"
+  ></script>
 </head>
 <body>
-  <group-component></group-component>
+
+<navbar-component>
+
+</navbar-component>
+
+  <group-component>
+
+  </group-component>
 
 </body>
 </html>

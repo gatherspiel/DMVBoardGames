@@ -10,7 +10,7 @@ import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constant
 
 import { updateComponentState } from "../../../../framework/state/ComponentStateManager.js";
 import {
-  GROUP_STATE_NAME,
+  GROUP_SEARCH_RESULT_STATE_NAME,
   updateSearchResultState,
 } from "../state/SearchResultGroupState.js";
 import { CONVENTION_LIST_STATE } from "../../components/ConventionListComponent.js";
@@ -18,7 +18,6 @@ import { SEARCH_COMPONENT_STATE } from "../../components/event-search/Constants.
 import { updateCities } from "../../components/event-search/EventSearchState.js";
 import { GAME_RESTAURANT_STATE } from "../../components/GameRestaurantComponent.js";
 import { GAME_STORE_LIST_STATE } from "../../components/GameStoreListComponent.js";
-import { getData } from "../mock/MockPageData.js";
 import { getResponseData } from "../../../../framework/state/RequestStateManager.js";
 
 export const SEARCH_REQUEST_STATE = "searchRequestState";
@@ -56,16 +55,15 @@ export class EventSearchAPI {
   }
 
   async retrieveData(searchParams) {
-    return await getResponseData(
-      this.getEventsQueryUrl(searchParams),
-      getGroups,
-      import.meta.env.VITE_USE_API_MOCK,
-    );
+    return await getResponseData(this.getEventsQueryUrl(searchParams), {
+      mockFunction: getGroups,
+      useMockByDefault: import.meta.env.VITE_USE_API_MOCK,
+    });
   }
 
   async updateData(response) {
     updateComponentState(
-      GROUP_STATE_NAME,
+      GROUP_SEARCH_RESULT_STATE_NAME,
       updateSearchResultState,
       response.groupData,
     );
@@ -89,11 +87,10 @@ export function getSearchResultGameLocations() {
     };
   };
 
-  getResponseData(
-    getLocationsQueryUrl(),
-    mockFunction,
-    import.meta.env.VITE_USE_API_MOCK,
-  ).then((data) => {
+  getResponseData(getLocationsQueryUrl(), {
+    mockFunction: mockFunction,
+    useMockByDefault: import.meta.env.VITE_USE_API_MOCK,
+  }).then((data) => {
     updateComponentState(CONVENTION_LIST_STATE, function () {
       return data.conventions;
     });
@@ -111,11 +108,10 @@ export function getSearchCities() {
     return MOCK_CITY_LIST;
   };
 
-  getResponseData(
-    getCitiesQueryUrl(),
-    mockFunction,
-    import.meta.env.VITE_USE_API_MOCK,
-  ).then(function (data) {
+  getResponseData(getCitiesQueryUrl(), {
+    mockFunction: mockFunction,
+    useMockByDefault: import.meta.env.VITE_USE_API_MOCK,
+  }).then(function (data) {
     updateComponentState(SEARCH_COMPONENT_STATE, updateCities, data);
   });
 }

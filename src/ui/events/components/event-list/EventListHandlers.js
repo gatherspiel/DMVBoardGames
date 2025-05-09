@@ -1,7 +1,11 @@
-import { updateGroupVisibilityState } from "../../data/state/SearchResultGroupState.js";
+import { getGroupName } from "../../data/state/SearchResultGroupState.js";
 
 function showHideHandler(groupId) {
-  updateGroupVisibilityState(groupId);
+  console.log(groupId);
+  const groupName = getGroupName(groupId);
+  window.location.replace(
+    `${window.location.origin}/groups.html?name=${encodeURIComponent(groupName)}`,
+  );
 }
 
 function addEventHandler(groupElement) {
