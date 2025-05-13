@@ -4,7 +4,7 @@ import {
 } from "../../data/state/SearchResultGroupState.js";
 import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.js";
 import { setupEventHandlers } from "./EventListHandlers.js";
-import { createJSONProp } from "../../../../framework/components/utils/ComponentUtils.js";
+import { createJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
 
 export class EventListComponent extends HTMLElement {
   constructor() {

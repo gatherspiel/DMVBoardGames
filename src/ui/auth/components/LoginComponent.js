@@ -1,6 +1,6 @@
 import { showExperimental } from "../../../framework/util/urlParmUtils.js";
 import { isLoggedIn } from "../AuthState.js";
-import { initStateOnLoad } from "../../../framework/state/RequestStateManager.js";
+import { initStateOnLoad } from "../../../framework/state/RequestStateManager.ts";
 import { setupEventHandlers } from "../AuthEventHandlers.js";
 import { AuthAPI } from "../AuthAPI.js";
 import {

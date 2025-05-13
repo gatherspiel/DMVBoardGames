@@ -1,10 +1,15 @@
 import { defineConfig } from "vite";
-import { dirname, resolve } from "node:path";
-
+import { resolve } from "node:path";
+import checker from "vite-plugin-checker";
 // https://vite.dev/config/
 export default defineConfig({
   base: "./",
-  plugins: [],
+  plugins: [
+    checker({
+      // e.g. use TypeScript check
+      typescript: true,
+    }),
+  ],
   build: {
     rollupOptions: {
       input: {
