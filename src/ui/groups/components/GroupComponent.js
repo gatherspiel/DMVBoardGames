@@ -4,11 +4,11 @@ import {
   GROUP_COMPONENT_STATE,
   GROUP_NAME_PARAM,
 } from "../Constants.js";
-import { initStateOnLoad } from "../../../framework/state/RequestStateManager.js";
+import { initStateOnLoad } from "../../../framework/state/RequestStateManager.ts";
 import { subscribeToComponentState } from "../../../framework/state/ComponentStateManager.js";
 import { GroupRequestAPI } from "../data/GroupRequestAPI.js";
 
-import { createJSONProp } from "../../../framework/components/utils/ComponentUtils.js";
+import { createJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
 
 const template = document.createElement("template");
 template.innerHTML = `

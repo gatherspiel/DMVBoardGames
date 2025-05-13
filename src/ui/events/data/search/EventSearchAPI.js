@@ -1,74 +1,21 @@
-import {
-  getGameRestaurants,
-  getGameStores,
-  getGroups,
-} from "../mock/MockPageData.js";
+import { getGameRestaurants, getGameStores } from "../mock/MockPageData.js";
 
-import { API_ROOT } from "../../../../utils/params.js";
+import { API_ROOT, USE_MOCK } from "../../../../utils/params.js";
 import { getConventionData } from "../mock/MockConventionData.js";
-import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.js";
 
 import { updateComponentState } from "../../../../framework/state/ComponentStateManager.js";
-import {
-  GROUP_SEARCH_RESULT_STATE_NAME,
-  updateSearchResultState,
-} from "../state/SearchResultGroupState.js";
+
 import { CONVENTION_LIST_STATE } from "../../components/ConventionListComponent.js";
 import { SEARCH_COMPONENT_STATE } from "../../components/event-search/Constants.js";
 import { updateCities } from "../../components/event-search/EventSearchState.js";
 import { GAME_RESTAURANT_STATE } from "../../components/GameRestaurantComponent.js";
 import { GAME_STORE_LIST_STATE } from "../../components/GameStoreListComponent.js";
-import { getResponseData } from "../../../../framework/state/RequestStateManager.js";
+import { getResponseData } from "../../../../framework/state/RequestStateManager.ts";
 
 export const SEARCH_REQUEST_STATE = "searchRequestState";
 export const CITY_PARAM = "city";
 export const DAY_PARAM = "day";
 export const MOCK_CITY_LIST = ["Arlington", "DC"];
-
-export class EventSearchAPI {
-  getEventsQueryUrl(searchParams) {
-    let url = API_ROOT + "/searchEvents";
-    const paramMap = {};
-    if (searchParams.day && searchParams.day !== DEFAULT_SEARCH_PARAMETER) {
-      paramMap[DAY_PARAM] = searchParams.day;
-    }
-
-    if (
-      searchParams.city &&
-      searchParams.city !== DEFAULT_SEARCH_PARAMETER &&
-      searchParams.city !== undefined
-    ) {
-      paramMap[CITY_PARAM] = searchParams.city;
-    }
-
-    if (paramMap && Object.keys(paramMap).length > 0) {
-      let queryString = "?";
-
-      let params = [];
-      Object.keys(paramMap).forEach(function (param) {
-        params.push(param + "=" + paramMap[param].replace(" ", "%20"));
-      });
-      queryString += params.join("&");
-      url += queryString;
-    }
-    return url;
-  }
-
-  async retrieveData(searchParams) {
-    return await getResponseData(this.getEventsQueryUrl(searchParams), {
-      mockFunction: getGroups,
-      useMockByDefault: import.meta.env.VITE_USE_API_MOCK,
-    });
-  }
-
-  async updateData(response) {
-    updateComponentState(
-      GROUP_SEARCH_RESULT_STATE_NAME,
-      updateSearchResultState,
-      response.groupData,
-    );
-  }
-}
 
 function getCitiesQueryUrl() {
   return API_ROOT + "/listCities?area=dmv";
@@ -110,7 +57,7 @@ export function getSearchCities() {
 
   getResponseData(getCitiesQueryUrl(), {
     mockFunction: mockFunction,
-    useMockByDefault: import.meta.env.VITE_USE_API_MOCK,
+    useMockByDefault: USE_MOCK,
   }).then(function (data) {
     updateComponentState(SEARCH_COMPONENT_STATE, updateCities, data);
   });

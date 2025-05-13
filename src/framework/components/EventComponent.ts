@@ -1,4 +1,5 @@
-import { retrieveJSONProp } from "./utils/ComponentUtils.js";
+import { retrieveJSONProp } from "./utils/ComponentUtils.ts";
+import { BaseComponent } from "./BaseComponent.ts";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -36,22 +37,15 @@ template.innerHTML = `
   </style>
   <div></div>
 `;
-export class EventComponent extends HTMLElement {
+export class EventComponent extends BaseComponent {
   constructor() {
     super();
     this.id = "";
   }
 
-  connectedCallback() {
-    this.id = this.getAttribute("key");
-
+  generateHTML(): string {
+    this.id = this.getAttribute("key") ?? "";
     const eventData = retrieveJSONProp(this, "data");
-
-    this.attachShadow({ mode: "open" });
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-
-    const div = this.shadowRoot.querySelector("div");
-
     let eventDay = "";
     if (eventData.eventDate) {
       eventDay = eventData.eventDate;
@@ -59,7 +53,7 @@ export class EventComponent extends HTMLElement {
       eventDay = `Day: ${eventData.day.charAt(0).toUpperCase() + eventData.day.slice(1)}`;
     }
 
-    div.innerHTML = `
+    return `
       <div id=${this.id} class="event">
           <h3>${eventData.name}</h3>
           <p class = "event-title">${eventDay}</p>
@@ -68,6 +62,10 @@ export class EventComponent extends HTMLElement {
           <p> ${eventData.summary || eventData.description}</p>
       </div>
     `;
+  }
+
+  getTemplate(): HTMLTemplateElement {
+    return template;
   }
 }
 
