@@ -10,8 +10,6 @@ import {
 import { setupEventHandlers } from "./EventSearchHandlers.js";
 import { registerComponent } from "../../../../framework/EventHandlerFactory.js";
 
-import { getCustomEventName } from "../../../../framework/EventHandlerFactory.js";
-
 import {
   EventSearchAPI,
   getSearchCities,
