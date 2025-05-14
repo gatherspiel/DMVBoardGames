@@ -1,27 +1,23 @@
 import {
-  COMPONENT_NAME,
   DAYS_IN_WEEK,
   DEFAULT_SEARCH_PARAMETER,
   SEARCH_CITY_ID,
   SEARCH_COMPONENT_LOADED_STATE,
+  SEARCH_COMPONENT_LOADED_STATE_CITIES,
   SEARCH_COMPONENT_STATE,
+  SEARCH_REQUEST_STATE,
 } from "./Constants.ts";
 
 import { setupEventHandlers } from "./EventSearchHandlers.js";
-
-import {
-  getSearchCities,
-  getSearchResultGameLocations,
-  SEARCH_REQUEST_STATE,
-} from "../../data/search/EventSearchAPI.js";
-import { eventSearchState } from "./EventSearchState.js";
 import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.ts";
+import { eventSearchState } from "./EventSearchState.ts";
 import {
   createRequestState,
   initStateOnLoad,
 } from "../../../../framework/state/RequestStateManager.ts";
 import { EVENT_SEARCH_API } from "../../data/search/EventAPI.ts";
-
+import { LOCATION_API } from "../../data/search/LocationsAPI.ts";
+import { CITIES_API } from "../../data/search/CityListAPI.ts";
 export class EventSearchComponent extends HTMLElement {
   constructor() {
     super();
@@ -36,9 +32,8 @@ export class EventSearchComponent extends HTMLElement {
         day: eventSearchState.day,
       },
       dependencyUpdates: function () {
-        createRequestState(SEARCH_COMPONENT_LOADED_STATE, LOCATIONS_API);
-        getSearchResultGameLocations();
-        getSearchCities();
+        createRequestState(SEARCH_COMPONENT_LOADED_STATE, LOCATION_API);
+        createRequestState(SEARCH_COMPONENT_LOADED_STATE_CITIES, CITIES_API);
       },
     });
   }

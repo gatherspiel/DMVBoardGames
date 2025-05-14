@@ -24,7 +24,7 @@ export function subscribeToState(stateName: string, item: any, states: any) {
 export function updateState(
   stateName: string,
   updateFunction: (a: any) => any,
-  states: any,
+  states: Record<string, any>,
   data: any,
 ) {
   if (!(stateName in states)) {

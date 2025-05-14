@@ -17,16 +17,23 @@ export function createRequestState(
   responseCache[stateName] = {};
 
   subscribeToRequestState(stateName, dataSource);
-  updateRequestState(stateName, initState(), null);
+  updateRequestState(stateName, initState, null);
 }
 
 export function subscribeToRequestState(stateName: string, item: any) {
   subscribeToState(stateName, item, states);
 }
 
+/**
+ * Updates the request state for an API call. This should only be called upon a component's initial render or when
+ *  a user action requires a request state
+ * @param stateName
+ * @param dataSource
+ * @param initState
+ */
 export function updateRequestState(
   stateName: string,
-  updateFunction: any,
+  updateFunction: (a?: any) => any,
   data?: any,
 ) {
   if (!(stateName in states)) {

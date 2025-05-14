@@ -27,7 +27,7 @@ export function subscribeToComponentState(
 }
 
 /**
- * Update the state for a component.
+ * Update the state for a component. This should only be called as a result of a user action or relevant API response.
  * @param stateName The name of the component state.
  * @param updateFunction A function that returns the updated state that should be used.
  * @param data Data that should be passed to updateFunction.
