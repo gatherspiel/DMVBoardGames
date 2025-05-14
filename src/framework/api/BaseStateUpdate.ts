@@ -1,15 +1,15 @@
 /*
  Updates state after an API response is returned
  */
-import { updateComponentState } from "../state/ComponentStateManager";
+import { updateComponentState } from "../state/ComponentStateManager.ts";
 
 export class BaseStateUpdate {
-  stateName: String;
+  stateName: string;
   stateUpdate: (a: any) => any;
   responseField: string;
 
   constructor(
-    stateName: String,
+    stateName: string,
     stateUpdate: (a: any) => any,
     responseField: string,
   ) {

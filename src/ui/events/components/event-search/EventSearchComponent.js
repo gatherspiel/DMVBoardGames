@@ -7,7 +7,6 @@ import {
 } from "./Constants.js";
 
 import { setupEventHandlers } from "./EventSearchHandlers.js";
-import { registerComponent } from "../../../../framework/EventHandlerFactory.js";
 
 import {
   getSearchCities,
@@ -15,11 +14,9 @@ import {
   SEARCH_REQUEST_STATE,
 } from "../../data/search/EventSearchAPI.js";
 import { eventSearchState } from "./EventSearchState.js";
-import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.js";
+import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.ts";
 import { initStateOnLoad } from "../../../../framework/state/RequestStateManager.ts";
 import { EVENT_SEARCH_API } from "../../data/search/EventAPI.ts";
-
-registerComponent(COMPONENT_NAME);
 
 export class EventSearchComponent extends HTMLElement {
   constructor() {

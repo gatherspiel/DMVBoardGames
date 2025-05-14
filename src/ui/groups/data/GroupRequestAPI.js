@@ -1,6 +1,6 @@
 import { API_ROOT } from "../../../utils/params.js";
 import { getResponseData } from "../../../framework/state/RequestStateManager.ts";
-import { updateComponentState } from "../../../framework/state/ComponentStateManager.js";
+import { updateComponentState } from "../../../framework/state/ComponentStateManager.ts";
 import { GROUP_COMPONENT_STATE } from "../Constants.js";
 
 export class GroupRequestAPI {

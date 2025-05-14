@@ -3,7 +3,7 @@ import { getGameRestaurants, getGameStores } from "../mock/MockPageData.js";
 import { API_ROOT, USE_MOCK } from "../../../../utils/params.js";
 import { getConventionData } from "../mock/MockConventionData.js";
 
-import { updateComponentState } from "../../../../framework/state/ComponentStateManager.js";
+import { updateComponentState } from "../../../../framework/state/ComponentStateManager.ts";
 
 import { CONVENTION_LIST_STATE } from "../../components/ConventionListComponent.js";
 import { SEARCH_COMPONENT_STATE } from "../../components/event-search/Constants.js";

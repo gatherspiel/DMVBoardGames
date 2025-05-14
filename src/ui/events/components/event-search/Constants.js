@@ -15,4 +15,3 @@ export const SEARCH_CITY_ID = "search-cities";
 
 export const SEARCH_COMPONENT_STATE = "EventSearchComponentState";
 export const COMPONENT_NAME = "EventSearchComponent";
-export const CITY_UPDATED = "City_Updated";

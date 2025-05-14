@@ -20,7 +20,7 @@ export function updateRequestState(
   data: any,
 ) {
   if (!(stateName in states)) {
-    createState(stateName);
+    createState(stateName, states);
   }
 
   if (!data) {
