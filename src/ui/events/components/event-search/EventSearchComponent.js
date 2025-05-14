@@ -3,8 +3,9 @@ import {
   DAYS_IN_WEEK,
   DEFAULT_SEARCH_PARAMETER,
   SEARCH_CITY_ID,
+  SEARCH_COMPONENT_LOADED_STATE,
   SEARCH_COMPONENT_STATE,
-} from "./Constants.js";
+} from "./Constants.ts";
 
 import { setupEventHandlers } from "./EventSearchHandlers.js";
 
@@ -15,7 +16,10 @@ import {
 } from "../../data/search/EventSearchAPI.js";
 import { eventSearchState } from "./EventSearchState.js";
 import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.ts";
-import { initStateOnLoad } from "../../../../framework/state/RequestStateManager.ts";
+import {
+  createRequestState,
+  initStateOnLoad,
+} from "../../../../framework/state/RequestStateManager.ts";
 import { EVENT_SEARCH_API } from "../../data/search/EventAPI.ts";
 
 export class EventSearchComponent extends HTMLElement {
@@ -32,6 +36,7 @@ export class EventSearchComponent extends HTMLElement {
         day: eventSearchState.day,
       },
       dependencyUpdates: function () {
+        createRequestState(SEARCH_COMPONENT_LOADED_STATE, LOCATIONS_API);
         getSearchResultGameLocations();
         getSearchCities();
       },

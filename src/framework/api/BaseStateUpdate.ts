@@ -6,12 +6,12 @@ import { updateComponentState } from "../state/ComponentStateManager.ts";
 export class BaseStateUpdate {
   stateName: string;
   stateUpdate: (a: any) => any;
-  responseField: string;
+  responseField?: string;
 
   constructor(
     stateName: string,
     stateUpdate: (a: any) => any,
-    responseField: string,
+    responseField?: string,
   ) {
     this.stateName = stateName;
     this.stateUpdate = stateUpdate;

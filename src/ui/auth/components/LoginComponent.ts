@@ -1,22 +1,23 @@
 import { showExperimental } from "../../../framework/util/urlParmUtils.ts";
-import { isLoggedIn } from "../AuthState.js";
+import { isLoggedIn } from "../LoginComponentState.ts";
 import { initStateOnLoad } from "../../../framework/state/RequestStateManager.ts";
-import { setupEventHandlers } from "../AuthEventHandlers.js";
-import { AuthAPI } from "../AuthAPI.js";
+import { setupEventHandlers } from "../AuthEventHandlers.ts";
+import { AUTH_API } from "../AuthAPI.ts";
 import {
   AUTH_STATE,
   LOGIN_FORM_ID,
   PASSWORD_INPUT,
   USERNAME_INPUT,
 } from "../Constants.js";
+import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
 
-export class LoginComponent extends HTMLElement {
+export class LoginComponent extends BaseDynamicComponent {
   constructor() {
     super();
 
     initStateOnLoad({
       stateName: AUTH_STATE,
-      dataSource: new AuthAPI(),
+      dataSource: AUTH_API,
       requestData: {
         username: "",
         password: "",
@@ -32,7 +33,7 @@ export class LoginComponent extends HTMLElement {
     this.innerHTML = this.generateHTML();
   }
 
-  updateData(state) {
+  updateData() {
     this.innerHTML = this.generateHTML();
     setupEventHandlers();
   }

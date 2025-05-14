@@ -1,9 +1,4 @@
-import {
-  AUTH_STATE,
-  LOGIN_FORM_ID,
-  PASSWORD_INPUT,
-  USERNAME_INPUT,
-} from "./Constants.js";
+import { AUTH_STATE, LOGIN_FORM_ID, USERNAME_INPUT } from "./Constants.js";
 import { updateRequestState } from "../../framework/state/RequestStateManager.ts";
 
 export function setupEventHandlers() {
@@ -14,10 +9,15 @@ export function setupEventHandlers() {
   if (form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
+
       updateRequestState(AUTH_STATE, function () {
         return {
-          username: document.getElementById(USERNAME_INPUT)?.value ?? "",
-          password: document.getElementById(PASSWORD_INPUT)?.value ?? "",
+          username:
+            (document.getElementById(USERNAME_INPUT) as HTMLInputElement)
+              ?.value ?? "",
+          password:
+            (document.getElementById(USERNAME_INPUT) as HTMLInputElement)
+              ?.value ?? "",
         };
       });
     });

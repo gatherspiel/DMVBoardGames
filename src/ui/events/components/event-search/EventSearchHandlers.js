@@ -1,5 +1,5 @@
 import { eventSearchState } from "./EventSearchState.js";
-import { SEARCH_CITY_ID } from "./Constants.js";
+import { SEARCH_CITY_ID } from "./Constants.ts";
 import { SEARCH_REQUEST_STATE } from "../../data/search/EventSearchAPI.js";
 import { updateRequestState } from "../../../../framework/state/RequestStateManager.ts";
 

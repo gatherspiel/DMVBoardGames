@@ -6,7 +6,7 @@ import { getConventionData } from "../mock/MockConventionData.js";
 import { updateComponentState } from "../../../../framework/state/ComponentStateManager.ts";
 
 import { CONVENTION_LIST_STATE } from "../../components/ConventionListComponent.js";
-import { SEARCH_COMPONENT_STATE } from "../../components/event-search/Constants.js";
+import { SEARCH_COMPONENT_STATE } from "../../components/event-search/Constants.ts";
 import { updateCities } from "../../components/event-search/EventSearchState.js";
 import { GAME_RESTAURANT_STATE } from "../../components/GameRestaurantComponent.js";
 import { GAME_STORE_LIST_STATE } from "../../components/GameStoreListComponent.js";
@@ -35,8 +35,8 @@ export function getSearchResultGameLocations() {
   };
 
   getResponseData(getLocationsQueryUrl(), {
-    mockFunction: mockFunction,
-    useMockByDefault: import.meta.env.VITE_USE_API_MOCK,
+    defaultFunction: mockFunction,
+    defaultFunctionPriority: import.meta.env.VITE_USE_API_MOCK,
   }).then((data) => {
     updateComponentState(CONVENTION_LIST_STATE, function () {
       return data.conventions;
@@ -56,8 +56,8 @@ export function getSearchCities() {
   };
 
   getResponseData(getCitiesQueryUrl(), {
-    mockFunction: mockFunction,
-    useMockByDefault: USE_MOCK,
+    defaultFunction: mockFunction,
+    defaultFunctionPriority: USE_MOCK,
   }).then(function (data) {
     updateComponentState(SEARCH_COMPONENT_STATE, updateCities, data);
   });
