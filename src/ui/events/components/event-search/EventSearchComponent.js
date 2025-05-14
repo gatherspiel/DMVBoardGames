@@ -1,5 +1,4 @@
 import {
-  CITY_UPDATED,
   COMPONENT_NAME,
   DAYS_IN_WEEK,
   DEFAULT_SEARCH_PARAMETER,
@@ -10,17 +9,15 @@ import {
 import { setupEventHandlers } from "./EventSearchHandlers.js";
 import { registerComponent } from "../../../../framework/EventHandlerFactory.js";
 
-import { getCustomEventName } from "../../../../framework/EventHandlerFactory.js";
-
 import {
-  EventSearchAPI,
   getSearchCities,
   getSearchResultGameLocations,
   SEARCH_REQUEST_STATE,
 } from "../../data/search/EventSearchAPI.js";
 import { eventSearchState } from "./EventSearchState.js";
 import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.js";
-import { initStateOnLoad } from "../../../../framework/state/RequestStateManager.js";
+import { initStateOnLoad } from "../../../../framework/state/RequestStateManager.ts";
+import { EVENT_SEARCH_API } from "../../data/search/EventAPI.ts";
 
 registerComponent(COMPONENT_NAME);
 
@@ -32,7 +29,7 @@ export class EventSearchComponent extends HTMLElement {
 
     initStateOnLoad({
       stateName: SEARCH_REQUEST_STATE,
-      dataSource: new EventSearchAPI(),
+      dataSource: EVENT_SEARCH_API,
       requestData: {
         city: eventSearchState.location,
         day: eventSearchState.day,

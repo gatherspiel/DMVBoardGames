@@ -1,7 +1,7 @@
-import { API_ROOT } from "../../../../utils/params.js";
-import { getResponseData } from "../../../../framework/state/RequestStateManager.js";
-import { updateComponentState } from "../../../../framework/state/ComponentStateManager.js";
-import { GROUP_COMPONENT_STATE } from "../../Constants.js";
+import { API_ROOT } from "../../../utils/params.js";
+import { getResponseData } from "../../../framework/state/RequestStateManager.ts";
+import { updateComponentState } from "../../../framework/state/ComponentStateManager.js";
+import { GROUP_COMPONENT_STATE } from "../Constants.js";
 
 export class GroupRequestAPI {
   getGroupsQueryUrl(requestParams) {
