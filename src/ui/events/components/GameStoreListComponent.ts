@@ -1,4 +1,5 @@
 import { createComponentState } from "../../../framework/state/ComponentStateManager.ts";
+import type { GameStore } from "../data/types/GameStore.ts";
 
 export const GAME_STORE_LIST_STATE = "gameStoreListState";
 
@@ -8,7 +9,7 @@ export class GameStoreListComponent extends HTMLElement {
     createComponentState(GAME_STORE_LIST_STATE, this);
   }
 
-  getItemHtml(gameStore) {
+  getItemHtml(gameStore: GameStore) {
     return `
     <div id = convention-${gameStore.id} class="game-store-list-item">
      <h3>
@@ -19,7 +20,7 @@ export class GameStoreListComponent extends HTMLElement {
   `;
   }
 
-  generateHtml(data) {
+  generateHtml(data: Record<any, GameStore>) {
     let html = `<h1>Game Stores</h1>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
@@ -28,7 +29,7 @@ export class GameStoreListComponent extends HTMLElement {
     return html;
   }
 
-  updateData(data) {
+  updateData(data: Record<any, GameStore>) {
     const html = this.generateHtml(data);
     this.innerHTML = html;
   }

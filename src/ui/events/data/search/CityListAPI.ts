@@ -1,5 +1,5 @@
 import { BaseGet } from "../../../../framework/api/BaseGet.ts";
-import { API_ROOT, USE_MOCK } from "../../../../utils/params";
+import { API_ROOT, USE_MOCK } from "../../../../utils/params.ts";
 import { BaseStateUpdate } from "../../../../framework/api/BaseStateUpdate.ts";
 import { BaseAPI } from "../../../../framework/api/BaseAPI.ts";
 

@@ -4,15 +4,15 @@ import { updateComponentState } from "../../../framework/state/ComponentStateMan
 import { GROUP_COMPONENT_STATE } from "../Constants.js";
 
 export class GroupRequestAPI {
-  getGroupsQueryUrl(requestParams) {
+  getGroupsQueryUrl(requestParams: any) {
     return API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`;
   }
 
-  async retrieveData(requestParams) {
+  async retrieveData(requestParams: any) {
     return await getResponseData(this.getGroupsQueryUrl(requestParams));
   }
 
-  async updateData(response) {
+  async updateData(response: any) {
     updateComponentState(
       GROUP_COMPONENT_STATE,
       function (data) {

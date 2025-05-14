@@ -1,5 +1,5 @@
 import { retrieveJSONProp } from "./utils/ComponentUtils.ts";
-import { BaseStaticComponent } from "./BaseStaticComponent.ts";
+import { BaseTemplateComponent } from "./BaseTemplateComponent.ts";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -37,7 +37,7 @@ template.innerHTML = `
   </style>
   <div></div>
 `;
-export class EventComponent extends BaseStaticComponent {
+export class EventComponent extends BaseTemplateComponent {
   constructor() {
     super();
     this.id = "";

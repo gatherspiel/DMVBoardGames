@@ -1,41 +1,30 @@
 import { BaseGet } from "../../../../framework/api/BaseGet.ts";
-import { API_ROOT, USE_MOCK } from "../../../../utils/params";
+import { API_ROOT, USE_MOCK } from "../../../../utils/params.ts";
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.ts";
-import { getGroups } from "../mock/MockPageData";
+import { getGroups } from "../mock/MockPageData.ts";
 import { BaseStateUpdate } from "../../../../framework/api/BaseStateUpdate.ts";
 import {
   GROUP_SEARCH_RESULT_STATE_NAME,
   updateSearchResultState,
-} from "../state/SearchResultGroupState";
+} from "../state/SearchResultGroupState.ts";
 import { BaseAPI } from "../../../../framework/api/BaseAPI.ts";
+import type { SearchParams } from "./model/SearchParams.ts";
 
 const CITY_PARAM = "city";
 const DAY_PARAM = "day";
 
-export const DE = {
-  day: DEFAULT_SEARCH_PARAMETER,
-  location: DEFAULT_SEARCH_PARAMETER,
-  cities: [
-    {
-      id: 0,
-      name: "Loading",
-    },
-  ],
-};
-
-function getEventsQueryUrl(searchParams: any) {
+function getEventsQueryUrl(searchParams: SearchParams) {
   let url = API_ROOT + "/searchEvents";
   const paramMap: any = {};
   if (searchParams.day && searchParams.day !== DEFAULT_SEARCH_PARAMETER) {
     paramMap[DAY_PARAM] = searchParams.day;
   }
-
   if (
-    searchParams.city &&
-    searchParams.city !== DEFAULT_SEARCH_PARAMETER &&
-    searchParams.city !== undefined
+    searchParams.location &&
+    searchParams.location !== DEFAULT_SEARCH_PARAMETER &&
+    searchParams.location !== undefined
   ) {
-    paramMap[CITY_PARAM] = searchParams.city;
+    paramMap[CITY_PARAM] = searchParams.location;
   }
 
   if (paramMap && Object.keys(paramMap).length > 0) {

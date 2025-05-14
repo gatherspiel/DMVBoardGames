@@ -5,6 +5,7 @@ import {
   SEARCH_COMPONENT_LOADED_STATE,
   SEARCH_COMPONENT_LOADED_STATE_CITIES,
   SEARCH_COMPONENT_STATE,
+  SEARCH_FORM_ID,
   SEARCH_REQUEST_STATE,
 } from "./Constants.ts";
 
@@ -18,6 +19,7 @@ import {
 import { EVENT_SEARCH_API } from "../../data/search/EventAPI.ts";
 import { LOCATION_API } from "../../data/search/LocationsAPI.ts";
 import { CITIES_API } from "../../data/search/CityListAPI.ts";
+import type { EventSearchCity } from "./types/EventSearchCity.ts";
 export class EventSearchComponent extends HTMLElement {
   constructor() {
     super();
@@ -38,9 +40,9 @@ export class EventSearchComponent extends HTMLElement {
     });
   }
 
-  generateHtml(eventSearchState) {
+  generateHtml(eventSearchState: any) {
     return `
-      <form id='search-form'>
+      <form id=${SEARCH_FORM_ID}>
 
         <div id='search-input-wrapper'>
           <div>
@@ -68,7 +70,7 @@ export class EventSearchComponent extends HTMLElement {
   `;
   }
 
-  getCityHtml(eventSearchState) {
+  getCityHtml(eventSearchState: any) {
     return ` 
     <label>Select city: </label>
     <select
@@ -81,10 +83,10 @@ export class EventSearchComponent extends HTMLElement {
     </select>`;
   }
 
-  getLocationSelect(eventSearchState) {
+  getLocationSelect(eventSearchState: any) {
     const data = `
     ${eventSearchState.cities?.map(
-      (location) =>
+      (location: EventSearchCity) =>
         `<option key=${location.index} value="${location.name}">
           ${
             location.name === DEFAULT_SEARCH_PARAMETER
@@ -96,7 +98,7 @@ export class EventSearchComponent extends HTMLElement {
     return data;
   }
 
-  updateData(state) {
+  updateData(state: any) {
     this.innerHTML = this.generateHtml(state);
     setupEventHandlers();
   }

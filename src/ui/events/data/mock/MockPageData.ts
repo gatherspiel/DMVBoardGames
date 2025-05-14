@@ -1,7 +1,7 @@
-import { gameStores } from "./MockGameStoreData.js";
-import { gameRestaurants } from "./MockGameRestaurantData.js";
-import { MOCK_GROUP_DATA } from "./MockGroupData.js";
-import { getConventionData } from "./MockConventionData.js";
+import { gameStores } from "./MockGameStoreData.ts";
+import { gameRestaurants } from "./MockGameRestaurantData.ts";
+import { MOCK_GROUP_DATA } from "./MockGroupData.ts";
+import { getConventionData } from "./MockConventionData.ts";
 
 export function getGroups() {
   return MOCK_GROUP_DATA;

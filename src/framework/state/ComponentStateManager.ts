@@ -35,7 +35,7 @@ export function subscribeToComponentState(
 export function updateComponentState(
   stateName: string,
   updateFunction: (a: any) => any,
-  data: any,
+  data?: any,
 ) {
   updateState(stateName, updateFunction, states, data);
 }
