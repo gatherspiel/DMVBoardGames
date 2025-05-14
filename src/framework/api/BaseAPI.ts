@@ -3,9 +3,9 @@ import { BaseStateUpdate } from "./BaseStateUpdate.ts";
 
 export class BaseAPI {
   dataFetch: BaseRequest;
-  stateUpdate: BaseStateUpdate;
+  stateUpdate: BaseStateUpdate[];
 
-  constructor(dataFetch: BaseRequest, stateUpdate: BaseStateUpdate) {
+  constructor(dataFetch: BaseRequest, stateUpdate: BaseStateUpdate[]) {
     this.dataFetch = dataFetch;
     this.stateUpdate = stateUpdate;
   }
@@ -15,6 +15,8 @@ export class BaseAPI {
   }
 
   updateData(response: any) {
-    this.stateUpdate.updateData(response);
+    for (let stateUpdate of this.stateUpdate) {
+      stateUpdate.updateData(response);
+    }
   }
 }

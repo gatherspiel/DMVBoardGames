@@ -2,7 +2,7 @@ import {
   GROUP_SEARCH_RESULT_STATE_NAME,
   isVisible,
 } from "../../data/state/SearchResultGroupState.js";
-import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.js";
+import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.ts";
 import { setupEventHandlers } from "./EventListHandlers.js";
 import { createJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
 

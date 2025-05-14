@@ -1,4 +1,4 @@
-import { createComponentState } from "../../../framework/state/ComponentStateManager.js";
+import { createComponentState } from "../../../framework/state/ComponentStateManager.ts";
 
 export const GAME_STORE_LIST_STATE = "gameStoreListState";
 

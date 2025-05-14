@@ -1,4 +1,4 @@
-export abstract class BaseComponent extends HTMLElement {
+export abstract class BaseStaticComponent extends HTMLElement {
   connectedCallback() {
     const id = this.getAttribute("key");
     if (id === null) {

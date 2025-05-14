@@ -1,7 +1,6 @@
 import { BaseGet } from "../../../../framework/api/BaseGet.ts";
 import { API_ROOT, USE_MOCK } from "../../../../utils/params";
-import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants";
-import { CITY_PARAM, DAY_PARAM } from "./EventSearchAPI";
+import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.ts";
 import { getGroups } from "../mock/MockPageData";
 import { BaseStateUpdate } from "../../../../framework/api/BaseStateUpdate.ts";
 import {
@@ -9,6 +8,20 @@ import {
   updateSearchResultState,
 } from "../state/SearchResultGroupState";
 import { BaseAPI } from "../../../../framework/api/BaseAPI.ts";
+
+const CITY_PARAM = "city";
+const DAY_PARAM = "day";
+
+export const DE = {
+  day: DEFAULT_SEARCH_PARAMETER,
+  location: DEFAULT_SEARCH_PARAMETER,
+  cities: [
+    {
+      id: 0,
+      name: "Loading",
+    },
+  ],
+};
 
 function getEventsQueryUrl(searchParams: any) {
   let url = API_ROOT + "/searchEvents";
@@ -39,8 +52,8 @@ function getEventsQueryUrl(searchParams: any) {
 }
 
 const searchEvents: BaseGet = new BaseGet(getEventsQueryUrl, {
-  mockFunction: getGroups,
-  useMockByDefault: USE_MOCK,
+  defaultFunction: getGroups,
+  defaultFunctionPriority: USE_MOCK,
 });
 
 const updateEvents: BaseStateUpdate = new BaseStateUpdate(
@@ -49,4 +62,4 @@ const updateEvents: BaseStateUpdate = new BaseStateUpdate(
   "groupData",
 );
 
-export const EVENT_SEARCH_API = new BaseAPI(searchEvents, updateEvents);
+export const EVENT_SEARCH_API = new BaseAPI(searchEvents, [updateEvents]);

@@ -1,4 +1,4 @@
-import { createComponentState } from "../../../framework/state/ComponentStateManager.js";
+import { createComponentState } from "../../../framework/state/ComponentStateManager.ts";
 
 export const CONVENTION_LIST_STATE = "conventionListState";
 export class ConventionListComponent extends HTMLElement {

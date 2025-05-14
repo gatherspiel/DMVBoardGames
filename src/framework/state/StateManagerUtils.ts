@@ -1,4 +1,7 @@
-export function createState(stateName, states) {
+import type { BaseAPI } from "../api/BaseAPI.ts";
+import type { BaseDynamicComponent } from "../components/BaseDynamicComponent.ts";
+
+export function createState(stateName: string, states: any) {
   if (stateName in states) {
     console.warn(`State with name ${stateName} already exists`);
   }
@@ -8,7 +11,7 @@ export function createState(stateName, states) {
   };
 }
 
-export function subscribeToState(stateName, item, states) {
+export function subscribeToState(stateName: string, item: any, states: any) {
   if (!(stateName in states)) {
     createState(stateName, states);
   }
@@ -18,7 +21,12 @@ export function subscribeToState(stateName, item, states) {
   }
 }
 
-export function updateState(stateName, updateFunction, states, data) {
+export function updateState(
+  stateName: string,
+  updateFunction: (a: any) => any,
+  states: Record<string, any>,
+  data: any,
+) {
   if (!(stateName in states)) {
     createState(stateName, states);
   }
@@ -31,7 +39,9 @@ export function updateState(stateName, updateFunction, states, data) {
     ...updateFunction(data),
   };
 
-  states[stateName].subscribers.forEach(function (component) {
+  states[stateName].subscribers.forEach(function (
+    component: BaseDynamicComponent | BaseAPI,
+  ) {
     component.updateData(states[stateName].data);
   });
 }

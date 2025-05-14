@@ -1,11 +1,11 @@
-import { getParameter } from "../../../framework/util/urlParmUtils.js";
+import { getParameter } from "../../../framework/util/urlParmUtils.ts";
 import {
   GET_GROUP_REQUEST_STATE,
   GROUP_COMPONENT_STATE,
   GROUP_NAME_PARAM,
 } from "../Constants.js";
 import { initStateOnLoad } from "../../../framework/state/RequestStateManager.ts";
-import { subscribeToComponentState } from "../../../framework/state/ComponentStateManager.js";
+import { subscribeToComponentState } from "../../../framework/state/ComponentStateManager.ts";
 import { GroupRequestAPI } from "../data/GroupRequestAPI.js";
 
 import { createJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";

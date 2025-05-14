@@ -1,7 +1,7 @@
 import {
   getComponentState,
   updateComponentState,
-} from "../../../../framework/state/ComponentStateManager.js";
+} from "../../../../framework/state/ComponentStateManager.ts";
 
 const IS_VISIBLE = "isVisible";
 const NAME = "title";
