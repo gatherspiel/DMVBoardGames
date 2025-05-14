@@ -6,9 +6,12 @@ import {
 } from "../Constants.js";
 import { initStateOnLoad } from "../../../framework/state/RequestStateManager.ts";
 import { subscribeToComponentState } from "../../../framework/state/ComponentStateManager.ts";
-import { GroupRequestAPI } from "../data/GroupRequestAPI.js";
+import { GroupRequestAPI } from "../data/GroupRequestAPI.ts";
 
 import { createJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
+import type { GroupPageData } from "../../events/data/types/GroupPageData.ts";
+import type { Event } from "../../events/data/types/Event.ts";
+import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -33,7 +36,7 @@ template.innerHTML = `
   <div></div>
 
 `;
-export class GroupComponent extends HTMLElement {
+export class GroupComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super();
 
@@ -47,12 +50,12 @@ export class GroupComponent extends HTMLElement {
     });
   }
 
-  updateData(groupData) {
-    this.attachShadow({ mode: "open" });
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-    const div = this.shadowRoot.querySelector("div");
+  getTemplate(): HTMLTemplateElement {
+    return template;
+  }
 
-    div.innerHTML = `
+  generateHTML(groupData: GroupPageData): string {
+    return `
 
       <div class="group-title">
         <h1><a href=${groupData.url}>${groupData.name}</a></h1>
@@ -67,7 +70,7 @@ export class GroupComponent extends HTMLElement {
         groupData.eventData.length === 0
           ? `<p id="no-event">Click on group link above for event information</p>`
           : `${groupData.eventData
-              .map((event) => {
+              .map((event: Event) => {
                 return `
               <event-component
                 key = ${groupData.id + "event-" + event.id}
@@ -83,6 +86,7 @@ export class GroupComponent extends HTMLElement {
       <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
     `;
   }
+
   //TODO: Add loading animation
   connectedCallback() {
     const groupParameter = getParameter(GROUP_NAME_PARAM);

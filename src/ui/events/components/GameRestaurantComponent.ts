@@ -1,4 +1,5 @@
 import { createComponentState } from "../../../framework/state/ComponentStateManager.ts";
+import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
 
 export const GAME_RESTAURANT_STATE = "gameRestaurantListState";
 export class GameRestaurantComponent extends HTMLElement {
@@ -7,7 +8,7 @@ export class GameRestaurantComponent extends HTMLElement {
     createComponentState(GAME_RESTAURANT_STATE, this);
   }
 
-  getItemHtml(gameRestaurant) {
+  getItemHtml(gameRestaurant: GameRestaurant) {
     return `
     <div id = convention-${gameRestaurant.id} class="game-restaurant-list-item">
      <h3>
@@ -18,7 +19,7 @@ export class GameRestaurantComponent extends HTMLElement {
   `;
   }
 
-  generateHtml(data) {
+  generateHtml(data: Record<any, GameRestaurant>) {
     let html = `<h1>Board Game Bars and Cafés</h1>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
@@ -27,7 +28,7 @@ export class GameRestaurantComponent extends HTMLElement {
     return html;
   }
 
-  updateData(data) {
+  updateData(data: Record<any, GameRestaurant>) {
     const html = this.generateHtml(data);
     this.innerHTML = html;
   }

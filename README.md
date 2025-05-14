@@ -38,7 +38,7 @@ They should only be used when attempting to test UI changes that do not depend o
 
 ## Future changes
 
-### Group pages
+### GroupSearchResult pages
  - Each group has a page at https://dmvboardgames.com/group/{group name} with group and event information.
  - Each group has a page at https://dmvboardgames.com/group/{group name}/edit for editing group information that will be accessible by admins
  - Each event has a page at https://dmvboardgames.com/group/{group name}/event/{event name} with event information.

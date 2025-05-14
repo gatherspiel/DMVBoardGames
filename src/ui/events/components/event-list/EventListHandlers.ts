@@ -1,25 +1,29 @@
 import { getGroupName } from "../../data/state/SearchResultGroupState.js";
 
-function showHideHandler(groupId) {
-  console.log(groupId);
+function showHideHandler(groupId: string) {
   const groupName = getGroupName(groupId);
   window.location.replace(
     `${window.location.origin}/groups.html?name=${encodeURIComponent(groupName)}`,
   );
 }
 
-function addEventHandler(groupElement) {
+function addEventHandler(groupElement: Element) {
   const groupId = groupElement.id;
   const showHideButton = document.querySelector(
     `#${groupId} .show-hide-button`,
   );
 
-  showHideButton.addEventListener("click", () => showHideHandler(groupId));
+  if (showHideButton === null) {
+    throw new Error("Could not create event handler");
+  }
+  (showHideButton as HTMLElement).addEventListener("click", () =>
+    showHideHandler(groupId),
+  );
 }
 
 export function setupEventHandlers() {
-  const groups = document.querySelectorAll(".event-group");
-  groups.forEach((group) => {
+  const groups: NodeListOf<Element> = document.querySelectorAll(".event-group");
+  groups.forEach((group: Element) => {
     addEventHandler(group);
   });
 }

@@ -6,6 +6,11 @@ import type { BaseAPI } from "../api/BaseAPI.ts";
 const states: Record<string, any> = {};
 const responseCache: Record<string, any> = {};
 
+const DEFAULT_API_ERROR_RESPONSE = function (responseData: any) {
+  throw new Error(JSON.stringify(responseData, null, 2));
+};
+
+//
 export function createRequestState(
   stateName: string,
   dataSource: BaseAPI,
@@ -76,7 +81,7 @@ export function initStateOnLoad(config: any) {
 
 export async function getResponseData(
   queryUrl: string,
-  mockSettings: DefaultResponse,
+  mockSettings?: DefaultResponse,
 ) {
   try {
     const useMock = mockSettings?.defaultFunctionPriority;
@@ -86,16 +91,29 @@ export async function getResponseData(
       if (response.status !== 200) {
         console.log("Did not retrieve data from API. Mock data will be used");
 
-        mockSettings.defaultFunction ? mockSettings.defaultFunction() : {};
+        const responseData: any = {
+          status: response.status,
+          message: "",
+          endpoint: queryUrl,
+        };
+        mockSettings?.defaultFunction
+          ? mockSettings?.defaultFunction(responseData)
+          : DEFAULT_API_ERROR_RESPONSE(responseData);
       }
 
       const result = await response.json();
       return result;
     }
-  } catch (e) {
-    console.log(
-      `Error when calling endpoint: ${queryUrl}. A mock will be used`,
-    );
+  } catch (e: any) {
+    const responseData: any = {
+      status: null,
+      message: e.message,
+      endpoint: queryUrl,
+    };
+
+    mockSettings?.defaultFunction
+      ? mockSettings?.defaultFunction(responseData)
+      : DEFAULT_API_ERROR_RESPONSE(responseData);
   }
-  return mockSettings.defaultFunction ? mockSettings.defaultFunction() : {};
+  return mockSettings?.defaultFunction ? mockSettings.defaultFunction() : {};
 }
