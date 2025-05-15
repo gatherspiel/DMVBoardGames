@@ -8,9 +8,9 @@ Go to the following page to view general development guidelines for the project:
 Also, follow the guidelines below:
 - Keep PRs as small as possible. Large features should be broken down into multiple PRs when possible.
 - If a PR has UI changes, it is helpful to include a screenshot of the change in the PR.
-- JavaScript logic that is associated with a specific part of the UI should be in the src/events/scripts folder.
-- If JavaScript logic is not associated with a specific component, it should be placed in the src/framework folder.
-- If JavaScript is used to update a part of the UI, it should be implemented as a [Web Component](https://developer.mozilla.org/en-US/docs/Web/API/Web_components).
+- Code that is associated with a specific part of the UI should be in the src/events/scripts folder.
+- JavaScript logic is not associated with a specific part of the UI should be placed in the src/framework folder.
+- UI elements that are dynamic or will be used multiple times should be implemented as [Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components).
 - For new files, TypeScript should be used.
 
 
