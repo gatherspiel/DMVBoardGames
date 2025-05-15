@@ -3,6 +3,7 @@ import {
   subscribeToState,
   updateState,
 } from "./StateManagerUtils.js";
+import { ImmutableState } from "./ImmutableState.ts";
 
 const states: Record<string, any> = {};
 
@@ -40,6 +41,21 @@ export function updateComponentState(
   updateState(stateName, updateFunction, states, data);
 }
 
+/**
+ * @Depreacted
+ * @param stateName
+ */
 export function getComponentState(stateName: string) {
   return states[stateName].data;
+}
+
+export function getDataFromState(stateName: string, param: string): string {
+  const state = states[stateName];
+  if (!(state instanceof ImmutableState)) {
+    throw new Error(
+      `getData can only be used for states that are defined as an instance of ImmutableState`,
+    );
+  }
+
+  return state.getValue(param) ?? "";
 }

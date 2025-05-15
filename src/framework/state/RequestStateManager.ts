@@ -10,7 +10,6 @@ const DEFAULT_API_ERROR_RESPONSE = function (responseData: any) {
   throw new Error(JSON.stringify(responseData, null, 2));
 };
 
-//
 export function createRequestState(
   stateName: string,
   dataSource: BaseAPI,

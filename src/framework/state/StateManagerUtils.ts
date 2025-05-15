@@ -39,6 +39,10 @@ export function updateState(
     ...updateFunction(data),
   };
 
+  if (states[stateName].subscribers.length === 0) {
+    console.warn(`No subscribers to state ${stateName}`);
+  }
+
   states[stateName].subscribers.forEach(function (
     component: BaseDynamicComponent | BaseAPI,
   ) {
