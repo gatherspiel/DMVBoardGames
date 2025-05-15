@@ -1,12 +1,12 @@
-import type { MockResponse } from "./MockResponse.ts";
+import type { DefaultResponse } from "./DefaultResponse.ts";
 import { BaseRequest } from "./BaseRequest.ts";
 import { getResponseData } from "../state/RequestStateManager.ts";
 
 export class BaseGet extends BaseRequest {
-  mockResponse: MockResponse;
+  mockResponse: DefaultResponse;
   getQueryUrl: (a: any) => string;
 
-  constructor(getQueryUrl: (a: any) => string, mockResponse: MockResponse) {
+  constructor(getQueryUrl: (a: any) => string, mockResponse: DefaultResponse) {
     super();
     this.getQueryUrl = getQueryUrl;
     this.mockResponse = mockResponse;
