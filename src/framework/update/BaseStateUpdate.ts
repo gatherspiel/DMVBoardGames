@@ -1,7 +1,11 @@
 /*
  Updates state after an API response is returned
  */
-import { updateComponentState } from "../state/ComponentStateManager.ts";
+import {
+  hasComponentState,
+  updateComponentState,
+} from "../state/ComponentStateManager.ts";
+import { updateRequestState } from "../state/RequestStateManager.ts";
 
 export class BaseStateUpdate {
   stateName: string;
@@ -24,10 +28,18 @@ export class BaseStateUpdate {
       ? response[this.responseField]
       : response;
 
-    updateComponentState(
-      baseUpdate.stateName,
-      baseUpdate.stateUpdate,
-      responseData,
-    );
+    if (hasComponentState(baseUpdate.stateName)) {
+      updateComponentState(
+        baseUpdate.stateName,
+        baseUpdate.stateUpdate,
+        responseData,
+      );
+    } else {
+      updateRequestState(
+        baseUpdate.stateName,
+        baseUpdate.stateUpdate,
+        responseData,
+      );
+    }
   }
 }

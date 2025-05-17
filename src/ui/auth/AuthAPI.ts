@@ -1,29 +1,59 @@
-import { createClient, SupabaseClient } from "@supabase/supabase-js";
-import { ExternalRequest } from "../../framework/api/ExternalRequest.js";
-import type { DefaultResponse } from "../../framework/api/DefaultResponse.ts";
-import { BaseStateUpdate } from "../../framework/api/BaseStateUpdate.ts";
-import { AUTH_COMPONENT_STATE } from "./Constants.ts";
-import { BaseAPI } from "../../framework/api/BaseAPI.ts";
+import {
+  type AuthTokenResponsePassword,
+  createClient,
+  SupabaseClient,
+} from "@supabase/supabase-js";
+import { ExternalRequest } from "../../framework/update/api/ExternalRequest.js";
+import type { DefaultResponse } from "../../framework/update/api/DefaultResponse.ts";
+import { BaseStateUpdate } from "../../framework/update/BaseStateUpdate.ts";
+import { LOGIN_COMPONENT_STATE, SESSION_STATE } from "./Constants.ts";
+import { BaseUpdater } from "../../framework/update/BaseUpdater.ts";
+import type { AuthRequest } from "./types/AuthRequest.ts";
+import { AuthResponse } from "./types/AuthResponse.ts";
+import { ImmutableState } from "../../framework/state/ImmutableState.ts";
 
-const client: SupabaseClient = createClient(
+const supabaseClient: SupabaseClient = createClient(
   "https://karqyskuudnvfxohwkok.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthcnF5c2t1dWRudmZ4b2h3a29rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE5ODQ5NjgsImV4cCI6MjA1NzU2MDk2OH0.TR-Pn6dknOTtqS9y-gxK_S1-nw6TX-sL3gRH2kXJY_I",
 );
 
-async function retrieveData(params: any, backupResponse: DefaultResponse) {
-  console.log(params);
-  console.log(typeof client);
-  console.log(backupResponse);
+async function retrieveData(
+  params: AuthRequest,
+  backupResponse: DefaultResponse,
+): Promise<AuthResponse> {
+  if (
+    backupResponse.defaultFunctionPriority &&
+    backupResponse.defaultFunction
+  ) {
+    return backupResponse.defaultFunction();
+  }
+  const authResponse: AuthTokenResponsePassword =
+    await supabaseClient.auth.signInWithPassword({
+      email: params.username,
+      password: params.password,
+    });
+
+  if (!authResponse.error) {
+    return new AuthResponse(true, authResponse.data);
+  }
+  if (backupResponse.defaultFunction) {
+    return backupResponse.defaultFunction(authResponse);
+  } else {
+    throw Error("Authentication error");
+  }
 }
 
-function getAuthComponentStateFromResponse(response: any) {
-  console.log(response);
-  return {};
+function getLoginComponentStateFromResponse(response: AuthResponse) {
+  return {
+    isLoggedIn: response.isLoggedIn(),
+    message: response.getErrorMessage(),
+  };
 }
 
 const defaultResponse = {
-  defaultFunction: () => {
-    return "Failed to authenticate";
+  defaultFunction: (authData: any) => {
+    console.error("Authentication error");
+    return new AuthResponse(false, authData.data, authData.error.message);
   },
   defaultFunctionPriority: false,
 };
@@ -33,9 +63,32 @@ export const authenticate: ExternalRequest = new ExternalRequest(
   defaultResponse,
 );
 
-export const updateData: BaseStateUpdate = new BaseStateUpdate(
-  AUTH_COMPONENT_STATE,
-  getAuthComponentStateFromResponse,
+export const updateLogin: BaseStateUpdate = new BaseStateUpdate(
+  LOGIN_COMPONENT_STATE,
+  getLoginComponentStateFromResponse,
 );
 
-export const AUTH_API = new BaseAPI(authenticate, [updateData]);
+/**
+ * TODO
+ *
+ * -Add login status to session state.
+ * -Store session information in HttpOnly cookie
+ * @param response
+ */
+function getSessionStateFromResponse(response: AuthResponse): ImmutableState {
+  const responseData = response.isLoggedIn() ? response.getData() : "";
+  const data = {
+    access_token: responseData?.session?.access_token,
+  };
+  return new ImmutableState(data);
+}
+
+export const updateSession: BaseStateUpdate = new BaseStateUpdate(
+  SESSION_STATE,
+  getSessionStateFromResponse,
+);
+
+export const AUTH_API = new BaseUpdater(authenticate, [
+  updateLogin,
+  updateSession,
+]);

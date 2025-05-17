@@ -27,12 +27,12 @@ export class EventListComponent extends BaseDynamicComponent {
   }
 
   generateHTML(data: any): string {
+    const groups = data.groups;
     let html = ``;
-
     let visibleEvents = 0;
-    if (data && Object.values(data).length > 0) {
-      Object.keys(data).forEach((groupId) => {
-        const group = data[groupId];
+    if (data && Object.values(groups).length > 0) {
+      Object.keys(groups).forEach((groupId) => {
+        const group = groups[groupId];
         let groupHtml = "";
         groupHtml = this.getItemHtml(groupId, group);
         html += groupHtml;

@@ -11,6 +11,7 @@ export const DAYS_IN_WEEK: string[] = [
   "Saturday",
 ];
 
+export const EVENT_SEARCH_STATE = "event-search-state";
 export const SEARCH_COMPONENT_LOADED_STATE = "search-component-loaded";
 export const SEARCH_COMPONENT_LOADED_STATE_CITIES =
   "search-component-loaded-cities";

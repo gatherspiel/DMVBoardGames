@@ -1,7 +1,7 @@
 import { BaseRequest } from "./BaseRequest.ts";
 import { BaseStateUpdate } from "./BaseStateUpdate.ts";
 
-export class BaseAPI {
+export class BaseUpdater {
   dataFetch: BaseRequest;
   stateUpdate: BaseStateUpdate[];
 
