@@ -10,8 +10,6 @@ export class EventHandlerRequest {
   }
 
   retrieveData(params: Event): any {
-    console.log(this.componentStateName);
-
     if (this.componentStateName) {
       return this.eventHandler({
         event: params,

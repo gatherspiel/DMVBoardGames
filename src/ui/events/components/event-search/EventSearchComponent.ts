@@ -37,16 +37,12 @@ const loadConfig = {
 
 export class EventSearchComponent extends BaseDynamicComponent {
   constructor() {
-    super(
-      [SEARCH_EVENT_HANDLER_CONFIG, UPDATE_CITY_CONFIG, UPDATE_DAY_CONFIG],
-      SEARCH_COMPONENT_STATE,
-      loadConfig,
-    );
+    super(SEARCH_COMPONENT_STATE, loadConfig);
   }
 
   generateHTML(eventSearchState: any) {
     return `
-      <form id=${SEARCH_FORM_ID}>
+      <form id=${SEARCH_FORM_ID} ${this.createSubmitEvent(SEARCH_EVENT_HANDLER_CONFIG)}>
 
         <div id='search-input-wrapper'>
           <div>
@@ -58,6 +54,7 @@ export class EventSearchComponent extends BaseDynamicComponent {
               name="days"
               id="search-days"
               value=${eventSearchState.day}
+              ${this.createOnChangeEvent(UPDATE_DAY_CONFIG)}
             >
               ${DAYS_IN_WEEK.map(
                 (day, index) =>
@@ -69,7 +66,7 @@ export class EventSearchComponent extends BaseDynamicComponent {
           </div>
 
         </div>
-        <button type="submit">SEARCH EVENTS</button>
+        <button type="submit" >SEARCH EVENTS</button>
       </form>
   `;
   }
@@ -81,6 +78,7 @@ export class EventSearchComponent extends BaseDynamicComponent {
       id=${SEARCH_CITY_ID}
       name="cities"
       value=${eventSearchState.cities}
+      ${this.createOnChangeEvent(UPDATE_CITY_CONFIG)}
     >
 
     ${this.getLocationSelect(eventSearchState)}

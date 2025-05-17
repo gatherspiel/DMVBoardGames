@@ -1,5 +1,4 @@
 import { showExperimental } from "../../../framework/util/urlParmUtils.ts";
-import { LOGIN_EVENT_CONFIG } from "../AuthEventHandlers.ts";
 import { AUTH_API } from "../AuthAPI.ts";
 import {
   AUTH_REQUEST_STATE,
@@ -11,10 +10,11 @@ import {
 import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
 import { generateDefaultLoginComponentState } from "../types/AuthResponse.ts";
 import type { LoginComponentState } from "../types/LoginComponentState.ts";
+import { LOGIN_EVENT_CONFIG } from "../AuthEventHandlers.ts";
 
 export class LoginComponent extends BaseDynamicComponent {
   constructor() {
-    super([LOGIN_EVENT_CONFIG], LOGIN_COMPONENT_STATE, {
+    super(LOGIN_COMPONENT_STATE, {
       stateName: AUTH_REQUEST_STATE,
       dataSource: AUTH_API,
       requestData: {
@@ -41,12 +41,12 @@ export class LoginComponent extends BaseDynamicComponent {
   }
   generateLogin(data: LoginComponentState) {
     return `<div>
-          <form id=${LOGIN_FORM_ID}>
+          <form id=${LOGIN_FORM_ID} ${this.createSubmitEvent(LOGIN_EVENT_CONFIG)}>
             <label for="username">Email:</label>
             <input type="text" id=${USERNAME_INPUT} name=${USERNAME_INPUT} />
             <label for="username">Password:</label>
             <input type="password" id=${PASSWORD_INPUT} name=${PASSWORD_INPUT} />
-            <button type="submit"> Login </button>
+            <button type="submit" > Login </button>
           </form>
           <p>${data.message.trim()}</p>
         `;

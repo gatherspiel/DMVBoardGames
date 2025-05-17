@@ -17,7 +17,6 @@ function getEventsQueryUrl(searchParams: SearchParams) {
   let url = API_ROOT + "/searchEvents";
   const paramMap: any = {};
 
-  console.log(`Searching with ${JSON.stringify(searchParams)}`);
   if (searchParams.day && searchParams.day !== DEFAULT_SEARCH_PARAMETER) {
     paramMap[DAY_PARAM] = searchParams.day;
   }
