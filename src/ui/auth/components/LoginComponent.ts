@@ -1,6 +1,5 @@
 import { showExperimental } from "../../../framework/util/urlParmUtils.ts";
-import { initStateOnLoad } from "../../../framework/state/RequestStateManager.ts";
-import { setupEventHandlers } from "../AuthEventHandlers.ts";
+import { LOGIN_EVENT_CONFIG } from "../AuthEventHandlers.ts";
 import { AUTH_API } from "../AuthAPI.ts";
 import {
   AUTH_REQUEST_STATE,
@@ -12,33 +11,21 @@ import {
 import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
 import { generateDefaultLoginComponentState } from "../types/AuthResponse.ts";
 import type { LoginComponentState } from "../types/LoginComponentState.ts";
-import { createComponentState } from "../../../framework/state/ComponentStateManager.ts";
 
 export class LoginComponent extends BaseDynamicComponent {
   constructor() {
-    super();
-
-    createComponentState(LOGIN_COMPONENT_STATE, this);
-    initStateOnLoad({
+    super([LOGIN_EVENT_CONFIG], LOGIN_COMPONENT_STATE, {
       stateName: AUTH_REQUEST_STATE,
       dataSource: AUTH_API,
       requestData: {
         username: "",
         password: "",
       },
-      dependencyUpdates: function () {
-        setupEventHandlers();
-      },
     });
   }
 
   connectedCallback() {
     this.innerHTML = this.generateHTML(generateDefaultLoginComponentState());
-  }
-
-  updateData(data: LoginComponentState): void {
-    this.innerHTML = this.generateHTML(data);
-    setupEventHandlers();
   }
 
   generateHTML(data: LoginComponentState) {

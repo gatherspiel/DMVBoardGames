@@ -1,7 +1,7 @@
-import { BaseGet } from "../../../../framework/api/BaseGet.ts";
+import { BaseGetRequest } from "../../../../framework/update/api/BaseGetRequest.ts";
 import { API_ROOT, USE_MOCK } from "../../../../utils/params.ts";
-import { BaseStateUpdate } from "../../../../framework/api/BaseStateUpdate.ts";
-import { BaseAPI } from "../../../../framework/api/BaseAPI.ts";
+import { BaseStateUpdate } from "../../../../framework/update/BaseStateUpdate.ts";
+import { BaseUpdater } from "../../../../framework/update/BaseUpdater.ts";
 
 import {
   DEFAULT_SEARCH_PARAMETER,
@@ -18,7 +18,7 @@ const mockFunction = function () {
   return MOCK_CITY_LIST;
 };
 
-const getData: BaseGet = new BaseGet(getCitiesQueryUrl, {
+const getData: BaseGetRequest = new BaseGetRequest(getCitiesQueryUrl, {
   defaultFunction: mockFunction,
   defaultFunctionPriority: USE_MOCK,
 });
@@ -48,4 +48,4 @@ const updateCityList: BaseStateUpdate = new BaseStateUpdate(
   updateCities,
 );
 
-export const CITIES_API = new BaseAPI(getData, [updateCityList]);
+export const CITIES_API = new BaseUpdater(getData, [updateCityList]);

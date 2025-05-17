@@ -1,7 +1,7 @@
 import { createState, subscribeToState } from "./StateManagerUtils.js";
 import { addLoadFunction } from "./LoadManager.js";
-import type { DefaultResponse } from "../api/DefaultResponse.ts";
-import type { BaseAPI } from "../api/BaseAPI.ts";
+import type { DefaultResponse } from "../update/api/DefaultResponse.ts";
+import type { BaseUpdater } from "../update/BaseUpdater.ts";
 
 const states: Record<string, any> = {};
 const responseCache: Record<string, any> = {};
@@ -12,7 +12,7 @@ const DEFAULT_API_ERROR_RESPONSE = function (responseData: any) {
 
 export function createRequestState(
   stateName: string,
-  dataSource: BaseAPI,
+  dataSource: BaseUpdater,
   initState: () => any = () => {
     return { load: true };
   },
@@ -26,6 +26,10 @@ export function createRequestState(
 
 export function subscribeToRequestState(stateName: string, item: any) {
   subscribeToState(stateName, item, states);
+}
+
+export function hasRequestState(stateName: string): boolean {
+  return stateName in states;
 }
 
 /**
@@ -70,6 +74,7 @@ export function initStateOnLoad(config: any) {
     function getRequestData() {
       return config.requestData;
     }
+
     createRequestState(config.stateName, config.dataSource, getRequestData);
 
     if (config.dependencyUpdates) {

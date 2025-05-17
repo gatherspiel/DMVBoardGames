@@ -1,4 +1,4 @@
-import type { BaseAPI } from "../api/BaseAPI.ts";
+import type { BaseUpdater } from "../update/BaseUpdater.ts";
 import type { BaseDynamicComponent } from "../components/BaseDynamicComponent.ts";
 
 export function createState(stateName: string, states: any) {
@@ -35,16 +35,21 @@ export function updateState(
     data = states[stateName].data;
   }
 
-  states[stateName].data = {
-    ...updateFunction(data),
-  };
+  const updatedData = updateFunction(data);
+
+  Object.keys(states[stateName].data).forEach(function (key) {
+    if (!(key in updatedData)) {
+      updatedData[key] = states[stateName].data[key];
+    }
+  });
+  states[stateName].data = updatedData;
 
   if (states[stateName].subscribers.length === 0) {
     console.warn(`No subscribers to state ${stateName}`);
   }
 
   states[stateName].subscribers.forEach(function (
-    component: BaseDynamicComponent | BaseAPI,
+    component: BaseDynamicComponent | BaseUpdater,
   ) {
     component.updateData(states[stateName].data);
   });

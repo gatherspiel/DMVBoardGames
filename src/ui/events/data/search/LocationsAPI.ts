@@ -1,8 +1,8 @@
-import { BaseGet } from "../../../../framework/api/BaseGet.ts";
+import { BaseGetRequest } from "../../../../framework/update/api/BaseGetRequest.ts";
 import { getGameRestaurants, getGameStores } from "../mock/MockPageData.ts";
 import { API_ROOT, USE_MOCK } from "../../../../utils/params.ts";
-import { BaseStateUpdate } from "../../../../framework/api/BaseStateUpdate.ts";
-import { BaseAPI } from "../../../../framework/api/BaseAPI.ts";
+import { BaseStateUpdate } from "../../../../framework/update/BaseStateUpdate.ts";
+import { BaseUpdater } from "../../../../framework/update/BaseUpdater.ts";
 import { getConventionData } from "../mock/MockConventionData.ts";
 import { CONVENTION_LIST_STATE } from "../../components/ConventionListComponent.ts";
 import { GAME_RESTAURANT_STATE } from "../../components/GameRestaurantComponent.ts";
@@ -20,7 +20,7 @@ const mockFunction = function () {
   };
 };
 
-const getData: BaseGet = new BaseGet(getLocationsQueryUrl, {
+const getData: BaseGetRequest = new BaseGetRequest(getLocationsQueryUrl, {
   defaultFunction: mockFunction,
   defaultFunctionPriority: USE_MOCK,
 });
@@ -48,4 +48,4 @@ const updateGameStores: BaseStateUpdate = new BaseStateUpdate(
 
 const stateUpdates = [updateConventions, updateRestaurants, updateGameStores];
 
-export const LOCATION_API = new BaseAPI(getData, stateUpdates);
+export const LOCATION_API = new BaseUpdater(getData, stateUpdates);

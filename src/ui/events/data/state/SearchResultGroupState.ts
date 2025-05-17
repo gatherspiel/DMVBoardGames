@@ -24,5 +24,7 @@ export function updateSearchResultState(groupResults: any) {
       isHidden: false,
     };
   });
-  return updatedGroupState;
+  return {
+    groups: updatedGroupState,
+  };
 }

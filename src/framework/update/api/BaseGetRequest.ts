@@ -1,8 +1,8 @@
 import type { DefaultResponse } from "./DefaultResponse.ts";
-import { BaseRequest } from "./BaseRequest.ts";
-import { getResponseData } from "../state/RequestStateManager.ts";
+import { BaseRequest } from "../BaseRequest.ts";
+import { getResponseData } from "../../state/RequestStateManager.ts";
 
-export class BaseGet extends BaseRequest {
+export class BaseGetRequest extends BaseRequest {
   mockResponse: DefaultResponse;
   getQueryUrl: (a: any) => string;
 
@@ -13,7 +13,7 @@ export class BaseGet extends BaseRequest {
   }
 
   async retrieveData(params: any): Promise<any> {
-    const baseGet: BaseGet = this;
+    const baseGet: BaseGetRequest = this;
     return await getResponseData(
       baseGet.getQueryUrl(params),
       baseGet.mockResponse,

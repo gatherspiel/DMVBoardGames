@@ -59,3 +59,7 @@ export function getDataFromState(stateName: string, param: string): string {
 
   return state.getValue(param) ?? "";
 }
+
+export function hasComponentState(stateName: string): boolean {
+  return stateName in states;
+}

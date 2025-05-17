@@ -3,11 +3,11 @@ import {
   createClient,
   SupabaseClient,
 } from "@supabase/supabase-js";
-import { ExternalRequest } from "../../framework/api/ExternalRequest.js";
-import type { DefaultResponse } from "../../framework/api/DefaultResponse.ts";
-import { BaseStateUpdate } from "../../framework/api/BaseStateUpdate.ts";
+import { ExternalRequest } from "../../framework/update/api/ExternalRequest.js";
+import type { DefaultResponse } from "../../framework/update/api/DefaultResponse.ts";
+import { BaseStateUpdate } from "../../framework/update/BaseStateUpdate.ts";
 import { LOGIN_COMPONENT_STATE, SESSION_STATE } from "./Constants.ts";
-import { BaseAPI } from "../../framework/api/BaseAPI.ts";
+import { BaseUpdater } from "../../framework/update/BaseUpdater.ts";
 import type { AuthRequest } from "./types/AuthRequest.ts";
 import { AuthResponse } from "./types/AuthResponse.ts";
 import { ImmutableState } from "../../framework/state/ImmutableState.ts";
@@ -80,7 +80,6 @@ function getSessionStateFromResponse(response: AuthResponse): ImmutableState {
   const data = {
     access_token: responseData?.session?.access_token,
   };
-  console.log(data);
   return new ImmutableState(data);
 }
 
@@ -89,4 +88,7 @@ export const updateSession: BaseStateUpdate = new BaseStateUpdate(
   getSessionStateFromResponse,
 );
 
-export const AUTH_API = new BaseAPI(authenticate, [updateLogin, updateSession]);
+export const AUTH_API = new BaseUpdater(authenticate, [
+  updateLogin,
+  updateSession,
+]);

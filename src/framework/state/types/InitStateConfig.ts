@@ -1,8 +1,8 @@
-import type { BaseAPI } from "../../api/BaseAPI.ts";
+import type { BaseUpdater } from "../../update/BaseUpdater.ts";
 
 export interface InitStateConfig {
   stateName: string;
-  dataSource: BaseAPI;
+  dataSource: BaseUpdater;
   requestData: any;
   dependencyUpdates: () => void;
 }

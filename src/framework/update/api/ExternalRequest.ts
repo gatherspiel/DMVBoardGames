@@ -1,4 +1,4 @@
-import { BaseRequest } from "./BaseRequest.ts";
+import { BaseRequest } from "../BaseRequest.ts";
 import type { DefaultResponse } from "./DefaultResponse.ts";
 
 export class ExternalRequest extends BaseRequest {
