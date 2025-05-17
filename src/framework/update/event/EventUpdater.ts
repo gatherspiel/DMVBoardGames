@@ -3,24 +3,12 @@ import type { BaseStateUpdate } from "../BaseStateUpdate.ts";
 import { EventHandlerRequest } from "./EventHandlerRequest.ts";
 
 export class EventUpdater extends BaseUpdater {
-  constructor(
-    dataFetch: EventHandlerRequest,
-    stateUpdate: BaseStateUpdate[],
-    element: Element,
-    eventName: string,
-  ) {
+  constructor(dataFetch: EventHandlerRequest, stateUpdate: BaseStateUpdate[]) {
     super(dataFetch, stateUpdate);
-
-    const retrieveData = async (e: Event) => {
-      e.preventDefault();
-
-      const data = await this.retrieveData(e);
-      this.updateData(data);
-    };
-    element.addEventListener(eventName, (e: Event) => retrieveData(e));
   }
 
-  async retrieveData(e: Event) {
-    return this.dataFetch.retrieveData(e);
+  async processEvent(e: Event) {
+    const response = await this.dataFetch.retrieveData(e);
+    this.updateData(response);
   }
 }
