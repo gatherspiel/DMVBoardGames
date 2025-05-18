@@ -10,7 +10,7 @@ import { LOGIN_COMPONENT_STATE, SESSION_STATE } from "./Constants.ts";
 import { BaseUpdater } from "../../framework/update/BaseUpdater.ts";
 import type { AuthRequest } from "./types/AuthRequest.ts";
 import { AuthResponse } from "./types/AuthResponse.ts";
-import { ImmutableState } from "../../framework/state/ImmutableState.ts";
+import { ReadOnlyState } from "../../framework/state/ReadOnlyState.ts";
 
 const supabaseClient: SupabaseClient = createClient(
   "https://karqyskuudnvfxohwkok.supabase.co",
@@ -76,14 +76,14 @@ export const updateLogin: BaseStateUpdate = new BaseStateUpdate(
  * -Store session information in HttpOnly cookie
  * @param response
  */
-function getSessionStateFromResponse(response: AuthResponse): ImmutableState {
+function getSessionStateFromResponse(response: AuthResponse): ReadOnlyState {
   const responseData = response.isLoggedIn() ? response.getData() : "";
   const data = {
     access_token: responseData?.session?.access_token,
     userId: responseData?.user?.id,
     email: responseData?.user?.email,
   };
-  return new ImmutableState(data);
+  return new ReadOnlyState(data);
 }
 
 export const updateSession: BaseStateUpdate = new BaseStateUpdate(

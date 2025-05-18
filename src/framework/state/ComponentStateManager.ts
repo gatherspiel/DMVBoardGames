@@ -3,9 +3,14 @@ import {
   subscribeToState,
   updateState,
 } from "./StateManagerUtils.js";
-import { ImmutableState } from "./ImmutableState.ts";
+import { ReadOnlyState } from "./ReadOnlyState.ts";
 
 const states: Record<string, any> = {};
+const readOnlyStates: ReadOnlyState[] = [];
+
+export function addReadOnlyState(state: ReadOnlyState) {
+  readOnlyStates.push(state);
+}
 
 export function createComponentState(
   stateName: string,
@@ -51,9 +56,12 @@ export function getComponentState(stateName: string) {
 
 export function getDataFromState(stateName: string, param: string): string {
   const state = states[stateName];
-  if (!(state instanceof ImmutableState)) {
+  console.log(stateName);
+  console.log(typeof state);
+  console.log(readOnlyStates.length);
+  if (!readOnlyStates.includes(state)) {
     throw new Error(
-      `getData can only be used for states that are defined as an instance of ImmutableState`,
+      `getData can only be used for states that are defined as an instance of ReadOnlyState`,
     );
   }
 

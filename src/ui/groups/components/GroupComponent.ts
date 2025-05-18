@@ -4,6 +4,7 @@ import {
   GROUP_COMPONENT_STATE,
   GROUP_NAME_PARAM,
 } from "../Constants.js";
+
 import { initStateOnLoad } from "../../../framework/state/RequestStateManager.ts";
 import { subscribeToComponentState } from "../../../framework/state/ComponentStateManager.ts";
 import { GroupRequestAPI } from "../data/GroupRequestAPI.ts";
@@ -55,11 +56,10 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
   }
 
   generateHTML(groupData: GroupPageData): string {
-    console.log(groupData);
     return `
 
       <div class="group-title">
-        <h1><a href=${groupData.url}>${groupData.name}</a></h1>
+        <h1>Group link: <a href=${groupData.url}>${groupData.name}</a></h1>
       </div>
       
       <div class="group-summary">
