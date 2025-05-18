@@ -19,7 +19,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   constructor(componentStateName?: string, loadConfig?: any) {
     super();
-
     this.eventHandlers = {};
     if (componentStateName) {
       this.componentStateName = componentStateName;
@@ -34,18 +33,23 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   updateData(data: any) {
     this.eventHandlers = {};
     this.idCount = 0;
-    this.innerHTML = this.generateHTML(data);
+
+    this.generateAndSaveHTML(data);
 
     const eventHandlers = this.eventHandlers;
     const elementIdTag = this.getElementIdTag();
+
     document.querySelectorAll(`[${elementIdTag}]`).forEach(function (
       item: Element,
     ) {
       const id = item.getAttribute(elementIdTag) ?? "";
       const eventConfig = eventHandlers[id];
-
       item.addEventListener(eventConfig.eventType, eventConfig.eventFunction);
     });
+  }
+
+  generateAndSaveHTML(data: any) {
+    this.innerHTML = this.generateHTML(data);
   }
 
   getElementIdTag() {
@@ -55,14 +59,19 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   saveEventHandler(
     eventFunction: (e: Event) => any,
     eventType: string,
+    targetId?: string,
   ): string {
-    const id = `${this.getElementIdTag()}=${this.idCount}`;
+    let id = `${this.getElementIdTag()}=${this.idCount}`;
 
     this.eventHandlers[this.idCount] = {
       eventType: eventType,
       eventFunction: eventFunction,
     };
     this.idCount++;
+
+    if (targetId) {
+      id += ` id=${targetId}`;
+    }
     return id;
   }
 
@@ -79,8 +88,15 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       eventConfig,
       this?.componentStateName,
     );
-
     return this.saveEventHandler(eventHandler, "submit");
+  }
+
+  createClickEvent(eventConfig: any, id?: string) {
+    const eventHandler = BaseDynamicComponent.createHandler(
+      eventConfig,
+      this?.componentStateName,
+    );
+    return this.saveEventHandler(eventHandler, "click", id);
   }
 
   static createHandler(

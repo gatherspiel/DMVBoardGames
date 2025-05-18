@@ -9,7 +9,6 @@ import {
   SEARCH_REQUEST_STATE,
 } from "./Constants.ts";
 
-import { eventSearchState } from "./EventSearchState.ts";
 import { createRequestState } from "../../../../framework/state/RequestStateManager.ts";
 import { EVENT_SEARCH_API } from "../../data/search/EventAPI.ts";
 import { LOCATION_API } from "../../data/search/LocationsAPI.ts";
@@ -26,8 +25,8 @@ const loadConfig = {
   stateName: SEARCH_REQUEST_STATE,
   dataSource: EVENT_SEARCH_API,
   requestData: {
-    city: eventSearchState.location,
-    day: eventSearchState.day,
+    city: DEFAULT_SEARCH_PARAMETER,
+    day: DEFAULT_SEARCH_PARAMETER,
   },
   dependencyUpdates: function () {
     createRequestState(SEARCH_COMPONENT_LOADED_STATE, LOCATION_API);

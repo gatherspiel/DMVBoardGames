@@ -1,29 +1,17 @@
-import { getGroupName } from "../../data/state/SearchResultGroupState.js";
+import type { EventHandlerConfig } from "../../../../framework/update/event/types/EventHandlerConfig.ts";
+import type { EventHandlerData } from "../../../../framework/update/event/types/EventHandlerData.ts";
+const NAME = "title";
 
-function showHideHandler(groupId: string) {
-  const groupName = getGroupName(groupId);
-  window.location.replace(
-    `${window.location.origin}/groups.html?name=${encodeURIComponent(groupName)}`,
-  );
-}
+export const SHOW_INFO_CONFIG: EventHandlerConfig = {
+  eventHandler: function (params: EventHandlerData) {
+    const state = params.componentState;
 
-function addEventHandler(groupElement: Element) {
-  const groupId = groupElement.id;
-  const showHideButton = document.querySelector(
-    `#${groupId} .show-hide-button`,
-  );
+    const groupId = params.targetId;
+    const groupName = state.groups[groupId][NAME];
 
-  if (showHideButton === null) {
-    throw new Error("Could not create event handler");
-  }
-  (showHideButton as HTMLElement).addEventListener("click", () =>
-    showHideHandler(groupId),
-  );
-}
-
-export function setupEventHandlers() {
-  const groups: NodeListOf<Element> = document.querySelectorAll(".event-group");
-  groups.forEach((group: Element) => {
-    addEventHandler(group);
-  });
-}
+    window.location.replace(
+      `${window.location.origin}/groups.html?name=${encodeURIComponent(groupName)}`,
+    );
+  },
+  stateToUpdate: "",
+};

@@ -1,12 +1,12 @@
-import { GROUP_SEARCH_RESULT_STATE_NAME } from "../../data/state/SearchResultGroupState.ts";
 import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.ts";
-import { setupEventHandlers } from "./EventListHandlers.ts";
 import { BaseDynamicComponent } from "../../../../framework/components/BaseDynamicComponent.ts";
 import type { GroupSearchResult } from "../../data/types/GroupSearchResult.ts";
+import { GROUP_SEARCH_RESULT_STATE_NAME } from "../event-search/Constants.ts";
+import { SHOW_INFO_CONFIG } from "./EventListHandlers.ts";
 
 export class EventListComponent extends BaseDynamicComponent {
   constructor() {
-    super();
+    super(GROUP_SEARCH_RESULT_STATE_NAME);
     subscribeToComponentState(GROUP_SEARCH_RESULT_STATE_NAME, this);
   }
 
@@ -14,7 +14,7 @@ export class EventListComponent extends BaseDynamicComponent {
     let groupHtml = "";
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
-        <button class='show-hide-button'>
+        <button class='show-hide-button' ${this.createClickEvent(SHOW_INFO_CONFIG, groupId)}>
           ${"Show info"}
         </button>
         <h2>
@@ -46,12 +46,6 @@ export class EventListComponent extends BaseDynamicComponent {
     `;
     }
     return html;
-  }
-
-  updateData(data: any): void {
-    const html = this.generateHTML(data);
-    this.innerHTML = html;
-    setupEventHandlers();
   }
 }
 
