@@ -1,3 +1,5 @@
+import type { FeatureFlagSetting } from "./types/FeatureFlagConfig.ts";
+
 export const API_ROOT: string = window.location.href.includes(
   "https://dmvboardgames.com/",
 )
@@ -9,3 +11,10 @@ export const USE_MOCK: boolean = import.meta.env.VITE_USE_API_MOCK === "true";
 export const IS_PRODUCTION = window.location.href.includes(
   "https://dmvboardgames.com/",
 );
+
+export const FEATURE_FLAGS: Record<string, FeatureFlagSetting> = {
+  loginEnabled: {
+    devEnabled: true,
+    prodEnabled: false,
+  },
+};

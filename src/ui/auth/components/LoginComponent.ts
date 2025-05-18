@@ -31,7 +31,7 @@ export class LoginComponent extends BaseDynamicComponent {
     if (!data.isLoggedIn) {
       return this.generateLogin(data);
     } else {
-      return `<p>User</p>`;
+      return `<p>Welcome ${data.email}</p>`;
     }
   }
   generateLogin(data: LoginComponentState) {
@@ -43,7 +43,7 @@ export class LoginComponent extends BaseDynamicComponent {
             <input type="password" id=${PASSWORD_INPUT} name=${PASSWORD_INPUT} />
             <button type="submit" > Login </button>
           </form>
-          <p>${data.message.trim()}</p>
+          <p>${data.errorMessage.trim()}</p>
         `;
   }
 }

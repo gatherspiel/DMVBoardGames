@@ -1,9 +1,11 @@
-export class FeatureFlagComponent extends HTMLElement {
+export abstract class BaseFeatureFlagComponent extends HTMLElement {
   featureFlagName: string;
-  constructor() {
+  protected constructor() {
     super();
     this.featureFlagName = "";
   }
+
+  abstract isFeatureFlagEnabled(featureFlagName: string): boolean;
 
   async connectedCallback() {
     const featureFlagName = this.getAttribute("featureFlagName");
@@ -13,7 +15,12 @@ export class FeatureFlagComponent extends HTMLElement {
         "FeatureFlagComponent must have a featureFlagName property",
       );
     }
+    if (this.isFeatureFlagEnabled(featureFlagName)) {
+      await this.showComponent();
+    }
+  }
 
+  async showComponent() {
     const componentPath = this.getAttribute("componentPath");
     if (!componentPath) {
       throw new Error(
@@ -37,15 +44,9 @@ export class FeatureFlagComponent extends HTMLElement {
         htmlTagName += char;
       }
     }
-    console.log(JSON.stringify(componentImport));
-
     if (!customElements.get(htmlTagName)) {
       customElements.define(htmlTagName, componentImport[className]);
     }
     this.innerHTML = `<${htmlTagName}></${htmlTagName}>`;
   }
-}
-
-if (!customElements.get("feature-flag-component")) {
-  customElements.define("feature-flag-component", FeatureFlagComponent);
 }
