@@ -11,12 +11,12 @@ export const DAYS_IN_WEEK: string[] = [
   "Saturday",
 ];
 
-export const EVENT_SEARCH_STATE = "event-search-state";
+export const GROUP_SEARCH_RESULT_STATE_NAME = "searchResultGroupState";
+
 export const SEARCH_COMPONENT_LOADED_STATE = "search-component-loaded";
 export const SEARCH_COMPONENT_LOADED_STATE_CITIES =
   "search-component-loaded-cities";
 export const SEARCH_CITY_ID: string = "search-cities";
-export const SEARCH_DAYS_ID: string = "search-days";
 
 export const SEARCH_FORM_ID: string = "search-form";
 export const SEARCH_COMPONENT_STATE: string = "EventSearchComponentState";

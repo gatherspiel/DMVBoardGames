@@ -30,11 +30,6 @@ export class ConventionListComponent extends BaseDynamicComponent {
     });
     return html;
   }
-
-  updateData(data: Record<any, Convention>) {
-    const html = this.generateHTML(data);
-    this.innerHTML = html;
-  }
 }
 
 if (!customElements.get("convention-list-component")) {

@@ -55,6 +55,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
   }
 
   generateHTML(groupData: GroupPageData): string {
+    console.log(groupData);
     return `
 
       <div class="group-title">
@@ -85,16 +86,6 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
       
       <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
     `;
-  }
-
-  //TODO: Add loading animation
-  connectedCallback() {
-    const groupParameter = getParameter(GROUP_NAME_PARAM);
-    if (groupParameter) {
-      this.textContent = `Loading group data for group ${groupParameter}`;
-    } else {
-      this.textContent = "Invalid group";
-    }
   }
 }
 

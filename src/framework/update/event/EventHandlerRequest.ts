@@ -14,6 +14,7 @@ export class EventHandlerRequest {
       return this.eventHandler({
         event: params,
         componentState: getComponentState(this.componentStateName),
+        targetId: (params.target as HTMLElement).id,
       });
     }
     return this.eventHandler({
