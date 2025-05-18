@@ -46,7 +46,8 @@ async function retrieveData(
 function getLoginComponentStateFromResponse(response: AuthResponse) {
   return {
     isLoggedIn: response.isLoggedIn(),
-    message: response.getErrorMessage(),
+    errorMessage: response.getErrorMessage(),
+    email: response?.getData()?.user?.email,
   };
 }
 
@@ -79,6 +80,8 @@ function getSessionStateFromResponse(response: AuthResponse): ImmutableState {
   const responseData = response.isLoggedIn() ? response.getData() : "";
   const data = {
     access_token: responseData?.session?.access_token,
+    userId: responseData?.user?.id,
+    email: responseData?.user?.email,
   };
   return new ImmutableState(data);
 }

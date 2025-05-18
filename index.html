@@ -44,14 +44,19 @@
     ></script>
     <script
       type="module"
-      src="/src/ui/auth/components/LoginComponent.ts"
+      src="/src/ui/utils/components/FeatureFlagComponent.ts"
     ></script>
   </head>
   <body>
     <div id="container">
       <navbar-component></navbar-component>
 
-      <login-component></login-component>
+      <feature-flag-component
+        componentPath="/src/ui/auth/components/LoginComponent.ts"
+        featureFlagName="loginEnabled"
+      >
+      </feature-flag-component>
+
       <div id="hero-sec">
 
         <div id="para-wrapper">

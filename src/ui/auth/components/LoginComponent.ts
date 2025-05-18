@@ -1,4 +1,3 @@
-import { showExperimental } from "../../../framework/util/urlParmUtils.ts";
 import { AUTH_API } from "../AuthAPI.ts";
 import {
   AUTH_REQUEST_STATE,
@@ -29,14 +28,10 @@ export class LoginComponent extends BaseDynamicComponent {
   }
 
   generateHTML(data: LoginComponentState) {
-    if (showExperimental()) {
-      if (!data.isLoggedIn) {
-        return this.generateLogin(data);
-      } else {
-        return `<p>User</p>`;
-      }
+    if (!data.isLoggedIn) {
+      return this.generateLogin(data);
     } else {
-      return `<p></p>`;
+      return `<p>Welcome ${data.email}</p>`;
     }
   }
   generateLogin(data: LoginComponentState) {
@@ -48,7 +43,7 @@ export class LoginComponent extends BaseDynamicComponent {
             <input type="password" id=${PASSWORD_INPUT} name=${PASSWORD_INPUT} />
             <button type="submit" > Login </button>
           </form>
-          <p>${data.message.trim()}</p>
+          <p>${data.errorMessage.trim()}</p>
         `;
   }
 }

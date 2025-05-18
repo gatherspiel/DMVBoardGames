@@ -30,6 +30,7 @@ export class AuthResponse {
 export function generateDefaultLoginComponentState(): LoginComponentState {
   return {
     isLoggedIn: false,
-    message: "",
+    errorMessage: "",
+    email: "",
   };
 }

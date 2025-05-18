@@ -1,4 +1,4 @@
-import { getParameter } from "../../../framework/util/urlParmUtils.ts";
+import { getParameter } from "../../../framework/utils/urlParmUtils.ts";
 import {
   GET_GROUP_REQUEST_STATE,
   GROUP_COMPONENT_STATE,
