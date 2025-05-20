@@ -2,14 +2,14 @@ import {
   DAYS_IN_WEEK,
   DEFAULT_SEARCH_PARAMETER,
   SEARCH_CITY_ID,
-  SEARCH_COMPONENT_LOADED_STATE,
-  SEARCH_COMPONENT_LOADED_STATE_CITIES,
-  SEARCH_COMPONENT_STATE,
+  SEARCH_COMPONENT_LOADED_STORE,
+  SEARCH_COMPONENT_LOADED_STORE_CITIES,
+  SEARCH_COMPONENT_STORE,
   SEARCH_FORM_ID,
-  SEARCH_REQUEST_STATE,
+  SEARCH_REQUEST_STORE,
 } from "./Constants.ts";
 
-import { createRequestState } from "../../../../framework/state/RequestStateManager.ts";
+import { createRequestStore } from "../../../../framework/store/RequestStore.ts";
 import { EVENT_SEARCH_API } from "../../data/search/EventAPI.ts";
 import { LOCATION_API } from "../../data/search/LocationsAPI.ts";
 import { CITIES_API } from "../../data/search/CityListAPI.ts";
@@ -22,42 +22,42 @@ import {
 import { BaseDynamicComponent } from "../../../../framework/components/BaseDynamicComponent.ts";
 
 const loadConfig = {
-  stateName: SEARCH_REQUEST_STATE,
+  storeName: SEARCH_REQUEST_STORE,
   dataSource: EVENT_SEARCH_API,
   requestData: {
     city: DEFAULT_SEARCH_PARAMETER,
     day: DEFAULT_SEARCH_PARAMETER,
   },
   dependencyUpdates: function () {
-    createRequestState(SEARCH_COMPONENT_LOADED_STATE, LOCATION_API);
-    createRequestState(SEARCH_COMPONENT_LOADED_STATE_CITIES, CITIES_API);
+    createRequestStore(SEARCH_COMPONENT_LOADED_STORE, LOCATION_API);
+    createRequestStore(SEARCH_COMPONENT_LOADED_STORE_CITIES, CITIES_API);
   },
 };
 
 export class EventSearchComponent extends BaseDynamicComponent {
   constructor() {
-    super(SEARCH_COMPONENT_STATE, loadConfig);
+    super(SEARCH_COMPONENT_STORE, loadConfig);
   }
 
-  generateHTML(eventSearchState: any) {
+  render(eventSearchStore: any) {
     return `
       <form id=${SEARCH_FORM_ID} ${this.createSubmitEvent(SEARCH_EVENT_HANDLER_CONFIG)}>
 
         <div id='search-input-wrapper'>
           <div>
-            ${this.getCityHtml(eventSearchState)}
+            ${this.getCityHtml(eventSearchStore)}
           </div>
           <div>
             <label htmlFor="days">Select day:</label>
             <select
               name="days"
               id="search-days"
-              value=${eventSearchState.day}
+              value=${eventSearchStore.day}
               ${this.createOnChangeEvent(UPDATE_DAY_CONFIG)}
             >
               ${DAYS_IN_WEEK.map(
                 (day, index) =>
-                  `<option key=${index} value=${day} ${day === eventSearchState.day ? "selected" : ""}>
+                  `<option key=${index} value=${day} ${day === eventSearchStore.day ? "selected" : ""}>
                     ${day === DEFAULT_SEARCH_PARAMETER ? "Any day" : day}
                    </option>`,
               )}
@@ -70,25 +70,25 @@ export class EventSearchComponent extends BaseDynamicComponent {
   `;
   }
 
-  getCityHtml(eventSearchState: any) {
+  getCityHtml(eventSearchStore: any) {
     return ` 
     <label>Select city: </label>
     <select
       id=${SEARCH_CITY_ID}
       name="cities"
-      value=${eventSearchState.cities}
+      value=${eventSearchStore.cities}
       ${this.createOnChangeEvent(UPDATE_CITY_CONFIG)}
     >
 
-    ${this.getLocationSelect(eventSearchState)}
+    ${this.getLocationSelect(eventSearchStore)}
     </select>`;
   }
 
-  getLocationSelect(eventSearchState: any) {
+  getLocationSelect(eventSearchStore: any) {
     const data = `
-    ${eventSearchState.cities?.map(
+    ${eventSearchStore.cities?.map(
       (location: EventSearchCity) =>
-        `<option key=${location.index} value="${location.name}" ${location.name === eventSearchState.location ? "selected" : ""}>
+        `<option key=${location.index} value="${location.name}" ${location.name === eventSearchStore.location ? "selected" : ""}>
           ${
             location.name === DEFAULT_SEARCH_PARAMETER
               ? "Any location"

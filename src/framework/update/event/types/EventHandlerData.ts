@@ -1,5 +1,5 @@
 export interface EventHandlerData {
   event?: Event;
-  componentState?: any;
+  componentStore?: any;
   targetId: string;
 }

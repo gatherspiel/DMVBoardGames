@@ -1,20 +1,20 @@
 import { AUTH_API } from "../AuthAPI.ts";
 import {
-  AUTH_REQUEST_STATE,
-  LOGIN_COMPONENT_STATE,
+  AUTH_REQUEST_STORE,
+  LOGIN_COMPONENT_STORE,
   LOGIN_FORM_ID,
   PASSWORD_INPUT,
   USERNAME_INPUT,
 } from "../Constants.js";
 import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
-import { generateDefaultLoginComponentState } from "../types/AuthResponse.ts";
-import type { LoginComponentState } from "../types/LoginComponentState.ts";
+import { generateDefaultLoginComponentStore } from "../types/AuthResponse.ts";
+import type { LoginComponentStore } from "../types/LoginComponentStore.ts";
 import { LOGIN_EVENT_CONFIG } from "../AuthEventHandlers.ts";
 
 export class LoginComponent extends BaseDynamicComponent {
   constructor() {
-    super(LOGIN_COMPONENT_STATE, {
-      stateName: AUTH_REQUEST_STATE,
+    super(LOGIN_COMPONENT_STORE, {
+      storeName: AUTH_REQUEST_STORE,
       dataSource: AUTH_API,
       requestData: {
         username: "",
@@ -24,17 +24,17 @@ export class LoginComponent extends BaseDynamicComponent {
   }
 
   connectedCallback() {
-    this.innerHTML = this.generateHTML(generateDefaultLoginComponentState());
+    this.innerHTML = this.render(generateDefaultLoginComponentStore());
   }
 
-  generateHTML(data: LoginComponentState) {
+  render(data: LoginComponentStore) {
     if (!data.isLoggedIn) {
       return this.generateLogin(data);
     } else {
       return `<p>Welcome ${data.email}</p>`;
     }
   }
-  generateLogin(data: LoginComponentState) {
+  generateLogin(data: LoginComponentStore) {
     return `<div>
           <form id=${LOGIN_FORM_ID} ${this.createSubmitEvent(LOGIN_EVENT_CONFIG)}>
             <label for="username">Email:</label>

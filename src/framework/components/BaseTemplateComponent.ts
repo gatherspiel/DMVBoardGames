@@ -12,5 +12,5 @@ export abstract class BaseTemplateComponent extends HTMLElement {
 
   abstract getTemplate(): HTMLTemplateElement;
 
-  abstract generateHTML(data?: any): string;
+  abstract render(data?: any): string;
 }

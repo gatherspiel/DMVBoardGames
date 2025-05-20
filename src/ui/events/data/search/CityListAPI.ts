@@ -1,12 +1,10 @@
-import { BaseGetRequest } from "../../../../framework/update/api/BaseGetRequest.ts";
 import { API_ROOT, USE_MOCK } from "../../../../utils/params.ts";
-import { BaseStateUpdate } from "../../../../framework/update/BaseStateUpdate.ts";
-import { BaseUpdater } from "../../../../framework/update/BaseUpdater.ts";
 
 import {
   DEFAULT_SEARCH_PARAMETER,
-  SEARCH_COMPONENT_STATE,
+  SEARCH_COMPONENT_STORE,
 } from "../../components/event-search/Constants.ts";
+import { generateGetApiReducer } from "../../../../framework/update/api/ApiReducerFactory.ts";
 
 const MOCK_CITY_LIST = ["Arlington", "DC"];
 
@@ -18,10 +16,10 @@ const mockFunction = function () {
   return MOCK_CITY_LIST;
 };
 
-const getData: BaseGetRequest = new BaseGetRequest(getCitiesQueryUrl, {
+export const defaultFunctionConfig = {
   defaultFunction: mockFunction,
   defaultFunctionPriority: USE_MOCK,
-});
+};
 
 const updateCities = function (cities: Record<number, string>): any {
   const cityArray = Object.values(cities);
@@ -43,9 +41,10 @@ const updateCities = function (cities: Record<number, string>): any {
   };
 };
 
-const updateCityList: BaseStateUpdate = new BaseStateUpdate(
-  SEARCH_COMPONENT_STATE,
-  updateCities,
-);
-
-export const CITIES_API = new BaseUpdater(getData, [updateCityList]);
+export const CITIES_API = generateGetApiReducer({
+  queryUrl: getCitiesQueryUrl,
+  defaultFunctionConfig: defaultFunctionConfig,
+  dispatcherItems: [
+    { updateFunction: updateCities, componentStore: SEARCH_COMPONENT_STORE },
+  ],
+});

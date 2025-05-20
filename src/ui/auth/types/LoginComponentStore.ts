@@ -1,4 +1,4 @@
-export interface LoginComponentState {
+export interface LoginComponentStore {
   isLoggedIn: boolean;
   errorMessage: string;
   email: string;

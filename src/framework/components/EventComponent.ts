@@ -43,7 +43,7 @@ export class EventComponent extends BaseTemplateComponent {
     this.id = "";
   }
 
-  generateHTML(): string {
+  render(): string {
     this.id = this.getAttribute("key") ?? "";
     const eventData = retrieveJSONProp(this, "data");
     let eventDay = "";

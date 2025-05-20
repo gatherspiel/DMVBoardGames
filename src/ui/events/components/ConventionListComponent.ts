@@ -1,13 +1,13 @@
 import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
-import { createComponentState } from "../../../framework/state/ComponentStateManager.ts";
+import { createComponentStore } from "../../../framework/store/ComponentStore.ts";
 import type { Convention } from "../data/types/Convention.ts";
 
-export const CONVENTION_LIST_STATE = "conventionListState";
+export const CONVENTION_LIST_STORE = "conventionListStore";
 export class ConventionListComponent extends BaseDynamicComponent {
   constructor() {
     super();
 
-    createComponentState(CONVENTION_LIST_STATE, this);
+    createComponentStore(CONVENTION_LIST_STORE, this);
   }
 
   getItemHtml(convention: Convention) {
@@ -22,7 +22,7 @@ export class ConventionListComponent extends BaseDynamicComponent {
   `;
   }
 
-  generateHTML(data: Record<any, Convention>) {
+  render(data: Record<any, Convention>) {
     let html = `<h1>Upcoming conventions</h1>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);

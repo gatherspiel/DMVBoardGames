@@ -42,5 +42,5 @@ export function addTemplateToComponent(component: BaseTemplateComponent) {
     throw new Error("template must be defined with a <div></div> tag");
   }
 
-  div.innerHTML = component.generateHTML();
+  div.innerHTML = component.render();
 }

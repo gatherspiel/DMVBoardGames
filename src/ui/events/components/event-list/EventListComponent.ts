@@ -1,13 +1,13 @@
-import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.ts";
+import { subscribeToComponentStore } from "../../../../framework/store/ComponentStore.ts";
 import { BaseDynamicComponent } from "../../../../framework/components/BaseDynamicComponent.ts";
 import type { GroupSearchResult } from "../../data/types/GroupSearchResult.ts";
-import { GROUP_SEARCH_RESULT_STATE_NAME } from "../event-search/Constants.ts";
+import { GROUP_SEARCH_RESULT_STORE } from "../event-search/Constants.ts";
 import { SHOW_INFO_CONFIG } from "./EventListHandlers.ts";
 
 export class EventListComponent extends BaseDynamicComponent {
   constructor() {
-    super(GROUP_SEARCH_RESULT_STATE_NAME);
-    subscribeToComponentState(GROUP_SEARCH_RESULT_STATE_NAME, this);
+    super(GROUP_SEARCH_RESULT_STORE);
+    subscribeToComponentStore(GROUP_SEARCH_RESULT_STORE, this);
   }
 
   private getItemHtml(groupId: string, group: GroupSearchResult) {
@@ -26,7 +26,7 @@ export class EventListComponent extends BaseDynamicComponent {
     return groupHtml;
   }
 
-  generateHTML(data: any): string {
+  render(data: any): string {
     const groups = data.groups;
     let html = ``;
     let visibleEvents = 0;

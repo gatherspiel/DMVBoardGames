@@ -1,11 +1,11 @@
 import { getParameter } from "../../../framework/utils/urlParmUtils.ts";
 import {
-  GET_GROUP_REQUEST_STATE,
-  GROUP_COMPONENT_STATE,
+  GET_GROUP_REQUEST_STORE,
+  GROUP_COMPONENT_STORE,
   GROUP_NAME_PARAM,
 } from "../Constants.js";
-import { initStateOnLoad } from "../../../framework/state/RequestStateManager.ts";
-import { subscribeToComponentState } from "../../../framework/state/ComponentStateManager.ts";
+import { initStoreOnLoad } from "../../../framework/store/RequestStore.ts";
+import { subscribeToComponentStore } from "../../../framework/store/ComponentStore.ts";
 import { GroupRequestAPI } from "../data/GroupRequestAPI.ts";
 
 import { createJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
@@ -40,9 +40,9 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super();
 
-    subscribeToComponentState(GROUP_COMPONENT_STATE, this);
-    initStateOnLoad({
-      stateName: GET_GROUP_REQUEST_STATE,
+    subscribeToComponentStore(GROUP_COMPONENT_STORE, this);
+    initStoreOnLoad({
+      storeName: GET_GROUP_REQUEST_STORE,
       dataSource: new GroupRequestAPI(),
       requestData: {
         name: getParameter(GROUP_NAME_PARAM),
@@ -54,12 +54,11 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
-  generateHTML(groupData: GroupPageData): string {
-    console.log(groupData);
+  render(groupData: GroupPageData): string {
     return `
 
       <div class="group-title">
-        <h1><a href=${groupData.url}>${groupData.name}</a></h1>
+        <h1>Group link: <a href=${groupData.url}>${groupData.name}</a></h1>
       </div>
       
       <div class="group-summary">

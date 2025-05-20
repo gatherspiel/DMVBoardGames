@@ -1,6 +1,6 @@
 import type { EventHandlerData } from "./EventHandlerData.ts";
 
-export interface EventHandlerConfig {
+export interface EventHandlerReducerConfig {
   eventHandler: (e: EventHandlerData) => any;
-  stateToUpdate: string;
+  storeToUpdate: string;
 }
