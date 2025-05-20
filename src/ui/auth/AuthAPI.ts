@@ -10,7 +10,7 @@ import { LOGIN_COMPONENT_STORE, SESSION_STORE } from "./Constants.ts";
 import { BaseReducer } from "../../framework/update/BaseReducer.ts";
 import type { AuthRequest } from "./types/AuthRequest.ts";
 import { AuthResponse } from "./types/AuthResponse.ts";
-import { ImmutableStore } from "../../framework/store/ImmutableStore.ts";
+import { ReadOnlyStore } from "../../framework/store/ReadOnlyStore.ts";
 
 const supabaseClient: SupabaseClient = createClient(
   "https://karqyskuudnvfxohwkok.supabase.co",
@@ -72,23 +72,23 @@ export const updateLogin: BaseDispatcher = new BaseDispatcher(
 /**
  * TODO
  *
- * -Add login status to session state.
+ * -Add login status to session store.
  * -Store session information in HttpOnly cookie
  * @param response
  */
-function getSessionStateFromResponse(response: AuthResponse): ImmutableStore {
+function getSessionStoreFromResponse(response: AuthResponse): ReadOnlyStore {
   const responseData = response.isLoggedIn() ? response.getData() : "";
   const data = {
     access_token: responseData?.session?.access_token,
     userId: responseData?.user?.id,
     email: responseData?.user?.email,
   };
-  return new ImmutableStore(data);
+  return new ReadOnlyStore(data);
 }
 
 export const updateSession: BaseDispatcher = new BaseDispatcher(
   SESSION_STORE,
-  getSessionStateFromResponse,
+  getSessionStoreFromResponse,
 );
 
 export const AUTH_API = new BaseReducer(authenticate, [

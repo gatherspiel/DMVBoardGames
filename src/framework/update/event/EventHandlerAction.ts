@@ -13,7 +13,7 @@ export class EventHandlerAction {
     if (this.eventComponentStoreName) {
       return this.eventHandler({
         event: params,
-        componentState: getComponentStore(this.eventComponentStoreName),
+        componentStore: getComponentStore(this.eventComponentStoreName),
         targetId: (params.target as HTMLElement).id,
       });
     }

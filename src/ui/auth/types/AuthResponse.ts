@@ -1,5 +1,5 @@
 import type { AuthError } from "@supabase/supabase-js";
-import type { LoginComponentState } from "./LoginComponentState.ts";
+import type { LoginComponentStore } from "./LoginComponentStore.ts";
 
 export class AuthResponse {
   private readonly loggedIn: boolean;
@@ -27,7 +27,7 @@ export class AuthResponse {
   }
 }
 
-export function generateDefaultLoginComponentState(): LoginComponentState {
+export function generateDefaultLoginComponentStore(): LoginComponentStore {
   return {
     isLoggedIn: false,
     errorMessage: "",

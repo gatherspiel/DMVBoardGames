@@ -6,6 +6,7 @@ import { BaseReducer } from "../BaseReducer.ts";
 export type DispatcherItem = {
   updateFunction: (a: any) => any;
   componentStore: string;
+  field?: string;
 };
 
 export type ApiReducerConfig = {
@@ -23,7 +24,7 @@ export function generateGetApiReducer(config: ApiReducerConfig) {
   const dispatcherItems: BaseDispatcher[] = [];
   config.dispatcherItems.forEach(function (item) {
     dispatcherItems.push(
-      new BaseDispatcher(item.componentStore, item.updateFunction),
+      new BaseDispatcher(item.componentStore, item.updateFunction, item.field),
     );
   });
   return new BaseReducer(getAction, dispatcherItems);

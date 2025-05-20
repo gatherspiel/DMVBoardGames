@@ -1,12 +1,12 @@
-import { BaseGetAction } from "../../../../framework/update/api/BaseGetAction.ts";
 import { API_ROOT, USE_MOCK } from "../../../../utils/params.ts";
-import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.ts";
-import { GROUP_SEARCH_RESULT_STATE_NAME } from "../../components/event-search/Constants.ts";
+import {
+  DEFAULT_SEARCH_PARAMETER,
+  GROUP_SEARCH_RESULT_STORE,
+} from "../../components/event-search/Constants.ts";
 import { getGroups } from "../mock/MockPageData.ts";
-import { BaseDispatcher } from "../../../../framework/update/BaseDispatcher.ts";
-import { updateSearchResultState } from "../state/SearchResultGroupState.ts";
-import { BaseReducer } from "../../../../framework/update/BaseReducer.ts";
+import { updateSearchResultGroupStore } from "../store/SearchResultGroupStore.ts";
 import type { SearchParams } from "./model/SearchParams.ts";
+import { generateGetApiReducer } from "../../../../framework/update/api/ApiReducerFactory.ts";
 
 const CITY_PARAM = "city";
 const DAY_PARAM = "day";
@@ -39,15 +39,19 @@ function getEventsQueryUrl(searchParams: SearchParams) {
   return url;
 }
 
-const searchEvents: BaseGetAction = new BaseGetAction(getEventsQueryUrl, {
+const defaultFunctionConfig = {
   defaultFunction: getGroups,
   defaultFunctionPriority: USE_MOCK,
+};
+
+export const EVENT_SEARCH_API = generateGetApiReducer({
+  queryUrl: getEventsQueryUrl,
+  defaultFunctionConfig: defaultFunctionConfig,
+  dispatcherItems: [
+    {
+      updateFunction: updateSearchResultGroupStore,
+      componentStore: GROUP_SEARCH_RESULT_STORE,
+      field: "groupData",
+    },
+  ],
 });
-
-const updateEvents: BaseDispatcher = new BaseDispatcher(
-  GROUP_SEARCH_RESULT_STATE_NAME,
-  updateSearchResultState,
-  "groupData",
-);
-
-export const EVENT_SEARCH_API = new BaseReducer(searchEvents, [updateEvents]);

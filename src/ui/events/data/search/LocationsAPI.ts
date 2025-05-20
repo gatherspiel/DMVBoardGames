@@ -1,12 +1,10 @@
-import { BaseGetAction } from "../../../../framework/update/api/BaseGetAction.ts";
 import { getGameRestaurants, getGameStores } from "../mock/MockPageData.ts";
 import { API_ROOT, USE_MOCK } from "../../../../utils/params.ts";
-import { BaseDispatcher } from "../../../../framework/update/BaseDispatcher.ts";
-import { BaseReducer } from "../../../../framework/update/BaseReducer.ts";
 import { getConventionData } from "../mock/MockConventionData.ts";
-import { CONVENTION_LIST_STATE } from "../../components/ConventionListComponent.ts";
-import { GAME_RESTAURANT_STATE } from "../../components/GameRestaurantComponent.ts";
-import { GAME_STORE_LIST_STATE } from "../../components/GameStoreListComponent.ts";
+import { CONVENTION_LIST_STORE } from "../../components/ConventionListComponent.ts";
+import { GAME_RESTAURANT_LIST_STORE } from "../../components/GameRestaurantComponent.ts";
+import { GAME_STORE_LIST_STORE } from "../../components/GameStoreListComponent.ts";
+import { generateGetApiReducer } from "../../../../framework/update/api/ApiReducerFactory.ts";
 
 function getLocationsQueryUrl() {
   return API_ROOT + "/searchLocations?area=dmv";
@@ -20,32 +18,32 @@ const mockFunction = function () {
   };
 };
 
-const getData: BaseGetAction = new BaseGetAction(getLocationsQueryUrl, {
+const defaultFunctionConfig = {
   defaultFunction: mockFunction,
   defaultFunctionPriority: USE_MOCK,
+};
+
+export const LOCATION_API = generateGetApiReducer({
+  queryUrl: getLocationsQueryUrl,
+  defaultFunctionConfig: defaultFunctionConfig,
+  dispatcherItems: [
+    {
+      updateFunction: (data) => {
+        return data.gameStores;
+      },
+      componentStore: GAME_STORE_LIST_STORE,
+    },
+    {
+      updateFunction: (data) => {
+        return data.gameRestaurants;
+      },
+      componentStore: GAME_RESTAURANT_LIST_STORE,
+    },
+    {
+      updateFunction: (data) => {
+        return data.conventions;
+      },
+      componentStore: CONVENTION_LIST_STORE,
+    },
+  ],
 });
-
-const updateConventions: BaseDispatcher = new BaseDispatcher(
-  CONVENTION_LIST_STATE,
-  (data) => {
-    return data.conventions;
-  },
-);
-
-const updateRestaurants: BaseDispatcher = new BaseDispatcher(
-  GAME_RESTAURANT_STATE,
-  (data) => {
-    return data.gameRestaurants;
-  },
-);
-
-const updateGameStores: BaseDispatcher = new BaseDispatcher(
-  GAME_STORE_LIST_STATE,
-  (data) => {
-    return data.gameStores;
-  },
-);
-
-const stateUpdates = [updateConventions, updateRestaurants, updateGameStores];
-
-export const LOCATION_API = new BaseReducer(getData, stateUpdates);

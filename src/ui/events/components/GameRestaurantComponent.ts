@@ -2,11 +2,11 @@ import { createComponentStore } from "../../../framework/store/ComponentStore.ts
 import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
 import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
 
-export const GAME_RESTAURANT_STATE = "gameRestaurantListState";
+export const GAME_RESTAURANT_LIST_STORE = "gameRestaurantListStore";
 export class GameRestaurantComponent extends BaseDynamicComponent {
   constructor() {
     super();
-    createComponentStore(GAME_RESTAURANT_STATE, this);
+    createComponentStore(GAME_RESTAURANT_LIST_STORE, this);
   }
 
   getItemHtml(gameRestaurant: GameRestaurant) {

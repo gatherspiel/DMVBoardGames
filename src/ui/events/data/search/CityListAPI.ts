@@ -2,7 +2,7 @@ import { API_ROOT, USE_MOCK } from "../../../../utils/params.ts";
 
 import {
   DEFAULT_SEARCH_PARAMETER,
-  SEARCH_COMPONENT_STATE,
+  SEARCH_COMPONENT_STORE,
 } from "../../components/event-search/Constants.ts";
 import { generateGetApiReducer } from "../../../../framework/update/api/ApiReducerFactory.ts";
 
@@ -45,6 +45,6 @@ export const CITIES_API = generateGetApiReducer({
   queryUrl: getCitiesQueryUrl,
   defaultFunctionConfig: defaultFunctionConfig,
   dispatcherItems: [
-    { updateFunction: updateCities, componentStore: SEARCH_COMPONENT_STATE },
+    { updateFunction: updateCities, componentStore: SEARCH_COMPONENT_STORE },
   ],
 });

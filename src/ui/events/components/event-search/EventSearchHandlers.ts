@@ -1,5 +1,5 @@
-import { SEARCH_COMPONENT_STATE } from "./Constants.ts";
-import { SEARCH_REQUEST_STATE } from "./Constants.ts";
+import { SEARCH_COMPONENT_STORE } from "./Constants.ts";
+import { SEARCH_REQUEST_STORE } from "./Constants.ts";
 
 import type { EventHandlerData } from "../../../../framework/update/event/types/EventHandlerData.ts";
 import type { EventHandlerReducerConfig } from "../../../../framework/update/event/types/EventHandlerReducerConfig.ts";
@@ -10,7 +10,7 @@ export const SEARCH_EVENT_HANDLER_CONFIG: EventHandlerReducerConfig = {
       day: params.componentStore.day,
     };
   },
-  storeToUpdate: SEARCH_REQUEST_STATE,
+  storeToUpdate: SEARCH_REQUEST_STORE,
 };
 
 export const UPDATE_CITY_CONFIG: EventHandlerReducerConfig = {
@@ -19,7 +19,7 @@ export const UPDATE_CITY_CONFIG: EventHandlerReducerConfig = {
       location: (params.event?.target as HTMLInputElement).value,
     };
   },
-  storeToUpdate: SEARCH_COMPONENT_STATE,
+  storeToUpdate: SEARCH_COMPONENT_STORE,
 };
 
 export const UPDATE_DAY_CONFIG: EventHandlerReducerConfig = {
@@ -28,5 +28,5 @@ export const UPDATE_DAY_CONFIG: EventHandlerReducerConfig = {
       day: (params.event?.target as HTMLInputElement).value,
     };
   },
-  storeToUpdate: SEARCH_COMPONENT_STATE,
+  storeToUpdate: SEARCH_COMPONENT_STORE,
 };

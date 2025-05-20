@@ -1,7 +1,7 @@
 import { getParameter } from "../../../framework/utils/urlParmUtils.ts";
 import {
-  GET_GROUP_REQUEST_STATE,
-  GROUP_COMPONENT_STATE,
+  GET_GROUP_REQUEST_STORE,
+  GROUP_COMPONENT_STORE,
   GROUP_NAME_PARAM,
 } from "../Constants.js";
 import { initStoreOnLoad } from "../../../framework/store/RequestStore.ts";
@@ -40,9 +40,9 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super();
 
-    subscribeToComponentStore(GROUP_COMPONENT_STATE, this);
+    subscribeToComponentStore(GROUP_COMPONENT_STORE, this);
     initStoreOnLoad({
-      stateName: GET_GROUP_REQUEST_STATE,
+      storeName: GET_GROUP_REQUEST_STORE,
       dataSource: new GroupRequestAPI(),
       requestData: {
         name: getParameter(GROUP_NAME_PARAM),
@@ -55,11 +55,10 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
   }
 
   render(groupData: GroupPageData): string {
-    console.log(groupData);
     return `
 
       <div class="group-title">
-        <h1><a href=${groupData.url}>${groupData.name}</a></h1>
+        <h1>Group link: <a href=${groupData.url}>${groupData.name}</a></h1>
       </div>
       
       <div class="group-summary">

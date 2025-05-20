@@ -101,23 +101,23 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   static createHandler(
     eventConfig: EventHandlerReducerConfig,
-    componentStateName?: string,
+    componentStoreName?: string,
   ) {
     const handler = function (e: Event) {
       e.preventDefault();
       const request: EventHandlerAction = new EventHandlerAction(
         eventConfig.eventHandler,
-        componentStateName,
+        componentStoreName,
       );
 
-      const stateUpdate = new BaseDispatcher(
+      const storeUpdate = new BaseDispatcher(
         eventConfig.storeToUpdate,
         (a: any): any => {
           return a;
         },
       );
       const eventUpdater: EventReducer = new EventReducer(request, [
-        stateUpdate,
+        storeUpdate,
       ]);
       eventUpdater.processEvent(e);
     };

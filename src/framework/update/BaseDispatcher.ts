@@ -1,5 +1,5 @@
 /*
- Updates state after an API response is returned
+ Updates store after an API response is returned
  */
 import { updateComponentStore } from "../store/ComponentStore.ts";
 import { hasRequestStore, updateRequestStore } from "../store/RequestStore.ts";
@@ -10,12 +10,12 @@ export class BaseDispatcher {
   responseField?: string;
 
   constructor(
-    stateName: string,
-    stateUpdate: (a: any) => any,
+    storeName: string,
+    storeUpdate: (a: any) => any,
     responseField?: string,
   ) {
-    this.storeField = stateName;
-    this.reducerUpdate = stateUpdate;
+    this.storeField = storeName;
+    this.reducerUpdate = storeUpdate;
     this.responseField = responseField;
   }
 

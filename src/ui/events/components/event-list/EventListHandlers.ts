@@ -4,10 +4,10 @@ const NAME = "title";
 
 export const SHOW_INFO_CONFIG: EventHandlerReducerConfig = {
   eventHandler: function (params: EventHandlerData) {
-    const state = params.componentStore;
+    const store = params.componentStore;
 
     const groupId = params.targetId;
-    const groupName = state.groups[groupId][NAME];
+    const groupName = store.groups[groupId][NAME];
 
     window.location.replace(
       `${window.location.origin}/groups.html?name=${encodeURIComponent(groupName)}`,
