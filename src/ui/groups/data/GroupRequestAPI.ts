@@ -1,6 +1,6 @@
 import { API_ROOT } from "../../../utils/params.js";
-import { getResponseData } from "../../../framework/state/RequestStateManager.ts";
-import { updateComponentState } from "../../../framework/state/ComponentStateManager.ts";
+import { getResponseData } from "../../../framework/store/RequestStore.ts";
+import { updateComponentStore } from "../../../framework/store/ComponentStore.ts";
 import { GROUP_COMPONENT_STATE } from "../Constants.js";
 
 export class GroupRequestAPI {
@@ -13,7 +13,7 @@ export class GroupRequestAPI {
   }
 
   async updateData(response: any) {
-    updateComponentState(
+    updateComponentStore(
       GROUP_COMPONENT_STATE,
       function (data) {
         return data;

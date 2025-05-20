@@ -3,14 +3,14 @@ import {
   createClient,
   SupabaseClient,
 } from "@supabase/supabase-js";
-import { ExternalRequest } from "../../framework/update/api/ExternalRequest.js";
-import type { DefaultResponse } from "../../framework/update/api/DefaultResponse.ts";
-import { BaseStateUpdate } from "../../framework/update/BaseStateUpdate.ts";
-import { LOGIN_COMPONENT_STATE, SESSION_STATE } from "./Constants.ts";
-import { BaseUpdater } from "../../framework/update/BaseUpdater.ts";
+import { ExternalReducerAction } from "../../framework/update/api/ExternalReducerAction.js";
+import type { DefaultApiAction } from "../../framework/update/api/DefaultApiAction.ts";
+import { BaseDispatcher } from "../../framework/update/BaseDispatcher.ts";
+import { LOGIN_COMPONENT_STORE, SESSION_STORE } from "./Constants.ts";
+import { BaseReducer } from "../../framework/update/BaseReducer.ts";
 import type { AuthRequest } from "./types/AuthRequest.ts";
 import { AuthResponse } from "./types/AuthResponse.ts";
-import { ImmutableState } from "../../framework/state/ImmutableState.ts";
+import { ImmutableStore } from "../../framework/store/ImmutableStore.ts";
 
 const supabaseClient: SupabaseClient = createClient(
   "https://karqyskuudnvfxohwkok.supabase.co",
@@ -19,7 +19,7 @@ const supabaseClient: SupabaseClient = createClient(
 
 async function retrieveData(
   params: AuthRequest,
-  backupResponse: DefaultResponse,
+  backupResponse: DefaultApiAction,
 ): Promise<AuthResponse> {
   if (
     backupResponse.defaultFunctionPriority &&
@@ -43,7 +43,7 @@ async function retrieveData(
   }
 }
 
-function getLoginComponentStateFromResponse(response: AuthResponse) {
+function getLoginComponentStoreFromResponse(response: AuthResponse) {
   return {
     isLoggedIn: response.isLoggedIn(),
     errorMessage: response.getErrorMessage(),
@@ -59,14 +59,14 @@ const defaultResponse = {
   defaultFunctionPriority: false,
 };
 
-export const authenticate: ExternalRequest = new ExternalRequest(
+export const authenticate: ExternalReducerAction = new ExternalReducerAction(
   retrieveData,
   defaultResponse,
 );
 
-export const updateLogin: BaseStateUpdate = new BaseStateUpdate(
-  LOGIN_COMPONENT_STATE,
-  getLoginComponentStateFromResponse,
+export const updateLogin: BaseDispatcher = new BaseDispatcher(
+  LOGIN_COMPONENT_STORE,
+  getLoginComponentStoreFromResponse,
 );
 
 /**
@@ -76,22 +76,22 @@ export const updateLogin: BaseStateUpdate = new BaseStateUpdate(
  * -Store session information in HttpOnly cookie
  * @param response
  */
-function getSessionStateFromResponse(response: AuthResponse): ImmutableState {
+function getSessionStateFromResponse(response: AuthResponse): ImmutableStore {
   const responseData = response.isLoggedIn() ? response.getData() : "";
   const data = {
     access_token: responseData?.session?.access_token,
     userId: responseData?.user?.id,
     email: responseData?.user?.email,
   };
-  return new ImmutableState(data);
+  return new ImmutableStore(data);
 }
 
-export const updateSession: BaseStateUpdate = new BaseStateUpdate(
-  SESSION_STATE,
+export const updateSession: BaseDispatcher = new BaseDispatcher(
+  SESSION_STORE,
   getSessionStateFromResponse,
 );
 
-export const AUTH_API = new BaseUpdater(authenticate, [
+export const AUTH_API = new BaseReducer(authenticate, [
   updateLogin,
   updateSession,
 ]);

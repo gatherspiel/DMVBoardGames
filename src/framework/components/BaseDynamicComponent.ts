@@ -1,11 +1,11 @@
 import type { DisplayItem } from "../../ui/events/data/types/DisplayItem.ts";
 
-import { createComponentState } from "../state/ComponentStateManager.ts";
-import { initStateOnLoad } from "../state/RequestStateManager.ts";
-import { EventHandlerRequest } from "../update/event/EventHandlerRequest.ts";
-import { BaseStateUpdate } from "../update/BaseStateUpdate.ts";
-import { EventUpdater } from "../update/event/EventUpdater.ts";
-import type { EventHandlerConfig } from "../update/event/types/EventHandlerConfig.ts";
+import { createComponentStore } from "../store/ComponentStore.ts";
+import { initStoreOnLoad } from "../store/RequestStore.ts";
+import { EventHandlerAction } from "../update/event/EventHandlerAction.ts";
+import { BaseDispatcher } from "../update/BaseDispatcher.ts";
+import { EventReducer } from "../update/event/EventReducer.ts";
+import type { EventHandlerReducerConfig } from "../update/event/types/EventHandlerReducerConfig.ts";
 
 type EventConfig = {
   eventType: string;
@@ -13,24 +13,24 @@ type EventConfig = {
 };
 
 export abstract class BaseDynamicComponent extends HTMLElement {
-  componentStateName?: string;
+  componentStoreName?: string;
   eventHandlers: Record<string, EventConfig>;
   idCount = 0;
 
-  constructor(componentStateName?: string, loadConfig?: any) {
+  constructor(componentStoreName?: string, loadConfig?: any) {
     super();
     this.eventHandlers = {};
-    if (componentStateName) {
-      this.componentStateName = componentStateName;
-      createComponentState(componentStateName, this);
+    if (componentStoreName) {
+      this.componentStoreName = componentStoreName;
+      createComponentStore(componentStoreName, this);
     }
 
     if (loadConfig) {
-      initStateOnLoad(loadConfig);
+      initStoreOnLoad(loadConfig);
     }
   }
 
-  updateData(data: any) {
+  updateStore(data: any) {
     this.eventHandlers = {};
     this.idCount = 0;
 
@@ -49,11 +49,11 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   generateAndSaveHTML(data: any) {
-    this.innerHTML = this.generateHTML(data);
+    this.innerHTML = this.render(data);
   }
 
   getElementIdTag() {
-    return `data-${this.componentStateName}-element-id`;
+    return `data-${this.componentStoreName}-element-id`;
   }
   //TODO: Handle case where there are multiple instances of the same component for generating the ids for event handlers.
   saveEventHandler(
@@ -78,7 +78,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   createOnChangeEvent(eventConfig: any) {
     const eventHandler = BaseDynamicComponent.createHandler(
       eventConfig,
-      this?.componentStateName,
+      this?.componentStoreName,
     );
     return this.saveEventHandler(eventHandler, "change");
   }
@@ -86,7 +86,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   createSubmitEvent(eventConfig: any) {
     const eventHandler = BaseDynamicComponent.createHandler(
       eventConfig,
-      this?.componentStateName,
+      this?.componentStoreName,
     );
     return this.saveEventHandler(eventHandler, "submit");
   }
@@ -94,29 +94,29 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   createClickEvent(eventConfig: any, id?: string) {
     const eventHandler = BaseDynamicComponent.createHandler(
       eventConfig,
-      this?.componentStateName,
+      this?.componentStoreName,
     );
     return this.saveEventHandler(eventHandler, "click", id);
   }
 
   static createHandler(
-    eventConfig: EventHandlerConfig,
+    eventConfig: EventHandlerReducerConfig,
     componentStateName?: string,
   ) {
     const handler = function (e: Event) {
       e.preventDefault();
-      const request: EventHandlerRequest = new EventHandlerRequest(
+      const request: EventHandlerAction = new EventHandlerAction(
         eventConfig.eventHandler,
         componentStateName,
       );
 
-      const stateUpdate = new BaseStateUpdate(
-        eventConfig.stateToUpdate,
+      const stateUpdate = new BaseDispatcher(
+        eventConfig.storeToUpdate,
         (a: any): any => {
           return a;
         },
       );
-      const eventUpdater: EventUpdater = new EventUpdater(request, [
+      const eventUpdater: EventReducer = new EventReducer(request, [
         stateUpdate,
       ]);
       eventUpdater.processEvent(e);
@@ -125,5 +125,5 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     return handler;
   }
 
-  abstract generateHTML(data: Record<any, DisplayItem> | any): string;
+  abstract render(data: Record<any, DisplayItem> | any): string;
 }

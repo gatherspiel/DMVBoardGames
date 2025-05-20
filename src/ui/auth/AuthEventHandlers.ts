@@ -1,11 +1,11 @@
 import {
-  AUTH_REQUEST_STATE,
+  AUTH_REQUEST_STORE,
   PASSWORD_INPUT,
   USERNAME_INPUT,
 } from "./Constants.js";
-import type { EventHandlerConfig } from "../../framework/update/event/types/EventHandlerConfig.ts";
+import type { EventHandlerReducerConfig } from "../../framework/update/event/types/EventHandlerReducerConfig.ts";
 
-export const LOGIN_EVENT_CONFIG: EventHandlerConfig = {
+export const LOGIN_EVENT_CONFIG: EventHandlerReducerConfig = {
   eventHandler: function () {
     return {
       username:
@@ -16,5 +16,5 @@ export const LOGIN_EVENT_CONFIG: EventHandlerConfig = {
         "",
     };
   },
-  stateToUpdate: AUTH_REQUEST_STATE,
+  storeToUpdate: AUTH_REQUEST_STORE,
 };

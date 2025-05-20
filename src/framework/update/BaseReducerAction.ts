@@ -1,3 +1,3 @@
-export abstract class BaseRequest {
+export abstract class BaseReducerAction {
   abstract retrieveData(params: any): any;
 }

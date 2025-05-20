@@ -1,7 +1,7 @@
 /**
  * Default response for API calls.
  */
-export interface DefaultResponse {
+export interface DefaultApiAction {
   /**
    * Function to run when the API endpoint throws an error or is disabled.
    * @param info

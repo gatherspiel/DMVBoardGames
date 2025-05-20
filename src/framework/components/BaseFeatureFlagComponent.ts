@@ -16,11 +16,11 @@ export abstract class BaseFeatureFlagComponent extends HTMLElement {
       );
     }
     if (this.isFeatureFlagEnabled(featureFlagName)) {
-      await this.showComponent();
+      await this.render();
     }
   }
 
-  async showComponent() {
+  async render() {
     const componentPath = this.getAttribute("componentPath");
     if (!componentPath) {
       throw new Error(

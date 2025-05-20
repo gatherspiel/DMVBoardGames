@@ -1,4 +1,4 @@
-export class ImmutableState {
+export class ImmutableStore {
   private readonly data: Record<string, string>;
 
   constructor(data: Record<string, string>) {

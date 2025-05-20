@@ -9,7 +9,7 @@ import {
   SEARCH_REQUEST_STATE,
 } from "./Constants.ts";
 
-import { createRequestState } from "../../../../framework/state/RequestStateManager.ts";
+import { createRequestStore } from "../../../../framework/store/RequestStore.ts";
 import { EVENT_SEARCH_API } from "../../data/search/EventAPI.ts";
 import { LOCATION_API } from "../../data/search/LocationsAPI.ts";
 import { CITIES_API } from "../../data/search/CityListAPI.ts";
@@ -29,8 +29,8 @@ const loadConfig = {
     day: DEFAULT_SEARCH_PARAMETER,
   },
   dependencyUpdates: function () {
-    createRequestState(SEARCH_COMPONENT_LOADED_STATE, LOCATION_API);
-    createRequestState(SEARCH_COMPONENT_LOADED_STATE_CITIES, CITIES_API);
+    createRequestStore(SEARCH_COMPONENT_LOADED_STATE, LOCATION_API);
+    createRequestStore(SEARCH_COMPONENT_LOADED_STATE_CITIES, CITIES_API);
   },
 };
 
@@ -39,7 +39,7 @@ export class EventSearchComponent extends BaseDynamicComponent {
     super(SEARCH_COMPONENT_STATE, loadConfig);
   }
 
-  generateHTML(eventSearchState: any) {
+  render(eventSearchState: any) {
     return `
       <form id=${SEARCH_FORM_ID} ${this.createSubmitEvent(SEARCH_EVENT_HANDLER_CONFIG)}>
 

@@ -1,7 +1,7 @@
 import { AUTH_API } from "../AuthAPI.ts";
 import {
-  AUTH_REQUEST_STATE,
-  LOGIN_COMPONENT_STATE,
+  AUTH_REQUEST_STORE,
+  LOGIN_COMPONENT_STORE,
   LOGIN_FORM_ID,
   PASSWORD_INPUT,
   USERNAME_INPUT,
@@ -13,8 +13,8 @@ import { LOGIN_EVENT_CONFIG } from "../AuthEventHandlers.ts";
 
 export class LoginComponent extends BaseDynamicComponent {
   constructor() {
-    super(LOGIN_COMPONENT_STATE, {
-      stateName: AUTH_REQUEST_STATE,
+    super(LOGIN_COMPONENT_STORE, {
+      stateName: AUTH_REQUEST_STORE,
       dataSource: AUTH_API,
       requestData: {
         username: "",
@@ -24,10 +24,10 @@ export class LoginComponent extends BaseDynamicComponent {
   }
 
   connectedCallback() {
-    this.innerHTML = this.generateHTML(generateDefaultLoginComponentState());
+    this.innerHTML = this.render(generateDefaultLoginComponentState());
   }
 
-  generateHTML(data: LoginComponentState) {
+  render(data: LoginComponentState) {
     if (!data.isLoggedIn) {
       return this.generateLogin(data);
     } else {

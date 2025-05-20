@@ -1,8 +1,8 @@
-import { BaseGetRequest } from "../../../../framework/update/api/BaseGetRequest.ts";
+import { BaseGetAction } from "../../../../framework/update/api/BaseGetAction.ts";
 import { getGameRestaurants, getGameStores } from "../mock/MockPageData.ts";
 import { API_ROOT, USE_MOCK } from "../../../../utils/params.ts";
-import { BaseStateUpdate } from "../../../../framework/update/BaseStateUpdate.ts";
-import { BaseUpdater } from "../../../../framework/update/BaseUpdater.ts";
+import { BaseDispatcher } from "../../../../framework/update/BaseDispatcher.ts";
+import { BaseReducer } from "../../../../framework/update/BaseReducer.ts";
 import { getConventionData } from "../mock/MockConventionData.ts";
 import { CONVENTION_LIST_STATE } from "../../components/ConventionListComponent.ts";
 import { GAME_RESTAURANT_STATE } from "../../components/GameRestaurantComponent.ts";
@@ -20,26 +20,26 @@ const mockFunction = function () {
   };
 };
 
-const getData: BaseGetRequest = new BaseGetRequest(getLocationsQueryUrl, {
+const getData: BaseGetAction = new BaseGetAction(getLocationsQueryUrl, {
   defaultFunction: mockFunction,
   defaultFunctionPriority: USE_MOCK,
 });
 
-const updateConventions: BaseStateUpdate = new BaseStateUpdate(
+const updateConventions: BaseDispatcher = new BaseDispatcher(
   CONVENTION_LIST_STATE,
   (data) => {
     return data.conventions;
   },
 );
 
-const updateRestaurants: BaseStateUpdate = new BaseStateUpdate(
+const updateRestaurants: BaseDispatcher = new BaseDispatcher(
   GAME_RESTAURANT_STATE,
   (data) => {
     return data.gameRestaurants;
   },
 );
 
-const updateGameStores: BaseStateUpdate = new BaseStateUpdate(
+const updateGameStores: BaseDispatcher = new BaseDispatcher(
   GAME_STORE_LIST_STATE,
   (data) => {
     return data.gameStores;
@@ -48,4 +48,4 @@ const updateGameStores: BaseStateUpdate = new BaseStateUpdate(
 
 const stateUpdates = [updateConventions, updateRestaurants, updateGameStores];
 
-export const LOCATION_API = new BaseUpdater(getData, stateUpdates);
+export const LOCATION_API = new BaseReducer(getData, stateUpdates);

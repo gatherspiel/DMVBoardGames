@@ -4,8 +4,8 @@ import {
   GROUP_COMPONENT_STATE,
   GROUP_NAME_PARAM,
 } from "../Constants.js";
-import { initStateOnLoad } from "../../../framework/state/RequestStateManager.ts";
-import { subscribeToComponentState } from "../../../framework/state/ComponentStateManager.ts";
+import { initStoreOnLoad } from "../../../framework/store/RequestStore.ts";
+import { subscribeToComponentStore } from "../../../framework/store/ComponentStore.ts";
 import { GroupRequestAPI } from "../data/GroupRequestAPI.ts";
 
 import { createJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
@@ -40,8 +40,8 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super();
 
-    subscribeToComponentState(GROUP_COMPONENT_STATE, this);
-    initStateOnLoad({
+    subscribeToComponentStore(GROUP_COMPONENT_STATE, this);
+    initStoreOnLoad({
       stateName: GET_GROUP_REQUEST_STATE,
       dataSource: new GroupRequestAPI(),
       requestData: {
@@ -54,7 +54,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
-  generateHTML(groupData: GroupPageData): string {
+  render(groupData: GroupPageData): string {
     console.log(groupData);
     return `
 

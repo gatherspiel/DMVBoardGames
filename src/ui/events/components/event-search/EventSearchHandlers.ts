@@ -2,31 +2,31 @@ import { SEARCH_COMPONENT_STATE } from "./Constants.ts";
 import { SEARCH_REQUEST_STATE } from "./Constants.ts";
 
 import type { EventHandlerData } from "../../../../framework/update/event/types/EventHandlerData.ts";
-import type { EventHandlerConfig } from "../../../../framework/update/event/types/EventHandlerConfig.ts";
-export const SEARCH_EVENT_HANDLER_CONFIG: EventHandlerConfig = {
+import type { EventHandlerReducerConfig } from "../../../../framework/update/event/types/EventHandlerReducerConfig.ts";
+export const SEARCH_EVENT_HANDLER_CONFIG: EventHandlerReducerConfig = {
   eventHandler: function (params: EventHandlerData) {
     return {
-      location: params.componentState.location,
-      day: params.componentState.day,
+      location: params.componentStore.location,
+      day: params.componentStore.day,
     };
   },
-  stateToUpdate: SEARCH_REQUEST_STATE,
+  storeToUpdate: SEARCH_REQUEST_STATE,
 };
 
-export const UPDATE_CITY_CONFIG: EventHandlerConfig = {
+export const UPDATE_CITY_CONFIG: EventHandlerReducerConfig = {
   eventHandler: function (params: EventHandlerData) {
     return {
       location: (params.event?.target as HTMLInputElement).value,
     };
   },
-  stateToUpdate: SEARCH_COMPONENT_STATE,
+  storeToUpdate: SEARCH_COMPONENT_STATE,
 };
 
-export const UPDATE_DAY_CONFIG: EventHandlerConfig = {
+export const UPDATE_DAY_CONFIG: EventHandlerReducerConfig = {
   eventHandler: function (params: EventHandlerData) {
     return {
       day: (params.event?.target as HTMLInputElement).value,
     };
   },
-  stateToUpdate: SEARCH_COMPONENT_STATE,
+  storeToUpdate: SEARCH_COMPONENT_STATE,
 };

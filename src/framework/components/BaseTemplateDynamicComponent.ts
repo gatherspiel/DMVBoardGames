@@ -6,7 +6,7 @@ export abstract class BaseTemplateDynamicComponent extends BaseDynamicComponent 
     this.attachShadow({ mode: "open" });
     this.shadowRoot!.appendChild(this.getTemplate().content.cloneNode(true));
     const div = getElementWithSelector("div", this.shadowRoot!);
-    div.innerHTML = this.generateHTML(data);
+    div.innerHTML = this.render(data);
   }
 
   abstract getTemplate(): HTMLTemplateElement;
