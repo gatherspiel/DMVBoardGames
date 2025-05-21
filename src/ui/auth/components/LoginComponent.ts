@@ -4,7 +4,6 @@ import {
 } from "../AuthReducer.ts";
 import {
   AUTH_REQUEST_STORE,
-  LOGIN_COMPONENT_STORE,
   LOGIN_FORM_ID,
   PASSWORD_INPUT,
   USERNAME_INPUT,
@@ -16,7 +15,7 @@ import { LOGIN_EVENT_CONFIG } from "../AuthEventHandlers.ts";
 
 export class LoginComponent extends BaseDynamicComponent {
   constructor() {
-    super(LOGIN_COMPONENT_STORE, {
+    super("loginComponentStore", {
       storeName: AUTH_REQUEST_STORE,
       dataSource: AUTH_REDUCER,
       requestData: {

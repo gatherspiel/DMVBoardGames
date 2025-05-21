@@ -9,8 +9,10 @@ import { SESSION_STORE } from "./Constants.ts";
 import { BaseReducer } from "../../framework/reducer/BaseReducer.ts";
 import type { AuthRequest } from "./types/AuthRequest.ts";
 import { AuthResponse } from "./types/AuthResponse.ts";
-import { ReadOnlyStore } from "../../framework/store/ReadOnlyStore.ts";
+import { GlobalReadOnlyStore } from "../../framework/store/GlobalReadOnlyStore.ts";
 import { generateApiReducerWithExternalClient } from "../../framework/reducer/api/ApiReducerFactory.ts";
+import { getLocalStorageData } from "../../framework/utils/localStorageUtils.ts";
+import { isAfterNow } from "../../framework/utils/dateUtils.ts";
 
 const supabaseClient: SupabaseClient = createClient(
   "https://karqyskuudnvfxohwkok.supabase.co",
@@ -27,6 +29,16 @@ async function retrieveData(
   ) {
     return backupResponse.defaultFunction();
   }
+
+  const authData = await getLocalStorageData(
+    "sb-karqyskuudnvfxohwkok-auth-token",
+  );
+
+  if (isAfterNow(authData.expires_at)) {
+    console.log("Hi");
+    return new AuthResponse(true, authData);
+  }
+
   const authResponse: AuthTokenResponsePassword =
     await supabaseClient.auth.signInWithPassword({
       email: params.username,
@@ -44,6 +56,7 @@ async function retrieveData(
 }
 
 export function getLoginComponentStoreFromResponse(response: AuthResponse) {
+  console.log(JSON.stringify(response));
   return {
     isLoggedIn: response.isLoggedIn(),
     errorMessage: response.getErrorMessage(),
@@ -73,14 +86,13 @@ export const AUTH_REDUCER: BaseReducer = generateApiReducerWithExternalClient(
  */
 export function getSessionStoreFromResponse(
   response: AuthResponse,
-): ReadOnlyStore {
+): GlobalReadOnlyStore {
   const responseData = response.isLoggedIn() ? response.getData() : "";
   const data = {
-    access_token: responseData?.session?.access_token,
     userId: responseData?.user?.id,
     email: responseData?.user?.email,
   };
-  return new ReadOnlyStore(data);
+  return new GlobalReadOnlyStore(data);
 }
 
 export const updateSession: BaseDispatcher = new BaseDispatcher(

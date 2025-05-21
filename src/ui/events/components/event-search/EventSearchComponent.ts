@@ -2,9 +2,6 @@ import {
   DAYS_IN_WEEK,
   DEFAULT_SEARCH_PARAMETER,
   SEARCH_CITY_ID,
-  SEARCH_COMPONENT_LOADED_STORE,
-  SEARCH_COMPONENT_LOADED_STORE_CITIES,
-  SEARCH_COMPONENT_STORE,
   SEARCH_FORM_ID,
   SEARCH_REQUEST_STORE,
 } from "./Constants.ts";
@@ -32,14 +29,14 @@ const loadConfig = {
     day: DEFAULT_SEARCH_PARAMETER,
   },
   dependencyUpdates: function () {
-    createRequestStore(SEARCH_COMPONENT_LOADED_STORE, LOCATIONS_REDUCER);
-    createRequestStore(SEARCH_COMPONENT_LOADED_STORE_CITIES, CITY_LIST_REDUCER);
+    createRequestStore("search-component-loaded", LOCATIONS_REDUCER);
+    createRequestStore("search-component-loaded-cities", CITY_LIST_REDUCER);
   },
 };
 
 export class EventSearchComponent extends BaseDynamicComponent {
   constructor() {
-    super(SEARCH_COMPONENT_STORE, loadConfig);
+    super("event-search-component-store", loadConfig);
     this.subscribeToReducer(CITY_LIST_REDUCER, updateCities);
   }
 

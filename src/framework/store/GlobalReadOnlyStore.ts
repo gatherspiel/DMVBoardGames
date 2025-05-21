@@ -1,6 +1,6 @@
 import { addReadOnlyStore } from "./ComponentStore.ts";
 
-export class ReadOnlyStore {
+export class GlobalReadOnlyStore {
   private readonly data: Record<string, string>;
 
   constructor(data: Record<string, string>) {
