@@ -9,6 +9,7 @@ export function createComponentStore(
   component: HTMLElement,
 ) {
   createStore(storeName, stores);
+  console.log("Creating component store with name:" + storeName);
   subscribeToComponentStore(storeName, component);
 }
 
@@ -54,7 +55,7 @@ export function getDataFromStore(storeName: string, param: string): string {
   const store = stores[storeName];
   if (!(store instanceof ReadOnlyStore)) {
     throw new Error(
-      `getData can only be used for store that are defined as an instance of ImmutableStore`,
+      `Cannot retrieve data from store:${storeName} getData can only be used for store that are defined as an instance of ImmutableStore`,
     );
   }
 

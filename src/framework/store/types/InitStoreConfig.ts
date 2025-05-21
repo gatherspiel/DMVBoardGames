@@ -1,4 +1,4 @@
-import type { BaseReducer } from "../../update/BaseReducer.ts";
+import type { BaseReducer } from "../../reducer/BaseReducer.ts";
 
 export interface InitStoreConfig {
   storeName: string;

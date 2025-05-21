@@ -1,7 +1,7 @@
 import { createStore, subscribeToStore } from "./StoreUtils.js";
 import { addLoadFunction } from "./InitStoreManager.js";
-import type { DefaultApiAction } from "../update/api/DefaultApiAction.ts";
-import type { BaseReducer } from "../update/BaseReducer.ts";
+import type { DefaultApiAction } from "../reducer/api/DefaultApiAction.ts";
+import type { BaseReducer } from "../reducer/BaseReducer.ts";
 
 const stores: Record<string, any> = {};
 const responseCache: Record<string, any> = {};

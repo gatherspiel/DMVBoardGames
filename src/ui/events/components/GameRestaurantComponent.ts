@@ -1,12 +1,16 @@
 import { createComponentStore } from "../../../framework/store/ComponentStore.ts";
 import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
 import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
+import { LOCATIONS_REDUCER } from "../data/search/LocationsReducer.ts";
 
 export const GAME_RESTAURANT_LIST_STORE = "gameRestaurantListStore";
 export class GameRestaurantComponent extends BaseDynamicComponent {
   constructor() {
     super();
     createComponentStore(GAME_RESTAURANT_LIST_STORE, this);
+    this.subscribeToReducer(LOCATIONS_REDUCER, (data: any) => {
+      return data.gameRestaurants;
+    });
   }
 
   getItemHtml(gameRestaurant: GameRestaurant) {

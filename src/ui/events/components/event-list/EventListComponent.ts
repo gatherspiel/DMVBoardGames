@@ -3,11 +3,18 @@ import { BaseDynamicComponent } from "../../../../framework/components/BaseDynam
 import type { GroupSearchResult } from "../../data/types/GroupSearchResult.ts";
 import { GROUP_SEARCH_RESULT_STORE } from "../event-search/Constants.ts";
 import { SHOW_INFO_CONFIG } from "./EventListHandlers.ts";
+import { EVENT_LIST_REDUCER } from "../../data/search/EventListReducer.ts";
+import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
 
 export class EventListComponent extends BaseDynamicComponent {
   constructor() {
     super(GROUP_SEARCH_RESULT_STORE);
     subscribeToComponentStore(GROUP_SEARCH_RESULT_STORE, this);
+    this.subscribeToReducer(
+      EVENT_LIST_REDUCER,
+      updateSearchResultGroupStore,
+      "groupData",
+    );
   }
 
   private getItemHtml(groupId: string, group: GroupSearchResult) {

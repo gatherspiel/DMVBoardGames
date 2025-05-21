@@ -2,10 +2,11 @@ import type { DisplayItem } from "../../ui/events/data/types/DisplayItem.ts";
 
 import { createComponentStore } from "../store/ComponentStore.ts";
 import { initStoreOnLoad } from "../store/RequestStore.ts";
-import { EventHandlerAction } from "../update/event/EventHandlerAction.ts";
-import { BaseDispatcher } from "../update/BaseDispatcher.ts";
-import { EventReducer } from "../update/event/EventReducer.ts";
-import type { EventHandlerReducerConfig } from "../update/event/types/EventHandlerReducerConfig.ts";
+import { EventHandlerAction } from "../reducer/event/EventHandlerAction.ts";
+import { BaseDispatcher } from "../reducer/BaseDispatcher.ts";
+import { EventReducer } from "../reducer/event/EventReducer.ts";
+import type { EventHandlerReducerConfig } from "../reducer/event/types/EventHandlerReducerConfig.ts";
+import type { BaseReducer } from "../reducer/BaseReducer.ts";
 
 type EventConfig = {
   eventType: string;
@@ -15,14 +16,24 @@ type EventConfig = {
 export abstract class BaseDynamicComponent extends HTMLElement {
   componentStoreName?: string;
   eventHandlers: Record<string, EventConfig>;
-  idCount = 0;
+  eventTagIdCount = 0;
 
+  instanceId: number;
+
+  static instanceCount = 1;
   constructor(componentStoreName?: string, loadConfig?: any) {
     super();
+
+    /*
+    TODO: Remove this warning and make componentStoreName a required property once all instances of BaseDynamicComponent
+    pass a store name in the constructor.
+     */
+    this.instanceId = BaseDynamicComponent.instanceCount;
+    BaseDynamicComponent.instanceCount++;
     this.eventHandlers = {};
     if (componentStoreName) {
-      this.componentStoreName = componentStoreName;
-      createComponentStore(componentStoreName, this);
+      this.componentStoreName = `${componentStoreName}-${BaseDynamicComponent.instanceCount}`;
+      createComponentStore(this.componentStoreName, this);
     }
 
     if (loadConfig) {
@@ -32,7 +43,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   updateStore(data: any) {
     this.eventHandlers = {};
-    this.idCount = 0;
+    this.eventTagIdCount = 0;
 
     this.generateAndSaveHTML(data);
 
@@ -61,18 +72,40 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     eventType: string,
     targetId?: string,
   ): string {
-    let id = `${this.getElementIdTag()}=${this.idCount}`;
+    let id = `${this.getElementIdTag()}=${this.eventTagIdCount}`;
 
-    this.eventHandlers[this.idCount] = {
+    this.eventHandlers[this.eventTagIdCount] = {
       eventType: eventType,
       eventFunction: eventFunction,
     };
-    this.idCount++;
+    this.eventTagIdCount++;
 
     if (targetId) {
       id += ` id=${targetId}`;
     }
     return id;
+  }
+
+  /**
+   * Subscribes to a reducer. The state is currently shared among all instances of the component.
+   * If there are multiple instances of a component that each need different state
+   * @param reducer
+   * @param reducerFunction
+   */
+  subscribeToReducer(
+    reducer: BaseReducer,
+    reducerFunction: (a: any) => any,
+    field?: string,
+  ) {
+    if (!this.componentStoreName || this.componentStoreName.length === 0) {
+      throw new Error(
+        "Cannot subscribe to reducer. Component store name has not been defined.",
+      );
+    }
+    console.log(
+      "Subscribing component to store with name:" + this.componentStoreName,
+    );
+    reducer.subscribeComponent(this.componentStoreName, reducerFunction, field);
   }
 
   createOnChangeEvent(eventConfig: any) {
@@ -92,6 +125,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   createClickEvent(eventConfig: any, id?: string) {
+    console.log(this.componentStoreName);
     const eventHandler = BaseDynamicComponent.createHandler(
       eventConfig,
       this?.componentStoreName,
@@ -103,19 +137,25 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     eventConfig: EventHandlerReducerConfig,
     componentStoreName?: string,
   ) {
+    console.log(componentStoreName);
+    console.log(eventConfig.storeToUpdate);
     const handler = function (e: Event) {
+      const storeToUpdate =
+        eventConfig?.storeToUpdate && eventConfig.storeToUpdate.length > 0
+          ? eventConfig.storeToUpdate
+          : componentStoreName;
+      if (!storeToUpdate) {
+        throw new Error("Event handler must be associated with a valid state");
+      }
       e.preventDefault();
       const request: EventHandlerAction = new EventHandlerAction(
         eventConfig.eventHandler,
         componentStoreName,
       );
 
-      const storeUpdate = new BaseDispatcher(
-        eventConfig.storeToUpdate,
-        (a: any): any => {
-          return a;
-        },
-      );
+      const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {
+        return a;
+      });
       const eventUpdater: EventReducer = new EventReducer(request, [
         storeUpdate,
       ]);

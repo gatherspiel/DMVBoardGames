@@ -1,4 +1,4 @@
-import type { BaseReducer } from "../update/BaseReducer.ts";
+import type { BaseReducer } from "../reducer/BaseReducer.ts";
 import type { BaseDynamicComponent } from "../components/BaseDynamicComponent.ts";
 
 export function createStore(storeName: string, stores: any) {
