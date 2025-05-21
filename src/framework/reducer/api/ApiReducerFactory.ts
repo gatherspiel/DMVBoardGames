@@ -1,7 +1,7 @@
 import type { DefaultApiAction } from "./DefaultApiAction.ts";
 import { BaseGetAction } from "./BaseGetAction.ts";
-import { BaseDispatcher } from "../BaseDispatcher.ts";
 import { BaseReducer } from "../BaseReducer.ts";
+import { ExternalReducerAction } from "./ExternalReducerAction.ts";
 
 export type DispatcherItem = {
   updateFunction: (a: any) => any;
@@ -12,7 +12,6 @@ export type DispatcherItem = {
 export type ApiReducerConfig = {
   queryUrl: (a: any) => string;
   defaultFunctionConfig: DefaultApiAction;
-  dispatcherItems: DispatcherItem[];
 };
 
 export function generateGetApiReducer(config: ApiReducerConfig) {
@@ -21,11 +20,13 @@ export function generateGetApiReducer(config: ApiReducerConfig) {
     config.defaultFunctionConfig,
   );
 
-  const dispatcherItems: BaseDispatcher[] = [];
-  config.dispatcherItems.forEach(function (item) {
-    dispatcherItems.push(
-      new BaseDispatcher(item.componentStore, item.updateFunction, item.field),
-    );
-  });
-  return new BaseReducer(getAction, dispatcherItems);
+  return new BaseReducer(getAction);
+}
+
+export function generateApiReducerWithExternalClient(
+  retrieveData: (a: any, b: DefaultApiAction) => Promise<any>,
+  defaultResponse: DefaultApiAction,
+) {
+  const action = new ExternalReducerAction(retrieveData, defaultResponse);
+  return new BaseReducer(action);
 }

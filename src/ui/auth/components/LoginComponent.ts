@@ -1,4 +1,7 @@
-import { AUTH_API } from "../AuthAPI.ts";
+import {
+  AUTH_REDUCER,
+  getLoginComponentStoreFromResponse,
+} from "../AuthReducer.ts";
 import {
   AUTH_REQUEST_STORE,
   LOGIN_COMPONENT_STORE,
@@ -15,12 +18,13 @@ export class LoginComponent extends BaseDynamicComponent {
   constructor() {
     super(LOGIN_COMPONENT_STORE, {
       storeName: AUTH_REQUEST_STORE,
-      dataSource: AUTH_API,
+      dataSource: AUTH_REDUCER,
       requestData: {
         username: "",
         password: "",
       },
     });
+    this.subscribeToReducer(AUTH_REDUCER, getLoginComponentStoreFromResponse);
   }
 
   connectedCallback() {

@@ -10,9 +10,12 @@ import {
 } from "./Constants.ts";
 
 import { createRequestStore } from "../../../../framework/store/RequestStore.ts";
-import { EVENT_SEARCH_API } from "../../data/search/EventAPI.ts";
-import { LOCATION_API } from "../../data/search/LocationsAPI.ts";
-import { CITIES_API } from "../../data/search/CityListAPI.ts";
+import { EVENT_LIST_REDUCER } from "../../data/search/EventListReducer.ts";
+import { LOCATIONS_REDUCER } from "../../data/search/LocationsReducer.ts";
+import {
+  CITY_LIST_REDUCER,
+  updateCities,
+} from "../../data/search/CityListReducer.ts";
 import type { EventSearchCity } from "./types/EventSearchCity.ts";
 import {
   SEARCH_EVENT_HANDLER_CONFIG,
@@ -23,20 +26,21 @@ import { BaseDynamicComponent } from "../../../../framework/components/BaseDynam
 
 const loadConfig = {
   storeName: SEARCH_REQUEST_STORE,
-  dataSource: EVENT_SEARCH_API,
+  dataSource: EVENT_LIST_REDUCER,
   requestData: {
     city: DEFAULT_SEARCH_PARAMETER,
     day: DEFAULT_SEARCH_PARAMETER,
   },
   dependencyUpdates: function () {
-    createRequestStore(SEARCH_COMPONENT_LOADED_STORE, LOCATION_API);
-    createRequestStore(SEARCH_COMPONENT_LOADED_STORE_CITIES, CITIES_API);
+    createRequestStore(SEARCH_COMPONENT_LOADED_STORE, LOCATIONS_REDUCER);
+    createRequestStore(SEARCH_COMPONENT_LOADED_STORE_CITIES, CITY_LIST_REDUCER);
   },
 };
 
 export class EventSearchComponent extends BaseDynamicComponent {
   constructor() {
     super(SEARCH_COMPONENT_STORE, loadConfig);
+    this.subscribeToReducer(CITY_LIST_REDUCER, updateCities);
   }
 
   render(eventSearchStore: any) {

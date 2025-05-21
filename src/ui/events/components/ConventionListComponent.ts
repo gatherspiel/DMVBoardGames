@@ -1,13 +1,17 @@
 import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
 import { createComponentStore } from "../../../framework/store/ComponentStore.ts";
 import type { Convention } from "../data/types/Convention.ts";
+import { LOCATIONS_REDUCER } from "../data/search/LocationsReducer.ts";
 
 export const CONVENTION_LIST_STORE = "conventionListStore";
 export class ConventionListComponent extends BaseDynamicComponent {
   constructor() {
-    super();
-
+    super(CONVENTION_LIST_STORE);
     createComponentStore(CONVENTION_LIST_STORE, this);
+
+    this.subscribeToReducer(LOCATIONS_REDUCER, (data: any) => {
+      return data.conventions;
+    });
   }
 
   getItemHtml(convention: Convention) {

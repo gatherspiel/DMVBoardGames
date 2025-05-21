@@ -3,14 +3,14 @@ import {
   createClient,
   SupabaseClient,
 } from "@supabase/supabase-js";
-import { ExternalReducerAction } from "../../framework/update/api/ExternalReducerAction.js";
-import type { DefaultApiAction } from "../../framework/update/api/DefaultApiAction.ts";
-import { BaseDispatcher } from "../../framework/update/BaseDispatcher.ts";
-import { LOGIN_COMPONENT_STORE, SESSION_STORE } from "./Constants.ts";
-import { BaseReducer } from "../../framework/update/BaseReducer.ts";
+import type { DefaultApiAction } from "../../framework/reducer/api/DefaultApiAction.ts";
+import { BaseDispatcher } from "../../framework/reducer/BaseDispatcher.ts";
+import { SESSION_STORE } from "./Constants.ts";
+import { BaseReducer } from "../../framework/reducer/BaseReducer.ts";
 import type { AuthRequest } from "./types/AuthRequest.ts";
 import { AuthResponse } from "./types/AuthResponse.ts";
 import { ReadOnlyStore } from "../../framework/store/ReadOnlyStore.ts";
+import { generateApiReducerWithExternalClient } from "../../framework/reducer/api/ApiReducerFactory.ts";
 
 const supabaseClient: SupabaseClient = createClient(
   "https://karqyskuudnvfxohwkok.supabase.co",
@@ -43,7 +43,7 @@ async function retrieveData(
   }
 }
 
-function getLoginComponentStoreFromResponse(response: AuthResponse) {
+export function getLoginComponentStoreFromResponse(response: AuthResponse) {
   return {
     isLoggedIn: response.isLoggedIn(),
     errorMessage: response.getErrorMessage(),
@@ -59,14 +59,9 @@ const defaultResponse = {
   defaultFunctionPriority: false,
 };
 
-export const authenticate: ExternalReducerAction = new ExternalReducerAction(
+export const AUTH_REDUCER: BaseReducer = generateApiReducerWithExternalClient(
   retrieveData,
   defaultResponse,
-);
-
-export const updateLogin: BaseDispatcher = new BaseDispatcher(
-  LOGIN_COMPONENT_STORE,
-  getLoginComponentStoreFromResponse,
 );
 
 /**
@@ -76,7 +71,9 @@ export const updateLogin: BaseDispatcher = new BaseDispatcher(
  * -Store session information in HttpOnly cookie
  * @param response
  */
-function getSessionStoreFromResponse(response: AuthResponse): ReadOnlyStore {
+export function getSessionStoreFromResponse(
+  response: AuthResponse,
+): ReadOnlyStore {
   const responseData = response.isLoggedIn() ? response.getData() : "";
   const data = {
     access_token: responseData?.session?.access_token,
@@ -90,8 +87,3 @@ export const updateSession: BaseDispatcher = new BaseDispatcher(
   SESSION_STORE,
   getSessionStoreFromResponse,
 );
-
-export const AUTH_API = new BaseReducer(authenticate, [
-  updateLogin,
-  updateSession,
-]);

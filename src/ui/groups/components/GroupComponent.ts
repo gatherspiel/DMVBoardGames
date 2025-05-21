@@ -4,9 +4,7 @@ import {
   GROUP_COMPONENT_STORE,
   GROUP_NAME_PARAM,
 } from "../Constants.js";
-import { initStoreOnLoad } from "../../../framework/store/RequestStore.ts";
-import { subscribeToComponentStore } from "../../../framework/store/ComponentStore.ts";
-import { GroupRequestAPI } from "../data/GroupRequestAPI.ts";
+import { GROUP_REQUEST_REDUCER } from "../data/GroupRequestReducer.ts";
 
 import { createJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
 import type { GroupPageData } from "../../events/data/types/GroupPageData.ts";
@@ -36,17 +34,20 @@ template.innerHTML = `
   <div></div>
 
 `;
+
+const loadConfig = {
+  storeName: GET_GROUP_REQUEST_STORE,
+  dataSource: GROUP_REQUEST_REDUCER,
+  requestData: {
+    name: getParameter(GROUP_NAME_PARAM),
+  },
+};
+
 export class GroupComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super();
-
-    subscribeToComponentStore(GROUP_COMPONENT_STORE, this);
-    initStoreOnLoad({
-      storeName: GET_GROUP_REQUEST_STORE,
-      dataSource: new GroupRequestAPI(),
-      requestData: {
-        name: getParameter(GROUP_NAME_PARAM),
-      },
+    super(GROUP_COMPONENT_STORE, loadConfig);
+    this.subscribeToReducer(GROUP_REQUEST_REDUCER, function (data) {
+      return data;
     });
   }
 
