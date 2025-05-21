@@ -21,7 +21,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   instanceId: number;
 
   static instanceCount = 1;
-  constructor(componentStoreName?: string, loadConfig?: any) {
+  constructor(componentStoreName: string, loadConfig?: any) {
     super();
 
     /*
@@ -102,9 +102,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         "Cannot subscribe to reducer. Component store name has not been defined.",
       );
     }
-    console.log(
-      "Subscribing component to store with name:" + this.componentStoreName,
-    );
     reducer.subscribeComponent(this.componentStoreName, reducerFunction, field);
   }
 
@@ -125,7 +122,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   createClickEvent(eventConfig: any, id?: string) {
-    console.log(this.componentStoreName);
     const eventHandler = BaseDynamicComponent.createHandler(
       eventConfig,
       this?.componentStoreName,
@@ -137,8 +133,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     eventConfig: EventHandlerReducerConfig,
     componentStoreName?: string,
   ) {
-    console.log(componentStoreName);
-    console.log(eventConfig.storeToUpdate);
     const handler = function (e: Event) {
       const storeToUpdate =
         eventConfig?.storeToUpdate && eventConfig.storeToUpdate.length > 0

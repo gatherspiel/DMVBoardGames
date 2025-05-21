@@ -1,4 +1,3 @@
-import { createComponentStore } from "../../../framework/store/ComponentStore.ts";
 import type { GameStore } from "../data/types/GameStore.ts";
 import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
 
@@ -6,8 +5,7 @@ export const GAME_STORE_LIST_STORE = "gameStoreListStore";
 
 export class GameStoreListComponent extends BaseDynamicComponent {
   constructor() {
-    super();
-    createComponentStore(GAME_STORE_LIST_STORE, this);
+    super(GAME_STORE_LIST_STORE);
   }
 
   getItemHtml(gameStore: GameStore) {

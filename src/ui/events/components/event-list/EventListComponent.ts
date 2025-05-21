@@ -1,15 +1,12 @@
-import { subscribeToComponentStore } from "../../../../framework/store/ComponentStore.ts";
 import { BaseDynamicComponent } from "../../../../framework/components/BaseDynamicComponent.ts";
 import type { GroupSearchResult } from "../../data/types/GroupSearchResult.ts";
-import { GROUP_SEARCH_RESULT_STORE } from "../event-search/Constants.ts";
 import { SHOW_INFO_CONFIG } from "./EventListHandlers.ts";
 import { EVENT_LIST_REDUCER } from "../../data/search/EventListReducer.ts";
 import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
 
 export class EventListComponent extends BaseDynamicComponent {
   constructor() {
-    super(GROUP_SEARCH_RESULT_STORE);
-    subscribeToComponentStore(GROUP_SEARCH_RESULT_STORE, this);
+    super("searchResultGroupStore");
     this.subscribeToReducer(
       EVENT_LIST_REDUCER,
       updateSearchResultGroupStore,

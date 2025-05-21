@@ -46,7 +46,6 @@ export class BaseReducer {
   }
   updateStore(response: any) {
     for (let dispatcher of this.dispatchers) {
-      console.log("Updating:" + dispatcher.storeField);
       dispatcher.updateStore(response);
     }
   }
