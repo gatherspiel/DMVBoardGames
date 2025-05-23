@@ -11,52 +11,70 @@ import type { AuthRequest } from "./types/AuthRequest.ts";
 import { AuthResponse } from "./types/AuthResponse.ts";
 import { GlobalReadOnlyStore } from "../../framework/store/GlobalReadOnlyStore.ts";
 import { generateApiReducerWithExternalClient } from "../../framework/reducer/api/ApiReducerFactory.ts";
-import { getLocalStorageData } from "../../framework/utils/localStorageUtils.ts";
+import { getLocalStorageDataIfPresent } from "../../framework/utils/localStorageUtils.ts";
 import { isAfterNow } from "../../framework/utils/dateUtils.ts";
+import type { AuthReducerError } from "./types/AuthReducerError.ts";
+import {
+  SUPABASE_CLIENT_KEY,
+  SUPABASE_CLIENT_URL,
+} from "../../utils/params.ts";
 
 const supabaseClient: SupabaseClient = createClient(
-  "https://karqyskuudnvfxohwkok.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthcnF5c2t1dWRudmZ4b2h3a29rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE5ODQ5NjgsImV4cCI6MjA1NzU2MDk2OH0.TR-Pn6dknOTtqS9y-gxK_S1-nw6TX-sL3gRH2kXJY_I",
+  SUPABASE_CLIENT_URL,
+  SUPABASE_CLIENT_KEY,
 );
 
 async function retrieveData(
   params: AuthRequest,
   backupResponse: DefaultApiAction,
 ): Promise<AuthResponse> {
-  if (
-    backupResponse.defaultFunctionPriority &&
-    backupResponse.defaultFunction
-  ) {
-    return backupResponse.defaultFunction();
-  }
+  try {
+    if (
+      backupResponse.defaultFunctionPriority &&
+      backupResponse.defaultFunction
+    ) {
+      return backupResponse.defaultFunction();
+    }
 
-  const authData = await getLocalStorageData(
-    "sb-karqyskuudnvfxohwkok-auth-token",
-  );
+    const authData = await getLocalStorageDataIfPresent(
+      "sb-karqyskuudnvfxohwkok-auth-token",
+    );
 
-  if (isAfterNow(authData.expires_at)) {
-    console.log("Hi");
-    return new AuthResponse(true, authData);
-  }
+    if (authData && isAfterNow(authData.expires_at)) {
+      return new AuthResponse(true, authData);
+    }
 
-  const authResponse: AuthTokenResponsePassword =
-    await supabaseClient.auth.signInWithPassword({
-      email: params.username,
-      password: params.password,
+    if (!params.username || !params.password) {
+      return backupResponse.defaultFunction({
+        errorMessage: "Enter a valid username and password",
+      });
+    }
+
+    const authResponse: AuthTokenResponsePassword =
+      await supabaseClient.auth.signInWithPassword({
+        email: params.username,
+        password: params.password,
+      });
+
+    if (!authResponse.error) {
+      return new AuthResponse(true, authResponse.data);
+    }
+    if (backupResponse.defaultFunction) {
+      return backupResponse.defaultFunction(authResponse);
+    } else {
+      throw Error("Authentication error");
+    }
+  } catch (e: any) {
+    console.trace();
+    return backupResponse.defaultFunction({
+      errorMessage: e.message,
     });
-
-  if (!authResponse.error) {
-    return new AuthResponse(true, authResponse.data);
-  }
-  if (backupResponse.defaultFunction) {
-    return backupResponse.defaultFunction(authResponse);
-  } else {
-    throw Error("Authentication error");
   }
 }
 
 export function getLoginComponentStoreFromResponse(response: AuthResponse) {
   console.log(JSON.stringify(response));
+
   return {
     isLoggedIn: response.isLoggedIn(),
     errorMessage: response.getErrorMessage(),
@@ -65,9 +83,17 @@ export function getLoginComponentStoreFromResponse(response: AuthResponse) {
 }
 
 const defaultResponse = {
-  defaultFunction: (authData: any) => {
-    console.error("Authentication error");
-    return new AuthResponse(false, authData.data, authData.error.message);
+  defaultFunction: (authData: AuthResponse | AuthReducerError) => {
+    if (authData instanceof AuthResponse) {
+      console.error("Authentication error");
+      return new AuthResponse(
+        false,
+        authData.getData(),
+        authData.getErrorMessage().toString(),
+      );
+    } else {
+      return new AuthResponse(false, {}, authData.errorMessage);
+    }
   },
   defaultFunctionPriority: false,
 };

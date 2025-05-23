@@ -115,6 +115,7 @@ export async function getResponseData(
       endpoint: queryUrl,
     };
 
+    console.log("Error");
     mockSettings?.defaultFunction
       ? mockSettings?.defaultFunction(responseData)
       : DEFAULT_API_ERROR_RESPONSE(responseData);
