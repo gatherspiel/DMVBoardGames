@@ -3,12 +3,21 @@ import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicC
 import { LOCATIONS_REDUCER } from "../data/search/LocationsReducer.ts";
 
 export const GAME_RESTAURANT_LIST_STORE = "gameRestaurantListStore";
+
+const loadConfig = {
+  reducerSubscriptions: [
+    {
+      reducer: LOCATIONS_REDUCER,
+      reducerFunction: (data: any) => {
+        return data.gameRestaurants;
+      },
+    },
+  ],
+};
+
 export class GameRestaurantComponent extends BaseDynamicComponent {
   constructor() {
-    super(GAME_RESTAURANT_LIST_STORE);
-    this.subscribeToReducer(LOCATIONS_REDUCER, (data: any) => {
-      return data.gameRestaurants;
-    });
+    super(GAME_RESTAURANT_LIST_STORE, loadConfig);
   }
 
   getItemHtml(gameRestaurant: GameRestaurant) {

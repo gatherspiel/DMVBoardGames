@@ -4,14 +4,19 @@ import { SHOW_INFO_CONFIG } from "./EventListHandlers.ts";
 import { EVENT_LIST_REDUCER } from "../../data/search/EventListReducer.ts";
 import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
 
+const loadConfig = {
+  reducerSubscriptions: [
+    {
+      reducer: EVENT_LIST_REDUCER,
+      reducerFunction: updateSearchResultGroupStore,
+      reducerField: "groupData",
+    },
+  ],
+};
+
 export class EventListComponent extends BaseDynamicComponent {
   constructor() {
-    super("searchResultGroupStore");
-    this.subscribeToReducer(
-      EVENT_LIST_REDUCER,
-      updateSearchResultGroupStore,
-      "groupData",
-    );
+    super("searchResultGroupStore", loadConfig);
   }
 
   private getItemHtml(groupId: string, group: GroupSearchResult) {

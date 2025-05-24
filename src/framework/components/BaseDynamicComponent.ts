@@ -12,8 +12,10 @@ import { EventHandlerAction } from "../reducer/event/EventHandlerAction.ts";
 import { BaseDispatcher } from "../reducer/BaseDispatcher.ts";
 import { EventReducer } from "../reducer/event/EventReducer.ts";
 import type { EventHandlerReducerConfig } from "../reducer/event/types/EventHandlerReducerConfig.ts";
-import type { BaseReducer } from "../reducer/BaseReducer.ts";
-import type { RequestStoreConfig } from "../store/types/RequestStoreConfig.ts";
+import type {
+  ComponentLoadConfig,
+  ReducerFunctionConfig,
+} from "./types/ComponentLoadConfig.ts";
 
 type EventConfig = {
   eventType: string;
@@ -30,7 +32,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   static instanceCount = 1;
 
   //TODO: Consider passing reducers here.
-  constructor(componentStoreName: string, loadConfig?: RequestStoreConfig) {
+  constructor(componentStoreName: string, loadConfig?: ComponentLoadConfig) {
     super();
 
     /*
@@ -47,6 +49,25 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
     if (loadConfig) {
       initRequestStoresOnLoad(loadConfig);
+      const componentStoreName = this.componentStoreName;
+      if (!componentStoreName || componentStoreName.length === 0) {
+        throw new Error(
+          "Cannot subscribe to reducer. Component store name has not been defined.",
+        );
+      }
+
+      // TODO: Handle case where there are multiple instances of a component that each need different state
+      if (loadConfig.reducerSubscriptions) {
+        loadConfig.reducerSubscriptions.forEach(function (
+          config: ReducerFunctionConfig,
+        ) {
+          config.reducer.subscribeComponent(
+            componentStoreName,
+            config.reducerFunction,
+            config.reducerField,
+          );
+        });
+      }
     }
   }
 
@@ -93,25 +114,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       id += ` id=${targetId}`;
     }
     return id;
-  }
-
-  /**
-   * Subscribes to a reducer. The state is currently shared among all instances of the component.
-   * If there are multiple instances of a component that each need different state
-   * @param reducer
-   * @param reducerFunction
-   */
-  subscribeToReducer(
-    reducer: BaseReducer,
-    reducerFunction: (a: any) => any,
-    field?: string,
-  ) {
-    if (!this.componentStoreName || this.componentStoreName.length === 0) {
-      throw new Error(
-        "Cannot subscribe to reducer. Component store name has not been defined.",
-      );
-    }
-    reducer.subscribeComponent(this.componentStoreName, reducerFunction, field);
   }
 
   createOnChangeEvent(eventConfig: any) {

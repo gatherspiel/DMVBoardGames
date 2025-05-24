@@ -6,7 +6,6 @@ import {
   SEARCH_REQUEST_STORE,
 } from "./Constants.ts";
 
-import { createRequestStoreWithData } from "../../../../framework/store/RequestStore.ts";
 import { EVENT_LIST_REDUCER } from "../../data/search/EventListReducer.ts";
 import { LOCATIONS_REDUCER } from "../../data/search/LocationsReducer.ts";
 import {
@@ -21,6 +20,9 @@ import {
 } from "./EventSearchHandlers.ts";
 import { BaseDynamicComponent } from "../../../../framework/components/BaseDynamicComponent.ts";
 
+/**
+ * TODO: Move reducer configurations to load config and make subscribeToReducer a private method.
+ */
 const loadConfig = {
   onLoadStoreConfig: {
     storeName: SEARCH_REQUEST_STORE,
@@ -30,19 +32,27 @@ const loadConfig = {
     city: DEFAULT_SEARCH_PARAMETER,
     day: DEFAULT_SEARCH_PARAMETER,
   },
-  dependencyUpdates: function () {
-    createRequestStoreWithData("search-component-loaded", LOCATIONS_REDUCER);
-    createRequestStoreWithData(
-      "search-component-loaded-cities",
-      CITY_LIST_REDUCER,
-    );
-  },
+  onLoadRequestConfig: [
+    {
+      storeName: "search-component-loaded",
+      dataSource: LOCATIONS_REDUCER,
+    },
+    {
+      storeName: "search-component-loaded-cities",
+      dataSource: CITY_LIST_REDUCER,
+    },
+  ],
+  reducerSubscriptions: [
+    {
+      reducer: CITY_LIST_REDUCER,
+      reducerFunction: updateCities,
+    },
+  ],
 };
 
 export class EventSearchComponent extends BaseDynamicComponent {
   constructor() {
     super("event-search-component-store", loadConfig);
-    this.subscribeToReducer(CITY_LIST_REDUCER, updateCities);
   }
 
   render(eventSearchStore: any) {

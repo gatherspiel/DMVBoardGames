@@ -4,14 +4,21 @@ import type { Convention } from "../data/types/Convention.ts";
 import { LOCATIONS_REDUCER } from "../data/search/LocationsReducer.ts";
 
 export const CONVENTION_LIST_STORE = "conventionListStore";
+
+const loadConfig = {
+  reducerSubscriptions: [
+    {
+      reducer: LOCATIONS_REDUCER,
+      reducerFunction: (data: any) => {
+        return data.conventions;
+      },
+    },
+  ],
+};
 export class ConventionListComponent extends BaseDynamicComponent {
   constructor() {
-    super(CONVENTION_LIST_STORE);
+    super(CONVENTION_LIST_STORE, loadConfig);
     createComponentStore(CONVENTION_LIST_STORE, this);
-
-    this.subscribeToReducer(LOCATIONS_REDUCER, (data: any) => {
-      return data.conventions;
-    });
   }
 
   getItemHtml(convention: Convention) {
