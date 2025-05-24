@@ -1,8 +1,4 @@
-import {
-  type AuthTokenResponsePassword,
-  createClient,
-  SupabaseClient,
-} from "@supabase/supabase-js";
+import { type AuthTokenResponsePassword } from "@supabase/supabase-js";
 import type { DefaultApiAction } from "../../../framework/reducer/api/DefaultApiAction.ts";
 import { BaseReducer } from "../../../framework/reducer/BaseReducer.ts";
 import type { AuthRequest } from "../types/AuthRequest.ts";
@@ -11,16 +7,8 @@ import { generateApiReducerWithExternalClient } from "../../../framework/reducer
 import { getLocalStorageDataIfPresent } from "../../../framework/utils/localStorageUtils.ts";
 import { isAfterNow } from "../../../framework/utils/dateUtils.ts";
 import type { AuthReducerError } from "../types/AuthReducerError.ts";
-import {
-  AUTH_TOKEN_KEY,
-  SUPABASE_CLIENT_KEY,
-  SUPABASE_CLIENT_URL,
-} from "../../../utils/params.ts";
-
-const supabaseClient: SupabaseClient = createClient(
-  SUPABASE_CLIENT_URL,
-  SUPABASE_CLIENT_KEY,
-);
+import { AUTH_TOKEN_KEY } from "../../../utils/params.ts";
+import { getSupabaseClient } from "../SupabaseClient.ts";
 
 async function retrieveData(
   params: AuthRequest,
@@ -47,7 +35,7 @@ async function retrieveData(
     }
 
     const authResponse: AuthTokenResponsePassword =
-      await supabaseClient.auth.signInWithPassword({
+      await getSupabaseClient().auth.signInWithPassword({
         email: params.username,
         password: params.password,
       });
