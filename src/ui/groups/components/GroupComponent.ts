@@ -36,8 +36,10 @@ template.innerHTML = `
 `;
 
 const loadConfig = {
-  storeName: GET_GROUP_REQUEST_STORE,
-  dataSource: GROUP_REQUEST_REDUCER,
+  onLoadStoreConfig: {
+    storeName: GET_GROUP_REQUEST_STORE,
+    dataSource: GROUP_REQUEST_REDUCER,
+  },
   requestData: {
     name: getParameter(GROUP_NAME_PARAM),
   },

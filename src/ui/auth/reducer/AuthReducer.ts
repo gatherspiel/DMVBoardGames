@@ -3,21 +3,19 @@ import {
   createClient,
   SupabaseClient,
 } from "@supabase/supabase-js";
-import type { DefaultApiAction } from "../../framework/reducer/api/DefaultApiAction.ts";
-import { BaseDispatcher } from "../../framework/reducer/BaseDispatcher.ts";
-import { SESSION_STORE } from "./Constants.ts";
-import { BaseReducer } from "../../framework/reducer/BaseReducer.ts";
-import type { AuthRequest } from "./types/AuthRequest.ts";
-import { AuthResponse } from "./types/AuthResponse.ts";
-import { GlobalReadOnlyStore } from "../../framework/store/GlobalReadOnlyStore.ts";
-import { generateApiReducerWithExternalClient } from "../../framework/reducer/api/ApiReducerFactory.ts";
-import { getLocalStorageDataIfPresent } from "../../framework/utils/localStorageUtils.ts";
-import { isAfterNow } from "../../framework/utils/dateUtils.ts";
-import type { AuthReducerError } from "./types/AuthReducerError.ts";
+import type { DefaultApiAction } from "../../../framework/reducer/api/DefaultApiAction.ts";
+import { BaseReducer } from "../../../framework/reducer/BaseReducer.ts";
+import type { AuthRequest } from "../types/AuthRequest.ts";
+import { AuthResponse } from "../types/AuthResponse.ts";
+import { generateApiReducerWithExternalClient } from "../../../framework/reducer/api/ApiReducerFactory.ts";
+import { getLocalStorageDataIfPresent } from "../../../framework/utils/localStorageUtils.ts";
+import { isAfterNow } from "../../../framework/utils/dateUtils.ts";
+import type { AuthReducerError } from "../types/AuthReducerError.ts";
 import {
+  AUTH_TOKEN_KEY,
   SUPABASE_CLIENT_KEY,
   SUPABASE_CLIENT_URL,
-} from "../../utils/params.ts";
+} from "../../../utils/params.ts";
 
 const supabaseClient: SupabaseClient = createClient(
   SUPABASE_CLIENT_URL,
@@ -36,9 +34,7 @@ async function retrieveData(
       return backupResponse.defaultFunction();
     }
 
-    const authData = await getLocalStorageDataIfPresent(
-      "sb-karqyskuudnvfxohwkok-auth-token",
-    );
+    const authData = await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY);
 
     if (authData && isAfterNow(authData.expires_at)) {
       return new AuthResponse(true, authData);
@@ -72,9 +68,9 @@ async function retrieveData(
   }
 }
 
-export function getLoginComponentStoreFromResponse(response: AuthResponse) {
-  console.log(JSON.stringify(response));
-
+export function getLoginComponentStoreFromLoginResponse(
+  response: AuthResponse,
+) {
   return {
     isLoggedIn: response.isLoggedIn(),
     errorMessage: response.getErrorMessage(),
@@ -101,27 +97,4 @@ const defaultResponse = {
 export const AUTH_REDUCER: BaseReducer = generateApiReducerWithExternalClient(
   retrieveData,
   defaultResponse,
-);
-
-/**
- * TODO
- *
- * -Add login status to session store.
- * -Store session information in HttpOnly cookie
- * @param response
- */
-export function getSessionStoreFromResponse(
-  response: AuthResponse,
-): GlobalReadOnlyStore {
-  const responseData = response.isLoggedIn() ? response.getData() : "";
-  const data = {
-    userId: responseData?.user?.id,
-    email: responseData?.user?.email,
-  };
-  return new GlobalReadOnlyStore(data);
-}
-
-export const updateSession: BaseDispatcher = new BaseDispatcher(
-  SESSION_STORE,
-  getSessionStoreFromResponse,
 );

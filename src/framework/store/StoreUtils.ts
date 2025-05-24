@@ -2,6 +2,9 @@ import type { BaseReducer } from "../reducer/BaseReducer.ts";
 import type { BaseDynamicComponent } from "../components/BaseDynamicComponent.ts";
 
 export function createStore(storeName: string, stores: any) {
+  if (!storeName) {
+    throw new Error(`createStore must be called with a valid store name`);
+  }
   if (storeName in stores) {
     console.warn(`Store with name ${storeName} already exists`);
   }
@@ -9,6 +12,10 @@ export function createStore(storeName: string, stores: any) {
     data: {},
     subscribers: [],
   };
+}
+
+export function hasSubscribers(storeName: string, store: any) {
+  return storeName in store && store[storeName].subscribers.length > 0;
 }
 
 export function subscribeToStore(storeName: string, item: any, store: any) {
@@ -45,7 +52,9 @@ export function updateStore(
   storeData[storeName].data = updatedData;
 
   if (storeData[storeName].subscribers.length === 0) {
-    console.warn(`No subscribers to store ${storeName}`);
+    console.warn(
+      `No subscribers to store ${storeName}. Make sure to call subscribeToReducer in component constructor.`,
+    );
   }
 
   storeData[storeName].subscribers.forEach(function (
