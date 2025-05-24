@@ -6,3 +6,12 @@ export async function getLocalStorageData(key: string): Promise<any> {
   }
   return await JSON.parse(data);
 }
+
+export async function getLocalStorageDataIfPresent(key: string): Promise<any> {
+  const data = window.localStorage.getItem(key);
+
+  if (!data) {
+    return null;
+  }
+  return await JSON.parse(data);
+}

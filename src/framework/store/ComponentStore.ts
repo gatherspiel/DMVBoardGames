@@ -1,5 +1,6 @@
 import { createStore, subscribeToStore, updateStore } from "./StoreUtils.js";
 import { GlobalReadOnlyStore } from "./GlobalReadOnlyStore.ts";
+import { hasSubscribers } from "./StoreUtils.js";
 
 const stores: Record<string, any> = {};
 const readOnlyStores: GlobalReadOnlyStore[] = [];
@@ -12,6 +13,9 @@ export function createComponentStore(
   subscribeToComponentStore(storeName, component);
 }
 
+export function hasComponentStoreSubscribers(storeName: string): boolean {
+  return hasSubscribers(storeName, stores);
+}
 /**
  * Make sure a component is subscribed to a store.
  * @param store Name of store that the component will subscribe to.

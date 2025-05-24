@@ -1,7 +1,11 @@
-import { createStore, subscribeToStore } from "./StoreUtils.js";
+import { createStore, hasSubscribers, subscribeToStore } from "./StoreUtils.js";
 import { addLoadFunction } from "./InitStoreManager.js";
 import type { DefaultApiAction } from "../reducer/api/DefaultApiAction.ts";
 import type { BaseReducer } from "../reducer/BaseReducer.ts";
+import type {
+  RequestStoreConfig,
+  RequestStoreItem,
+} from "./types/RequestStoreConfig.ts";
 
 const stores: Record<string, any> = {};
 const responseCache: Record<string, any> = {};
@@ -10,7 +14,7 @@ const DEFAULT_API_ERROR_RESPONSE = function (responseData: any) {
   throw new Error(JSON.stringify(responseData, null, 2));
 };
 
-export function createRequestStore(
+export function createRequestStoreWithData(
   storeName: string,
   dataSource: BaseReducer,
   initStore: () => any = () => {
@@ -58,9 +62,16 @@ export function updateRequestStore(
   stores[storeName].subscribers.forEach(function (item: any) {
     const requestData = stores[storeName].data;
 
-    if (JSON.stringify(requestData) in responseCache[storeName]) {
+    //TODO: If a response would invalidate a cache item, do a page refresh or clear the whole cache.
+    console.log(requestData);
+    if (
+      requestData &&
+      Object.keys(requestData).length > 0 &&
+      JSON.stringify(requestData) in responseCache[storeName]
+    ) {
       item.updateStore(responseCache[storeName][JSON.stringify(requestData)]);
     } else {
+      console.log(storeName);
       item.retrieveData(requestData).then((response: any) => {
         responseCache[storeName][JSON.stringify(requestData)] = response;
         item.updateStore(response);
@@ -69,13 +80,35 @@ export function updateRequestStore(
   });
 }
 
-export function initStoreOnLoad(config: any) {
-  addLoadFunction(config.storeName, function () {
+export function hasRequestStoreSubscribers(storeName: string): boolean {
+  return hasSubscribers(storeName, stores);
+}
+
+export function initRequestStoresOnLoad(config: RequestStoreConfig) {
+  const onLoadConfig = config.onLoadStoreConfig;
+  addLoadFunction(onLoadConfig.storeName, function () {
     function getRequestData() {
       return config.requestData;
     }
 
-    createRequestStore(config.storeName, config.dataSource, getRequestData);
+    createRequestStoreWithData(
+      onLoadConfig.storeName,
+      onLoadConfig.dataSource,
+      getRequestData,
+    );
+
+    if (config.requestStoresToCreate) {
+      config.requestStoresToCreate.forEach(function (
+        requestStoreItem: RequestStoreItem,
+      ) {
+        createStore(requestStoreItem.storeName, stores);
+        responseCache[requestStoreItem.storeName] = {};
+        subscribeToRequestStore(
+          requestStoreItem.storeName,
+          requestStoreItem.dataSource,
+        );
+      });
+    }
 
     if (config.dependencyUpdates) {
       config.dependencyUpdates();
@@ -115,6 +148,7 @@ export async function getResponseData(
       endpoint: queryUrl,
     };
 
+    console.log("Error");
     mockSettings?.defaultFunction
       ? mockSettings?.defaultFunction(responseData)
       : DEFAULT_API_ERROR_RESPONSE(responseData);

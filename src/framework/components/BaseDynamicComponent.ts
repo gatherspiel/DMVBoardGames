@@ -1,12 +1,19 @@
 import type { DisplayItem } from "../../ui/events/data/types/DisplayItem.ts";
 
-import { createComponentStore } from "../store/ComponentStore.ts";
-import { initStoreOnLoad } from "../store/RequestStore.ts";
+import {
+  createComponentStore,
+  hasComponentStoreSubscribers,
+} from "../store/ComponentStore.ts";
+import {
+  hasRequestStoreSubscribers,
+  initRequestStoresOnLoad,
+} from "../store/RequestStore.ts";
 import { EventHandlerAction } from "../reducer/event/EventHandlerAction.ts";
 import { BaseDispatcher } from "../reducer/BaseDispatcher.ts";
 import { EventReducer } from "../reducer/event/EventReducer.ts";
 import type { EventHandlerReducerConfig } from "../reducer/event/types/EventHandlerReducerConfig.ts";
 import type { BaseReducer } from "../reducer/BaseReducer.ts";
+import type { RequestStoreConfig } from "../store/types/RequestStoreConfig.ts";
 
 type EventConfig = {
   eventType: string;
@@ -21,7 +28,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   instanceId: number;
 
   static instanceCount = 1;
-  constructor(componentStoreName: string, loadConfig?: any) {
+
+  //TODO: Consider passing reducers here.
+  constructor(componentStoreName: string, loadConfig?: RequestStoreConfig) {
     super();
 
     /*
@@ -37,7 +46,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     }
 
     if (loadConfig) {
-      initStoreOnLoad(loadConfig);
+      initRequestStoresOnLoad(loadConfig);
     }
   }
 
@@ -66,7 +75,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   getElementIdTag() {
     return `data-${this.componentStoreName}-element-id`;
   }
-  //TODO: Handle case where there are multiple instances of the same component for generating the ids for event handlers.
+  //TODO: Handle case where there are multiple instances of the same component when generating the ids for event handlers.
   saveEventHandler(
     eventFunction: (e: Event) => any,
     eventType: string,
@@ -131,20 +140,28 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   static createHandler(
     eventConfig: EventHandlerReducerConfig,
-    componentStoreName?: string,
+    storeName?: string,
   ) {
+    const storeToUpdate =
+      eventConfig?.storeToUpdate && eventConfig.storeToUpdate.length > 0
+        ? eventConfig.storeToUpdate
+        : storeName;
+    if (!storeToUpdate) {
+      throw new Error("Event handler must be associated with a valid state");
+    }
+
     const handler = function (e: Event) {
-      const storeToUpdate =
-        eventConfig?.storeToUpdate && eventConfig.storeToUpdate.length > 0
-          ? eventConfig.storeToUpdate
-          : componentStoreName;
-      if (!storeToUpdate) {
-        throw new Error("Event handler must be associated with a valid state");
+      if (
+        !hasRequestStoreSubscribers(storeToUpdate) &&
+        !hasComponentStoreSubscribers(storeToUpdate)
+      ) {
+        throw new Error(`No subscribers for store ${storeToUpdate}`);
       }
+
       e.preventDefault();
       const request: EventHandlerAction = new EventHandlerAction(
         eventConfig.eventHandler,
-        componentStoreName,
+        storeName,
       );
 
       const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {

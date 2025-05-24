@@ -17,9 +17,17 @@ export class ExternalReducerAction extends BaseReducerAction {
   async retrieveData(params: any): Promise<any> {
     const externalRequest: ExternalReducerAction = this;
 
-    return await externalRequest.externalClient(
-      params,
-      externalRequest.defaultResponse,
-    );
+    try {
+      return await externalRequest.externalClient(
+        params,
+        externalRequest.defaultResponse,
+      );
+    } catch (e: any) {
+      if (this.defaultResponse.defaultFunction) {
+        return this.defaultResponse.defaultFunction();
+      } else {
+        console.error("No custom error response defined for:" + e.message);
+      }
+    }
   }
 }

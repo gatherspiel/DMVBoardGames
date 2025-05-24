@@ -6,7 +6,7 @@ import {
   SEARCH_REQUEST_STORE,
 } from "./Constants.ts";
 
-import { createRequestStore } from "../../../../framework/store/RequestStore.ts";
+import { createRequestStoreWithData } from "../../../../framework/store/RequestStore.ts";
 import { EVENT_LIST_REDUCER } from "../../data/search/EventListReducer.ts";
 import { LOCATIONS_REDUCER } from "../../data/search/LocationsReducer.ts";
 import {
@@ -22,15 +22,20 @@ import {
 import { BaseDynamicComponent } from "../../../../framework/components/BaseDynamicComponent.ts";
 
 const loadConfig = {
-  storeName: SEARCH_REQUEST_STORE,
-  dataSource: EVENT_LIST_REDUCER,
+  onLoadStoreConfig: {
+    storeName: SEARCH_REQUEST_STORE,
+    dataSource: EVENT_LIST_REDUCER,
+  },
   requestData: {
     city: DEFAULT_SEARCH_PARAMETER,
     day: DEFAULT_SEARCH_PARAMETER,
   },
   dependencyUpdates: function () {
-    createRequestStore("search-component-loaded", LOCATIONS_REDUCER);
-    createRequestStore("search-component-loaded-cities", CITY_LIST_REDUCER);
+    createRequestStoreWithData("search-component-loaded", LOCATIONS_REDUCER);
+    createRequestStoreWithData(
+      "search-component-loaded-cities",
+      CITY_LIST_REDUCER,
+    );
   },
 };
 

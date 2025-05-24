@@ -1,29 +1,50 @@
 import {
   AUTH_REDUCER,
-  getLoginComponentStoreFromResponse,
-} from "../AuthReducer.ts";
+  getLoginComponentStoreFromLoginResponse,
+} from "../reducer/AuthReducer.ts";
+
+import { getLoginComponentStoreFromLogoutResponse } from "../reducer/LogoutReducer.ts";
+
 import {
   AUTH_REQUEST_STORE,
   LOGIN_FORM_ID,
+  LOGOUT_REQUEST_STORE,
   PASSWORD_INPUT,
   USERNAME_INPUT,
 } from "../Constants.js";
 import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
 import { generateDefaultLoginComponentStore } from "../types/AuthResponse.ts";
 import type { LoginComponentStore } from "../types/LoginComponentStore.ts";
-import { LOGIN_EVENT_CONFIG } from "../AuthEventHandlers.ts";
+import {
+  LOGIN_EVENT_CONFIG,
+  LOGOUT_EVENT_CONFIG,
+} from "../AuthEventHandlers.ts";
+import { LOGOUT_REDUCER } from "../reducer/LogoutReducer.ts";
 
 export class LoginComponent extends BaseDynamicComponent {
   constructor() {
     super("loginComponentStore", {
-      storeName: AUTH_REQUEST_STORE,
-      dataSource: AUTH_REDUCER,
+      onLoadStoreConfig: {
+        storeName: AUTH_REQUEST_STORE,
+        dataSource: AUTH_REDUCER,
+      },
       requestData: {
         username: "",
         password: "",
       },
+      requestStoresToCreate: [
+        { storeName: LOGOUT_REQUEST_STORE, dataSource: LOGOUT_REDUCER },
+      ],
     });
-    this.subscribeToReducer(AUTH_REDUCER, getLoginComponentStoreFromResponse);
+
+    this.subscribeToReducer(
+      AUTH_REDUCER,
+      getLoginComponentStoreFromLoginResponse,
+    );
+    this.subscribeToReducer(
+      LOGOUT_REDUCER,
+      getLoginComponentStoreFromLogoutResponse,
+    );
   }
 
   connectedCallback() {
@@ -34,7 +55,10 @@ export class LoginComponent extends BaseDynamicComponent {
     if (!data.isLoggedIn) {
       return this.generateLogin(data);
     } else {
-      return `<p>Welcome ${data.email}</p>`;
+      return `
+        <button ${this.createClickEvent(LOGOUT_EVENT_CONFIG)}>Logout</button>
+      <p>Welcome ${data.email}</p>
+       `;
     }
   }
   generateLogin(data: LoginComponentStore) {
@@ -46,7 +70,7 @@ export class LoginComponent extends BaseDynamicComponent {
             <input type="password" id=${PASSWORD_INPUT} name=${PASSWORD_INPUT} />
             <button type="submit" > Login </button>
           </form>
-          <p>${data.errorMessage.trim()}</p>
+          <p>${data.errorMessage ? data.errorMessage.trim() : ""}</p>
         `;
   }
 }

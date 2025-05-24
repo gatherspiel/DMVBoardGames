@@ -1,5 +1,6 @@
 import {
   AUTH_REQUEST_STORE,
+  LOGOUT_REQUEST_STORE,
   PASSWORD_INPUT,
   USERNAME_INPUT,
 } from "./Constants.js";
@@ -17,4 +18,11 @@ export const LOGIN_EVENT_CONFIG: EventHandlerReducerConfig = {
     };
   },
   storeToUpdate: AUTH_REQUEST_STORE,
+};
+
+export const LOGOUT_EVENT_CONFIG: EventHandlerReducerConfig = {
+  eventHandler: function () {
+    console.log("Logging out");
+  },
+  storeToUpdate: LOGOUT_REQUEST_STORE,
 };

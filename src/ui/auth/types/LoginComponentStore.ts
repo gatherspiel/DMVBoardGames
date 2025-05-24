@@ -1,5 +1,5 @@
 export interface LoginComponentStore {
   isLoggedIn: boolean;
-  errorMessage: string;
+  errorMessage?: string;
   email: string;
 }
