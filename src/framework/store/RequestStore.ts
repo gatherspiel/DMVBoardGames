@@ -3,9 +3,9 @@ import { addLoadFunction } from "./InitStoreManager.js";
 import type { DefaultApiAction } from "../reducer/api/DefaultApiAction.ts";
 import type { BaseReducer } from "../reducer/BaseReducer.ts";
 import type {
-  RequestStoreConfig,
+  ComponentLoadConfig,
   RequestStoreItem,
-} from "./types/RequestStoreConfig.ts";
+} from "../components/types/ComponentLoadConfig.ts";
 
 const stores: Record<string, any> = {};
 const responseCache: Record<string, any> = {};
@@ -63,7 +63,6 @@ export function updateRequestStore(
     const requestData = stores[storeName].data;
 
     //TODO: If a response would invalidate a cache item, do a page refresh or clear the whole cache.
-    console.log(requestData);
     if (
       requestData &&
       Object.keys(requestData).length > 0 &&
@@ -71,7 +70,6 @@ export function updateRequestStore(
     ) {
       item.updateStore(responseCache[storeName][JSON.stringify(requestData)]);
     } else {
-      console.log(storeName);
       item.retrieveData(requestData).then((response: any) => {
         responseCache[storeName][JSON.stringify(requestData)] = response;
         item.updateStore(response);
@@ -84,11 +82,14 @@ export function hasRequestStoreSubscribers(storeName: string): boolean {
   return hasSubscribers(storeName, stores);
 }
 
-export function initRequestStoresOnLoad(config: RequestStoreConfig) {
+export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
   const onLoadConfig = config.onLoadStoreConfig;
+  if (!onLoadConfig) {
+    return;
+  }
   addLoadFunction(onLoadConfig.storeName, function () {
     function getRequestData() {
-      return config.requestData;
+      return config.onLoadRequestData;
     }
 
     createRequestStoreWithData(
@@ -110,8 +111,15 @@ export function initRequestStoresOnLoad(config: RequestStoreConfig) {
       });
     }
 
-    if (config.dependencyUpdates) {
-      config.dependencyUpdates();
+    if (config.onLoadRequestConfig) {
+      config.onLoadRequestConfig.forEach(function (
+        requestStoreItem: RequestStoreItem,
+      ) {
+        createRequestStoreWithData(
+          requestStoreItem.storeName,
+          requestStoreItem.dataSource,
+        );
+      });
     }
   });
 }

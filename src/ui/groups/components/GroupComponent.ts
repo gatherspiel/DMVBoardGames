@@ -43,14 +43,19 @@ const loadConfig = {
   requestData: {
     name: getParameter(GROUP_NAME_PARAM),
   },
+  reducerSubscriptions: [
+    {
+      reducer: GROUP_REQUEST_REDUCER,
+      reducerFunction: function (data: any) {
+        return data;
+      },
+    },
+  ],
 };
 
 export class GroupComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(GROUP_COMPONENT_STORE, loadConfig);
-    this.subscribeToReducer(GROUP_REQUEST_REDUCER, function (data) {
-      return data;
-    });
   }
 
   getTemplate(): HTMLTemplateElement {

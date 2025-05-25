@@ -28,23 +28,24 @@ export class LoginComponent extends BaseDynamicComponent {
         storeName: AUTH_REQUEST_STORE,
         dataSource: AUTH_REDUCER,
       },
-      requestData: {
+      onLoadRequestData: {
         username: "",
         password: "",
       },
       requestStoresToCreate: [
         { storeName: LOGOUT_REQUEST_STORE, dataSource: LOGOUT_REDUCER },
       ],
+      reducerSubscriptions: [
+        {
+          reducer: AUTH_REDUCER,
+          reducerFunction: getLoginComponentStoreFromLoginResponse,
+        },
+        {
+          reducer: LOGOUT_REDUCER,
+          reducerFunction: getLoginComponentStoreFromLogoutResponse,
+        },
+      ],
     });
-
-    this.subscribeToReducer(
-      AUTH_REDUCER,
-      getLoginComponentStoreFromLoginResponse,
-    );
-    this.subscribeToReducer(
-      LOGOUT_REDUCER,
-      getLoginComponentStoreFromLogoutResponse,
-    );
   }
 
   connectedCallback() {
