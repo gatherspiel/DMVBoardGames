@@ -1,4 +1,4 @@
-import { getDataFromStore } from "../../framework/store/ComponentStore.ts";
+import { getDataFromStore } from "../../framework/store/data/ComponentStore.ts";
 
 import { SESSION_STORE } from "./Constants.ts";
 

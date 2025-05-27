@@ -1,14 +1,14 @@
 import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
-import { createComponentStore } from "../../../framework/store/ComponentStore.ts";
+import { createComponentStore } from "../../../framework/store/data/ComponentStore.ts";
 import type { Convention } from "../data/types/Convention.ts";
 import { LOCATIONS_REDUCER } from "../data/search/LocationsReducer.ts";
 
 export const CONVENTION_LIST_STORE = "conventionListStore";
 
 const loadConfig = {
-  reducerSubscriptions: [
+  thunkReducers: [
     {
-      reducer: LOCATIONS_REDUCER,
+      thunk: LOCATIONS_REDUCER,
       reducerFunction: (data: any) => {
         return data.conventions;
       },

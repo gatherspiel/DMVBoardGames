@@ -1,7 +1,7 @@
 import { API_ROOT, USE_MOCK } from "../../../../utils/params.ts";
 
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.ts";
-import { generateGetApiReducer } from "../../../../framework/reducer/api/ApiReducerFactory.ts";
+import { generateGetApiReducer } from "../../../../framework/store/update/api/ApiThunkFactory.ts";
 
 const MOCK_CITY_LIST = ["Arlington", "DC"];
 

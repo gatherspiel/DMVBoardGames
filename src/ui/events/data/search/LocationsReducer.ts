@@ -1,7 +1,7 @@
 import { getGameRestaurants, getGameStores } from "../mock/MockPageData.ts";
 import { API_ROOT, USE_MOCK } from "../../../../utils/params.ts";
 import { getConventionData } from "../mock/MockConventionData.ts";
-import { generateGetApiReducer } from "../../../../framework/reducer/api/ApiReducerFactory.ts";
+import { generateGetApiReducer } from "../../../../framework/store/update/api/ApiThunkFactory.ts";
 
 function getLocationsQueryUrl() {
   return API_ROOT + "/searchLocations?area=dmv";

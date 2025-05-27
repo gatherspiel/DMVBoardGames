@@ -1,8 +1,8 @@
 /*
  Updates store after an API response is returned
  */
-import { updateComponentStore } from "../store/ComponentStore.ts";
-import { hasRequestStore, updateRequestStore } from "../store/RequestStore.ts";
+import { updateComponentStore } from "../data/ComponentStore.ts";
+import { hasRequestStore, updateRequestStore } from "../data/RequestStore.ts";
 
 export class BaseDispatcher {
   storeField: string;

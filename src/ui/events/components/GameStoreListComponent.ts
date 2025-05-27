@@ -5,9 +5,9 @@ import { LOCATIONS_REDUCER } from "../data/search/LocationsReducer.ts";
 export const GAME_STORE_LIST_STORE = "gameStoreListStore";
 
 const loadConfig = {
-  reducerSubscriptions: [
+  thunkReducers: [
     {
-      reducer: LOCATIONS_REDUCER,
+      thunk: LOCATIONS_REDUCER,
       reducerFunction: (data: any) => {
         return data.gameStores;
       },

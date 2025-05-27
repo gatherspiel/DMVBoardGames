@@ -3,18 +3,18 @@ import type { DisplayItem } from "../../ui/events/data/types/DisplayItem.ts";
 import {
   createComponentStore,
   hasComponentStoreSubscribers,
-} from "../store/ComponentStore.ts";
+} from "../store/data/ComponentStore.ts";
 import {
   hasRequestStoreSubscribers,
   initRequestStoresOnLoad,
-} from "../store/RequestStore.ts";
-import { EventHandlerAction } from "../reducer/event/EventHandlerAction.ts";
-import { BaseDispatcher } from "../reducer/BaseDispatcher.ts";
-import { EventReducer } from "../reducer/event/EventReducer.ts";
-import type { EventHandlerReducerConfig } from "../reducer/event/types/EventHandlerReducerConfig.ts";
+} from "../store/data/RequestStore.ts";
+import { EventHandlerAction } from "../store/update/event/EventHandlerAction.ts";
+import { BaseDispatcher } from "../store/update/BaseDispatcher.ts";
+import { EventThunk } from "../store/update/event/EventThunk.ts";
+import type { EventHandlerReducerConfig } from "../store/update/event/types/EventHandlerReducerConfig.ts";
 import type {
   ComponentLoadConfig,
-  ReducerFunctionConfig,
+  ThunkReducerConfig,
 } from "./types/ComponentLoadConfig.ts";
 
 type EventConfig = {
@@ -57,11 +57,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       }
 
       // TODO: Handle case where there are multiple instances of a component that each need different state
-      if (loadConfig.reducerSubscriptions) {
-        loadConfig.reducerSubscriptions.forEach(function (
-          config: ReducerFunctionConfig,
-        ) {
-          config.reducer.subscribeComponent(
+      if (loadConfig.thunkReducers) {
+        loadConfig.thunkReducers.forEach(function (config: ThunkReducerConfig) {
+          config.thunk.subscribeComponent(
             componentStoreName,
             config.reducerFunction,
             config.reducerField,
@@ -169,9 +167,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {
         return a;
       });
-      const eventUpdater: EventReducer = new EventReducer(request, [
-        storeUpdate,
-      ]);
+      const eventUpdater: EventThunk = new EventThunk(request, [storeUpdate]);
       eventUpdater.processEvent(e);
     };
 

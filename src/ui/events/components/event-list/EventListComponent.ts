@@ -5,9 +5,9 @@ import { EVENT_LIST_REDUCER } from "../../data/search/EventListReducer.ts";
 import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
 
 const loadConfig = {
-  reducerSubscriptions: [
+  thunkReducers: [
     {
-      reducer: EVENT_LIST_REDUCER,
+      thunk: EVENT_LIST_REDUCER,
       reducerFunction: updateSearchResultGroupStore,
       reducerField: "groupData",
     },

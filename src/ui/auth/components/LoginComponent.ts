@@ -13,7 +13,6 @@ import {
   USERNAME_INPUT,
 } from "../Constants.js";
 import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
-import { generateDefaultLoginComponentStore } from "../types/AuthResponse.ts";
 import type { LoginComponentStore } from "../types/LoginComponentStore.ts";
 import {
   LOGIN_EVENT_CONFIG,
@@ -35,21 +34,17 @@ export class LoginComponent extends BaseDynamicComponent {
       requestStoresToCreate: [
         { storeName: LOGOUT_REQUEST_STORE, dataSource: LOGOUT_REDUCER },
       ],
-      reducerSubscriptions: [
+      thunkReducers: [
         {
-          reducer: AUTH_REDUCER,
+          thunk: AUTH_REDUCER,
           reducerFunction: getLoginComponentStoreFromLoginResponse,
         },
         {
-          reducer: LOGOUT_REDUCER,
+          thunk: LOGOUT_REDUCER,
           reducerFunction: getLoginComponentStoreFromLogoutResponse,
         },
       ],
     });
-  }
-
-  connectedCallback() {
-    this.innerHTML = this.render(generateDefaultLoginComponentStore());
   }
 
   render(data: LoginComponentStore) {

@@ -1,7 +1,7 @@
-import { BaseReducerAction } from "../BaseReducerAction.ts";
+import { BaseThunkAction } from "../BaseThunkAction.ts";
 import type { DefaultApiAction } from "./DefaultApiAction.ts";
 
-export class ExternalReducerAction extends BaseReducerAction {
+export class ExternalAction extends BaseThunkAction {
   externalClient: (params: any, defaultResponse: DefaultApiAction) => any;
   defaultResponse: DefaultApiAction;
 
@@ -15,7 +15,7 @@ export class ExternalReducerAction extends BaseReducerAction {
   }
 
   async retrieveData(params: any): Promise<any> {
-    const externalRequest: ExternalReducerAction = this;
+    const externalRequest: ExternalAction = this;
 
     try {
       return await externalRequest.externalClient(
