@@ -1,5 +1,5 @@
-import type { BaseReducer } from "../reducer/BaseReducer.ts";
-import type { BaseDynamicComponent } from "../components/BaseDynamicComponent.ts";
+import type { BaseThunk } from "../update/BaseThunk.ts";
+import type { BaseDynamicComponent } from "../../components/BaseDynamicComponent.ts";
 
 export function createStore(storeName: string, stores: any) {
   if (!storeName) {
@@ -58,7 +58,7 @@ export function updateStore(
   }
 
   storeData[storeName].subscribers.forEach(function (
-    component: BaseDynamicComponent | BaseReducer,
+    component: BaseDynamicComponent | BaseThunk,
   ) {
     if (!component || !(typeof component.updateStore === "function")) {
       throw new Error(

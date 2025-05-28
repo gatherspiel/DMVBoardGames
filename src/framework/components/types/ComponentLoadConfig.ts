@@ -1,12 +1,12 @@
-import type { BaseReducer } from "../../reducer/BaseReducer.ts";
+import type { BaseThunk } from "../../store/update/BaseThunk.ts";
 
 export type RequestStoreItem = {
   storeName: string;
-  dataSource: BaseReducer;
+  dataSource: BaseThunk;
 };
 
-export type ReducerFunctionConfig = {
-  reducer: BaseReducer;
+export type ThunkReducerConfig = {
+  thunk: BaseThunk;
   reducerFunction: (a: any) => any;
   reducerField?: string;
 };
@@ -17,5 +17,5 @@ export type ComponentLoadConfig = {
   onLoadInitStore?: () => any;
   onLoadRequestConfig?: RequestStoreItem[];
   requestStoresToCreate?: RequestStoreItem[];
-  reducerSubscriptions?: ReducerFunctionConfig[];
+  thunkReducers?: ThunkReducerConfig[];
 };

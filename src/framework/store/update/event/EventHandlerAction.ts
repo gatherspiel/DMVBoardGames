@@ -1,4 +1,4 @@
-import { getComponentStore } from "../../store/ComponentStore.ts";
+import { getComponentStore } from "../../data/ComponentStore.ts";
 
 export class EventHandlerAction {
   eventHandler: (a: any, componentStore?: any) => any;

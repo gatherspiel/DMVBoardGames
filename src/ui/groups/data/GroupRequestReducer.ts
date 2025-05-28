@@ -1,5 +1,5 @@
 import { API_ROOT } from "../../../utils/params.js";
-import { generateGetApiReducer } from "../../../framework/reducer/api/ApiReducerFactory.ts";
+import { generateGetApiReducer } from "../../../framework/store/update/api/ApiThunkFactory.ts";
 
 function getGroupsQueryUrl(requestParams: any) {
   return API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`;

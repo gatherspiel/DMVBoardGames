@@ -1,9 +1,9 @@
 import { type AuthTokenResponsePassword } from "@supabase/supabase-js";
-import type { DefaultApiAction } from "../../../framework/reducer/api/DefaultApiAction.ts";
-import { BaseReducer } from "../../../framework/reducer/BaseReducer.ts";
+import type { DefaultApiAction } from "../../../framework/store/update/api/DefaultApiAction.ts";
+import { BaseThunk } from "../../../framework/store/update/BaseThunk.ts";
 import type { AuthRequest } from "../types/AuthRequest.ts";
 import { AuthResponse } from "../types/AuthResponse.ts";
-import { generateApiReducerWithExternalClient } from "../../../framework/reducer/api/ApiReducerFactory.ts";
+import { generateApiReducerWithExternalClient } from "../../../framework/store/update/api/ApiThunkFactory.ts";
 import { getLocalStorageDataIfPresent } from "../../../framework/utils/localStorageUtils.ts";
 import { isAfterNow } from "../../../framework/utils/dateUtils.ts";
 import type { AuthReducerError } from "../types/AuthReducerError.ts";
@@ -82,7 +82,7 @@ const defaultResponse = {
   defaultFunctionPriority: false,
 };
 
-export const AUTH_REDUCER: BaseReducer = generateApiReducerWithExternalClient(
+export const AUTH_REDUCER: BaseThunk = generateApiReducerWithExternalClient(
   retrieveData,
   defaultResponse,
 );

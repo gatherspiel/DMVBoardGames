@@ -1,8 +1,8 @@
 import type { DefaultApiAction } from "./DefaultApiAction.ts";
-import { BaseReducerAction } from "../BaseReducerAction.ts";
-import { getResponseData } from "../../store/RequestStore.ts";
+import { BaseThunkAction } from "../BaseThunkAction.ts";
+import { getResponseData } from "../../data/RequestStore.ts";
 
-export class BaseGetAction extends BaseReducerAction {
+export class BaseGetAction extends BaseThunkAction {
   mockResponse: DefaultApiAction;
   getQueryUrl: (a: any) => string;
 

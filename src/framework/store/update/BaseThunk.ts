@@ -1,16 +1,16 @@
-import { BaseReducerAction } from "./BaseReducerAction.ts";
+import { BaseThunkAction } from "./BaseThunkAction.ts";
 import { BaseDispatcher } from "./BaseDispatcher.ts";
 
-export class BaseReducer {
-  reducerAction: BaseReducerAction;
+export class BaseThunk {
+  thunkAction: BaseThunkAction;
   dispatchers: BaseDispatcher[];
-  constructor(dataFetch: BaseReducerAction, dispatchers?: BaseDispatcher[]) {
-    this.reducerAction = dataFetch;
+  constructor(dataFetch: BaseThunkAction, dispatchers?: BaseDispatcher[]) {
+    this.thunkAction = dataFetch;
     this.dispatchers = dispatchers ?? [];
   }
 
   async retrieveData(params: any) {
-    return await this.reducerAction.retrieveData(params);
+    return await this.thunkAction.retrieveData(params);
   }
 
   //TODO: Optimize the logic of subscribeComponent

@@ -2,7 +2,7 @@ import { API_ROOT, USE_MOCK } from "../../../../utils/params.ts";
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.ts";
 import { getGroups } from "../mock/MockPageData.ts";
 import type { SearchParams } from "./model/SearchParams.ts";
-import { generateGetApiReducer } from "../../../../framework/reducer/api/ApiReducerFactory.ts";
+import { generateGetApiReducer } from "../../../../framework/store/update/api/ApiThunkFactory.ts";
 
 const CITY_PARAM = "city";
 const DAY_PARAM = "day";

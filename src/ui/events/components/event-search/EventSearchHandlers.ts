@@ -1,7 +1,7 @@
 import { SEARCH_REQUEST_STORE } from "./Constants.ts";
 
-import type { EventHandlerData } from "../../../../framework/reducer/event/types/EventHandlerData.ts";
-import type { EventHandlerReducerConfig } from "../../../../framework/reducer/event/types/EventHandlerReducerConfig.ts";
+import type { EventHandlerData } from "../../../../framework/store/update/event/types/EventHandlerData.ts";
+import type { EventHandlerReducerConfig } from "../../../../framework/store/update/event/types/EventHandlerReducerConfig.ts";
 export const SEARCH_EVENT_HANDLER_CONFIG: EventHandlerReducerConfig = {
   eventHandler: function (params: EventHandlerData) {
     return {

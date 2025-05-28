@@ -4,7 +4,7 @@ import {
   PASSWORD_INPUT,
   USERNAME_INPUT,
 } from "./Constants.js";
-import type { EventHandlerReducerConfig } from "../../framework/reducer/event/types/EventHandlerReducerConfig.ts";
+import type { EventHandlerReducerConfig } from "../../framework/store/update/event/types/EventHandlerReducerConfig.ts";
 
 export const LOGIN_EVENT_CONFIG: EventHandlerReducerConfig = {
   eventHandler: function () {

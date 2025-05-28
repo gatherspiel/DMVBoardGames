@@ -1,11 +1,11 @@
 import { createStore, hasSubscribers, subscribeToStore } from "./StoreUtils.js";
 import { addLoadFunction } from "./InitStoreManager.js";
-import type { DefaultApiAction } from "../reducer/api/DefaultApiAction.ts";
-import type { BaseReducer } from "../reducer/BaseReducer.ts";
+import type { DefaultApiAction } from "../update/api/DefaultApiAction.ts";
+import type { BaseThunk } from "../update/BaseThunk.ts";
 import type {
   ComponentLoadConfig,
   RequestStoreItem,
-} from "../components/types/ComponentLoadConfig.ts";
+} from "../../components/types/ComponentLoadConfig.ts";
 
 const stores: Record<string, any> = {};
 const responseCache: Record<string, any> = {};
@@ -16,7 +16,7 @@ const DEFAULT_API_ERROR_RESPONSE = function (responseData: any) {
 
 export function createRequestStoreWithData(
   storeName: string,
-  dataSource: BaseReducer,
+  dataSource: BaseThunk,
   initStore: () => any = () => {
     return { load: true };
   },
