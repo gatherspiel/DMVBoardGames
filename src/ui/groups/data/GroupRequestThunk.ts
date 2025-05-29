@@ -1,8 +1,12 @@
 import { API_ROOT } from "../../../utils/params.js";
-import { generateGetApiReducer } from "../../../framework/store/update/api/ApiThunkFactory.ts";
+import { generateApiThunk } from "../../../framework/store/update/api/ApiThunkFactory.ts";
+import type { ApiRequestConfig } from "../../../framework/store/update/api/types/ApiRequestConfig.ts";
 
-function getGroupsQueryUrl(requestParams: any) {
-  return API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`;
+function getGroupsQueryUrl(requestParams: any): ApiRequestConfig {
+  //TODO: Update to include headers
+  return {
+    url: API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`,
+  };
 }
 
 const defaultFunctionConfig = {
@@ -11,8 +15,8 @@ const defaultFunctionConfig = {
   },
   defaultFunctionPriority: false,
 };
-export const GROUP_REQUEST_REDUCER = generateGetApiReducer({
-  queryUrl: getGroupsQueryUrl,
+export const GROUP_REQUEST_REDUCER = generateApiThunk({
+  queryConfig: getGroupsQueryUrl,
   defaultFunctionConfig: defaultFunctionConfig,
 });
 

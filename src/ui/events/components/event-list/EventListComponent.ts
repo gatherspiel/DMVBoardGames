@@ -1,13 +1,13 @@
 import { BaseDynamicComponent } from "../../../../framework/components/BaseDynamicComponent.ts";
 import type { GroupSearchResult } from "../../data/types/GroupSearchResult.ts";
 import { SHOW_INFO_CONFIG } from "./EventListHandlers.ts";
-import { EVENT_LIST_REDUCER } from "../../data/search/EventListReducer.ts";
+import { EVENT_LIST_THUNK } from "../../data/search/EventListThunk.ts";
 import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
 
 const loadConfig = {
   thunkReducers: [
     {
-      thunk: EVENT_LIST_REDUCER,
+      thunk: EVENT_LIST_THUNK,
       reducerFunction: updateSearchResultGroupStore,
       reducerField: "groupData",
     },

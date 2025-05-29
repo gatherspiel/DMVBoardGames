@@ -2,12 +2,13 @@ import { API_ROOT, USE_MOCK } from "../../../../utils/params.ts";
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.ts";
 import { getGroups } from "../mock/MockPageData.ts";
 import type { SearchParams } from "./model/SearchParams.ts";
-import { generateGetApiReducer } from "../../../../framework/store/update/api/ApiThunkFactory.ts";
+import { generateApiThunk } from "../../../../framework/store/update/api/ApiThunkFactory.ts";
+import type { ApiRequestConfig } from "../../../../framework/store/update/api/types/ApiRequestConfig.ts";
 
 const CITY_PARAM = "city";
 const DAY_PARAM = "day";
 
-function getEventsQueryUrl(searchParams: SearchParams) {
+function getEventsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
   let url = API_ROOT + "/searchEvents";
   const paramMap: any = {};
 
@@ -32,7 +33,9 @@ function getEventsQueryUrl(searchParams: SearchParams) {
     queryString += params.join("&");
     url += queryString;
   }
-  return url;
+  return {
+    url: url,
+  };
 }
 
 const defaultFunctionConfig = {
@@ -40,7 +43,7 @@ const defaultFunctionConfig = {
   defaultFunctionPriority: USE_MOCK,
 };
 
-export const EVENT_LIST_REDUCER = generateGetApiReducer({
-  queryUrl: getEventsQueryUrl,
+export const EVENT_LIST_THUNK = generateApiThunk({
+  queryConfig: getEventsQueryConfig,
   defaultFunctionConfig: defaultFunctionConfig,
 });

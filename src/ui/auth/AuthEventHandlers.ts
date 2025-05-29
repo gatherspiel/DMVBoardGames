@@ -4,9 +4,9 @@ import {
   PASSWORD_INPUT,
   USERNAME_INPUT,
 } from "./Constants.js";
-import type { EventHandlerReducerConfig } from "../../framework/store/update/event/types/EventHandlerReducerConfig.ts";
+import type { EventHandlerThunkConfig } from "../../framework/store/update/event/types/EventHandlerThunkConfig.ts";
 
-export const LOGIN_EVENT_CONFIG: EventHandlerReducerConfig = {
+export const LOGIN_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function () {
     return {
       username:
@@ -20,7 +20,7 @@ export const LOGIN_EVENT_CONFIG: EventHandlerReducerConfig = {
   storeToUpdate: AUTH_REQUEST_STORE,
 };
 
-export const LOGOUT_EVENT_CONFIG: EventHandlerReducerConfig = {
+export const LOGOUT_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function () {
     console.log("Logging out");
   },

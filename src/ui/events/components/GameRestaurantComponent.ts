@@ -1,13 +1,13 @@
 import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
 import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
-import { LOCATIONS_REDUCER } from "../data/search/LocationsReducer.ts";
+import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 
 export const GAME_RESTAURANT_LIST_STORE = "gameRestaurantListStore";
 
 const loadConfig = {
   thunkReducers: [
     {
-      thunk: LOCATIONS_REDUCER,
+      thunk: LOCATIONS_THUNK,
       reducerFunction: (data: any) => {
         return data.gameRestaurants;
       },

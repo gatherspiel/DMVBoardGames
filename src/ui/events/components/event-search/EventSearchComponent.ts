@@ -6,12 +6,12 @@ import {
   SEARCH_REQUEST_STORE,
 } from "./Constants.ts";
 
-import { EVENT_LIST_REDUCER } from "../../data/search/EventListReducer.ts";
-import { LOCATIONS_REDUCER } from "../../data/search/LocationsReducer.ts";
+import { EVENT_LIST_THUNK } from "../../data/search/EventListThunk.ts";
+import { LOCATIONS_THUNK } from "../../data/search/LocationsThunk.ts";
 import {
-  CITY_LIST_REDUCER,
+  CITY_LIST_THUNK,
   updateCities,
-} from "../../data/search/CityListReducer.ts";
+} from "../../data/search/CityListThunk.ts";
 import type { EventSearchCity } from "./types/EventSearchCity.ts";
 import {
   SEARCH_EVENT_HANDLER_CONFIG,
@@ -26,25 +26,25 @@ import { BaseDynamicComponent } from "../../../../framework/components/BaseDynam
 const loadConfig = {
   onLoadStoreConfig: {
     storeName: SEARCH_REQUEST_STORE,
-    dataSource: EVENT_LIST_REDUCER,
+    dataSource: EVENT_LIST_THUNK,
   },
-  requestData: {
+  onLoadRequestData: {
     city: DEFAULT_SEARCH_PARAMETER,
     day: DEFAULT_SEARCH_PARAMETER,
   },
   onLoadRequestConfig: [
     {
       storeName: "search-component-loaded",
-      dataSource: LOCATIONS_REDUCER,
+      dataSource: LOCATIONS_THUNK,
     },
     {
       storeName: "search-component-loaded-cities",
-      dataSource: CITY_LIST_REDUCER,
+      dataSource: CITY_LIST_THUNK,
     },
   ],
-  reducerSubscriptions: [
+  thunkReducers: [
     {
-      reducer: CITY_LIST_REDUCER,
+      thunk: CITY_LIST_THUNK,
       reducerFunction: updateCities,
     },
   ],

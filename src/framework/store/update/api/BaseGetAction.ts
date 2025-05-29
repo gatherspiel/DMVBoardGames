@@ -1,27 +1,17 @@
 import type { DefaultApiAction } from "./DefaultApiAction.ts";
 import { BaseThunkAction } from "../BaseThunkAction.ts";
 import { getResponseData } from "../../data/RequestStore.ts";
-
-export const ApiActionTypes = Object.freeze({
-  GET: "GET",
-});
-
-export type ApiRequestCofnig = {
-  url: string;
-  method: typeof ApiActionTypes;
-  headers?: Record<string, string>;
-  body?: any;
-};
+import type { ApiRequestConfig } from "./types/ApiRequestConfig.ts";
 export class BaseGetAction extends BaseThunkAction {
   defaultResponse: DefaultApiAction;
-  getQueryUrl: (a: any) => string;
+  getQueryConfig: (a: any) => ApiRequestConfig;
 
   constructor(
-    getQueryUrl: (a: any) => string,
+    getQueryConfig: (a: any) => ApiRequestConfig,
     defaultResponse: DefaultApiAction,
   ) {
     super();
-    this.getQueryUrl = getQueryUrl;
+    this.getQueryConfig = getQueryConfig;
     this.defaultResponse = defaultResponse;
   }
 
@@ -36,7 +26,7 @@ export class BaseGetAction extends BaseThunkAction {
     const baseGet: BaseGetAction = this;
 
     return await getResponseData(
-      baseGet.getQueryUrl(params),
+      baseGet.getQueryConfig(params),
       baseGet.defaultResponse,
     );
   }

@@ -1,6 +1,6 @@
 import type { DefaultApiAction } from "../../../framework/store/update/api/DefaultApiAction.ts";
 import type { BaseThunk } from "../../../framework/store/update/BaseThunk.ts";
-import { generateApiReducerWithExternalClient } from "../../../framework/store/update/api/ApiThunkFactory.ts";
+import { generateApiThunkWithExternalConfig } from "../../../framework/store/update/api/ApiThunkFactory.ts";
 import type { LoginComponentStore } from "../types/LoginComponentStore.ts";
 import { getSupabaseClient } from "../SupabaseClient.ts";
 import { AuthResponse } from "../types/AuthResponse.ts";
@@ -32,7 +32,7 @@ export function getLoginComponentStoreFromLogoutResponse(): LoginComponentStore 
   };
 }
 
-export const LOGOUT_REDUCER: BaseThunk = generateApiReducerWithExternalClient(
+export const LOGOUT_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
   retrieveData,
   defaultResponse,
 );
