@@ -1,11 +1,22 @@
 import { API_ROOT } from "../../../utils/params.js";
 import { generateApiThunk } from "../../../framework/store/update/api/ApiThunkFactory.ts";
 import type { ApiRequestConfig } from "../../../framework/store/update/api/types/ApiRequestConfig.ts";
+import { AUTH_TOKEN_HEADER_KEY } from "../../auth/Constants.ts";
+import { getAccessTokenIfPresent } from "../../auth/AuthUtils.ts";
 
 function getGroupsQueryUrl(requestParams: any): ApiRequestConfig {
   //TODO: Update to include headers
+
+  let headers: Record<string, string> = {};
+  const authData = getAccessTokenIfPresent();
+  console.log(authData);
+  if (authData) {
+    headers[AUTH_TOKEN_HEADER_KEY] = authData;
+  }
+  console.log(headers);
   return {
     url: API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`,
+    headers: headers,
   };
 }
 

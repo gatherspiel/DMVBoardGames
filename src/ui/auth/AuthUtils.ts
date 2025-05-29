@@ -1,7 +1,10 @@
-import { getDataFromStore } from "../../framework/store/data/ComponentStore.ts";
+import { getLocalStorageDataIfPresent } from "../../framework/utils/localStorageUtils.ts";
+import { AUTH_TOKEN_KEY } from "../../utils/params.ts";
 
-import { SESSION_STORE } from "./Constants.ts";
-
-export function getAccessToken() {
-  return getDataFromStore(SESSION_STORE, "access_token");
+export function getAccessTokenIfPresent() {
+  const authData = getLocalStorageDataIfPresent(AUTH_TOKEN_KEY);
+  if (authData) {
+    return authData["access_token"];
+  }
+  return null;
 }
