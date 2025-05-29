@@ -1,22 +1,33 @@
 import type { DefaultApiAction } from "./DefaultApiAction.ts";
 import { BaseThunkAction } from "../BaseThunkAction.ts";
 import { getResponseData } from "../../data/RequestStore.ts";
-
+import type { ApiRequestConfig } from "./types/ApiRequestConfig.ts";
 export class BaseGetAction extends BaseThunkAction {
-  mockResponse: DefaultApiAction;
-  getQueryUrl: (a: any) => string;
+  defaultResponse: DefaultApiAction;
+  getQueryConfig: (a: any) => ApiRequestConfig;
 
-  constructor(getQueryUrl: (a: any) => string, mockResponse: DefaultApiAction) {
+  constructor(
+    getQueryConfig: (a: any) => ApiRequestConfig,
+    defaultResponse: DefaultApiAction,
+  ) {
     super();
-    this.getQueryUrl = getQueryUrl;
-    this.mockResponse = mockResponse;
+    this.getQueryConfig = getQueryConfig;
+    this.defaultResponse = defaultResponse;
   }
 
+  /**
+   * TODO:
+   * - Rename getQueryUrl to getQueryConfig
+   * - Rename this class to BaseApiAction.ts
+   * - Make sure retrieveData sets the token before sending the request
+   * @param params
+   */
   async retrieveData(params: any): Promise<any> {
     const baseGet: BaseGetAction = this;
+
     return await getResponseData(
-      baseGet.getQueryUrl(params),
-      baseGet.mockResponse,
+      baseGet.getQueryConfig(params),
+      baseGet.defaultResponse,
     );
   }
 }

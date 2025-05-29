@@ -6,6 +6,7 @@ import type {
   ComponentLoadConfig,
   RequestStoreItem,
 } from "../../components/types/ComponentLoadConfig.ts";
+import type { ApiRequestConfig } from "../update/api/types/ApiRequestConfig.ts";
 
 const stores: Record<string, any> = {};
 const responseCache: Record<string, any> = {};
@@ -62,6 +63,11 @@ export function updateRequestStore(
   stores[storeName].subscribers.forEach(function (item: any) {
     const requestData = stores[storeName].data;
 
+    if (item.dispatchers.length === 0) {
+      throw new Error(
+        `No components are subscribed to request store: ${storeName}`,
+      );
+    }
     //TODO: If a response would invalidate a cache item, do a page refresh or clear the whole cache.
     if (
       requestData &&
@@ -125,21 +131,25 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
 }
 
 export async function getResponseData(
-  queryUrl: string,
+  queryConfig: ApiRequestConfig,
   mockSettings?: DefaultApiAction,
 ) {
+  const url = queryConfig.url;
+  const useDefault = mockSettings?.defaultFunctionPriority;
+
   try {
-    const useMock = mockSettings?.defaultFunctionPriority;
-    if (!useMock) {
+    if (!useDefault) {
       //The replace call is a workaround for an issue with url strings containing double quotes"
-      const response = await fetch(queryUrl.replace(/"/g, ""));
+      const response = await fetch(url.replace(/"/g, ""), {
+        headers: queryConfig.headers,
+      });
       if (response.status !== 200) {
         console.log("Did not retrieve data from API. Mock data will be used");
 
         const responseData: any = {
           status: response.status,
           message: "",
-          endpoint: queryUrl,
+          endpoint: url,
         };
         mockSettings?.defaultFunction
           ? mockSettings?.defaultFunction(responseData)
@@ -153,7 +163,7 @@ export async function getResponseData(
     const responseData: any = {
       status: null,
       message: e.message,
-      endpoint: queryUrl,
+      endpoint: url,
     };
 
     console.log("Error");

@@ -1,9 +1,9 @@
 import {
-  AUTH_REDUCER,
+  AUTH_THUNK,
   getLoginComponentStoreFromLoginResponse,
-} from "../reducer/AuthReducer.ts";
+} from "../reducer/AuthThunk.ts";
 
-import { getLoginComponentStoreFromLogoutResponse } from "../reducer/LogoutReducer.ts";
+import { getLoginComponentStoreFromLogoutResponse } from "../reducer/LogoutThunk.ts";
 
 import {
   AUTH_REQUEST_STORE,
@@ -18,29 +18,29 @@ import {
   LOGIN_EVENT_CONFIG,
   LOGOUT_EVENT_CONFIG,
 } from "../AuthEventHandlers.ts";
-import { LOGOUT_REDUCER } from "../reducer/LogoutReducer.ts";
+import { LOGOUT_THUNK } from "../reducer/LogoutThunk.ts";
 
 export class LoginComponent extends BaseDynamicComponent {
   constructor() {
     super("loginComponentStore", {
       onLoadStoreConfig: {
         storeName: AUTH_REQUEST_STORE,
-        dataSource: AUTH_REDUCER,
+        dataSource: AUTH_THUNK,
       },
       onLoadRequestData: {
         username: "",
         password: "",
       },
       requestStoresToCreate: [
-        { storeName: LOGOUT_REQUEST_STORE, dataSource: LOGOUT_REDUCER },
+        { storeName: LOGOUT_REQUEST_STORE, dataSource: LOGOUT_THUNK },
       ],
       thunkReducers: [
         {
-          thunk: AUTH_REDUCER,
+          thunk: AUTH_THUNK,
           reducerFunction: getLoginComponentStoreFromLoginResponse,
         },
         {
-          thunk: LOGOUT_REDUCER,
+          thunk: LOGOUT_THUNK,
           reducerFunction: getLoginComponentStoreFromLogoutResponse,
         },
       ],

@@ -4,7 +4,7 @@ import {
   GROUP_COMPONENT_STORE,
   GROUP_NAME_PARAM,
 } from "../Constants.js";
-import { GROUP_REQUEST_REDUCER } from "../data/GroupRequestReducer.ts";
+import { GROUP_REQUEST_REDUCER } from "../data/GroupRequestThunk.ts";
 
 import { createJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
 import type { GroupPageData } from "../../events/data/types/GroupPageData.ts";
@@ -40,12 +40,12 @@ const loadConfig = {
     storeName: GET_GROUP_REQUEST_STORE,
     dataSource: GROUP_REQUEST_REDUCER,
   },
-  requestData: {
+  onLoadRequestData: {
     name: getParameter(GROUP_NAME_PARAM),
   },
-  reducerSubscriptions: [
+  thunkReducers: [
     {
-      reducer: GROUP_REQUEST_REDUCER,
+      thunk: GROUP_REQUEST_REDUCER,
       reducerFunction: function (data: any) {
         return data;
       },

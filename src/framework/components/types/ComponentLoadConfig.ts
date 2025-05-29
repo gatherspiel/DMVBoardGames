@@ -19,3 +19,12 @@ export type ComponentLoadConfig = {
   requestStoresToCreate?: RequestStoreItem[];
   thunkReducers?: ThunkReducerConfig[];
 };
+
+export const validComponentLoadConfigFields = [
+  "onLoadStoreConfig",
+  "onLoadRequestData",
+  "onLoadInitStore",
+  "onLoadRequestConfig",
+  "requestStoresToCreate",
+  "thunkReducers",
+];

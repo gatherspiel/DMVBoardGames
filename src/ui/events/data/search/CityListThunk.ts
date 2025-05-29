@@ -1,12 +1,15 @@
 import { API_ROOT, USE_MOCK } from "../../../../utils/params.ts";
 
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.ts";
-import { generateGetApiReducer } from "../../../../framework/store/update/api/ApiThunkFactory.ts";
+import { generateApiThunk } from "../../../../framework/store/update/api/ApiThunkFactory.ts";
+import type { ApiRequestConfig } from "../../../../framework/store/update/api/types/ApiRequestConfig.ts";
 
 const MOCK_CITY_LIST = ["Arlington", "DC"];
 
-function getCitiesQueryUrl() {
-  return API_ROOT + "/listCities?area=dmv";
+function getCitiesQueryConfig(): ApiRequestConfig {
+  return {
+    url: API_ROOT + "/listCities?area=dmv",
+  };
 }
 
 const mockFunction = function () {
@@ -38,7 +41,7 @@ export const updateCities = function (cities: Record<number, string>): any {
   };
 };
 
-export const CITY_LIST_REDUCER = generateGetApiReducer({
-  queryUrl: getCitiesQueryUrl,
+export const CITY_LIST_THUNK = generateApiThunk({
+  queryConfig: getCitiesQueryConfig,
   defaultFunctionConfig: defaultFunctionConfig,
 });

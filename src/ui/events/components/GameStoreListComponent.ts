@@ -1,13 +1,13 @@
 import type { GameStore } from "../data/types/GameStore.ts";
 import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
-import { LOCATIONS_REDUCER } from "../data/search/LocationsReducer.ts";
+import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 
 export const GAME_STORE_LIST_STORE = "gameStoreListStore";
 
 const loadConfig = {
   thunkReducers: [
     {
-      thunk: LOCATIONS_REDUCER,
+      thunk: LOCATIONS_THUNK,
       reducerFunction: (data: any) => {
         return data.gameStores;
       },

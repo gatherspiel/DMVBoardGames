@@ -1,14 +1,13 @@
 import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
-import { createComponentStore } from "../../../framework/store/data/ComponentStore.ts";
 import type { Convention } from "../data/types/Convention.ts";
-import { LOCATIONS_REDUCER } from "../data/search/LocationsReducer.ts";
+import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 
 export const CONVENTION_LIST_STORE = "conventionListStore";
 
 const loadConfig = {
   thunkReducers: [
     {
-      thunk: LOCATIONS_REDUCER,
+      thunk: LOCATIONS_THUNK,
       reducerFunction: (data: any) => {
         return data.conventions;
       },
@@ -18,7 +17,6 @@ const loadConfig = {
 export class ConventionListComponent extends BaseDynamicComponent {
   constructor() {
     super(CONVENTION_LIST_STORE, loadConfig);
-    createComponentStore(CONVENTION_LIST_STORE, this);
   }
 
   getItemHtml(convention: Convention) {

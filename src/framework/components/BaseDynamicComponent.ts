@@ -11,10 +11,11 @@ import {
 import { EventHandlerAction } from "../store/update/event/EventHandlerAction.ts";
 import { BaseDispatcher } from "../store/update/BaseDispatcher.ts";
 import { EventThunk } from "../store/update/event/EventThunk.ts";
-import type { EventHandlerReducerConfig } from "../store/update/event/types/EventHandlerReducerConfig.ts";
-import type {
-  ComponentLoadConfig,
-  ThunkReducerConfig,
+import type { EventHandlerThunkConfig } from "../store/update/event/types/EventHandlerThunkConfig.ts";
+import {
+  type ComponentLoadConfig,
+  type ThunkReducerConfig,
+  validComponentLoadConfigFields,
 } from "./types/ComponentLoadConfig.ts";
 
 type EventConfig = {
@@ -31,14 +32,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   static instanceCount = 1;
 
-  //TODO: Consider passing reducers here.
   constructor(componentStoreName: string, loadConfig?: ComponentLoadConfig) {
     super();
 
-    /*
-    TODO: Remove this warning and make componentStoreName a required property once all instances of BaseDynamicComponent
-    pass a store name in the constructor.
-     */
     this.instanceId = BaseDynamicComponent.instanceCount;
     BaseDynamicComponent.instanceCount++;
     this.eventHandlers = {};
@@ -48,6 +44,16 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     }
 
     if (loadConfig) {
+      const self = this;
+      Object.keys(loadConfig).forEach((configField: any) => {
+        if (!validComponentLoadConfigFields.includes(configField)) {
+          throw new Error(
+            `Invalid component load config field ${configField} for ${self.componentStoreName}. Valid fields are
+            ${validComponentLoadConfigFields}`,
+          );
+        }
+      });
+
       initRequestStoresOnLoad(loadConfig);
       const componentStoreName = this.componentStoreName;
       if (!componentStoreName || componentStoreName.length === 0) {
@@ -59,6 +65,11 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       // TODO: Handle case where there are multiple instances of a component that each need different state
       if (loadConfig.thunkReducers) {
         loadConfig.thunkReducers.forEach(function (config: ThunkReducerConfig) {
+          if (!config.thunk) {
+            throw new Error(
+              `Missing thunk field in ${self.componentStoreName} reducer configuration`,
+            );
+          }
           config.thunk.subscribeComponent(
             componentStoreName,
             config.reducerFunction,
@@ -139,7 +150,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   static createHandler(
-    eventConfig: EventHandlerReducerConfig,
+    eventConfig: EventHandlerThunkConfig,
     storeName?: string,
   ) {
     const storeToUpdate =
