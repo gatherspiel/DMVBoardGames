@@ -2,62 +2,78 @@ import {
   DAYS_IN_WEEK,
   DEFAULT_SEARCH_PARAMETER,
   SEARCH_CITY_ID,
-  SEARCH_COMPONENT_LOADED_STATE,
-  SEARCH_COMPONENT_LOADED_STATE_CITIES,
-  SEARCH_COMPONENT_STATE,
   SEARCH_FORM_ID,
-  SEARCH_REQUEST_STATE,
+  SEARCH_REQUEST_STORE,
 } from "./Constants.ts";
 
-import { setupEventHandlers } from "./EventSearchHandlers.js";
-import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.ts";
-import { eventSearchState } from "./EventSearchState.ts";
+import { EVENT_LIST_THUNK } from "../../data/search/EventListThunk.ts";
+import { LOCATIONS_THUNK } from "../../data/search/LocationsThunk.ts";
 import {
-  createRequestState,
-  initStateOnLoad,
-} from "../../../../framework/state/RequestStateManager.ts";
-import { EVENT_SEARCH_API } from "../../data/search/EventAPI.ts";
-import { LOCATION_API } from "../../data/search/LocationsAPI.ts";
-import { CITIES_API } from "../../data/search/CityListAPI.ts";
+  CITY_LIST_THUNK,
+  updateCities,
+} from "../../data/search/CityListThunk.ts";
 import type { EventSearchCity } from "./types/EventSearchCity.ts";
-export class EventSearchComponent extends HTMLElement {
+import {
+  SEARCH_EVENT_HANDLER_CONFIG,
+  UPDATE_CITY_CONFIG,
+  UPDATE_DAY_CONFIG,
+} from "./EventSearchHandlers.ts";
+import { BaseDynamicComponent } from "../../../../framework/components/BaseDynamicComponent.ts";
+
+/**
+ * TODO: Move reducer configurations to load config and make subscribeToReducer a private method.
+ */
+const loadConfig = {
+  onLoadStoreConfig: {
+    storeName: SEARCH_REQUEST_STORE,
+    dataSource: EVENT_LIST_THUNK,
+  },
+  onLoadRequestData: {
+    city: DEFAULT_SEARCH_PARAMETER,
+    day: DEFAULT_SEARCH_PARAMETER,
+  },
+  onLoadRequestConfig: [
+    {
+      storeName: "search-component-loaded",
+      dataSource: LOCATIONS_THUNK,
+    },
+    {
+      storeName: "search-component-loaded-cities",
+      dataSource: CITY_LIST_THUNK,
+    },
+  ],
+  thunkReducers: [
+    {
+      thunk: CITY_LIST_THUNK,
+      reducerFunction: updateCities,
+    },
+  ],
+};
+
+export class EventSearchComponent extends BaseDynamicComponent {
   constructor() {
-    super();
-
-    subscribeToComponentState(SEARCH_COMPONENT_STATE, this);
-
-    initStateOnLoad({
-      stateName: SEARCH_REQUEST_STATE,
-      dataSource: EVENT_SEARCH_API,
-      requestData: {
-        city: eventSearchState.location,
-        day: eventSearchState.day,
-      },
-      dependencyUpdates: function () {
-        createRequestState(SEARCH_COMPONENT_LOADED_STATE, LOCATION_API);
-        createRequestState(SEARCH_COMPONENT_LOADED_STATE_CITIES, CITIES_API);
-      },
-    });
+    super("event-search-component-store", loadConfig);
   }
 
-  generateHtml(eventSearchState: any) {
+  render(eventSearchStore: any) {
     return `
-      <form id=${SEARCH_FORM_ID}>
+      <form id=${SEARCH_FORM_ID} ${this.createSubmitEvent(SEARCH_EVENT_HANDLER_CONFIG)}>
 
         <div id='search-input-wrapper'>
           <div>
-            ${this.getCityHtml(eventSearchState)}
+            ${this.getCityHtml(eventSearchStore)}
           </div>
           <div>
             <label htmlFor="days">Select day:</label>
             <select
               name="days"
               id="search-days"
-              value=${eventSearchState.day}
+              value=${eventSearchStore.day}
+              ${this.createOnChangeEvent(UPDATE_DAY_CONFIG)}
             >
               ${DAYS_IN_WEEK.map(
                 (day, index) =>
-                  `<option key=${index} value=${day}>
+                  `<option key=${index} value=${day} ${day === eventSearchStore.day ? "selected" : ""}>
                     ${day === DEFAULT_SEARCH_PARAMETER ? "Any day" : day}
                    </option>`,
               )}
@@ -65,29 +81,30 @@ export class EventSearchComponent extends HTMLElement {
           </div>
 
         </div>
-        <button type="submit">SEARCH EVENTS</button>
+        <button type="submit" >SEARCH EVENTS</button>
       </form>
   `;
   }
 
-  getCityHtml(eventSearchState: any) {
+  getCityHtml(eventSearchStore: any) {
     return ` 
     <label>Select city: </label>
     <select
       id=${SEARCH_CITY_ID}
       name="cities"
-      value=${eventSearchState.cities}
+      value=${eventSearchStore.cities}
+      ${this.createOnChangeEvent(UPDATE_CITY_CONFIG)}
     >
 
-    ${this.getLocationSelect(eventSearchState)}
+    ${this.getLocationSelect(eventSearchStore)}
     </select>`;
   }
 
-  getLocationSelect(eventSearchState: any) {
+  getLocationSelect(eventSearchStore: any) {
     const data = `
-    ${eventSearchState.cities?.map(
+    ${eventSearchStore.cities?.map(
       (location: EventSearchCity) =>
-        `<option key=${location.index} value="${location.name}">
+        `<option key=${location.index} value="${location.name}" ${location.name === eventSearchStore.location ? "selected" : ""}>
           ${
             location.name === DEFAULT_SEARCH_PARAMETER
               ? "Any location"
@@ -96,11 +113,6 @@ export class EventSearchComponent extends HTMLElement {
         </option>`,
     )}`;
     return data;
-  }
-
-  updateData(state: any) {
-    this.innerHTML = this.generateHtml(state);
-    setupEventHandlers();
   }
 }
 if (!customElements.get("event-search-component")) {

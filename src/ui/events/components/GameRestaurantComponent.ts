@@ -1,11 +1,23 @@
-import { createComponentState } from "../../../framework/state/ComponentStateManager.ts";
 import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
+import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
+import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 
-export const GAME_RESTAURANT_STATE = "gameRestaurantListState";
-export class GameRestaurantComponent extends HTMLElement {
+export const GAME_RESTAURANT_LIST_STORE = "gameRestaurantListStore";
+
+const loadConfig = {
+  thunkReducers: [
+    {
+      thunk: LOCATIONS_THUNK,
+      reducerFunction: (data: any) => {
+        return data.gameRestaurants;
+      },
+    },
+  ],
+};
+
+export class GameRestaurantComponent extends BaseDynamicComponent {
   constructor() {
-    super();
-    createComponentState(GAME_RESTAURANT_STATE, this);
+    super(GAME_RESTAURANT_LIST_STORE, loadConfig);
   }
 
   getItemHtml(gameRestaurant: GameRestaurant) {
@@ -19,18 +31,13 @@ export class GameRestaurantComponent extends HTMLElement {
   `;
   }
 
-  generateHtml(data: Record<any, GameRestaurant>) {
+  render(data: Record<any, GameRestaurant>) {
     let html = `<h1>Board Game Bars and Cafés</h1>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
     });
     return html;
-  }
-
-  updateData(data: Record<any, GameRestaurant>) {
-    const html = this.generateHtml(data);
-    this.innerHTML = html;
   }
 }
 

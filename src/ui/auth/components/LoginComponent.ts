@@ -1,63 +1,72 @@
-import { showExperimental } from "../../../framework/util/urlParmUtils.ts";
-import { isLoggedIn } from "../LoginComponentState.ts";
-import { initStateOnLoad } from "../../../framework/state/RequestStateManager.ts";
-import { setupEventHandlers } from "../AuthEventHandlers.ts";
-import { AUTH_API } from "../AuthAPI.ts";
 import {
-  AUTH_STATE,
+  AUTH_THUNK,
+  getLoginComponentStoreFromLoginResponse,
+} from "../reducer/AuthThunk.ts";
+
+import { getLoginComponentStoreFromLogoutResponse } from "../reducer/LogoutThunk.ts";
+
+import {
+  AUTH_REQUEST_STORE,
   LOGIN_FORM_ID,
+  LOGOUT_REQUEST_STORE,
   PASSWORD_INPUT,
   USERNAME_INPUT,
 } from "../Constants.js";
 import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
+import type { LoginComponentStore } from "../types/LoginComponentStore.ts";
+import {
+  LOGIN_EVENT_CONFIG,
+  LOGOUT_EVENT_CONFIG,
+} from "../AuthEventHandlers.ts";
+import { LOGOUT_THUNK } from "../reducer/LogoutThunk.ts";
 
 export class LoginComponent extends BaseDynamicComponent {
   constructor() {
-    super();
-
-    initStateOnLoad({
-      stateName: AUTH_STATE,
-      dataSource: AUTH_API,
-      requestData: {
+    super("loginComponentStore", {
+      onLoadStoreConfig: {
+        storeName: AUTH_REQUEST_STORE,
+        dataSource: AUTH_THUNK,
+      },
+      onLoadRequestData: {
         username: "",
         password: "",
       },
-      dependencyUpdates: function () {
-        setupEventHandlers();
-      },
+      requestStoresToCreate: [
+        { storeName: LOGOUT_REQUEST_STORE, dataSource: LOGOUT_THUNK },
+      ],
+      thunkReducers: [
+        {
+          thunk: AUTH_THUNK,
+          reducerFunction: getLoginComponentStoreFromLoginResponse,
+        },
+        {
+          thunk: LOGOUT_THUNK,
+          reducerFunction: getLoginComponentStoreFromLogoutResponse,
+        },
+      ],
     });
   }
 
-  connectedCallback() {
-    console.log(showExperimental());
-    this.innerHTML = this.generateHTML();
-  }
-
-  updateData() {
-    this.innerHTML = this.generateHTML();
-    setupEventHandlers();
-  }
-
-  generateHTML() {
-    if (showExperimental()) {
-      if (!isLoggedIn()) {
-        return this.generateLogin();
-      } else {
-        return `<p>User</p>`;
-      }
+  render(data: LoginComponentStore) {
+    if (!data.isLoggedIn) {
+      return this.generateLogin(data);
     } else {
-      return `<p></p>`;
+      return `
+        <button ${this.createClickEvent(LOGOUT_EVENT_CONFIG)}>Logout</button>
+      <p>Welcome ${data.email}</p>
+       `;
     }
   }
-  generateLogin() {
+  generateLogin(data: LoginComponentStore) {
     return `<div>
-          <form id=${LOGIN_FORM_ID}>
+          <form id=${LOGIN_FORM_ID} ${this.createSubmitEvent(LOGIN_EVENT_CONFIG)}>
             <label for="username">Email:</label>
             <input type="text" id=${USERNAME_INPUT} name=${USERNAME_INPUT} />
             <label for="username">Password:</label>
             <input type="password" id=${PASSWORD_INPUT} name=${PASSWORD_INPUT} />
-            <button type="submit"> Login </button>
+            <button type="submit" > Login </button>
           </form>
+          <p>${data.errorMessage ? data.errorMessage.trim() : ""}</p>
         `;
   }
 }

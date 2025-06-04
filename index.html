@@ -40,18 +40,35 @@
     ></script>
     <script
       type="module"
-      src="/src/framework/state/LoadManager.ts"
+      src="/src/framework/store/data/InitStoreManager.ts"
     ></script>
     <script
       type="module"
-      src="/src/ui/auth/components/LoginComponent.ts"
+      src="/src/ui/utils/components/FeatureFlagComponent.ts"
+    ></script>
+    <script
+      type="module"
+      src="/src/ui/events/components/ConventionListComponent.ts"
+    ></script>
+    <script
+      type="module"
+      src="/src/ui/events/components/GameRestaurantComponent.ts"
+    ></script>
+    <script
+      type="module"
+      src="/src/ui/events/components/GameStoreListComponent.ts"
     ></script>
   </head>
   <body>
     <div id="container">
       <navbar-component></navbar-component>
 
-      <login-component></login-component>
+      <feature-flag-component
+        componentPath="/src/ui/auth/components/LoginComponent.ts"
+        featureFlagName="loginEnabled"
+      >
+      </feature-flag-component>
+
       <div id="hero-sec">
 
         <div id="para-wrapper">

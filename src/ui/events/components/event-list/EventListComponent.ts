@@ -1,20 +1,29 @@
-import { GROUP_SEARCH_RESULT_STATE_NAME } from "../../data/state/SearchResultGroupState.ts";
-import { subscribeToComponentState } from "../../../../framework/state/ComponentStateManager.ts";
-import { setupEventHandlers } from "./EventListHandlers.ts";
 import { BaseDynamicComponent } from "../../../../framework/components/BaseDynamicComponent.ts";
 import type { GroupSearchResult } from "../../data/types/GroupSearchResult.ts";
+import { SHOW_INFO_CONFIG } from "./EventListHandlers.ts";
+import { EVENT_LIST_THUNK } from "../../data/search/EventListThunk.ts";
+import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
+
+const loadConfig = {
+  thunkReducers: [
+    {
+      thunk: EVENT_LIST_THUNK,
+      reducerFunction: updateSearchResultGroupStore,
+      reducerField: "groupData",
+    },
+  ],
+};
 
 export class EventListComponent extends BaseDynamicComponent {
   constructor() {
-    super();
-    subscribeToComponentState(GROUP_SEARCH_RESULT_STATE_NAME, this);
+    super("searchResultGroupStore", loadConfig);
   }
 
   private getItemHtml(groupId: string, group: GroupSearchResult) {
     let groupHtml = "";
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
-        <button class='show-hide-button'>
+        <button class='show-hide-button' ${this.createClickEvent(SHOW_INFO_CONFIG, groupId)}>
           ${"Show info"}
         </button>
         <h2>
@@ -26,13 +35,13 @@ export class EventListComponent extends BaseDynamicComponent {
     return groupHtml;
   }
 
-  generateHTML(data: any): string {
+  render(data: any): string {
+    const groups = data.groups;
     let html = ``;
-
     let visibleEvents = 0;
-    if (data && Object.values(data).length > 0) {
-      Object.keys(data).forEach((groupId) => {
-        const group = data[groupId];
+    if (data && Object.values(groups).length > 0) {
+      Object.keys(groups).forEach((groupId) => {
+        const group = groups[groupId];
         let groupHtml = "";
         groupHtml = this.getItemHtml(groupId, group);
         html += groupHtml;
@@ -46,12 +55,6 @@ export class EventListComponent extends BaseDynamicComponent {
     `;
     }
     return html;
-  }
-
-  updateData(data: any): void {
-    const html = this.generateHTML(data);
-    this.innerHTML = html;
-    setupEventHandlers();
   }
 }
 

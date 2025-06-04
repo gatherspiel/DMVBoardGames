@@ -1,25 +1,28 @@
-import { AUTH_STATE, LOGIN_FORM_ID, USERNAME_INPUT } from "./Constants.js";
-import { updateRequestState } from "../../framework/state/RequestStateManager.ts";
+import {
+  AUTH_REQUEST_STORE,
+  LOGOUT_REQUEST_STORE,
+  PASSWORD_INPUT,
+  USERNAME_INPUT,
+} from "./Constants.js";
+import type { EventHandlerThunkConfig } from "../../framework/store/update/event/types/EventHandlerThunkConfig.ts";
 
-export function setupEventHandlers() {
-  console.log("Setting up event handlers for authentication");
+export const LOGIN_EVENT_CONFIG: EventHandlerThunkConfig = {
+  eventHandler: function () {
+    return {
+      username:
+        (document.getElementById(USERNAME_INPUT) as HTMLInputElement)?.value ??
+        "",
+      password:
+        (document.getElementById(PASSWORD_INPUT) as HTMLInputElement)?.value ??
+        "",
+    };
+  },
+  storeToUpdate: AUTH_REQUEST_STORE,
+};
 
-  const form = document.getElementById(LOGIN_FORM_ID);
-
-  if (form) {
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      updateRequestState(AUTH_STATE, function () {
-        return {
-          username:
-            (document.getElementById(USERNAME_INPUT) as HTMLInputElement)
-              ?.value ?? "",
-          password:
-            (document.getElementById(USERNAME_INPUT) as HTMLInputElement)
-              ?.value ?? "",
-        };
-      });
-    });
-  }
-}
+export const LOGOUT_EVENT_CONFIG: EventHandlerThunkConfig = {
+  eventHandler: function () {
+    console.log("Logging out");
+  },
+  storeToUpdate: LOGOUT_REQUEST_STORE,
+};

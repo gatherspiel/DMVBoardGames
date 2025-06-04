@@ -1,12 +1,23 @@
-import { createComponentState } from "../../../framework/state/ComponentStateManager.ts";
 import type { GameStore } from "../data/types/GameStore.ts";
+import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
+import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 
-export const GAME_STORE_LIST_STATE = "gameStoreListState";
+export const GAME_STORE_LIST_STORE = "gameStoreListStore";
 
-export class GameStoreListComponent extends HTMLElement {
+const loadConfig = {
+  thunkReducers: [
+    {
+      thunk: LOCATIONS_THUNK,
+      reducerFunction: (data: any) => {
+        return data.gameStores;
+      },
+    },
+  ],
+};
+
+export class GameStoreListComponent extends BaseDynamicComponent {
   constructor() {
-    super();
-    createComponentState(GAME_STORE_LIST_STATE, this);
+    super(GAME_STORE_LIST_STORE, loadConfig);
   }
 
   getItemHtml(gameStore: GameStore) {
@@ -20,18 +31,13 @@ export class GameStoreListComponent extends HTMLElement {
   `;
   }
 
-  generateHtml(data: Record<any, GameStore>) {
+  render(data: Record<any, GameStore>) {
     let html = `<h1>Game Stores</h1>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
     });
     return html;
-  }
-
-  updateData(data: Record<any, GameStore>) {
-    const html = this.generateHtml(data);
-    this.innerHTML = html;
   }
 }
 

@@ -1,13 +1,22 @@
 import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
-import { createComponentState } from "../../../framework/state/ComponentStateManager.ts";
 import type { Convention } from "../data/types/Convention.ts";
+import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 
-export const CONVENTION_LIST_STATE = "conventionListState";
+export const CONVENTION_LIST_STORE = "conventionListStore";
+
+const loadConfig = {
+  thunkReducers: [
+    {
+      thunk: LOCATIONS_THUNK,
+      reducerFunction: (data: any) => {
+        return data.conventions;
+      },
+    },
+  ],
+};
 export class ConventionListComponent extends BaseDynamicComponent {
   constructor() {
-    super();
-
-    createComponentState(CONVENTION_LIST_STATE, this);
+    super(CONVENTION_LIST_STORE, loadConfig);
   }
 
   getItemHtml(convention: Convention) {
@@ -22,18 +31,13 @@ export class ConventionListComponent extends BaseDynamicComponent {
   `;
   }
 
-  generateHTML(data: Record<any, Convention>) {
+  render(data: Record<any, Convention>) {
     let html = `<h1>Upcoming conventions</h1>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
     });
     return html;
-  }
-
-  updateData(data: Record<any, Convention>) {
-    const html = this.generateHTML(data);
-    this.innerHTML = html;
   }
 }
 

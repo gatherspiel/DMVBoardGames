@@ -1,12 +1,10 @@
-import { getParameter } from "../../../framework/util/urlParmUtils.ts";
+import { getParameter } from "../../../framework/utils/urlParmUtils.ts";
 import {
-  GET_GROUP_REQUEST_STATE,
-  GROUP_COMPONENT_STATE,
+  GET_GROUP_REQUEST_STORE,
+  GROUP_COMPONENT_STORE,
   GROUP_NAME_PARAM,
 } from "../Constants.js";
-import { initStateOnLoad } from "../../../framework/state/RequestStateManager.ts";
-import { subscribeToComponentState } from "../../../framework/state/ComponentStateManager.ts";
-import { GroupRequestAPI } from "../data/GroupRequestAPI.ts";
+import { GROUP_REQUEST_REDUCER } from "../data/GroupRequestThunk.ts";
 
 import { createJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
 import type { GroupPageData } from "../../events/data/types/GroupPageData.ts";
@@ -36,29 +34,39 @@ template.innerHTML = `
   <div></div>
 
 `;
+
+const loadConfig = {
+  onLoadStoreConfig: {
+    storeName: GET_GROUP_REQUEST_STORE,
+    dataSource: GROUP_REQUEST_REDUCER,
+  },
+  onLoadRequestData: {
+    name: getParameter(GROUP_NAME_PARAM),
+  },
+  thunkReducers: [
+    {
+      thunk: GROUP_REQUEST_REDUCER,
+      reducerFunction: function (data: any) {
+        return data;
+      },
+    },
+  ],
+};
+
 export class GroupComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super();
-
-    subscribeToComponentState(GROUP_COMPONENT_STATE, this);
-    initStateOnLoad({
-      stateName: GET_GROUP_REQUEST_STATE,
-      dataSource: new GroupRequestAPI(),
-      requestData: {
-        name: getParameter(GROUP_NAME_PARAM),
-      },
-    });
+    super(GROUP_COMPONENT_STORE, loadConfig);
   }
 
   getTemplate(): HTMLTemplateElement {
     return template;
   }
 
-  generateHTML(groupData: GroupPageData): string {
+  render(groupData: GroupPageData): string {
     return `
 
       <div class="group-title">
-        <h1><a href=${groupData.url}>${groupData.name}</a></h1>
+        <h1>Group link: <a href=${groupData.url}>${groupData.name}</a></h1>
       </div>
       
       <div class="group-summary">
@@ -85,16 +93,6 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
       
       <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
     `;
-  }
-
-  //TODO: Add loading animation
-  connectedCallback() {
-    const groupParameter = getParameter(GROUP_NAME_PARAM);
-    if (groupParameter) {
-      this.textContent = `Loading group data for group ${groupParameter}`;
-    } else {
-      this.textContent = "Invalid group";
-    }
   }
 }
 
