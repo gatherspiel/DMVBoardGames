@@ -89,13 +89,26 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     const eventHandlers = this.eventHandlers;
     const elementIdTag = this.getElementIdTag();
 
-    document.querySelectorAll(`[${elementIdTag}]`).forEach(function (
-      item: Element,
-    ) {
+    const addEventHandler = function (item: Element) {
       const id = item.getAttribute(elementIdTag) ?? "";
       const eventConfig = eventHandlers[id];
+
       item.addEventListener(eventConfig.eventType, eventConfig.eventFunction);
-    });
+    };
+
+    if (this.shadowRoot) {
+      this.shadowRoot?.querySelectorAll(`[${elementIdTag}]`).forEach(function (
+        item: Element,
+      ) {
+        addEventHandler(item);
+      });
+    } else {
+      document.querySelectorAll(`[${elementIdTag}]`).forEach(function (
+        item: Element,
+      ) {
+        addEventHandler(item);
+      });
+    }
   }
 
   generateAndSaveHTML(data: any) {

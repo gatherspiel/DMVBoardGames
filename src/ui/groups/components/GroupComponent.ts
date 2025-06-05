@@ -10,6 +10,7 @@ import { createJSONProp } from "../../../framework/components/utils/ComponentUti
 import type { GroupPageData } from "../../events/data/types/GroupPageData.ts";
 import type { Event } from "../../events/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { EDIT_GROUP_EVENT_CONFIG } from "./GroupPageHandlers.ts";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -62,16 +63,41 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
+  /*
+   TODO:
+
+   Make sure user can edit group details
+   Make sure group data can be saved
+   Make sure event data can be saved.
+   */
   render(groupData: GroupPageData): string {
+    console.log(groupData);
     return `
 
-      <div class="group-title">
+    ${
+      !groupData.isEditing
+        ? `<div class="group-title">
         <h1>Group link: <a href=${groupData.url}>${groupData.name}</a></h1>
-      </div>
+
+    ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(EDIT_GROUP_EVENT_CONFIG)}>Edit group</button>` : ``}
+    </div>
+
+    <div class="group-summary">
+    <p class="group-description">${groupData.summary}</p>
+    </div>`
+        : `
+        <h1>Editing group information</h1>
+        <div class="group-title">
+        <h1>Group link: <a href=${groupData.url}>${groupData.name}</a></h1>
+
+    ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(EDIT_GROUP_EVENT_CONFIG)}>Edit group</button>` : ``}
+    </div>
+
+    <div class="group-summary">
+    <p class="group-description">${groupData.summary}</p>
+    </div>`
+    }
       
-      <div class="group-summary">
-        <p class="group-description">${groupData.summary}</p>
-      </div>
       
 
       ${
