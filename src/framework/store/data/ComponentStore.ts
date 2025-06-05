@@ -39,6 +39,7 @@ export function updateComponentStore(
   updateFunction: (a: any) => any,
   data?: any,
 ) {
+  console.log(storeName + " " + Object.keys(stores));
   updateStore(storeName, updateFunction, stores, data);
 }
 

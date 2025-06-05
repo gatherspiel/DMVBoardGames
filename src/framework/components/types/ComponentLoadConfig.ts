@@ -3,6 +3,7 @@ import type { BaseThunk } from "../../store/update/BaseThunk.ts";
 export type RequestStoreItem = {
   storeName: string;
   dataSource: BaseThunk;
+  reloadOnThunkUpdate?: BaseThunk[];
 };
 
 export type ThunkReducerConfig = {
@@ -18,6 +19,7 @@ export type ComponentLoadConfig = {
   onLoadRequestConfig?: RequestStoreItem[];
   requestStoresToCreate?: RequestStoreItem[];
   thunkReducers?: ThunkReducerConfig[];
+  reloadOnThunkUpdate?: BaseThunk[];
 };
 
 export const validComponentLoadConfigFields = [

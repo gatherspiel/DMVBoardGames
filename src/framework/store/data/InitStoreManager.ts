@@ -9,6 +9,7 @@ export function addLoadFunction(componentName: string, loadFunction: any) {
 
 window.onload = () => {
   Object.keys(loadFunctions).forEach(function (componentName: string) {
+    console.log(componentName);
     loadFunctions[componentName]();
   });
 };

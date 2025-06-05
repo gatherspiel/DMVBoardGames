@@ -14,6 +14,9 @@ export class BaseDispatcher {
     storeUpdate: (a: any) => any,
     responseField?: string,
   ) {
+    if (storeName === "loginComponentStore") {
+      throw new Error("Invalid");
+    }
     this.storeField = storeName;
     this.reducerUpdate = storeUpdate;
     this.responseField = responseField;
@@ -21,6 +24,7 @@ export class BaseDispatcher {
 
   updateStore(response: any) {
     const baseDispatcher: BaseDispatcher = this;
+    console.log(baseDispatcher.storeField);
     const responseData = this.responseField
       ? response[this.responseField]
       : response;

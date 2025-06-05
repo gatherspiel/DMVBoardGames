@@ -12,7 +12,10 @@
     type="module"
     src="/src/framework/components/EventComponent.ts"
   > </script>
-
+  <script
+    type="module"
+    src="/src/ui/utils/components/FeatureFlagComponent.ts"
+  ></script>
   <script
     type="module"
     src="/src/ui/groups/components/GroupComponent.ts"
@@ -23,12 +26,15 @@
   ></script>
 </head>
 <body>
-<navbar-component>
+  <navbar-component>
 
-</navbar-component>
-
+  </navbar-component>
+  <feature-flag-component
+    componentPath="/src/ui/auth/components/LoginComponent.ts"
+    featureFlagName="loginEnabled"
+  >
+  </feature-flag-component>
   <group-component>
-
   </group-component>
 
 </body>

@@ -2,6 +2,10 @@ import type { BaseThunk } from "../update/BaseThunk.ts";
 import type { BaseDynamicComponent } from "../../components/BaseDynamicComponent.ts";
 
 export function createStore(storeName: string, stores: any) {
+  console.log("Creating store with name:" + storeName);
+  if (storeName === "loginComponentStore") {
+    throw new Error("Invalid");
+  }
   if (!storeName) {
     throw new Error(`createStore must be called with a valid store name`);
   }
@@ -19,6 +23,8 @@ export function hasSubscribers(storeName: string, store: any) {
 }
 
 export function subscribeToStore(storeName: string, item: any, store: any) {
+  console.log(storeName);
+
   if (!(storeName in store)) {
     createStore(storeName, store);
   }
@@ -55,6 +61,7 @@ export function updateStore(
     console.warn(
       `No subscribers to store ${storeName}. Make sure to call subscribeToReducer in component constructor.`,
     );
+    throw Error("Error updating");
   }
 
   storeData[storeName].subscribers.forEach(function (

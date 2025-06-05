@@ -11,6 +11,8 @@ import type { ApiRequestConfig } from "../update/api/types/ApiRequestConfig.ts";
 const stores: Record<string, any> = {};
 const responseCache: Record<string, any> = {};
 
+const clearCacheOnThunkUpdate: Record<string, BaseThunk[]> = {};
+
 const DEFAULT_API_ERROR_RESPONSE = function (responseData: any) {
   throw new Error(JSON.stringify(responseData, null, 2));
 };
@@ -37,6 +39,20 @@ export function hasRequestStore(storeName: string): boolean {
   return storeName in stores;
 }
 
+//@ts-ignore
+function updateClearCacheOnThunkUpdate(storeName: string, thunk: BaseThunk) {
+  if (!(storeName in clearCacheOnThunkUpdate)) {
+    clearCacheOnThunkUpdate[storeName] = [thunk];
+  } else {
+    if (!clearCacheOnThunkUpdate[storeName].includes(thunk)) {
+      clearCacheOnThunkUpdate[storeName].push(thunk);
+    } else {
+      console.warn(
+        "Attempting to add clear request subscription to the same thunk twice",
+      );
+    }
+  }
+}
 /**
  * Updates the request store for an API call. This should only be called upon a component's initial render or when
  *  a user action requires a request store
@@ -63,6 +79,14 @@ export function updateRequestStore(
   stores[storeName].subscribers.forEach(function (item: any) {
     const requestData = stores[storeName].data;
 
+    /*if (
+      storeName in clearCacheOnThunkUpdate &&
+      clearCacheOnThunkUpdate[storeName].includes(item)
+    ) {
+      responseCache[storeName] = {};
+    }
+     */
+
     if (item.dispatchers.length === 0) {
       throw new Error(
         `No components are subscribed to request store: ${storeName}`,
@@ -78,6 +102,7 @@ export function updateRequestStore(
     } else {
       item.retrieveData(requestData).then((response: any) => {
         responseCache[storeName][JSON.stringify(requestData)] = response;
+        console.log("Updating store:" + storeName);
         item.updateStore(response);
       });
     }
@@ -93,10 +118,21 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
   if (!onLoadConfig) {
     return;
   }
+
+  if (onLoadConfig.reloadOnThunkUpdate) {
+    onLoadConfig.reloadOnThunkUpdate.forEach(function (thunk: BaseThunk) {
+      console.log(thunk);
+      //updateClearCacheOnThunkUpdate(onLoadConfig.storeName, thunk);
+      // subscribeToRequestStore(onLoadConfig.storeName, thunk);
+    });
+  }
+
   addLoadFunction(onLoadConfig.storeName, function () {
     function getRequestData() {
       return config.onLoadRequestData;
     }
+
+    console.log("Adding load function with:" + onLoadConfig.storeName);
 
     createRequestStoreWithData(
       onLoadConfig.storeName,

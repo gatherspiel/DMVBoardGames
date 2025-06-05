@@ -24,7 +24,7 @@ type EventConfig = {
 };
 
 export abstract class BaseDynamicComponent extends HTMLElement {
-  componentStoreName?: string;
+  componentStoreName: string;
   eventHandlers: Record<string, EventConfig>;
   eventTagIdCount = 0;
 
@@ -38,10 +38,11 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     this.instanceId = BaseDynamicComponent.instanceCount;
     BaseDynamicComponent.instanceCount++;
     this.eventHandlers = {};
-    if (componentStoreName) {
-      this.componentStoreName = `${componentStoreName}-${BaseDynamicComponent.instanceCount}`;
-      createComponentStore(this.componentStoreName, this);
-    }
+
+    this.componentStoreName = `${componentStoreName}-${BaseDynamicComponent.instanceCount}`;
+
+    console.log("Component store name:" + this.componentStoreName);
+    createComponentStore(this.componentStoreName, this);
 
     if (loadConfig) {
       const self = this;
@@ -55,15 +56,12 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       });
 
       initRequestStoresOnLoad(loadConfig);
-      const componentStoreName = this.componentStoreName;
-      if (!componentStoreName || componentStoreName.length === 0) {
-        throw new Error(
-          "Cannot subscribe to reducer. Component store name has not been defined.",
-        );
-      }
 
       // TODO: Handle case where there are multiple instances of a component that each need different state
       if (loadConfig.thunkReducers) {
+        console.log("Setting up thunk reducers");
+        const component = this;
+
         loadConfig.thunkReducers.forEach(function (config: ThunkReducerConfig) {
           if (!config.thunk) {
             throw new Error(
@@ -71,11 +69,12 @@ export abstract class BaseDynamicComponent extends HTMLElement {
             );
           }
           config.thunk.subscribeComponent(
-            componentStoreName,
+            component.componentStoreName,
             config.reducerFunction,
             config.reducerField,
           );
         });
+        console.log("Done setting up thunk reducers");
       }
     }
   }
