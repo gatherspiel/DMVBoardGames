@@ -147,10 +147,19 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   createSubmitEvent(eventConfig: any) {
-    const eventHandler = BaseDynamicComponent.createHandler(
-      eventConfig,
-      this?.componentStoreName,
-    );
+    let eventHandler;
+    if (this.shadowRoot) {
+      eventHandler = BaseDynamicComponent.createHandler(
+        eventConfig,
+        this?.componentStoreName,
+        this?.shadowRoot,
+      );
+    } else {
+      eventHandler = BaseDynamicComponent.createHandler(
+        eventConfig,
+        this?.componentStoreName,
+      );
+    }
     return this.saveEventHandler(eventHandler, "submit");
   }
 
@@ -165,11 +174,13 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   static createHandler(
     eventConfig: EventHandlerThunkConfig,
     storeName?: string,
+    shadowRoot?: ShadowRoot,
   ) {
     const storeToUpdate =
       eventConfig?.storeToUpdate && eventConfig.storeToUpdate.length > 0
         ? eventConfig.storeToUpdate
         : storeName;
+
     if (!storeToUpdate) {
       throw new Error("Event handler must be associated with a valid state");
     }
@@ -183,9 +194,11 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       }
 
       e.preventDefault();
+
       const request: EventHandlerAction = new EventHandlerAction(
         eventConfig.eventHandler,
         storeName,
+        shadowRoot,
       );
 
       const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {

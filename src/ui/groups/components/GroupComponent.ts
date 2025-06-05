@@ -2,15 +2,22 @@ import { getParameter } from "../../../framework/utils/urlParmUtils.ts";
 import {
   GET_GROUP_REQUEST_STORE,
   GROUP_COMPONENT_STORE,
+  GROUP_DESCRIPTION_INPUT,
+  GROUP_NAME_INPUT,
   GROUP_NAME_PARAM,
+  GROUP_URL_INPUT,
 } from "../Constants.js";
-import { GROUP_REQUEST_REDUCER } from "../data/GroupRequestThunk.ts";
+import { GROUP_REQUEST_THUNK } from "../data/GroupRequestThunk.ts";
 
 import { createJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
 import type { GroupPageData } from "../../events/data/types/GroupPageData.ts";
 import type { Event } from "../../events/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
-import { EDIT_GROUP_EVENT_CONFIG } from "./GroupPageHandlers.ts";
+import {
+  EDIT_GROUP_EVENT_CONFIG,
+  SAVE_GROUP_CONFIG,
+} from "./GroupPageHandlers.ts";
+import { SAVE_GROUP_REQUEST_THUNK } from "../data/SaveGroupThunk.ts";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -39,15 +46,23 @@ template.innerHTML = `
 const loadConfig = {
   onLoadStoreConfig: {
     storeName: GET_GROUP_REQUEST_STORE,
-    dataSource: GROUP_REQUEST_REDUCER,
+    dataSource: GROUP_REQUEST_THUNK,
   },
   onLoadRequestData: {
     name: getParameter(GROUP_NAME_PARAM),
   },
   thunkReducers: [
     {
-      thunk: GROUP_REQUEST_REDUCER,
+      thunk: GROUP_REQUEST_THUNK,
       reducerFunction: function (data: any) {
+        return data;
+      },
+    },
+    {
+      thunk: SAVE_GROUP_REQUEST_THUNK,
+      reducerFunction: function (data: any) {
+        console.log("Result of attempt to save group:" + data);
+        //TODO: If the group was saved without any errors, then make sure the UI state is updated.
         return data;
       },
     },
@@ -71,7 +86,6 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
    Make sure event data can be saved.
    */
   render(groupData: GroupPageData): string {
-    console.log(groupData);
     return `
 
     ${
@@ -87,18 +101,24 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
     </div>`
         : `
         <h1>Editing group information</h1>
-        <div class="group-title">
-        <h1>Group link: <a href=${groupData.url}>${groupData.name}</a></h1>
-
-    ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(EDIT_GROUP_EVENT_CONFIG)}>Edit group</button>` : ``}
-    </div>
-
-    <div class="group-summary">
-    <p class="group-description">${groupData.summary}</p>
-    </div>`
+        
+        <form ${this.createSubmitEvent(SAVE_GROUP_CONFIG)}>
+        
+          <label for="group-name">Group Name</label>
+          <textarea style= "height:24px; font-size:24px" type="text" id=${GROUP_NAME_INPUT} name=${GROUP_NAME_INPUT}>${groupData.name}</textarea>
+          
+          <label for="group-url">Group URL:</label>
+          <input type="text" id=${GROUP_URL_INPUT} name=${GROUP_URL_INPUT} value=${groupData.url}/>
+          
+          <label for="group-description">Group Description</label>
+          <textarea type="text" id=${GROUP_DESCRIPTION_INPUT} name=${GROUP_DESCRIPTION_INPUT}> ${groupData.summary}
+          </textarea>
+    
+          <button type="submit">Save updates</button>
+        </form>
+      
+      `
     }
-      
-      
 
       ${
         groupData.eventData.length === 0
