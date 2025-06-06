@@ -6,12 +6,18 @@ let stateCreated = false;
 
 let globalStateSubscribers: Record<string, BaseDynamicComponent[]> = {};
 
-export function setupGlobalState(fields: string[]) {
+export function getGlobalStateValue(fieldName: string): string {
+  if (!(fieldName in globalState)) {
+    throw new Error(`Could not find ${fieldName} in global state`);
+  }
+  return globalState[fieldName];
+}
+export function setupGlobalState(fields: Record<string, string>) {
   if (stateCreated) {
     throw new Error("Global state has already been initialized");
   }
 
-  fields.forEach(function (fieldName: string) {
+  Object.values(fields).forEach(function (fieldName: string) {
     globalState[fieldName] = "";
   });
 
@@ -19,13 +25,8 @@ export function setupGlobalState(fields: string[]) {
 }
 
 export function updateGlobalStore(fieldsToUpdate: Record<string, string>) {
-  console.log(
-    "Updating global store with fields:" + JSON.stringify(fieldsToUpdate),
-  );
-  console.log(globalStateSubscribers);
   let componentsToUpdate = new Set();
   Object.keys(fieldsToUpdate).forEach(function (fieldName: string) {
-    console.log(`Updating ${fieldName}`);
     if (!(fieldName in globalState)) {
       throw new Error(
         `Invalid field ${fieldName} for global store. Make sure field is configured as a field name using setupGlobalState`,

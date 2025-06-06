@@ -3,6 +3,7 @@ import type { BaseThunk } from "../../store/update/BaseThunk.ts";
 export type RequestStoreItem = {
   storeName: string;
   dataSource: BaseThunk;
+  disableCache?: boolean;
 };
 
 export type ThunkReducerConfig = {

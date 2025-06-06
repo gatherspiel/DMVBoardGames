@@ -18,6 +18,8 @@ import {
   SAVE_GROUP_CONFIG,
 } from "./GroupPageHandlers.ts";
 import { SAVE_GROUP_REQUEST_THUNK } from "../data/SaveGroupThunk.ts";
+import { stateFields } from "../../utils/initGlobalStateConfig.ts";
+import { getGlobalStateValue } from "../../../framework/store/data/StoreUtils.ts";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -37,6 +39,21 @@ template.innerHTML = `
     .group-title {
        margin-left: 2rem;
     }
+    .group-data-input {
+      height:24px;
+      font-size:24px;
+      display: block;
+    }
+    
+    #group-url-input {
+      width: 600px;
+    }
+    
+    #group-description-input {
+      height: 500px;
+      width: 800px;
+    }
+    
   </style>
   
   <div></div>
@@ -55,6 +72,14 @@ const loadConfig = {
     {
       thunk: GROUP_REQUEST_THUNK,
       componentReducerFunction: function (data: any) {
+        console.log(stateFields.LOGGED_IN);
+
+        const isLoggedIn = getGlobalStateValue(stateFields.LOGGED_IN);
+
+        if (!isLoggedIn) {
+          data.isEditing = false;
+        }
+
         return data;
       },
     },
@@ -87,8 +112,9 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
    Make sure event data can be saved.
    */
   render(groupData: GroupPageData): string {
-    console.log("Rendering group component");
     console.log(groupData.permissions.userCanEdit);
+
+    console.log(groupData.url);
     return `
 
     ${
@@ -96,25 +122,26 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
         ? `<div class="group-title">
         <h1>Group link: <a href=${groupData.url}>${groupData.name}</a></h1>
 
-    ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(EDIT_GROUP_EVENT_CONFIG)}>Edit group</button>` : ``}
-    </div>
-
-    <div class="group-summary">
-    <p class="group-description">${groupData.summary}</p>
-    </div>`
+        ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(EDIT_GROUP_EVENT_CONFIG)}>Edit group</button>` : ``}
+        </div>
+    
+        <div class="group-summary">
+        <p class="group-description">${groupData.summary}</p>
+        </div>`
         : `
         <h1>Editing group information</h1>
         
         <form ${this.createSubmitEvent(SAVE_GROUP_CONFIG)}>
         
           <label for="group-name">Group Name</label>
-          <textarea style= "height:24px; font-size:24px" type="text" id=${GROUP_NAME_INPUT} name=${GROUP_NAME_INPUT}>${groupData.name}</textarea>
+          <textarea class="group-data-input" type="text" id=${GROUP_NAME_INPUT} name=${GROUP_NAME_INPUT}>${groupData.name}</textarea>
           
           <label for="group-url">Group URL:</label>
-          <input type="text" id=${GROUP_URL_INPUT} name=${GROUP_URL_INPUT} value=${groupData.url}/>
+          <textarea class="group-data-input" id = "group-url-input" type="text" id=${GROUP_URL_INPUT} name=${GROUP_URL_INPUT}> ${groupData.url}
+          </textarea>
           
           <label for="group-description">Group Description</label>
-          <textarea type="text" id=${GROUP_DESCRIPTION_INPUT} name=${GROUP_DESCRIPTION_INPUT}> ${groupData.summary}
+          <textarea class="group-data-input" id = "group-description-input" type="text" id=${GROUP_DESCRIPTION_INPUT} name=${GROUP_DESCRIPTION_INPUT}> ${groupData.summary}
           </textarea>
     
           <button type="submit">Save updates</button>

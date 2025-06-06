@@ -11,9 +11,7 @@ import { ApiActionTypes } from "../update/api/types/ApiActionTypes.ts";
 
 const stores: Record<string, any> = {};
 const responseCache: Record<string, any> = {};
-
-const clearCacheOnThunkUpdate: Record<string, BaseThunk[]> = {};
-
+const requestsWithoutCache = new Set<string>();
 const DEFAULT_API_ERROR_RESPONSE = function (responseData: any) {
   throw new Error(JSON.stringify(responseData, null, 2));
 };
@@ -41,21 +39,6 @@ export function subscribeToRequestStore(storeName: string, item: any) {
 
 export function hasRequestStore(storeName: string): boolean {
   return storeName in stores;
-}
-
-// @ts-ignore
-function updateClearCacheOnThunkUpdate(storeName: string, thunk: BaseThunk) {
-  if (!(storeName in clearCacheOnThunkUpdate)) {
-    clearCacheOnThunkUpdate[storeName] = [thunk];
-  } else {
-    if (!clearCacheOnThunkUpdate[storeName].includes(thunk)) {
-      clearCacheOnThunkUpdate[storeName].push(thunk);
-    } else {
-      console.warn(
-        "Attempting to add clear request subscription to the same thunk twice",
-      );
-    }
-  }
 }
 
 export function updateRequestStoreAndClearCache(
@@ -97,15 +80,7 @@ export function updateRequestStore(
   };
 
   stores[storeName].subscribers.forEach(function (item: any) {
-    console.log("Updating request store:" + storeName);
     const requestData = stores[storeName].data;
-
-    if (
-      storeName in clearCacheOnThunkUpdate &&
-      clearCacheOnThunkUpdate[storeName].includes(item)
-    ) {
-      responseCache[storeName] = {};
-    }
 
     if (item.dispatchers.length === 0) {
       throw new Error(
@@ -121,7 +96,9 @@ export function updateRequestStore(
       item.updateStore(responseCache[storeName][JSON.stringify(requestData)]);
     } else {
       item.retrieveData(requestData).then((response: any) => {
-        responseCache[storeName][JSON.stringify(requestData)] = response;
+        if (!requestsWithoutCache.has(storeName)) {
+          responseCache[storeName][JSON.stringify(requestData)] = response;
+        }
         item.updateStore(response);
       });
     }
@@ -130,16 +107,6 @@ export function updateRequestStore(
 
 export function hasRequestStoreSubscribers(storeName: string): boolean {
   return hasSubscribers(storeName, stores);
-}
-
-export function cacheEnabledForThunkSubscription(
-  storeName: string,
-  thunk: BaseThunk,
-) {
-  return !(
-    clearCacheOnThunkUpdate[storeName] &&
-    clearCacheOnThunkUpdate[storeName].includes(thunk)
-  );
 }
 
 export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
@@ -153,6 +120,9 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
       return config.onLoadRequestData;
     }
 
+    if (onLoadConfig.disableCache) {
+      requestsWithoutCache.add(onLoadConfig.storeName);
+    }
     createRequestStoreWithData(
       onLoadConfig.storeName,
       onLoadConfig.dataSource,

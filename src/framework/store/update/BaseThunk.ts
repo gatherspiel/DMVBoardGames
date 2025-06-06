@@ -1,6 +1,5 @@
 import { BaseThunkAction } from "./BaseThunkAction.ts";
 import { BaseDispatcher } from "./BaseDispatcher.ts";
-import { cacheEnabledForThunkSubscription } from "../data/RequestStore.ts";
 import { updateGlobalStore } from "../data/StoreUtils.ts";
 
 export class BaseThunk {
@@ -20,11 +19,6 @@ export class BaseThunk {
 
   //TODO: Optimize the logic of subscribeComponent
   subscribeRequestStore(requestStore: string) {
-    if (cacheEnabledForThunkSubscription(requestStore, this)) {
-      throw Error(
-        `Cache is enabled for request store ${requestStore} subscribed to thunk`,
-      );
-    }
     this.dispatchers.push(
       new BaseDispatcher(requestStore, function () {
         return {};
@@ -85,7 +79,6 @@ export class BaseThunk {
       const updates: Record<string, string> = this.globalStateReducer(
         response,
       ) as Record<string, string>;
-      console.log(updates);
       updateGlobalStore(updates);
     }
 
