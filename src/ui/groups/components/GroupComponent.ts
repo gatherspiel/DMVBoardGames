@@ -10,7 +10,6 @@ import { createJSONProp } from "../../../framework/components/utils/ComponentUti
 import type { GroupPageData } from "../../events/data/types/GroupPageData.ts";
 import type { Event } from "../../events/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
-import { AUTH_THUNK } from "../../auth/reducer/AuthThunk.ts";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -40,7 +39,6 @@ const loadConfig = {
   onLoadStoreConfig: {
     storeName: GET_GROUP_REQUEST_STORE,
     dataSource: GROUP_REQUEST_REDUCER,
-    reloadOnThunkUpdate: [AUTH_THUNK],
   },
   onLoadRequestData: {
     name: getParameter(GROUP_NAME_PARAM),
@@ -48,11 +46,12 @@ const loadConfig = {
   thunkReducers: [
     {
       thunk: GROUP_REQUEST_REDUCER,
-      reducerFunction: function (data: any) {
+      componentReducerFunction: function (data: any) {
         return data;
       },
     },
   ],
+  globalStateSubscriptions: ["isLoggedIn"],
 };
 
 export class GroupComponent extends BaseTemplateDynamicComponent {
@@ -65,6 +64,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
   }
 
   render(groupData: GroupPageData): string {
+    console.log("Rendering");
     return `
 
       <div class="group-title">

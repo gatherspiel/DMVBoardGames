@@ -39,7 +39,7 @@ export function hasRequestStore(storeName: string): boolean {
   return storeName in stores;
 }
 
-//@ts-ignore
+// @ts-ignore
 function updateClearCacheOnThunkUpdate(storeName: string, thunk: BaseThunk) {
   if (!(storeName in clearCacheOnThunkUpdate)) {
     clearCacheOnThunkUpdate[storeName] = [thunk];
@@ -69,6 +69,8 @@ export function updateRequestStore(
     createStore(storeName, stores);
   }
 
+  console.log("Updating:" + storeName);
+
   if (!data) {
     data = stores[storeName].data;
   }
@@ -76,16 +78,16 @@ export function updateRequestStore(
   stores[storeName].data = {
     ...updateFunction(data),
   };
+
   stores[storeName].subscribers.forEach(function (item: any) {
     const requestData = stores[storeName].data;
 
-    /*if (
+    if (
       storeName in clearCacheOnThunkUpdate &&
       clearCacheOnThunkUpdate[storeName].includes(item)
     ) {
       responseCache[storeName] = {};
     }
-     */
 
     if (item.dispatchers.length === 0) {
       throw new Error(
@@ -102,7 +104,6 @@ export function updateRequestStore(
     } else {
       item.retrieveData(requestData).then((response: any) => {
         responseCache[storeName][JSON.stringify(requestData)] = response;
-        console.log("Updating store:" + storeName);
         item.updateStore(response);
       });
     }
@@ -113,18 +114,20 @@ export function hasRequestStoreSubscribers(storeName: string): boolean {
   return hasSubscribers(storeName, stores);
 }
 
+export function cacheEnabledForThunkSubscription(
+  storeName: string,
+  thunk: BaseThunk,
+) {
+  return !(
+    clearCacheOnThunkUpdate[storeName] &&
+    clearCacheOnThunkUpdate[storeName].includes(thunk)
+  );
+}
+
 export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
   const onLoadConfig = config.onLoadStoreConfig;
   if (!onLoadConfig) {
     return;
-  }
-
-  if (onLoadConfig.reloadOnThunkUpdate) {
-    onLoadConfig.reloadOnThunkUpdate.forEach(function (thunk: BaseThunk) {
-      console.log(thunk);
-      //updateClearCacheOnThunkUpdate(onLoadConfig.storeName, thunk);
-      // subscribeToRequestStore(onLoadConfig.storeName, thunk);
-    });
   }
 
   addLoadFunction(onLoadConfig.storeName, function () {
@@ -132,7 +135,17 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
       return config.onLoadRequestData;
     }
 
-    console.log("Adding load function with:" + onLoadConfig.storeName);
+    /*
+    if (onLoadConfig.reloadOnThunkUpdate && false) {
+      onLoadConfig.reloadOnThunkUpdate.forEach(function (thunk: BaseThunk) {
+        updateClearCacheOnThunkUpdate(onLoadConfig.storeName, thunk);
+
+        thunk.subscribeRequestStore(onLoadConfig.storeName);
+
+        console.log("Subscribing");
+      });
+    }
+     */
 
     createRequestStoreWithData(
       onLoadConfig.storeName,
@@ -180,7 +193,7 @@ export async function getResponseData(
         headers: queryConfig.headers,
       });
       if (response.status !== 200) {
-        console.log("Did not retrieve data from API. Mock data will be used");
+        console.warn("Did not retrieve data from API. Mock data will be used");
 
         const responseData: any = {
           status: response.status,

@@ -8,7 +8,7 @@ const loadConfig = {
   thunkReducers: [
     {
       thunk: LOCATIONS_THUNK,
-      reducerFunction: (data: any) => {
+      componentReducerFunction: (data: any) => {
         return data.conventions;
       },
     },

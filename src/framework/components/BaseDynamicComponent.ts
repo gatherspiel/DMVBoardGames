@@ -41,7 +41,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
     this.componentStoreName = `${componentStoreName}-${BaseDynamicComponent.instanceCount}`;
 
-    console.log("Component store name:" + this.componentStoreName);
     createComponentStore(this.componentStoreName, this);
 
     if (loadConfig) {
@@ -59,7 +58,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
       // TODO: Handle case where there are multiple instances of a component that each need different state
       if (loadConfig.thunkReducers) {
-        console.log("Setting up thunk reducers");
         const component = this;
 
         loadConfig.thunkReducers.forEach(function (config: ThunkReducerConfig) {
@@ -70,11 +68,10 @@ export abstract class BaseDynamicComponent extends HTMLElement {
           }
           config.thunk.subscribeComponent(
             component.componentStoreName,
-            config.reducerFunction,
+            config.componentReducerFunction,
             config.reducerField,
           );
         });
-        console.log("Done setting up thunk reducers");
       }
     }
   }

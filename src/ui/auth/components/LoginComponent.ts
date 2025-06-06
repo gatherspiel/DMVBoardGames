@@ -37,11 +37,11 @@ export class LoginComponent extends BaseDynamicComponent {
       thunkReducers: [
         {
           thunk: AUTH_THUNK,
-          reducerFunction: getLoginComponentStoreFromLoginResponse,
+          componentReducerFunction: getLoginComponentStoreFromLoginResponse,
         },
         {
           thunk: LOGOUT_THUNK,
-          reducerFunction: getLoginComponentStoreFromLogoutResponse,
+          componentReducerFunction: getLoginComponentStoreFromLogoutResponse,
         },
       ],
     });

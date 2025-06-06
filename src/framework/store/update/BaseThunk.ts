@@ -1,9 +1,14 @@
 import { BaseThunkAction } from "./BaseThunkAction.ts";
 import { BaseDispatcher } from "./BaseDispatcher.ts";
+import { cacheEnabledForThunkSubscription } from "../data/RequestStore.ts";
+import { updateGlobalStore } from "../data/StoreUtils.ts";
 
 export class BaseThunk {
   thunkAction: BaseThunkAction;
   dispatchers: BaseDispatcher[];
+
+  globalStateReducer?: (a: any) => any;
+
   constructor(dataFetch: BaseThunkAction, dispatchers?: BaseDispatcher[]) {
     this.thunkAction = dataFetch;
     this.dispatchers = dispatchers ?? [];
@@ -14,6 +19,24 @@ export class BaseThunk {
   }
 
   //TODO: Optimize the logic of subscribeComponent
+  subscribeRequestStore(requestStore: string) {
+    if (cacheEnabledForThunkSubscription(requestStore, this)) {
+      throw Error(
+        `Cache is enabled for request store ${requestStore} subscribed to thunk`,
+      );
+    }
+    this.dispatchers.push(
+      new BaseDispatcher(requestStore, function () {
+        return {};
+      }),
+    );
+  }
+
+  addGlobalStateReducer(reducer: (a: any) => any): BaseThunk {
+    this.globalStateReducer = reducer;
+    return this;
+  }
+
   subscribeComponent(
     componentStoreName: string,
     reducerFunction: (a: any) => any,
@@ -47,6 +70,7 @@ export class BaseThunk {
       new BaseDispatcher(componentStoreName, reducerFunction, field),
     );
   }
+
   updateStore(response: any) {
     if (this.dispatchers.length === 0) {
       console.error(
@@ -54,6 +78,11 @@ export class BaseThunk {
       );
       throw new Error("");
     }
+
+    if (this.globalStateReducer) {
+      updateGlobalStore(this.globalStateReducer(response));
+    }
+
     for (let dispatcher of this.dispatchers) {
       dispatcher.updateStore(response);
     }

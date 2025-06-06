@@ -1,17 +1,53 @@
 import type { BaseThunk } from "../update/BaseThunk.ts";
 import type { BaseDynamicComponent } from "../../components/BaseDynamicComponent.ts";
 
+let globalState: Record<string, string> = {};
+let stateCreated = false;
+
+let globalStateSubscribers: Record<string, BaseDynamicComponent[]> = {};
+
+export function setupGlobalState(fields: Record<string, string>) {
+  if (stateCreated) {
+    throw new Error("Global state has already been initialized");
+  }
+  globalState = fields;
+  stateCreated = true;
+}
+
+export function updateGlobalStore(fieldsToUpdate: Record<string, string>) {
+  let componentsToUpdate = new Set();
+  Object.keys(fieldsToUpdate).forEach(function (fieldName: string) {
+    if (!(fieldName in globalState)) {
+      throw new Error(
+        `Invalid field ${fieldName} for global store. Make sure field is configured as a field name using setupGlobalState`,
+      );
+    }
+    globalState[fieldName] = fieldsToUpdate[fieldName];
+
+    if (fieldName in globalStateSubscribers) {
+      globalStateSubscribers[fieldName].forEach(function (
+        component: BaseDynamicComponent,
+      ) {
+        componentsToUpdate.add(component);
+      });
+    }
+  });
+
+  componentsToUpdate.forEach(function (component:any){
+    component.updateFromGlobalState();
+  })
+}
+
+export function subscribeToGlobalField
+
 export function createStore(storeName: string, stores: any) {
-  console.log("Creating store with name:" + storeName);
   if (storeName === "loginComponentStore") {
     throw new Error("Invalid");
   }
   if (!storeName) {
     throw new Error(`createStore must be called with a valid store name`);
   }
-  if (storeName in stores) {
-    console.warn(`Store with name ${storeName} already exists`);
-  }
+
   stores[storeName] = {
     data: {},
     subscribers: [],
@@ -23,8 +59,6 @@ export function hasSubscribers(storeName: string, store: any) {
 }
 
 export function subscribeToStore(storeName: string, item: any, store: any) {
-  console.log(storeName);
-
   if (!(storeName in store)) {
     createStore(storeName, store);
   }
