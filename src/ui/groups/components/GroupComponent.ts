@@ -87,7 +87,8 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
    Make sure event data can be saved.
    */
   render(groupData: GroupPageData): string {
-    console.log("Rendering");
+    console.log("Rendering group component");
+    console.log(groupData.permissions.userCanEdit);
     return `
 
     ${
