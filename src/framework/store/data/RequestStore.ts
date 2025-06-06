@@ -7,6 +7,7 @@ import type {
   RequestStoreItem,
 } from "../../components/types/ComponentLoadConfig.ts";
 import type { ApiRequestConfig } from "../update/api/types/ApiRequestConfig.ts";
+import { ApiActionTypes } from "../update/api/types/ApiActionTypes.ts";
 
 const stores: Record<string, any> = {};
 const responseCache: Record<string, any> = {};
@@ -33,6 +34,9 @@ export function createRequestStoreWithData(
 
 export function subscribeToRequestStore(storeName: string, item: any) {
   subscribeToStore(storeName, item, stores);
+  if (!responseCache[storeName]) {
+    responseCache[storeName] = {};
+  }
 }
 
 export function hasRequestStore(storeName: string): boolean {
@@ -192,6 +196,7 @@ export async function getResponseData(
     if (!useDefault) {
       //The replace call is a workaround for an issue with url strings containing double quotes"
       const response = await fetch(url.replace(/"/g, ""), {
+        method: queryConfig.method ?? ApiActionTypes.GET,
         headers: queryConfig.headers,
       });
       if (response.status !== 200) {

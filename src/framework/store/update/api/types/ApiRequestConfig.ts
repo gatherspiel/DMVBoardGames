@@ -1,7 +1,6 @@
-import { ApiActionTypes } from "./ApiActionTypes.ts";
 export type ApiRequestConfig = {
   url: string;
-  method?: typeof ApiActionTypes;
+  method?: string;
   headers?: Record<string, string>;
   body?: any;
 };

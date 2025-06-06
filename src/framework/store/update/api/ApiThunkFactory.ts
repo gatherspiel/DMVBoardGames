@@ -3,10 +3,12 @@ import { BaseThunk } from "../BaseThunk.ts";
 import { ExternalAction } from "./ExternalAction.ts";
 import { BaseGetAction } from "./BaseGetAction.ts";
 import type { ApiRequestConfig } from "./types/ApiRequestConfig.ts";
+import { subscribeToRequestStore } from "../../data/RequestStore.ts";
 
 export type ApiThunkConfig = {
   queryConfig: (a: any) => ApiRequestConfig;
   defaultFunctionConfig: DefaultApiAction;
+  requestStoreName?: string;
 };
 
 export function generateApiThunk(config: ApiThunkConfig) {
@@ -15,7 +17,11 @@ export function generateApiThunk(config: ApiThunkConfig) {
     config.defaultFunctionConfig,
   );
 
-  return new BaseThunk(getAction);
+  const apiThunk = new BaseThunk(getAction);
+  if (config.requestStoreName) {
+    subscribeToRequestStore(config.requestStoreName, apiThunk);
+  }
+  return apiThunk;
 }
 
 export function generateApiThunkWithExternalConfig(

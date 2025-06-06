@@ -4,11 +4,7 @@ import type { ApiRequestConfig } from "../../../framework/store/update/api/types
 import { AUTH_TOKEN_HEADER_KEY } from "../../auth/Constants.ts";
 import { getAccessTokenIfPresent } from "../../auth/AuthUtils.ts";
 
-function getGroupsQueryUrl(requestParams: any): ApiRequestConfig {
-  //TODO: Update to include headers
-
-  console.log("Hi");
-  console.log(JSON.stringify(requestParams));
+function getGroupsRequestConfig(requestParams: any): ApiRequestConfig {
   let headers: Record<string, string> = {};
   const authData = getAccessTokenIfPresent();
   if (authData) {
@@ -27,6 +23,6 @@ const defaultFunctionConfig = {
   defaultFunctionPriority: false,
 };
 export const GROUP_REQUEST_THUNK = generateApiThunk({
-  queryConfig: getGroupsQueryUrl,
+  queryConfig: getGroupsRequestConfig,
   defaultFunctionConfig: defaultFunctionConfig,
 });
