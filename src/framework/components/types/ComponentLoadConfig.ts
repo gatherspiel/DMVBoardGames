@@ -3,11 +3,13 @@ import type { BaseThunk } from "../../store/update/BaseThunk.ts";
 export type RequestStoreItem = {
   storeName: string;
   dataSource: BaseThunk;
+  disableCache?: boolean;
 };
 
 export type ThunkReducerConfig = {
   thunk: BaseThunk;
-  reducerFunction: (a: any) => any;
+  componentReducerFunction: (a: any) => any;
+  globalStoreReducer?: (a: any) => any;
   reducerField?: string;
 };
 
@@ -18,6 +20,7 @@ export type ComponentLoadConfig = {
   onLoadRequestConfig?: RequestStoreItem[];
   requestStoresToCreate?: RequestStoreItem[];
   thunkReducers?: ThunkReducerConfig[];
+  globalFieldSubscriptions?: string[];
 };
 
 export const validComponentLoadConfigFields = [
@@ -27,4 +30,5 @@ export const validComponentLoadConfigFields = [
   "onLoadRequestConfig",
   "requestStoresToCreate",
   "thunkReducers",
+  "globalFieldSubscriptions",
 ];

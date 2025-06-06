@@ -26,6 +26,7 @@ export class LoginComponent extends BaseDynamicComponent {
       onLoadStoreConfig: {
         storeName: AUTH_REQUEST_STORE,
         dataSource: AUTH_THUNK,
+        disableCache: true,
       },
       onLoadRequestData: {
         username: "",
@@ -37,11 +38,11 @@ export class LoginComponent extends BaseDynamicComponent {
       thunkReducers: [
         {
           thunk: AUTH_THUNK,
-          reducerFunction: getLoginComponentStoreFromLoginResponse,
+          componentReducerFunction: getLoginComponentStoreFromLoginResponse,
         },
         {
           thunk: LOGOUT_THUNK,
-          reducerFunction: getLoginComponentStoreFromLogoutResponse,
+          componentReducerFunction: getLoginComponentStoreFromLogoutResponse,
         },
       ],
     });

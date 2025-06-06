@@ -85,4 +85,8 @@ const defaultResponse = {
 export const AUTH_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
   retrieveData,
   defaultResponse,
-);
+).addGlobalStateReducer((loginState: any) => {
+  return {
+    isLoggedIn: loginState.loggedIn,
+  };
+});

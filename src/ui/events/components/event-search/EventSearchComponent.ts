@@ -45,7 +45,7 @@ const loadConfig = {
   thunkReducers: [
     {
       thunk: CITY_LIST_THUNK,
-      reducerFunction: updateCities,
+      componentReducerFunction: updateCities,
     },
   ],
 };

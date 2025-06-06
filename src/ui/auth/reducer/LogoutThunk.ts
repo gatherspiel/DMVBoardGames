@@ -35,4 +35,8 @@ export function getLoginComponentStoreFromLogoutResponse(): LoginComponentStore 
 export const LOGOUT_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
   retrieveData,
   defaultResponse,
-);
+).addGlobalStateReducer((loginState: any) => {
+  return {
+    isLoggedIn: loginState.loggedIn,
+  };
+});

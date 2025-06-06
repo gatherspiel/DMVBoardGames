@@ -7,10 +7,11 @@ import type {
   RequestStoreItem,
 } from "../../components/types/ComponentLoadConfig.ts";
 import type { ApiRequestConfig } from "../update/api/types/ApiRequestConfig.ts";
+import { ApiActionTypes } from "../update/api/types/ApiActionTypes.ts";
 
 const stores: Record<string, any> = {};
 const responseCache: Record<string, any> = {};
-
+const requestsWithoutCache = new Set<string>();
 const DEFAULT_API_ERROR_RESPONSE = function (responseData: any) {
   throw new Error(JSON.stringify(responseData, null, 2));
 };
@@ -31,10 +32,27 @@ export function createRequestStoreWithData(
 
 export function subscribeToRequestStore(storeName: string, item: any) {
   subscribeToStore(storeName, item, stores);
+  if (!responseCache[storeName]) {
+    responseCache[storeName] = {};
+  }
 }
 
 export function hasRequestStore(storeName: string): boolean {
   return storeName in stores;
+}
+
+export function updateRequestStoreAndClearCache(
+  storeName: string,
+  params: Record<string, string>,
+) {
+  responseCache[storeName] = {};
+  updateRequestStore(
+    storeName,
+    () => {
+      return params;
+    },
+    null,
+  );
 }
 
 /**
@@ -60,6 +78,7 @@ export function updateRequestStore(
   stores[storeName].data = {
     ...updateFunction(data),
   };
+
   stores[storeName].subscribers.forEach(function (item: any) {
     const requestData = stores[storeName].data;
 
@@ -77,7 +96,9 @@ export function updateRequestStore(
       item.updateStore(responseCache[storeName][JSON.stringify(requestData)]);
     } else {
       item.retrieveData(requestData).then((response: any) => {
-        responseCache[storeName][JSON.stringify(requestData)] = response;
+        if (!requestsWithoutCache.has(storeName)) {
+          responseCache[storeName][JSON.stringify(requestData)] = response;
+        }
         item.updateStore(response);
       });
     }
@@ -93,11 +114,15 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
   if (!onLoadConfig) {
     return;
   }
+
   addLoadFunction(onLoadConfig.storeName, function () {
     function getRequestData() {
       return config.onLoadRequestData;
     }
 
+    if (onLoadConfig.disableCache) {
+      requestsWithoutCache.add(onLoadConfig.storeName);
+    }
     createRequestStoreWithData(
       onLoadConfig.storeName,
       onLoadConfig.dataSource,
@@ -141,10 +166,11 @@ export async function getResponseData(
     if (!useDefault) {
       //The replace call is a workaround for an issue with url strings containing double quotes"
       const response = await fetch(url.replace(/"/g, ""), {
+        method: queryConfig.method ?? ApiActionTypes.GET,
         headers: queryConfig.headers,
       });
       if (response.status !== 200) {
-        console.log("Did not retrieve data from API. Mock data will be used");
+        console.warn("Did not retrieve data from API. Mock data will be used");
 
         const responseData: any = {
           status: response.status,

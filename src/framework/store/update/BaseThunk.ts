@@ -1,9 +1,13 @@
 import { BaseThunkAction } from "./BaseThunkAction.ts";
 import { BaseDispatcher } from "./BaseDispatcher.ts";
+import { updateGlobalStore } from "../data/StoreUtils.ts";
 
 export class BaseThunk {
   thunkAction: BaseThunkAction;
   dispatchers: BaseDispatcher[];
+
+  globalStateReducer?: (a: any) => Record<string, string>;
+
   constructor(dataFetch: BaseThunkAction, dispatchers?: BaseDispatcher[]) {
     this.thunkAction = dataFetch;
     this.dispatchers = dispatchers ?? [];
@@ -14,6 +18,21 @@ export class BaseThunk {
   }
 
   //TODO: Optimize the logic of subscribeComponent
+  subscribeRequestStore(requestStore: string) {
+    this.dispatchers.push(
+      new BaseDispatcher(requestStore, function () {
+        return {};
+      }),
+    );
+  }
+
+  addGlobalStateReducer(
+    reducer: (a: any) => Record<string, string>,
+  ): BaseThunk {
+    this.globalStateReducer = reducer;
+    return this;
+  }
+
   subscribeComponent(
     componentStoreName: string,
     reducerFunction: (a: any) => any,
@@ -47,6 +66,7 @@ export class BaseThunk {
       new BaseDispatcher(componentStoreName, reducerFunction, field),
     );
   }
+
   updateStore(response: any) {
     if (this.dispatchers.length === 0) {
       console.error(
@@ -54,6 +74,14 @@ export class BaseThunk {
       );
       throw new Error("");
     }
+
+    if (this.globalStateReducer) {
+      const updates: Record<string, string> = this.globalStateReducer(
+        response,
+      ) as Record<string, string>;
+      updateGlobalStore(updates);
+    }
+
     for (let dispatcher of this.dispatchers) {
       dispatcher.updateStore(response);
     }

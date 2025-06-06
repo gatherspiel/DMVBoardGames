@@ -1,9 +1,7 @@
 import { createStore, subscribeToStore, updateStore } from "./StoreUtils.js";
-import { GlobalReadOnlyStore } from "./GlobalReadOnlyStore.ts";
 import { hasSubscribers } from "./StoreUtils.js";
 
 const stores: Record<string, any> = {};
-const readOnlyStores: GlobalReadOnlyStore[] = [];
 
 export function createComponentStore(
   storeName: string,
@@ -50,17 +48,8 @@ export function getComponentStore(storeName: string) {
   return stores[storeName].data;
 }
 
-export function addReadOnlyStore(store: GlobalReadOnlyStore) {
-  readOnlyStores.push(store);
-}
-
 export function getDataFromStore(storeName: string, param: string): string {
   const store = stores[storeName];
-  if (!(store instanceof GlobalReadOnlyStore)) {
-    throw new Error(
-      `Cannot retrieve data from store:${storeName} getData can only be used for store that are defined as an instance of ImmutableStore`,
-    );
-  }
 
   return store.getValue(param) ?? "";
 }

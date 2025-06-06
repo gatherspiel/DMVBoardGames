@@ -8,7 +8,7 @@ const loadConfig = {
   thunkReducers: [
     {
       thunk: EVENT_LIST_THUNK,
-      reducerFunction: updateSearchResultGroupStore,
+      componentReducerFunction: updateSearchResultGroupStore,
       reducerField: "groupData",
     },
   ],
