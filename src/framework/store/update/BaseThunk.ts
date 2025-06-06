@@ -7,7 +7,7 @@ export class BaseThunk {
   thunkAction: BaseThunkAction;
   dispatchers: BaseDispatcher[];
 
-  globalStateReducer?: (a: any) => any;
+  globalStateReducer?: (a: any) => Record<string, string>;
 
   constructor(dataFetch: BaseThunkAction, dispatchers?: BaseDispatcher[]) {
     this.thunkAction = dataFetch;
@@ -32,7 +32,9 @@ export class BaseThunk {
     );
   }
 
-  addGlobalStateReducer(reducer: (a: any) => any): BaseThunk {
+  addGlobalStateReducer(
+    reducer: (a: any) => Record<string, string>,
+  ): BaseThunk {
     this.globalStateReducer = reducer;
     return this;
   }
@@ -80,7 +82,11 @@ export class BaseThunk {
     }
 
     if (this.globalStateReducer) {
-      updateGlobalStore(this.globalStateReducer(response));
+      const updates: Record<string, string> = this.globalStateReducer(
+        response,
+      ) as Record<string, string>;
+      console.log(updates);
+      updateGlobalStore(updates);
     }
 
     for (let dispatcher of this.dispatchers) {

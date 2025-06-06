@@ -53,6 +53,21 @@ function updateClearCacheOnThunkUpdate(storeName: string, thunk: BaseThunk) {
     }
   }
 }
+
+export function updateRequestStoreAndClearCache(
+  storeName: string,
+  params: Record<string, string>,
+) {
+  responseCache[storeName] = {};
+  updateRequestStore(
+    storeName,
+    () => {
+      return params;
+    },
+    null,
+  );
+}
+
 /**
  * Updates the request store for an API call. This should only be called upon a component's initial render or when
  *  a user action requires a request store
@@ -69,8 +84,6 @@ export function updateRequestStore(
     createStore(storeName, stores);
   }
 
-  console.log("Updating:" + storeName);
-
   if (!data) {
     data = stores[storeName].data;
   }
@@ -80,6 +93,7 @@ export function updateRequestStore(
   };
 
   stores[storeName].subscribers.forEach(function (item: any) {
+    console.log("Updating request store:" + storeName);
     const requestData = stores[storeName].data;
 
     if (
@@ -134,18 +148,6 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
     function getRequestData() {
       return config.onLoadRequestData;
     }
-
-    /*
-    if (onLoadConfig.reloadOnThunkUpdate && false) {
-      onLoadConfig.reloadOnThunkUpdate.forEach(function (thunk: BaseThunk) {
-        updateClearCacheOnThunkUpdate(onLoadConfig.storeName, thunk);
-
-        thunk.subscribeRequestStore(onLoadConfig.storeName);
-
-        console.log("Subscribing");
-      });
-    }
-     */
 
     createRequestStoreWithData(
       onLoadConfig.storeName,

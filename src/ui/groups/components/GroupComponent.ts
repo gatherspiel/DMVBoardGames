@@ -4,7 +4,7 @@ import {
   GROUP_COMPONENT_STORE,
   GROUP_NAME_PARAM,
 } from "../Constants.js";
-import { GROUP_REQUEST_REDUCER } from "../data/GroupRequestThunk.ts";
+import { GROUP_REQUEST_THUNK } from "../data/GroupRequestThunk.ts";
 
 import { createJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
 import type { GroupPageData } from "../../events/data/types/GroupPageData.ts";
@@ -38,20 +38,20 @@ template.innerHTML = `
 const loadConfig = {
   onLoadStoreConfig: {
     storeName: GET_GROUP_REQUEST_STORE,
-    dataSource: GROUP_REQUEST_REDUCER,
+    dataSource: GROUP_REQUEST_THUNK,
   },
   onLoadRequestData: {
     name: getParameter(GROUP_NAME_PARAM),
   },
   thunkReducers: [
     {
-      thunk: GROUP_REQUEST_REDUCER,
+      thunk: GROUP_REQUEST_THUNK,
       componentReducerFunction: function (data: any) {
         return data;
       },
     },
   ],
-  globalStateSubscriptions: ["isLoggedIn"],
+  globalFieldSubscriptions: ["isLoggedIn"],
 };
 
 export class GroupComponent extends BaseTemplateDynamicComponent {

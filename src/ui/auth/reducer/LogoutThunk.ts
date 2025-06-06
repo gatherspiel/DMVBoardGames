@@ -36,5 +36,7 @@ export const LOGOUT_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
   retrieveData,
   defaultResponse,
 ).addGlobalStateReducer((loginState: any) => {
-  return loginState.isLoggedIn;
+  return {
+    isLoggedIn: loginState.loggedIn,
+  };
 });

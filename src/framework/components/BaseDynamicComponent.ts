@@ -2,11 +2,13 @@ import type { DisplayItem } from "../../ui/events/data/types/DisplayItem.ts";
 
 import {
   createComponentStore,
+  getComponentStore,
   hasComponentStoreSubscribers,
 } from "../store/data/ComponentStore.ts";
 import {
   hasRequestStoreSubscribers,
   initRequestStoresOnLoad,
+  updateRequestStoreAndClearCache,
 } from "../store/data/RequestStore.ts";
 import { EventHandlerAction } from "../store/update/event/EventHandlerAction.ts";
 import { BaseDispatcher } from "../store/update/BaseDispatcher.ts";
@@ -17,6 +19,8 @@ import {
   type ThunkReducerConfig,
   validComponentLoadConfigFields,
 } from "./types/ComponentLoadConfig.ts";
+import { subscribeComponentToGlobalField } from "../store/data/StoreUtils.ts";
+import type { BaseThunk } from "../store/update/BaseThunk.ts";
 
 type EventConfig = {
   eventType: string;
@@ -27,6 +31,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   componentStoreName: string;
   eventHandlers: Record<string, EventConfig>;
   eventTagIdCount = 0;
+
+  requestStoreName?: string;
+  requestStoreReducer?: BaseThunk;
 
   instanceId: number;
 
@@ -45,6 +52,10 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
     if (loadConfig) {
       const self = this;
+
+      self.requestStoreName = loadConfig.onLoadStoreConfig?.storeName;
+      self.requestStoreReducer = loadConfig.onLoadStoreConfig?.dataSource;
+
       Object.keys(loadConfig).forEach((configField: any) => {
         if (!validComponentLoadConfigFields.includes(configField)) {
           throw new Error(
@@ -55,6 +66,14 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       });
 
       initRequestStoresOnLoad(loadConfig);
+
+      if (loadConfig.globalFieldSubscriptions) {
+        loadConfig.globalFieldSubscriptions.forEach(function (
+          fieldName: string,
+        ) {
+          subscribeComponentToGlobalField(self, fieldName);
+        });
+      }
 
       // TODO: Handle case where there are multiple instances of a component that each need different state
       if (loadConfig.thunkReducers) {
@@ -179,6 +198,16 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     };
 
     return handler;
+  }
+
+  updateFromGlobalState(data: any) {
+    console.log("Updated state:" + JSON.stringify(data));
+    const componentData = getComponentStore(this.componentStoreName);
+    if (this.requestStoreName) {
+      updateRequestStoreAndClearCache(this.requestStoreName, {
+        name: componentData.name,
+      });
+    }
   }
 
   abstract render(data: Record<any, DisplayItem> | any): string;

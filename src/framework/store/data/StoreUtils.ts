@@ -6,39 +6,70 @@ let stateCreated = false;
 
 let globalStateSubscribers: Record<string, BaseDynamicComponent[]> = {};
 
-export function setupGlobalState(fields: Record<string, string>) {
+export function setupGlobalState(fields: string[]) {
   if (stateCreated) {
     throw new Error("Global state has already been initialized");
   }
-  globalState = fields;
+
+  fields.forEach(function (fieldName: string) {
+    globalState[fieldName] = "";
+  });
+
   stateCreated = true;
 }
 
 export function updateGlobalStore(fieldsToUpdate: Record<string, string>) {
+  console.log(
+    "Updating global store with fields:" + JSON.stringify(fieldsToUpdate),
+  );
+  console.log(globalStateSubscribers);
   let componentsToUpdate = new Set();
   Object.keys(fieldsToUpdate).forEach(function (fieldName: string) {
+    console.log(`Updating ${fieldName}`);
     if (!(fieldName in globalState)) {
       throw new Error(
         `Invalid field ${fieldName} for global store. Make sure field is configured as a field name using setupGlobalState`,
       );
     }
-    globalState[fieldName] = fieldsToUpdate[fieldName];
 
-    if (fieldName in globalStateSubscribers) {
+    if (
+      globalState[fieldName] !== "" &&
+      globalState[fieldName] !== fieldsToUpdate[fieldName] &&
+      fieldName in globalStateSubscribers
+    ) {
       globalStateSubscribers[fieldName].forEach(function (
         component: BaseDynamicComponent,
       ) {
         componentsToUpdate.add(component);
       });
     }
+
+    globalState[fieldName] = fieldsToUpdate[fieldName];
   });
 
-  componentsToUpdate.forEach(function (component:any){
-    component.updateFromGlobalState();
-  })
+  componentsToUpdate.forEach(function (component: any) {
+    console.log("Updating component");
+    component.updateFromGlobalState(structuredClone(globalState));
+  });
 }
 
-export function subscribeToGlobalField
+export function subscribeComponentToGlobalField(
+  component: BaseDynamicComponent,
+  fieldName: string,
+) {
+  if (!(fieldName in globalState)) {
+    throw new Error(
+      `Component id: ${component.componentStoreName} cannot subscribe to field ${fieldName}.
+       Make sure the field is configured as a field name using setupGlobalState`,
+    );
+  }
+
+  if (!(fieldName in globalStateSubscribers)) {
+    globalStateSubscribers[fieldName] = [component];
+  } else {
+    globalStateSubscribers[fieldName].push(component);
+  }
+}
 
 export function createStore(storeName: string, stores: any) {
   if (storeName === "loginComponentStore") {
