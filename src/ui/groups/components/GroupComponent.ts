@@ -10,14 +10,14 @@ import {
 import { GROUP_REQUEST_THUNK } from "../data/GroupRequestThunk.ts";
 
 import { createJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
-import type { GroupPageData } from "../../events/data/types/GroupPageData.ts";
+import type { GroupPageData } from "../../events/data/types/group/GroupPageData.ts";
 import type { Event } from "../../events/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
   EDIT_GROUP_EVENT_CONFIG,
   SAVE_GROUP_CONFIG,
 } from "./GroupPageHandlers.ts";
-import { SAVE_GROUP_REQUEST_THUNK } from "../data/SaveGroupThunk.ts";
+import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 import { stateFields } from "../../utils/initGlobalStateConfig.ts";
 import { getGlobalStateValue } from "../../../framework/store/data/StoreUtils.ts";
 
@@ -72,8 +72,6 @@ const loadConfig = {
     {
       thunk: GROUP_REQUEST_THUNK,
       componentReducerFunction: function (data: any) {
-        console.log(stateFields.LOGGED_IN);
-
         const isLoggedIn = getGlobalStateValue(stateFields.LOGGED_IN);
 
         if (!isLoggedIn) {
@@ -84,7 +82,7 @@ const loadConfig = {
       },
     },
     {
-      thunk: SAVE_GROUP_REQUEST_THUNK,
+      thunk: UPDATE_GROUP_REQUEST_THUNK,
       componentReducerFunction: function (data: any) {
         console.log("Result of attempt to save group:" + data);
         //TODO: If the group was saved without any errors, then make sure the UI state is updated.
@@ -112,9 +110,6 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
    Make sure event data can be saved.
    */
   render(groupData: GroupPageData): string {
-    console.log(groupData.permissions.userCanEdit);
-
-    console.log(groupData.url);
     return `
 
     ${
@@ -134,7 +129,11 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
         <form ${this.createSubmitEvent(SAVE_GROUP_CONFIG)}>
         
           <label for="group-name">Group Name</label>
-          <textarea class="group-data-input" type="text" id=${GROUP_NAME_INPUT} name=${GROUP_NAME_INPUT}>${groupData.name}</textarea>
+          <textarea 
+            class="group-data-input"
+            type="text" id=${GROUP_NAME_INPUT} 
+            name=${GROUP_NAME_INPUT}>${groupData.name}
+          </textarea>
           
           <label for="group-url">Group URL:</label>
           <textarea class="group-data-input" id = "group-url-input" type="text" id=${GROUP_URL_INPUT} name=${GROUP_URL_INPUT}> ${groupData.url}

@@ -87,6 +87,7 @@ export function updateRequestStore(
         `No components are subscribed to request store: ${storeName}`,
       );
     }
+
     //TODO: If a response would invalidate a cache item, do a page refresh or clear the whole cache.
     if (
       requestData &&
@@ -168,6 +169,7 @@ export async function getResponseData(
       const response = await fetch(url.replace(/"/g, ""), {
         method: queryConfig.method ?? ApiActionTypes.GET,
         headers: queryConfig.headers,
+        body: queryConfig.body,
       });
       if (response.status !== 200) {
         console.warn("Did not retrieve data from API. Mock data will be used");

@@ -161,6 +161,14 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     return this.saveEventHandler(eventHandler, "change");
   }
 
+  createInputEvent(eventConfig: any) {
+    const eventHandler = BaseDynamicComponent.createHandler(
+      eventConfig,
+      this?.componentStoreName,
+    );
+    return this.saveEventHandler(eventHandler, "input");
+  }
+
   createSubmitEvent(eventConfig: any) {
     let eventHandler;
     if (this.shadowRoot) {
