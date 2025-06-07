@@ -16,6 +16,7 @@ const DEFAULT_API_ERROR_RESPONSE = function (responseData: any) {
   throw new Error(JSON.stringify(responseData, null, 2));
 };
 
+export const DEFAULT_SUCCESS_RESPONSE = { status: 200 };
 export function createRequestStoreWithData(
   storeName: string,
   dataSource: BaseThunk,
@@ -179,7 +180,7 @@ export async function getResponseData(
           message: "",
           endpoint: url,
         };
-        mockSettings?.defaultFunction
+        return mockSettings?.defaultFunction
           ? mockSettings?.defaultFunction(responseData)
           : DEFAULT_API_ERROR_RESPONSE(responseData);
       }
@@ -189,6 +190,8 @@ export async function getResponseData(
         const result = await response.json();
         return result;
       }
+
+      return DEFAULT_SUCCESS_RESPONSE;
     }
   } catch (e: any) {
     const responseData: any = {
