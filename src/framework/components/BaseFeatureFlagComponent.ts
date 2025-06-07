@@ -2,6 +2,7 @@ export abstract class BaseFeatureFlagComponent extends HTMLElement {
   featureFlagName: string;
   protected constructor() {
     super();
+
     this.featureFlagName = "";
   }
 

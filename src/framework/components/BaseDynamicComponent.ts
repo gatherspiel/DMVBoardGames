@@ -2,11 +2,13 @@ import type { DisplayItem } from "../../ui/events/data/types/DisplayItem.ts";
 
 import {
   createComponentStore,
+  getComponentStore,
   hasComponentStoreSubscribers,
 } from "../store/data/ComponentStore.ts";
 import {
   hasRequestStoreSubscribers,
   initRequestStoresOnLoad,
+  updateRequestStoreAndClearCache,
 } from "../store/data/RequestStore.ts";
 import { EventHandlerAction } from "../store/update/event/EventHandlerAction.ts";
 import { BaseDispatcher } from "../store/update/BaseDispatcher.ts";
@@ -17,6 +19,8 @@ import {
   type ThunkReducerConfig,
   validComponentLoadConfigFields,
 } from "./types/ComponentLoadConfig.ts";
+import { subscribeComponentToGlobalField } from "../store/data/StoreUtils.ts";
+import type { BaseThunk } from "../store/update/BaseThunk.ts";
 
 type EventConfig = {
   eventType: string;
@@ -24,9 +28,12 @@ type EventConfig = {
 };
 
 export abstract class BaseDynamicComponent extends HTMLElement {
-  componentStoreName?: string;
+  componentStoreName: string;
   eventHandlers: Record<string, EventConfig>;
   eventTagIdCount = 0;
+
+  requestStoreName?: string;
+  requestStoreReducer?: BaseThunk;
 
   instanceId: number;
 
@@ -38,13 +45,17 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     this.instanceId = BaseDynamicComponent.instanceCount;
     BaseDynamicComponent.instanceCount++;
     this.eventHandlers = {};
-    if (componentStoreName) {
-      this.componentStoreName = `${componentStoreName}-${BaseDynamicComponent.instanceCount}`;
-      createComponentStore(this.componentStoreName, this);
-    }
+
+    this.componentStoreName = `${componentStoreName}-${BaseDynamicComponent.instanceCount}`;
+
+    createComponentStore(this.componentStoreName, this);
 
     if (loadConfig) {
       const self = this;
+
+      self.requestStoreName = loadConfig.onLoadStoreConfig?.storeName;
+      self.requestStoreReducer = loadConfig.onLoadStoreConfig?.dataSource;
+
       Object.keys(loadConfig).forEach((configField: any) => {
         if (!validComponentLoadConfigFields.includes(configField)) {
           throw new Error(
@@ -55,15 +66,19 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       });
 
       initRequestStoresOnLoad(loadConfig);
-      const componentStoreName = this.componentStoreName;
-      if (!componentStoreName || componentStoreName.length === 0) {
-        throw new Error(
-          "Cannot subscribe to reducer. Component store name has not been defined.",
-        );
+
+      if (loadConfig.globalFieldSubscriptions) {
+        loadConfig.globalFieldSubscriptions.forEach(function (
+          fieldName: string,
+        ) {
+          subscribeComponentToGlobalField(self, fieldName);
+        });
       }
 
       // TODO: Handle case where there are multiple instances of a component that each need different state
       if (loadConfig.thunkReducers) {
+        const component = this;
+
         loadConfig.thunkReducers.forEach(function (config: ThunkReducerConfig) {
           if (!config.thunk) {
             throw new Error(
@@ -71,8 +86,8 @@ export abstract class BaseDynamicComponent extends HTMLElement {
             );
           }
           config.thunk.subscribeComponent(
-            componentStoreName,
-            config.reducerFunction,
+            component.componentStoreName,
+            config.componentReducerFunction,
             config.reducerField,
           );
         });
@@ -89,13 +104,26 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     const eventHandlers = this.eventHandlers;
     const elementIdTag = this.getElementIdTag();
 
-    document.querySelectorAll(`[${elementIdTag}]`).forEach(function (
-      item: Element,
-    ) {
+    const addEventHandler = function (item: Element) {
       const id = item.getAttribute(elementIdTag) ?? "";
       const eventConfig = eventHandlers[id];
+
       item.addEventListener(eventConfig.eventType, eventConfig.eventFunction);
-    });
+    };
+
+    if (this.shadowRoot) {
+      this.shadowRoot?.querySelectorAll(`[${elementIdTag}]`).forEach(function (
+        item: Element,
+      ) {
+        addEventHandler(item);
+      });
+    } else {
+      document.querySelectorAll(`[${elementIdTag}]`).forEach(function (
+        item: Element,
+      ) {
+        addEventHandler(item);
+      });
+    }
   }
 
   generateAndSaveHTML(data: any) {
@@ -134,10 +162,19 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   createSubmitEvent(eventConfig: any) {
-    const eventHandler = BaseDynamicComponent.createHandler(
-      eventConfig,
-      this?.componentStoreName,
-    );
+    let eventHandler;
+    if (this.shadowRoot) {
+      eventHandler = BaseDynamicComponent.createHandler(
+        eventConfig,
+        this?.componentStoreName,
+        this?.shadowRoot,
+      );
+    } else {
+      eventHandler = BaseDynamicComponent.createHandler(
+        eventConfig,
+        this?.componentStoreName,
+      );
+    }
     return this.saveEventHandler(eventHandler, "submit");
   }
 
@@ -152,13 +189,24 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   static createHandler(
     eventConfig: EventHandlerThunkConfig,
     storeName?: string,
+    shadowRoot?: ShadowRoot,
   ) {
     const storeToUpdate =
       eventConfig?.storeToUpdate && eventConfig.storeToUpdate.length > 0
         ? eventConfig.storeToUpdate
         : storeName;
+
     if (!storeToUpdate) {
       throw new Error("Event handler must be associated with a valid state");
+    }
+
+    const dispatchers: BaseDispatcher[] = [];
+    if (eventConfig.componentReducer && storeName) {
+      const componentStoreUpdate = new BaseDispatcher(
+        storeName,
+        eventConfig.componentReducer,
+      );
+      dispatchers.push(componentStoreUpdate);
     }
 
     const handler = function (e: Event) {
@@ -170,19 +218,32 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       }
 
       e.preventDefault();
+
       const request: EventHandlerAction = new EventHandlerAction(
         eventConfig.eventHandler,
         storeName,
+        shadowRoot,
       );
 
       const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {
         return a;
       });
-      const eventUpdater: EventThunk = new EventThunk(request, [storeUpdate]);
+      dispatchers.push(storeUpdate);
+      const eventUpdater: EventThunk = new EventThunk(request, dispatchers);
       eventUpdater.processEvent(e);
     };
 
     return handler;
+  }
+
+  updateFromGlobalState(data: any) {
+    console.log("Updated state:" + JSON.stringify(data));
+    const componentData = getComponentStore(this.componentStoreName);
+    if (this.requestStoreName) {
+      updateRequestStoreAndClearCache(this.requestStoreName, {
+        name: componentData.name,
+      });
+    }
   }
 
   abstract render(data: Record<any, DisplayItem> | any): string;
