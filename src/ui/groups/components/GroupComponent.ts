@@ -21,6 +21,8 @@ import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 import { stateFields } from "../../utils/initGlobalStateConfig.ts";
 import { getGlobalStateValue } from "../../../framework/store/data/StoreUtils.ts";
 
+const SAVE_GROUP_SUCCESS_PROP = "saveGroupSuccess";
+
 const template = document.createElement("template");
 template.innerHTML = `
   <style>
@@ -77,7 +79,7 @@ const loadConfig = {
         if (!isLoggedIn) {
           data.isEditing = false;
         }
-
+        data[SAVE_GROUP_SUCCESS_PROP] = false;
         return data;
       },
     },
@@ -85,6 +87,9 @@ const loadConfig = {
       thunk: UPDATE_GROUP_REQUEST_THUNK,
       componentReducerFunction: function (data: any) {
         //TODO: If the group was saved without any errors, then make sure the UI state is updated.
+
+        data[SAVE_GROUP_SUCCESS_PROP] = true;
+        data.isEditing = false;
         return data;
       },
     },
@@ -101,19 +106,14 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
-  /*
-   TODO:
-
-   Make sure user can edit group details
-   Make sure group data can be saved
-   Make sure event data can be saved.
-   */
   render(groupData: GroupPageData): string {
     if (!groupData.permissions) {
       return `<h1>Failed to load group ${getParameter(GROUP_NAME_PARAM)}</h1>`;
     }
+
     return `
 
+     ${groupData.saveGroupSuccess ? `<h2>Group update sucessful</h2>` : ``}
     ${
       !groupData.isEditing
         ? `<div class="group-title">
@@ -162,12 +162,14 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
               >
     
               </event-component>
+
             `;
               })
-              .join(" ")}`
+              .join(" ")}
+              <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
+              `
       }
       
-      <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
     `;
   }
 }
