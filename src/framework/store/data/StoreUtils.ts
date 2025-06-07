@@ -49,7 +49,6 @@ export function updateGlobalStore(fieldsToUpdate: Record<string, string>) {
   });
 
   componentsToUpdate.forEach(function (component: any) {
-    console.log("Updating component");
     component.updateFromGlobalState(structuredClone(globalState));
   });
 }
@@ -115,6 +114,12 @@ export function updateStore(
   }
 
   const updatedData = updateFunction(data);
+
+  if (!updatedData) {
+    throw new Error(
+      `Update function for store ${storeName} must return a JSON object`,
+    );
+  }
 
   Object.keys(storeData[storeName].data).forEach(function (key) {
     if (!(key in updatedData)) {

@@ -87,6 +87,7 @@ export function updateRequestStore(
         `No components are subscribed to request store: ${storeName}`,
       );
     }
+
     //TODO: If a response would invalidate a cache item, do a page refresh or clear the whole cache.
     if (
       requestData &&
@@ -168,6 +169,7 @@ export async function getResponseData(
       const response = await fetch(url.replace(/"/g, ""), {
         method: queryConfig.method ?? ApiActionTypes.GET,
         headers: queryConfig.headers,
+        body: queryConfig.body,
       });
       if (response.status !== 200) {
         console.warn("Did not retrieve data from API. Mock data will be used");
@@ -182,8 +184,11 @@ export async function getResponseData(
           : DEFAULT_API_ERROR_RESPONSE(responseData);
       }
 
-      const result = await response.json();
-      return result;
+      const contentType = response.headers.get("content-type");
+      if (contentType === "application/json") {
+        const result = await response.json();
+        return result;
+      }
     }
   } catch (e: any) {
     const responseData: any = {
@@ -192,7 +197,6 @@ export async function getResponseData(
       endpoint: url,
     };
 
-    console.log("Error");
     mockSettings?.defaultFunction
       ? mockSettings?.defaultFunction(responseData)
       : DEFAULT_API_ERROR_RESPONSE(responseData);

@@ -5,11 +5,11 @@ import { ApiActionTypes } from "../../../framework/store/update/api/types/ApiAct
 import { SAVE_GROUP_REQUEST_STORE } from "../Constants.ts";
 import { getAccessTokenIfPresent } from "../../auth/AuthUtils.ts";
 import { AUTH_TOKEN_HEADER_KEY } from "../../auth/Constants.ts";
+import type { UpdateGroupRequest } from "../../events/data/types/group/UpdateGroupRequest.ts";
 
-function saveGroupsRequestConfig(requestParams: any): ApiRequestConfig {
-  console.log(requestParams);
-  //TODO: Add group data.
-
+function updateGroupRequestThunk(
+  requestParams: UpdateGroupRequest,
+): ApiRequestConfig {
   let headers: Record<string, string> = {};
   const authData = getAccessTokenIfPresent();
   if (authData) {
@@ -17,7 +17,9 @@ function saveGroupsRequestConfig(requestParams: any): ApiRequestConfig {
   }
 
   return {
+    body: JSON.stringify(requestParams),
     method: ApiActionTypes.PUT,
+    headers: headers,
     url: API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`,
   };
 }
@@ -29,8 +31,8 @@ const defaultFunctionConfig = {
   defaultFunctionPriority: false,
 };
 
-export const SAVE_GROUP_REQUEST_THUNK = generateApiThunk({
-  queryConfig: saveGroupsRequestConfig,
+export const UPDATE_GROUP_REQUEST_THUNK = generateApiThunk({
+  queryConfig: updateGroupRequestThunk,
   defaultFunctionConfig: defaultFunctionConfig,
   requestStoreName: SAVE_GROUP_REQUEST_STORE,
 });

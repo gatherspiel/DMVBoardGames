@@ -5,6 +5,7 @@ import {
   GROUP_URL_INPUT,
   SAVE_GROUP_REQUEST_STORE,
 } from "../Constants.ts";
+import type { UpdateGroupRequest } from "../../events/data/types/group/UpdateGroupRequest.ts";
 
 export const EDIT_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function () {
@@ -15,13 +16,37 @@ export const EDIT_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
 };
 
 export const SAVE_GROUP_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function (params) {
+  eventHandler: function (params): UpdateGroupRequest {
+    if (!params.shadowRoot) {
+      throw new Error("Invalid shadow root for save group event handler");
+    }
     return {
-      name: params.shadowRoot?.getElementById(GROUP_NAME_INPUT)?.textContent,
-      url: params.shadowRoot?.getElementById(GROUP_URL_INPUT)?.textContent,
-      description: params.shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT)
-        ?.textContent,
+      id: params.componentStore.id,
+      summary: (
+        params.shadowRoot.getElementById(
+          GROUP_DESCRIPTION_INPUT,
+        ) as HTMLInputElement
+      )?.value.trim(),
+      name:
+        (
+          params.shadowRoot.getElementById(
+            GROUP_NAME_INPUT,
+          ) as HTMLTextAreaElement
+        )?.value ?? "",
+      url:
+        (
+          params.shadowRoot.getElementById(
+            GROUP_URL_INPUT,
+          ) as HTMLTextAreaElement
+        )?.value ?? "",
     };
   },
   storeToUpdate: SAVE_GROUP_REQUEST_STORE,
+  componentReducer: function (a: any) {
+    return {
+      name: a.name,
+      summary: a.summary,
+      url: a.url,
+    };
+  },
 };

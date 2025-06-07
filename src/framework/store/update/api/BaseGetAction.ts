@@ -16,10 +16,6 @@ export class BaseGetAction extends BaseThunkAction {
   }
 
   /**
-   * TODO:
-   * - Rename getQueryUrl to getQueryConfig
-   * - Rename this class to BaseApiAction.ts
-   * - Make sure retrieveData sets the token before sending the request
    * @param params
    */
   async retrieveData(params: any): Promise<any> {

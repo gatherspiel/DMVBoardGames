@@ -200,6 +200,15 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       throw new Error("Event handler must be associated with a valid state");
     }
 
+    const dispatchers: BaseDispatcher[] = [];
+    if (eventConfig.componentReducer && storeName) {
+      const componentStoreUpdate = new BaseDispatcher(
+        storeName,
+        eventConfig.componentReducer,
+      );
+      dispatchers.push(componentStoreUpdate);
+    }
+
     const handler = function (e: Event) {
       if (
         !hasRequestStoreSubscribers(storeToUpdate) &&
@@ -219,7 +228,8 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {
         return a;
       });
-      const eventUpdater: EventThunk = new EventThunk(request, [storeUpdate]);
+      dispatchers.push(storeUpdate);
+      const eventUpdater: EventThunk = new EventThunk(request, dispatchers);
       eventUpdater.processEvent(e);
     };
 

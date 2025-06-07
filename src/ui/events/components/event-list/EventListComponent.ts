@@ -1,5 +1,5 @@
 import { BaseDynamicComponent } from "../../../../framework/components/BaseDynamicComponent.ts";
-import type { GroupSearchResult } from "../../data/types/GroupSearchResult.ts";
+import type { GroupSearchResult } from "../../data/types/group/GroupSearchResult.ts";
 import { SHOW_INFO_CONFIG } from "./EventListHandlers.ts";
 import { EVENT_LIST_THUNK } from "../../data/search/EventListThunk.ts";
 import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
