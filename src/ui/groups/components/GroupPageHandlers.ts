@@ -6,7 +6,6 @@ import {
   SAVE_GROUP_REQUEST_STORE,
 } from "../Constants.ts";
 import type { UpdateGroupRequest } from "../../events/data/types/group/UpdateGroupRequest.ts";
-import type { EventHandlerData } from "../../../framework/store/update/event/types/EventHandlerData.ts";
 
 export const EDIT_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function () {
@@ -21,14 +20,13 @@ export const SAVE_GROUP_CONFIG: EventHandlerThunkConfig = {
     if (!params.shadowRoot) {
       throw new Error("Invalid shadow root for save group event handler");
     }
-    console.log("Updating group request");
-    console.log(params.shadowRoot.getElementById(GROUP_NAME_INPUT));
     return {
+      id: params.componentStore.id,
       summary: (
         params.shadowRoot.getElementById(
           GROUP_DESCRIPTION_INPUT,
-        ) as HTMLTextAreaElement
-      )?.value,
+        ) as HTMLInputElement
+      )?.value.trim(),
       name:
         (
           params.shadowRoot.getElementById(
@@ -44,10 +42,11 @@ export const SAVE_GROUP_CONFIG: EventHandlerThunkConfig = {
     };
   },
   storeToUpdate: SAVE_GROUP_REQUEST_STORE,
-};
-
-export const GROUP_INPUT_UPDATE_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function (params: EventHandlerData) {
-    console.log(JSON.stringify((params?.event as InputEvent).currentTarget));
+  componentReducer: function (a: any) {
+    return {
+      name: a.name,
+      summary: a.summary,
+      url: a.url,
+    };
   },
 };

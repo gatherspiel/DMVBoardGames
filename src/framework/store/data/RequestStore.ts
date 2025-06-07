@@ -184,8 +184,11 @@ export async function getResponseData(
           : DEFAULT_API_ERROR_RESPONSE(responseData);
       }
 
-      const result = await response.json();
-      return result;
+      const contentType = response.headers.get("content-type");
+      if (contentType === "application/json") {
+        const result = await response.json();
+        return result;
+      }
     }
   } catch (e: any) {
     const responseData: any = {
@@ -194,7 +197,6 @@ export async function getResponseData(
       endpoint: url,
     };
 
-    console.log("Error");
     mockSettings?.defaultFunction
       ? mockSettings?.defaultFunction(responseData)
       : DEFAULT_API_ERROR_RESPONSE(responseData);

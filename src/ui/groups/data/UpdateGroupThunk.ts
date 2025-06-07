@@ -17,9 +17,10 @@ function updateGroupRequestThunk(
   }
 
   return {
-    method: ApiActionTypes.PUT,
-    url: API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`,
     body: JSON.stringify(requestParams),
+    method: ApiActionTypes.PUT,
+    headers: headers,
+    url: API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`,
   };
 }
 

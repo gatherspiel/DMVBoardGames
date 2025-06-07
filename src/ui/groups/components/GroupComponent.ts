@@ -84,7 +84,6 @@ const loadConfig = {
     {
       thunk: UPDATE_GROUP_REQUEST_THUNK,
       componentReducerFunction: function (data: any) {
-        console.log("Result of attempt to save group:" + data);
         //TODO: If the group was saved without any errors, then make sure the UI state is updated.
         return data;
       },
@@ -110,6 +109,9 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
    Make sure event data can be saved.
    */
   render(groupData: GroupPageData): string {
+    if (!groupData.permissions) {
+      return `<h1>Failed to load group ${getParameter(GROUP_NAME_PARAM)}</h1>`;
+    }
     return `
 
     ${
@@ -129,15 +131,14 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
         <form ${this.createSubmitEvent(SAVE_GROUP_CONFIG)}>
         
           <label for="group-name">Group Name</label>
-          <textarea 
+          <input 
             class="group-data-input"
-            type="text" id=${GROUP_NAME_INPUT} 
-            name=${GROUP_NAME_INPUT}>${groupData.name}
-          </textarea>
+            type="text" id=${GROUP_NAME_INPUT}
+            value="${groupData.name}"
+            name=${GROUP_NAME_INPUT}/>
           
           <label for="group-url">Group URL:</label>
-          <textarea class="group-data-input" id = "group-url-input" type="text" id=${GROUP_URL_INPUT} name=${GROUP_URL_INPUT}> ${groupData.url}
-          </textarea>
+          <input class="group-data-input" id = "group-url-input" type="text" value= ${groupData.url} id=${GROUP_URL_INPUT} name=${GROUP_URL_INPUT}/> 
           
           <label for="group-description">Group Description</label>
           <textarea class="group-data-input" id = "group-description-input" type="text" id=${GROUP_DESCRIPTION_INPUT} name=${GROUP_DESCRIPTION_INPUT}> ${groupData.summary}
