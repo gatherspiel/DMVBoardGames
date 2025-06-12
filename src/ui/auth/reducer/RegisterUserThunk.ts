@@ -31,6 +31,7 @@ export const REGISTER_USER_THUNK: BaseThunk =
     retrieveData,
     defaultResponse,
   ).addGlobalStateReducer((loginState: any) => {
+    console.log(loginState);
     return {
       isLoggedIn: "false",
     };
