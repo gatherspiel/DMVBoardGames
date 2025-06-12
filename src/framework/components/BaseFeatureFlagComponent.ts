@@ -1,5 +1,6 @@
 export abstract class BaseFeatureFlagComponent extends HTMLElement {
   featureFlagName: string;
+
   protected constructor() {
     super();
 
@@ -7,6 +8,8 @@ export abstract class BaseFeatureFlagComponent extends HTMLElement {
   }
 
   abstract isFeatureFlagEnabled(featureFlagName: string): boolean;
+
+  abstract getComponentPath(): string;
 
   async connectedCallback() {
     const featureFlagName = this.getAttribute("featureFlagName");
@@ -22,12 +25,7 @@ export abstract class BaseFeatureFlagComponent extends HTMLElement {
   }
 
   async render() {
-    const componentPath = this.getAttribute("componentPath");
-    if (!componentPath) {
-      throw new Error(
-        "FeatureFlagComponent must have a componentPath property",
-      );
-    }
+    const componentPath = this.getComponentPath();
     const componentImport = await import(componentPath);
 
     const pathSplit = componentPath.split("/");
