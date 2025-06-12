@@ -14,6 +14,7 @@ export type ThunkReducerConfig = {
 };
 
 export type ComponentLoadConfig = {
+  featureFlagEnabled?: () => boolean;
   onLoadStoreConfig?: RequestStoreItem;
   onLoadRequestData?: any;
   onLoadInitStore?: () => any;
