@@ -28,6 +28,7 @@ async function retrieveData(
       return new AuthResponse(true, authData);
     }
 
+    console.log(JSON.stringify(params));
     if (!params.username || !params.password) {
       return backupResponse.defaultFunction({
         errorMessage: "Enter a valid username and password",
@@ -44,7 +45,9 @@ async function retrieveData(
       return new AuthResponse(true, authResponse.data);
     }
     if (backupResponse.defaultFunction) {
-      return backupResponse.defaultFunction(authResponse);
+      return backupResponse.defaultFunction({
+        errorMessage: authResponse.error,
+      });
     } else {
       throw Error("Authentication error");
     }
@@ -59,14 +62,16 @@ async function retrieveData(
 export function getLoginComponentStoreFromLoginResponse(
   response: AuthResponse,
 ) {
+  const email = response?.getData()?.user?.email;
   return {
     isLoggedIn: response.isLoggedIn(),
     errorMessage: response.getErrorMessage(),
-    email: response?.getData()?.user?.email,
+    email: email,
+    successMessage: `Welcome ${email}`,
   };
 }
 
-const defaultResponse = {
+export const authenticationErrorConfig = {
   defaultFunction: (authData: AuthResponse | AuthReducerError) => {
     if (authData instanceof AuthResponse) {
       console.error("Authentication error");
@@ -84,7 +89,7 @@ const defaultResponse = {
 
 export const AUTH_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
   retrieveData,
-  defaultResponse,
+  authenticationErrorConfig,
 ).addGlobalStateReducer((loginState: any) => {
   return {
     isLoggedIn: loginState.loggedIn,

@@ -175,11 +175,28 @@ export async function getResponseData(
       if (response.status !== 200) {
         console.warn("Did not retrieve data from API. Mock data will be used");
 
+        let message = "";
+
+        const contentType = response.headers.get("content-type");
+        console.log(contentType);
+        if (contentType && contentType.includes("application/json")) {
+          message = await response.json();
+          console.log(message);
+        } else {
+          if (response.status === 404) {
+            message = `Endpoint ${url} not found`;
+          } else {
+            message = await response.text();
+          }
+        }
+
         const responseData: any = {
           status: response.status,
-          message: "",
+          message: message,
           endpoint: url,
         };
+
+        console.log("Error");
         return mockSettings?.defaultFunction
           ? mockSettings?.defaultFunction(responseData)
           : DEFAULT_API_ERROR_RESPONSE(responseData);
@@ -200,7 +217,7 @@ export async function getResponseData(
       endpoint: url,
     };
 
-    mockSettings?.defaultFunction
+    return mockSettings?.defaultFunction
       ? mockSettings?.defaultFunction(responseData)
       : DEFAULT_API_ERROR_RESPONSE(responseData);
   }
