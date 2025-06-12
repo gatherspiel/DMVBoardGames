@@ -179,10 +179,19 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   createClickEvent(eventConfig: any, id?: string) {
-    const eventHandler = BaseDynamicComponent.createHandler(
-      eventConfig,
-      this?.componentStoreName,
-    );
+    let eventHandler;
+    if (this.shadowRoot) {
+      eventHandler = BaseDynamicComponent.createHandler(
+        eventConfig,
+        this?.componentStoreName,
+        this?.shadowRoot,
+      );
+    } else {
+      eventHandler = BaseDynamicComponent.createHandler(
+        eventConfig,
+        this?.componentStoreName,
+      );
+    }
     return this.saveEventHandler(eventHandler, "click", id);
   }
 
