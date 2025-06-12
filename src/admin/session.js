@@ -8,6 +8,7 @@ const supabase = createClient(
 const SERVER_URL = "http://localhost:7070/";
 const ENDPOINT = "admin/saveData";
 window.onload = function () {
+  console.log("Setting window.onLoad function for admin interface");
   let form = document.getElementById("loginForm");
 
   async function saveData() {
@@ -15,6 +16,13 @@ window.onload = function () {
     const email = document.getElementById("username").value;
     const password = document.getElementById("password").value;
     const data = document.getElementById("data").value;
+
+    const { authData, authError } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    console.log(authData);
 
     const url = SERVER_URL + ENDPOINT;
     try {
@@ -31,11 +39,6 @@ window.onload = function () {
     } catch (error) {
       console.log(error.message);
     }
-
-    const { authData, authError } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
 
     console.log(authData);
   }

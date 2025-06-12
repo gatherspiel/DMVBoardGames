@@ -5,6 +5,12 @@
   flex-wrap: wrap;
 }
 
+#para-wrapper {
+  background: hsl(from var(--clr-lighter-blue) h s l / 0.1);
+  border-radius: 10px;
+  padding: 1rem;
+}
+
 #hero-sec img {
   width: clamp(350px, 40vw, 525px);
 }
@@ -13,6 +19,7 @@
   color: var(--clr-dark-blue);
   line-height: 1.75;
   max-width: 50ch;
+  font-weight: 600;
 }
 
 #root {
@@ -113,10 +120,10 @@ select:focus-visible {
 .game-store-list-item a:focus-visible {
   color: var(--clr-dark-blue);
 }
-.game-store-list-item{
+.game-store-list-item {
   margin: 20px 0px;
 }
-.game-store-list-item p{
+.game-store-list-item p {
   display: inline;
 }
 
@@ -130,6 +137,18 @@ select:focus-visible {
   color: var(--clr-dark-blue);
   font-size: 1.25rem;
   font-weight: 600;
+}
+
+.event-summary {
+  margin-left: 2rem;
+}
+
+.event-summary p {
+  margin-left: 1rem;
+  background: hsl(from var(--clr-lighter-blue) h s l / 0.1);
+  border-radius: 10px;
+  color: var(--clr-dark-blue);
+  padding: 2rem;
 }
 
 .event {

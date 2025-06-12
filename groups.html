@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GroupSearchResult Information</title>
+
+  <link rel="stylesheet" href="/styles/styles.css">
+  <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
+
+  <script
+    type="module"
+    src="/src/framework/components/EventComponent.ts"
+  > </script>
+  <script
+    type="module"
+    src="/src/ui/utils/components/FeatureFlagComponent.ts"
+  ></script>
+  <script
+    type="module"
+    src="/src/ui/groups/components/GroupComponent.ts"
+  ></script>
+  <script
+    type="module"
+    src="/src/ui/static/navbarComponent.ts"
+  ></script>
+</head>
+<body>
+  <navbar-component>
+
+  </navbar-component>
+  <feature-flag-component
+    componentPath="/src/ui/auth/components/LoginComponent.ts"
+    featureFlagName="loginEnabled"
+  >
+  </feature-flag-component>
+  <group-component>
+  </group-component>
+
+</body>
+</html>
