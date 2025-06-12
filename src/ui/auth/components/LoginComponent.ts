@@ -1,9 +1,9 @@
 import {
   AUTH_THUNK,
   getLoginComponentStoreFromLoginResponse,
-} from "../reducer/AuthThunk.ts";
+} from "../data/AuthThunk.ts";
 
-import { getLoginComponentStoreFromLogoutResponse } from "../reducer/LogoutThunk.ts";
+import { getLoginComponentStoreFromLogoutResponse } from "../data/LogoutThunk.ts";
 
 import {
   AUTH_REQUEST_STORE,
@@ -13,20 +13,31 @@ import {
   REGISTER_REQUEST_STORE,
   USERNAME_INPUT,
 } from "../Constants.js";
-import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
 import type { LoginComponentStore } from "../types/LoginComponentStore.ts";
 import {
   LOGIN_EVENT_CONFIG,
   LOGOUT_EVENT_CONFIG,
   REGISTER_EVENT_CONFIG,
 } from "../AuthEventHandlers.ts";
-import { LOGOUT_THUNK } from "../reducer/LogoutThunk.ts";
+import { LOGOUT_THUNK } from "../data/LogoutThunk.ts";
 import {
   getLoginComponentStoreFromRegisterResponse,
   REGISTER_USER_THUNK,
-} from "../reducer/RegisterUserThunk.ts";
+} from "../data/RegisterUserThunk.ts";
+import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 
-export class LoginComponent extends BaseDynamicComponent {
+const template = document.createElement("template");
+template.innerHTML = `
+  <style>
+    #authentication-error-message {
+      color:darkred;
+    }
+  </style>
+  <div></div>
+
+`;
+
+export class LoginComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("loginComponentStore", {
       onLoadStoreConfig: {
@@ -59,13 +70,17 @@ export class LoginComponent extends BaseDynamicComponent {
     });
   }
 
+  override getTemplate(): HTMLTemplateElement {
+    return template;
+  }
+
   render(data: LoginComponentStore) {
     if (!data.isLoggedIn) {
       return this.generateLogin(data);
     } else {
       return `
         <button ${this.createClickEvent(LOGOUT_EVENT_CONFIG)}>Logout</button>
-      <p>Welcome ${data.email}</p>
+      <p>${data.successMessage}</p>
        `;
     }
   }
@@ -79,10 +94,11 @@ export class LoginComponent extends BaseDynamicComponent {
             <button type="submit"  name="action" value="Login"> Login </button>
 
           </form>
-          <p>${data.errorMessage ? data.errorMessage.trim() : ""}</p>
+          <p id="authentication-error-message">${data.errorMessage ? data.errorMessage.trim() : ""}</p>
           
           <button type="submit" ${this.createClickEvent(REGISTER_EVENT_CONFIG)}  name="action" value="Register"> Register </button>
-
+          
+          <p>${data.successMessage}</p>
         `;
   }
 }
