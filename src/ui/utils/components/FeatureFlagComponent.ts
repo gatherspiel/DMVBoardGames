@@ -1,4 +1,8 @@
-import { FEATURE_FLAGS, IS_PRODUCTION } from "../../../utils/params.ts";
+import {
+  FEATURE_FLAGS,
+  IS_PRODUCTION,
+  IS_TEST,
+} from "../../../utils/params.ts";
 import { BaseFeatureFlagComponent } from "../../../framework/components/BaseFeatureFlagComponent.ts";
 
 export class FeatureFlagComponent extends BaseFeatureFlagComponent {
@@ -15,6 +19,8 @@ export class FeatureFlagComponent extends BaseFeatureFlagComponent {
     }
     if (IS_PRODUCTION) {
       return FEATURE_FLAGS[featureFlagName].prodEnabled;
+    } else if (IS_TEST) {
+      return FEATURE_FLAGS[featureFlagName].testEnabled;
     } else {
       return FEATURE_FLAGS[featureFlagName].devEnabled;
     }
