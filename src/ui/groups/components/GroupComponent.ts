@@ -85,12 +85,11 @@ const loadConfig = {
     },
     {
       thunk: UPDATE_GROUP_REQUEST_THUNK,
-      componentReducerFunction: function (data: any) {
-        //TODO: If the group was saved without any errors, then make sure the UI state is updated.
-
-        data[SAVE_GROUP_SUCCESS_PROP] = true;
-        data.isEditing = false;
-        return data;
+      componentReducerFunction: function () {
+        return {
+          isEditing: false,
+          SAVE_GROUP_SUCCESS_PROP: true,
+        };
       },
     },
   ],
