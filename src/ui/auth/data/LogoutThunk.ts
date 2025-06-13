@@ -6,9 +6,6 @@ import { getSupabaseClient } from "../SupabaseClient.ts";
 import { AuthResponse } from "../types/AuthResponse.ts";
 
 async function retrieveData(params: any, backupResponse: DefaultApiAction) {
-  console.log(params);
-  console.log(backupResponse);
-
   const { error } = await getSupabaseClient().auth.signOut();
 
   if (!error) {

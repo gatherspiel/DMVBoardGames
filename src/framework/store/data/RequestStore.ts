@@ -178,10 +178,8 @@ export async function getResponseData(
         let message = "";
 
         const contentType = response.headers.get("content-type");
-        console.log(contentType);
         if (contentType && contentType.includes("application/json")) {
           message = await response.json();
-          console.log(message);
         } else {
           if (response.status === 404) {
             message = `Endpoint ${url} not found`;
@@ -196,7 +194,6 @@ export async function getResponseData(
           endpoint: url,
         };
 
-        console.log("Error");
         return mockSettings?.defaultFunction
           ? mockSettings?.defaultFunction(responseData)
           : DEFAULT_API_ERROR_RESPONSE(responseData);
