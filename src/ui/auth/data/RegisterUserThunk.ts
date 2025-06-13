@@ -21,7 +21,7 @@ export function getLoginComponentStoreFromRegisterResponse(response: any) {
   console.log(response);
   return {
     errorMessage: response.errorMessage,
-    successMessage: "Successfully registered user",
+    successMessage: response.errorMessage ? "" : "Successfully registered user",
   };
 }
 
