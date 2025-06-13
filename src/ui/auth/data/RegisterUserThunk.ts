@@ -34,7 +34,7 @@ const userRegisterErrorConfig = {
 export const REGISTER_USER_THUNK: BaseThunk = generateApiThunk({
   queryConfig: registerUserConfig,
   defaultFunctionConfig: userRegisterErrorConfig,
-}).addGlobalStateReducer((loginState: any) => {
+}).addGlobalStateReducer(() => {
   return {
     isLoggedIn: "false",
   };
