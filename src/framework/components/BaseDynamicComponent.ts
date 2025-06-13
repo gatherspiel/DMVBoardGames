@@ -245,8 +245,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     return handler;
   }
 
-  updateFromGlobalState(data: any) {
-    console.log("Updated state:" + JSON.stringify(data));
+  updateFromGlobalState() {
     const componentData = getComponentStore(this.componentStoreName);
     if (this.requestStoreName) {
       updateRequestStoreAndClearCache(this.requestStoreName, {

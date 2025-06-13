@@ -28,7 +28,6 @@ async function retrieveData(
       return new AuthResponse(true, authData);
     }
 
-    console.log(JSON.stringify(params));
     if (!params.username || !params.password) {
       return backupResponse.defaultFunction({
         errorMessage: "Enter a valid username and password",
