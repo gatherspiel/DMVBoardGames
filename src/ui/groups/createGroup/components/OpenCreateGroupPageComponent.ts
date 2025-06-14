@@ -32,7 +32,6 @@ export class OpenCreateGroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: OpenCreateGroupPageState): string {
-    console.log("Hi");
     return `
       ${data.isVisible ? `<button>Create group </button>` : ""} 
     `;

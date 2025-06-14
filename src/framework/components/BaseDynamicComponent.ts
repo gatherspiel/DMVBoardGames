@@ -81,7 +81,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
           globalStateLoadConfig.waitForGlobalState,
         );
         self.componentLoadConfig = loadConfig;
-        console.log(`${componentStoreName} is waiting for global state`);
       } else {
         initRequestStoresOnLoad(loadConfig);
       }
@@ -147,7 +146,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   generateAndSaveHTML(data: any) {
     if (!this.dependenciesLoaded) {
-      console.log("Component is waiting for global state:");
+      return;
     }
     this.innerHTML = this.render(data);
   }
@@ -268,7 +267,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   updateFromGlobalState() {
-    console.log("Updating from global state");
     const componentData = getComponentStore(this.componentStoreName);
 
     const globalStateLoadConfig =
@@ -280,7 +278,8 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     //Component is still waiting for state
     if (
       globalStateLoadConfig.waitForGlobalState &&
-      !getGlobalStateValue(globalStateLoadConfig.waitForGlobalState)
+      getGlobalStateValue(globalStateLoadConfig.waitForGlobalState) ===
+        undefined
     ) {
       return;
     }
