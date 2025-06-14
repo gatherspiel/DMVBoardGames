@@ -72,7 +72,6 @@ const loadConfig = {
     {
       thunk: GROUP_REQUEST_THUNK,
       componentReducerFunction: function (data: any) {
-        console.log("1");
         const isLoggedIn = getGlobalStateValue(stateFields.LOGGED_IN);
 
         if (!isLoggedIn) {
@@ -85,7 +84,6 @@ const loadConfig = {
     {
       thunk: UPDATE_GROUP_REQUEST_THUNK,
       componentReducerFunction: function () {
-        console.log("2");
         return {
           isEditing: false,
           SAVE_GROUP_SUCCESS_PROP: true,

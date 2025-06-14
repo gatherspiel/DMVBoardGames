@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="/styles/styles.css" />
+  <link rel="stylesheet" href="/styles/eventListing.css" />
+  <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DMV Board Games</title>
+
+  <script
+    type="module"
+    src="ui/utils/initGlobalStateConfig.ts"
+  ></script>
+
+  <script
+    type="module"
+    src="ui/events/data/mock/MockGameRestaurantData.ts"
+  ></script>
+  <script
+    type="module"
+    src="ui/events/data/mock/MockGameStoreData.ts"
+  ></script>
+
+  <script
+    type="module"
+    src="ui/events/data/mock/MockGroupData.ts"
+  ></script>
+  <script
+    type="module"
+    src="ui/events/components/event-search/EventSearchComponent.ts"
+  ></script>
+  <script
+    type="module"
+    src="ui/events/components/event-list/EventListComponent.ts"
+  ></script>
+  <script
+    type="module"
+    src="framework/components/EventComponent.ts"
+  >
+  </script>
+  <script
+    type="module"
+    src="ui/static/navbarComponent.ts"
+  ></script>
+  <script
+    type="module"
+    src="framework/store/data/InitStoreManager.ts"
+  ></script>
+  <script
+    type="module"
+    src="ui/utils/components/FeatureFlagComponent.ts"
+  ></script>
+  <script
+    type="module"
+    src="ui/events/components/ConventionListComponent.ts"
+  ></script>
+  <script
+    type="module"
+    src="ui/events/components/GameRestaurantComponent.ts"
+  ></script>
+  <script
+    type="module"
+    src="ui/events/components/GameStoreListComponent.ts"
+  ></script>
+</head>
+<body>
+<div id="container">
+  <navbar-component></navbar-component>
+adfadfsafdsafsdafd
+  <h1>A copy of the group listing page</h1>
+  <feature-flag-component
+    componentName="login-component"
+    featureFlagName="loginEnabled"
+  >
+  </feature-flag-component>
+
+  <feature-flag-component
+    componentName="open-create-group-page-component"
+    featureFlagName="loginEnabled"
+  >
+  </feature-flag-component>
+  <div id="hero-sec">
+
+    <div id="para-wrapper">
+      <p>
+        This page is a work in progress listing of public board game groups,
+        conventions stores, and restaurants in the DMV area. Email
+        gulu@createthirdplaces.com to request an update to this list or
+        share feedback. All submitted items must have information visible on
+        their main website without requiring a login.
+      </p>
+      <p>
+        To request a new feature or view the source code, go
+        <a href="https://github.com/Create-Third-Places/DMVBoardGames"
+        >here</a
+        >
+      </p>
+    </div>
+    <img
+      src="../public/assets/DMV_board_games_site_pic_600.png"
+      alt="DMV Board Games"
+    />
+  </div>
+  <div id="root">
+    <div id="jump-to">
+      <p>Click for more info about:</p>
+      <a href="#convention-list">Conventions</a>
+      <a href="#game-store">Game Stores</a>
+      <a href="#game-restaurant-list">Bars And Cafés</a>
+    </div>
+    <div id="event-search" class="page-section"></div>
+
+    <div data-container="root">
+      <event-search-component id="eventList" class="page-section">
+      </event-search-component>
+
+      <div id="event-list" class="page-section">
+        <event-list-component> </event-list-component>
+      </div>
+
+      <div id="convention-list" class="page-section">
+        <convention-list-component data-test="testing">
+          <p></p>
+        </convention-list-component>
+      </div>
+
+      <div id="game-restaurant-list" class="page-section">
+        <game-restaurant-list-component> </game-restaurant-list-component>
+      </div>
+
+      <div id="game-store" class="page-section">
+        <game-store-list-component> </game-store-list-component>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
