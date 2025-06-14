@@ -13,15 +13,20 @@ export type ThunkReducerConfig = {
   reducerField?: string;
 };
 
+export type GlobalStateLoadConfig = {
+  globalFieldSubscriptions: string[];
+  waitForGlobalState?: string; //Wait for this global state to be ready before loading.
+  defaultGlobalStateReducer?: (updates: Record<string, string>) => any; //Default reducer from global state if there is no dependent API request.
+};
+
 export type ComponentLoadConfig = {
-  featureFlagEnabled?: () => boolean;
   onLoadStoreConfig?: RequestStoreItem;
   onLoadRequestData?: any;
   onLoadInitStore?: () => any;
   onLoadRequestConfig?: RequestStoreItem[];
   requestStoresToCreate?: RequestStoreItem[];
   thunkReducers?: ThunkReducerConfig[];
-  globalFieldSubscriptions?: string[];
+  globalStateLoadConfig?: GlobalStateLoadConfig;
 };
 
 export const validComponentLoadConfigFields = [
@@ -31,5 +36,5 @@ export const validComponentLoadConfigFields = [
   "onLoadRequestConfig",
   "requestStoresToCreate",
   "thunkReducers",
-  "globalFieldSubscriptions",
+  "globalStateLoadConfig",
 ];

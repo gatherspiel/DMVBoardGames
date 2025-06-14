@@ -34,7 +34,6 @@ export function updateGlobalStore(fieldsToUpdate: Record<string, string>) {
     }
 
     if (
-      globalState[fieldName] !== "" &&
       globalState[fieldName] !== fieldsToUpdate[fieldName] &&
       fieldName in globalStateSubscribers
     ) {
@@ -67,14 +66,13 @@ export function subscribeComponentToGlobalField(
   if (!(fieldName in globalStateSubscribers)) {
     globalStateSubscribers[fieldName] = [component];
   } else {
-    globalStateSubscribers[fieldName].push(component);
+    if (!globalStateSubscribers[fieldName].includes(component)) {
+      globalStateSubscribers[fieldName].push(component);
+    }
   }
 }
 
 export function createStore(storeName: string, stores: any) {
-  if (storeName === "loginComponentStore") {
-    throw new Error("Invalid");
-  }
   if (!storeName) {
     throw new Error(`createStore must be called with a valid store name`);
   }

@@ -1,11 +1,11 @@
-import type { EventHandlerThunkConfig } from "../../../framework/store/update/event/types/EventHandlerThunkConfig.ts";
+import type { EventHandlerThunkConfig } from "../../../../framework/store/update/event/types/EventHandlerThunkConfig.ts";
 import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
   SAVE_GROUP_REQUEST_STORE,
 } from "../Constants.ts";
-import type { UpdateGroupRequest } from "../../events/data/types/group/UpdateGroupRequest.ts";
+import type { UpdateGroupRequest } from "../data/types/UpdateGroupRequest.ts";
 
 export const EDIT_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function () {

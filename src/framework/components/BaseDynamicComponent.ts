@@ -4,9 +4,12 @@ import {
   createComponentStore,
   getComponentStore,
   hasComponentStoreSubscribers,
+  updateComponentStore,
 } from "../store/data/ComponentStore.ts";
 import {
+  hasRequestStore,
   hasRequestStoreSubscribers,
+  initRequestStore,
   initRequestStoresOnLoad,
   updateRequestStoreAndClearCache,
 } from "../store/data/RequestStore.ts";
@@ -19,7 +22,10 @@ import {
   type ThunkReducerConfig,
   validComponentLoadConfigFields,
 } from "./types/ComponentLoadConfig.ts";
-import { subscribeComponentToGlobalField } from "../store/data/StoreUtils.ts";
+import {
+  getGlobalStateValue,
+  subscribeComponentToGlobalField,
+} from "../store/data/StoreUtils.ts";
 import type { BaseThunk } from "../store/update/BaseThunk.ts";
 
 type EventConfig = {
@@ -36,6 +42,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   requestStoreReducer?: BaseThunk;
 
   instanceId: number;
+
+  dependenciesLoaded: boolean = true;
+  componentLoadConfig: ComponentLoadConfig | undefined = undefined; //Used if global state is needed before loading the component
 
   static instanceCount = 1;
 
@@ -65,10 +74,20 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         }
       });
 
-      initRequestStoresOnLoad(loadConfig);
+      const globalStateLoadConfig = loadConfig.globalStateLoadConfig;
+      if (globalStateLoadConfig?.waitForGlobalState) {
+        subscribeComponentToGlobalField(
+          self,
+          globalStateLoadConfig.waitForGlobalState,
+        );
+        self.componentLoadConfig = loadConfig;
+        console.log(`${componentStoreName} is waiting for global state`);
+      } else {
+        initRequestStoresOnLoad(loadConfig);
+      }
 
-      if (loadConfig.globalFieldSubscriptions) {
-        loadConfig.globalFieldSubscriptions.forEach(function (
+      if (globalStateLoadConfig?.globalFieldSubscriptions) {
+        globalStateLoadConfig.globalFieldSubscriptions.forEach(function (
           fieldName: string,
         ) {
           subscribeComponentToGlobalField(self, fieldName);
@@ -127,6 +146,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   generateAndSaveHTML(data: any) {
+    if (!this.dependenciesLoaded) {
+      console.log("Component is waiting for global state:");
+    }
     this.innerHTML = this.render(data);
   }
 
@@ -246,11 +268,55 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   updateFromGlobalState() {
+    console.log("Updating from global state");
     const componentData = getComponentStore(this.componentStoreName);
+
+    const globalStateLoadConfig =
+      this.componentLoadConfig?.globalStateLoadConfig;
+    if (!globalStateLoadConfig) {
+      throw new Error("Component global state config is not defined");
+    }
+
+    //Component is still waiting for state
+    if (
+      globalStateLoadConfig.waitForGlobalState &&
+      !getGlobalStateValue(globalStateLoadConfig.waitForGlobalState)
+    ) {
+      return;
+    }
+
+    //The component should make an API request based on the data received before rerendering
     if (this.requestStoreName) {
-      updateRequestStoreAndClearCache(this.requestStoreName, {
-        name: componentData.name,
-      });
+      if (this.componentLoadConfig && !hasRequestStore(this.requestStoreName)) {
+        initRequestStore(this.componentLoadConfig);
+      } else {
+        updateRequestStoreAndClearCache(this.requestStoreName, {
+          name: componentData.name,
+        });
+      }
+      this.dependenciesLoaded = true;
+    } else if (globalStateLoadConfig?.defaultGlobalStateReducer) {
+      this.dependenciesLoaded = true;
+      /*TODO: Handle case where the component is subscribed to global state created by multiple components to prevent
+      extra rerenders.
+       */
+      let dataToUpdate: Record<string, string> = {};
+
+      globalStateLoadConfig?.globalFieldSubscriptions?.forEach(
+        function (fieldName) {
+          const fieldValue = getGlobalStateValue(fieldName);
+          dataToUpdate[fieldName] = fieldValue;
+        },
+      );
+      updateComponentStore(
+        this.componentStoreName,
+        globalStateLoadConfig.defaultGlobalStateReducer,
+        dataToUpdate,
+      );
+    } else {
+      console.error(
+        "A default global state reducer or API request store should be defined to subscribe to global state",
+      );
     }
   }
 
