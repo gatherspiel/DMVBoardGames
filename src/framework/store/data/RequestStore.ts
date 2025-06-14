@@ -111,6 +111,50 @@ export function hasRequestStoreSubscribers(storeName: string): boolean {
   return hasSubscribers(storeName, stores);
 }
 
+export function initRequestStore(config: ComponentLoadConfig) {
+  function getRequestData() {
+    return config.onLoadRequestData;
+  }
+
+  const onLoadConfig = config.onLoadStoreConfig;
+  if (!onLoadConfig) {
+    return;
+  }
+
+  if (onLoadConfig.disableCache) {
+    requestsWithoutCache.add(onLoadConfig.storeName);
+  }
+  createRequestStoreWithData(
+    onLoadConfig.storeName,
+    onLoadConfig.dataSource,
+    getRequestData,
+  );
+
+  if (config.requestStoresToCreate) {
+    config.requestStoresToCreate.forEach(function (
+      requestStoreItem: RequestStoreItem,
+    ) {
+      createStore(requestStoreItem.storeName, stores);
+      responseCache[requestStoreItem.storeName] = {};
+      subscribeToRequestStore(
+        requestStoreItem.storeName,
+        requestStoreItem.dataSource,
+      );
+    });
+  }
+
+  if (config.onLoadRequestConfig) {
+    config.onLoadRequestConfig.forEach(function (
+      requestStoreItem: RequestStoreItem,
+    ) {
+      createRequestStoreWithData(
+        requestStoreItem.storeName,
+        requestStoreItem.dataSource,
+      );
+    });
+  }
+}
+
 export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
   const onLoadConfig = config.onLoadStoreConfig;
   if (!onLoadConfig) {
@@ -118,42 +162,7 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
   }
 
   addLoadFunction(onLoadConfig.storeName, function () {
-    function getRequestData() {
-      return config.onLoadRequestData;
-    }
-
-    if (onLoadConfig.disableCache) {
-      requestsWithoutCache.add(onLoadConfig.storeName);
-    }
-    createRequestStoreWithData(
-      onLoadConfig.storeName,
-      onLoadConfig.dataSource,
-      getRequestData,
-    );
-
-    if (config.requestStoresToCreate) {
-      config.requestStoresToCreate.forEach(function (
-        requestStoreItem: RequestStoreItem,
-      ) {
-        createStore(requestStoreItem.storeName, stores);
-        responseCache[requestStoreItem.storeName] = {};
-        subscribeToRequestStore(
-          requestStoreItem.storeName,
-          requestStoreItem.dataSource,
-        );
-      });
-    }
-
-    if (config.onLoadRequestConfig) {
-      config.onLoadRequestConfig.forEach(function (
-        requestStoreItem: RequestStoreItem,
-      ) {
-        createRequestStoreWithData(
-          requestStoreItem.storeName,
-          requestStoreItem.dataSource,
-        );
-      });
-    }
+    initRequestStore(config);
   });
 }
 

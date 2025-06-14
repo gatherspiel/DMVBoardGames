@@ -4,6 +4,7 @@ import {
   IS_PRODUCTION,
   IS_TEST,
 } from "../../../utils/params.ts";
+import { OpenCreateGroupPageComponent } from "../../groups/createGroup/components/OpenCreateGroupPageComponent.ts";
 
 export class FeatureFlagComponent extends HTMLElement {
   constructor() {
@@ -25,6 +26,9 @@ if (!customElements.get("feature-flag-component")) {
 function getComponent(componentName: string): HTMLElement {
   if (componentName === "login-component") {
     return new LoginComponent();
+  }
+  if (componentName === "open-create-group-page-component") {
+    return new OpenCreateGroupPageComponent();
   }
   throw Error(
     `Component ${componentName} is not configured to work with feature-flag-component`,

@@ -1,8 +1,8 @@
-import { API_ROOT } from "../../../utils/params.js";
-import { generateApiThunk } from "../../../framework/store/update/api/ApiThunkFactory.ts";
-import type { ApiRequestConfig } from "../../../framework/store/update/api/types/ApiRequestConfig.ts";
-import { AUTH_TOKEN_HEADER_KEY } from "../../auth/Constants.ts";
-import { getAccessTokenIfPresent } from "../../auth/AuthUtils.ts";
+import { API_ROOT } from "../../../../utils/params.js";
+import { generateApiThunk } from "../../../../framework/store/update/api/ApiThunkFactory.ts";
+import type { ApiRequestConfig } from "../../../../framework/store/update/api/types/ApiRequestConfig.ts";
+import { AUTH_TOKEN_HEADER_KEY } from "../../../auth/Constants.ts";
+import { getAccessTokenIfPresent } from "../../../auth/AuthUtils.ts";
 
 function getGroupsRequestConfig(requestParams: any): ApiRequestConfig {
   let headers: Record<string, string> = {};

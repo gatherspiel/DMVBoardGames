@@ -1,4 +1,4 @@
-import { getParameter } from "../../../framework/utils/urlParmUtils.ts";
+import { getParameter } from "../../../../framework/utils/urlParmUtils.ts";
 import {
   GET_GROUP_REQUEST_STORE,
   GROUP_COMPONENT_STORE,
@@ -9,17 +9,17 @@ import {
 } from "../Constants.js";
 import { GROUP_REQUEST_THUNK } from "../data/GroupRequestThunk.ts";
 
-import { createJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
-import type { GroupPageData } from "../../events/data/types/group/GroupPageData.ts";
-import type { Event } from "../../events/data/types/Event.ts";
-import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { createJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
+import type { GroupPageData } from "../data/types/GroupPageData.ts";
+import type { Event } from "../../../events/data/types/Event.ts";
+import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
   EDIT_GROUP_EVENT_CONFIG,
   SAVE_GROUP_CONFIG,
 } from "./GroupPageHandlers.ts";
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
-import { stateFields } from "../../utils/initGlobalStateConfig.ts";
-import { getGlobalStateValue } from "../../../framework/store/data/StoreUtils.ts";
+import { stateFields } from "../../../utils/initGlobalStateConfig.ts";
+import { getGlobalStateValue } from "../../../../framework/store/data/StoreUtils.ts";
 
 const SAVE_GROUP_SUCCESS_PROP = "saveGroupSuccess";
 
@@ -36,7 +36,7 @@ template.innerHTML = `
       font-size: 1.25rem;
       font-weight:600;
       margin-left: 1rem;
-      padding: 2rem
+      padding: 2rem;
     }
     .group-title {
        margin-left: 2rem;
@@ -57,9 +57,7 @@ template.innerHTML = `
     }
     
   </style>
-  
   <div></div>
-
 `;
 
 const loadConfig = {
@@ -74,6 +72,7 @@ const loadConfig = {
     {
       thunk: GROUP_REQUEST_THUNK,
       componentReducerFunction: function (data: any) {
+        console.log("1");
         const isLoggedIn = getGlobalStateValue(stateFields.LOGGED_IN);
 
         if (!isLoggedIn) {
@@ -86,6 +85,7 @@ const loadConfig = {
     {
       thunk: UPDATE_GROUP_REQUEST_THUNK,
       componentReducerFunction: function () {
+        console.log("2");
         return {
           isEditing: false,
           SAVE_GROUP_SUCCESS_PROP: true,
@@ -93,7 +93,10 @@ const loadConfig = {
       },
     },
   ],
-  globalFieldSubscriptions: ["isLoggedIn"],
+  globalStateLoadConfig: {
+    globalFieldSubscriptions: ["isLoggedIn"],
+    waitForGlobalState: "isLoggedIn",
+  },
 };
 
 export class GroupComponent extends BaseTemplateDynamicComponent {
