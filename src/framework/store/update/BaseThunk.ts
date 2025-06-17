@@ -1,6 +1,7 @@
 import { BaseThunkAction } from "./BaseThunkAction.ts";
 import { BaseDispatcher } from "./BaseDispatcher.ts";
-import { updateGlobalStore } from "../data/StoreUtils.ts";
+
+import { updateGlobalStore } from "../data/GlobalStore.ts";
 
 export class BaseThunk {
   thunkAction: BaseThunkAction;
@@ -15,15 +16,6 @@ export class BaseThunk {
 
   async retrieveData(params: any) {
     return await this.thunkAction.retrieveData(params);
-  }
-
-  //TODO: Optimize the logic of subscribeComponent
-  subscribeRequestStore(requestStore: string) {
-    this.dispatchers.push(
-      new BaseDispatcher(requestStore, function () {
-        return {};
-      }),
-    );
   }
 
   addGlobalStateReducer(

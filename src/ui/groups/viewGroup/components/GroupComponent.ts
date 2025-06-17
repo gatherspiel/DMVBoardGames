@@ -6,7 +6,7 @@ import {
   GROUP_NAME_INPUT,
   GROUP_NAME_PARAM,
   GROUP_URL_INPUT,
-} from "../Constants.js";
+} from "../../Constants.js";
 import { GROUP_REQUEST_THUNK } from "../data/GroupRequestThunk.ts";
 
 import { createJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
@@ -18,8 +18,9 @@ import {
   SAVE_GROUP_CONFIG,
 } from "./GroupPageHandlers.ts";
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
-import { stateFields } from "../../../utils/initGlobalStateConfig.ts";
-import { getGlobalStateValue } from "../../../../framework/store/data/StoreUtils.ts";
+import { stateFields } from "../../../utils/InitGlobalStateConfig.ts";
+
+import { getGlobalStateValue } from "../../../../framework/store/data/GlobalStore.ts";
 
 const SAVE_GROUP_SUCCESS_PROP = "saveGroupSuccess";
 
@@ -71,8 +72,7 @@ const loadConfig = {
   thunkReducers: [
     {
       thunk: GROUP_REQUEST_THUNK,
-      componentReducerFunction: function (data: any) {
-        console.log("1");
+      componentStoreReducer: function (data: any) {
         const isLoggedIn = getGlobalStateValue(stateFields.LOGGED_IN);
 
         if (!isLoggedIn) {
@@ -84,8 +84,7 @@ const loadConfig = {
     },
     {
       thunk: UPDATE_GROUP_REQUEST_THUNK,
-      componentReducerFunction: function () {
-        console.log("2");
+      componentStoreReducer: function () {
         return {
           isEditing: false,
           SAVE_GROUP_SUCCESS_PROP: true,
@@ -130,7 +129,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
         : `
         <h1>Editing group information</h1>
         
-        <form ${this.createSubmitEvent(SAVE_GROUP_CONFIG)}>
+        <form >
         
           <label for="group-name">Group Name</label>
           <input 
@@ -146,7 +145,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
           <textarea class="group-data-input" id = "group-description-input" type="text" id=${GROUP_DESCRIPTION_INPUT} name=${GROUP_DESCRIPTION_INPUT}> ${groupData.summary}
           </textarea>
     
-          <button type="submit">Save updates</button>
+          <button ${this.createSubmitEvent(SAVE_GROUP_CONFIG)}>Save updates</button>
         </form>
       
       `

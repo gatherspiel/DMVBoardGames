@@ -19,14 +19,14 @@ import { EventThunk } from "../store/update/event/EventThunk.ts";
 import type { EventHandlerThunkConfig } from "../store/update/event/types/EventHandlerThunkConfig.ts";
 import {
   type ComponentLoadConfig,
-  type ThunkReducerConfig,
+  type ThunkDispatcherConfig,
   validComponentLoadConfigFields,
 } from "./types/ComponentLoadConfig.ts";
+import type { BaseThunk } from "../store/update/BaseThunk.ts";
 import {
   getGlobalStateValue,
   subscribeComponentToGlobalField,
-} from "../store/data/StoreUtils.ts";
-import type { BaseThunk } from "../store/update/BaseThunk.ts";
+} from "../store/data/GlobalStore.ts";
 
 type EventConfig = {
   eventType: string;
@@ -97,7 +97,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       if (loadConfig.thunkReducers) {
         const component = this;
 
-        loadConfig.thunkReducers.forEach(function (config: ThunkReducerConfig) {
+        loadConfig.thunkReducers.forEach(function (
+          config: ThunkDispatcherConfig,
+        ) {
           if (!config.thunk) {
             throw new Error(
               `Missing thunk field in ${self.componentStoreName} reducer configuration`,
@@ -105,7 +107,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
           }
           config.thunk.subscribeComponent(
             component.componentStoreName,
-            config.componentReducerFunction,
+            config.componentStoreReducer,
             config.reducerField,
           );
         });
@@ -125,7 +127,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     const addEventHandler = function (item: Element) {
       const id = item.getAttribute(elementIdTag) ?? "";
       const eventConfig = eventHandlers[id];
-
       item.addEventListener(eventConfig.eventType, eventConfig.eventFunction);
     };
 
@@ -222,8 +223,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     shadowRoot?: ShadowRoot,
   ) {
     const storeToUpdate =
-      eventConfig?.storeToUpdate && eventConfig.storeToUpdate.length > 0
-        ? eventConfig.storeToUpdate
+      eventConfig?.requestStoreToUpdate &&
+      eventConfig.requestStoreToUpdate.length > 0
+        ? eventConfig.requestStoreToUpdate
         : storeName;
 
     if (!storeToUpdate) {
@@ -231,6 +233,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     }
 
     const dispatchers: BaseDispatcher[] = [];
+
     if (eventConfig.componentReducer && storeName) {
       const componentStoreUpdate = new BaseDispatcher(
         storeName,
@@ -244,7 +247,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         !hasRequestStoreSubscribers(storeToUpdate) &&
         !hasComponentStoreSubscribers(storeToUpdate)
       ) {
-        throw new Error(`No subscribers for store ${storeToUpdate}`);
+        // throw new Error(`No subscribers for store ${storeToUpdate}`);
       }
 
       e.preventDefault();
