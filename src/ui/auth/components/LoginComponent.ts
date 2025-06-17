@@ -56,15 +56,15 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
       thunkReducers: [
         {
           thunk: AUTH_THUNK,
-          componentReducerFunction: getLoginComponentStoreFromLoginResponse,
+          componentStoreReducer: getLoginComponentStoreFromLoginResponse,
         },
         {
           thunk: LOGOUT_THUNK,
-          componentReducerFunction: getLoginComponentStoreFromLogoutResponse,
+          componentStoreReducer: getLoginComponentStoreFromLogoutResponse,
         },
         {
           thunk: REGISTER_USER_THUNK,
-          componentReducerFunction: getLoginComponentStoreFromRegisterResponse,
+          componentStoreReducer: getLoginComponentStoreFromRegisterResponse,
         },
       ],
     });

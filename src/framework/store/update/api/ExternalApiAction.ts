@@ -8,7 +8,7 @@ import type { DefaultApiAction } from "./DefaultApiAction.ts";
  * - The thunk factory could be used with the unit tests to create a mock.
  *
  */
-export class ExternalAction extends BaseThunkAction {
+export class ExternalApiAction extends BaseThunkAction {
   externalClient: (params: any, defaultResponse: DefaultApiAction) => any;
   defaultResponse: DefaultApiAction;
 
@@ -22,7 +22,7 @@ export class ExternalAction extends BaseThunkAction {
   }
 
   async retrieveData(params: any): Promise<any> {
-    const externalRequest: ExternalAction = this;
+    const externalRequest: ExternalApiAction = this;
 
     try {
       return await externalRequest.externalClient(

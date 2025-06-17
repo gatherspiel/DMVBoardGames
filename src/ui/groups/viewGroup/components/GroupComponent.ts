@@ -19,7 +19,8 @@ import {
 } from "./GroupPageHandlers.ts";
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 import { stateFields } from "../../../utils/InitGlobalStateConfig.ts";
-import { getGlobalStateValue } from "../../../../framework/store/data/StoreUtils.ts";
+
+import { getGlobalStateValue } from "../../../../framework/store/data/GlobalStore.ts";
 
 const SAVE_GROUP_SUCCESS_PROP = "saveGroupSuccess";
 
@@ -71,7 +72,7 @@ const loadConfig = {
   thunkReducers: [
     {
       thunk: GROUP_REQUEST_THUNK,
-      componentReducerFunction: function (data: any) {
+      componentStoreReducer: function (data: any) {
         const isLoggedIn = getGlobalStateValue(stateFields.LOGGED_IN);
 
         if (!isLoggedIn) {
@@ -83,7 +84,7 @@ const loadConfig = {
     },
     {
       thunk: UPDATE_GROUP_REQUEST_THUNK,
-      componentReducerFunction: function () {
+      componentStoreReducer: function () {
         return {
           isEditing: false,
           SAVE_GROUP_SUCCESS_PROP: true,

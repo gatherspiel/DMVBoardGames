@@ -6,9 +6,9 @@ export type RequestStoreItem = {
   disableCache?: boolean;
 };
 
-export type ThunkReducerConfig = {
+export type ThunkDispatcherConfig = {
   thunk: BaseThunk;
-  componentReducerFunction: (a: any) => any;
+  componentStoreReducer: (a: any) => any;
   globalStoreReducer?: (a: any) => any;
   reducerField?: string;
 };
@@ -25,7 +25,7 @@ export type ComponentLoadConfig = {
   onLoadInitStore?: () => any;
   onLoadRequestConfig?: RequestStoreItem[];
   requestStoresToCreate?: RequestStoreItem[];
-  thunkReducers?: ThunkReducerConfig[];
+  thunkReducers?: ThunkDispatcherConfig[];
   globalStateLoadConfig?: GlobalStateLoadConfig;
 };
 

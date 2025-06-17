@@ -19,14 +19,14 @@ import { EventThunk } from "../store/update/event/EventThunk.ts";
 import type { EventHandlerThunkConfig } from "../store/update/event/types/EventHandlerThunkConfig.ts";
 import {
   type ComponentLoadConfig,
-  type ThunkReducerConfig,
+  type ThunkDispatcherConfig,
   validComponentLoadConfigFields,
 } from "./types/ComponentLoadConfig.ts";
+import type { BaseThunk } from "../store/update/BaseThunk.ts";
 import {
   getGlobalStateValue,
   subscribeComponentToGlobalField,
-} from "../store/data/StoreUtils.ts";
-import type { BaseThunk } from "../store/update/BaseThunk.ts";
+} from "../store/data/GlobalStore.ts";
 
 type EventConfig = {
   eventType: string;
@@ -46,7 +46,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   dependenciesLoaded: boolean = true;
   componentLoadConfig: ComponentLoadConfig | undefined = undefined; //Used if global state is needed before loading the component
 
-  thunksWithReducers = [];
   static instanceCount = 1;
 
   constructor(componentStoreName: string, loadConfig?: ComponentLoadConfig) {
@@ -98,7 +97,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       if (loadConfig.thunkReducers) {
         const component = this;
 
-        loadConfig.thunkReducers.forEach(function (config: ThunkReducerConfig) {
+        loadConfig.thunkReducers.forEach(function (
+          config: ThunkDispatcherConfig,
+        ) {
           if (!config.thunk) {
             throw new Error(
               `Missing thunk field in ${self.componentStoreName} reducer configuration`,
@@ -106,7 +107,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
           }
           config.thunk.subscribeComponent(
             component.componentStoreName,
-            config.componentReducerFunction,
+            config.componentStoreReducer,
             config.reducerField,
           );
         });

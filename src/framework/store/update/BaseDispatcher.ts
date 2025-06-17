@@ -26,7 +26,6 @@ export class BaseDispatcher {
       : response;
 
     if (hasRequestStore(baseDispatcher.storeField)) {
-      console.log("Updating request store");
       updateRequestStore(
         baseDispatcher.storeField,
         baseDispatcher.reducerUpdate,

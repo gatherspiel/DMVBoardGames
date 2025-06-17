@@ -1,9 +1,8 @@
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import { CREATE_GROUP_CONFIG } from "./CreateGroupPageHandler.ts";
 import { CREATE_GROUP_REQUEST_THUNK } from "../data/CreateGroupRequestThunk.ts";
-import { OPEN_CREATE_GROUP_PAGE_CONFIG } from "../OpenCreateGroupPageHandler.ts";
-import { getGlobalStateValue } from "../../../../framework/store/data/StoreUtils.ts";
 import { stateFields } from "../../../utils/InitGlobalStateConfig.ts";
+import { getGlobalStateValue } from "../../../../framework/store/data/GlobalStore.ts";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -21,7 +20,7 @@ const loadConfig = {
   thunkReducers: [
     {
       thunk: CREATE_GROUP_REQUEST_THUNK,
-      componentReducerFunction: function (data: any) {
+      componentStoreReducer: function (data: any) {
         const isLoggedIn = getGlobalStateValue(stateFields.LOGGED_IN);
 
         if (!isLoggedIn) {
@@ -53,15 +52,15 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
 
   render(createGroupData: any): string {
     //TODO: Add additional fields
-
-    console.log(createGroupData);
     return `
       <h1>Create group</h1>
       
-      <button id ="openGroupEditPageButton" ${this.createClickEvent(OPEN_CREATE_GROUP_PAGE_CONFIG)}>Create group </button>
-
-        <button ${this.createClickEvent(CREATE_GROUP_CONFIG)}>Create group</button>
-
+        ${
+          createGroupData.isVisible
+            ? `<button ${this.createClickEvent(CREATE_GROUP_CONFIG)}>Create group</button>`
+            : `<p>You must log in to create a group </p>`
+        }
+      
         </form>
     `;
   }

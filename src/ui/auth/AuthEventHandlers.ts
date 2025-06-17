@@ -26,9 +26,7 @@ export const LOGIN_EVENT_CONFIG: EventHandlerThunkConfig = {
 };
 
 export const LOGOUT_EVENT_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function () {
-    console.log("Logging out");
-  },
+  eventHandler: function () {},
   requestStoreToUpdate: LOGOUT_REQUEST_STORE,
 };
 

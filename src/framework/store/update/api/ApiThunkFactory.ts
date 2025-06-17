@@ -1,7 +1,7 @@
 import type { DefaultApiAction } from "./DefaultApiAction.ts";
 import { BaseThunk } from "../BaseThunk.ts";
-import { ExternalAction } from "./ExternalAction.ts";
-import { BaseGetAction } from "./BaseGetAction.ts";
+import { ExternalApiAction } from "./ExternalApiAction.ts";
+import { InternalApiAction } from "./InternalApiAction.ts";
 import type { ApiRequestConfig } from "./types/ApiRequestConfig.ts";
 import { subscribeToRequestStore } from "../../data/RequestStore.ts";
 
@@ -12,14 +12,13 @@ export type ApiThunkConfig = {
 };
 
 export function generateApiThunk(config: ApiThunkConfig) {
-  const getAction = new BaseGetAction(
+  const getAction = new InternalApiAction(
     config.queryConfig,
     config.defaultFunctionConfig,
   );
 
   const apiThunk = new BaseThunk(getAction);
   if (config.requestStoreName) {
-    console.log(`Subscribing to request store ${config.requestStoreName}`);
     subscribeToRequestStore(config.requestStoreName, apiThunk);
   }
   return apiThunk;
@@ -29,6 +28,6 @@ export function generateApiThunkWithExternalConfig(
   retrieveData: (a: any, b: DefaultApiAction) => Promise<any>,
   defaultResponse: DefaultApiAction,
 ) {
-  const action = new ExternalAction(retrieveData, defaultResponse);
+  const action = new ExternalApiAction(retrieveData, defaultResponse);
   return new BaseThunk(action);
 }
