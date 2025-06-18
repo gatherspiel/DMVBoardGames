@@ -1,12 +1,19 @@
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import { CREATE_GROUP_CONFIG } from "./CreateGroupPageHandler.ts";
 import { CREATE_GROUP_REQUEST_THUNK } from "../data/CreateGroupRequestThunk.ts";
-import { stateFields } from "../../../utils/InitGlobalStateConfig.ts";
-import { getGlobalStateValue } from "../../../../framework/store/data/GlobalStore.ts";
+import type { CreateGroupData } from "../data/types/CreateGroupData.ts";
+import {
+  GROUP_DESCRIPTION_INPUT,
+  GROUP_NAME_INPUT,
+  GROUP_URL_INPUT,
+} from "../../Constants.ts";
 
 const template = document.createElement("template");
 template.innerHTML = `
   <style>
+    #create-group-error-message {
+      color:darkred;
+    }
     #openGroupEditPageButton {
       padding: 2rem;
     }
@@ -21,12 +28,15 @@ const loadConfig = {
     {
       thunk: CREATE_GROUP_REQUEST_THUNK,
       componentStoreReducer: function (data: any) {
-        const isLoggedIn = getGlobalStateValue(stateFields.LOGGED_IN);
-
-        if (!isLoggedIn) {
-          data.isEditing = false;
+        if (data.errorMessage) {
+          return {
+            errorMessage: data.errorMessage,
+          };
+        } else {
+          return {
+            successMessage: "Successfully created group",
+          };
         }
-        return data;
       },
     },
   ],
@@ -35,6 +45,9 @@ const loadConfig = {
     waitForGlobalState: "isLoggedIn",
     defaultGlobalStateReducer: function (updates: Record<string, string>) {
       return {
+        name: "",
+        summary: "",
+        url: "",
         isVisible: updates["isLoggedIn"],
       };
     },
@@ -50,18 +63,46 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
-  render(createGroupData: any): string {
-    //TODO: Add additional fields
+  render(createGroupData: CreateGroupData): string {
     return `
-      <h1>Create group</h1>
+      <h1>Create board game group</h1>
       
         ${
           createGroupData.isVisible
-            ? `<button ${this.createClickEvent(CREATE_GROUP_CONFIG)}>Create group</button>`
+            ? `
+              <form onsubmit="return false">
+              
+                <label for="group-name">Group Name</label>
+                <input 
+                  class="group-data-input"
+                  id=${GROUP_NAME_INPUT}
+                  name=${GROUP_NAME_INPUT}
+                  type="text" 
+                  value="${createGroupData.name}"
+                />
+          
+                <label for="group-url">Group URL:</label>
+                <input 
+                  class="group-data-input" 
+                  id = "group-url-input"
+                  name=${GROUP_URL_INPUT}
+                  type="text"
+                  value= "${createGroupData.url}"   
+                /> 
+          
+                <label for="group-description">Group Description</label>
+                <textarea class="group-data-input" id = "group-description-input" type="text" id=${GROUP_DESCRIPTION_INPUT} name=${GROUP_DESCRIPTION_INPUT}> ${createGroupData.summary}
+                </textarea>
+                <button type="submit" ${this.createClickEvent(CREATE_GROUP_CONFIG)}>Create group</button>
+           
+              </form>
+              
+              <p id="create-group-error-message">${createGroupData.errorMessage ? createGroupData.errorMessage.trim() : ""}</p>
+
+            `
             : `<p>You must log in to create a group </p>`
         }
       
-        </form>
     `;
   }
 }
