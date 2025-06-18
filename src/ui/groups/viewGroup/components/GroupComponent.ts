@@ -129,7 +129,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
         : `
         <h1>Editing group information</h1>
         
-        <form >
+        <form>
         
           <label for="group-name">Group Name</label>
           <input 

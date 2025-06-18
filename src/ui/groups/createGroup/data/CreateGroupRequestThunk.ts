@@ -7,6 +7,12 @@ import { generateApiThunk } from "../../../../framework/store/update/api/ApiThun
 import { CREATE_GROUP_REQUEST_STORE } from "../../Constants.ts";
 
 function updateCreateGroupRequestThunk(requestParams: any): ApiRequestConfig {
+  const requestBody = {
+    name: requestParams.name,
+    summary: requestParams.summary,
+    url: requestParams.url,
+  };
+
   let headers: Record<string, string> = {};
   const authData = getAccessTokenIfPresent();
   if (authData) {
@@ -14,7 +20,7 @@ function updateCreateGroupRequestThunk(requestParams: any): ApiRequestConfig {
   }
 
   return {
-    body: JSON.stringify(requestParams),
+    body: JSON.stringify(requestBody),
     method: ApiActionTypes.POST,
     headers: headers,
     url: API_ROOT + `/groups/`,
@@ -22,8 +28,10 @@ function updateCreateGroupRequestThunk(requestParams: any): ApiRequestConfig {
 }
 
 const defaultFunctionConfig = {
-  defaultFunction: function () {
-    return {};
+  defaultFunction: function (response: any) {
+    return {
+      errorMessage: response.message,
+    };
   },
   defaultFunctionPriority: false,
 };
