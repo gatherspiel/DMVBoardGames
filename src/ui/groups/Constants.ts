@@ -10,3 +10,4 @@ export const GROUP_URL_INPUT = "group-url-input";
 export const GROUP_DESCRIPTION_INPUT = "group-description-input";
 
 export const SAVE_GROUP_REQUEST_STORE = "save_group_request_store";
+export const DELETE_GROUP_REQUEST_STORE = "delete_group";

@@ -27,6 +27,7 @@ import {
   getGlobalStateValue,
   subscribeComponentToGlobalField,
 } from "../store/data/GlobalStore.ts";
+import type { EventValidationResult } from "../store/update/event/types/EventValidationResult.ts";
 
 type EventConfig = {
   eventType: string;
@@ -234,8 +235,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
     const dispatchers: BaseDispatcher[] = [];
 
+    let componentStoreUpdate: any;
     if (eventConfig.componentReducer && storeName) {
-      const componentStoreUpdate = new BaseDispatcher(
+      componentStoreUpdate = new BaseDispatcher(
         storeName,
         eventConfig.componentReducer,
       );
@@ -263,9 +265,25 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       });
       dispatchers.push(storeUpdate);
       const eventUpdater: EventThunk = new EventThunk(request, dispatchers);
-      eventUpdater.processEvent(e);
-    };
 
+      if (eventConfig.validator) {
+        const eventConfigValidator = eventConfig.validator;
+        const validator = function (
+          eventHandlerResult: any,
+        ): EventValidationResult {
+          const componentData = getComponentStore(storeName ?? "");
+          return eventConfigValidator(eventHandlerResult, componentData);
+        };
+
+        eventUpdater.processEvent(e, validator).then((result: any) => {
+          if (result?.error) {
+            componentStoreUpdate.updateStore(result);
+          }
+        });
+      } else {
+        eventUpdater.processEvent(e);
+      }
+    };
     return handler;
   }
 

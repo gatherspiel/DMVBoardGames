@@ -21,8 +21,8 @@ function updateCreateGroupRequestThunk(requestParams: any): ApiRequestConfig {
 
   return {
     body: JSON.stringify(requestBody),
-    method: ApiActionTypes.POST,
     headers: headers,
+    method: ApiActionTypes.POST,
     url: API_ROOT + `/groups/`,
   };
 }

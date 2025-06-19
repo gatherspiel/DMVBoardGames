@@ -6,7 +6,17 @@ import {
   SAVE_GROUP_REQUEST_STORE,
 } from "../../Constants.ts";
 import type { UpdateGroupRequest } from "../data/types/UpdateGroupRequest.ts";
+import type { EventHandlerData } from "../../../../framework/store/update/event/types/EventHandlerData.ts";
 
+export const DELETE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
+  eventHandler: function (params: EventHandlerData) {
+    console.log(JSON.stringify(params));
+
+    window.location.replace(
+      `${window.location.origin}/groups/delete.html?name=${encodeURIComponent(params.componentStore.name)}&id=${params.componentStore.id}`,
+    );
+  },
+};
 export const EDIT_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function () {
     return {

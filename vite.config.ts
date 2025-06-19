@@ -27,7 +27,7 @@ export default defineConfig({
         plans: resolve(__dirname, "src/plans.html"),
         print_and_play: resolve(__dirname, "src/print_and_play.html"),
         useful_links: resolve(__dirname, "src/useful_links.html"),
-        create_groups: resolve(__dirname, "src/createGroup.html"),
+        create_groups: resolve(__dirname, "src/groups/create.html"),
       },
     },
   },

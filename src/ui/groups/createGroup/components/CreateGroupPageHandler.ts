@@ -3,9 +3,10 @@ import {
   CREATE_GROUP_REQUEST_STORE,
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
+  GROUP_URL_INPUT,
 } from "../../Constants.ts";
 
-export const CREATE_GROUP_CONFIG: EventHandlerThunkConfig = {
+export const CREATE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params): any {
     if (!params.shadowRoot) {
       throw new Error("Invalid shadow root for save group event handler");
@@ -24,10 +25,10 @@ export const CREATE_GROUP_CONFIG: EventHandlerThunkConfig = {
             GROUP_DESCRIPTION_INPUT,
           ) as HTMLTextAreaElement
         )?.value ?? "",
-      value:
+      url:
         (
           params.shadowRoot.getElementById(
-            GROUP_NAME_INPUT,
+            GROUP_URL_INPUT,
           ) as HTMLTextAreaElement
         )?.value ?? "",
     };
