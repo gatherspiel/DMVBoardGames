@@ -129,7 +129,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
         : `
         <h1>Editing group information</h1>
         
-        <form>
+        <form ${this.createSubmitEvent(SAVE_GROUP_CONFIG)}>
         
           <label for="group-name">Group Name</label>
           <input 
@@ -145,7 +145,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
           <textarea class="group-data-input" id = "group-description-input" type="text" id=${GROUP_DESCRIPTION_INPUT} name=${GROUP_DESCRIPTION_INPUT}> ${groupData.summary}
           </textarea>
     
-          <button ${this.createSubmitEvent(SAVE_GROUP_CONFIG)}>Save updates</button>
+          <button type="submit" >Save updates</button>
         </form>
       
       `

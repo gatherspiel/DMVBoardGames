@@ -29,7 +29,7 @@ export class EventListComponent extends BaseDynamicComponent {
         <h2>
           <a href=${group.url}>${group.title}</a>
         </h2>  
-          <p>${group.locations.join(", ")}</p>              
+          <p>${group.locations?.join(", ") ?? ""}</p>              
       </div> 
     `;
     return groupHtml;
