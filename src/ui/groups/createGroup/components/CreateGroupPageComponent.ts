@@ -1,5 +1,5 @@
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
-import { CREATE_GROUP_CONFIG } from "./CreateGroupPageHandler.ts";
+import { CREATE_GROUP_EVENT_CONFIG } from "./CreateGroupPageHandler.ts";
 import { CREATE_GROUP_REQUEST_THUNK } from "../data/CreateGroupRequestThunk.ts";
 import type { CreateGroupData } from "../data/types/CreateGroupData.ts";
 import {
@@ -31,9 +31,11 @@ const loadConfig = {
         if (data.errorMessage) {
           return {
             errorMessage: data.errorMessage,
+            successMessage: "",
           };
         } else {
           return {
+            errorMessage: "",
             successMessage: "Successfully created group",
           };
         }
@@ -93,10 +95,12 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
                 <label for="group-description">Group Description</label>
                 <textarea class="group-data-input" id = "group-description-input" type="text" id=${GROUP_DESCRIPTION_INPUT} name=${GROUP_DESCRIPTION_INPUT}> ${createGroupData.summary}
                 </textarea>
-                <button type="submit" ${this.createClickEvent(CREATE_GROUP_CONFIG)}>Create group</button>
+                <button type="submit" ${this.createClickEvent(CREATE_GROUP_EVENT_CONFIG)}>Create group</button>
            
               </form>
               
+              
+              <p>${createGroupData.successMessage ? createGroupData.successMessage.trim() : ""}</p>
               <p id="create-group-error-message">${createGroupData.errorMessage ? createGroupData.errorMessage.trim() : ""}</p>
 
             `

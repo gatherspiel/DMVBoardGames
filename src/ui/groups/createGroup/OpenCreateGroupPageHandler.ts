@@ -2,6 +2,6 @@ import type { EventHandlerThunkConfig } from "../../../framework/store/update/ev
 
 export const OPEN_CREATE_GROUP_PAGE_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function () {
-    window.location.replace(`${window.location.origin}/createGroup.html`);
+    window.location.replace(`${window.location.origin}/groups/create.html`);
   },
 };

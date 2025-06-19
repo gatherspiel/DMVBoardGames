@@ -1,4 +1,4 @@
-import { getParameter } from "../../../../framework/utils/urlParmUtils.ts";
+import { getUrlParameter } from "../../../../framework/utils/urlParmUtils.ts";
 import {
   GET_GROUP_REQUEST_STORE,
   GROUP_COMPONENT_STORE,
@@ -14,6 +14,7 @@ import type { GroupPageData } from "../data/types/GroupPageData.ts";
 import type { Event } from "../../../events/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
+  DELETE_GROUP_EVENT_CONFIG,
   EDIT_GROUP_EVENT_CONFIG,
   SAVE_GROUP_CONFIG,
 } from "./GroupPageHandlers.ts";
@@ -67,7 +68,7 @@ const loadConfig = {
     dataSource: GROUP_REQUEST_THUNK,
   },
   onLoadRequestData: {
-    name: getParameter(GROUP_NAME_PARAM),
+    name: getUrlParameter(GROUP_NAME_PARAM),
   },
   thunkReducers: [
     {
@@ -109,7 +110,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
 
   render(groupData: GroupPageData): string {
     if (!groupData.permissions) {
-      return `<h1>Failed to load group ${getParameter(GROUP_NAME_PARAM)}</h1>`;
+      return `<h1>Failed to load group ${getUrlParameter(GROUP_NAME_PARAM)}</h1>`;
     }
 
     return `
@@ -120,7 +121,9 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
         ? `<div class="group-title">
         <h1>Group link: <a href=${groupData.url}>${groupData.name}</a></h1>
 
-        ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(EDIT_GROUP_EVENT_CONFIG)}>Edit group</button>` : ``}
+        ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(EDIT_GROUP_EVENT_CONFIG)}>Edit group</button>` : ``} 
+        ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(DELETE_GROUP_EVENT_CONFIG)}>Delete group</button>` : ``}
+
         </div>
     
         <div class="group-summary">
