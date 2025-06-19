@@ -186,7 +186,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   createSubmitEvent(eventConfig: any) {
     let eventHandler;
     if (this.shadowRoot) {
-      console.log("Hi");
       eventHandler = BaseDynamicComponent.createHandler(
         eventConfig,
         this?.componentStoreName,
