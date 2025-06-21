@@ -22,27 +22,23 @@ import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 import { stateFields } from "../../../utils/InitGlobalStateConfig.ts";
 
 import { getGlobalStateValue } from "../../../../framework/store/data/GlobalStore.ts";
+import { getSharedButtonStyles } from "../../../utils/sharedStyles.ts";
 
 const SAVE_GROUP_SUCCESS_PROP = "saveGroupSuccess";
 
 const template = document.createElement("template");
 template.innerHTML = `
   <style>
-    .group-summary {
-      margin-left: 2rem;
-    }
+ 
     .group-description {
       background: hsl(from var(--clr-lighter-blue) h s l / 0.1);
       border-radius: 10px;
       color: var(--clr-dark-blue);
       font-size: 1.25rem;
       font-weight:600;
-      margin-left: 1rem;
       padding: 2rem;
     }
-    .group-title {
-       margin-left: 2rem;
-    }
+   
     .group-data-input {
       height:24px;
       font-size:24px;
@@ -57,7 +53,7 @@ template.innerHTML = `
       height: 500px;
       width: 800px;
     }
-    
+        
   </style>
   <div></div>
 `;
@@ -108,6 +104,10 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
+  override getSharedStyle(): string {
+    return getSharedButtonStyles();
+  }
+
   render(groupData: GroupPageData): string {
     if (!groupData.permissions) {
       return `<h1>Failed to load group ${getUrlParameter(GROUP_NAME_PARAM)}</h1>`;
@@ -153,6 +153,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
       
       `
     }
+          <h1>Upcoming events</h1>
 
       ${
         groupData.eventData.length === 0

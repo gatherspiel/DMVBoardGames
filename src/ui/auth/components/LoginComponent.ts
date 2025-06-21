@@ -25,15 +25,18 @@ import {
   REGISTER_USER_THUNK,
 } from "../data/RegisterUserThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { getSharedButtonStyles } from "../../utils/sharedStyles.ts";
 
 const template = document.createElement("template");
 template.innerHTML = `
   <style>
+    #login-component-container {
+      padding-top: 0.25rem;
+    }
     #authentication-error-message {
       color:darkred;
     }
   </style>
-  <div></div>
 
 `;
 
@@ -74,32 +77,53 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
+  override getSharedStyle(): string {
+    return getSharedButtonStyles();
+  }
+
   render(data: LoginComponentStore) {
     if (!data.isLoggedIn) {
       return this.generateLogin(data);
     } else {
       return `
-        <button ${this.createClickEvent(LOGOUT_EVENT_CONFIG)}>Logout</button>
+       <div id="login-component-container">
+
+        <button class="login-button" ${this.createClickEvent(LOGOUT_EVENT_CONFIG)}>Logout</button>
       <p>${data.successMessage}</p>
+      </div>
        `;
     }
   }
   generateLogin(data: LoginComponentStore) {
-    return `<div>
-          <form id=${LOGIN_FORM_ID} ${this.createSubmitEvent(LOGIN_EVENT_CONFIG)}>
-            <label for="username">Email:</label>
-            <input type="text" id=${USERNAME_INPUT} name=${USERNAME_INPUT} />
-            <label for="username">Password:</label>
-            <input type="password" id=${PASSWORD_INPUT} name=${PASSWORD_INPUT} />
-            <button type="submit"  name="action" value="Login"> Login </button>
+    return `
+       <div id="login-component-container">
+      <form id=${LOGIN_FORM_ID} ${this.createSubmitEvent(LOGIN_EVENT_CONFIG)}>
+        <label for="username">Email:</label>
+        <input type="text" id=${USERNAME_INPUT} name=${USERNAME_INPUT} />
+        <label for="username">Password:</label>
+        <input type="password" id=${PASSWORD_INPUT} name=${PASSWORD_INPUT} />
+        
+        <br>
 
-          </form>
-          <p id="authentication-error-message">${data.errorMessage ? data.errorMessage.trim() : ""}</p>
-          
-          <button type="submit" ${this.createClickEvent(REGISTER_EVENT_CONFIG)}  name="action" value="Register"> Register </button>
-          
-          <p>${data.successMessage}</p>
-        `;
+        <div id="component-buttons">
+          <button class="login-button" type="submit"  name="action" value="Login"> Login </button>
+            <button 
+              class="login-button"
+              type="submit" 
+              ${this.createClickEvent(REGISTER_EVENT_CONFIG)} 
+              name="action" value="Register"> 
+                Register 
+            </button>       
+          </div>
+     
+
+      </form>
+      <p id="authentication-error-message">${data.errorMessage ? data.errorMessage.trim() : ""}</p>
+      
+      
+      <p>${data.successMessage}</p>
+      </div>
+    `;
   }
 }
 
