@@ -2,7 +2,7 @@ import type { EventHandlerThunkConfig } from "../../../framework/store/update/ev
 import { DELETE_GROUP_REQUEST_STORE, GROUP_NAME_INPUT } from "../Constants.ts";
 import type { EventValidationResult } from "../../../framework/store/update/event/types/EventValidationResult.ts";
 import type { DeleteGroupData } from "./types/DeleteGroupData.ts";
-import { getUrlParameter } from "../../../framework/utils/urlParmUtils.ts";
+import { getUrlParameter } from "../../../framework/utils/UrlParamUtils.ts";
 
 export const DELETE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params: any) {

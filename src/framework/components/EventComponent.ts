@@ -4,36 +4,39 @@ import { BaseTemplateComponent } from "./BaseTemplateComponent.ts";
 const template = document.createElement("template");
 template.innerHTML = `
   <style>
-    .event {
-        border-bottom: 1px solid var(--clr-lighter-blue);
+ 
+   
+    .event-info {
+      background: hsl(from var(--clr-lighter-blue) h s l / 0.05);
+      border-radius: 10px;
+      color: var(--clr-dark-blue);
+      font-size: 1.25rem;
+      font-weight:600;
+      margin-top: 2rem;
+      padding-left:1.5rem;
+      padding-top: 0.5rem;
     }
-    
+     
     p {
       word-wrap: break-word;
       display: inline-block;
       white-space: normal;
     
-      color: var(--clr-dark-blue);
         
       font-size: 1rem;
       font-weight:600;
         
       max-width: 65ch;
-      margin-left: 3rem;
       margin-top: 0.5rem;
+      margin-right: 5rem;
     }
     
     .event-title, .event-location {
-      color: var(--clr-light-blue);
       font-size: 1.25rem;
       font-weight: 600;
+
     }
     
-    h3 {
-      color: var(--clr-dark-blue);
-      font-size: 1.5rem;
-      margin: 0.5rem 0 0 3rem;
-    }
   </style>
   <div></div>
 `;
@@ -55,11 +58,16 @@ export class EventComponent extends BaseTemplateComponent {
 
     return `
       <div id=${this.id} class="event">
+      
+        <div class="event-info">
           <h3>${eventData.name}</h3>
           <p class = "event-title">${eventDay}</p>
           <p class = "event-location">Location: ${eventData.location}</p>
-          </br>
+          </br>  
           <p> ${eventData.summary || eventData.description}</p>
+
+        </div>
+           
       </div>
     `;
   }

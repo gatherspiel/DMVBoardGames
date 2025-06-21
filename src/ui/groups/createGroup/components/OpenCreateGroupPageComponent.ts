@@ -5,8 +5,18 @@ import { OPEN_CREATE_GROUP_PAGE_CONFIG } from "../OpenCreateGroupPageHandler.ts"
 const template = document.createElement("template");
 template.innerHTML = `
   <style>
-    #openGroupEditPageButton {
-      padding: 2rem;
+     button {
+      background-color: var(--clr-lighter-blue); 
+      border-color: var(--clr-darker-blue);
+      border-radius: 5px;
+      border-width:1px;
+      color: white;
+      font-size: 1rem;
+      padding: 0.5rem;
+    }
+    
+    button:hover {
+      background-color: var(--clr-darker-blue);
     }
   </style>
   <div></div>

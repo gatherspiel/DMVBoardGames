@@ -7,6 +7,7 @@ import {
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
 } from "../../Constants.ts";
+import { getSharedButtonStyles } from "../../../utils/SharedStyles.ts";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -14,13 +15,26 @@ template.innerHTML = `
     #create-group-error-message {
       color:darkred;
     }
-    #openGroupEditPageButton {
-      padding: 2rem;
+    
+    button {
+      background-color: var(--clr-lighter-blue); 
+      border-color: var(--clr-darker-blue);
+      border-radius: 5px;
+      border-width:1px;
+      color: white;
+      font-size: 1rem;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    
+    button:hover {
+      background-color: var(--clr-darker-blue);
+    }
+    
+    #group-description-input {
+      margin-top: 0.5rem;
     }
   </style>
-  <div>
-    <h1>Create group</h1>
-</div>
 `;
 
 const loadConfig = {
@@ -65,6 +79,10 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
+  override getSharedStyle(): string {
+    return getSharedButtonStyles();
+  }
+
   render(createGroupData: CreateGroupData): string {
     return `
       <h1>Create board game group</h1>
@@ -92,21 +110,24 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
                   value= "${createGroupData.url}"   
                 /> 
           
-                <label for="group-description">Group Description</label>
-                <textarea class="group-data-input" id = "group-description-input" type="text" id=${GROUP_DESCRIPTION_INPUT} name=${GROUP_DESCRIPTION_INPUT}> ${createGroupData.summary}
-                </textarea>
+                <br>
+                
+                <div id="group-description-input">
+                  <label for="group-description">Group Description</label>
+                  <textarea class="group-data-input" id = "group-description-input" type="text" id=${GROUP_DESCRIPTION_INPUT} name=${GROUP_DESCRIPTION_INPUT}> ${createGroupData.summary}
+                  </textarea>                
+                </div>
+
+                <br>
                 <button type="submit" ${this.createClickEvent(CREATE_GROUP_EVENT_CONFIG)}>Create group</button>
            
               </form>
-              
-              
+             
               <p>${createGroupData.successMessage ? createGroupData.successMessage.trim() : ""}</p>
               <p id="create-group-error-message">${createGroupData.errorMessage ? createGroupData.errorMessage.trim() : ""}</p>
-
             `
             : `<p>You must log in to create a group </p>`
-        }
-      
+        }    
     `;
   }
 }

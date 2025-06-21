@@ -20,9 +20,6 @@ import {
 } from "./EventSearchHandlers.ts";
 import { BaseDynamicComponent } from "../../../../framework/components/BaseDynamicComponent.ts";
 
-/**
- * TODO: Move reducer configurations to load config and make subscribeToReducer a private method.
- */
 const loadConfig = {
   onLoadStoreConfig: {
     storeName: SEARCH_REQUEST_STORE,
@@ -81,7 +78,7 @@ export class EventSearchComponent extends BaseDynamicComponent {
           </div>
 
         </div>
-        <button type="submit" >SEARCH EVENTS</button>
+        <button type="submit" >Search Events</button>
       </form>
   `;
   }
