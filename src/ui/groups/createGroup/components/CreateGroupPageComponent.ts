@@ -9,26 +9,10 @@ import {
 } from "../../Constants.ts";
 import { getSharedButtonStyles } from "../../../utils/SharedStyles.ts";
 
-const template = document.createElement("template");
-template.innerHTML = `
+const templateStyle = `
   <style>
     #create-group-error-message {
       color:darkred;
-    }
-    
-    button {
-      background-color: var(--clr-lighter-blue); 
-      border-color: var(--clr-darker-blue);
-      border-radius: 5px;
-      border-width:1px;
-      color: white;
-      font-size: 1rem;
-      padding: 0.5rem;
-      margin-top: 0.5rem;
-    }
-    
-    button:hover {
-      background-color: var(--clr-darker-blue);
     }
     
     #group-description-input {
@@ -75,8 +59,8 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
     super("create-group-page-component", loadConfig);
   }
 
-  getTemplate(): HTMLTemplateElement {
-    return template;
+  getTemplateStyle(): string {
+    return templateStyle;
   }
 
   override getSharedStyle(): string {

@@ -6,8 +6,7 @@ import type { DeleteGroupData } from "./types/DeleteGroupData.ts";
 import { getUrlParameter } from "../../../framework/utils/UrlParamUtils.ts";
 import { getSharedButtonStyles } from "../../utils/SharedStyles.ts";
 
-const template = document.createElement("template");
-template.innerHTML = `
+const template = `
   <style>
     #delete-group-error-message {
       color:darkred;
@@ -56,7 +55,7 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
     super("create-group-page-component", loadConfig);
   }
 
-  getTemplate(): HTMLTemplateElement {
+  getTemplateStyle(): string {
     return template;
   }
 

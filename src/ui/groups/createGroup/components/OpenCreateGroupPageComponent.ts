@@ -2,8 +2,7 @@ import { BaseTemplateDynamicComponent } from "../../../../framework/components/B
 import type { OpenCreateGroupPageState } from "../data/types/OpenCreateGroupPageState.ts";
 import { OPEN_CREATE_GROUP_PAGE_CONFIG } from "../OpenCreateGroupPageHandler.ts";
 
-const template = document.createElement("template");
-template.innerHTML = `
+const template = `
   <style>
      button {
       background-color: var(--clr-lighter-blue); 
@@ -38,7 +37,7 @@ export class OpenCreateGroupPageComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("Open_Create_Group_Page_Component_Store", loadConfig);
   }
-  getTemplate(): HTMLTemplateElement {
+  getTemplateStyle(): string {
     return template;
   }
 

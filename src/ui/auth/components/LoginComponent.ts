@@ -27,8 +27,7 @@ import {
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import { getSharedButtonStyles } from "../../utils/SharedStyles.ts";
 
-const template = document.createElement("template");
-template.innerHTML = `
+const template = `
   <style>
     #login-component-container {
       padding-top: 0.25rem;
@@ -73,7 +72,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
     });
   }
 
-  override getTemplate(): HTMLTemplateElement {
+  override getTemplateStyle(): string {
     return template;
   }
 
