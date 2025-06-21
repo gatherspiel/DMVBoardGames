@@ -25,7 +25,7 @@ import {
   REGISTER_USER_THUNK,
 } from "../data/RegisterUserThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
-import { getSharedButtonStyles } from "../../utils/sharedStyles.ts";
+import { getSharedButtonStyles } from "../../utils/SharedStyles.ts";
 
 const template = document.createElement("template");
 template.innerHTML = `

@@ -7,7 +7,7 @@ import {
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
 } from "../../Constants.ts";
-import { getSharedButtonStyles } from "../../../utils/sharedStyles.ts";
+import { getSharedButtonStyles } from "../../../utils/SharedStyles.ts";
 
 const template = document.createElement("template");
 template.innerHTML = `

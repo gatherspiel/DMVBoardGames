@@ -1,4 +1,4 @@
-import { getUrlParameter } from "../../../../framework/utils/urlParmUtils.ts";
+import { getUrlParameter } from "../../../../framework/utils/UrlParamUtils.ts";
 import {
   GET_GROUP_REQUEST_STORE,
   GROUP_COMPONENT_STORE,
@@ -22,7 +22,7 @@ import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 import { stateFields } from "../../../utils/InitGlobalStateConfig.ts";
 
 import { getGlobalStateValue } from "../../../../framework/store/data/GlobalStore.ts";
-import { getSharedButtonStyles } from "../../../utils/sharedStyles.ts";
+import { getSharedButtonStyles } from "../../../utils/SharedStyles.ts";
 
 const SAVE_GROUP_SUCCESS_PROP = "saveGroupSuccess";
 

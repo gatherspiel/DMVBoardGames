@@ -1,4 +1,4 @@
-import { getLocalStorageDataIfPresent } from "../../framework/utils/localStorageUtils.ts";
+import { getLocalStorageDataIfPresent } from "../../framework/utils/LocalStorageUtils.ts";
 import { AUTH_TOKEN_KEY } from "../../utils/params.ts";
 
 export function getAccessTokenIfPresent() {

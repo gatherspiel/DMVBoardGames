@@ -58,28 +58,12 @@
   cursor: pointer;
   font-weight: 600;
   margin-right: 1.25rem;
-  padding: 0.5rem;
+  padding: 0.25rem;
 }
 
 select:focus,
 select:focus-visible {
   outline: 1px solid var(--clr-light-blue);
-}
-
-#search-form button {
-  background-color: var(--clr-lighter-blue);
-  color: white;
-  font-size: 1.25rem;
-  outline: 1px solid var(--clr-light-blue);
-  padding-block: 1rem;
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-#search-form button:hover,
-#search-form button:focus-visible {
-  background-color: white;
-  color: var(--clr-lighter-blue);
 }
 
 #jump-to {
@@ -96,12 +80,6 @@ select:focus-visible {
 
 #jump-to a {
   text-wrap: nowrap;
-}
-
-.event-group button {
-  color: var(--clr-dark-blue);
-  min-width: 113px;
-  outline: 1px solid var(--clr-lighter-blue);
 }
 
 .event-group h2,

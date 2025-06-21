@@ -3,8 +3,8 @@ import { GROUP_NAME_INPUT } from "../Constants.ts";
 import { DELETE_GROUP_EVENT_CONFIG } from "./DeleteGroupPageHandlers.ts";
 import { DELETE_GROUP_REQUEST_THUNK } from "./DeleteGroupRequestThunk.ts";
 import type { DeleteGroupData } from "./types/DeleteGroupData.ts";
-import { getUrlParameter } from "../../../framework/utils/urlParmUtils.ts";
-import { getSharedButtonStyles } from "../../utils/sharedStyles.ts";
+import { getUrlParameter } from "../../../framework/utils/UrlParamUtils.ts";
+import { getSharedButtonStyles } from "../../utils/SharedStyles.ts";
 
 const template = document.createElement("template");
 template.innerHTML = `
