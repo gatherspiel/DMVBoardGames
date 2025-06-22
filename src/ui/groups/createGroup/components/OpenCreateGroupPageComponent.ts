@@ -1,22 +1,10 @@
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import type { OpenCreateGroupPageState } from "../data/types/OpenCreateGroupPageState.ts";
 import { OPEN_CREATE_GROUP_PAGE_CONFIG } from "../OpenCreateGroupPageHandler.ts";
+import { getSharedButtonStyles } from "../../../utils/SharedStyles.ts";
 
 const template = `
   <style>
-     button {
-      background-color: var(--clr-lighter-blue); 
-      border-color: var(--clr-darker-blue);
-      border-radius: 5px;
-      border-width:1px;
-      color: white;
-      font-size: 1rem;
-      padding: 0.5rem;
-    }
-    
-    button:hover {
-      background-color: var(--clr-darker-blue);
-    }
   </style>
   <div></div>
 `;
@@ -37,13 +25,18 @@ export class OpenCreateGroupPageComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("Open_Create_Group_Page_Component_Store", loadConfig);
   }
+
   getTemplateStyle(): string {
     return template;
   }
 
+  override getSharedStyle(): string {
+    return getSharedButtonStyles();
+  }
+
   render(data: OpenCreateGroupPageState): string {
     return `
-      ${data.isVisible ? `<button id ="openGroupEditPageButton" ${this.createClickEvent(OPEN_CREATE_GROUP_PAGE_CONFIG)}>Create group </button>` : ""} 
+      ${data.isVisible ? `<button id ="openGroupEditPageButton" ${this.createClickEvent(OPEN_CREATE_GROUP_PAGE_CONFIG)}>Click here to create a group </button>` : ""} 
      
     `;
   }

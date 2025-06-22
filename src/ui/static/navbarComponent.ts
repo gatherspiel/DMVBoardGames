@@ -6,9 +6,8 @@ template.innerHTML = `
   
     #nav-container {
       background-color: darkblue;  
-      display: inline-block;
+      display: flex;
       margin-top: 5px;
-      padding-bottom: 5px;
     }
   
     nav a,
@@ -16,7 +15,10 @@ template.innerHTML = `
       background-color: var(--clr-lighter-blue);
       color: white;
       font-size: 1.25rem;
-      padding: 0.25rem 0.5rem 0.5rem;
+      padding-bottom: 0.25rem;
+      padding-top: 0.25rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
       text-decoration: none;
       transition: all 0.3s ease;
     }
@@ -42,7 +44,13 @@ template.innerHTML = `
     }
     
     nav a + a {
-      margin-left: 0.05rem;
+      margin-left: 1px;
+    }
+    
+    #nav-filler {
+      display: inline-block;
+      background-color: var(--clr-lighter-blue); 
+      flex-grow:1;
     }
   </style>
   <div>
@@ -68,6 +76,8 @@ export class NavbarComponent extends BaseTemplateComponent {
           </a><a href="print_and_play.html">Print and Play
           </a><a href="/plans.html">Future plans
           </a><a href="useful_links.html">Useful Links</a>       
+        <div id="nav-filler"></div>
+
         </div>
 
       </nav>

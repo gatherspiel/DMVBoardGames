@@ -9,7 +9,7 @@ export abstract class BaseTemplateDynamicComponent extends BaseDynamicComponent 
       let templateStyle = this.getTemplateStyle();
 
       templateStyle = templateStyle.split(`<style>`)[1].split(`</style`)[0];
-      templateStyle += this.getSharedStyle();
+      templateStyle = this.getSharedStyle() + templateStyle;
 
       const template = document.createElement("template");
       template.innerHTML = `<style> ${templateStyle} </style><div></div>`;
@@ -21,8 +21,15 @@ export abstract class BaseTemplateDynamicComponent extends BaseDynamicComponent 
     div.innerHTML = this.render(data);
   }
 
+  /*
+   - Returns CSS styles specific to the component. The string should be in the format <style> ${CSS styles} </style>
+   */
   abstract getTemplateStyle(): string;
 
+  /*
+  - This method is for returning any CSS styles that are shared between different components. If there is a conflict
+  between shared styling and component styling for an element, the component styling will be used. 
+   */
   getSharedStyle(): string {
     return "";
   }
