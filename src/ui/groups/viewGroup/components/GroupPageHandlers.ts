@@ -17,6 +17,15 @@ export const DELETE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
     );
   },
 };
+
+export const VIEW_EVENT_CONFIG: EventHandlerThunkConfig = {
+  eventHandler: function (params: EventHandlerData) {
+    console.log(params);
+    window.location.replace(
+      `${window.location.origin}/groups/event.html?&id=${1}`,
+    );
+  },
+};
 export const EDIT_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function () {
     return {

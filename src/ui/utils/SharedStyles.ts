@@ -25,9 +25,29 @@ export function getSharedUiSectionStyles(): string {
       color: var(--clr-dark-blue);
       font-size: 1.25rem;
       font-weight:600;
-      margin-top: 2rem;
+      margin-top: 0.5rem;
       padding-left:1.5rem;
       padding-top: 0.5rem;
+      padding-button: 0.5rem;
+    }
+    
+    a:hover,
+    a:focus-visible,
+    {
+      color: var(--clr-dark-blue);
+    }
+    
+    a:active {
+      color: white;
+    }
+    
+    a {
+      color:var(--clr-light-blue)
+    }
+    p {
+      color: var(--clr-dark-blue);
+      font-size: 1.25rem;
+      font-weight: 600;
     }
       
   `;

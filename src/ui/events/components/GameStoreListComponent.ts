@@ -1,6 +1,7 @@
 import type { GameStore } from "../data/types/GameStore.ts";
-import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
 import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
+import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { getSharedUiSectionStyles } from "../../utils/SharedStyles.ts";
 
 export const GAME_STORE_LIST_STORE = "gameStoreListStore";
 
@@ -15,9 +16,28 @@ const loadConfig = {
   ],
 };
 
-export class GameStoreListComponent extends BaseDynamicComponent {
+const template = `<style>
+
+  .game-store-list-item p {
+    display: inline;
+  }
+  
+    .game-store-list-item > * {
+    display: inline-block;
+  }
+</style>
+`;
+export class GameStoreListComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(GAME_STORE_LIST_STORE, loadConfig);
+  }
+
+  override getTemplateStyle(): string {
+    return template;
+  }
+
+  override getSharedStyle(): string {
+    return getSharedUiSectionStyles();
   }
 
   getItemHtml(gameStore: GameStore) {
@@ -32,12 +52,12 @@ export class GameStoreListComponent extends BaseDynamicComponent {
   }
 
   render(data: Record<any, GameStore>) {
-    let html = `<h1>Game Stores</h1>`;
+    let html = `<div class="ui-section"><h1>Game Stores</h1>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
     });
-    return html;
+    return html + "</div>";
   }
 }
 

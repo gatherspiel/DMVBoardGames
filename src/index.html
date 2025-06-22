@@ -36,7 +36,7 @@
     ></script>
     <script
       type="module"
-      src="framework/components/EventComponent.ts"
+      src="ui/events/components/EventComponent.ts"
       >
     </script>
     <script
@@ -101,13 +101,13 @@
       </div>
       <div id="root">
           <nav>
-            <div id="nav-container">
+            <div id="nav-container" class="ui-section">
 
             <div>Click for more info about</div>
-          <a href="#convention-list">Conventions</a>
-          <a href="#game-store">Game Stores</a>
-          <a href="#game-restaurant-list">Bars And Cafés</a>
-              <div id="nav-filler"></div>
+
+              <button onclick="document.location='#convention-list'">Conventions</button>
+              <button onclick="document.location='#game-store'">Game Stores</button>
+              <button onclick="document.location='#game-restaurant-list'">Bars And Cafés</button>
 
             </div>
 

@@ -121,7 +121,10 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     this.eventTagIdCount = 0;
 
     this.generateAndSaveHTML(data);
+    this.attachEventHandlersToDom();
+  }
 
+  attachEventHandlersToDom() {
     const eventHandlers = this.eventHandlers;
     const elementIdTag = this.getElementIdTag();
 
