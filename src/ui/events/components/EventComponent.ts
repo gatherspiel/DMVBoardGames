@@ -41,7 +41,6 @@ export class EventComponent extends BaseTemplateDynamicComponent {
   }
 
   render(): string {
-    console.log("Hi");
     this.id = this.getAttribute("key") ?? "";
     const eventData = retrieveJSONProp(this, "data");
     let eventDay = "";
