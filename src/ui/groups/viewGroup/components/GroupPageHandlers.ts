@@ -12,9 +12,14 @@ export const DELETE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params: EventHandlerData) {
     console.log(JSON.stringify(params));
 
-    window.location.replace(
-      `${window.location.origin}/groups/delete.html?name=${encodeURIComponent(params.componentStore.name)}&id=${params.componentStore.id}`,
-    );
+    window.location.href = `${window.location.origin}/groups/delete.html?name=${encodeURIComponent(params.componentStore.name)}&id=${params.componentStore.id}`;
+  },
+};
+
+export const VIEW_EVENT_CONFIG: EventHandlerThunkConfig = {
+  eventHandler: function (params: EventHandlerData) {
+    console.log(params);
+    window.location.href = `${window.location.origin}/groups/event.html?&id=${1}`;
   },
 };
 export const EDIT_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {

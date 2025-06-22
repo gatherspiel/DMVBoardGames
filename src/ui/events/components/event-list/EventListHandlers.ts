@@ -9,9 +9,7 @@ export const SHOW_INFO_CONFIG: EventHandlerThunkConfig = {
     const groupId = params.targetId;
     const groupName = store.groups[groupId][NAME];
 
-    window.location.replace(
-      `${window.location.origin}/groups.html?name=${encodeURIComponent(groupName)}`,
-    );
+    window.location.href = `${window.location.origin}/groups.html?name=${encodeURIComponent(groupName)}`;
   },
   requestStoreToUpdate: "",
 };

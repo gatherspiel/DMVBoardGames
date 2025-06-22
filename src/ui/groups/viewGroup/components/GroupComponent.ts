@@ -115,9 +115,9 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
     return `
 
      ${groupData.saveGroupSuccess ? `<h2>Group update sucessful</h2>` : ``}
-    ${
-      !groupData.isEditing
-        ? `<div class="group-title">
+     ${
+       !groupData.isEditing
+         ? `<div class="group-title">
         <h1>Group link: <a href=${groupData.url}>${groupData.name}</a></h1>
 
         ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(EDIT_GROUP_EVENT_CONFIG)}>Edit group</button>` : ``} 
@@ -128,7 +128,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
         <div class="group-summary">
         <p class="group-description">${groupData.summary}</p>
         </div>`
-        : `
+         : `
         <h1>Editing group information</h1>
         
         <form ${this.createSubmitEvent(SAVE_GROUP_CONFIG)}>
@@ -148,11 +148,10 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
           </textarea>
     
           <button type="submit" >Save updates</button>
-        </form>
-      
+        </form> 
       `
-    }
-          <h1>Upcoming events</h1>
+     }
+    <h1>Upcoming events</h1>
 
       ${
         groupData.eventData.length === 0
@@ -164,14 +163,14 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
                 key = ${groupData.id + "event-" + event.id}
                 data =${createJSONProp(event)}
               >
-    
+ 
               </event-component>
 
             `;
               })
               .join(" ")}
-              <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
-              `
+          <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
+          `
       }
       
     `;
