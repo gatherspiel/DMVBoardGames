@@ -74,12 +74,8 @@
       >
       </feature-flag-component>
 
-      <feature-flag-component
-        componentName="open-create-group-page-component"
-        featureFlagName="loginEnabled"
-      >
-      </feature-flag-component>
-      <div id="hero-sec">
+
+      <div id="welcome-sec">
 
         <div id="para-wrapper">
           <p>
@@ -95,19 +91,27 @@
               >here</a
             >
           </p>
+
+          <feature-flag-component
+            componentName="open-create-group-page-component"
+            featureFlagName="loginEnabled"
+          >
+          </feature-flag-component>
         </div>
-        <img
-          src="/assets/DMV_board_games_site_pic_600.png"
-          alt="DMV Board Games"
-        />
       </div>
       <div id="root">
-        <div id="jump-to">
-          <p>Click for more info about:</p>
+          <nav>
+            <div id="nav-container">
+
+            <div>Click for more info about</div>
           <a href="#convention-list">Conventions</a>
           <a href="#game-store">Game Stores</a>
           <a href="#game-restaurant-list">Bars And Cafés</a>
-        </div>
+              <div id="nav-filler"></div>
+
+            </div>
+
+          </nav>
         <div id="event-search" class="page-section"></div>
 
         <div data-container="root">

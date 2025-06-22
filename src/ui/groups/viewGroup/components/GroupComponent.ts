@@ -26,8 +26,7 @@ import { getSharedButtonStyles } from "../../../utils/SharedStyles.ts";
 
 const SAVE_GROUP_SUCCESS_PROP = "saveGroupSuccess";
 
-const template = document.createElement("template");
-template.innerHTML = `
+const template = `
   <style>
  
     .group-description {
@@ -100,7 +99,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
     super(GROUP_COMPONENT_STORE, loadConfig);
   }
 
-  getTemplate(): HTMLTemplateElement {
+  getTemplateStyle(): string {
     return template;
   }
 

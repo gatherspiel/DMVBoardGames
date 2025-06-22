@@ -1,28 +1,15 @@
 import { retrieveJSONProp } from "./utils/ComponentUtils.ts";
-import { BaseTemplateComponent } from "./BaseTemplateComponent.ts";
+import { getSharedUiSectionStyles } from "../../ui/utils/SharedStyles.ts";
+import { BaseTemplateDynamicComponent } from "./BaseTemplateDynamicComponent.ts";
 
-const template = document.createElement("template");
-template.innerHTML = `
-  <style>
+const template = `<style>
  
-   
-    .event-info {
-      background: hsl(from var(--clr-lighter-blue) h s l / 0.05);
-      border-radius: 10px;
-      color: var(--clr-dark-blue);
-      font-size: 1.25rem;
-      font-weight:600;
-      margin-top: 2rem;
-      padding-left:1.5rem;
-      padding-top: 0.5rem;
-    }
-     
     p {
       word-wrap: break-word;
       display: inline-block;
       white-space: normal;
     
-        
+       
       font-size: 1rem;
       font-weight:600;
         
@@ -38,12 +25,16 @@ template.innerHTML = `
     }
     
   </style>
-  <div></div>
 `;
-export class EventComponent extends BaseTemplateComponent {
+
+export class EventComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super();
+    super("event-component");
     this.id = "";
+  }
+
+  connectedCallback() {
+    this.generateAndSaveHTML({});
   }
 
   render(): string {
@@ -59,7 +50,7 @@ export class EventComponent extends BaseTemplateComponent {
     return `
       <div id=${this.id} class="event">
       
-        <div class="event-info">
+        <div class="ui-section">
           <h3>${eventData.name}</h3>
           <p class = "event-title">${eventDay}</p>
           <p class = "event-location">Location: ${eventData.location}</p>
@@ -72,7 +63,11 @@ export class EventComponent extends BaseTemplateComponent {
     `;
   }
 
-  getTemplate(): HTMLTemplateElement {
+  override getSharedStyle() {
+    return getSharedUiSectionStyles();
+  }
+
+  getTemplateStyle(): string {
     return template;
   }
 }

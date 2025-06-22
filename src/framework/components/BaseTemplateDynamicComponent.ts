@@ -6,23 +6,30 @@ export abstract class BaseTemplateDynamicComponent extends BaseDynamicComponent 
     if (this.shadowRoot === null) {
       this.attachShadow({ mode: "open" });
 
-      const template = this.getTemplate();
+      let templateStyle = this.getTemplateStyle();
 
-      let templateStyle = template.innerHTML
-        .split(`<style>`)[1]
-        .split(`</style`)[0];
-      templateStyle += this.getSharedStyle();
+      templateStyle = templateStyle.split(`<style>`)[1].split(`</style`)[0];
+      templateStyle = this.getSharedStyle() + templateStyle;
 
+      const template = document.createElement("template");
       template.innerHTML = `<style> ${templateStyle} </style><div></div>`;
-      this.shadowRoot!.appendChild(this.getTemplate().content.cloneNode(true));
+
+      this.shadowRoot!.appendChild(template.content.cloneNode(true));
     }
 
     const div = getElementWithSelector("div", this.shadowRoot!);
     div.innerHTML = this.render(data);
   }
 
-  abstract getTemplate(): HTMLTemplateElement;
+  /*
+   - Returns CSS styles specific to the component. The string should be in the format <style> ${CSS styles} </style>
+   */
+  abstract getTemplateStyle(): string;
 
+  /*
+  - This method is for returning any CSS styles that are shared between different components. If there is a conflict
+  between shared styling and component styling for an element, the component styling will be used. 
+   */
   getSharedStyle(): string {
     return "";
   }

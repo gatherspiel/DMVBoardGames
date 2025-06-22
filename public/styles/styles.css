@@ -49,21 +49,6 @@ a {
   color: var(--clr-light-blue);
 }
 
-nav {
-  margin-block: 1rem;
-}
-
-nav a,
-#jump-to a {
-  border-radius: 5px;
-  color: var(--clr-dark-blue);
-  font-size: 1.25rem;
-  padding: 0.25rem 0.5rem 0.5rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-
 #page-info {
   padding-top: 8px;
 }
@@ -77,3 +62,6 @@ nav a,
     color: #747bff;
   }
 }
+
+
+
