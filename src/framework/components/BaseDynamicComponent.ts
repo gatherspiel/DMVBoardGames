@@ -4,9 +4,12 @@ import {
   createComponentStore,
   getComponentStore,
   hasComponentStoreSubscribers,
+  updateComponentStore,
 } from "../store/data/ComponentStore.ts";
 import {
+  hasRequestStore,
   hasRequestStoreSubscribers,
+  initRequestStore,
   initRequestStoresOnLoad,
   updateRequestStoreAndClearCache,
 } from "../store/data/RequestStore.ts";
@@ -16,11 +19,15 @@ import { EventThunk } from "../store/update/event/EventThunk.ts";
 import type { EventHandlerThunkConfig } from "../store/update/event/types/EventHandlerThunkConfig.ts";
 import {
   type ComponentLoadConfig,
-  type ThunkReducerConfig,
+  type ThunkDispatcherConfig,
   validComponentLoadConfigFields,
 } from "./types/ComponentLoadConfig.ts";
-import { subscribeComponentToGlobalField } from "../store/data/StoreUtils.ts";
 import type { BaseThunk } from "../store/update/BaseThunk.ts";
+import {
+  getGlobalStateValue,
+  subscribeComponentToGlobalField,
+} from "../store/data/GlobalStore.ts";
+import type { EventValidationResult } from "../store/update/event/types/EventValidationResult.ts";
 
 type EventConfig = {
   eventType: string;
@@ -36,6 +43,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   requestStoreReducer?: BaseThunk;
 
   instanceId: number;
+
+  dependenciesLoaded: boolean = true;
+  componentLoadConfig: ComponentLoadConfig | undefined = undefined; //Used if global state is needed before loading the component
 
   static instanceCount = 1;
 
@@ -65,10 +75,19 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         }
       });
 
-      initRequestStoresOnLoad(loadConfig);
+      const globalStateLoadConfig = loadConfig.globalStateLoadConfig;
+      if (globalStateLoadConfig?.waitForGlobalState) {
+        subscribeComponentToGlobalField(
+          self,
+          globalStateLoadConfig.waitForGlobalState,
+        );
+        self.componentLoadConfig = loadConfig;
+      } else {
+        initRequestStoresOnLoad(loadConfig);
+      }
 
-      if (loadConfig.globalFieldSubscriptions) {
-        loadConfig.globalFieldSubscriptions.forEach(function (
+      if (globalStateLoadConfig?.globalFieldSubscriptions) {
+        globalStateLoadConfig.globalFieldSubscriptions.forEach(function (
           fieldName: string,
         ) {
           subscribeComponentToGlobalField(self, fieldName);
@@ -79,7 +98,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       if (loadConfig.thunkReducers) {
         const component = this;
 
-        loadConfig.thunkReducers.forEach(function (config: ThunkReducerConfig) {
+        loadConfig.thunkReducers.forEach(function (
+          config: ThunkDispatcherConfig,
+        ) {
           if (!config.thunk) {
             throw new Error(
               `Missing thunk field in ${self.componentStoreName} reducer configuration`,
@@ -87,7 +108,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
           }
           config.thunk.subscribeComponent(
             component.componentStoreName,
-            config.componentReducerFunction,
+            config.componentStoreReducer,
             config.reducerField,
           );
         });
@@ -107,7 +128,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     const addEventHandler = function (item: Element) {
       const id = item.getAttribute(elementIdTag) ?? "";
       const eventConfig = eventHandlers[id];
-
       item.addEventListener(eventConfig.eventType, eventConfig.eventFunction);
     };
 
@@ -127,6 +147,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   generateAndSaveHTML(data: any) {
+    if (!this.dependenciesLoaded) {
+      return;
+    }
     this.innerHTML = this.render(data);
   }
 
@@ -201,8 +224,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     shadowRoot?: ShadowRoot,
   ) {
     const storeToUpdate =
-      eventConfig?.storeToUpdate && eventConfig.storeToUpdate.length > 0
-        ? eventConfig.storeToUpdate
+      eventConfig?.requestStoreToUpdate &&
+      eventConfig.requestStoreToUpdate.length > 0
+        ? eventConfig.requestStoreToUpdate
         : storeName;
 
     if (!storeToUpdate) {
@@ -210,8 +234,10 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     }
 
     const dispatchers: BaseDispatcher[] = [];
+
+    let componentStoreUpdate: any;
     if (eventConfig.componentReducer && storeName) {
-      const componentStoreUpdate = new BaseDispatcher(
+      componentStoreUpdate = new BaseDispatcher(
         storeName,
         eventConfig.componentReducer,
       );
@@ -223,7 +249,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         !hasRequestStoreSubscribers(storeToUpdate) &&
         !hasComponentStoreSubscribers(storeToUpdate)
       ) {
-        throw new Error(`No subscribers for store ${storeToUpdate}`);
+        // throw new Error(`No subscribers for store ${storeToUpdate}`);
       }
 
       e.preventDefault();
@@ -239,19 +265,78 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       });
       dispatchers.push(storeUpdate);
       const eventUpdater: EventThunk = new EventThunk(request, dispatchers);
-      eventUpdater.processEvent(e);
-    };
 
+      if (eventConfig.validator) {
+        const eventConfigValidator = eventConfig.validator;
+        const validator = function (
+          eventHandlerResult: any,
+        ): EventValidationResult {
+          const componentData = getComponentStore(storeName ?? "");
+          return eventConfigValidator(eventHandlerResult, componentData);
+        };
+
+        eventUpdater.processEvent(e, validator).then((result: any) => {
+          if (result?.error) {
+            componentStoreUpdate.updateStore(result);
+          }
+        });
+      } else {
+        eventUpdater.processEvent(e);
+      }
+    };
     return handler;
   }
 
-  updateFromGlobalState(data: any) {
-    console.log("Updated state:" + JSON.stringify(data));
+  updateFromGlobalState() {
     const componentData = getComponentStore(this.componentStoreName);
+
+    const globalStateLoadConfig =
+      this.componentLoadConfig?.globalStateLoadConfig;
+    if (!globalStateLoadConfig) {
+      throw new Error("Component global state config is not defined");
+    }
+
+    //Component is still waiting for state
+    if (
+      globalStateLoadConfig.waitForGlobalState &&
+      getGlobalStateValue(globalStateLoadConfig.waitForGlobalState) ===
+        undefined
+    ) {
+      return;
+    }
+
+    //The component should make an API request based on the data received before rerendering
     if (this.requestStoreName) {
-      updateRequestStoreAndClearCache(this.requestStoreName, {
-        name: componentData.name,
-      });
+      if (this.componentLoadConfig && !hasRequestStore(this.requestStoreName)) {
+        initRequestStore(this.componentLoadConfig);
+      } else {
+        updateRequestStoreAndClearCache(this.requestStoreName, {
+          name: componentData.name,
+        });
+      }
+      this.dependenciesLoaded = true;
+    } else if (globalStateLoadConfig?.defaultGlobalStateReducer) {
+      this.dependenciesLoaded = true;
+      /*TODO: Handle case where the component is subscribed to global state created by multiple components to prevent
+      extra rerenders.
+       */
+      let dataToUpdate: Record<string, string> = {};
+
+      globalStateLoadConfig?.globalFieldSubscriptions?.forEach(
+        function (fieldName) {
+          const fieldValue = getGlobalStateValue(fieldName);
+          dataToUpdate[fieldName] = fieldValue;
+        },
+      );
+      updateComponentStore(
+        this.componentStoreName,
+        globalStateLoadConfig.defaultGlobalStateReducer,
+        dataToUpdate,
+      );
+    } else {
+      console.error(
+        "A default global state reducer or API request store should be defined to subscribe to global state",
+      );
     }
   }
 

@@ -1,12 +1,22 @@
-import type { EventHandlerThunkConfig } from "../../../framework/store/update/event/types/EventHandlerThunkConfig.ts";
+import type { EventHandlerThunkConfig } from "../../../../framework/store/update/event/types/EventHandlerThunkConfig.ts";
 import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
   SAVE_GROUP_REQUEST_STORE,
-} from "../Constants.ts";
-import type { UpdateGroupRequest } from "../../events/data/types/group/UpdateGroupRequest.ts";
+} from "../../Constants.ts";
+import type { UpdateGroupRequest } from "../data/types/UpdateGroupRequest.ts";
+import type { EventHandlerData } from "../../../../framework/store/update/event/types/EventHandlerData.ts";
 
+export const DELETE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
+  eventHandler: function (params: EventHandlerData) {
+    console.log(JSON.stringify(params));
+
+    window.location.replace(
+      `${window.location.origin}/groups/delete.html?name=${encodeURIComponent(params.componentStore.name)}&id=${params.componentStore.id}`,
+    );
+  },
+};
 export const EDIT_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function () {
     return {
@@ -41,7 +51,7 @@ export const SAVE_GROUP_CONFIG: EventHandlerThunkConfig = {
         )?.value ?? "",
     };
   },
-  storeToUpdate: SAVE_GROUP_REQUEST_STORE,
+  requestStoreToUpdate: SAVE_GROUP_REQUEST_STORE,
   componentReducer: function (a: any) {
     return {
       name: a.name,

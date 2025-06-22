@@ -6,22 +6,27 @@ export type RequestStoreItem = {
   disableCache?: boolean;
 };
 
-export type ThunkReducerConfig = {
+export type ThunkDispatcherConfig = {
   thunk: BaseThunk;
-  componentReducerFunction: (a: any) => any;
+  componentStoreReducer: (a: any) => any;
   globalStoreReducer?: (a: any) => any;
   reducerField?: string;
 };
 
+export type GlobalStateLoadConfig = {
+  globalFieldSubscriptions: string[];
+  waitForGlobalState?: string; //Wait for this global state to be ready before loading.
+  defaultGlobalStateReducer?: (updates: Record<string, string>) => any; //Default reducer from global state if there is no dependent API request.
+};
+
 export type ComponentLoadConfig = {
-  featureFlagEnabled?: () => boolean;
   onLoadStoreConfig?: RequestStoreItem;
   onLoadRequestData?: any;
   onLoadInitStore?: () => any;
   onLoadRequestConfig?: RequestStoreItem[];
   requestStoresToCreate?: RequestStoreItem[];
-  thunkReducers?: ThunkReducerConfig[];
-  globalFieldSubscriptions?: string[];
+  thunkReducers?: ThunkDispatcherConfig[];
+  globalStateLoadConfig?: GlobalStateLoadConfig;
 };
 
 export const validComponentLoadConfigFields = [
@@ -31,5 +36,5 @@ export const validComponentLoadConfigFields = [
   "onLoadRequestConfig",
   "requestStoresToCreate",
   "thunkReducers",
-  "globalFieldSubscriptions",
+  "globalStateLoadConfig",
 ];

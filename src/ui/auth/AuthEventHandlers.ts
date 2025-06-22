@@ -22,14 +22,12 @@ export const LOGIN_EVENT_CONFIG: EventHandlerThunkConfig = {
           ?.value ?? "",
     };
   },
-  storeToUpdate: AUTH_REQUEST_STORE,
+  requestStoreToUpdate: AUTH_REQUEST_STORE,
 };
 
 export const LOGOUT_EVENT_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function () {
-    console.log("Logging out");
-  },
-  storeToUpdate: LOGOUT_REQUEST_STORE,
+  eventHandler: function () {},
+  requestStoreToUpdate: LOGOUT_REQUEST_STORE,
 };
 
 export const REGISTER_EVENT_CONFIG: EventHandlerThunkConfig = {
@@ -46,5 +44,5 @@ export const REGISTER_EVENT_CONFIG: EventHandlerThunkConfig = {
           ?.value ?? "",
     };
   },
-  storeToUpdate: REGISTER_REQUEST_STORE,
+  requestStoreToUpdate: REGISTER_REQUEST_STORE,
 };

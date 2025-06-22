@@ -1,4 +1,4 @@
-import { getParameter } from "../../../framework/utils/urlParmUtils.ts";
+import { getUrlParameter } from "../../../../framework/utils/UrlParamUtils.ts";
 import {
   GET_GROUP_REQUEST_STORE,
   GROUP_COMPONENT_STORE,
@@ -6,41 +6,38 @@ import {
   GROUP_NAME_INPUT,
   GROUP_NAME_PARAM,
   GROUP_URL_INPUT,
-} from "../Constants.js";
+} from "../../Constants.js";
 import { GROUP_REQUEST_THUNK } from "../data/GroupRequestThunk.ts";
 
-import { createJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
-import type { GroupPageData } from "../../events/data/types/group/GroupPageData.ts";
-import type { Event } from "../../events/data/types/Event.ts";
-import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { createJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
+import type { GroupPageData } from "../data/types/GroupPageData.ts";
+import type { Event } from "../../../events/data/types/Event.ts";
+import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
+  DELETE_GROUP_EVENT_CONFIG,
   EDIT_GROUP_EVENT_CONFIG,
   SAVE_GROUP_CONFIG,
 } from "./GroupPageHandlers.ts";
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
-import { stateFields } from "../../utils/initGlobalStateConfig.ts";
-import { getGlobalStateValue } from "../../../framework/store/data/StoreUtils.ts";
+import { stateFields } from "../../../utils/InitGlobalStateConfig.ts";
+
+import { getGlobalStateValue } from "../../../../framework/store/data/GlobalStore.ts";
+import { getSharedButtonStyles } from "../../../utils/SharedStyles.ts";
 
 const SAVE_GROUP_SUCCESS_PROP = "saveGroupSuccess";
 
-const template = document.createElement("template");
-template.innerHTML = `
+const template = `
   <style>
-    .group-summary {
-      margin-left: 2rem;
-    }
+ 
     .group-description {
       background: hsl(from var(--clr-lighter-blue) h s l / 0.1);
       border-radius: 10px;
       color: var(--clr-dark-blue);
       font-size: 1.25rem;
       font-weight:600;
-      margin-left: 1rem;
-      padding: 2rem
+      padding: 2rem;
     }
-    .group-title {
-       margin-left: 2rem;
-    }
+   
     .group-data-input {
       height:24px;
       font-size:24px;
@@ -55,11 +52,9 @@ template.innerHTML = `
       height: 500px;
       width: 800px;
     }
-    
+        
   </style>
-  
   <div></div>
-
 `;
 
 const loadConfig = {
@@ -68,12 +63,12 @@ const loadConfig = {
     dataSource: GROUP_REQUEST_THUNK,
   },
   onLoadRequestData: {
-    name: getParameter(GROUP_NAME_PARAM),
+    name: getUrlParameter(GROUP_NAME_PARAM),
   },
   thunkReducers: [
     {
       thunk: GROUP_REQUEST_THUNK,
-      componentReducerFunction: function (data: any) {
+      componentStoreReducer: function (data: any) {
         const isLoggedIn = getGlobalStateValue(stateFields.LOGGED_IN);
 
         if (!isLoggedIn) {
@@ -85,7 +80,7 @@ const loadConfig = {
     },
     {
       thunk: UPDATE_GROUP_REQUEST_THUNK,
-      componentReducerFunction: function () {
+      componentStoreReducer: function () {
         return {
           isEditing: false,
           SAVE_GROUP_SUCCESS_PROP: true,
@@ -93,7 +88,10 @@ const loadConfig = {
       },
     },
   ],
-  globalFieldSubscriptions: ["isLoggedIn"],
+  globalStateLoadConfig: {
+    globalFieldSubscriptions: ["isLoggedIn"],
+    waitForGlobalState: "isLoggedIn",
+  },
 };
 
 export class GroupComponent extends BaseTemplateDynamicComponent {
@@ -101,13 +99,17 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
     super(GROUP_COMPONENT_STORE, loadConfig);
   }
 
-  getTemplate(): HTMLTemplateElement {
+  getTemplateStyle(): string {
     return template;
+  }
+
+  override getSharedStyle(): string {
+    return getSharedButtonStyles();
   }
 
   render(groupData: GroupPageData): string {
     if (!groupData.permissions) {
-      return `<h1>Failed to load group ${getParameter(GROUP_NAME_PARAM)}</h1>`;
+      return `<h1>Failed to load group ${getUrlParameter(GROUP_NAME_PARAM)}</h1>`;
     }
 
     return `
@@ -118,7 +120,9 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
         ? `<div class="group-title">
         <h1>Group link: <a href=${groupData.url}>${groupData.name}</a></h1>
 
-        ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(EDIT_GROUP_EVENT_CONFIG)}>Edit group</button>` : ``}
+        ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(EDIT_GROUP_EVENT_CONFIG)}>Edit group</button>` : ``} 
+        ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(DELETE_GROUP_EVENT_CONFIG)}>Delete group</button>` : ``}
+
         </div>
     
         <div class="group-summary">
@@ -143,11 +147,12 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
           <textarea class="group-data-input" id = "group-description-input" type="text" id=${GROUP_DESCRIPTION_INPUT} name=${GROUP_DESCRIPTION_INPUT}> ${groupData.summary}
           </textarea>
     
-          <button type="submit">Save updates</button>
+          <button type="submit" >Save updates</button>
         </form>
       
       `
     }
+          <h1>Upcoming events</h1>
 
       ${
         groupData.eventData.length === 0

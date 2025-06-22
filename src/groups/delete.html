@@ -10,32 +10,32 @@
 
   <script
     type="module"
-    src="/src/framework/components/EventComponent.ts"
-  > </script>
+    src="./../ui/utils/InitGlobalStateConfig.ts"
+  ></script>
+
   <script
     type="module"
-    src="/src/ui/utils/components/FeatureFlagComponent.ts"
+    src="./../ui/utils/components/FeatureFlagComponent.ts"
   ></script>
+
   <script
     type="module"
-    src="/src/ui/groups/components/GroupComponent.ts"
+    src="./../ui/groups/deleteGroup/DeleteGroupPageComponent.ts"
   ></script>
-  <script
-    type="module"
-    src="/src/ui/static/navbarComponent.ts"
-  ></script>
+
+  <title>Delete group?</title>
 </head>
 <body>
-  <navbar-component>
 
-  </navbar-component>
+<h2>Are you sure you want to delete this group?</h2>
+
   <feature-flag-component
     componentName="login-component"
     featureFlagName="loginEnabled"
   >
   </feature-flag-component>
-  <group-component>
-  </group-component>
+  <delete-group-page-component>
 
+  </delete-group-page-component>
 </body>
 </html>

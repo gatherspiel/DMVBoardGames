@@ -8,7 +8,7 @@ const loadConfig = {
   thunkReducers: [
     {
       thunk: LOCATIONS_THUNK,
-      componentReducerFunction: (data: any) => {
+      componentStoreReducer: (data: any) => {
         return data.gameRestaurants;
       },
     },

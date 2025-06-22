@@ -4,8 +4,6 @@ import { API_ROOT } from "../../../utils/params.ts";
 import type { ApiRequestConfig } from "../../../framework/store/update/api/types/ApiRequestConfig.ts";
 
 function registerUserConfig(params: any): ApiRequestConfig {
-  console.log("New user");
-  console.log(JSON.stringify(params));
   const requestBody = {
     email: params.username,
     password: params.password,
@@ -18,7 +16,6 @@ function registerUserConfig(params: any): ApiRequestConfig {
 }
 
 export function getLoginComponentStoreFromRegisterResponse(response: any) {
-  console.log(response);
   return {
     errorMessage: response.errorMessage,
     successMessage: response.errorMessage ? "" : "Successfully registered user",
@@ -37,8 +34,7 @@ const userRegisterErrorConfig = {
 export const REGISTER_USER_THUNK: BaseThunk = generateApiThunk({
   queryConfig: registerUserConfig,
   defaultFunctionConfig: userRegisterErrorConfig,
-}).addGlobalStateReducer((loginState: any) => {
-  console.log(loginState);
+}).addGlobalStateReducer(() => {
   return {
     isLoggedIn: "false",
   };

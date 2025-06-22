@@ -18,11 +18,12 @@ import {
   UPDATE_CITY_CONFIG,
   UPDATE_DAY_CONFIG,
 } from "./EventSearchHandlers.ts";
-import { BaseDynamicComponent } from "../../../../framework/components/BaseDynamicComponent.ts";
+import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {
+  getSharedButtonStyles,
+  getSharedUiSectionStyles,
+} from "../../../utils/SharedStyles.ts";
 
-/**
- * TODO: Move reducer configurations to load config and make subscribeToReducer a private method.
- */
 const loadConfig = {
   onLoadStoreConfig: {
     storeName: SEARCH_REQUEST_STORE,
@@ -45,50 +46,100 @@ const loadConfig = {
   thunkReducers: [
     {
       thunk: CITY_LIST_THUNK,
-      componentReducerFunction: updateCities,
+      componentStoreReducer: updateCities,
     },
   ],
 };
 
-export class EventSearchComponent extends BaseDynamicComponent {
+const template = `<style>
+  #event-search {
+    padding-block: 1.5rem;
+  }
+  
+  #search-form {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4rem;
+    justify-content: left;
+  }
+  
+  #search-input-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  #search-form label {
+    margin-right: 0.5rem;
+  }
+  
+  #search-form select {
+    border-color: var(--clr-light-blue);
+    border-radius: 5px;
+    color: var(--clr-light-blue);
+    cursor: pointer;
+    margin-right: 1.25rem;
+    padding: 0.25rem;
+  }
+  
+  @media screen and (width < 32em) {
+    #search-form {
+      gap: 2rem;
+    }
+  }
+</style>
+
+`;
+export class EventSearchComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("event-search-component-store", loadConfig);
   }
 
+  override getTemplateStyle(): string {
+    return template;
+  }
+
+  override getSharedStyle(): string {
+    return getSharedButtonStyles() + getSharedUiSectionStyles();
+  }
+
   render(eventSearchStore: any) {
     return `
-      <form id=${SEARCH_FORM_ID} ${this.createSubmitEvent(SEARCH_EVENT_HANDLER_CONFIG)}>
 
-        <div id='search-input-wrapper'>
-          <div>
-            ${this.getCityHtml(eventSearchStore)}
+      <div class="ui-section">
+        <form id=${SEARCH_FORM_ID} ${this.createSubmitEvent(SEARCH_EVENT_HANDLER_CONFIG)}>
+          <div id='search-input-wrapper'>
+            <div>
+              ${this.getCityHtml(eventSearchStore)}
+            </div>
+            <div>
+              <label htmlFor="days">Select event day:</label>
+              <select
+                name="days"
+                id="search-days"
+                value=${eventSearchStore.day}
+                ${this.createOnChangeEvent(UPDATE_DAY_CONFIG)}
+              >
+                ${DAYS_IN_WEEK.map(
+                  (day, index) =>
+                    `<option key=${index} value=${day} ${day === eventSearchStore.day ? "selected" : ""}>
+                      ${day === DEFAULT_SEARCH_PARAMETER ? "Any day" : day}
+                     </option>`,
+                )}
+              </select>
+            </div>
+  
           </div>
-          <div>
-            <label htmlFor="days">Select day:</label>
-            <select
-              name="days"
-              id="search-days"
-              value=${eventSearchStore.day}
-              ${this.createOnChangeEvent(UPDATE_DAY_CONFIG)}
-            >
-              ${DAYS_IN_WEEK.map(
-                (day, index) =>
-                  `<option key=${index} value=${day} ${day === eventSearchStore.day ? "selected" : ""}>
-                    ${day === DEFAULT_SEARCH_PARAMETER ? "Any day" : day}
-                   </option>`,
-              )}
-            </select>
-          </div>
-
-        </div>
-        <button type="submit" >SEARCH EVENTS</button>
-      </form>
+          <button type="submit" >Search Groups</button>
+        </form>
+      </div>
   `;
   }
 
   getCityHtml(eventSearchStore: any) {
     return ` 
-    <label>Select city: </label>
+    <label>Select event city: </label>
     <select
       id=${SEARCH_CITY_ID}
       name="cities"
