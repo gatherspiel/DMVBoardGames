@@ -9,6 +9,7 @@ template.innerHTML = `
       display: flex;
       flex-wrap: wrap;
       margin-top: 5px;
+      padding-left: 0.5rem;
     }
   
     nav a,
@@ -69,11 +70,13 @@ export class NavbarComponent extends BaseTemplateComponent {
     return template;
   }
 
+
+
   override render() {
     // Closing tags on separate lines are to prevent extra spaces between links
     return `
       <nav>
-        <div id="nav-container">
+        <div class="ui-section" id="nav-container">
           <a href="index.html">Home
           </a><a class="mid-element" href="designers.html">Local designers
           </a><a href="print_and_play.html">Print and Play

@@ -20,7 +20,7 @@ import {
 } from "./EventSearchHandlers.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
-  getSharedButtonStyles,
+  getSharedButtonAndLinkStyles,
   getSharedUiSectionStyles,
 } from "../../../utils/SharedStyles.ts";
 
@@ -103,7 +103,7 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
   }
 
   override getSharedStyle(): string {
-    return getSharedButtonStyles() + getSharedUiSectionStyles();
+    return getSharedButtonAndLinkStyles() + getSharedUiSectionStyles();
   }
 
   render(eventSearchStore: any) {

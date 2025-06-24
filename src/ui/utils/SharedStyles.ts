@@ -1,18 +1,28 @@
-export function getSharedButtonStyles(): string {
+export function getSharedButtonAndLinkStyles(): string {
   return `
-    button {
+    a,button {
       background-color: var(--clr-lighter-blue); 
       border-color: var(--clr-darker-blue);
       border-radius: 5px;
       border-width:1px;
       color: white;
       font-size: 1rem;
+      font-weight: 400;
       margin-top: 0.5rem;
       padding: 0.5rem;
     }
     
     button:hover {
       background-color: var(--clr-darker-blue);
+    }
+    
+    a:hover {
+          background-color: var(--clr-darker-blue);
+      }
+      
+    a {
+      border: 1px solid var(--clr-darker-blue);
+      text-decoration:none
     }
   `;
 }
@@ -23,9 +33,9 @@ export function getSharedUiSectionStyles(): string {
       color: var(--clr-dark-blue);
       font-size: 1.25rem;
       font-weight:600;
-      padding-left:1.5rem;
+      padding-left:1rem;
       padding-top: 0.5rem;
-      padding-button: 0.5rem;
+      padding-bottom: 0.5rem;
     }
     
     label {
@@ -33,19 +43,6 @@ export function getSharedUiSectionStyles(): string {
       font-weight:600;
     }
     
-    a:hover,
-    a:focus-visible,
-    {
-      color: var(--clr-dark-blue);
-    }
-    
-    a:active {
-      color: white;
-    }
-    
-    a {
-      color:var(--clr-light-blue)
-    }
     p {
       color: var(--clr-dark-blue);
       font-size: 1.25rem;
@@ -58,3 +55,4 @@ export function getSharedUiSectionStyles(): string {
       
   `;
 }
+

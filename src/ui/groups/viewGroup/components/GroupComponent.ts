@@ -14,7 +14,6 @@ import type { GroupPageData } from "../data/types/GroupPageData.ts";
 import type { Event } from "../../../events/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
-  DELETE_GROUP_EVENT_CONFIG,
   EDIT_GROUP_EVENT_CONFIG,
   SAVE_GROUP_CONFIG,
 } from "./GroupPageHandlers.ts";
@@ -22,7 +21,7 @@ import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 import { stateFields } from "../../../utils/InitGlobalStateConfig.ts";
 
 import { getGlobalStateValue } from "../../../../framework/store/data/GlobalStore.ts";
-import { getSharedButtonStyles } from "../../../utils/SharedStyles.ts";
+import {getSharedButtonAndLinkStyles, getSharedUiSectionStyles} from "../../../utils/SharedStyles.ts";
 
 const SAVE_GROUP_SUCCESS_PROP = "saveGroupSuccess";
 
@@ -104,7 +103,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
   }
 
   override getSharedStyle(): string {
-    return getSharedButtonStyles();
+    return getSharedButtonAndLinkStyles() + getSharedUiSectionStyles();
   }
 
   render(groupData: GroupPageData): string {
@@ -114,14 +113,15 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
 
     return `
 
+     <div class="ui-section">
      ${groupData.saveGroupSuccess ? `<h2>Group update sucessful</h2>` : ``}
      ${
        !groupData.isEditing
          ? `<div class="group-title">
-        <h1>Group link: <a href=${groupData.url}>${groupData.name}</a></h1>
+        <h1>${groupData.name} <a href=${groupData.url}>Group webpage</a></h1>
 
         ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(EDIT_GROUP_EVENT_CONFIG)}>Edit group</button>` : ``} 
-        ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(DELETE_GROUP_EVENT_CONFIG)}>Delete group</button>` : ``}
+        ${groupData.permissions.userCanEdit ? `<a href="groups/delete.html" class="group-edit-button">Delete group</a>` : ``}
 
         </div>
     
@@ -172,7 +172,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
           <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
           `
       }
-      
+      </div>
     `;
   }
 }

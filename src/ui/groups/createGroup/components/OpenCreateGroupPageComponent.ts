@@ -1,13 +1,16 @@
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import type { OpenCreateGroupPageState } from "../data/types/OpenCreateGroupPageState.ts";
-import { OPEN_CREATE_GROUP_PAGE_CONFIG } from "../OpenCreateGroupPageHandler.ts";
-import { getSharedButtonStyles } from "../../../utils/SharedStyles.ts";
+import {getSharedButtonAndLinkStyles} from "../../../utils/SharedStyles.ts";
 
 const template = `
   <style>
  
     button {
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    #open-create-group-page-button-container {
+      padding-bottom: 1rem;
     }
   </style>
   <div></div>
@@ -35,12 +38,15 @@ export class OpenCreateGroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   override getSharedStyle(): string {
-    return getSharedButtonStyles();
+    return getSharedButtonAndLinkStyles();
   }
 
   render(data: OpenCreateGroupPageState): string {
     return `
-      ${data.isVisible ? `<button id ="openGroupEditPageButton" ${this.createClickEvent(OPEN_CREATE_GROUP_PAGE_CONFIG)}>Click here to create a group </button>` : ""} 
+       <div id="open-create-group-page-button-container">
+             ${data.isVisible ? `<a href="groups/create.html">Click to create group</a>` : ""} 
+
+       </div>
      
     `;
   }

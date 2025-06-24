@@ -1,10 +1,9 @@
 import type { GroupSearchResult } from "../../data/types/group/GroupSearchResult.ts";
-import { SHOW_INFO_CONFIG } from "./EventListHandlers.ts";
 import { EVENT_LIST_THUNK } from "../../data/search/EventListThunk.ts";
 import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
-  getSharedButtonStyles,
+  getSharedButtonAndLinkStyles,
   getSharedUiSectionStyles,
 } from "../../../utils/SharedStyles.ts";
 
@@ -36,13 +35,13 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
     let groupHtml = "";
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
-        <button class='show-hide-button' ${this.createClickEvent(SHOW_INFO_CONFIG, groupId)}>
-          ${"Show info"}
-        </button>
+      
+        <a href="groups.html?name=${encodeURIComponent(group.title)}">Show info</a>
         <h3>
-          <a href=${group.url}>${group.title}</a>
+          <a href=${group.url}> Group webpage</a>
         </h3>  
-          <p>${group.locations?.join(", ") ?? ""}</p>              
+        <p>${group.title}</p>
+        <p>${group.locations?.join(", ") ?? ""}</p>              
       </div> 
     `;
     return groupHtml;
@@ -53,7 +52,7 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
   }
 
   override getSharedStyle(): string {
-    return getSharedButtonStyles() + getSharedUiSectionStyles();
+    return getSharedButtonAndLinkStyles() + getSharedUiSectionStyles();
   }
 
   render(data: any): string {

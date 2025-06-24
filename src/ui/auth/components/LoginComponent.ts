@@ -26,7 +26,7 @@ import {
 } from "../data/RegisterUserThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
-  getSharedButtonStyles,
+  getSharedButtonAndLinkStyles,
   getSharedUiSectionStyles,
 } from "../../utils/SharedStyles.ts";
 
@@ -83,7 +83,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
   }
 
   override getSharedStyle(): string {
-    return getSharedButtonStyles() + getSharedUiSectionStyles();
+    return getSharedButtonAndLinkStyles() + getSharedUiSectionStyles();
   }
 
   render(data: LoginComponentStore) {
@@ -91,7 +91,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
       return this.generateLogin(data);
     } else {
       return `
-       <div id="login-component-container">
+       <div class="ui-section" id="login-component-container">
         <p class="login-element">${data.successMessage}</p>
         <button class="login-element" ${this.createClickEvent(LOGOUT_EVENT_CONFIG)}>Logout</button>
       </div>
@@ -100,7 +100,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
   }
   generateLogin(data: LoginComponentStore) {
     return `
-     <div id="login-component-container">
+     <div class="ui-section" id="login-component-container">
       <form id=${LOGIN_FORM_ID} ${this.createSubmitEvent(LOGIN_EVENT_CONFIG)}>
       
         <div class="ui-input">
