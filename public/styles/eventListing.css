@@ -86,7 +86,7 @@ select:focus-visible {
 
   color: var(--clr-dark-blue);
   font-weight: 600;
-  padding-left: 1.5rem;
+  padding-left: 1rem;
 }
 
 .ui-info-section a {
@@ -96,7 +96,7 @@ select:focus-visible {
 }
 
 .ui-section {
-  padding-left: 1.5rem;
+  padding-left: 1rem;
   font-size: 1.25rem;
 }
 
