@@ -5,8 +5,9 @@ template.innerHTML = `
   <style>
   
     #nav-container {
-      background-color: darkblue;  
+      background-color:var(--clr-lighter-blue); 
       display: flex;
+      flex-wrap: wrap;
       margin-top: 5px;
     }
   
@@ -45,6 +46,8 @@ template.innerHTML = `
     
     nav a + a {
       margin-left: 1px;
+      border-color: white;
+      border-width: 1px;
     }
     
     #nav-filler {

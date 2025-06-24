@@ -20,14 +20,17 @@ export function getSharedButtonStyles(): string {
 export function getSharedUiSectionStyles(): string {
   return `
     .ui-section {
-      background: hsl(from var(--clr-lighter-blue) h s l / 0.05);
-      border-radius: 10px;
       color: var(--clr-dark-blue);
       font-size: 1.25rem;
       font-weight:600;
       padding-left:1.5rem;
       padding-top: 0.5rem;
       padding-button: 0.5rem;
+    }
+    
+    label {
+      font-size: 1.25rem;
+      font-weight:600;
     }
     
     a:hover,
@@ -47,6 +50,10 @@ export function getSharedUiSectionStyles(): string {
       color: var(--clr-dark-blue);
       font-size: 1.25rem;
       font-weight: 600;
+    }
+    
+    .ui-input {
+      display: inline-block;
     }
       
   `;

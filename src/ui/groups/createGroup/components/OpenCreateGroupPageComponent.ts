@@ -5,6 +5,10 @@ import { getSharedButtonStyles } from "../../../utils/SharedStyles.ts";
 
 const template = `
   <style>
+ 
+    button {
+      margin-bottom: 0.5rem;
+    }
   </style>
   <div></div>
 `;

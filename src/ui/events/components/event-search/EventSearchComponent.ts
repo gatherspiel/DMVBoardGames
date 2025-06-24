@@ -53,6 +53,7 @@ const loadConfig = {
 
 const template = `<style>
   #event-search {
+  border-top: 1px solid var(--clr-lighter-blue);
     padding-block: 1.5rem;
   }
   
@@ -62,6 +63,7 @@ const template = `<style>
     flex-wrap: wrap;
     gap: 4rem;
     justify-content: left;
+    padding-bottom: 5px;
   }
   
   #search-input-wrapper {
