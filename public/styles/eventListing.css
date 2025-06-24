@@ -81,21 +81,28 @@ select:focus-visible {
   }
 }
 
-.ui-section {
+.ui-info-section {
   background: hsl(from var(--clr-lighter-blue) h s l / 0.05);
 
   color: var(--clr-dark-blue);
-  font-size: 1.25rem;
   font-weight: 600;
   padding-left: 1.5rem;
 }
 
-.ui-section a {
+.ui-info-section a {
   border-color: var(--clr-darker-blue);
   border-width:1px;
   font-weight: 400;
 }
 
+.ui-section {
+  padding-left: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.ui-separator {
+  border-top: 1px solid var(--clr-lighter-blue);
+}
 
 
 @media screen and (width < 32em) {

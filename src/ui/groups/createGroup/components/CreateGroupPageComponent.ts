@@ -7,7 +7,7 @@ import {
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
 } from "../../Constants.ts";
-import { getSharedButtonStyles } from "../../../utils/SharedStyles.ts";
+import { getSharedButtonAndLinkStyles } from "../../../utils/SharedStyles.ts";
 
 const templateStyle = `
   <style>
@@ -64,7 +64,7 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   override getSharedStyle(): string {
-    return getSharedButtonStyles();
+    return getSharedButtonAndLinkStyles();
   }
 
   render(createGroupData: CreateGroupData): string {

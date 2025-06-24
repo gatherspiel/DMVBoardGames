@@ -26,7 +26,7 @@ import {
 } from "../data/RegisterUserThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
-  getSharedButtonStyles,
+  getSharedButtonAndLinkStyles,
   getSharedUiSectionStyles,
 } from "../../utils/SharedStyles.ts";
 
@@ -83,7 +83,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
   }
 
   override getSharedStyle(): string {
-    return getSharedButtonStyles() + getSharedUiSectionStyles();
+    return getSharedButtonAndLinkStyles() + getSharedUiSectionStyles();
   }
 
   render(data: LoginComponentStore) {
@@ -91,7 +91,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
       return this.generateLogin(data);
     } else {
       return `
-       <div id="login-component-container" class="ui-section">
+       <div class="ui-section" id="login-component-container">
         <p class="login-element">${data.successMessage}</p>
         <button class="login-element" ${this.createClickEvent(LOGOUT_EVENT_CONFIG)}>Logout</button>
       </div>
@@ -100,12 +100,18 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
   }
   generateLogin(data: LoginComponentStore) {
     return `
-     <div id="login-component-container" class="ui-section">
+     <div class="ui-section" id="login-component-container">
       <form id=${LOGIN_FORM_ID} ${this.createSubmitEvent(LOGIN_EVENT_CONFIG)}>
-        <label for="username">Email:</label>
-        <input type="text" id=${USERNAME_INPUT} name=${USERNAME_INPUT} />
-        <label for="username">Password:</label>
-        <input type="password" id=${PASSWORD_INPUT} name=${PASSWORD_INPUT} />
+      
+        <div class="ui-input">
+          <label for="username">Email:</label>
+          <input type="text" id=${USERNAME_INPUT} name=${USERNAME_INPUT} />
+        </div>
+        
+        <div class="ui-input">
+          <label for="username">Password:</label>
+          <input type="password" id=${PASSWORD_INPUT} name=${PASSWORD_INPUT} />
+        </div>
         
         <br>
 
@@ -119,7 +125,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
                 Register 
             </button>       
           </div>
-          <p id="authentication-error-message">${data.errorMessage ? data.errorMessage.trim() : ""}</p>
+          <p class="login-element" id="authentication-error-message">${data.errorMessage ? data.errorMessage.trim() : ""}</p>
           <p class="login-element">${data.successMessage}</p>
         </form>
 

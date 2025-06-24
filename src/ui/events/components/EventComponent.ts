@@ -1,10 +1,9 @@
 import { retrieveJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
 import {
-  getSharedButtonStyles,
+  getSharedButtonAndLinkStyles,
   getSharedUiSectionStyles,
 } from "../../utils/SharedStyles.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
-import { VIEW_EVENT_CONFIG } from "../../groups/viewGroup/components/GroupPageHandlers.ts";
 
 const template = `
   <style>
@@ -25,6 +24,10 @@ const template = `
     .event-title, .event-location {
       font-size: 1.25rem;
       font-weight: 600;
+   }
+   
+   .event {
+      border-top: 1px solid var(--clr-lighter-blue);
    }
     
   </style>
@@ -60,7 +63,7 @@ export class EventComponent extends BaseTemplateDynamicComponent {
           </br>  
           <p> ${eventData.summary || eventData.description}</p>
           
-          <button ${this.createClickEvent(VIEW_EVENT_CONFIG)}>View event details</button>
+          <a href="/groups/event.html?&id=${1}">View event details</a>
         </div>
            
       </div>
@@ -68,7 +71,7 @@ export class EventComponent extends BaseTemplateDynamicComponent {
   }
 
   override getSharedStyle() {
-    return getSharedUiSectionStyles() + getSharedButtonStyles();
+    return getSharedUiSectionStyles() + getSharedButtonAndLinkStyles();
   }
 
   getTemplateStyle(): string {

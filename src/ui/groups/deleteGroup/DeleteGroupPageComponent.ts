@@ -4,7 +4,7 @@ import { DELETE_GROUP_EVENT_CONFIG } from "./DeleteGroupPageHandlers.ts";
 import { DELETE_GROUP_REQUEST_THUNK } from "./DeleteGroupRequestThunk.ts";
 import type { DeleteGroupData } from "./types/DeleteGroupData.ts";
 import { getUrlParameter } from "../../../framework/utils/UrlParamUtils.ts";
-import { getSharedButtonStyles } from "../../utils/SharedStyles.ts";
+import { getSharedButtonAndLinkStyles } from "../../utils/SharedStyles.ts";
 
 const template = `
   <style>
@@ -60,7 +60,7 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   override getSharedStyle(): string {
-    return getSharedButtonStyles();
+    return getSharedButtonAndLinkStyles();
   }
 
   render(data: DeleteGroupData): string {

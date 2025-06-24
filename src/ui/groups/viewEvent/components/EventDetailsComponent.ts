@@ -1,6 +1,6 @@
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
-  getSharedButtonStyles,
+  getSharedButtonAndLinkStyles,
   getSharedUiSectionStyles,
 } from "../../../utils/SharedStyles.ts";
 
@@ -34,7 +34,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   }
 
   override getSharedStyle() {
-    return getSharedUiSectionStyles() + getSharedButtonStyles();
+    return getSharedUiSectionStyles() + getSharedButtonAndLinkStyles();
   }
 
   getTemplateStyle(): string {
