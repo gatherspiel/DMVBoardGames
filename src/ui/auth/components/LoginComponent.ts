@@ -119,7 +119,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
                 Register 
             </button>       
           </div>
-          <p id="authentication-error-message">${data.errorMessage ? data.errorMessage.trim() : ""}</p>
+          <p class="login-element" id="authentication-error-message">${data.errorMessage ? data.errorMessage.trim() : ""}</p>
           <p class="login-element">${data.successMessage}</p>
         </form>
 
