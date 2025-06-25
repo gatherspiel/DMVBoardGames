@@ -2,10 +2,7 @@ import type { GroupSearchResult } from "../../data/types/group/GroupSearchResult
 import { EVENT_LIST_THUNK } from "../../data/search/EventListThunk.ts";
 import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
-import {
-  getSharedButtonAndLinkStyles,
-  getSharedUiSectionStyles,
-} from "../../../utils/SharedStyles.ts";
+
 
 const loadConfig = {
   thunkReducers: [
@@ -18,13 +15,14 @@ const loadConfig = {
 };
 
 const template = `
-<style>
-.event-group h3,
-.event-group p {
-  display: inline-block;
-  margin-left: 2rem;
-}
-</style>
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+  <style>
+    .event-group h3,
+    .event-group p {
+      display: inline-block;
+      margin-left: 2rem;
+    }
+  </style>
 `;
 export class EventListComponent extends BaseTemplateDynamicComponent {
   constructor() {
@@ -51,9 +49,7 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
-  override getSharedStyle(): string {
-    return getSharedButtonAndLinkStyles() + getSharedUiSectionStyles();
-  }
+
 
   render(data: any): string {
     const groups = data.groups;

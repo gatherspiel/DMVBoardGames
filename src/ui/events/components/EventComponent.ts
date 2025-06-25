@@ -1,11 +1,9 @@
 import { retrieveJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
-import {
-  getSharedButtonAndLinkStyles,
-  getSharedUiSectionStyles,
-} from "../../utils/SharedStyles.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 
 const template = `
+
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
   <style>
  
     p {
@@ -68,10 +66,6 @@ export class EventComponent extends BaseTemplateDynamicComponent {
            
       </div>
     `;
-  }
-
-  override getSharedStyle() {
-    return getSharedUiSectionStyles() + getSharedButtonAndLinkStyles();
   }
 
   getTemplateStyle(): string {

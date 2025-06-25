@@ -21,11 +21,12 @@ import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 import { stateFields } from "../../../utils/InitGlobalStateConfig.ts";
 
 import { getGlobalStateValue } from "../../../../framework/store/data/GlobalStore.ts";
-import {getSharedButtonAndLinkStyles, getSharedUiSectionStyles} from "../../../utils/SharedStyles.ts";
 
 const SAVE_GROUP_SUCCESS_PROP = "saveGroupSuccess";
 
 const template = `
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
   <style>
  
     .group-description {
@@ -104,9 +105,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
-  override getSharedStyle(): string {
-    return getSharedButtonAndLinkStyles() + getSharedUiSectionStyles();
-  }
+
 
   render(groupData: GroupPageData): string {
     if (!groupData.permissions) {

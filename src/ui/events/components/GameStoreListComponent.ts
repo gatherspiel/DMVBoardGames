@@ -1,7 +1,6 @@
 import type { GameStore } from "../data/types/GameStore.ts";
 import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
-import { getSharedUiSectionStyles } from "../../utils/SharedStyles.ts";
 
 export const GAME_STORE_LIST_STORE = "gameStoreListStore";
 
@@ -16,7 +15,11 @@ const loadConfig = {
   ],
 };
 
-const template = `<style>
+const template = `
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
+
+<style>
 
   .game-store-list-item p {
     display: inline;
@@ -34,10 +37,6 @@ export class GameStoreListComponent extends BaseTemplateDynamicComponent {
 
   override getTemplateStyle(): string {
     return template;
-  }
-
-  override getSharedStyle(): string {
-    return getSharedUiSectionStyles();
   }
 
   getItemHtml(gameStore: GameStore) {

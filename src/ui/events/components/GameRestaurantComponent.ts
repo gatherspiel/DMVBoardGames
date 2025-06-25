@@ -1,7 +1,6 @@
 import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
 import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
-import { getSharedUiSectionStyles } from "../../utils/SharedStyles.ts";
 
 export const GAME_RESTAURANT_LIST_STORE = "gameRestaurantListStore";
 
@@ -17,6 +16,8 @@ const loadConfig = {
 };
 
 const template = `
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
   <style>
     .game-restaurant-list-item > * {
       display: inline-block;
@@ -30,10 +31,6 @@ export class GameRestaurantComponent extends BaseTemplateDynamicComponent {
 
   override getTemplateStyle(): string {
     return template;
-  }
-
-  override getSharedStyle(): string {
-    return getSharedUiSectionStyles();
   }
 
   getItemHtml(gameRestaurant: GameRestaurant) {
