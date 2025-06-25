@@ -1,10 +1,9 @@
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
-import {
-  getSharedButtonAndLinkStyles,
-  getSharedUiSectionStyles,
-} from "../../../utils/SharedStyles.ts";
+
 
 const template = `
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
   <style>
 
     
@@ -31,10 +30,6 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
 </div>
  
     `;
-  }
-
-  override getSharedStyle() {
-    return getSharedUiSectionStyles() + getSharedButtonAndLinkStyles();
   }
 
   getTemplateStyle(): string {

@@ -291,6 +291,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   updateFromGlobalState() {
+
     const componentData = getComponentStore(this.componentStoreName);
 
     const globalStateLoadConfig =

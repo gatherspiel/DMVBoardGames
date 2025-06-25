@@ -25,12 +25,10 @@ import {
   REGISTER_USER_THUNK,
 } from "../data/RegisterUserThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
-import {
-  getSharedButtonAndLinkStyles,
-  getSharedUiSectionStyles,
-} from "../../utils/SharedStyles.ts";
 
 const template = `
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
   <style>
     #login-component-container {
       padding-top: 0.25rem;
@@ -80,10 +78,6 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
 
   override getTemplateStyle(): string {
     return template;
-  }
-
-  override getSharedStyle(): string {
-    return getSharedButtonAndLinkStyles() + getSharedUiSectionStyles();
   }
 
   render(data: LoginComponentStore) {
