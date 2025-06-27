@@ -1,7 +1,6 @@
 import type { Convention } from "../data/types/Convention.ts";
 import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
-import { getSharedUiSectionStyles } from "../../utils/SharedStyles.ts";
 
 export const CONVENTION_LIST_STORE = "conventionListStore";
 
@@ -16,7 +15,10 @@ const loadConfig = {
   ],
 };
 
-const template = `<style>
+const template = `
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
+   <style>
   .conv-list-item > * {
     display: inline-block;
   }
@@ -52,11 +54,6 @@ export class ConventionListComponent extends BaseTemplateDynamicComponent {
   override getTemplateStyle(): string {
     return template;
   }
-
-  override getSharedStyle(): string {
-    return getSharedUiSectionStyles();
-  }
-
   render(data: Record<any, Convention>) {
     let html = `<div class="ui-section"><h1>Upcoming conventions</h1>`;
     Object.values(data).forEach((item) => {

@@ -8,12 +8,8 @@ export abstract class BaseTemplateDynamicComponent extends BaseDynamicComponent 
 
       let templateStyle = this.getTemplateStyle();
 
-      templateStyle = templateStyle.split(`<style>`)[1].split(`</style`)[0];
-      templateStyle = this.getSharedStyle() + templateStyle;
-
       const template = document.createElement("template");
-      template.innerHTML = `<style> ${templateStyle} </style><div></div>`;
-
+      template.innerHTML = templateStyle + `<div></div>`;
       this.shadowRoot!.appendChild(template.content.cloneNode(true));
     }
 

@@ -1,8 +1,10 @@
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import type { OpenCreateGroupPageState } from "../data/types/OpenCreateGroupPageState.ts";
-import {getSharedButtonAndLinkStyles} from "../../../utils/SharedStyles.ts";
 
 const template = `
+
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
   <style>
  
     button {
@@ -35,10 +37,6 @@ export class OpenCreateGroupPageComponent extends BaseTemplateDynamicComponent {
 
   getTemplateStyle(): string {
     return template;
-  }
-
-  override getSharedStyle(): string {
-    return getSharedButtonAndLinkStyles();
   }
 
   render(data: OpenCreateGroupPageState): string {

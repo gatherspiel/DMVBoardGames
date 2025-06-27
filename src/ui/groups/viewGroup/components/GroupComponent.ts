@@ -21,11 +21,12 @@ import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 import { stateFields } from "../../../utils/InitGlobalStateConfig.ts";
 
 import { getGlobalStateValue } from "../../../../framework/store/data/GlobalStore.ts";
-import {getSharedButtonAndLinkStyles, getSharedUiSectionStyles} from "../../../utils/SharedStyles.ts";
 
 const SAVE_GROUP_SUCCESS_PROP = "saveGroupSuccess";
 
 const template = `
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
   <style>
  
     .group-description {
@@ -74,8 +75,6 @@ const loadConfig = {
           data.isEditing = false;
         }
         data[SAVE_GROUP_SUCCESS_PROP] = false;
-
-        console.log(JSON.stringify(data))
         return data;
       },
     },
@@ -104,9 +103,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
-  override getSharedStyle(): string {
-    return getSharedButtonAndLinkStyles() + getSharedUiSectionStyles();
-  }
+
 
   render(groupData: GroupPageData): string {
     if (!groupData.permissions) {
@@ -128,7 +125,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
         </div>
     
         <div class="group-summary">
-        <p class="group-description">${groupData.summary}</p>
+        <p class="group-description">${groupData.description}</p>
         </div>`
          : `
         <h1>Editing group information</h1>
@@ -146,7 +143,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
           <input class="group-data-input" id = "group-url-input" type="text" value= ${groupData.url} id=${GROUP_URL_INPUT} name=${GROUP_URL_INPUT}/> 
           
           <label for="group-description">Group Description</label>
-          <textarea class="group-data-input" id = "group-description-input" type="text" id=${GROUP_DESCRIPTION_INPUT} name=${GROUP_DESCRIPTION_INPUT}> ${groupData.summary}
+          <textarea class="group-data-input" id = "group-description-input" type="text" id=${GROUP_DESCRIPTION_INPUT} name=${GROUP_DESCRIPTION_INPUT}> ${groupData.description}
           </textarea>
     
           <button type="submit" >Save updates</button>
