@@ -14,7 +14,6 @@ import type { GroupPageData } from "../data/types/GroupPageData.ts";
 import type { Event } from "../../../events/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
-  DELETE_GROUP_EVENT_CONFIG,
   EDIT_GROUP_EVENT_CONFIG,
   SAVE_GROUP_CONFIG,
 } from "./GroupPageHandlers.ts";
@@ -22,11 +21,12 @@ import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 import { stateFields } from "../../../utils/InitGlobalStateConfig.ts";
 
 import { getGlobalStateValue } from "../../../../framework/store/data/GlobalStore.ts";
-import { getSharedButtonStyles } from "../../../utils/SharedStyles.ts";
 
 const SAVE_GROUP_SUCCESS_PROP = "saveGroupSuccess";
 
 const template = `
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
   <style>
  
     .group-description {
@@ -103,9 +103,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
-  override getSharedStyle(): string {
-    return getSharedButtonStyles();
-  }
+
 
   render(groupData: GroupPageData): string {
     if (!groupData.permissions) {
@@ -114,21 +112,22 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
 
     return `
 
+     <div class="ui-section">
      ${groupData.saveGroupSuccess ? `<h2>Group update sucessful</h2>` : ``}
-    ${
-      !groupData.isEditing
-        ? `<div class="group-title">
-        <h1>Group link: <a href=${groupData.url}>${groupData.name}</a></h1>
+     ${
+       !groupData.isEditing
+         ? `<div class="group-title">
+        <h1>${groupData.name} <a href=${groupData.url}>Group webpage</a></h1>
 
         ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(EDIT_GROUP_EVENT_CONFIG)}>Edit group</button>` : ``} 
-        ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(DELETE_GROUP_EVENT_CONFIG)}>Delete group</button>` : ``}
+        ${groupData.permissions.userCanEdit ? `<a href="groups/delete.html" class="group-edit-button">Delete group</a>` : ``}
 
         </div>
     
         <div class="group-summary">
-        <p class="group-description">${groupData.summary}</p>
+        <p class="group-description">${groupData.description}</p>
         </div>`
-        : `
+         : `
         <h1>Editing group information</h1>
         
         <form ${this.createSubmitEvent(SAVE_GROUP_CONFIG)}>
@@ -144,15 +143,14 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
           <input class="group-data-input" id = "group-url-input" type="text" value= ${groupData.url} id=${GROUP_URL_INPUT} name=${GROUP_URL_INPUT}/> 
           
           <label for="group-description">Group Description</label>
-          <textarea class="group-data-input" id = "group-description-input" type="text" id=${GROUP_DESCRIPTION_INPUT} name=${GROUP_DESCRIPTION_INPUT}> ${groupData.summary}
+          <textarea class="group-data-input" id = "group-description-input" type="text" id=${GROUP_DESCRIPTION_INPUT} name=${GROUP_DESCRIPTION_INPUT}> ${groupData.description}
           </textarea>
     
           <button type="submit" >Save updates</button>
-        </form>
-      
+        </form> 
       `
-    }
-          <h1>Upcoming events</h1>
+     }
+    <h1>Upcoming events</h1>
 
       ${
         groupData.eventData.length === 0
@@ -164,16 +162,16 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
                 key = ${groupData.id + "event-" + event.id}
                 data =${createJSONProp(event)}
               >
-    
+ 
               </event-component>
 
             `;
               })
               .join(" ")}
-              <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
-              `
+          <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
+          `
       }
-      
+      </div>
     `;
   }
 }

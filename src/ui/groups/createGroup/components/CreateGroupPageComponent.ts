@@ -7,9 +7,10 @@ import {
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
 } from "../../Constants.ts";
-import { getSharedButtonStyles } from "../../../utils/SharedStyles.ts";
 
 const templateStyle = `
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
   <style>
     #create-group-error-message {
       color:darkred;
@@ -61,10 +62,6 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
 
   getTemplateStyle(): string {
     return templateStyle;
-  }
-
-  override getSharedStyle(): string {
-    return getSharedButtonStyles();
   }
 
   render(createGroupData: CreateGroupData): string {

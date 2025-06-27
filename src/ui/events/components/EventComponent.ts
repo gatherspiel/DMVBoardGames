@@ -1,15 +1,16 @@
-import { retrieveJSONProp } from "./utils/ComponentUtils.ts";
-import { getSharedUiSectionStyles } from "../../ui/utils/SharedStyles.ts";
-import { BaseTemplateDynamicComponent } from "./BaseTemplateDynamicComponent.ts";
+import { retrieveJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
+import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 
-const template = `<style>
+const template = `
+
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+  <style>
  
     p {
       word-wrap: break-word;
       display: inline-block;
       white-space: normal;
-    
-       
+
       font-size: 1rem;
       font-weight:600;
         
@@ -21,8 +22,11 @@ const template = `<style>
     .event-title, .event-location {
       font-size: 1.25rem;
       font-weight: 600;
-
-    }
+   }
+   
+   .event {
+      border-top: 1px solid var(--clr-lighter-blue);
+   }
     
   </style>
 `;
@@ -34,7 +38,7 @@ export class EventComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback() {
-    this.generateAndSaveHTML({});
+    this.updateStore({});
   }
 
   render(): string {
@@ -56,15 +60,12 @@ export class EventComponent extends BaseTemplateDynamicComponent {
           <p class = "event-location">Location: ${eventData.location}</p>
           </br>  
           <p> ${eventData.summary || eventData.description}</p>
-
+          
+          <a href="/groups/event.html?&id=${1}">View event details</a>
         </div>
            
       </div>
     `;
-  }
-
-  override getSharedStyle() {
-    return getSharedUiSectionStyles();
   }
 
   getTemplateStyle(): string {

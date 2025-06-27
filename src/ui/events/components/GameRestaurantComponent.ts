@@ -1,6 +1,6 @@
 import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
-import { BaseDynamicComponent } from "../../../framework/components/BaseDynamicComponent.ts";
 import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
+import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 
 export const GAME_RESTAURANT_LIST_STORE = "gameRestaurantListStore";
 
@@ -15,9 +15,22 @@ const loadConfig = {
   ],
 };
 
-export class GameRestaurantComponent extends BaseDynamicComponent {
+const template = `
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
+  <style>
+    .game-restaurant-list-item > * {
+      display: inline-block;
+    }
+  </style>
+`;
+export class GameRestaurantComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(GAME_RESTAURANT_LIST_STORE, loadConfig);
+  }
+
+  override getTemplateStyle(): string {
+    return template;
   }
 
   getItemHtml(gameRestaurant: GameRestaurant) {
@@ -32,12 +45,12 @@ export class GameRestaurantComponent extends BaseDynamicComponent {
   }
 
   render(data: Record<any, GameRestaurant>) {
-    let html = `<h1>Board Game Bars and Cafés</h1>`;
+    let html = `<div class ="ui-section"><h1>Board Game Bars and Cafés</h1>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
     });
-    return html;
+    return html + `</div>`;
   }
 }
 

@@ -1,142 +1,157 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" type="text/css" href="/styles/styles.css" />
-    <link rel="stylesheet" href="/styles/eventListing.css" />
-    <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DMV Board Games</title>
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" type="text/css" href="/styles/styles.css"/>
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
 
-    <script
-      type="module"
-      src="ui/utils/InitGlobalStateConfig.ts"
-    ></script>
-    
-    <script
-      type="module"
-      src="ui/events/data/mock/MockGameRestaurantData.ts"
-    ></script>
-    <script
-      type="module"
-      src="ui/events/data/mock/MockGameStoreData.ts"
-    ></script>
+  <link rel="stylesheet" href="/styles/eventListing.css"/>
+  <link rel="icon" type="image/ico" href="/assets/favicon.ico"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DMV Board Games</title>
 
-    <script
-      type="module"
-      src="ui/events/data/mock/MockGroupData.ts"
-    ></script>
-    <script
-      type="module"
-      src="ui/events/components/event-search/EventSearchComponent.ts"
-    ></script>
-    <script
-      type="module"
-      src="ui/events/components/event-list/EventListComponent.ts"
-    ></script>
-    <script
-      type="module"
-      src="framework/components/EventComponent.ts"
-      >
-    </script>
-    <script
-      type="module"
-      src="ui/static/navbarComponent.ts"
-    ></script>
-    <script
-      type="module"
-      src="framework/store/data/InitStoreManager.ts"
-    ></script>
-    <script
-      type="module"
-      src="ui/utils/components/FeatureFlagComponent.ts"
-    ></script>
-    <script
-      type="module"
-      src="ui/events/components/ConventionListComponent.ts"
-    ></script>
-    <script
-      type="module"
-      src="ui/events/components/GameRestaurantComponent.ts"
-    ></script>
-    <script
-      type="module"
-      src="ui/events/components/GameStoreListComponent.ts"
-    ></script>
-  </head>
-  <body>
-    <div id="container">
-      <navbar-component></navbar-component>
+  <script
+    type="module"
+    src="ui/utils/InitGlobalStateConfig.ts"
+  ></script>
+
+  <script
+    type="module"
+    src="ui/events/components/event-search/Constants.ts"
+  ></script>
+
+  <script
+    type="module"
+    src="ui/events/data/mock/MockGameRestaurantData.ts"
+  ></script>
+  <script
+    type="module"
+    src="ui/events/data/mock/MockGameStoreData.ts"
+  ></script>
+
+  <script
+    type="module"
+    src="ui/events/data/mock/MockGroupData.ts"
+  ></script>
+  <script
+    type="module"
+    src="ui/events/components/event-search/EventSearchComponent.ts"
+  ></script>
+  <script
+    type="module"
+    src="ui/events/components/event-list/EventListComponent.ts"
+  ></script>
+  <script
+    type="module"
+    src="ui/events/components/EventComponent.ts"
+  >
+  </script>
+  <script
+    type="module"
+    src="ui/static/navbarComponent.ts"
+  ></script>
+  <script
+    type="module"
+    src="framework/store/data/InitStoreManager.ts"
+  ></script>
+  <script
+    type="module"
+    src="ui/utils/components/FeatureFlagComponent.ts"
+  ></script>
+  <script
+    type="module"
+    src="ui/events/components/ConventionListComponent.ts"
+  ></script>
+  <script
+    type="module"
+    src="ui/events/components/GameRestaurantComponent.ts"
+  ></script>
+  <script
+    type="module"
+    src="ui/events/components/GameStoreListComponent.ts"
+  ></script>
+</head>
+<body>
+<div id="container">
+  <navbar-component></navbar-component>
+
+  <feature-flag-component
+    componentName="login-component"
+    featureFlagName="loginEnabled"
+  >
+  </feature-flag-component>
+
+  <div class="ui-info-section">
+
+    <div id="welcome-sec">
+
+
+      <p>
+        This page is a work in progress listing of public board game groups,
+        conventions stores, and restaurants in the DMV area. Email
+        gulu@createthirdplaces.com to request an update to this list or
+        share feedback. All submitted items must have information visible on
+        their main website without requiring a login.
+      </p>
+      <p>
+        To request a new feature or view the source code, go
+        <a href="https://github.com/Create-Third-Places/DMVBoardGames"
+        >here</a
+        >
+      </p>
 
       <feature-flag-component
-        componentName="login-component"
+        componentName="open-create-group-page-component"
         featureFlagName="loginEnabled"
       >
       </feature-flag-component>
-
-
-      <div id="welcome-sec">
-
-        <div id="para-wrapper">
-          <p>
-            This page is a work in progress listing of public board game groups,
-            conventions stores, and restaurants in the DMV area. Email
-            gulu@createthirdplaces.com to request an update to this list or
-            share feedback. All submitted items must have information visible on
-            their main website without requiring a login.
-          </p>
-          <p>
-            To request a new feature or view the source code, go
-            <a href="https://github.com/Create-Third-Places/DMVBoardGames"
-              >here</a
-            >
-          </p>
-
-          <feature-flag-component
-            componentName="open-create-group-page-component"
-            featureFlagName="loginEnabled"
-          >
-          </feature-flag-component>
-        </div>
-      </div>
-      <div id="root">
-          <nav>
-            <div id="nav-container">
-
-            <div>Click for more info about</div>
-          <a href="#convention-list">Conventions</a>
-          <a href="#game-store">Game Stores</a>
-          <a href="#game-restaurant-list">Bars And Cafés</a>
-              <div id="nav-filler"></div>
-
-            </div>
-
-          </nav>
-        <div id="event-search" class="page-section"></div>
-
-        <div data-container="root">
-          <event-search-component id="eventList" class="page-section">
-          </event-search-component>
-
-          <div id="event-list" class="page-section">
-            <event-list-component> </event-list-component>
-          </div>
-
-          <div id="convention-list" class="page-section">
-            <convention-list-component data-test="testing">
-              <p></p>
-            </convention-list-component>
-          </div>
-
-          <div id="game-restaurant-list" class="page-section">
-            <game-restaurant-list-component> </game-restaurant-list-component>
-          </div>
-
-          <div id="game-store" class="page-section">
-            <game-store-list-component> </game-store-list-component>
-          </div>
-        </div>
-      </div>
     </div>
-  </body>
+  </div>
+  <div class="ui-separator"></div>
+  <div class="ui-section">
+    <nav>
+      <div id="nav-container">
+
+        <div>Click for more info about</div>
+
+        <button onclick="document.location='#convention-list'">Conventions</button>
+        <button onclick="document.location='#game-store'">Game Stores</button>
+        <button onclick="document.location='#game-restaurant-list'">Bars And Cafés</button>
+
+      </div>
+
+    </nav>
+
+  </div>
+
+
+  <div id="event-search" class="page-section"></div>
+
+  <div data-container="root">
+    <event-search-component id="eventList" class="page-section">
+    </event-search-component>
+
+    <div class="ui-separator"></div>
+
+    <div id="event-list" class="page-section">
+      <event-list-component></event-list-component>
+    </div>
+
+    <div id="convention-list" class="page-section">
+      <convention-list-component data-test="testing">
+        <p></p>
+      </convention-list-component>
+    </div>
+
+    <div id="game-restaurant-list" class="page-section">
+      <game-restaurant-list-component></game-restaurant-list-component>
+    </div>
+
+    <div id="game-store" class="page-section">
+      <game-store-list-component></game-store-list-component>
+    </div>
+  </div>
+</div>
+</div>
+</body>
 </html>

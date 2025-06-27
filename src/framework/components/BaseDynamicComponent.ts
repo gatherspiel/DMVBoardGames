@@ -121,7 +121,10 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     this.eventTagIdCount = 0;
 
     this.generateAndSaveHTML(data);
+    this.attachEventHandlersToDom();
+  }
 
+  attachEventHandlersToDom() {
     const eventHandlers = this.eventHandlers;
     const elementIdTag = this.getElementIdTag();
 
@@ -288,6 +291,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   updateFromGlobalState() {
+
     const componentData = getComponentStore(this.componentStoreName);
 
     const globalStateLoadConfig =
@@ -296,7 +300,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       throw new Error("Component global state config is not defined");
     }
 
-    //Component is still waiting for state
+    //Component is still waiting for state.
     if (
       globalStateLoadConfig.waitForGlobalState &&
       getGlobalStateValue(globalStateLoadConfig.waitForGlobalState) ===
@@ -305,7 +309,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       return;
     }
 
-    //The component should make an API request based on the data received before rerendering
+    //The component should make an API request based on the data received before rerendering.
     if (this.requestStoreName) {
       if (this.componentLoadConfig && !hasRequestStore(this.requestStoreName)) {
         initRequestStore(this.componentLoadConfig);

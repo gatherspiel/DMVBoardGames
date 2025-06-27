@@ -19,10 +19,6 @@ import {
   UPDATE_DAY_CONFIG,
 } from "./EventSearchHandlers.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
-import {
-  getSharedButtonStyles,
-  getSharedUiSectionStyles,
-} from "../../../utils/SharedStyles.ts";
 
 const loadConfig = {
   onLoadStoreConfig: {
@@ -51,8 +47,12 @@ const loadConfig = {
   ],
 };
 
-const template = `<style>
+const template = `
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
+  <style>
   #event-search {
+  border-top: 1px solid var(--clr-lighter-blue);
     padding-block: 1.5rem;
   }
   
@@ -62,6 +62,7 @@ const template = `<style>
     flex-wrap: wrap;
     gap: 4rem;
     justify-content: left;
+    padding-bottom: 5px;
   }
   
   #search-input-wrapper {
@@ -99,11 +100,6 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
   override getTemplateStyle(): string {
     return template;
   }
-
-  override getSharedStyle(): string {
-    return getSharedButtonStyles() + getSharedUiSectionStyles();
-  }
-
   render(eventSearchStore: any) {
     return `
 
