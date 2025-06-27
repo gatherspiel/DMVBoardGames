@@ -2,27 +2,47 @@ import {
   AUTH_REQUEST_STORE,
   LOGOUT_REQUEST_STORE,
   PASSWORD_INPUT,
+  REGISTER_REQUEST_STORE,
   USERNAME_INPUT,
 } from "./Constants.js";
 import type { EventHandlerThunkConfig } from "../../framework/store/update/event/types/EventHandlerThunkConfig.ts";
+import type { EventHandlerData } from "../../framework/store/update/event/types/EventHandlerData.ts";
 
 export const LOGIN_EVENT_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function () {
+  eventHandler: function (params: EventHandlerData) {
+    if (!params.shadowRoot) {
+      throw new Error("Invalid shadow root for save group event handler");
+    }
     return {
       username:
-        (document.getElementById(USERNAME_INPUT) as HTMLInputElement)?.value ??
-        "",
+        (params.shadowRoot.getElementById(USERNAME_INPUT) as HTMLInputElement)
+          ?.value ?? "",
       password:
-        (document.getElementById(PASSWORD_INPUT) as HTMLInputElement)?.value ??
-        "",
+        (params.shadowRoot.getElementById(PASSWORD_INPUT) as HTMLInputElement)
+          ?.value ?? "",
     };
   },
-  storeToUpdate: AUTH_REQUEST_STORE,
+  requestStoreToUpdate: AUTH_REQUEST_STORE,
 };
 
 export const LOGOUT_EVENT_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function () {
-    console.log("Logging out");
+  eventHandler: function () {},
+  requestStoreToUpdate: LOGOUT_REQUEST_STORE,
+};
+
+export const REGISTER_EVENT_CONFIG: EventHandlerThunkConfig = {
+  eventHandler: function (params: EventHandlerData) {
+    if (!params.shadowRoot) {
+      throw new Error("Invalid shadow root for save group event handler");
+    }
+    return {
+      username:
+        (params.shadowRoot.getElementById(USERNAME_INPUT) as HTMLInputElement)
+          ?.value ?? "",
+      password:
+        (params.shadowRoot.getElementById(PASSWORD_INPUT) as HTMLInputElement)
+          ?.value ?? "",
+    };
   },
-  storeToUpdate: LOGOUT_REQUEST_STORE,
+  requestStoreToUpdate: REGISTER_REQUEST_STORE,
 };

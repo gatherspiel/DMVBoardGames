@@ -8,7 +8,7 @@ export function createComponentStore(
   component: HTMLElement,
 ) {
   createStore(storeName, stores);
-  subscribeToComponentStore(storeName, component);
+  subscribeComponentToStore(storeName, component);
 }
 
 export function hasComponentStoreSubscribers(storeName: string): boolean {
@@ -19,7 +19,7 @@ export function hasComponentStoreSubscribers(storeName: string): boolean {
  * @param store Name of store that the component will subscribe to.
  * @param component The component instance.
  */
-export function subscribeToComponentStore(
+export function subscribeComponentToStore(
   storeName: string,
   component: HTMLElement,
 ) {
@@ -46,14 +46,4 @@ export function updateComponentStore(
  */
 export function getComponentStore(storeName: string) {
   return stores[storeName].data;
-}
-
-export function getDataFromStore(storeName: string, param: string): string {
-  const store = stores[storeName];
-
-  return store.getValue(param) ?? "";
-}
-
-export function hasComponentStore(storeName: string): boolean {
-  return storeName in stores;
 }
