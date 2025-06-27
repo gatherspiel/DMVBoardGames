@@ -75,8 +75,6 @@ const loadConfig = {
           data.isEditing = false;
         }
         data[SAVE_GROUP_SUCCESS_PROP] = false;
-
-        console.log(JSON.stringify(data))
         return data;
       },
     },
