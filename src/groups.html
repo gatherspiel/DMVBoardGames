@@ -8,6 +8,12 @@
   <link rel="stylesheet" href="/styles/styles.css">
   <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
 
+
+  <script
+    type="module"
+    src="ui/auth/components/LoginComponent.ts"
+  > </script>
+
   <script
     type="module"
     src="ui/events/components/EventComponent.ts"
@@ -27,13 +33,11 @@
 </head>
 <body>
   <navbar-component>
-
   </navbar-component>
-  <feature-flag-component
-    componentName="login-component"
-    featureFlagName="loginEnabled"
-  >
-  </feature-flag-component>
+
+  <login-component>
+  </login-component>
+  
   <group-component>
   </group-component>
 
