@@ -5,3 +5,5 @@ export const stateFields: Record<string, string> = {
 };
 
 setupGlobalState(stateFields);
+
+console.log("Done setting up")

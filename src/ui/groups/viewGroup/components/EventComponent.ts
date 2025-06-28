@@ -1,5 +1,5 @@
-import { retrieveJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
-import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { retrieveJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
+import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 
 const template = `
 
@@ -55,7 +55,7 @@ export class EventComponent extends BaseTemplateDynamicComponent {
           <p class = "event-location">Location: ${eventData.location}</p>
           </br>  
           
-          <a href="/groups/event.html?&id=${1}">View event details</a>
+          <a href="/groups/event.html?&id=${eventData.id}">View event details</a>
         </div>
            
       </div>

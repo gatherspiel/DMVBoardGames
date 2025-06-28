@@ -3,15 +3,17 @@ import { generateApiThunk } from "../../../../framework/store/update/api/ApiThun
 import type { ApiRequestConfig } from "../../../../framework/store/update/api/types/ApiRequestConfig.ts";
 import { AUTH_TOKEN_HEADER_KEY } from "../../../auth/Constants.ts";
 import { getAccessTokenIfPresent } from "../../../auth/AuthUtils.ts";
+import {getUrlParameter} from "../../../../framework/utils/UrlParamUtils.ts";
 
-function getGroupRequestConfig(requestParams: any): ApiRequestConfig {
+function getEventRequestConfig(): ApiRequestConfig {
   let headers: Record<string, string> = {};
   const authData = getAccessTokenIfPresent();
   if (authData) {
     headers[AUTH_TOKEN_HEADER_KEY] = authData;
   }
   return {
-    url: API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`,
+    url: API_ROOT + `/groups/events/${getUrlParameter("id")}/`,
+
     headers: headers,
   };
 }
@@ -22,7 +24,7 @@ const defaultFunctionConfig = {
   },
   defaultFunctionPriority: false,
 };
-export const GROUP_REQUEST_THUNK = generateApiThunk({
-  queryConfig: getGroupRequestConfig,
+export const EVENT_REQUEST_THUNK = generateApiThunk({
+  queryConfig: getEventRequestConfig,
   defaultFunctionConfig: defaultFunctionConfig,
 });
