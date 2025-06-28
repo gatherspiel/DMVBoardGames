@@ -44,22 +44,16 @@ export class EventComponent extends BaseTemplateDynamicComponent {
   render(): string {
     this.id = this.getAttribute("key") ?? "";
     const eventData = retrieveJSONProp(this, "data");
-    let eventDay = "";
-    if (eventData.eventDate) {
-      eventDay = eventData.eventDate;
-    } else {
-      eventDay = `Day: ${eventData.day.charAt(0).toUpperCase() + eventData.day.slice(1)}`;
-    }
 
+    let start:Date = new Date(eventData.startTime);
     return `
       <div id=${this.id} class="event">
       
         <div class="ui-section">
           <h3>${eventData.name}</h3>
-          <p class = "event-title">${eventDay}</p>
+          <p class = "event-title">${start.toISOString().substring(0,10)} ${start.getHours()}:${start.getMinutes()}</p>
           <p class = "event-location">Location: ${eventData.location}</p>
           </br>  
-          <p> ${eventData.summary || eventData.description}</p>
           
           <a href="/groups/event.html?&id=${1}">View event details</a>
         </div>
