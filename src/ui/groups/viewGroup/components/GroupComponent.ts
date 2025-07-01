@@ -158,12 +158,12 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
           : `${groupData.eventData
               .map((event: Event) => {
                 return `
-              <event-component
+              <group-page-event-component
                 key = ${groupData.id + "event-" + event.id}
                 data =${createJSONProp(event)}
               >
  
-              </event-component>
+              </group-page-event-component>
 
             `;
               })

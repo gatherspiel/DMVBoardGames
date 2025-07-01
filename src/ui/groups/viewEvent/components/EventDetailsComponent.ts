@@ -22,7 +22,6 @@ const loadConfig = {
     {
       thunk: EVENT_REQUEST_THUNK,
       componentStoreReducer: function (data: any) {
-        console.log(JSON.stringify(data));
         return data;
       },
     }
@@ -40,7 +39,6 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback() {
-    this.updateStore({});
   }
 
   render(data: any): string {
@@ -48,7 +46,9 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
 
     return `
       <div class="ui-section">
-        <h1>View group event</h1>
+        <h1>${data.name}</h1>
+        
+        <p>${data.description}</p>
         <button>Edit event</button>  
         <button>Back to group</button> 
       </div>
