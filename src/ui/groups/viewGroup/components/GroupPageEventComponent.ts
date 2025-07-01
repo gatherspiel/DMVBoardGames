@@ -31,7 +31,7 @@ const template = `
   </style>
 `;
 
-export class EventComponent extends BaseTemplateDynamicComponent {
+export class GroupPageEventComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("event-component");
     this.id = "";
@@ -55,7 +55,7 @@ export class EventComponent extends BaseTemplateDynamicComponent {
           <p class = "event-location">Location: ${eventData.location}</p>
           </br>  
           
-          <a href="/groups/event.html?&id=${eventData.id}">View event details</a>
+          <a href="/groups/event.html?id=${eventData.id}">View event details</a>
         </div>
            
       </div>
@@ -67,6 +67,6 @@ export class EventComponent extends BaseTemplateDynamicComponent {
   }
 }
 
-if (!customElements.get("event-component")) {
-  customElements.define("event-component", EventComponent);
+if (!customElements.get("group-page-event-component")) {
+  customElements.define("group-page-event-component", GroupPageEventComponent);
 }
