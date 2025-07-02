@@ -1,6 +1,6 @@
-import type { EventHandlerThunkConfig } from "../../../framework/store/update/event/types/EventHandlerThunkConfig.ts";
+import type { EventHandlerThunkConfig } from "../../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
 import { DELETE_GROUP_REQUEST_STORE, GROUP_NAME_INPUT } from "../Constants.ts";
-import type { EventValidationResult } from "../../../framework/store/update/event/types/EventValidationResult.ts";
+import type { EventValidationResult } from "../../../framework/state/update/event/types/EventValidationResult.ts";
 import type { DeleteGroupData } from "./types/DeleteGroupData.ts";
 import { getUrlParameter } from "../../../framework/utils/UrlParamUtils.ts";
 

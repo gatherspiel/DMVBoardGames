@@ -18,7 +18,7 @@ import {
   LOGIN_EVENT_CONFIG,
   LOGOUT_EVENT_CONFIG,
   REGISTER_EVENT_CONFIG,
-} from "../AuthEventHandlers.ts";
+} from "../LoginComponentEventHandlers.ts";
 import { LOGOUT_THUNK } from "../data/LogoutThunk.ts";
 import {
   getLoginComponentStoreFromRegisterResponse,

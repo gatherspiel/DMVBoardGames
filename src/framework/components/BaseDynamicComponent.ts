@@ -1,33 +1,33 @@
-import type { DisplayItem } from "../../ui/events/data/types/DisplayItem.ts";
+import type { DisplayItem } from "../../ui/homepage/data/types/DisplayItem.ts";
 
 import {
   createComponentStore,
   getComponentStore,
   hasComponentStoreSubscribers,
   updateComponentStore,
-} from "../store/data/ComponentStore.ts";
+} from "../state/data/ComponentStore.ts";
 import {
   hasRequestStore,
   hasRequestStoreSubscribers,
   initRequestStore,
   initRequestStoresOnLoad,
   updateRequestStoreAndClearCache,
-} from "../store/data/RequestStore.ts";
-import { EventHandlerAction } from "../store/update/event/EventHandlerAction.ts";
-import { BaseDispatcher } from "../store/update/BaseDispatcher.ts";
-import { EventThunk } from "../store/update/event/EventThunk.ts";
-import type { EventHandlerThunkConfig } from "../store/update/event/types/EventHandlerThunkConfig.ts";
+} from "../state/data/RequestStore.ts";
+import { EventHandlerAction } from "../state/update/event/EventHandlerAction.ts";
+import { BaseDispatcher } from "../state/update/BaseDispatcher.ts";
+import { EventThunk } from "../state/update/event/EventThunk.ts";
+import type { EventHandlerThunkConfig } from "../state/update/event/types/EventHandlerThunkConfig.ts";
 import {
   type ComponentLoadConfig,
   type ThunkDispatcherConfig,
   validComponentLoadConfigFields,
 } from "./types/ComponentLoadConfig.ts";
-import type { BaseThunk } from "../store/update/BaseThunk.ts";
+import type { BaseThunk } from "../state/update/BaseThunk.ts";
 import {
   getGlobalStateValue,
   subscribeComponentToGlobalField,
-} from "../store/data/GlobalStore.ts";
-import type { EventValidationResult } from "../store/update/event/types/EventValidationResult.ts";
+} from "../state/data/GlobalStore.ts";
+import type { EventValidationResult } from "../state/update/event/types/EventValidationResult.ts";
 
 type EventConfig = {
   eventType: string;

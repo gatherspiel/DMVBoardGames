@@ -10,10 +10,6 @@ export function retrieveJSONProp(component: HTMLElement, propName: string) {
   return JSON.parse(jsonStr);
 }
 
-export function getElementWithId(id: String): Element {
-  return getElementWithSelector(`#${id}`);
-}
-
 export function getElementWithSelector(
   selector: string,
   queryScope: Document | ShadowRoot = document,

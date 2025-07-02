@@ -50,7 +50,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         
         <p>${data.description}</p>
         <button>Edit event</button>  
-        <button>Back to group</button> 
+        <a href="/groups.html?name=${data.name}">Back to group</a> 
       </div>
  
     `;

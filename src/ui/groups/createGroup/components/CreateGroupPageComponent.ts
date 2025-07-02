@@ -1,5 +1,5 @@
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
-import { CREATE_GROUP_EVENT_CONFIG } from "./CreateGroupPageHandler.ts";
+import { CREATE_GROUP_EVENT_CONFIG } from "../CreateGroupPageHandler.ts";
 import { CREATE_GROUP_REQUEST_THUNK } from "../data/CreateGroupRequestThunk.ts";
 import type { CreateGroupData } from "../data/types/CreateGroupData.ts";
 import {
