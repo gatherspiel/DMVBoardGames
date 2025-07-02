@@ -1,7 +1,7 @@
 import { SEARCH_REQUEST_STORE } from "./Constants.ts";
 
-import type { EventHandlerData } from "../../../../framework/store/update/event/types/EventHandlerData.ts";
-import type { EventHandlerThunkConfig } from "../../../../framework/store/update/event/types/EventHandlerThunkConfig.ts";
+import type { EventHandlerData } from "../../../../framework/state/update/event/types/EventHandlerData.ts";
+import type { EventHandlerThunkConfig } from "../../../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
 export const SEARCH_EVENT_HANDLER_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params: EventHandlerData) {
     return {

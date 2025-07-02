@@ -1,5 +1,5 @@
-import type { DisplayItem } from "../../../../events/data/types/DisplayItem.ts";
-import type { Event } from "../../../../events/data/types/Event.ts";
+import type { DisplayItem } from "../../../../homepage/data/types/DisplayItem.ts";
+import type { Event } from "../../../../homepage/data/types/Event.ts";
 import type { PermissionData } from "../../../../auth/types/PermissionData.ts";
 
 export interface GroupPageData extends DisplayItem {
