@@ -1,13 +1,13 @@
 import { type AuthTokenResponsePassword } from "@supabase/supabase-js";
-import type { DefaultApiAction } from "../../../framework/store/update/api/DefaultApiAction.ts";
-import { BaseThunk } from "../../../framework/store/update/BaseThunk.ts";
+import type { DefaultApiAction } from "../../../framework/state/update/api/DefaultApiAction.ts";
+import { BaseThunk } from "../../../framework/state/update/BaseThunk.ts";
 import type { AuthRequest } from "../types/AuthRequest.ts";
 import { AuthResponse } from "../types/AuthResponse.ts";
-import { generateApiThunkWithExternalConfig } from "../../../framework/store/update/api/ApiThunkFactory.ts";
+import { generateApiThunkWithExternalConfig } from "../../../framework/state/update/api/ApiThunkFactory.ts";
 import { getLocalStorageDataIfPresent } from "../../../framework/utils/LocalStorageUtils.ts";
 import { isAfterNow } from "../../../framework/utils/DateUtils.ts";
 import type { AuthReducerError } from "../types/AuthReducerError.ts";
-import { AUTH_TOKEN_KEY } from "../../../utils/params.ts";
+import { AUTH_TOKEN_KEY } from "../../../shared/params.ts";
 import { getSupabaseClient } from "../SupabaseClient.ts";
 
 async function retrieveData(

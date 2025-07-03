@@ -11,16 +11,16 @@ import { GROUP_REQUEST_THUNK } from "../data/GroupRequestThunk.ts";
 
 import { createJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
 import type { GroupPageData } from "../data/types/GroupPageData.ts";
-import type { Event } from "../../../events/data/types/Event.ts";
+import type { Event } from "../../../homepage/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
   EDIT_GROUP_EVENT_CONFIG,
   SAVE_GROUP_CONFIG,
-} from "./GroupPageHandlers.ts";
+} from "../GroupPageHandlers.ts";
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
-import { stateFields } from "../../../utils/InitGlobalStateConfig.ts";
+import { stateFields } from "../../../../shared/InitGlobalStateConfig.ts";
 
-import { getGlobalStateValue } from "../../../../framework/store/data/GlobalStore.ts";
+import { getGlobalStateValue } from "../../../../framework/state/data/GlobalStore.ts";
 
 const SAVE_GROUP_SUCCESS_PROP = "saveGroupSuccess";
 
@@ -158,12 +158,12 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
           : `${groupData.eventData
               .map((event: Event) => {
                 return `
-              <event-component
+              <group-page-event-component
                 key = ${groupData.id + "event-" + event.id}
                 data =${createJSONProp(event)}
               >
  
-              </event-component>
+              </group-page-event-component>
 
             `;
               })

@@ -5,8 +5,8 @@ import {
   REGISTER_REQUEST_STORE,
   USERNAME_INPUT,
 } from "./Constants.js";
-import type { EventHandlerThunkConfig } from "../../framework/store/update/event/types/EventHandlerThunkConfig.ts";
-import type { EventHandlerData } from "../../framework/store/update/event/types/EventHandlerData.ts";
+import type { EventHandlerThunkConfig } from "../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
+import type { EventHandlerData } from "../../framework/state/update/event/types/EventHandlerData.ts";
 
 export const LOGIN_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params: EventHandlerData) {

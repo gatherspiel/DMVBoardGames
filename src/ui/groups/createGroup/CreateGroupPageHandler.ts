@@ -1,10 +1,10 @@
-import type { EventHandlerThunkConfig } from "../../../../framework/store/update/event/types/EventHandlerThunkConfig.ts";
+import type { EventHandlerThunkConfig } from "../../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
 import {
   CREATE_GROUP_REQUEST_STORE,
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
-} from "../../Constants.ts";
+} from "../Constants.ts";
 
 export const CREATE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params): any {

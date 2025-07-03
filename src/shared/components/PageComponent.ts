@@ -1,6 +1,6 @@
-import { NavbarComponent } from "../../static/navbarComponent.ts";
-import { LoginComponent } from "../../auth/components/LoginComponent.ts";
-import { getComponent } from "../ComponentRegistry.ts";
+import { NavbarComponent } from "../../ui/static/navbarComponent.ts";
+import { LoginComponent } from "../../ui/auth/components/LoginComponent.ts";
+import { getComponent } from "./ComponentRegistry.ts";
 
 export class PageComponent extends HTMLElement {
   constructor() {

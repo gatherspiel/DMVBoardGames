@@ -2,8 +2,8 @@ import {
   FEATURE_FLAGS,
   IS_PRODUCTION,
   IS_TEST,
-} from "../../../utils/params.ts";
-import { getComponent } from "../ComponentRegistry.ts";
+} from "../params.ts";
+import { getComponent } from "./ComponentRegistry.ts";
 
 export class FeatureFlagComponent extends HTMLElement {
   constructor() {

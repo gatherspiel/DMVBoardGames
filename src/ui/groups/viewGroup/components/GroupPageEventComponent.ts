@@ -1,5 +1,9 @@
-import { retrieveJSONProp } from "../../../framework/components/utils/ComponentUtils.ts";
-import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { retrieveJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
+import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {
+  convertDateTimeForDisplay,
+  convertLocationStringForDisplay
+} from "../../../../framework/utils/DateUtils.ts";
 
 const template = `
 
@@ -19,7 +23,7 @@ const template = `
       margin-right: 5rem;
     }
     
-    .event-title, .event-location {
+    .event-time, .event-location {
       font-size: 1.25rem;
       font-weight: 600;
    }
@@ -31,7 +35,7 @@ const template = `
   </style>
 `;
 
-export class EventComponent extends BaseTemplateDynamicComponent {
+export class GroupPageEventComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("event-component");
     this.id = "";
@@ -44,24 +48,17 @@ export class EventComponent extends BaseTemplateDynamicComponent {
   render(): string {
     this.id = this.getAttribute("key") ?? "";
     const eventData = retrieveJSONProp(this, "data");
-    let eventDay = "";
-    if (eventData.eventDate) {
-      eventDay = eventData.eventDate;
-    } else {
-      eventDay = `Day: ${eventData.day.charAt(0).toUpperCase() + eventData.day.slice(1)}`;
-    }
 
     return `
       <div id=${this.id} class="event">
       
         <div class="ui-section">
           <h3>${eventData.name}</h3>
-          <p class = "event-title">${eventDay}</p>
-          <p class = "event-location">Location: ${eventData.location}</p>
+          <p class = "event-time">${convertDateTimeForDisplay(eventData.startTime)}</p>
+          <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
           </br>  
-          <p> ${eventData.summary || eventData.description}</p>
           
-          <a href="/groups/event.html?&id=${1}">View event details</a>
+          <a href="/groups/event.html?id=${eventData.id}">View event details</a>
         </div>
            
       </div>
@@ -73,6 +70,6 @@ export class EventComponent extends BaseTemplateDynamicComponent {
   }
 }
 
-if (!customElements.get("event-component")) {
-  customElements.define("event-component", EventComponent);
+if (!customElements.get("group-page-event-component")) {
+  customElements.define("group-page-event-component", GroupPageEventComponent);
 }

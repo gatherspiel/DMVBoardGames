@@ -1,7 +1,7 @@
 import { getGameRestaurants, getGameStores } from "../mock/MockPageData.ts";
-import { API_ROOT, USE_MOCK } from "../../../../utils/params.ts";
+import { API_ROOT, USE_MOCK } from "../../../../shared/params.ts";
 import { getConventionData } from "../mock/MockConventionData.ts";
-import { generateApiThunk } from "../../../../framework/store/update/api/ApiThunkFactory.ts";
+import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
 
 function getLocationsQueryConfig() {
   return {

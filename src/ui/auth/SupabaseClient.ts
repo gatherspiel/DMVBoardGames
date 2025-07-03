@@ -2,7 +2,7 @@ import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import {
   SUPABASE_CLIENT_KEY,
   SUPABASE_CLIENT_URL,
-} from "../../utils/params.ts";
+} from "../../shared/params.ts";
 
 const supabaseClient: SupabaseClient = createClient(
   SUPABASE_CLIENT_URL,
