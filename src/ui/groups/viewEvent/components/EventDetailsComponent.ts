@@ -2,6 +2,8 @@ import {BaseTemplateDynamicComponent} from "../../../../framework/components/Bas
 import {GET_EVENT_REQUEST_STORE, GROUP_NAME_PARAM} from "../../Constants.ts";
 import {getUrlParameter} from "../../../../framework/utils/UrlParamUtils.ts";
 import {EVENT_REQUEST_THUNK} from "../data/EventRequestThunk.ts";
+import type {EventDetailsData} from "../data/EventDetailsData.ts";
+import {EDIT_EVENT_DETAILS_CONFIG} from "../EditEventDetailsHandler";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -32,27 +34,32 @@ const loadConfig = {
   },
 };
 
-
 export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("group-event-component", loadConfig);
   }
 
-  connectedCallback() {
+  render(data: EventDetailsData): string {
+    return data.isEditing ? this.renderEditMode(data) : this.renderViewMode(data);
   }
 
-  render(data: any): string {
-    console.log(JSON.stringify(data));
+  renderEditMode(data:EventDetailsData): string {
+    return `<h1>Editing ${data.name}</h1>`
+  }
 
+  renderViewMode(data:EventDetailsData): string {
     return `
       <div class="ui-section">
         <h1>${data.name}</h1>
         
         <p>${data.description}</p>
-        <button>Edit event</button>  
-        <a href="/groups.html?name=${data.name}">Back to group</a> 
+        ${data.permissions.userCanEdit ?
+      `<button ${this.createClickEvent(EDIT_EVENT_DETAILS_CONFIG)}>Edit event</button>  
+          ` :
+      ``
+    }
+        <a href="/groups.html?name=${encodeURIComponent(data.groupName)}">Back to group</a> 
       </div>
- 
     `;
   }
 
