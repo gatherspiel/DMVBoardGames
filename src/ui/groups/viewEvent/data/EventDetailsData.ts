@@ -6,4 +6,7 @@ export type EventDetailsData = {
   groupName: string;
   permissions: UserPermissionData;
   isEditing?: boolean;
+  day: string
+  startTime: string
+  location: string;
 }

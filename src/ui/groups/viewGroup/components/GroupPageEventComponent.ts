@@ -1,5 +1,9 @@
 import { retrieveJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {
+  convertDateTimeForDisplay,
+  convertLocationStringForDisplay
+} from "../../../../framework/utils/DateUtils.ts";
 
 const template = `
 
@@ -19,7 +23,7 @@ const template = `
       margin-right: 5rem;
     }
     
-    .event-title, .event-location {
+    .event-time, .event-location {
       font-size: 1.25rem;
       font-weight: 600;
    }
@@ -45,14 +49,13 @@ export class GroupPageEventComponent extends BaseTemplateDynamicComponent {
     this.id = this.getAttribute("key") ?? "";
     const eventData = retrieveJSONProp(this, "data");
 
-    let start:Date = new Date(eventData.startTime);
     return `
       <div id=${this.id} class="event">
       
         <div class="ui-section">
           <h3>${eventData.name}</h3>
-          <p class = "event-title">${start.toISOString().substring(0,10)} ${start.getHours()}:${start.getMinutes()}</p>
-          <p class = "event-location">Location: ${eventData.location}</p>
+          <p class = "event-time">${convertDateTimeForDisplay(eventData.startTime)}</p>
+          <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
           </br>  
           
           <a href="/groups/event.html?id=${eventData.id}">View event details</a>
