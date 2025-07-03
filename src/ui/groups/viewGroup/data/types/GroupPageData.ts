@@ -1,6 +1,6 @@
 import type { DisplayItem } from "../../../../homepage/data/types/DisplayItem.ts";
 import type { Event } from "../../../../homepage/data/types/Event.ts";
-import type { PermissionData } from "../../../../auth/types/PermissionData.ts";
+import type {UserPermissionData} from "../../../../../shared/types/UserPermissionData.ts";
 
 export interface GroupPageData extends DisplayItem {
   id: string;
@@ -8,6 +8,6 @@ export interface GroupPageData extends DisplayItem {
   description: string;
   url: string;
   eventData: Event[];
-  permissions: PermissionData;
+  permissions: UserPermissionData;
   saveGroupSuccess: boolean;
 }
