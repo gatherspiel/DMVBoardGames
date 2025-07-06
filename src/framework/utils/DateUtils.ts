@@ -11,8 +11,6 @@ export function convertDayOfWeekForDisplay(day:string){
 }
 const months = ['January', 'February','March', 'April','May', 'June','July','August','September','October','November','December'];
 
-//const validDateRegex = new RegExp("[0-9]{4}\-[0-1][0-9]\-[0-3][0-9]");
-//const validTimeRegex = new RegExp("[0-1][0-9]:[0-6][0-9]:[0-6][0-9]");
 
 /**
  * Returns date in YYYY-MM-DD format.
