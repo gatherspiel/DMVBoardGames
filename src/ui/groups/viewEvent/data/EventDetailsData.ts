@@ -8,5 +8,10 @@ export type EventDetailsData = {
   isEditing?: boolean;
   day: string
   startTime: string
+  endTime: string;
   location: string;
+  url: string;
+  errorMessage?: string;
+  successMessage?: string;
+
 }

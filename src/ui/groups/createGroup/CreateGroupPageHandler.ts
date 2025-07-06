@@ -35,7 +35,6 @@ export const CREATE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   },
   requestStoreToUpdate: CREATE_GROUP_REQUEST_STORE,
   componentReducer: function (data: any) {
-    //TODO: Update logic
     return data;
   },
 };
