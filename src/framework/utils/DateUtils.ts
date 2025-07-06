@@ -14,7 +14,8 @@ const months = ['January', 'February','March', 'April','May', 'June','July','Aug
 export function convertDateTimeForDisplay(date: string){
 
   const dateObj:Date = new Date(Date.parse(date))
-  const dateStr = `${months[dateObj.getMonth()]} ${dateObj.getDay()}, ${dateObj.getFullYear()} ` +
+
+  const dateStr = `${months[dateObj.getMonth()]} ${dateObj.getDate()}, ${dateObj.getFullYear()} ` +
     `${dateObj.getHours()}:${dateObj.getMinutes()}${dateObj.getHours()>=12 ?'PM':' AM'}`
   return dateStr;
 }
