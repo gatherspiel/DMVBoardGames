@@ -5,7 +5,7 @@ import {
   EVENT_NAME_INPUT,
   EVENT_URL_INPUT,
   GET_EVENT_REQUEST_STORE,
-  GROUP_NAME_PARAM, START_TIME_INPUT
+  GROUP_NAME_PARAM, START_DATE_INPUT, START_TIME_INPUT
 } from "../../Constants.ts";
 import {getUrlParameter} from "../../../../framework/utils/UrlParamUtils.ts";
 import {EVENT_REQUEST_THUNK} from "../data/EventRequestThunk.ts";
@@ -18,13 +18,24 @@ import {
 import {
   convertDateTimeForDisplay,
   convertDayOfWeekForDisplay,
-  convertLocationStringForDisplay
+  convertLocationStringForDisplay, getDateFromDateString, getTimeFromDateString
 } from "../../../../framework/utils/DateUtils.ts";
 import {UPDATE_EVENT_REQUEST_THUNK} from "../data/UpdateEventThunk.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
   <style>   
+  
+    #event-name-input {
+      width: 50rem;
+    }
+    .event-description-input {
+      width: 50rem;
+      height: 10rem;
+    }
+    .event-location-input {
+      width: 50rem;
+    }
   </style>
 `;
 
@@ -47,7 +58,6 @@ const loadConfig = {
     {
       thunk: UPDATE_EVENT_REQUEST_THUNK,
       componentStoreReducer: function (data:any) {
-        console.log(JSON.stringify(data.errorMessage));
         if (data.errorMessage) {
           return {
             errorMessage: data.errorMessage,
@@ -55,8 +65,9 @@ const loadConfig = {
           };
         } else {
           return {
+            isEditing: false,
             errorMessage: "",
-            successMessage: "Successfully created group",
+            successMessage: "Successfully updated event",
           };
         }
       }
@@ -84,6 +95,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
 
     <form>
       <label for="event-name">Event Name</label>
+      <br>
       <input 
         class="event-data-input"
         id=${EVENT_NAME_INPUT}
@@ -92,16 +104,18 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         value="${data.name}"
       />
       
+      <br>
       <label for="event-description">Event Description</label>
-      <input 
+      <br>
+      <textarea 
         class="event-description-input"
         id=${EVENT_DESCRIPTION_INPUT}
         name=${EVENT_DESCRIPTION_INPUT}
         type="text" 
-        value="${data.description}"
-      />
-      
+        >${data.description}</textarea>
+      <br>
       <label for="event-url">Event URL</label>
+      <br>
       <input 
         class="event-url-input"
         id=${EVENT_URL_INPUT}
@@ -109,18 +123,30 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         type="text" 
         value="${data.url}"
       />
+      <br>
       
-      <label for="event-name">Start time</label>
+      <label for="event-start-date">Start date</label>
+      <br>
+      <input 
+        class="start-time-input"
+        id=${START_DATE_INPUT}
+        name=${START_DATE_INPUT}
+        type="text" 
+        value="${getDateFromDateString(data.startTime)}"
+      />
+      <br>
+      <label for="event-start-time">Start time</label>
+      <br>
       <input 
         class="start-time-input"
         id=${START_TIME_INPUT}
         name=${START_TIME_INPUT}
         type="text" 
-        value="${data.startTime}"
+        value="${getTimeFromDateString(data.startTime)}"
       />
-      
-
+      <br>
       <label for="event-name">End time</label>
+      <br>
       <input 
         class="end-time-inpt"
         id=${END_TIME_INPUT}
@@ -128,8 +154,9 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         type="text" 
         value="${data.endTime}"
       />
-      
+      <br>
       <label for="event-name">Event location</label>
+      <br>
       <input 
         class="event-location-input"
         id=${EVENT_LOCATION_INPUT}
@@ -141,6 +168,8 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
     
     </form>
     <p id="update-event-error-message">${data.errorMessage ? data.errorMessage.trim(): ""}</p>
+    <p>${data.successMessage ? data.successMessage.trim(): ""}</p>
+
     <button ${this.createClickEvent(SAVE_EVENT_CONFIG)}>Save event</button>
     <button ${this.createClickEvent(CANCEL_EDIT_EVENT_DETAILS_CONFIG)}>Back to event</button>
    `
@@ -163,7 +192,6 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
           ``
         }
         
-        <p>${data.successMessage ? data.successMessage.trim(): ""}</p>
         <a href="/groups.html?name=${encodeURIComponent(data.groupName)}">Back to group</a> 
       </div>
     `;

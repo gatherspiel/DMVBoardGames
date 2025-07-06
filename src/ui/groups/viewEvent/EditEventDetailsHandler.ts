@@ -3,8 +3,9 @@ import {
   END_TIME_INPUT,
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT, EVENT_URL_INPUT,
-  SAVE_EVENT_REQUEST_STORE, START_TIME_INPUT,
+  SAVE_EVENT_REQUEST_STORE, START_DATE_INPUT, START_TIME_INPUT,
 } from "../Constants.ts";
+import {combineDateAndTime} from "../../../framework/utils/DateUtils.ts";
 
 export const EDIT_EVENT_DETAILS_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function() {
@@ -21,6 +22,20 @@ export const SAVE_EVENT_CONFIG: EventHandlerThunkConfig = {
     if (!params.shadowRoot) {
       throw new Error("Invalid shadow root for save group event handler");
     }
+
+
+    const startDate =
+      (params.shadowRoot.getElementById(
+        START_DATE_INPUT,
+      ) as HTMLTextAreaElement).value ?? ""
+
+    const startTime =
+      (params.shadowRoot.getElementById(
+        START_TIME_INPUT,
+      ) as HTMLTextAreaElement).value ?? ""
+
+
+    console.log(startDate+":"+startTime)
     return {
       id: params.componentStore.id,
       name: (
@@ -40,12 +55,8 @@ export const SAVE_EVENT_CONFIG: EventHandlerThunkConfig = {
             EVENT_URL_INPUT,
           ) as HTMLTextAreaElement
         )?.value ?? "",
-      startTime:
-        (
-          params.shadowRoot.getElementById(
-            START_TIME_INPUT,
-          ) as HTMLTextAreaElement
-        )?.value ?? "",
+
+      startTime: combineDateAndTime(startDate, startTime),
       endTime:
         (
           params.shadowRoot.getElementById(
@@ -63,6 +74,7 @@ export const SAVE_EVENT_CONFIG: EventHandlerThunkConfig = {
   },
   requestStoreToUpdate: SAVE_EVENT_REQUEST_STORE,
   componentReducer: function (a: any) {
+    console.log(a.startTime);
     return {
       name: a.name,
       description: a.description,
