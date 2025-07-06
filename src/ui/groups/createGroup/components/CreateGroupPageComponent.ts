@@ -65,6 +65,7 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   render(createGroupData: CreateGroupData): string {
+
     return `
       <h1>Create board game group</h1>
       
