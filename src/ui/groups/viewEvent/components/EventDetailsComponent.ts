@@ -188,6 +188,8 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         <p>${data.description}</p>
         ${data.permissions.userCanEdit ?
           `<button ${this.createClickEvent(EDIT_EVENT_DETAILS_CONFIG)}>Edit event</button>  
+             <button>Delete event</button>
+
               ` :
           ``
         }
