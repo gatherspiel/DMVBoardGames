@@ -23,7 +23,6 @@ const loadConfig = {
     {
       thunk: DELETE_GROUP_REQUEST_THUNK,
       componentStoreReducer: function (data: any) {
-        console.log(JSON.stringify(data));
         if (data.errorMessage) {
           return {
             errorMessage: data.errorMessage,

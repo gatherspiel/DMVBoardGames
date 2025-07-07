@@ -1,5 +1,6 @@
 import type {EventHandlerThunkConfig} from "../../../framework/state/update/event/types/EventHandlerThunkConfig";
 import {
+  DELETE_EVENT_REQUEST_STORE,
   END_TIME_INPUT,
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT, EVENT_URL_INPUT,
@@ -7,10 +8,42 @@ import {
 } from "../Constants.ts";
 import {combineDateAndTime} from "../../../framework/utils/DateUtils.ts";
 
+
+export const CONFIRM_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
+  eventHandler: function(params: any) {
+    return {
+      id: params.componentStore.id,
+      groupId: params.componentStore.groupId,
+    }
+  },
+  requestStoreToUpdate: DELETE_EVENT_REQUEST_STORE,
+  componentReducer: function (data: any) {
+    return {
+      errorMessage: data.error,
+    };
+  },
+}
 export const EDIT_EVENT_DETAILS_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function() {
     return {
       isEditing: true,
+    }
+  }
+}
+
+export const DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
+  eventHandler: function(){
+    return {
+      isDeleting: true,
+    }
+  }
+}
+
+
+export const CANCEL_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
+  eventHandler: function(){
+    return {
+      isDeleting: false,
     }
   }
 }
