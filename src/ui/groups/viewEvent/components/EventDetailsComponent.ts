@@ -11,7 +11,8 @@ import {getUrlParameter} from "../../../../framework/utils/UrlParamUtils.ts";
 import {EVENT_REQUEST_THUNK} from "../data/EventRequestThunk.ts";
 import type {EventDetailsData} from "../data/EventDetailsData.ts";
 import {
-  CANCEL_EDIT_EVENT_DETAILS_CONFIG,
+  CANCEL_DELETE_EVENT_CONFIG,
+  CANCEL_EDIT_EVENT_DETAILS_CONFIG, CONFIRM_DELETE_EVENT_CONFIG, DELETE_EVENT_CONFIG,
   EDIT_EVENT_DETAILS_CONFIG,
   SAVE_EVENT_CONFIG
 } from "../EditEventDetailsHandler";
@@ -21,6 +22,7 @@ import {
   convertLocationStringForDisplay, getDateFromDateString, getTimeFromDateString
 } from "../../../../framework/utils/DateUtils.ts";
 import {UPDATE_EVENT_REQUEST_THUNK} from "../data/UpdateEventThunk.ts";
+import {DELETE_EVENT_REQUEST_THUNK} from "../data/DeleteEventRequestThunk.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -71,6 +73,23 @@ const loadConfig = {
           };
         }
       }
+    },
+    {
+      thunk: DELETE_EVENT_REQUEST_THUNK,
+      componentStoreReducer: function (data:any) {
+        if (data.errorMessage) {
+          return {
+            errorMessage: data.errorMessage,
+            successMessage: "",
+          };
+        } else {
+          return {
+            isEditing: false,
+            errorMessage: "",
+            successMessage: "Successfully deleted event",
+          };
+        }
+      }
     }
 
 
@@ -87,9 +106,27 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: EventDetailsData): string {
-    return data.isEditing ? this.renderEditMode(data) : this.renderViewMode(data);
+
+    if(data.isEditing){
+      return this.renderEditMode(data);
+    }
+    if(data.isDeleting){
+      return this.renderDeleteMode(data);
+    }
+    return this.renderViewMode(data);
   }
 
+  renderDeleteMode(data:EventDetailsData): string {
+    console.log(JSON.stringify(data))
+
+    return `
+      <h1>Are you sure you want to delete ${data.name} on ${convertDateTimeForDisplay(data.startTime)}</h1>
+      <button ${this.createClickEvent(CONFIRM_DELETE_EVENT_CONFIG)}>Confirm delete</button>
+      <button ${this.createClickEvent(CANCEL_DELETE_EVENT_CONFIG)}>Cancel</button>
+      
+      ${data.errorMessage ? `<p>${data.errorMessage}</p>` : ''} 
+    `
+  }
   renderEditMode(data:EventDetailsData): string {
     return `<h1>Editing: ${data.name}</h1>
 
@@ -188,6 +225,8 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         <p>${data.description}</p>
         ${data.permissions.userCanEdit ?
           `<button ${this.createClickEvent(EDIT_EVENT_DETAILS_CONFIG)}>Edit event</button>  
+           <button ${this.createClickEvent(DELETE_EVENT_CONFIG)}> Delete event</button>
+
               ` :
           ``
         }

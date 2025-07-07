@@ -60,7 +60,6 @@ export function combineDateAndTime(date: string, time: string){
   }
 
   var updated = `${dateSplit[0]}-${dateSplit[1]}-${dateSplit[2]}T${timeSplit[0]}:${timeSplit[1]}`
-  console.log(updated)
   return updated;
 }
 
@@ -76,7 +75,6 @@ export function convertDateTimeForDisplay(date: string){
   if(dateObj.getMinutes() < 10){
     displayMinutes = `0${displayMinutes}`;
   }
-  console.log(dateObj.getMinutes());
 
   const dateStr = `${months[dateObj.getMonth()]} ${dateObj.getDate()}, ${dateObj.getFullYear()} ` +
     `${displayHours}:${displayMinutes}${dateObj.getHours()>=12 ?'PM':' AM'}`
