@@ -49,7 +49,7 @@ export const CANCEL_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
 }
 
 /**
- * TO
+ *
  */
 export const SAVE_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params): any {
@@ -69,7 +69,6 @@ export const SAVE_EVENT_CONFIG: EventHandlerThunkConfig = {
         START_TIME_INPUT,
       ) as HTMLTextAreaElement).value ?? ""
 
-    console.log(startDate+":"+startTime)
     return {
       id: params.componentStore.id,
       name: (

@@ -54,7 +54,7 @@ export function combineDateAndTime(date: string, time: string){
   if(!time.split(" ")[1]){
     if(timeSplit[1].includes("PM")){
       timeSplit[1]=timeSplit[1].substring(0,1);
-      if(timeSplit[0] !== '12'){
+      if(timeSplit[0] !== '12' && timeSplit[0] >){
         timeSplit[0] = "" + (parseInt(timeSplit[0])+12)
 
       }

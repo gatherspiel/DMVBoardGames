@@ -28,6 +28,8 @@ import {
   subscribeComponentToGlobalField,
 } from "../state/data/GlobalStore.ts";
 import type { EventValidationResult } from "../state/update/event/types/EventValidationResult.ts";
+import type {FormItemConfig} from "./types/FormItemConfig.ts";
+import  {FormSelector} from "../FormSelector.ts";
 
 type EventConfig = {
   eventType: string;
@@ -47,6 +49,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   dependenciesLoaded: boolean = true;
   componentLoadConfig: ComponentLoadConfig | undefined = undefined; //Used if global state is needed before loading the component
 
+  formSelector: FormSelector
   static instanceCount = 1;
 
   constructor(componentStoreName: string, loadConfig?: ComponentLoadConfig) {
@@ -55,9 +58,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     this.instanceId = BaseDynamicComponent.instanceCount;
     BaseDynamicComponent.instanceCount++;
     this.eventHandlers = {};
-
     this.componentStoreName = `${componentStoreName}-${BaseDynamicComponent.instanceCount}`;
 
+    this.formSelector = new FormSelector();
     createComponentStore(this.componentStoreName, this);
 
     if (loadConfig) {
@@ -153,12 +156,44 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     if (!this.dependenciesLoaded) {
       return;
     }
+    this.formSelector.clearFormSelectors();
     this.innerHTML = this.render(data);
   }
 
   getElementIdTag() {
     return `data-${this.componentStoreName}-element-id`;
   }
+
+  generateInputFormItem(formConfig:FormItemConfig){
+    this.formSelector.addFormSelector(formConfig.id);
+    return `
+      <label for=${formConfig.id}>${formConfig.componentLabel}</label>
+      <br>
+      <input
+        ${formConfig.className ? `class="${formConfig.className}"` : ``}
+        id=${formConfig.id}
+        name=${formConfig.id}
+        type=${formConfig.inputType}
+        value=${formConfig.value}
+        />
+    `
+  }
+
+  generateTextInputFormItem(formConfig:FormItemConfig){
+    this.formSelector.addFormSelector(formConfig.id);
+    return `
+      <label for=${formConfig.id}>${formConfig.componentLabel}</label>
+      <br>
+      <textarea
+        ${formConfig.className ? `class="${formConfig.className}"` : ``}
+        id=${formConfig.id}
+        name=${formConfig.id}
+        type=${formConfig.inputType}
+        /> ${formConfig.value}</textarea>
+    `
+  }
+
+
   //TODO: Handle case where there are multiple instances of the same component when generating the ids for event handlers.
   saveEventHandler(
     eventFunction: (e: Event) => any,
@@ -183,6 +218,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   createOnChangeEvent(eventConfig: any) {
     const eventHandler = BaseDynamicComponent.createHandler(
       eventConfig,
+      this.formSelector,
       this?.componentStoreName,
     );
     return this.saveEventHandler(eventHandler, "change");
@@ -193,12 +229,14 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     if (this.shadowRoot) {
       eventHandler = BaseDynamicComponent.createHandler(
         eventConfig,
+        this.formSelector,
         this?.componentStoreName,
         this?.shadowRoot,
       );
     } else {
       eventHandler = BaseDynamicComponent.createHandler(
         eventConfig,
+        this.formSelector,
         this?.componentStoreName,
       );
     }
@@ -210,12 +248,14 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     if (this.shadowRoot) {
       eventHandler = BaseDynamicComponent.createHandler(
         eventConfig,
+        this.formSelector,
         this?.componentStoreName,
         this?.shadowRoot,
       );
     } else {
       eventHandler = BaseDynamicComponent.createHandler(
         eventConfig,
+        this.formSelector,
         this?.componentStoreName,
       );
     }
@@ -224,6 +264,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   static createHandler(
     eventConfig: EventHandlerThunkConfig,
+    formSelector: FormSelector,
     storeName?: string,
     shadowRoot?: ShadowRoot,
   ) {
@@ -262,6 +303,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         eventConfig.eventHandler,
         storeName,
         shadowRoot,
+        formSelector
       );
 
       const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {
@@ -270,10 +312,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       dispatchers.push(storeUpdate);
       const eventUpdater: EventThunk = new EventThunk(request, dispatchers);
 
-      /**
-       * TODO:
-       * -Create
-       */
       if (eventConfig.validator) {
         const eventConfigValidator = eventConfig.validator;
         const validator = function (

@@ -131,16 +131,15 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
     return `<h1>Editing: ${data.name}</h1>
 
     <form>
-      <label for="event-name">Event Name</label>
-      <br>
-      <input 
-        class="event-data-input"
-        id=${EVENT_NAME_INPUT}
-        name=${EVENT_NAME_INPUT}
-        type="text" 
-        value="${data.name}"
-      />
+    
+      ${this.generateInputFormItem({
+        id: EVENT_NAME_INPUT,
+        componentLabel: "Event name",
+        inputType: "text",
+        value: data.name
+      })}
       
+     
       <br>
       <label for="event-description">Event Description</label>
       <br>

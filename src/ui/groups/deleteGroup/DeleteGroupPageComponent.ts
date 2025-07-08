@@ -74,7 +74,6 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
                   name=${GROUP_NAME_INPUT}
                   type="text" 
                   value="Test"
-
                 />
                 <button type="submit" ${this.createClickEvent(DELETE_GROUP_EVENT_CONFIG)}>Confirm delete</button>
               </form> 
