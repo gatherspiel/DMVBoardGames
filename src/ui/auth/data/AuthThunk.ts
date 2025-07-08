@@ -5,7 +5,7 @@ import type { AuthRequest } from "../types/AuthRequest.ts";
 import { AuthResponse } from "../types/AuthResponse.ts";
 import { generateApiThunkWithExternalConfig } from "../../../framework/state/update/api/ApiThunkFactory.ts";
 import { getLocalStorageDataIfPresent } from "../../../framework/utils/LocalStorageUtils.ts";
-import { isAfterNow } from "../../../framework/utils/DateUtils.ts";
+import { isAfterNow } from "../../../framework/utils/EventDataUtils.ts";
 import type { AuthReducerError } from "../types/AuthReducerError.ts";
 import { AUTH_TOKEN_KEY } from "../../../shared/params.ts";
 import { getSupabaseClient } from "../SupabaseClient.ts";

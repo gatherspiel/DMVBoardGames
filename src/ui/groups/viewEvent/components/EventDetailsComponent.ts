@@ -20,7 +20,7 @@ import {
   convertDateTimeForDisplay,
   convertDayOfWeekForDisplay,
   convertLocationStringForDisplay, getDateFromDateString, getTimeFromDateString
-} from "../../../../framework/utils/DateUtils.ts";
+} from "../../../../framework/utils/EventDataUtils.ts";
 import {UPDATE_EVENT_REQUEST_THUNK} from "../data/UpdateEventThunk.ts";
 import {DELETE_EVENT_REQUEST_THUNK} from "../data/DeleteEventRequestThunk.ts";
 
@@ -31,11 +31,11 @@ const template = `
     #event-name-input {
       width: 50rem;
     }
-    .event-description-input {
+    #${EVENT_DESCRIPTION_INPUT} {
       width: 50rem;
       height: 10rem;
     }
-    .event-location-input {
+    #${EVENT_LOCATION_INPUT} {
       width: 50rem;
     }
   </style>
@@ -139,69 +139,48 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         value: data.name
       })}
       
-     
-      <br>
-      <label for="event-description">Event Description</label>
-      <br>
-      <textarea 
-        class="event-description-input"
-        id=${EVENT_DESCRIPTION_INPUT}
-        name=${EVENT_DESCRIPTION_INPUT}
-        type="text" 
-        >${data.description}</textarea>
-      <br>
-      <label for="event-url">Event URL</label>
-      <br>
-      <input 
-        class="event-url-input"
-        id=${EVENT_URL_INPUT}
-        name=${EVENT_URL_INPUT}
-        type="text" 
-        value="${data.url}"
-      />
-      <br>
+      ${this.generateTextInputFormItem({
+        id: EVENT_DESCRIPTION_INPUT,
+        componentLabel: "Event description",
+        inputType: "text",
+        value: data.description
+      })}
       
-      <label for="event-start-date">Start date</label>
+       ${this.generateInputFormItem({
+        id: EVENT_URL_INPUT,
+        componentLabel: "Event URL",
+        inputType: "text",
+        value: data.url
+      })}
+       
+      ${this.generateInputFormItem({
+        id: START_DATE_INPUT,
+        componentLabel: "Start date",
+        inputType: "text",
+        value: getDateFromDateString(data.startTime)
+      })}
+      
+      ${this.generateInputFormItem({
+        id: START_TIME_INPUT,
+        componentLabel: "Start time",
+        inputType: "text",
+        value: getTimeFromDateString(data.startTime)
+      })}
+ 
+      ${this.generateInputFormItem({
+        id: END_TIME_INPUT,
+        componentLabel: "End time",
+        inputType: "text",
+        value: getTimeFromDateString(data.endTime)
+      })}     
       <br>
-      <input 
-        class="start-time-input"
-        id=${START_DATE_INPUT}
-        name=${START_DATE_INPUT}
-        type="text" 
-        value="${getDateFromDateString(data.startTime)}"
-      />
-      <br>
-      <label for="event-start-time">Start time</label>
-      <br>
-      <input 
-        class="start-time-input"
-        id=${START_TIME_INPUT}
-        name=${START_TIME_INPUT}
-        type="text" 
-        value="${getTimeFromDateString(data.startTime)}"
-      />
-      <br>
-      <label for="event-name">End time</label>
-      <br>
-      <input 
-        class="end-time-inpt"
-        id=${END_TIME_INPUT}
-        name=${END_TIME_INPUT}
-        type="text" 
-        value="${data.endTime}"
-      />
-      <br>
-      <label for="event-name">Event location</label>
-      <br>
-      <input 
-        class="event-location-input"
-        id=${EVENT_LOCATION_INPUT}
-        name=${EVENT_LOCATION_INPUT}
-        type="text" 
-        value="${data.location}"
-      />
-          
-    
+  
+      ${this.generateInputFormItem({
+        id: EVENT_LOCATION_INPUT,
+        componentLabel: "Event location",
+        inputType: "text",
+        value: data.location
+      })}     
     </form>
     <p id="update-event-error-message">${data.errorMessage ? data.errorMessage.trim(): ""}</p>
 

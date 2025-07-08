@@ -138,6 +138,8 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     };
 
     if (this.shadowRoot) {
+
+      this.formSelector.setShadowRoot(this.shadowRoot);
       this.shadowRoot?.querySelectorAll(`[${elementIdTag}]`).forEach(function (
         item: Element,
       ) {
@@ -174,8 +176,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         id=${formConfig.id}
         name=${formConfig.id}
         type=${formConfig.inputType}
-        value=${formConfig.value}
+        value="${formConfig.value}"
         />
+        <br>
     `
   }
 
@@ -190,6 +193,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         name=${formConfig.id}
         type=${formConfig.inputType}
         /> ${formConfig.value}</textarea>
+        <br>
     `
   }
 
@@ -226,39 +230,21 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   createSubmitEvent(eventConfig: any) {
     let eventHandler;
-    if (this.shadowRoot) {
-      eventHandler = BaseDynamicComponent.createHandler(
-        eventConfig,
-        this.formSelector,
-        this?.componentStoreName,
-        this?.shadowRoot,
-      );
-    } else {
-      eventHandler = BaseDynamicComponent.createHandler(
-        eventConfig,
-        this.formSelector,
-        this?.componentStoreName,
-      );
-    }
+    eventHandler = BaseDynamicComponent.createHandler(
+      eventConfig,
+      this.formSelector,
+      this?.componentStoreName,
+    );
     return this.saveEventHandler(eventHandler, "submit");
   }
 
   createClickEvent(eventConfig: any, id?: string) {
     let eventHandler;
-    if (this.shadowRoot) {
-      eventHandler = BaseDynamicComponent.createHandler(
-        eventConfig,
-        this.formSelector,
-        this?.componentStoreName,
-        this?.shadowRoot,
-      );
-    } else {
-      eventHandler = BaseDynamicComponent.createHandler(
-        eventConfig,
-        this.formSelector,
-        this?.componentStoreName,
-      );
-    }
+    eventHandler = BaseDynamicComponent.createHandler(
+      eventConfig,
+      this.formSelector,
+      this?.componentStoreName,
+    );
     return this.saveEventHandler(eventHandler, "click", id);
   }
 
@@ -266,7 +252,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     eventConfig: EventHandlerThunkConfig,
     formSelector: FormSelector,
     storeName?: string,
-    shadowRoot?: ShadowRoot,
   ) {
     const storeToUpdate =
       eventConfig?.requestStoreToUpdate &&
@@ -302,7 +287,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       const request: EventHandlerAction = new EventHandlerAction(
         eventConfig.eventHandler,
         storeName,
-        shadowRoot,
         formSelector
       );
 

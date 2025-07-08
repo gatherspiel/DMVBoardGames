@@ -6,7 +6,7 @@ import {
   EVENT_NAME_INPUT, EVENT_URL_INPUT,
   SAVE_EVENT_REQUEST_STORE, START_DATE_INPUT, START_TIME_INPUT,
 } from "../Constants.ts";
-import {combineDateAndTime} from "../../../framework/utils/DateUtils.ts";
+import {combineDateAndTime} from "../../../framework/utils/EventDataUtils.ts";
 
 
 export const CONFIRM_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
@@ -59,49 +59,19 @@ export const SAVE_EVENT_CONFIG: EventHandlerThunkConfig = {
       throw new Error("Invalid shadow root for save group event handler");
     }
 
-    const startDate =
-      (params.shadowRoot.getElementById(
-        START_DATE_INPUT,
-      ) as HTMLTextAreaElement).value ?? ""
+    const startDate = params.formSelector.getValue(START_DATE_INPUT)
+    const startTime = params.formSelector.getValue(START_TIME_INPUT)
+    const endTime =  params.formSelector.getValue(END_TIME_INPUT)
 
-    const startTime =
-      (params.shadowRoot.getElementById(
-        START_TIME_INPUT,
-      ) as HTMLTextAreaElement).value ?? ""
-
+    console.log(params.formSelector.getValue(EVENT_NAME_INPUT));
     return {
       id: params.componentStore.id,
-      name: (
-        params.shadowRoot.getElementById(
-          EVENT_NAME_INPUT,
-        ) as HTMLInputElement
-      )?.value.trim(),
-      description:
-        (
-          params.shadowRoot.getElementById(
-            EVENT_DESCRIPTION_INPUT,
-          ) as HTMLTextAreaElement
-        )?.value ?? "",
-      url:
-        (
-          params.shadowRoot.getElementById(
-            EVENT_URL_INPUT,
-          ) as HTMLTextAreaElement
-        )?.value ?? "",
-
+      name: params.formSelector.getValue(EVENT_NAME_INPUT),
+      description: params.formSelector.getValue(EVENT_DESCRIPTION_INPUT),
+      url: params.formSelector.getValue(EVENT_URL_INPUT),
       startTime: combineDateAndTime(startDate, startTime),
-      endTime:
-        (
-          params.shadowRoot.getElementById(
-            END_TIME_INPUT,
-          ) as HTMLTextAreaElement
-        )?.value ?? "",
-      location:
-        (
-          params.shadowRoot.getElementById(
-            EVENT_LOCATION_INPUT,
-          ) as HTMLTextAreaElement
-        )?.value ?? "",
+      endTime: combineDateAndTime(startDate, endTime),
+      location: params.formSelector.getValue(EVENT_LOCATION_INPUT),
       groupId: params.componentStore.groupId
     };
   },
