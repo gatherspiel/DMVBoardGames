@@ -166,6 +166,12 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     return `data-${this.componentStoreName}-element-id`;
   }
 
+  generateErrorMessage(message: string | undefined){
+    return `
+        <p class="api-error-message">${message? message.trim() : ""}</p>
+        `
+
+  }
   generateInputFormItem(formConfig:FormItemConfig){
     this.formSelector.addFormSelector(formConfig.id);
     return `
@@ -198,7 +204,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
 
-  //TODO: Handle case where there are multiple instances of the same component when generating the ids for event handlers.
   saveEventHandler(
     eventFunction: (e: Event) => any,
     eventType: string,

@@ -117,14 +117,11 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   }
 
   renderDeleteMode(data:EventDetailsData): string {
-    console.log(JSON.stringify(data))
-
     return `
       <h1>Are you sure you want to delete ${data.name} on ${convertDateTimeForDisplay(data.startTime)}</h1>
       <button ${this.createClickEvent(CONFIRM_DELETE_EVENT_CONFIG)}>Confirm delete</button>
       <button ${this.createClickEvent(CANCEL_DELETE_EVENT_CONFIG)}>Cancel</button>
-      
-      ${data.errorMessage ? `<p>${data.errorMessage}</p>` : ''} 
+      ${this.generateErrorMessage(data.errorMessage)}
     `
   }
   renderEditMode(data:EventDetailsData): string {
@@ -182,7 +179,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         value: data.location
       })}     
     </form>
-    <p id="update-event-error-message">${data.errorMessage ? data.errorMessage.trim(): ""}</p>
+    ${this.generateErrorMessage(data.errorMessage)}
 
     <button ${this.createClickEvent(SAVE_EVENT_CONFIG)}>Save event</button>
     <button ${this.createClickEvent(CANCEL_EDIT_EVENT_DETAILS_CONFIG)}>Back to event</button>
@@ -191,6 +188,11 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
 
   renderViewMode(data:EventDetailsData): string {
 
+    console.log(data.errorMessage);
+
+    if(data.errorMessage){
+      return `${this.generateErrorMessage(data.errorMessage)}`
+    }
     return `
       <div class="ui-section">
         <h1>${data.name}</h1>

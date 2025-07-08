@@ -46,3 +46,7 @@ p {
 .ui-input {
     display: inline-block;
 }
+
+.api-error-message {
+    color:darkred;
+}

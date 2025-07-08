@@ -24,17 +24,7 @@ function updateDeleteEventRequestThunk(params: any): ApiRequestConfig {
     };
 }
 
-const defaultFunctionConfig = {
-    defaultFunction: function (response: any) {
-        return {
-            errorMessage: response.message,
-        };
-    },
-    defaultFunctionPriority: false,
-};
-
 export const DELETE_EVENT_REQUEST_THUNK = generateApiThunk({
     queryConfig: updateDeleteEventRequestThunk,
-    defaultFunctionConfig: defaultFunctionConfig,
     requestStoreName: DELETE_EVENT_REQUEST_STORE,
 });

@@ -23,18 +23,10 @@ function updateEventRequestThunk(
   };
 }
 
-const defaultFunctionConfig = {
-  defaultFunction: function (response: any) {
-    return {
-      errorMessage: response.message,
-    };
-  },
-  defaultFunctionPriority: false,
-};
+
 
 
 export const UPDATE_EVENT_REQUEST_THUNK = generateApiThunk({
   queryConfig: updateEventRequestThunk,
-  defaultFunctionConfig: defaultFunctionConfig,
   requestStoreName: SAVE_EVENT_REQUEST_STORE,
 });

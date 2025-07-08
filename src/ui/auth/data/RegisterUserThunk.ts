@@ -22,18 +22,8 @@ export function getLoginComponentStoreFromRegisterResponse(response: any) {
   };
 }
 
-const userRegisterErrorConfig = {
-  defaultFunction: (response: any) => {
-    return {
-      errorMessage: response.message,
-    };
-  },
-  defaultFunctionPriority: false,
-};
-
 export const REGISTER_USER_THUNK: BaseThunk = generateApiThunk({
   queryConfig: registerUserConfig,
-  defaultFunctionConfig: userRegisterErrorConfig,
 }).addGlobalStateReducer(() => {
   return {
     isLoggedIn: "false",

@@ -74,7 +74,7 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
                 })} 
                 <button type="submit" ${this.createClickEvent(DELETE_GROUP_EVENT_CONFIG)}>Confirm delete</button>
               </form> 
-              <p id="delete-group-error-message">${data.errorMessage ? data.errorMessage.trim() : ""}</p>
+              ${this.generateErrorMessage(data.errorMessage)}
               
               <p>${data.successMessage ? data.successMessage.trim() : ""}</p>
 

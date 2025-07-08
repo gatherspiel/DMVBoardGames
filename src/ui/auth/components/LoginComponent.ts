@@ -33,9 +33,6 @@ const template = `
     #login-component-container {
       padding-top: 0.25rem;
     }
-    #authentication-error-message {
-      color:darkred;
-    }
     .login-element {
       display: inline-block;
     }
@@ -129,7 +126,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
                 Register 
             </button>       
           </div>
-          <p class="login-element" id="authentication-error-message">${data.errorMessage ? data.errorMessage.trim() : ""}</p>
+          ${this.generateErrorMessage(data.errorMessage)}
           <p class="login-element">${data.successMessage}</p>
         </form>
 

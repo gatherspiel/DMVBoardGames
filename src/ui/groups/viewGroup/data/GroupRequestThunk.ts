@@ -16,13 +16,6 @@ function getGroupRequestConfig(requestParams: any): ApiRequestConfig {
   };
 }
 
-const defaultFunctionConfig = {
-  defaultFunction: function () {
-    return {};
-  },
-  defaultFunctionPriority: false,
-};
 export const GROUP_REQUEST_THUNK = generateApiThunk({
   queryConfig: getGroupRequestConfig,
-  defaultFunctionConfig: defaultFunctionConfig,
 });
