@@ -205,7 +205,6 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
     
     </form>
     <p id="update-event-error-message">${data.errorMessage ? data.errorMessage.trim(): ""}</p>
-    <p>${data.successMessage ? data.successMessage.trim(): ""}</p>
 
     <button ${this.createClickEvent(SAVE_EVENT_CONFIG)}>Save event</button>
     <button ${this.createClickEvent(CANCEL_EDIT_EVENT_DETAILS_CONFIG)}>Back to event</button>
@@ -230,7 +229,8 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
               ` :
           ``
         }
-        
+      <p>${data.successMessage ? data.successMessage.trim(): ""}</p>
+
         <a href="/groups.html?name=${encodeURIComponent(data.groupName)}">Back to group</a> 
       </div>
     `;

@@ -48,14 +48,16 @@ export const CANCEL_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
   }
 }
 
+/**
+ * TO
+ */
 export const SAVE_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params): any {
 
-    console.log(JSON.stringify(params.componentStore))
+    console.log(JSON.stringify(params))
     if (!params.shadowRoot) {
       throw new Error("Invalid shadow root for save group event handler");
     }
-
 
     const startDate =
       (params.shadowRoot.getElementById(
@@ -66,7 +68,6 @@ export const SAVE_EVENT_CONFIG: EventHandlerThunkConfig = {
       (params.shadowRoot.getElementById(
         START_TIME_INPUT,
       ) as HTMLTextAreaElement).value ?? ""
-
 
     console.log(startDate+":"+startTime)
     return {

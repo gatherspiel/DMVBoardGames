@@ -179,6 +179,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     return id;
   }
 
+
   createOnChangeEvent(eventConfig: any) {
     const eventHandler = BaseDynamicComponent.createHandler(
       eventConfig,
@@ -269,6 +270,10 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       dispatchers.push(storeUpdate);
       const eventUpdater: EventThunk = new EventThunk(request, dispatchers);
 
+      /**
+       * TODO:
+       * -Create
+       */
       if (eventConfig.validator) {
         const eventConfigValidator = eventConfig.validator;
         const validator = function (

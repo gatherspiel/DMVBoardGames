@@ -28,7 +28,6 @@ export function getTimeFromDateString(date: string) {
   if(dateObj.getMinutes() < 10){
     displayMinutes = `0${displayMinutes}`;
   }
-  console.log(dateObj.getMinutes());
 
 
   return `${dateObj.getHours()}:${displayMinutes}${dateObj.getHours()>=12 ?'PM':' AM'}`
@@ -44,11 +43,22 @@ export function combineDateAndTime(date: string, time: string){
   if(dateSplit[2].length === 1) {
     dateSplit[2]=`0${dateSplit[2]}`
   }
+  console.log(time);
 
   const timeSplit = time.split(" ")[0].split(":");
 
-  if(time.split(" ")[1].includes("PM") && timeSplit[0] !== '12'){
+  if(time.split(" ")[1] && time.split(" ")[1].includes("PM") && timeSplit[0] !== '12'){
     timeSplit[0] = "" + (parseInt(timeSplit[0])+12)
+  }
+
+  if(!time.split(" ")[1]){
+    if(timeSplit[1].includes("PM")){
+      timeSplit[1]=timeSplit[1].substring(0,1);
+      if(timeSplit[0] !== '12'){
+        timeSplit[0] = "" + (parseInt(timeSplit[0])+12)
+
+      }
+    }
   }
 
   if(timeSplit[0].length === 1){
