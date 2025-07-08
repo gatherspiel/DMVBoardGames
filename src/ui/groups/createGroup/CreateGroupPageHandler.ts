@@ -8,29 +8,10 @@ import {
 
 export const CREATE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params): any {
-    if (!params.shadowRoot) {
-      throw new Error("Invalid shadow root for save group event handler");
-    }
-
     return {
-      name:
-        (
-          params.shadowRoot.getElementById(
-            GROUP_NAME_INPUT,
-          ) as HTMLTextAreaElement
-        )?.value ?? "",
-      summary:
-        (
-          params.shadowRoot.getElementById(
-            GROUP_DESCRIPTION_INPUT,
-          ) as HTMLTextAreaElement
-        )?.value ?? "",
-      url:
-        (
-          params.shadowRoot.getElementById(
-            GROUP_URL_INPUT,
-          ) as HTMLTextAreaElement
-        )?.value ?? "",
+      name: params.formSelector.getValue(GROUP_NAME_INPUT),
+      description: params.formSelector.getValue(GROUP_DESCRIPTION_INPUT),
+      url: params.formSelector.getValue(GROUP_URL_INPUT)
     };
   },
   requestStoreToUpdate: CREATE_GROUP_REQUEST_STORE,

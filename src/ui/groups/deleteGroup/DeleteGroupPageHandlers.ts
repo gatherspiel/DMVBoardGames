@@ -6,16 +6,8 @@ import { getUrlParameter } from "../../../framework/utils/UrlParamUtils.ts";
 
 export const DELETE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params: any) {
-    if (!params.shadowRoot) {
-      throw new Error("Invalid shadow root for save group event handler");
-    }
     return {
-      name:
-        (
-          params.shadowRoot.getElementById(
-            GROUP_NAME_INPUT,
-          ) as HTMLTextAreaElement
-        )?.value ?? "",
+      name: params.formSelector.getValue(GROUP_NAME_INPUT),
       id: getUrlParameter("id"),
     };
   },
@@ -23,6 +15,8 @@ export const DELETE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
     eventData: any,
     componentState: DeleteGroupData,
   ): EventValidationResult {
+
+
     if (eventData.name !== componentState.existingGroupName) {
       return {
         error: "Group name not entered correctly",

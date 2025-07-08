@@ -1,6 +1,6 @@
 export type UpdateGroupRequest = {
   id: number;
-  summary: string;
+  description: string;
   name: string;
   url: string;
 };

@@ -10,16 +10,9 @@ import type { EventHandlerData } from "../../framework/state/update/event/types/
 
 export const LOGIN_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params: EventHandlerData) {
-    if (!params.shadowRoot) {
-      throw new Error("Invalid shadow root for save group event handler");
-    }
     return {
-      username:
-        (params.shadowRoot.getElementById(USERNAME_INPUT) as HTMLInputElement)
-          ?.value ?? "",
-      password:
-        (params.shadowRoot.getElementById(PASSWORD_INPUT) as HTMLInputElement)
-          ?.value ?? "",
+      username: params.formSelector.getValue(USERNAME_INPUT),
+      password: params.formSelector.getValue(PASSWORD_INPUT)
     };
   },
   requestStoreToUpdate: AUTH_REQUEST_STORE,
@@ -32,16 +25,9 @@ export const LOGOUT_EVENT_CONFIG: EventHandlerThunkConfig = {
 
 export const REGISTER_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params: EventHandlerData) {
-    if (!params.shadowRoot) {
-      throw new Error("Invalid shadow root for save group event handler");
-    }
     return {
-      username:
-        (params.shadowRoot.getElementById(USERNAME_INPUT) as HTMLInputElement)
-          ?.value ?? "",
-      password:
-        (params.shadowRoot.getElementById(PASSWORD_INPUT) as HTMLInputElement)
-          ?.value ?? "",
+      username: params.formSelector.getValue(USERNAME_INPUT),
+      password: params.formSelector.getValue(PASSWORD_INPUT),
     };
   },
   requestStoreToUpdate: REGISTER_REQUEST_STORE,

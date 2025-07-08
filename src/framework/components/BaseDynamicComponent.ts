@@ -170,7 +170,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     this.formSelector.addFormSelector(formConfig.id);
     return `
       <label for=${formConfig.id}>${formConfig.componentLabel}</label>
-      <br>
+      ${formConfig.lineBreakAfterLabel !== false? `<br>` : ''}
       <input
         ${formConfig.className ? `class="${formConfig.className}"` : ``}
         id=${formConfig.id}
@@ -186,7 +186,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     this.formSelector.addFormSelector(formConfig.id);
     return `
       <label for=${formConfig.id}>${formConfig.componentLabel}</label>
-      <br>
+      ${formConfig.lineBreakAfterLabel !== false? `<br>` : ''}
       <textarea
         ${formConfig.className ? `class="${formConfig.className}"` : ``}
         id=${formConfig.id}

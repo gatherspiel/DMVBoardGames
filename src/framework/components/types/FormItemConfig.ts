@@ -4,5 +4,5 @@ export type FormItemConfig = {
     value: string,
     inputType: string,
     className?:string,
-
+    lineBreakAfterLabel?: boolean,
 }
