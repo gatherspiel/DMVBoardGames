@@ -9,7 +9,7 @@ import { CREATE_GROUP_REQUEST_STORE } from "../../Constants.ts";
 function updateCreateGroupRequestThunk(requestParams: any): ApiRequestConfig {
   const requestBody = {
     name: requestParams.name,
-    summary: requestParams.summary,
+    description: requestParams.description,
     url: requestParams.url,
   };
 

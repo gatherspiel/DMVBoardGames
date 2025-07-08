@@ -17,35 +17,18 @@ export const EDIT_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
 
 export const SAVE_GROUP_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params): UpdateGroupRequest {
-    if (!params.shadowRoot) {
-      throw new Error("Invalid shadow root for save group event handler");
-    }
     return {
       id: params.componentStore.id,
-      summary: (
-        params.shadowRoot.getElementById(
-          GROUP_DESCRIPTION_INPUT,
-        ) as HTMLInputElement
-      )?.value.trim(),
-      name:
-        (
-          params.shadowRoot.getElementById(
-            GROUP_NAME_INPUT,
-          ) as HTMLTextAreaElement
-        )?.value ?? "",
-      url:
-        (
-          params.shadowRoot.getElementById(
-            GROUP_URL_INPUT,
-          ) as HTMLTextAreaElement
-        )?.value ?? "",
+      name: params.formSelector.getValue(GROUP_NAME_INPUT),
+      description: params.formSelector.getValue(GROUP_DESCRIPTION_INPUT),
+      url: params.formSelector.getValue(GROUP_URL_INPUT)
     };
   },
   requestStoreToUpdate: SAVE_GROUP_REQUEST_STORE,
   componentReducer: function (a: any) {
     return {
       name: a.name,
-      summary: a.summary,
+      description: a.description,
       url: a.url,
     };
   },

@@ -3,7 +3,7 @@ import { BaseTemplateDynamicComponent } from "../../../../framework/components/B
 import {
   convertDateTimeForDisplay,
   convertLocationStringForDisplay
-} from "../../../../framework/utils/DateUtils.ts";
+} from "../../../../framework/utils/EventDataUtils.ts";
 
 const template = `
 

@@ -97,14 +97,24 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
      <div class="ui-section" id="login-component-container">
       <form id=${LOGIN_FORM_ID} ${this.createSubmitEvent(LOGIN_EVENT_CONFIG)}>
       
+      
+       
         <div class="ui-input">
-          <label for="username">Email:</label>
-          <input type="text" id=${USERNAME_INPUT} name=${USERNAME_INPUT} />
+          ${this.generateInputFormItem({
+            id: USERNAME_INPUT,
+            componentLabel: "Email",
+            inputType: "text",
+            value: ""
+          })}
         </div>
         
         <div class="ui-input">
-          <label for="username">Password:</label>
-          <input type="password" id=${PASSWORD_INPUT} name=${PASSWORD_INPUT} />
+          ${this.generateInputFormItem({
+            id: PASSWORD_INPUT,
+            componentLabel: "password",
+            inputType: "text",
+            value: ""
+          })}
         </div>
         
         <br>

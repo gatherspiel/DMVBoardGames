@@ -48,7 +48,7 @@ const template = `
       width: 600px;
     }
     
-    #group-description-input {
+    #${GROUP_DESCRIPTION_INPUT} {
       height: 500px;
       width: 800px;
     }
@@ -117,35 +117,41 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
      ${
        !groupData.isEditing
          ? `<div class="group-title">
-        <h1>${groupData.name} <a href=${groupData.url}>Group webpage</a></h1>
+       <h1>${groupData.name} <a href=${groupData.url}>Group webpage</a></h1>
 
-        ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(EDIT_GROUP_EVENT_CONFIG)}>Edit group</button>` : ``} 
-        ${groupData.permissions.userCanEdit ? `<a href="groups/delete.html" class="group-edit-button">Delete group</a>` : ``}
+       ${groupData.permissions.userCanEdit ? `<button class="group-edit-button" ${this.createClickEvent(EDIT_GROUP_EVENT_CONFIG)}>Edit group</button>` : ``} 
+       ${groupData.permissions.userCanEdit ? `<a href="${window.location.origin}/groups/delete.html?name=${groupData.name}&id=${groupData.id}" class="group-edit-button">Delete group</a>` : ``}
 
-        </div>
+       </div>
     
-        <div class="group-summary">
-        <p class="group-description">${groupData.description}</p>
-        </div>`
+       <div class="group-description">
+       <p>${groupData.description}</p>
+       </div>` 
          : `
-        <h1>Editing group information</h1>
+       <h1>Editing group information</h1>
         
-        <form ${this.createSubmitEvent(SAVE_GROUP_CONFIG)}>
-        
-          <label for="group-name">Group Name</label>
-          <input 
-            class="group-data-input"
-            type="text" id=${GROUP_NAME_INPUT}
-            value="${groupData.name}"
-            name=${GROUP_NAME_INPUT}/>
-          
-          <label for="group-url">Group URL:</label>
-          <input class="group-data-input" id = "group-url-input" type="text" value= ${groupData.url} id=${GROUP_URL_INPUT} name=${GROUP_URL_INPUT}/> 
-          
-          <label for="group-description">Group Description</label>
-          <textarea class="group-data-input" id = "group-description-input" type="text" id=${GROUP_DESCRIPTION_INPUT} name=${GROUP_DESCRIPTION_INPUT}> ${groupData.description}
-          </textarea>
-    
+       <form ${this.createSubmitEvent(SAVE_GROUP_CONFIG)}>
+       
+         ${this.generateInputFormItem({
+           id: GROUP_NAME_INPUT,
+           componentLabel: "Group name",
+           inputType: "text",
+           value: groupData.name
+         })} 
+         
+         ${this.generateInputFormItem({
+           id: GROUP_URL_INPUT,
+           componentLabel: "Group url",
+           inputType: "text",
+           value: groupData.url
+         })} 
+         
+         ${this.generateTextInputFormItem({
+           id: GROUP_DESCRIPTION_INPUT,
+           componentLabel: "Group description",
+           inputType: "text",
+           value: groupData.description
+         })}   
           <button type="submit" >Save updates</button>
         </form> 
       `
