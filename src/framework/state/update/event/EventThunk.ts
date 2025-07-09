@@ -8,17 +8,18 @@ export class EventThunk extends BaseThunk {
     super(dataFetch, dispatchers);
   }
 
-  async processEvent(e: Event, validator?: (a: any) => EventValidationResult) {
-    const response = await this.thunkAction.retrieveData(e);
-
+  async processEvent(e: Event, validator?: () => EventValidationResult) {
     if (validator) {
-      const validationResult: EventValidationResult = validator(response);
+      const validationResult: EventValidationResult = validator();
 
-      if (validationResult.error) {
+      if (validationResult.errorMessage) {
         return validationResult;
       }
     }
+    console.log("Processing")
+    const response = await this.thunkAction.retrieveData(e);
 
+    console.log("Done")
     this.updateStore(response);
   }
 }

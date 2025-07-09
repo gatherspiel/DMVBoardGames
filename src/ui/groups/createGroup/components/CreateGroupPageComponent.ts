@@ -13,11 +13,6 @@ const templateStyle = `
 
   <style>
     #create-group-error-message {
-      color:darkred;
-    }
-    
-    #group-description-input {
-      margin-top: 0.5rem;
     }
   </style>
 `;
@@ -101,7 +96,7 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
               </form>
              
               <p>${createGroupData.successMessage ? createGroupData.successMessage.trim() : ""}</p>
-              <p id="create-group-error-message">${createGroupData.errorMessage ? createGroupData.errorMessage.trim() : ""}</p>
+              ${this.generateErrorMessage(createGroupData.errorMessage)}
             `
             : `<p>You must log in to create a group </p>`
         }    

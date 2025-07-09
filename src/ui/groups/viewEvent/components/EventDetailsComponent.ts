@@ -15,7 +15,7 @@ import {
   CANCEL_EDIT_EVENT_DETAILS_CONFIG, CONFIRM_DELETE_EVENT_CONFIG, DELETE_EVENT_CONFIG,
   EDIT_EVENT_DETAILS_CONFIG,
   SAVE_EVENT_CONFIG
-} from "../EditEventDetailsHandler";
+} from "../EventDetailsHandler.ts";
 import {
   convertDateTimeForDisplay,
   convertDayOfWeekForDisplay,
@@ -28,7 +28,7 @@ const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
   <style>   
   
-    #event-name-input {
+    #${EVENT_NAME_INPUT} {
       width: 50rem;
     }
     #${EVENT_DESCRIPTION_INPUT} {
@@ -117,14 +117,11 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   }
 
   renderDeleteMode(data:EventDetailsData): string {
-    console.log(JSON.stringify(data))
-
     return `
       <h1>Are you sure you want to delete ${data.name} on ${convertDateTimeForDisplay(data.startTime)}</h1>
       <button ${this.createClickEvent(CONFIRM_DELETE_EVENT_CONFIG)}>Confirm delete</button>
       <button ${this.createClickEvent(CANCEL_DELETE_EVENT_CONFIG)}>Cancel</button>
-      
-      ${data.errorMessage ? `<p>${data.errorMessage}</p>` : ''} 
+      ${this.generateErrorMessage(data.errorMessage)}
     `
   }
   renderEditMode(data:EventDetailsData): string {
@@ -182,7 +179,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         value: data.location
       })}     
     </form>
-    <p id="update-event-error-message">${data.errorMessage ? data.errorMessage.trim(): ""}</p>
+    ${this.generateErrorMessage(data.errorMessage)}
 
     <button ${this.createClickEvent(SAVE_EVENT_CONFIG)}>Save event</button>
     <button ${this.createClickEvent(CANCEL_EDIT_EVENT_DETAILS_CONFIG)}>Back to event</button>
@@ -190,7 +187,9 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   }
 
   renderViewMode(data:EventDetailsData): string {
-
+    if(data.errorMessage){
+      return `${this.generateErrorMessage(data.errorMessage)}`
+    }
     return `
       <div class="ui-section">
         <h1>${data.name}</h1>
@@ -200,13 +199,13 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         <p>Time: ${convertDayOfWeekForDisplay(data.day)}, ${convertDateTimeForDisplay(data.startTime)}</p>
         <p>Location: ${convertLocationStringForDisplay(data.location)}</p>
         <p>${data.description}</p>
-        ${data.permissions.userCanEdit ?
-          `<button ${this.createClickEvent(EDIT_EVENT_DETAILS_CONFIG)}>Edit event</button>  
-           <button ${this.createClickEvent(DELETE_EVENT_CONFIG)}> Delete event</button>
-
-              ` :
-          ``
-        }
+        
+        ${this.generateButtonsForEditPermission({
+          "Edit event": EDIT_EVENT_DETAILS_CONFIG,
+          "Delete event": DELETE_EVENT_CONFIG
+        })}
+       
+       
       <p>${data.successMessage ? data.successMessage.trim(): ""}</p>
 
         <a href="/groups.html?name=${encodeURIComponent(data.groupName)}">Back to group</a> 

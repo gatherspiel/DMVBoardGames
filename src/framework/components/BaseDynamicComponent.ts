@@ -3,12 +3,10 @@ import type { DisplayItem } from "../../ui/homepage/data/types/DisplayItem.ts";
 import {
   createComponentStore,
   getComponentStore,
-  hasComponentStoreSubscribers,
   updateComponentStore,
 } from "../state/data/ComponentStore.ts";
 import {
   hasRequestStore,
-  hasRequestStoreSubscribers,
   initRequestStore,
   initRequestStoresOnLoad,
   updateRequestStoreAndClearCache,
@@ -166,7 +164,60 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     return `data-${this.componentStoreName}-element-id`;
   }
 
+  generateButtonsForEditPermission(buttonConfig:Record<string, EventHandlerThunkConfig>):string{
+    const userCanEditPermission = getComponentStore(this.componentStoreName)?.permissions?.userCanEdit
+    if(userCanEditPermission === undefined){
+      throw new Error(`permissions.userCanEdit state not defined for component state ${this.componentStoreName}`);
+    }
+    if(!userCanEditPermission) {
+      return '';
+    }
+
+    let html = ''
+    var self = this;
+    Object.keys(buttonConfig).forEach(function(buttonText){
+      html+= `<button ${self.createClickEvent(buttonConfig[buttonText])}> ${buttonText}</button>`;
+    });
+    return html;
+  }
+
+  generateLinksForEditPermission(linkConfig:Record<string, string>):string{
+    const userCanEditPermission = getComponentStore(this.componentStoreName)?.permissions?.userCanEdit
+    if(userCanEditPermission === undefined){
+      throw new Error(`permissions.userCanEdit state not defined for component state ${this.componentStoreName}`);
+    }
+    if(!userCanEditPermission) {
+      return '';
+    }
+
+    let html = ''
+    Object.keys(linkConfig).forEach(function(linkText){
+      html+= `<a href="${window.location.origin}/${linkConfig[linkText]}">${linkText}</a>`;
+    });
+    return html;
+  }
+
+  generateErrorMessage(message: string | string[] | undefined){
+    if(Array.isArray(message)){
+      let html = ''
+      message.forEach((item)=>{
+        html+=`<p class="api-error-message">${item.trim()}</p>`
+
+      })
+      return html;
+    }
+    return `
+        <p class="api-error-message">${message? message.trim() : ""}</p>
+        `
+  }
+
   generateInputFormItem(formConfig:FormItemConfig){
+
+    let formValue = formConfig.value;
+    if(!formValue && this.formSelector.hasValue(formConfig.id)){
+      formValue = this.formSelector.getValue(formConfig.id);
+    }
+
     this.formSelector.addFormSelector(formConfig.id);
     return `
       <label for=${formConfig.id}>${formConfig.componentLabel}</label>
@@ -176,14 +227,19 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         id=${formConfig.id}
         name=${formConfig.id}
         type=${formConfig.inputType}
-        value="${formConfig.value}"
+        value="${formValue}"
         />
         <br>
     `
   }
 
   generateTextInputFormItem(formConfig:FormItemConfig){
+    let formValue = formConfig.value;
+    if(!formValue && this.formSelector.hasValue(formConfig.id)){
+      formValue = this.formSelector.getValue(formConfig.id);
+    }
     this.formSelector.addFormSelector(formConfig.id);
+
     return `
       <label for=${formConfig.id}>${formConfig.componentLabel}</label>
       ${formConfig.lineBreakAfterLabel !== false? `<br>` : ''}
@@ -192,13 +248,12 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         id=${formConfig.id}
         name=${formConfig.id}
         type=${formConfig.inputType}
-        /> ${formConfig.value}</textarea>
-        <br>
+        /> ${formValue}
+      </textarea>
+      <br>
     `
   }
 
-
-  //TODO: Handle case where there are multiple instances of the same component when generating the ids for event handlers.
   saveEventHandler(
     eventFunction: (e: Event) => any,
     eventType: string,
@@ -275,12 +330,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     }
 
     const handler = function (e: Event) {
-      if (
-        !hasRequestStoreSubscribers(storeToUpdate) &&
-        !hasComponentStoreSubscribers(storeToUpdate)
-      ) {
-        // throw new Error(`No subscribers for store ${storeToUpdate}`);
-      }
 
       e.preventDefault();
 
@@ -298,15 +347,13 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
       if (eventConfig.validator) {
         const eventConfigValidator = eventConfig.validator;
-        const validator = function (
-          eventHandlerResult: any,
-        ): EventValidationResult {
+        const validator = function (): EventValidationResult {
           const componentData = getComponentStore(storeName ?? "");
-          return eventConfigValidator(eventHandlerResult, componentData);
+          return eventConfigValidator(formSelector, componentData);
         };
 
         eventUpdater.processEvent(e, validator).then((result: any) => {
-          if (result?.error) {
+          if (result?.errorMessage) {
             componentStoreUpdate.updateStore(result);
           }
         });

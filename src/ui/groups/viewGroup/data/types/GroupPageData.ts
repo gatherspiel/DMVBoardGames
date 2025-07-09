@@ -9,5 +9,5 @@ export interface GroupPageData extends DisplayItem {
   url: string;
   eventData: Event[];
   permissions: UserPermissionData;
-  saveGroupSuccess: boolean;
+  successMessage: string;
 }

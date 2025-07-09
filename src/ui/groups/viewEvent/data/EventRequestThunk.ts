@@ -18,13 +18,6 @@ function getEventRequestConfig(): ApiRequestConfig {
   };
 }
 
-const defaultFunctionConfig = {
-  defaultFunction: function () {
-    return {};
-  },
-  defaultFunctionPriority: false,
-};
 export const EVENT_REQUEST_THUNK = generateApiThunk({
   queryConfig: getEventRequestConfig,
-  defaultFunctionConfig: defaultFunctionConfig,
 });

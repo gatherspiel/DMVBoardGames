@@ -27,17 +27,8 @@ function updateCreateGroupRequestThunk(requestParams: any): ApiRequestConfig {
   };
 }
 
-const defaultFunctionConfig = {
-  defaultFunction: function (response: any) {
-    return {
-      errorMessage: response.message,
-    };
-  },
-  defaultFunctionPriority: false,
-};
 
 export const CREATE_GROUP_REQUEST_THUNK = generateApiThunk({
   queryConfig: updateCreateGroupRequestThunk,
-  defaultFunctionConfig: defaultFunctionConfig,
   requestStoreName: CREATE_GROUP_REQUEST_STORE,
 });

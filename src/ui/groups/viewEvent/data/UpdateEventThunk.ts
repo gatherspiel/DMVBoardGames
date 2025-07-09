@@ -2,7 +2,7 @@ import type { ApiRequestConfig } from "../../../../framework/state/update/api/ty
 import { API_ROOT } from "../../../../shared/params.ts";
 import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
 import { ApiActionTypes } from "../../../../framework/state/update/api/types/ApiActionTypes.ts";
-import {SAVE_EVENT_REQUEST_STORE} from "../../Constants.ts";
+import {UPDATE_EVENT_REQUEST_STORE} from "../../Constants.ts";
 import { getAccessTokenIfPresent } from "../../../auth/AuthUtils.ts";
 import { AUTH_TOKEN_HEADER_KEY } from "../../../auth/Constants.ts";
 
@@ -23,18 +23,7 @@ function updateEventRequestThunk(
   };
 }
 
-const defaultFunctionConfig = {
-  defaultFunction: function (response: any) {
-    return {
-      errorMessage: response.message,
-    };
-  },
-  defaultFunctionPriority: false,
-};
-
-
 export const UPDATE_EVENT_REQUEST_THUNK = generateApiThunk({
   queryConfig: updateEventRequestThunk,
-  defaultFunctionConfig: defaultFunctionConfig,
-  requestStoreName: SAVE_EVENT_REQUEST_STORE,
+  requestStoreName: UPDATE_EVENT_REQUEST_STORE,
 });

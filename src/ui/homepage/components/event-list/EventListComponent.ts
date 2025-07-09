@@ -3,7 +3,6 @@ import { EVENT_LIST_THUNK } from "../../data/search/EventListThunk.ts";
 import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 
-
 const loadConfig = {
   thunkReducers: [
     {
@@ -48,8 +47,6 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
   override getTemplateStyle(): string {
     return template;
   }
-
-
 
   render(data: any): string {
     const groups = data.groups;

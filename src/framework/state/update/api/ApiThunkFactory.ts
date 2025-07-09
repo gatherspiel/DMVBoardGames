@@ -7,14 +7,26 @@ import { subscribeToRequestStore } from "../../data/RequestStore.ts";
 
 export type ApiThunkConfig = {
   queryConfig: (a: any) => ApiRequestConfig;
-  defaultFunctionConfig: DefaultApiAction;
+  defaultFunctionConfig?: DefaultApiAction;
   requestStoreName?: string;
 };
 
 export function generateApiThunk(config: ApiThunkConfig) {
+
+  let defaultFunctionConfig = config.defaultFunctionConfig;
+  if(!defaultFunctionConfig){
+    defaultFunctionConfig = {
+      defaultFunction: function (response: any) {
+        return {
+          errorMessage: response.message,
+        };
+      },
+      defaultFunctionPriority: false,
+    };
+  }
   const getAction = new InternalApiAction(
     config.queryConfig,
-    config.defaultFunctionConfig,
+    defaultFunctionConfig,
   );
 
   const apiThunk = new BaseThunk(getAction);

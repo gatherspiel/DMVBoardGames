@@ -3,6 +3,7 @@ import { DELETE_GROUP_REQUEST_STORE, GROUP_NAME_INPUT } from "../Constants.ts";
 import type { EventValidationResult } from "../../../framework/state/update/event/types/EventValidationResult.ts";
 import type { DeleteGroupData } from "./types/DeleteGroupData.ts";
 import { getUrlParameter } from "../../../framework/utils/UrlParamUtils.ts";
+import type {FormSelector} from "../../../framework/FormSelector.ts";
 
 export const DELETE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params: any) {
@@ -12,14 +13,14 @@ export const DELETE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
     };
   },
   validator: function (
-    eventData: any,
+    formSelector: FormSelector,
     componentState: DeleteGroupData,
   ): EventValidationResult {
 
 
-    if (eventData.name !== componentState.existingGroupName) {
+    if (formSelector.getValue(GROUP_NAME_INPUT) !== componentState.existingGroupName) {
       return {
-        error: "Group name not entered correctly",
+        errorMessage: "Group name not entered correctly",
       };
     }
     return {};

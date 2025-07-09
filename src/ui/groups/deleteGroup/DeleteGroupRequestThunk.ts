@@ -7,7 +7,6 @@ import { generateApiThunk } from "../../../framework/state/update/api/ApiThunkFa
 import { DELETE_GROUP_REQUEST_STORE } from "../Constants.ts";
 
 function updateDeleteGroupRequestThunk(params: any): ApiRequestConfig {
-  console.log("Params for deleting group:" + params);
   const url = `${API_ROOT}/groups/?name=${encodeURIComponent(params.name)}&id=${params.id}`;
 
   let headers: Record<string, string> = {};
@@ -23,17 +22,7 @@ function updateDeleteGroupRequestThunk(params: any): ApiRequestConfig {
   };
 }
 
-const defaultFunctionConfig = {
-  defaultFunction: function (response: any) {
-    return {
-      errorMessage: response.message,
-    };
-  },
-  defaultFunctionPriority: false,
-};
-
 export const DELETE_GROUP_REQUEST_THUNK = generateApiThunk({
   queryConfig: updateDeleteGroupRequestThunk,
-  defaultFunctionConfig: defaultFunctionConfig,
   requestStoreName: DELETE_GROUP_REQUEST_STORE,
 });
