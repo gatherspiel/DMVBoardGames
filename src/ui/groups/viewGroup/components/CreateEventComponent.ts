@@ -59,6 +59,7 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: any): string {
+
     return `
     
     ${this.generateErrorMessage(data.errorMessage)}

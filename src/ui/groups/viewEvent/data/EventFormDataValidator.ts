@@ -21,6 +21,10 @@ export function validateEventFormData(formSelector:FormSelector): string[] {
 
   if(!formSelector.getValue(EVENT_URL_INPUT)){
     errorMessages.push("Event url must be defined");
+  } else {
+    if(formSelector.getValue(EVENT_URL_INPUT).toLowerCase().startsWith("http")){
+      errorMessages.push(`Invalid event url ${formSelector.getValue(EVENT_URL_INPUT)}`)
+    }
   }
 
   if(!formSelector.getValue(START_DATE_INPUT)){

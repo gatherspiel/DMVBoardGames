@@ -1,14 +1,15 @@
 export class FormSelector {
 
-  private formSelectors: Set<String>;
+  private formSelectors: Set<string>;
   private shadowRoot: ShadowRoot | undefined;
 
+
   constructor() {
-    this.formSelectors = new Set<String>();
+    this.formSelectors = new Set<string>();
   }
 
   clearFormSelectors() {
-    this.formSelectors = new Set<String>();
+    this.formSelectors = new Set<string>();
   }
 
   addFormSelector(formSelector: string) {
@@ -17,6 +18,10 @@ export class FormSelector {
 
   setShadowRoot(shadowRoot: ShadowRoot) {
     this.shadowRoot = shadowRoot;
+  }
+
+  hasValue(formSelector: string) {
+    return this.formSelectors.has(formSelector);
   }
 
   getValue(formSelector: string) {
@@ -29,5 +34,4 @@ export class FormSelector {
     }
     return (this.shadowRoot.getElementById(formSelector) as HTMLTextAreaElement | HTMLInputElement)?.value ?? "";
   }
-
 }

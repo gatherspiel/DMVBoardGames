@@ -206,12 +206,18 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       })
       return html;
     }
-
     return `
         <p class="api-error-message">${message? message.trim() : ""}</p>
         `
   }
+
   generateInputFormItem(formConfig:FormItemConfig){
+
+    let formValue = formConfig.value;
+    if(!formValue && this.formSelector.hasValue(formConfig.id)){
+      formValue = this.formSelector.getValue(formConfig.id);
+    }
+
     this.formSelector.addFormSelector(formConfig.id);
     return `
       <label for=${formConfig.id}>${formConfig.componentLabel}</label>
@@ -221,14 +227,19 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         id=${formConfig.id}
         name=${formConfig.id}
         type=${formConfig.inputType}
-        value="${formConfig.value}"
+        value="${formValue}"
         />
         <br>
     `
   }
 
   generateTextInputFormItem(formConfig:FormItemConfig){
+    let formValue = formConfig.value;
+    if(!formValue && this.formSelector.hasValue(formConfig.id)){
+      formValue = this.formSelector.getValue(formConfig.id);
+    }
     this.formSelector.addFormSelector(formConfig.id);
+
     return `
       <label for=${formConfig.id}>${formConfig.componentLabel}</label>
       ${formConfig.lineBreakAfterLabel !== false? `<br>` : ''}
@@ -237,7 +248,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         id=${formConfig.id}
         name=${formConfig.id}
         type=${formConfig.inputType}
-        /> ${formConfig.value}</textarea>
+        /> ${formValue}</textarea>
         <br>
     `
   }
