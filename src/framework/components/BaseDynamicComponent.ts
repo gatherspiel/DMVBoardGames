@@ -197,8 +197,16 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     return html;
   }
 
+  generateErrorMessage(message: string | string[] | undefined){
+    if(Array.isArray(message)){
+      let html = ''
+      message.forEach((item)=>{
+        html+=`<p class="api-error-message">${item.trim()}</p>`
 
-  generateErrorMessage(message: string | undefined){
+      })
+      return html;
+    }
+
     return `
         <p class="api-error-message">${message? message.trim() : ""}</p>
         `
@@ -327,15 +335,13 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
       if (eventConfig.validator) {
         const eventConfigValidator = eventConfig.validator;
-        const validator = function (
-          eventHandlerResult: any,
-        ): EventValidationResult {
+        const validator = function (): EventValidationResult {
           const componentData = getComponentStore(storeName ?? "");
-          return eventConfigValidator(eventHandlerResult, componentData);
+          return eventConfigValidator(formSelector, componentData);
         };
 
         eventUpdater.processEvent(e, validator).then((result: any) => {
-          if (result?.error) {
+          if (result?.errorMessage) {
             componentStoreUpdate.updateStore(result);
           }
         });

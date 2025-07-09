@@ -3,7 +3,7 @@ import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
-  SAVE_GROUP_REQUEST_STORE,
+  UPDATE_GROUP_REQUEST_STORE,
 } from "../Constants.ts";
 import type { UpdateGroupRequest } from "./data/types/UpdateGroupRequest.ts";
 
@@ -24,7 +24,7 @@ export const SAVE_GROUP_CONFIG: EventHandlerThunkConfig = {
       url: params.formSelector.getValue(GROUP_URL_INPUT)
     };
   },
-  requestStoreToUpdate: SAVE_GROUP_REQUEST_STORE,
+  requestStoreToUpdate: UPDATE_GROUP_REQUEST_STORE,
   componentReducer: function (a: any) {
     return {
       name: a.name,

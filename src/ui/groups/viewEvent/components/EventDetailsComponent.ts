@@ -15,7 +15,7 @@ import {
   CANCEL_EDIT_EVENT_DETAILS_CONFIG, CONFIRM_DELETE_EVENT_CONFIG, DELETE_EVENT_CONFIG,
   EDIT_EVENT_DETAILS_CONFIG,
   SAVE_EVENT_CONFIG
-} from "../EditEventDetailsHandler";
+} from "../EventDetailsHandler.ts";
 import {
   convertDateTimeForDisplay,
   convertDayOfWeekForDisplay,
@@ -28,7 +28,7 @@ const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
   <style>   
   
-    #event-name-input {
+    #${EVENT_NAME_INPUT} {
       width: 50rem;
     }
     #${EVENT_DESCRIPTION_INPUT} {

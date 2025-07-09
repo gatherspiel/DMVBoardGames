@@ -1,3 +1,3 @@
 export type EventValidationResult = {
-  error?: string;
+  errorMessage?: string | string[];
 };
