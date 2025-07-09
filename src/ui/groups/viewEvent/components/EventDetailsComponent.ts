@@ -187,9 +187,6 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   }
 
   renderViewMode(data:EventDetailsData): string {
-
-    console.log(data.errorMessage);
-
     if(data.errorMessage){
       return `${this.generateErrorMessage(data.errorMessage)}`
     }
@@ -202,13 +199,13 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         <p>Time: ${convertDayOfWeekForDisplay(data.day)}, ${convertDateTimeForDisplay(data.startTime)}</p>
         <p>Location: ${convertLocationStringForDisplay(data.location)}</p>
         <p>${data.description}</p>
-        ${data.permissions.userCanEdit ?
-          `<button ${this.createClickEvent(EDIT_EVENT_DETAILS_CONFIG)}>Edit event</button>  
-           <button ${this.createClickEvent(DELETE_EVENT_CONFIG)}> Delete event</button>
-
-              ` :
-          ``
-        }
+        
+        ${this.generateButtonsForEditPermission({
+          "Edit event": EDIT_EVENT_DETAILS_CONFIG,
+          "Delete event": DELETE_EVENT_CONFIG
+        })}
+       
+       
       <p>${data.successMessage ? data.successMessage.trim(): ""}</p>
 
         <a href="/groups.html?name=${encodeURIComponent(data.groupName)}">Back to group</a> 

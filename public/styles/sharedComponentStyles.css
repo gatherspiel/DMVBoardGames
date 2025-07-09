@@ -1,52 +1,52 @@
-a,button {
-    background-color: var(--clr-lighter-blue);
-    border-color: var(--clr-darker-blue);
-    border-radius: 5px;
-    border-width:1px;
-    color: white;
-    font-size: 1rem;
-    font-weight: 400;
-    margin-top: 0.5rem;
-    padding: 0.5rem;
+a, button {
+  background-color: var(--clr-lighter-blue);
+  border-color: var(--clr-darker-blue);
+  border-radius: 5px;
+  border-width: 1px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
 }
 
 button:hover {
-    background-color: var(--clr-darker-blue);
+  background-color: var(--clr-darker-blue);
 }
 
 a:hover {
-    background-color: var(--clr-darker-blue);
+  background-color: var(--clr-darker-blue);
 }
 
 a {
-    border: 1px solid var(--clr-darker-blue);
-    text-decoration:none
+  border: 1px solid var(--clr-darker-blue);
+  text-decoration: none
 }
 
 .ui-section {
-    color: var(--clr-dark-blue);
-    font-size: 1.25rem;
-    font-weight:600;
-    padding-left:1rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+  color: var(--clr-dark-blue);
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 label {
-    font-size: 1.25rem;
-    font-weight:600;
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 p {
-    color: var(--clr-dark-blue);
-    font-size: 1.25rem;
-    font-weight: 600;
+  color: var(--clr-dark-blue);
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .ui-input {
-    display: inline-block;
+  display: inline-block;
 }
 
 .api-error-message {
-    color:darkred;
+  color: darkred;
 }

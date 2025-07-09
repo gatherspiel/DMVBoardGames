@@ -48,9 +48,7 @@ export const CANCEL_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
   }
 }
 
-/**
- *
- */
+
 export const SAVE_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params): any {
 
@@ -58,7 +56,6 @@ export const SAVE_EVENT_CONFIG: EventHandlerThunkConfig = {
     const startTime = params.formSelector.getValue(START_TIME_INPUT)
     const endTime =  params.formSelector.getValue(END_TIME_INPUT)
 
-    console.log(params.formSelector.getValue(EVENT_NAME_INPUT));
     return {
       id: params.componentStore.id,
       name: params.formSelector.getValue(EVENT_NAME_INPUT),
