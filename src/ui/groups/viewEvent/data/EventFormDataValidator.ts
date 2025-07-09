@@ -7,6 +7,7 @@ import {
   START_DATE_INPUT,
   START_TIME_INPUT
 } from "../../Constants.ts";
+import {combineDateAndTime} from "../../../../framework/utils/EventDataUtils.ts";
 
 export function validateEventFormData(formSelector:FormSelector): string[] {
   const errorMessages = [];
@@ -22,26 +23,40 @@ export function validateEventFormData(formSelector:FormSelector): string[] {
   if(!formSelector.getValue(EVENT_URL_INPUT)){
     errorMessages.push("Event url must be defined");
   } else {
-    if(formSelector.getValue(EVENT_URL_INPUT).toLowerCase().startsWith("http")){
+    if(!formSelector.getValue(EVENT_URL_INPUT).toLowerCase().startsWith("http")){
       errorMessages.push(`Invalid event url ${formSelector.getValue(EVENT_URL_INPUT)}`)
     }
   }
 
-  if(!formSelector.getValue(START_DATE_INPUT)){
+  const startDate = formSelector.getValue(START_DATE_INPUT)
+  const startTime = formSelector.getValue(START_TIME_INPUT)
+  const endDate = formSelector.getValue(END_TIME_INPUT)
+
+  if(!startDate){
     errorMessages.push("Start date must be defined");
   }
 
-  if(!formSelector.getValue(START_TIME_INPUT)){
+  if(!startTime){
     errorMessages.push("Start time must be defined");
   }
 
-  if(!formSelector.getValue(END_TIME_INPUT)){
+  if(!endDate){
     errorMessages.push("End time must be defined");
+  }
+
+  if(startDate && startTime && endDate) {
+    try {
+      combineDateAndTime(startDate, startTime)
+    } catch (e:any){
+      errorMessages.push(e.message)
+    }
   }
 
   if(!formSelector.getValue(EVENT_LOCATION_INPUT)){
     errorMessages.push("Event location must be defined");
   }
+
+
 
   return errorMessages;
 }

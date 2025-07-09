@@ -29,6 +29,14 @@ const templateStyle = `
 `;
 
 const loadConfig = {
+  thunkReducers:[
+    {
+      thunk: CREATE_EVENT_THUNK,
+      componentStoreReducer: function(data: any){
+        console.log(JSON.stringify(data));
+      }
+    }
+  ],
   globalStateLoadConfig: {
     globalFieldSubscriptions: ["isLoggedIn"],
     waitForGlobalState: "isLoggedIn",
@@ -40,12 +48,7 @@ const loadConfig = {
         isVisible: updates["isLoggedIn"],
       };
     },
-    thunkReducers: {
-      thunk: CREATE_EVENT_THUNK,
-      componentStoreReducer: function(data: any){
-        console.log(JSON.stringify(data));
-      }
-    }
+
   },
 };
 

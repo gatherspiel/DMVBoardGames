@@ -248,8 +248,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         id=${formConfig.id}
         name=${formConfig.id}
         type=${formConfig.inputType}
-        /> ${formValue}</textarea>
-        <br>
+        /> ${formValue}
+      </textarea>
+      <br>
     `
   }
 
