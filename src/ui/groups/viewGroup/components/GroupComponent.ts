@@ -123,7 +123,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
          "Edit group": EDIT_GROUP_EVENT_CONFIG
        })}
        ${this.generateLinksForEditPermission({
-         "Add event": `groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&id=${groupData.id}`,
+         "Add event": `groups/addEvent.html?groupName=${encodeURIComponent(groupData.name)}&id=${groupData.id}`,
          "Delete group": `groups/delete.html?name=${encodeURIComponent(groupData.name)}&id=${groupData.id}`
        })}
        </div>

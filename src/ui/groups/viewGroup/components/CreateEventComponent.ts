@@ -1,4 +1,5 @@
 import {BaseTemplateDynamicComponent} from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {getUrlParameter} from "../../../../framework/utils/UrlParamUtils.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -36,9 +37,18 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
   render(data: any): string {
 
     return `
-      <h1>Create board game event</h1>
-      ${data.isVisible ? `Create an event` : ``}
-    
+      ${data.isVisible ? `
+        <h1>Create board game event</h1>
+        
+        <button>Save event</button>
+        <a href="${window.location.origin}/groups.html?name=${encodeURIComponent(getUrlParameter("groupName"))}">
+          Back to group
+        </a>
+      `
+      
+      : `<p>User does not have permission to access this page </p>`
+      
+      }  
     `;
   }
 }
