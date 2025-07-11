@@ -1,10 +1,10 @@
-import { API_ROOT } from "../../../../utils/params.js";
-import { generateApiThunk } from "../../../../framework/store/update/api/ApiThunkFactory.ts";
-import type { ApiRequestConfig } from "../../../../framework/store/update/api/types/ApiRequestConfig.ts";
+import { API_ROOT } from "../../../../shared/params.js";
+import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
+import type { ApiRequestConfig } from "../../../../framework/state/update/api/types/ApiRequestConfig.ts";
 import { AUTH_TOKEN_HEADER_KEY } from "../../../auth/Constants.ts";
 import { getAccessTokenIfPresent } from "../../../auth/AuthUtils.ts";
 
-function getGroupsRequestConfig(requestParams: any): ApiRequestConfig {
+function getGroupRequestConfig(requestParams: any): ApiRequestConfig {
   let headers: Record<string, string> = {};
   const authData = getAccessTokenIfPresent();
   if (authData) {
@@ -16,13 +16,6 @@ function getGroupsRequestConfig(requestParams: any): ApiRequestConfig {
   };
 }
 
-const defaultFunctionConfig = {
-  defaultFunction: function () {
-    return {};
-  },
-  defaultFunctionPriority: false,
-};
 export const GROUP_REQUEST_THUNK = generateApiThunk({
-  queryConfig: getGroupsRequestConfig,
-  defaultFunctionConfig: defaultFunctionConfig,
+  queryConfig: getGroupRequestConfig,
 });

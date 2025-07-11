@@ -23,7 +23,6 @@ const loadConfig = {
     {
       thunk: DELETE_GROUP_REQUEST_THUNK,
       componentStoreReducer: function (data: any) {
-        console.log(JSON.stringify(data));
         if (data.errorMessage) {
           return {
             errorMessage: data.errorMessage,
@@ -67,19 +66,15 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
           data.isVisible
             ? `
               <form onsubmit="return false">
-              
-                <label for="group-name">Enter group name to confirm deleting</label>
-                <input 
-                  class="group-data-input"
-                  id=${GROUP_NAME_INPUT}
-                  name=${GROUP_NAME_INPUT}
-                  type="text" 
-                  value="Test"
-
-                />
+                ${this.generateInputFormItem({
+                  id: GROUP_NAME_INPUT,
+                  componentLabel: "Enter group name to confirm deleting",
+                  inputType: "text",
+                  value: "Test"
+                })} 
                 <button type="submit" ${this.createClickEvent(DELETE_GROUP_EVENT_CONFIG)}>Confirm delete</button>
               </form> 
-              <p id="delete-group-error-message">${data.errorMessage ? data.errorMessage.trim() : ""}</p>
+              ${this.generateErrorMessage(data.errorMessage)}
               
               <p>${data.successMessage ? data.successMessage.trim() : ""}</p>
 

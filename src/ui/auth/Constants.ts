@@ -7,5 +7,3 @@ export const USERNAME_INPUT: string = "username-input";
 export const PASSWORD_INPUT: string = "password-input";
 
 export const AUTH_TOKEN_HEADER_KEY = "authToken";
-
-export const USER_CAN_EDIT_KEY = "userCanEdit";
