@@ -170,7 +170,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
                 return `
               <group-page-event-component
                 key = ${groupData.id + "event-" + event.id}
-                data =${createJSONProp(event)}
+                data =${createJSONProp({groupId: groupData.id,...event})}
               >
  
               </group-page-event-component>
