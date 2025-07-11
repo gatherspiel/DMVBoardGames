@@ -11,7 +11,7 @@ import {combineDateAndTime} from "../../../framework/utils/EventDataUtils.ts";
 import type {EventValidationResult} from "../../../framework/state/update/event/types/EventValidationResult.ts";
 import {validateEventFormData} from "./data/EventFormDataValidator.ts";
 import type {FormSelector} from "../../../framework/FormSelector.ts";
-
+import {getUrlParameter} from "../../../framework/utils/UrlParamUtils.ts";
 
 export const CONFIRM_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(params: any) {
@@ -27,6 +27,7 @@ export const CONFIRM_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
     };
   },
 }
+
 export const EDIT_EVENT_DETAILS_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function() {
     return {
@@ -42,7 +43,6 @@ export const DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
     }
   }
 }
-
 
 export const CANCEL_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(){
@@ -70,14 +70,13 @@ const eventDataHandler = function(params:any){
   const endTime =  params.formSelector.getValue(END_TIME_INPUT)
 
   return {
-    id: params.componentStore.id,
+    groupId: getUrlParameter("groupId"),
     name: params.formSelector.getValue(EVENT_NAME_INPUT),
     description: params.formSelector.getValue(EVENT_DESCRIPTION_INPUT),
     url: params.formSelector.getValue(EVENT_URL_INPUT),
     startTime: combineDateAndTime(startDate, startTime),
     endTime: combineDateAndTime(startDate, endTime),
     location: params.formSelector.getValue(EVENT_LOCATION_INPUT),
-    groupId: params.componentStore.groupId
   };
 }
 
@@ -90,9 +89,6 @@ export const CREATE_EVENT_CONFIG: EventHandlerThunkConfig = {
     if(errorMessages.length >= 1){
       return  {errorMessage:errorMessages}
     }
-
-    console.log(errorMessages.length)
-
     return {};
   }
 }

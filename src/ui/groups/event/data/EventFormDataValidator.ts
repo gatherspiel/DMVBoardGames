@@ -7,7 +7,7 @@ import {
   START_DATE_INPUT,
   START_TIME_INPUT
 } from "../../Constants.ts";
-import {combineDateAndTime} from "../../../../framework/utils/EventDataUtils.ts";
+import {combineDateAndTime, validateAddress, validateDateFormat} from "../../../../framework/utils/EventDataUtils.ts";
 
 export function validateEventFormData(formSelector:FormSelector): string[] {
   const errorMessages = [];
@@ -30,7 +30,7 @@ export function validateEventFormData(formSelector:FormSelector): string[] {
 
   const startDate = formSelector.getValue(START_DATE_INPUT)
   const startTime = formSelector.getValue(START_TIME_INPUT)
-  const endDate = formSelector.getValue(END_TIME_INPUT)
+  const endTime = formSelector.getValue(END_TIME_INPUT)
 
   if(!startDate){
     errorMessages.push("Start date must be defined");
@@ -40,12 +40,14 @@ export function validateEventFormData(formSelector:FormSelector): string[] {
     errorMessages.push("Start time must be defined");
   }
 
-  if(!endDate){
+  if(!endTime){
     errorMessages.push("End time must be defined");
   }
 
-  if(startDate && startTime && endDate) {
+
+  if(startDate && startTime && endTime) {
     try {
+      validateDateFormat(startDate)
       combineDateAndTime(startDate, startTime)
     } catch (e:any){
       errorMessages.push(e.message)
@@ -54,9 +56,13 @@ export function validateEventFormData(formSelector:FormSelector): string[] {
 
   if(!formSelector.getValue(EVENT_LOCATION_INPUT)){
     errorMessages.push("Event location must be defined");
+  } else {
+    try {
+      validateAddress(formSelector.getValue(EVENT_LOCATION_INPUT));
+    } catch(e: any){
+      errorMessages.push(e.message);
+    }
   }
-
-
 
   return errorMessages;
 }

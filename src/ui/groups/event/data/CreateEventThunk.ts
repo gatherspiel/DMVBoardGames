@@ -19,7 +19,7 @@ function createEventThunk(
     body: JSON.stringify(requestParams),
     method: ApiActionTypes.POST,
     headers: headers,
-    url: API_ROOT + `/groups/${requestParams.groupId}/events/?id=${encodeURIComponent(requestParams.id)}`,
+    url: API_ROOT + `/groups/${requestParams.groupId}/events/`,
   };
 }
 

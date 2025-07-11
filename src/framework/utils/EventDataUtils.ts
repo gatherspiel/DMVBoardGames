@@ -1,3 +1,5 @@
+const months = ['January', 'February','March', 'April','May', 'June','July','August','September','October','November','December'];
+const validStates = ['DC', 'MD', 'VA'];
 /**
  * Returns true if the timestamp is after the current moment, and returns false otherwise.
  * @param timestamp timestamp in seconds
@@ -9,7 +11,6 @@ export function isAfterNow(timestamp: number): boolean {
 export function convertDayOfWeekForDisplay(day:string){
   return `${day.substring(0,1).toUpperCase()}${day.substring(1).toLowerCase()}`
 }
-const months = ['January', 'February','March', 'April','May', 'June','July','August','September','October','November','December'];
 
 
 /**
@@ -37,7 +38,6 @@ export function getTimeFromDateString(date: string) {
 }
 
 export function combineDateAndTime(date: string, time: string){
-
   const dateSplit = date.split("-");
   if(dateSplit[1].length === 1) {
     dateSplit[1]=`0${dateSplit[1]}`
@@ -99,4 +99,23 @@ export function convertTimeTo24Hours(time:string){
 export function convertLocationStringForDisplay(location:string) {
   const split = location.split(',');
   return `${split[0].trim()}, ${split[1].trim()}, ${split[2].trim()}`
+}
+
+export function validateDateFormat(date: string){
+  const split= date.split("-");
+
+  if(split.length !== 3 || split[0].length !== 4 || split[1].length !== 2 || split[2].length !== 2){
+    throw new Error("Date must be in YYYY-MM-DD format. Example: 2025-07-07")
+  }
+}
+
+export function validateAddress(addressStr:string) {
+  const split = addressStr.split(",");
+
+  if(split.length !==3 || split[2].trim().split(" ").length !==2 ) {
+    throw new Error("Invalid address format. Address should be in the form 'street, city, state_code zip_code ")
+  }
+  if(!validStates.includes(split[2].split(" ")[1].trim())){
+    throw new Error("Invalid state code");
+  }
 }

@@ -16,10 +16,8 @@ export class EventThunk extends BaseThunk {
         return validationResult;
       }
     }
-    console.log("Processing")
     const response = await this.thunkAction.retrieveData(e);
 
-    console.log("Done")
     this.updateStore(response);
   }
 }
