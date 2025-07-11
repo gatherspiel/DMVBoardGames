@@ -70,6 +70,7 @@ const eventDataHandler = function(params:any){
   const endTime =  params.formSelector.getValue(END_TIME_INPUT)
 
   return {
+    id: params.componentStore.id,
     groupId: getUrlParameter("groupId"),
     name: params.formSelector.getValue(EVENT_NAME_INPUT),
     description: params.formSelector.getValue(EVENT_DESCRIPTION_INPUT),
