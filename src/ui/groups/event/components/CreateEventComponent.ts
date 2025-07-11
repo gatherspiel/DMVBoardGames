@@ -8,8 +8,8 @@ import {
   START_DATE_INPUT,
   START_TIME_INPUT
 } from "../../Constants.ts";
-import {CREATE_EVENT_CONFIG} from "../../viewEvent/EventDetailsHandler.ts";
-import {CREATE_EVENT_THUNK} from "../../viewEvent/data/CreateEventThunk.ts";
+import {CREATE_EVENT_CONFIG} from "../EventDetailsHandler.ts";
+import {CREATE_EVENT_THUNK} from "../data/CreateEventThunk.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -33,7 +33,13 @@ const loadConfig = {
     {
       thunk: CREATE_EVENT_THUNK,
       componentStoreReducer: function(data: any){
-        console.log(JSON.stringify(data));
+        if(!data.errorMessage){
+          return {
+            successMessage: "Successfully created event"
+          }
+        }
+        console.log(data);
+        return data;
       }
     }
   ],
@@ -48,7 +54,6 @@ const loadConfig = {
         isVisible: updates["isLoggedIn"],
       };
     },
-
   },
 };
 
@@ -66,9 +71,11 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
     return `
     
     ${this.generateErrorMessage(data.errorMessage)}
-    <form>
+    
+    ${data.successMessage ? `<p>${data.successMessage}</p>`: ``}
+    <form onsubmit="return false">
       ${data.isVisible ? `
-        <h1>Create board game event</h1>
+        <h1>Create board game event for group ${getUrlParameter("groupName")}</h1>
          <form>
     
       ${this.generateInputFormItem({
@@ -126,7 +133,6 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
           Back to group
         </a>
       `
-      
       : `<p>User does not have permission to access this page </p>`
       
       }  
