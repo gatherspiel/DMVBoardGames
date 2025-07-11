@@ -49,6 +49,7 @@ export class GroupPageEventComponent extends BaseTemplateDynamicComponent {
     this.id = this.getAttribute("key") ?? "";
     const eventData = retrieveJSONProp(this, "data");
 
+
     return `
       <div id=${this.id} class="event">
       
@@ -58,7 +59,7 @@ export class GroupPageEventComponent extends BaseTemplateDynamicComponent {
           <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
           </br>  
           
-          <a href="/groups/event.html?id=${eventData.id}">View event details</a>
+          <a href="/groups/event.html?id=${eventData.id}&groupId=${eventData.groupId}">View event details</a>
         </div>
            
       </div>
