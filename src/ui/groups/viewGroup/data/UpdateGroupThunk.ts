@@ -1,8 +1,8 @@
-import type { ApiRequestConfig } from "../../../../framework/store/update/api/types/ApiRequestConfig.ts";
-import { API_ROOT } from "../../../../utils/params.ts";
-import { generateApiThunk } from "../../../../framework/store/update/api/ApiThunkFactory.ts";
-import { ApiActionTypes } from "../../../../framework/store/update/api/types/ApiActionTypes.ts";
-import { SAVE_GROUP_REQUEST_STORE } from "../../Constants.ts";
+import type { ApiRequestConfig } from "../../../../framework/state/update/api/types/ApiRequestConfig.ts";
+import { API_ROOT } from "../../../../shared/params.ts";
+import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
+import { ApiActionTypes } from "../../../../framework/state/update/api/types/ApiActionTypes.ts";
+import { UPDATE_GROUP_REQUEST_STORE } from "../../Constants.ts";
 import { getAccessTokenIfPresent } from "../../../auth/AuthUtils.ts";
 import { AUTH_TOKEN_HEADER_KEY } from "../../../auth/Constants.ts";
 import type { UpdateGroupRequest } from "./types/UpdateGroupRequest.ts";
@@ -34,5 +34,5 @@ const defaultFunctionConfig = {
 export const UPDATE_GROUP_REQUEST_THUNK = generateApiThunk({
   queryConfig: updateGroupRequestThunk,
   defaultFunctionConfig: defaultFunctionConfig,
-  requestStoreName: SAVE_GROUP_REQUEST_STORE,
+  requestStoreName: UPDATE_GROUP_REQUEST_STORE,
 });

@@ -1,6 +1,6 @@
 export type CreateGroupData = {
   name: string;
-  summary: string;
+  description: string;
   url: string;
   isVisible: boolean;
   errorMessage?: string;

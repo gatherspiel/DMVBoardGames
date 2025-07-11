@@ -18,7 +18,7 @@ import {
   LOGIN_EVENT_CONFIG,
   LOGOUT_EVENT_CONFIG,
   REGISTER_EVENT_CONFIG,
-} from "../AuthEventHandlers.ts";
+} from "../LoginComponentEventHandlers.ts";
 import { LOGOUT_THUNK } from "../data/LogoutThunk.ts";
 import {
   getLoginComponentStoreFromRegisterResponse,
@@ -32,9 +32,6 @@ const template = `
   <style>
     #login-component-container {
       padding-top: 0.25rem;
-    }
-    #authentication-error-message {
-      color:darkred;
     }
     .login-element {
       display: inline-block;
@@ -97,14 +94,24 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
      <div class="ui-section" id="login-component-container">
       <form id=${LOGIN_FORM_ID} ${this.createSubmitEvent(LOGIN_EVENT_CONFIG)}>
       
+      
+       
         <div class="ui-input">
-          <label for="username">Email:</label>
-          <input type="text" id=${USERNAME_INPUT} name=${USERNAME_INPUT} />
+          ${this.generateInputFormItem({
+            id: USERNAME_INPUT,
+            componentLabel: "Email",
+            inputType: "text",
+            value: ""
+          })}
         </div>
         
         <div class="ui-input">
-          <label for="username">Password:</label>
-          <input type="password" id=${PASSWORD_INPUT} name=${PASSWORD_INPUT} />
+          ${this.generateInputFormItem({
+            id: PASSWORD_INPUT,
+            componentLabel: "password",
+            inputType: "text",
+            value: ""
+          })}
         </div>
         
         <br>
@@ -119,7 +126,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
                 Register 
             </button>       
           </div>
-          <p class="login-element" id="authentication-error-message">${data.errorMessage ? data.errorMessage.trim() : ""}</p>
+          ${this.generateErrorMessage(data.errorMessage)}
           <p class="login-element">${data.successMessage}</p>
         </form>
 

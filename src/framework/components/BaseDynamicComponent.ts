@@ -1,33 +1,33 @@
-import type { DisplayItem } from "../../ui/events/data/types/DisplayItem.ts";
+import type { DisplayItem } from "../../ui/homepage/data/types/DisplayItem.ts";
 
 import {
   createComponentStore,
   getComponentStore,
-  hasComponentStoreSubscribers,
   updateComponentStore,
-} from "../store/data/ComponentStore.ts";
+} from "../state/data/ComponentStore.ts";
 import {
   hasRequestStore,
-  hasRequestStoreSubscribers,
   initRequestStore,
   initRequestStoresOnLoad,
   updateRequestStoreAndClearCache,
-} from "../store/data/RequestStore.ts";
-import { EventHandlerAction } from "../store/update/event/EventHandlerAction.ts";
-import { BaseDispatcher } from "../store/update/BaseDispatcher.ts";
-import { EventThunk } from "../store/update/event/EventThunk.ts";
-import type { EventHandlerThunkConfig } from "../store/update/event/types/EventHandlerThunkConfig.ts";
+} from "../state/data/RequestStore.ts";
+import { EventHandlerAction } from "../state/update/event/EventHandlerAction.ts";
+import { BaseDispatcher } from "../state/update/BaseDispatcher.ts";
+import { EventThunk } from "../state/update/event/EventThunk.ts";
+import type { EventHandlerThunkConfig } from "../state/update/event/types/EventHandlerThunkConfig.ts";
 import {
   type ComponentLoadConfig,
   type ThunkDispatcherConfig,
   validComponentLoadConfigFields,
 } from "./types/ComponentLoadConfig.ts";
-import type { BaseThunk } from "../store/update/BaseThunk.ts";
+import type { BaseThunk } from "../state/update/BaseThunk.ts";
 import {
   getGlobalStateValue,
   subscribeComponentToGlobalField,
-} from "../store/data/GlobalStore.ts";
-import type { EventValidationResult } from "../store/update/event/types/EventValidationResult.ts";
+} from "../state/data/GlobalStore.ts";
+import type { EventValidationResult } from "../state/update/event/types/EventValidationResult.ts";
+import type {FormItemConfig} from "./types/FormItemConfig.ts";
+import  {FormSelector} from "../FormSelector.ts";
 
 type EventConfig = {
   eventType: string;
@@ -47,6 +47,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   dependenciesLoaded: boolean = true;
   componentLoadConfig: ComponentLoadConfig | undefined = undefined; //Used if global state is needed before loading the component
 
+  formSelector: FormSelector
   static instanceCount = 1;
 
   constructor(componentStoreName: string, loadConfig?: ComponentLoadConfig) {
@@ -55,9 +56,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     this.instanceId = BaseDynamicComponent.instanceCount;
     BaseDynamicComponent.instanceCount++;
     this.eventHandlers = {};
-
     this.componentStoreName = `${componentStoreName}-${BaseDynamicComponent.instanceCount}`;
 
+    this.formSelector = new FormSelector();
     createComponentStore(this.componentStoreName, this);
 
     if (loadConfig) {
@@ -135,6 +136,8 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     };
 
     if (this.shadowRoot) {
+
+      this.formSelector.setShadowRoot(this.shadowRoot);
       this.shadowRoot?.querySelectorAll(`[${elementIdTag}]`).forEach(function (
         item: Element,
       ) {
@@ -153,13 +156,104 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     if (!this.dependenciesLoaded) {
       return;
     }
+    this.formSelector.clearFormSelectors();
     this.innerHTML = this.render(data);
   }
 
   getElementIdTag() {
     return `data-${this.componentStoreName}-element-id`;
   }
-  //TODO: Handle case where there are multiple instances of the same component when generating the ids for event handlers.
+
+  generateButtonsForEditPermission(buttonConfig:Record<string, EventHandlerThunkConfig>):string{
+    const userCanEditPermission = getComponentStore(this.componentStoreName)?.permissions?.userCanEdit
+    if(userCanEditPermission === undefined){
+      throw new Error(`permissions.userCanEdit state not defined for component state ${this.componentStoreName}`);
+    }
+    if(!userCanEditPermission) {
+      return '';
+    }
+
+    let html = ''
+    var self = this;
+    Object.keys(buttonConfig).forEach(function(buttonText){
+      html+= `<button ${self.createClickEvent(buttonConfig[buttonText])}> ${buttonText}</button>`;
+    });
+    return html;
+  }
+
+  generateLinksForEditPermission(linkConfig:Record<string, string>):string{
+    const userCanEditPermission = getComponentStore(this.componentStoreName)?.permissions?.userCanEdit
+    if(userCanEditPermission === undefined){
+      throw new Error(`permissions.userCanEdit state not defined for component state ${this.componentStoreName}`);
+    }
+    if(!userCanEditPermission) {
+      return '';
+    }
+
+    let html = ''
+    Object.keys(linkConfig).forEach(function(linkText){
+      html+= `<a href="${window.location.origin}/${linkConfig[linkText]}">${linkText}</a>`;
+    });
+    return html;
+  }
+
+  generateErrorMessage(message: string | string[] | undefined){
+    if(Array.isArray(message)){
+      let html = ''
+      message.forEach((item)=>{
+        html+=`<p class="api-error-message">${item.trim()}</p>`
+
+      })
+      return html;
+    }
+    return `
+        <p class="api-error-message">${message? message.trim() : ""}</p>
+        `
+  }
+
+  generateInputFormItem(formConfig:FormItemConfig){
+
+    let formValue = formConfig.value;
+    if(!formValue && this.formSelector.hasValue(formConfig.id)){
+      formValue = this.formSelector.getValue(formConfig.id);
+    }
+
+    this.formSelector.addFormSelector(formConfig.id);
+    return `
+      <label for=${formConfig.id}>${formConfig.componentLabel}</label>
+      ${formConfig.lineBreakAfterLabel !== false? `<br>` : ''}
+      <input
+        ${formConfig.className ? `class="${formConfig.className}"` : ``}
+        id=${formConfig.id}
+        name=${formConfig.id}
+        type=${formConfig.inputType}
+        value="${formValue}"
+        />
+        <br>
+    `
+  }
+
+  generateTextInputFormItem(formConfig:FormItemConfig){
+    let formValue = formConfig.value;
+    if(!formValue && this.formSelector.hasValue(formConfig.id)){
+      formValue = this.formSelector.getValue(formConfig.id);
+    }
+    this.formSelector.addFormSelector(formConfig.id);
+
+    return `
+      <label for=${formConfig.id}>${formConfig.componentLabel}</label>
+      ${formConfig.lineBreakAfterLabel !== false? `<br>` : ''}
+      <textarea
+        ${formConfig.className ? `class="${formConfig.className}"` : ``}
+        id=${formConfig.id}
+        name=${formConfig.id}
+        type=${formConfig.inputType}
+        /> ${formValue}
+      </textarea>
+      <br>
+    `
+  }
+
   saveEventHandler(
     eventFunction: (e: Event) => any,
     eventType: string,
@@ -179,9 +273,11 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     return id;
   }
 
+
   createOnChangeEvent(eventConfig: any) {
     const eventHandler = BaseDynamicComponent.createHandler(
       eventConfig,
+      this.formSelector,
       this?.componentStoreName,
     );
     return this.saveEventHandler(eventHandler, "change");
@@ -189,42 +285,28 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   createSubmitEvent(eventConfig: any) {
     let eventHandler;
-    if (this.shadowRoot) {
-      eventHandler = BaseDynamicComponent.createHandler(
-        eventConfig,
-        this?.componentStoreName,
-        this?.shadowRoot,
-      );
-    } else {
-      eventHandler = BaseDynamicComponent.createHandler(
-        eventConfig,
-        this?.componentStoreName,
-      );
-    }
+    eventHandler = BaseDynamicComponent.createHandler(
+      eventConfig,
+      this.formSelector,
+      this?.componentStoreName,
+    );
     return this.saveEventHandler(eventHandler, "submit");
   }
 
   createClickEvent(eventConfig: any, id?: string) {
     let eventHandler;
-    if (this.shadowRoot) {
-      eventHandler = BaseDynamicComponent.createHandler(
-        eventConfig,
-        this?.componentStoreName,
-        this?.shadowRoot,
-      );
-    } else {
-      eventHandler = BaseDynamicComponent.createHandler(
-        eventConfig,
-        this?.componentStoreName,
-      );
-    }
+    eventHandler = BaseDynamicComponent.createHandler(
+      eventConfig,
+      this.formSelector,
+      this?.componentStoreName,
+    );
     return this.saveEventHandler(eventHandler, "click", id);
   }
 
   static createHandler(
     eventConfig: EventHandlerThunkConfig,
+    formSelector: FormSelector,
     storeName?: string,
-    shadowRoot?: ShadowRoot,
   ) {
     const storeToUpdate =
       eventConfig?.requestStoreToUpdate &&
@@ -248,19 +330,13 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     }
 
     const handler = function (e: Event) {
-      if (
-        !hasRequestStoreSubscribers(storeToUpdate) &&
-        !hasComponentStoreSubscribers(storeToUpdate)
-      ) {
-        // throw new Error(`No subscribers for store ${storeToUpdate}`);
-      }
 
       e.preventDefault();
 
       const request: EventHandlerAction = new EventHandlerAction(
         eventConfig.eventHandler,
         storeName,
-        shadowRoot,
+        formSelector
       );
 
       const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {
@@ -271,15 +347,13 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
       if (eventConfig.validator) {
         const eventConfigValidator = eventConfig.validator;
-        const validator = function (
-          eventHandlerResult: any,
-        ): EventValidationResult {
+        const validator = function (): EventValidationResult {
           const componentData = getComponentStore(storeName ?? "");
-          return eventConfigValidator(eventHandlerResult, componentData);
+          return eventConfigValidator(formSelector, componentData);
         };
 
         eventUpdater.processEvent(e, validator).then((result: any) => {
-          if (result?.error) {
+          if (result?.errorMessage) {
             componentStoreUpdate.updateStore(result);
           }
         });

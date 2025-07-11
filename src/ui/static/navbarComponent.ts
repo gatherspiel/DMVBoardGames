@@ -70,18 +70,17 @@ export class NavbarComponent extends BaseTemplateComponent {
     return template;
   }
 
-
-
   override render() {
-    // Closing tags on separate lines are to prevent extra spaces between links
+
+    // Closing tags are on separate lines are to prevent extra spaces between links
     return `
       <nav>
         <div class="ui-section" id="nav-container">
-          <a href="index.html">Home
-          </a><a class="mid-element" href="designers.html">Local designers
-          </a><a href="print_and_play.html">Print and Play
-          </a><a href="/plans.html">Future plans
-          </a><a href="useful_links.html">Useful Links</a>       
+          <a href="${window.location.origin}/index.html">Home
+          </a><a class="mid-element" href="${window.location.origin}/designers.html">Local designers
+          </a><a href="${window.location.origin}${window.location.origin}/print_and_play.html">Print and Play
+          </a><a href="https://gatherspiel.com/vision.html">Future plans
+          </a><a href="${window.location.origin}/useful_links.html">Useful Links</a>       
         <div id="nav-filler"></div>
 
         </div>
