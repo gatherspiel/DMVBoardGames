@@ -27,6 +27,8 @@ export default defineConfig({
         print_and_play: resolve(__dirname, "src/print_and_play.html"),
         useful_links: resolve(__dirname, "src/useful_links.html"),
         create_groups: resolve(__dirname, "src/groups/create.html"),
+        event: resolve(__dirname, "src/groups/event.html"),
+        create_event: resolve(__dirname, "src/groups/addEvent.html"),
       },
     },
   },
