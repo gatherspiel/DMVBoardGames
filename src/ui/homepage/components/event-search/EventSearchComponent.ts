@@ -52,7 +52,7 @@ const template = `
 
   <style>
   #event-search {
-  border-top: 1px solid var(--clr-lighter-blue);
+    border-top: 1px solid var(--clr-lighter-blue);
     padding-block: 1.5rem;
   }
   
@@ -63,12 +63,6 @@ const template = `
     gap: 4rem;
     justify-content: left;
     padding-bottom: 5px;
-  }
-  
-  #search-input-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
   }
   
   #search-form label {
@@ -84,9 +78,26 @@ const template = `
     padding: 0.25rem;
   }
   
+  not  @media screen and (width < 32em) {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
   @media screen and (width < 32em) {
     #search-form {
       gap: 2rem;
+    }
+    
+    .search-input-wrapper {
+      align-items: center;
+      justify-content: center;
+    }
+    
+    button {
+      justify-content: center;
+    }
+    
+    #searchButtonWrapper {
     }
   }
 </style>
@@ -109,7 +120,7 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
             <div>
               ${this.getCityHtml(eventSearchStore)}
             </div>
-            <div>
+            <div >
               <label htmlFor="days">Select event day:</label>
               <select
                 name="days"
@@ -125,9 +136,10 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
                 )}
               </select>
             </div>
-  
+            <div>
+              <button type="submit" >Search Groups</button>
+            </div>
           </div>
-          <button type="submit" >Search Groups</button>
         </form>
       </div>
   `;

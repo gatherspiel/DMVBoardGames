@@ -29,6 +29,8 @@ export default defineConfig({
         create_groups: resolve(__dirname, "src/groups/create.html"),
         event: resolve(__dirname, "src/groups/event.html"),
         create_event: resolve(__dirname, "src/groups/addEvent.html"),
+        feedback: resolve(__dirname, "src/feedback.html"),
+
       },
     },
   },

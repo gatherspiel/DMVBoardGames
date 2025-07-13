@@ -38,7 +38,6 @@ const loadConfig = {
   ],
   globalStateLoadConfig: {
     globalFieldSubscriptions: ["isLoggedIn"],
-    waitForGlobalState: "isLoggedIn",
     defaultGlobalStateReducer: function (updates: Record<string, string>) {
       return {
         name: "",
