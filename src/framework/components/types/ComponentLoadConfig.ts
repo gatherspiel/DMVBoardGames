@@ -15,7 +15,6 @@ export type ThunkDispatcherConfig = {
 
 export type GlobalStateLoadConfig = {
   globalFieldSubscriptions: string[];
-  waitForGlobalState?: string; //Wait for this global state to be ready before loading.
   defaultGlobalStateReducer?: (updates: Record<string, string>) => any; //Default reducer from global state if there is no dependent API request.
 };
 

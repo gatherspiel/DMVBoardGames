@@ -25,6 +25,7 @@ const defaultResponse = {
 export function getLoginComponentStoreFromLogoutResponse(): LoginComponentStore {
   return {
     isLoggedIn: false,
+    successMessage: ''
   };
 }
 

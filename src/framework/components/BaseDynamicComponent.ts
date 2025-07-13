@@ -45,7 +45,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   instanceId: number;
 
   dependenciesLoaded: boolean = true;
-  componentLoadConfig: ComponentLoadConfig | undefined = undefined; //Used if global state is needed before loading the component
+  componentLoadConfig: ComponentLoadConfig | undefined = undefined;
 
   formSelector: FormSelector
   static instanceCount = 1;
@@ -77,22 +77,17 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       });
 
       const globalStateLoadConfig = loadConfig.globalStateLoadConfig;
-      if (globalStateLoadConfig?.waitForGlobalState) {
-        subscribeComponentToGlobalField(
-          self,
-          globalStateLoadConfig.waitForGlobalState,
-        );
-        self.componentLoadConfig = loadConfig;
-      } else {
-        initRequestStoresOnLoad(loadConfig);
-      }
 
       if (globalStateLoadConfig?.globalFieldSubscriptions) {
         globalStateLoadConfig.globalFieldSubscriptions.forEach(function (
           fieldName: string,
         ) {
           subscribeComponentToGlobalField(self, fieldName);
+          self.componentLoadConfig = loadConfig;
+
         });
+      } else {
+        initRequestStoresOnLoad(loadConfig);
       }
 
       // TODO: Handle case where there are multiple instances of a component that each need different state
@@ -154,12 +149,16 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   generateAndSaveHTML(data: any) {
     if (!this.dependenciesLoaded) {
-      return;
+      this.innerHTML = this.getLoadingIndicator();
+    } else {
+      this.formSelector.clearFormSelectors();
+      this.innerHTML = this.render(data);
     }
-    this.formSelector.clearFormSelectors();
-    this.innerHTML = this.render(data);
   }
 
+  getLoadingIndicator(){
+    return `<h1>Loading</h1>`
+  }
   getElementIdTag() {
     return `data-${this.componentStoreName}-element-id`;
   }
@@ -371,17 +370,19 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     const globalStateLoadConfig =
       this.componentLoadConfig?.globalStateLoadConfig;
     if (!globalStateLoadConfig) {
-      throw new Error("Component global state config is not defined");
+      throw new Error(`Component global state config is not defined for component ${this.componentStoreName}`);
     }
 
     //Component is still waiting for state.
-    if (
-      globalStateLoadConfig.waitForGlobalState &&
-      getGlobalStateValue(globalStateLoadConfig.waitForGlobalState) ===
+    this.componentLoadConfig?.globalStateLoadConfig?.globalFieldSubscriptions.forEach(function(fieldName){
+      if (
+        globalStateLoadConfig.globalFieldSubscriptions &&
+        getGlobalStateValue(fieldName) ===
         undefined
-    ) {
-      return;
-    }
+      ) {
+        return;
+      }
+    })
 
     //The component should make an API request based on the data received before rerendering.
     if (this.requestStoreName) {
@@ -413,7 +414,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       );
     } else {
       console.error(
-        "A default global state reducer or API request store should be defined to subscribe to global state",
+        `A default global state reducer or API request store should be defined to subscribe to global state for component ${this.componentStoreName}`,
       );
     }
   }

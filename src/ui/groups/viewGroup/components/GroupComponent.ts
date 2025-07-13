@@ -92,7 +92,6 @@ const loadConfig = {
   ],
   globalStateLoadConfig: {
     globalFieldSubscriptions: ["isLoggedIn"],
-    waitForGlobalState: "isLoggedIn",
   },
 };
 

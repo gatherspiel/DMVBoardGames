@@ -12,6 +12,7 @@ const template = `
     }
     
     #open-create-group-page-button-container {
+      padding-left: 1rem;
       padding-bottom: 1rem;
     }
   </style>
@@ -21,7 +22,6 @@ const template = `
 const loadConfig = {
   globalStateLoadConfig: {
     globalFieldSubscriptions: ["isLoggedIn"],
-    waitForGlobalState: "isLoggedIn",
     defaultGlobalStateReducer: function (updates: Record<string, string>) {
       return {
         isVisible: updates["isLoggedIn"],
@@ -41,8 +41,8 @@ export class OpenCreateGroupPageComponent extends BaseTemplateDynamicComponent {
 
   render(data: OpenCreateGroupPageState): string {
     return `
-       <div id="open-create-group-page-button-container">
-             ${data.isVisible ? `<a href="groups/create.html">Click to create group</a>` : ""} 
+       <div class="ui-section" id="open-create-group-page-button-container">
+         ${data.isVisible ? `<a href="groups/create.html">Click to create group</a>` : ""} 
 
        </div>
      

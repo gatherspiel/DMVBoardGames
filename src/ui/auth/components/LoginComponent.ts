@@ -36,11 +36,19 @@ const template = `
     .login-element {
       display: inline-block;
     }
+    @media screen and (width < 32em) {
+      #login-component-container {
+        text-align: center;
+      }
+    }
+
   </style>
 
 `;
 
 export class LoginComponent extends BaseTemplateDynamicComponent {
+
+  hasRendered: boolean;
   constructor() {
     super("loginComponentStore", {
       onLoadStoreConfig: {
@@ -71,6 +79,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
         },
       ],
     });
+    this.hasRendered = false;
   }
 
   override getTemplateStyle(): string {
@@ -90,7 +99,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
     }
   }
   generateLogin(data: LoginComponentStore) {
-    return `
+    const html = `
      <div class="ui-section" id="login-component-container">
       <form id=${LOGIN_FORM_ID} ${this.createSubmitEvent(LOGIN_EVENT_CONFIG)}>
       
@@ -126,12 +135,14 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
                 Register 
             </button>       
           </div>
-          ${this.generateErrorMessage(data.errorMessage)}
+          ${this.hasRendered ? this.generateErrorMessage(data.errorMessage) : ''}
           <p class="login-element">${data.successMessage}</p>
         </form>
 
     </div>
     `;
+    this.hasRendered = true;
+    return html;
   }
 }
 

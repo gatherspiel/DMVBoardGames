@@ -38,14 +38,12 @@ const loadConfig = {
             successMessage: "Successfully created event"
           }
         }
-        console.log(data);
         return data;
       }
     }
   ],
   globalStateLoadConfig: {
     globalFieldSubscriptions: ["isLoggedIn"],
-    waitForGlobalState: "isLoggedIn",
     defaultGlobalStateReducer: function (updates: Record<string, string>) {
       return {
         name: "",
