@@ -16,10 +16,31 @@ const loadConfig = {
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
   <style>
-    .event-group h3,
-    .event-group p {
-      display: inline-block;
-      margin-left: 2rem;
+    @media not screen and (width < 32em) {
+      .event-group p {
+        display: inline-block;
+        margin-left: 2rem;
+      }
+      .group-webpage-link {
+        margin-left: 2rem;
+      }
+      .group-page-links {
+        display: inline-block;
+      }
+    }  
+    @media screen and (width < 32em) {
+      a {
+        margin-top: 1rem;
+      }
+      .event-group {
+        border-bottom: 1px solid var(--clr-lighter-blue);
+      }
+      .event-group-location {
+        display: none; 
+      }
+      .ui-section .event-group:not(:first-child) {
+        margin-top: 0.5rem;
+      }
     }
   </style>
 `;
@@ -32,13 +53,13 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
     let groupHtml = "";
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
-      
-        <a href="groups.html?name=${encodeURIComponent(group.title)}">Show info</a>
-        <h3>
-          <a href=${group.url}> Group webpage</a>
-        </h3>  
+        <div class = "group-page-links">
+          <a href="groups.html?name=${encodeURIComponent(group.title)}">Show info</a>
+          <a class="group-webpage-link" href=${group.url}> Group webpage</a>
+        </div>
+
         <p>${group.title}</p>
-        <p>${group.locations?.join(", ") ?? ""}</p>              
+        <p class="event-group-location">${group.locations?.join(", ") ?? ""}</p>              
       </div> 
     `;
     return groupHtml;
