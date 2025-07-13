@@ -12,6 +12,7 @@ const template = `
     }
     
     #open-create-group-page-button-container {
+      padding-left: 1rem;
       padding-bottom: 1rem;
     }
   </style>
@@ -40,7 +41,7 @@ export class OpenCreateGroupPageComponent extends BaseTemplateDynamicComponent {
 
   render(data: OpenCreateGroupPageState): string {
     return `
-       <div id="open-create-group-page-button-container">
+       <div class="ui-section" id="open-create-group-page-button-container">
          ${data.isVisible ? `<a href="groups/create.html">Click to create group</a>` : ""} 
 
        </div>

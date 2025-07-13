@@ -67,6 +67,7 @@ export function getLoginComponentStoreFromLoginResponse(
     errorMessage: response.getErrorMessage(),
     email: email,
     successMessage: response.isLoggedIn() ? `Welcome ${email}` : "",
+    hasAttemptedLogin: true
   };
 }
 

@@ -1,22 +1,5 @@
-#welcome-sec {
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-#para-wrapper {
-  margin-top: 10px;
-  background: hsl(from var(--clr-lighter-blue) h s l / 0.05);
-  border-radius: 10px;
-  padding: 1rem;
-}
 
 
-#welcome-sec p {
-  color: var(--clr-dark-blue);
-  line-height: 1.75;
-  font-weight: 600;
-}
 
 #root {
   padding-top: 0.25rem;
@@ -29,7 +12,6 @@
 #nav-container div {
   font-weight: 600;
   height:38px;
-  text-align: center;
   vertical-align: middle;
   line-height: 38px;
   padding-bottom: 0.25rem;
@@ -58,9 +40,7 @@ select:focus-visible {
 
 
 @media screen and (width < 50em) {
-  nav {
-    text-align: center;
-  }
+
 
   #search-days {
     margin-top: 1rem;
@@ -82,7 +62,6 @@ select:focus-visible {
 
 .ui-info-section {
   background: hsl(from var(--clr-lighter-blue) h s l / 0.05);
-
   color: var(--clr-dark-blue);
   font-weight: 600;
   padding-left: 1rem;
@@ -105,16 +84,8 @@ select:focus-visible {
 
 
 @media screen and (width < 32em) {
-  #welcome-sec p {
-    text-align: center;
-  }
-
   #root {
     padding: 0;
-  }
-
-  .page-section {
-    text-align: center;
   }
 }
 

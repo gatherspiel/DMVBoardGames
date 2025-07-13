@@ -51,3 +51,10 @@ p {
   color: darkred;
 }
 
+@media screen and (width < 32em) {
+  .ui-section {
+    text-align: center;
+    justify-items: center;
+  }
+}
+

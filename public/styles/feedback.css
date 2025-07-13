@@ -1,0 +1,18 @@
+#welcome-sec {
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+#welcome-sec p {
+    color: var(--clr-dark-blue);
+    line-height: 1.75;
+    font-weight: 600;
+}
+
+.ui-info-section {
+    background: hsl(from var(--clr-lighter-blue) h s l / 0.05);
+    color: var(--clr-dark-blue);
+    font-weight: 600;
+    padding-left: 1rem;
+}
