@@ -19,7 +19,6 @@ const defaultFunctionConfig = {
   defaultFunction: function () {
     return {};
   },
-  defaultFunctionPriority: false,
 };
 
 export const UPDATE_GROUP_REQUEST_THUNK = generateApiThunk({

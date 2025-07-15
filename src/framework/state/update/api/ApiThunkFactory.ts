@@ -22,7 +22,6 @@ export function generateApiThunk(config: ApiThunkConfig) {
           errorMessage: response.message,
         };
       },
-      defaultFunctionPriority: false,
     };
   }
   const getAction = new InternalApiAction(

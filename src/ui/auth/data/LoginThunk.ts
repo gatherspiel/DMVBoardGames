@@ -84,7 +84,6 @@ export const authenticationErrorConfig = {
       return new AuthResponse(false, {}, authData.errorMessage);
     }
   },
-  defaultFunctionPriority: false,
 };
 
 export const LOGIN_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
