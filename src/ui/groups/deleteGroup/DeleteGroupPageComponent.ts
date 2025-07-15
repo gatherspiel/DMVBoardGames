@@ -78,7 +78,7 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
               </form> 
               ${this.generateErrorMessage(data.errorMessage)}
               
-              <p>${data.successMessage ? data.successMessage.trim() : ""}</p>
+              <p>${data.successMessage.trim() ?? ""}</p>
 
             `
             : `<p>Insufficient permissions to delete group </p>`

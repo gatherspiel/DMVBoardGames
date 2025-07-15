@@ -2,14 +2,10 @@ import type { DisplayItem } from "../../ui/homepage/data/types/DisplayItem.ts";
 
 import {
   createComponentStore,
-  getComponentStore,
-  updateComponentStore,
+  getComponentStore, hasUserEditPermissions,
 } from "../state/data/ComponentStore.ts";
 import {
-  hasRequestStore,
-  initRequestStore,
   initRequestStoresOnLoad,
-  updateRequestStoreAndClearCache,
 } from "../state/data/RequestStore.ts";
 import { EventHandlerAction } from "../state/update/event/EventHandlerAction.ts";
 import { BaseDispatcher } from "../state/update/BaseDispatcher.ts";
@@ -20,9 +16,8 @@ import {
   type ThunkDispatcherConfig,
   validComponentLoadConfigFields,
 } from "./types/ComponentLoadConfig.ts";
-import type { BaseThunk } from "../state/update/BaseThunk.ts";
+import type {BaseThunk} from "../state/update/BaseThunk.ts";
 import {
-  getGlobalStateValue,
   subscribeComponentToGlobalField,
 } from "../state/data/GlobalStore.ts";
 import type { EventValidationResult } from "../state/update/event/types/EventValidationResult.ts";
@@ -36,10 +31,9 @@ type EventConfig = {
 
 export abstract class BaseDynamicComponent extends HTMLElement {
   componentStoreName: string;
-  eventHandlers: Record<string, EventConfig>;
+  eventHandlerConfig: Record<string, EventConfig>;
   eventTagIdCount = 0;
 
-  requestStoreName?: string;
   requestStoreReducer?: BaseThunk;
 
   instanceId: number;
@@ -55,7 +49,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
     this.instanceId = BaseDynamicComponent.instanceCount;
     BaseDynamicComponent.instanceCount++;
-    this.eventHandlers = {};
+    this.eventHandlerConfig = {};
     this.componentStoreName = `${componentStoreName}-${BaseDynamicComponent.instanceCount}`;
 
     this.formSelector = new FormSelector();
@@ -89,7 +83,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         initRequestStoresOnLoad(loadConfig);
       }
 
-      // TODO: Handle case where there are multiple instances of a component that each need different state
       if (loadConfig.thunkReducers) {
         const component = this;
 
@@ -112,7 +105,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   updateStore(data: any) {
-    this.eventHandlers = {};
+    this.eventHandlerConfig = {};
     this.eventTagIdCount = 0;
 
     this.generateAndSaveHTML(data);
@@ -120,7 +113,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   attachEventHandlersToDom() {
-    const eventHandlers = this.eventHandlers;
+    const eventHandlers = this.eventHandlerConfig;
     const elementIdTag = this.getElementIdTag();
 
     const addEventHandler = function (item: Element) {
@@ -158,12 +151,13 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   getLoadingIndicator(){
     return `<h1>Loading</h1>`
   }
+
   getElementIdTag() {
     return `data-${this.componentStoreName}-element-id`;
   }
 
   generateButtonsForEditPermission(buttonConfig:Record<string, EventHandlerThunkConfig>):string{
-    const userCanEditPermission = getComponentStore(this.componentStoreName)?.permissions?.userCanEdit
+    const userCanEditPermission = hasUserEditPermissions(this.componentStoreName);
     if(userCanEditPermission === undefined){
       throw new Error(`permissions.userCanEdit state not defined for component state ${this.componentStoreName}`);
     }
@@ -205,7 +199,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       return html;
     }
     return `
-        <p class="api-error-message">${message? message.trim() : ""}</p>
+      <p class="api-error-message">${message? message.trim() : ""}</p>
         `
   }
 
@@ -259,7 +253,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   ): string {
     let id = `${this.getElementIdTag()}=${this.eventTagIdCount}`;
 
-    this.eventHandlers[this.eventTagIdCount] = {
+    this.eventHandlerConfig[this.eventTagIdCount] = {
       eventType: eventType,
       eventFunction: eventFunction,
     };
@@ -309,9 +303,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
     const eventThunk = eventConfig.apiRequestThunk;
     const storeToUpdate =
-      eventThunk?.getRequestStoreId()
-        ? eventThunk?.getRequestStoreId()
-        : componentStoreName;
+      eventThunk?.getRequestStoreId() ?? componentStoreName;
 
     if (!storeToUpdate) {
       throw new Error("Event handler must be associated with a valid state");
@@ -320,10 +312,17 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     const dispatchers: BaseDispatcher[] = [];
 
     let componentStoreUpdate: any;
-    if (eventConfig.componentReducer && componentStoreName) {
+
+    let componentReducer = eventConfig.componentReducer;
+    if(!componentReducer){
+      componentReducer = function(data:any){
+        return data;
+      }
+    }
+    if (componentStoreName) {
       componentStoreUpdate = new BaseDispatcher(
         componentStoreName,
-        eventConfig.componentReducer,
+        componentReducer,
       );
       dispatchers.push(componentStoreUpdate);
     }
@@ -353,7 +352,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
         eventUpdater.processEvent(e, validator).then((result: any) => {
           if (result?.errorMessage) {
-            console.log("Error")
             componentStoreUpdate.updateStore(result);
           }
         });
@@ -366,56 +364,22 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   updateFromGlobalState() {
 
+    const componentLoadConfig = this.componentLoadConfig;
+    if(!componentLoadConfig){
+      throw new Error(`Component load config is not defined for component ${this.componentStoreName}`)
+    }
     const globalStateLoadConfig =
-      this.componentLoadConfig?.globalStateLoadConfig;
+      componentLoadConfig.globalStateLoadConfig;
     if (!globalStateLoadConfig) {
       throw new Error(`Component global state config is not defined for component ${this.componentStoreName}`);
     }
 
-    //Component is still waiting for state.
-    this.componentLoadConfig?.globalStateLoadConfig?.globalFieldSubscriptions.forEach(function(fieldName){
-      if (
-        globalStateLoadConfig.globalFieldSubscriptions &&
-        getGlobalStateValue(fieldName) ===
-        undefined
-      ) {
-        return;
-      }
-    })
+    const loadStatus = componentLoadConfig?.onLoadStoreConfig?.dataSource.initRequestStoreData(
+      componentLoadConfig,
+      this.componentStoreName)
 
-    //The component should make an API request based on the data received before rerendering.
-    const requestStoreName = this?.componentLoadConfig?.onLoadStoreConfig?.dataSource?.getRequestStoreId();
-    const componentLoadConfig = this?.componentLoadConfig;
-
-    if (requestStoreName && componentLoadConfig) {
-      if ( !hasRequestStore(requestStoreName)) {
-        initRequestStore(componentLoadConfig);
-      } else {
-        updateRequestStoreAndClearCache(requestStoreName, componentLoadConfig.onLoadRequestData);
-      }
+    if(loadStatus && loadStatus.dependenciesLoaded) {
       this.dependenciesLoaded = true;
-    } else {
-      let reducer = globalStateLoadConfig?.defaultGlobalStateReducer;
-      if(!reducer){
-       reducer = function (updates: Record<string, string>) {
-          return updates
-        }
-      }
-      this.dependenciesLoaded = true;
-
-      let dataToUpdate: Record<string, string> = {};
-
-      globalStateLoadConfig?.globalFieldSubscriptions?.forEach(
-        function (fieldName) {
-          const fieldValue = getGlobalStateValue(fieldName);
-          dataToUpdate[fieldName] = fieldValue;
-        },
-      );
-      updateComponentStore(
-        this.componentStoreName,
-        reducer,
-        dataToUpdate,
-      );
     }
   }
 

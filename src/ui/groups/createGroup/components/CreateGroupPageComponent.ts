@@ -94,7 +94,7 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
            
               </form>
              
-              <p>${createGroupData.successMessage ? createGroupData.successMessage.trim() : ""}</p>
+              <p>${createGroupData?.successMessage?.trim() ?? ""}</p>
               ${this.generateErrorMessage(createGroupData.errorMessage)}
             `
             : `<p>You must log in to create a group </p>`
