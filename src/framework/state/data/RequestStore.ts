@@ -117,7 +117,6 @@ export function createRequestStore(storeName:string, dataSource: BaseThunkAction
 
 export function initRequestStore(config: ComponentLoadConfig) {
   function getRequestData() {
-    console.log(config.onLoadRequestData)
     return config.onLoadRequestData;
   }
 

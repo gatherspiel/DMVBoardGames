@@ -366,8 +366,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   updateFromGlobalState() {
 
-    const componentData = getComponentStore(this.componentStoreName);
-
     const globalStateLoadConfig =
       this.componentLoadConfig?.globalStateLoadConfig;
     if (!globalStateLoadConfig) {
@@ -393,7 +391,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       if ( !hasRequestStore(requestStoreName)) {
         initRequestStore(componentLoadConfig);
       } else {
-        console.log(componentData.name)
         updateRequestStoreAndClearCache(requestStoreName, componentLoadConfig.onLoadRequestData);
       }
       this.dependenciesLoaded = true;
