@@ -29,6 +29,11 @@ export function getLoginComponentStoreFromLogoutResponse(): LoginComponentStore 
   };
 }
 
+/*
+-Add thunk id as parameter and add getThunkId method
+-Have the thunk factory automatically created the request store from the thunk id.
+
+ */
 export const LOGOUT_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
   retrieveData,
   defaultResponse,

@@ -1,5 +1,6 @@
 import { BaseThunkAction } from "../BaseThunkAction.ts";
 import type { DefaultApiAction } from "./DefaultApiAction.ts";
+import {createRequestStore} from "../../data/RequestStore.ts";
 
 /**
  * TODO: Add automated testing documentation and examples for instances of ExternalAction without the backend
@@ -9,16 +10,25 @@ import type { DefaultApiAction } from "./DefaultApiAction.ts";
  *
  */
 export class ExternalApiAction extends BaseThunkAction {
+
+  static thunkCount = 0;
+
   externalClient: (params: any, defaultResponse: DefaultApiAction) => any;
   defaultResponse: DefaultApiAction;
-
+  thunkId: string
   constructor(
     externalClient: (params: any, defaultResponse: DefaultApiAction) => any,
     defaultResponse: DefaultApiAction,
   ) {
     super();
+
     this.externalClient = externalClient;
     this.defaultResponse = defaultResponse;
+
+    this.thunkId = "api_thunk_" + ExternalApiAction.thunkCount;
+    ExternalApiAction.thunkCount++;
+    createRequestStore(this.thunkId, this);
+
   }
 
   async retrieveData(params: any): Promise<any> {

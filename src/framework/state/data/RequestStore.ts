@@ -5,6 +5,7 @@ import type {
   ComponentLoadConfig,
   RequestStoreItem,
 } from "../../components/types/ComponentLoadConfig.ts";
+import type {ExternalApiAction} from "../update/api/ExternalApiAction.ts";
 
 const stores: Record<string, any> = {};
 const responseCache: Record<string, any> = {};
@@ -102,6 +103,15 @@ export function updateRequestStore(
 
 export function hasRequestStoreSubscribers(storeName: string): boolean {
   return hasSubscribers(storeName, stores);
+}
+
+export function createRequestStore(storeName:string, dataSource: ExternalApiAction){
+  createStore(storeName, stores);
+  responseCache[storeName] = {};
+  subscribeToRequestStore(
+    storeName,
+    dataSource,
+  );
 }
 
 export function initRequestStore(config: ComponentLoadConfig) {
