@@ -18,6 +18,7 @@ export class BaseThunk {
   }
 
   createRequestStore(storeId:string){
+
     this.requestStoreId = storeId;
     createRequestStore(this.requestStoreId, this)
   }

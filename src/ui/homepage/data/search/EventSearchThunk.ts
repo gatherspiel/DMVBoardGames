@@ -10,6 +10,7 @@ const DAY_PARAM = "day";
 
 function getEventsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
   let url = API_ROOT + "/searchEvents";
+
   const paramMap: any = {};
 
   if (searchParams.day && searchParams.day !== DEFAULT_SEARCH_PARAMETER) {
@@ -43,7 +44,7 @@ const defaultFunctionConfig = {
   defaultFunctionPriority: USE_MOCK,
 };
 
-export const EVENT_LIST_THUNK = generateApiThunk({
+export const EVENT_SEARCH_THUNK = generateApiThunk({
   queryConfig: getEventsQueryConfig,
   defaultFunctionConfig: defaultFunctionConfig,
 });

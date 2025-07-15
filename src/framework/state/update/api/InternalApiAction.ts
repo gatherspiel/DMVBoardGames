@@ -96,6 +96,7 @@ export class InternalApiAction extends BaseThunkAction {
   async retrieveData(params: any): Promise<any> {
     //const baseGet: BaseGetAction = this;
 
+    console.log("HI");
     return await this.#getResponseData(
       this.#getQueryConfig(params),
       this.#defaultResponse,

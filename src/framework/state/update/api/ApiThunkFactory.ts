@@ -32,7 +32,7 @@ export function generateApiThunk(config: ApiThunkConfig) {
 
   const apiThunk = new BaseThunk(getAction);
 
-  const requestStoreId ="api_request_"+thunkCount;
+  const requestStoreId =config.queryConfig.name+"_"+thunkCount;
   apiThunk.createRequestStore(requestStoreId);
   thunkCount++;
 
@@ -44,10 +44,12 @@ export function generateApiThunkWithExternalConfig(
   defaultResponse: DefaultApiAction,
 ):BaseThunk {
   const action = new ExternalApiAction(retrieveData, defaultResponse);
+
   const requestStoreId ="api_request_"+thunkCount;
-  thunkCount++;
 
   const thunk = new BaseThunk(action);
   thunk.createRequestStore(requestStoreId);
+  thunkCount++;
+
   return thunk;
 }

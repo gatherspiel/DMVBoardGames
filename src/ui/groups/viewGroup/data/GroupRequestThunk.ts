@@ -5,6 +5,7 @@ import { AUTH_TOKEN_HEADER_KEY } from "../../../auth/Constants.ts";
 import { getAccessTokenIfPresent } from "../../../auth/AuthUtils.ts";
 
 function getGroupRequestConfig(requestParams: any): ApiRequestConfig {
+  console.log("Requesting group")
   let headers: Record<string, string> = {};
   const authData = getAccessTokenIfPresent();
   if (authData) {

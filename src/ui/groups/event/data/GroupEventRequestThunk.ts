@@ -18,6 +18,6 @@ function getEventRequestConfig(): ApiRequestConfig {
   };
 }
 
-export const EVENT_REQUEST_THUNK = generateApiThunk({
+export const GROUP_EVENT_REQUEST_THUNK = generateApiThunk({
   queryConfig: getEventRequestConfig,
 });

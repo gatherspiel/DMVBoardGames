@@ -4,7 +4,6 @@ import {AUTH_TOKEN_HEADER_KEY} from "../../../auth/Constants.ts";
 import {ApiActionTypes} from "../../../../framework/state/update/api/types/ApiActionTypes.ts";
 import {API_ROOT} from "../../../../shared/params.ts";
 import {generateApiThunk} from "../../../../framework/state/update/api/ApiThunkFactory.ts";
-import {CREATE_EVENT_REQUEST_STORE} from "../../Constants.ts";
 
 function createEventThunk(
   requestParams: any,
@@ -25,5 +24,4 @@ function createEventThunk(
 
 export const CREATE_EVENT_THUNK = generateApiThunk({
   queryConfig: createEventThunk,
-  requestStoreName: CREATE_EVENT_REQUEST_STORE,
 });

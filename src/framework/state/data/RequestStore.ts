@@ -75,6 +75,7 @@ export function updateRequestStore(
   };
 
   stores[storeName].subscribers.forEach(function (item: any) {
+
     const requestData = stores[storeName].data;
 
     if (!item.dispatchers || item.dispatchers.length === 0) {
@@ -116,6 +117,7 @@ export function createRequestStore(storeName:string, dataSource: BaseThunkAction
 
 export function initRequestStore(config: ComponentLoadConfig) {
   function getRequestData() {
+    console.log(config.onLoadRequestData)
     return config.onLoadRequestData;
   }
 
@@ -124,7 +126,7 @@ export function initRequestStore(config: ComponentLoadConfig) {
     return;
   }
 
-  const storeName = onLoadConfig.storeName ? onLoadConfig.storeName : onLoadConfig.dataSource.getRequestStoreId();
+  const storeName =  onLoadConfig.dataSource.getRequestStoreId();
   if(!storeName){
     throw new Error("Store name not defined");
   }
@@ -132,13 +134,17 @@ export function initRequestStore(config: ComponentLoadConfig) {
   if (onLoadConfig.disableCache) {
     requestsWithoutCache.add(storeName);
   }
+
   createRequestStoreWithData(
     storeName,
     onLoadConfig.dataSource,
     getRequestData,
   );
 
+
   if (config.requestStoresToCreate) {
+    console.error("config.requestStoresToCreate should be null")
+
     config.requestStoresToCreate.forEach(function (
       requestStoreItem: RequestStoreItem,
     ) {
@@ -151,14 +157,25 @@ export function initRequestStore(config: ComponentLoadConfig) {
     });
   }
 
+
+
   if (config.onLoadRequestConfig) {
     config.onLoadRequestConfig.forEach(function (
       requestStoreItem: RequestStoreItem,
     ) {
-      createRequestStoreWithData(
-        storeName,
-        requestStoreItem.dataSource,
-      );
+
+      const requestStoreId = requestStoreItem.dataSource.getRequestStoreId();
+      if(requestStoreId){
+        createRequestStoreWithData(
+          requestStoreId,
+          requestStoreItem.dataSource,
+        );
+      } else {
+        createRequestStoreWithData(
+          storeName,
+          requestStoreItem.dataSource,
+        );
+      }
     });
   }
 }
@@ -169,7 +186,7 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
     return;
   }
 
-  const storeName = onLoadConfig.storeName ? onLoadConfig.storeName : onLoadConfig.dataSource.getRequestStoreId();
+  const storeName = onLoadConfig.dataSource.getRequestStoreId();
   if(!storeName){
     throw new Error("Store name not defined");
   }
