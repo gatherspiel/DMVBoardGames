@@ -5,6 +5,7 @@ import type {
   ComponentLoadConfig,
   RequestStoreItem,
 } from "../../components/types/ComponentLoadConfig.ts";
+import type {BaseThunkAction} from "../update/BaseThunkAction.ts";
 
 const stores: Record<string, any> = {};
 const responseCache: Record<string, any> = {};
@@ -74,9 +75,10 @@ export function updateRequestStore(
   };
 
   stores[storeName].subscribers.forEach(function (item: any) {
+
     const requestData = stores[storeName].data;
 
-    if (item.dispatchers.length === 0) {
+    if (!item.dispatchers || item.dispatchers.length === 0) {
       throw new Error(
         `No dispatchers for the response associated with: ${storeName} Make sure a component is subscribed to the store thunk`,
       );
@@ -104,6 +106,15 @@ export function hasRequestStoreSubscribers(storeName: string): boolean {
   return hasSubscribers(storeName, stores);
 }
 
+export function createRequestStore(storeName:string, dataSource: BaseThunkAction){
+  createStore(storeName, stores);
+  responseCache[storeName] = {};
+  subscribeToRequestStore(
+    storeName,
+    dataSource,
+  );
+}
+
 export function initRequestStore(config: ComponentLoadConfig) {
   function getRequestData() {
     return config.onLoadRequestData;
@@ -114,36 +125,56 @@ export function initRequestStore(config: ComponentLoadConfig) {
     return;
   }
 
-  if (onLoadConfig.disableCache) {
-    requestsWithoutCache.add(onLoadConfig.storeName);
+  const storeName =  onLoadConfig.dataSource.getRequestStoreId();
+  if(!storeName){
+    throw new Error("Store name not defined");
   }
+
+  if (onLoadConfig.disableCache) {
+    requestsWithoutCache.add(storeName);
+  }
+
   createRequestStoreWithData(
-    onLoadConfig.storeName,
+    storeName,
     onLoadConfig.dataSource,
     getRequestData,
   );
 
+
   if (config.requestStoresToCreate) {
+    console.error("config.requestStoresToCreate should be null")
+
     config.requestStoresToCreate.forEach(function (
       requestStoreItem: RequestStoreItem,
     ) {
-      createStore(requestStoreItem.storeName, stores);
-      responseCache[requestStoreItem.storeName] = {};
+      createStore(storeName, stores);
+      responseCache[storeName] = {};
       subscribeToRequestStore(
-        requestStoreItem.storeName,
+        storeName,
         requestStoreItem.dataSource,
       );
     });
   }
 
+
+
   if (config.onLoadRequestConfig) {
     config.onLoadRequestConfig.forEach(function (
       requestStoreItem: RequestStoreItem,
     ) {
-      createRequestStoreWithData(
-        requestStoreItem.storeName,
-        requestStoreItem.dataSource,
-      );
+
+      const requestStoreId = requestStoreItem.dataSource.getRequestStoreId();
+      if(requestStoreId){
+        createRequestStoreWithData(
+          requestStoreId,
+          requestStoreItem.dataSource,
+        );
+      } else {
+        createRequestStoreWithData(
+          storeName,
+          requestStoreItem.dataSource,
+        );
+      }
     });
   }
 }
@@ -154,7 +185,11 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
     return;
   }
 
-  addLoadFunction(onLoadConfig.storeName, function () {
+  const storeName = onLoadConfig.dataSource.getRequestStoreId();
+  if(!storeName){
+    throw new Error("Store name not defined");
+  }
+  addLoadFunction(storeName, function () {
     initRequestStore(config);
   });
 }

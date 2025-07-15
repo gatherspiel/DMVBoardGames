@@ -1,7 +1,6 @@
 import type { BaseThunk } from "../../state/update/BaseThunk.ts";
 
 export type RequestStoreItem = {
-  storeName: string;
   dataSource: BaseThunk;
   disableCache?: boolean;
 };

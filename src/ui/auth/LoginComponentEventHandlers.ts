@@ -1,12 +1,12 @@
 import {
-  AUTH_REQUEST_STORE,
-  LOGOUT_REQUEST_STORE,
   PASSWORD_INPUT,
-  REGISTER_REQUEST_STORE,
   USERNAME_INPUT,
 } from "./Constants.js";
 import type { EventHandlerThunkConfig } from "../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
 import type { EventHandlerData } from "../../framework/state/update/event/types/EventHandlerData.ts";
+import {REGISTER_USER_THUNK} from "./data/RegisterUserThunk.ts";
+import {LOGOUT_THUNK} from "./data/LogoutThunk.ts";
+import {LOGIN_THUNK} from "./data/LoginThunk.ts";
 
 export const LOGIN_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params: EventHandlerData) {
@@ -15,12 +15,12 @@ export const LOGIN_EVENT_CONFIG: EventHandlerThunkConfig = {
       password: params.formSelector.getValue(PASSWORD_INPUT)
     };
   },
-  requestStoreToUpdate: AUTH_REQUEST_STORE,
+  apiRequestThunk: LOGIN_THUNK,
 };
 
 export const LOGOUT_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function () {},
-  requestStoreToUpdate: LOGOUT_REQUEST_STORE,
+  apiRequestThunk: LOGOUT_THUNK
 };
 
 export const REGISTER_EVENT_CONFIG: EventHandlerThunkConfig = {
@@ -30,5 +30,5 @@ export const REGISTER_EVENT_CONFIG: EventHandlerThunkConfig = {
       password: params.formSelector.getValue(PASSWORD_INPUT),
     };
   },
-  requestStoreToUpdate: REGISTER_REQUEST_STORE,
+  apiRequestThunk: REGISTER_USER_THUNK
 };

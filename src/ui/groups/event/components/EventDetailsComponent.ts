@@ -4,11 +4,10 @@ import {
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT,
   EVENT_URL_INPUT,
-  GET_EVENT_REQUEST_STORE,
   GROUP_NAME_PARAM, START_DATE_INPUT, START_TIME_INPUT
 } from "../../Constants.ts";
 import {getUrlParameter} from "../../../../framework/utils/UrlParamUtils.ts";
-import {EVENT_REQUEST_THUNK} from "../data/EventRequestThunk.ts";
+import {GROUP_EVENT_REQUEST_THUNK} from "../data/GroupEventRequestThunk.ts";
 import type {EventDetailsData} from "../data/EventDetailsData.ts";
 import {
   CANCEL_DELETE_EVENT_CONFIG,
@@ -44,15 +43,14 @@ const template = `
 
 const loadConfig = {
   onLoadStoreConfig: {
-    storeName: GET_EVENT_REQUEST_STORE,
-    dataSource: EVENT_REQUEST_THUNK,
+    dataSource: GROUP_EVENT_REQUEST_THUNK,
   },
   onLoadRequestData: {
     name: getUrlParameter(GROUP_NAME_PARAM),
   },
   thunkReducers: [
     {
-      thunk: EVENT_REQUEST_THUNK,
+      thunk: GROUP_EVENT_REQUEST_THUNK,
       componentStoreReducer: function (data: any) {
         return data;
       },

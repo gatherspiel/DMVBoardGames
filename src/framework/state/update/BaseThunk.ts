@@ -2,6 +2,7 @@ import { BaseThunkAction } from "./BaseThunkAction.ts";
 import { BaseDispatcher } from "./BaseDispatcher.ts";
 
 import { updateGlobalStore } from "../data/GlobalStore.ts";
+import {createRequestStore} from "../data/RequestStore.ts";
 
 export class BaseThunk {
   thunkAction: BaseThunkAction;
@@ -9,9 +10,21 @@ export class BaseThunk {
 
   globalStateReducer?: (a: any) => Record<string, string>;
 
+  requestStoreId?: string;
+
   constructor(dataFetch: BaseThunkAction, dispatchers?: BaseDispatcher[]) {
     this.thunkAction = dataFetch;
     this.dispatchers = dispatchers ?? [];
+  }
+
+  createRequestStore(storeId:string){
+
+    this.requestStoreId = storeId;
+    createRequestStore(this.requestStoreId, this)
+  }
+
+  getRequestStoreId(){
+    return this.requestStoreId;
   }
 
   async retrieveData(params: any) {

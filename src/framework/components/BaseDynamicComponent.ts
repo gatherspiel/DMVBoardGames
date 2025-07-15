@@ -64,7 +64,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     if (loadConfig) {
       const self = this;
 
-      self.requestStoreName = loadConfig.onLoadStoreConfig?.storeName;
       self.requestStoreReducer = loadConfig.onLoadStoreConfig?.dataSource;
 
       Object.keys(loadConfig).forEach((configField: any) => {
@@ -305,13 +304,14 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   static createHandler(
     eventConfig: EventHandlerThunkConfig,
     formSelector: FormSelector,
-    storeName?: string,
+    componentStoreName?: string,
   ) {
+
+    const eventThunk = eventConfig.apiRequestThunk;
     const storeToUpdate =
-      eventConfig?.requestStoreToUpdate &&
-      eventConfig.requestStoreToUpdate.length > 0
-        ? eventConfig.requestStoreToUpdate
-        : storeName;
+      eventThunk?.getRequestStoreId()
+        ? eventThunk?.getRequestStoreId()
+        : componentStoreName;
 
     if (!storeToUpdate) {
       throw new Error("Event handler must be associated with a valid state");
@@ -320,9 +320,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     const dispatchers: BaseDispatcher[] = [];
 
     let componentStoreUpdate: any;
-    if (eventConfig.componentReducer && storeName) {
+    if (eventConfig.componentReducer && componentStoreName) {
       componentStoreUpdate = new BaseDispatcher(
-        storeName,
+        componentStoreName,
         eventConfig.componentReducer,
       );
       dispatchers.push(componentStoreUpdate);
@@ -334,7 +334,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
       const request: EventHandlerAction = new EventHandlerAction(
         eventConfig.eventHandler,
-        storeName,
+        componentStoreName,
         formSelector
       );
 
@@ -347,12 +347,13 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       if (eventConfig.validator) {
         const eventConfigValidator = eventConfig.validator;
         const validator = function (): EventValidationResult {
-          const componentData = getComponentStore(storeName ?? "");
+          const componentData = getComponentStore(componentStoreName ?? "");
           return eventConfigValidator(formSelector, componentData);
         };
 
         eventUpdater.processEvent(e, validator).then((result: any) => {
           if (result?.errorMessage) {
+            console.log("Error")
             componentStoreUpdate.updateStore(result);
           }
         });
@@ -364,8 +365,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   updateFromGlobalState() {
-
-    const componentData = getComponentStore(this.componentStoreName);
 
     const globalStateLoadConfig =
       this.componentLoadConfig?.globalStateLoadConfig;
@@ -385,20 +384,25 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     })
 
     //The component should make an API request based on the data received before rerendering.
-    if (this.requestStoreName) {
-      if (this.componentLoadConfig && !hasRequestStore(this.requestStoreName)) {
-        initRequestStore(this.componentLoadConfig);
+    const requestStoreName = this?.componentLoadConfig?.onLoadStoreConfig?.dataSource?.getRequestStoreId();
+    const componentLoadConfig = this?.componentLoadConfig;
+
+    if (requestStoreName && componentLoadConfig) {
+      if ( !hasRequestStore(requestStoreName)) {
+        initRequestStore(componentLoadConfig);
       } else {
-        updateRequestStoreAndClearCache(this.requestStoreName, {
-          name: componentData.name,
-        });
+        updateRequestStoreAndClearCache(requestStoreName, componentLoadConfig.onLoadRequestData);
       }
       this.dependenciesLoaded = true;
-    } else if (globalStateLoadConfig?.defaultGlobalStateReducer) {
+    } else {
+      let reducer = globalStateLoadConfig?.defaultGlobalStateReducer;
+      if(!reducer){
+       reducer = function (updates: Record<string, string>) {
+          return updates
+        }
+      }
       this.dependenciesLoaded = true;
-      /*TODO: Handle case where the component is subscribed to global state created by multiple components to prevent
-      extra rerenders.
-       */
+
       let dataToUpdate: Record<string, string> = {};
 
       globalStateLoadConfig?.globalFieldSubscriptions?.forEach(
@@ -409,12 +413,8 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       );
       updateComponentStore(
         this.componentStoreName,
-        globalStateLoadConfig.defaultGlobalStateReducer,
+        reducer,
         dataToUpdate,
-      );
-    } else {
-      console.error(
-        `A default global state reducer or API request store should be defined to subscribe to global state for component ${this.componentStoreName}`,
       );
     }
   }

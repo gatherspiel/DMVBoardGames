@@ -9,9 +9,10 @@ import type { DefaultApiAction } from "./DefaultApiAction.ts";
  *
  */
 export class ExternalApiAction extends BaseThunkAction {
+
+
   externalClient: (params: any, defaultResponse: DefaultApiAction) => any;
   defaultResponse: DefaultApiAction;
-
   constructor(
     externalClient: (params: any, defaultResponse: DefaultApiAction) => any,
     defaultResponse: DefaultApiAction,

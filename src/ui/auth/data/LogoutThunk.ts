@@ -16,10 +16,8 @@ async function retrieveData() {
 
 const defaultResponse = {
   defaultFunction: (error: string) => {
-    console.error("Failed to logout");
     return new AuthResponse(true, {}, error);
-  },
-  defaultFunctionPriority: false,
+  }
 };
 
 export function getLoginComponentStoreFromLogoutResponse(): LoginComponentStore {
@@ -28,6 +26,7 @@ export function getLoginComponentStoreFromLogoutResponse(): LoginComponentStore 
     successMessage: ''
   };
 }
+
 
 export const LOGOUT_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
   retrieveData,

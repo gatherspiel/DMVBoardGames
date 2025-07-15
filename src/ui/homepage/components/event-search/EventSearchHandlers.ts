@@ -1,7 +1,6 @@
-import { SEARCH_REQUEST_STORE } from "./Constants.ts";
-
 import type { EventHandlerData } from "../../../../framework/state/update/event/types/EventHandlerData.ts";
 import type { EventHandlerThunkConfig } from "../../../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
+import {EVENT_SEARCH_THUNK} from "../../data/search/EventSearchThunk.ts";
 export const SEARCH_EVENT_HANDLER_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params: EventHandlerData) {
     return {
@@ -9,7 +8,7 @@ export const SEARCH_EVENT_HANDLER_CONFIG: EventHandlerThunkConfig = {
       day: params.componentStore.day,
     };
   },
-  requestStoreToUpdate: SEARCH_REQUEST_STORE,
+  apiRequestThunk: EVENT_SEARCH_THUNK
 };
 
 export const UPDATE_CITY_CONFIG: EventHandlerThunkConfig = {

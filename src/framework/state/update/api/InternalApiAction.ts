@@ -3,6 +3,8 @@ import { BaseThunkAction } from "../BaseThunkAction.ts";
 
 import type { ApiRequestConfig } from "./types/ApiRequestConfig.ts";
 import { ApiActionTypes } from "./types/ApiActionTypes.ts";
+import {getAccessTokenIfPresent} from "../../../../ui/auth/AuthUtils.ts";
+import {AUTH_TOKEN_HEADER_KEY} from "../../../../ui/auth/Constants.ts";
 export class InternalApiAction extends BaseThunkAction {
   readonly #defaultResponse: DefaultApiAction;
   readonly #getQueryConfig: (a: any) => ApiRequestConfig;
@@ -94,10 +96,19 @@ export class InternalApiAction extends BaseThunkAction {
    * @param params
    */
   async retrieveData(params: any): Promise<any> {
-    //const baseGet: BaseGetAction = this;
 
+    const queryConfig: ApiRequestConfig = this.#getQueryConfig(params);
+
+    const authData = getAccessTokenIfPresent();
+
+    if(!queryConfig.headers){
+      queryConfig.headers = {};
+    }
+    if (authData && queryConfig.headers) {
+      queryConfig.headers[AUTH_TOKEN_HEADER_KEY] = authData;
+    }
     return await this.#getResponseData(
-      this.#getQueryConfig(params),
+      queryConfig,
       this.#defaultResponse,
     );
   }
