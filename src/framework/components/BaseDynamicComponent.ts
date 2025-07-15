@@ -305,13 +305,14 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   static createHandler(
     eventConfig: EventHandlerThunkConfig,
     formSelector: FormSelector,
-    storeName?: string,
+    componentStoreName?: string,
   ) {
+
+    const eventThunk = eventConfig.apiRequestThunk;
     const storeToUpdate =
-      eventConfig?.requestStoreToUpdate &&
-      eventConfig.requestStoreToUpdate.length > 0
-        ? eventConfig.requestStoreToUpdate
-        : storeName;
+      eventThunk?.getRequestStoreId()
+        ? eventThunk?.getRequestStoreId()
+        : componentStoreName;
 
     if (!storeToUpdate) {
       throw new Error("Event handler must be associated with a valid state");
@@ -320,9 +321,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     const dispatchers: BaseDispatcher[] = [];
 
     let componentStoreUpdate: any;
-    if (eventConfig.componentReducer && storeName) {
+    if (eventConfig.componentReducer && componentStoreName) {
       componentStoreUpdate = new BaseDispatcher(
-        storeName,
+        componentStoreName,
         eventConfig.componentReducer,
       );
       dispatchers.push(componentStoreUpdate);
@@ -334,7 +335,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
       const request: EventHandlerAction = new EventHandlerAction(
         eventConfig.eventHandler,
-        storeName,
+        componentStoreName,
         formSelector
       );
 
@@ -347,7 +348,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       if (eventConfig.validator) {
         const eventConfigValidator = eventConfig.validator;
         const validator = function (): EventValidationResult {
-          const componentData = getComponentStore(storeName ?? "");
+          const componentData = getComponentStore(componentStoreName ?? "");
           return eventConfigValidator(formSelector, componentData);
         };
 

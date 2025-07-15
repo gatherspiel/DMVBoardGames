@@ -5,7 +5,7 @@ import type {
   ComponentLoadConfig,
   RequestStoreItem,
 } from "../../components/types/ComponentLoadConfig.ts";
-import type {ExternalApiAction} from "../update/api/ExternalApiAction.ts";
+import type {BaseThunkAction} from "../update/BaseThunkAction.ts";
 
 const stores: Record<string, any> = {};
 const responseCache: Record<string, any> = {};
@@ -77,7 +77,7 @@ export function updateRequestStore(
   stores[storeName].subscribers.forEach(function (item: any) {
     const requestData = stores[storeName].data;
 
-    if (item.dispatchers.length === 0) {
+    if (!item.dispatchers || item.dispatchers.length === 0) {
       throw new Error(
         `No dispatchers for the response associated with: ${storeName} Make sure a component is subscribed to the store thunk`,
       );
@@ -105,7 +105,7 @@ export function hasRequestStoreSubscribers(storeName: string): boolean {
   return hasSubscribers(storeName, stores);
 }
 
-export function createRequestStore(storeName:string, dataSource: ExternalApiAction){
+export function createRequestStore(storeName:string, dataSource: BaseThunkAction){
   createStore(storeName, stores);
   responseCache[storeName] = {};
   subscribeToRequestStore(
@@ -124,11 +124,16 @@ export function initRequestStore(config: ComponentLoadConfig) {
     return;
   }
 
+  const storeName = onLoadConfig.storeName ? onLoadConfig.storeName : onLoadConfig.dataSource.getRequestStoreId();
+  if(!storeName){
+    throw new Error("Store name not defined");
+  }
+
   if (onLoadConfig.disableCache) {
-    requestsWithoutCache.add(onLoadConfig.storeName);
+    requestsWithoutCache.add(storeName);
   }
   createRequestStoreWithData(
-    onLoadConfig.storeName,
+    storeName,
     onLoadConfig.dataSource,
     getRequestData,
   );
@@ -137,10 +142,10 @@ export function initRequestStore(config: ComponentLoadConfig) {
     config.requestStoresToCreate.forEach(function (
       requestStoreItem: RequestStoreItem,
     ) {
-      createStore(requestStoreItem.storeName, stores);
-      responseCache[requestStoreItem.storeName] = {};
+      createStore(storeName, stores);
+      responseCache[storeName] = {};
       subscribeToRequestStore(
-        requestStoreItem.storeName,
+        storeName,
         requestStoreItem.dataSource,
       );
     });
@@ -151,7 +156,7 @@ export function initRequestStore(config: ComponentLoadConfig) {
       requestStoreItem: RequestStoreItem,
     ) {
       createRequestStoreWithData(
-        requestStoreItem.storeName,
+        storeName,
         requestStoreItem.dataSource,
       );
     });
@@ -164,7 +169,11 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
     return;
   }
 
-  addLoadFunction(onLoadConfig.storeName, function () {
+  const storeName = onLoadConfig.storeName ? onLoadConfig.storeName : onLoadConfig.dataSource.getRequestStoreId();
+  if(!storeName){
+    throw new Error("Store name not defined");
+  }
+  addLoadFunction(storeName, function () {
     initRequestStore(config);
   });
 }

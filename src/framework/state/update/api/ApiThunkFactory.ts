@@ -3,13 +3,14 @@ import { BaseThunk } from "../BaseThunk.ts";
 import { ExternalApiAction } from "./ExternalApiAction.ts";
 import { InternalApiAction } from "./InternalApiAction.ts";
 import type { ApiRequestConfig } from "./types/ApiRequestConfig.ts";
-import { subscribeToRequestStore } from "../../data/RequestStore.ts";
 
 export type ApiThunkConfig = {
   queryConfig: (a: any) => ApiRequestConfig;
   defaultFunctionConfig?: DefaultApiAction;
   requestStoreName?: string;
 };
+
+let thunkCount = 0;
 
 export function generateApiThunk(config: ApiThunkConfig) {
 
@@ -30,16 +31,23 @@ export function generateApiThunk(config: ApiThunkConfig) {
   );
 
   const apiThunk = new BaseThunk(getAction);
-  if (config.requestStoreName) {
-    subscribeToRequestStore(config.requestStoreName, apiThunk);
-  }
+
+  const requestStoreId ="api_request_"+thunkCount;
+  apiThunk.createRequestStore(requestStoreId);
+  thunkCount++;
+
   return apiThunk;
 }
 
 export function generateApiThunkWithExternalConfig(
   retrieveData: (a: any, b: DefaultApiAction) => Promise<any>,
   defaultResponse: DefaultApiAction,
-) {
+):BaseThunk {
   const action = new ExternalApiAction(retrieveData, defaultResponse);
-  return new BaseThunk(action);
+  const requestStoreId ="api_request_"+thunkCount;
+  thunkCount++;
+
+  const thunk = new BaseThunk(action);
+  thunk.createRequestStore(requestStoreId);
+  return thunk;
 }

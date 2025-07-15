@@ -87,7 +87,7 @@ export const authenticationErrorConfig = {
   defaultFunctionPriority: false,
 };
 
-export const AUTH_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
+export const LOGIN_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
   retrieveData,
   authenticationErrorConfig,
 ).addGlobalStateReducer((loginState: any) => {

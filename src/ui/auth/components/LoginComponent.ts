@@ -1,12 +1,11 @@
 import {
-  AUTH_THUNK,
+  LOGIN_THUNK,
   getLoginComponentStoreFromLoginResponse,
-} from "../data/AuthThunk.ts";
+} from "../data/LoginThunk.ts";
 
 import { getLoginComponentStoreFromLogoutResponse } from "../data/LogoutThunk.ts";
 
 import {
-  AUTH_REQUEST_STORE,
   LOGIN_FORM_ID,
   PASSWORD_INPUT,
   USERNAME_INPUT,
@@ -50,8 +49,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("loginComponentStore", {
       onLoadStoreConfig: {
-        storeName: AUTH_REQUEST_STORE,
-        dataSource: AUTH_THUNK,
+        dataSource: LOGIN_THUNK,
         disableCache: true,
       },
       onLoadRequestData: {
@@ -60,7 +58,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
       },
       thunkReducers: [
         {
-          thunk: AUTH_THUNK,
+          thunk: LOGIN_THUNK,
           componentStoreReducer: getLoginComponentStoreFromLoginResponse,
         },
         {
