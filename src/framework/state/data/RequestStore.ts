@@ -6,9 +6,9 @@ import type {
   RequestStoreItem,
 } from "../../components/types/ComponentLoadConfig.ts";
 import type {BaseThunkAction} from "../update/BaseThunkAction.ts";
+import {createResponseCacheIfNotExists} from "./SessionStorageUtils.ts";
 
 const stores: Record<string, any> = {};
-const responseCache: Record<string, any> = {};
 const requestsWithoutCache = new Set<string>();
 
 export function createRequestStoreWithData(
@@ -19,7 +19,8 @@ export function createRequestStoreWithData(
   },
 ) {
   createStore(storeName, stores);
-  responseCache[storeName] = {};
+
+  createResponseCacheIfNotExists(storeName);
 
   subscribeToRequestStore(storeName, dataSource);
   updateRequestStore(storeName, initStore, null);
@@ -27,9 +28,6 @@ export function createRequestStoreWithData(
 
 export function subscribeToRequestStore(storeName: string, item: any) {
   subscribeToStore(storeName, item, stores);
-  if (!responseCache[storeName]) {
-    responseCache[storeName] = {};
-  }
 }
 
 export function hasRequestStore(storeName: string): boolean {
@@ -40,7 +38,7 @@ export function updateRequestStoreAndClearCache(
   storeName: string,
   params: Record<string, string>,
 ) {
-  responseCache[storeName] = {};
+  //createNewResponseCache(storeName);
   updateRequestStore(
     storeName,
     () => {
@@ -75,9 +73,7 @@ export function updateRequestStore(
   };
 
   stores[storeName].subscribers.forEach(function (item: any) {
-
     const requestData = stores[storeName].data;
-
     if (!item.dispatchers || item.dispatchers.length === 0) {
       throw new Error(
         `No dispatchers for the response associated with: ${storeName} Make sure a component is subscribed to the store thunk`,
@@ -85,20 +81,12 @@ export function updateRequestStore(
     }
 
     //TODO: If a response would invalidate a cache item, do a page refresh or clear the whole cache.
-    if (
-      requestData &&
-      Object.keys(requestData).length > 0 &&
-      JSON.stringify(requestData) in responseCache[storeName]
-    ) {
-      item.updateStore(responseCache[storeName][JSON.stringify(requestData)]);
-    } else {
-      item.retrieveData(requestData).then((response: any) => {
-        if (!requestsWithoutCache.has(storeName)) {
-          responseCache[storeName][JSON.stringify(requestData)] = response;
-        }
-        item.updateStore(response);
-      });
-    }
+
+    const cacheKey = requestsWithoutCache.has(storeName) ? '' : storeName;
+    item.retrieveData(requestData, cacheKey).then((response: any) => {
+      item.updateStore(response);
+    });
+
   });
 }
 
@@ -108,7 +96,7 @@ export function hasRequestStoreSubscribers(storeName: string): boolean {
 
 export function createRequestStore(storeName:string, dataSource: BaseThunkAction){
   createStore(storeName, stores);
-  responseCache[storeName] = {};
+  createResponseCacheIfNotExists(storeName)
   subscribeToRequestStore(
     storeName,
     dataSource,

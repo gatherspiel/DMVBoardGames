@@ -74,8 +74,8 @@ export class BaseThunk {
     return this.requestStoreId;
   }
 
-  async retrieveData(params: any) {
-    return await this.thunkAction.retrieveData(params);
+  async retrieveData(params: any, cacheKey?: string) {
+    return await this.thunkAction.retrieveData(params, cacheKey);
   }
 
   addGlobalStateReducer(

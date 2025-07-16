@@ -5,6 +5,11 @@ import type { ApiRequestConfig } from "./types/ApiRequestConfig.ts";
 import { ApiActionTypes } from "./types/ApiActionTypes.ts";
 import {getAccessTokenIfPresent} from "../../../../ui/auth/AuthUtils.ts";
 import {AUTH_TOKEN_HEADER_KEY} from "../../../../ui/auth/Constants.ts";
+import {
+  clearSessionStorage,
+  getRequestFromCache,
+  updateCache
+} from "../../data/SessionStorageUtils.ts";
 export class InternalApiAction extends BaseThunkAction {
   readonly #defaultResponse: DefaultApiAction;
   readonly #getQueryConfig: (a: any) => ApiRequestConfig;
@@ -95,11 +100,23 @@ export class InternalApiAction extends BaseThunkAction {
   /**
    * @param params
    */
-  async retrieveData(params: any): Promise<any> {
+  async retrieveData(params: any, cacheKey?: string): Promise<any> {
 
     const queryConfig: ApiRequestConfig = this.#getQueryConfig(params);
 
     const authData = getAccessTokenIfPresent();
+
+    let requestKey = ''
+    if(cacheKey && cacheKey.length > 0){
+      requestKey = `${queryConfig.method ?? ''}_${queryConfig.url}_${JSON.stringify(queryConfig.body) ?? ''}`;
+
+      const cachedResponse = getRequestFromCache(cacheKey, requestKey);
+
+      if(cachedResponse){
+        console.log(cachedResponse)
+        return cachedResponse;
+      }
+    }
 
     if(!queryConfig.headers){
       queryConfig.headers = {};
@@ -107,9 +124,19 @@ export class InternalApiAction extends BaseThunkAction {
     if (authData && queryConfig.headers) {
       queryConfig.headers[AUTH_TOKEN_HEADER_KEY] = authData;
     }
-    return await this.#getResponseData(
+
+    const response = await this.#getResponseData(
       queryConfig,
       this.#defaultResponse,
     );
+
+    if(cacheKey && requestKey){
+      if(queryConfig.method !== ApiActionTypes.GET){
+        clearSessionStorage();
+      }
+      updateCache(cacheKey, requestKey, response)
+    }
+
+    return response;
   }
 }
