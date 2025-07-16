@@ -33,6 +33,7 @@ export const EDIT_EVENT_DETAILS_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function() {
     return {
       isEditing: true,
+      successMessage:''
     }
   }
 }
@@ -41,6 +42,7 @@ export const DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(){
     return {
       isDeleting: true,
+      successMessage:''
     }
   }
 }
@@ -49,6 +51,7 @@ export const CANCEL_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(){
     return {
       isDeleting: false,
+      successMessage:''
     }
   }
 }

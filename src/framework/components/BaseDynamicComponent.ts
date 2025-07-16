@@ -193,14 +193,20 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     if(Array.isArray(message)){
       let html = ''
       message.forEach((item)=>{
-        html+=`<p class="api-error-message">${item.trim()}</p>`
+        html+=`<p class="error-message">${item.trim()}</p>`
 
       })
       return html;
     }
     return `
-      <p class="api-error-message">${message? message.trim() : ""}</p>
+      <p class="error-message">${message? message.trim() : ""}</p>
         `
+  }
+
+  generateSuccessMessage(message: string | undefined){
+    return `
+      ${message  ? `<p class="success-message">${message}</p>` : ''}
+    `
   }
 
   generateInputFormItem(formConfig:FormItemConfig){
@@ -264,7 +270,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     }
     return id;
   }
-
 
   createOnChangeEvent(eventConfig: any) {
     const eventHandler = BaseDynamicComponent.createHandler(
