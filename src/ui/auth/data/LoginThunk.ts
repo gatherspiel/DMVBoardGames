@@ -28,10 +28,8 @@ async function retrieveData(
       return new AuthResponse(true, authData);
     }
 
-    if (!params.username || !params.password) {
-      return backupResponse.defaultFunction({
-        errorMessage: "Enter a valid username and password",
-      });
+    if(!params.username && !params.password){
+      return backupResponse.defaultFunction({});
     }
 
     const authResponse: AuthTokenResponsePassword =
@@ -84,10 +82,9 @@ export const authenticationErrorConfig = {
       return new AuthResponse(false, {}, authData.errorMessage);
     }
   },
-  defaultFunctionPriority: false,
 };
 
-export const AUTH_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
+export const LOGIN_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
   retrieveData,
   authenticationErrorConfig,
 ).addGlobalStateReducer((loginState: any) => {

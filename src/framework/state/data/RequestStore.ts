@@ -5,9 +5,10 @@ import type {
   ComponentLoadConfig,
   RequestStoreItem,
 } from "../../components/types/ComponentLoadConfig.ts";
+import type {BaseThunkAction} from "../update/BaseThunkAction.ts";
+import {createResponseCacheIfNotExists} from "./SessionStorageUtils.ts";
 
 const stores: Record<string, any> = {};
-const responseCache: Record<string, any> = {};
 const requestsWithoutCache = new Set<string>();
 
 export function createRequestStoreWithData(
@@ -18,7 +19,8 @@ export function createRequestStoreWithData(
   },
 ) {
   createStore(storeName, stores);
-  responseCache[storeName] = {};
+
+  createResponseCacheIfNotExists(storeName);
 
   subscribeToRequestStore(storeName, dataSource);
   updateRequestStore(storeName, initStore, null);
@@ -26,9 +28,6 @@ export function createRequestStoreWithData(
 
 export function subscribeToRequestStore(storeName: string, item: any) {
   subscribeToStore(storeName, item, stores);
-  if (!responseCache[storeName]) {
-    responseCache[storeName] = {};
-  }
 }
 
 export function hasRequestStore(storeName: string): boolean {
@@ -39,7 +38,7 @@ export function updateRequestStoreAndClearCache(
   storeName: string,
   params: Record<string, string>,
 ) {
-  responseCache[storeName] = {};
+  //createNewResponseCache(storeName);
   updateRequestStore(
     storeName,
     () => {
@@ -75,33 +74,33 @@ export function updateRequestStore(
 
   stores[storeName].subscribers.forEach(function (item: any) {
     const requestData = stores[storeName].data;
-
-    if (item.dispatchers.length === 0) {
+    if (!item.dispatchers || item.dispatchers.length === 0) {
       throw new Error(
         `No dispatchers for the response associated with: ${storeName} Make sure a component is subscribed to the store thunk`,
       );
     }
 
     //TODO: If a response would invalidate a cache item, do a page refresh or clear the whole cache.
-    if (
-      requestData &&
-      Object.keys(requestData).length > 0 &&
-      JSON.stringify(requestData) in responseCache[storeName]
-    ) {
-      item.updateStore(responseCache[storeName][JSON.stringify(requestData)]);
-    } else {
-      item.retrieveData(requestData).then((response: any) => {
-        if (!requestsWithoutCache.has(storeName)) {
-          responseCache[storeName][JSON.stringify(requestData)] = response;
-        }
-        item.updateStore(response);
-      });
-    }
+
+    const cacheKey = requestsWithoutCache.has(storeName) ? '' : storeName;
+    item.retrieveData(requestData, cacheKey).then((response: any) => {
+      item.updateStore(response);
+    });
+
   });
 }
 
 export function hasRequestStoreSubscribers(storeName: string): boolean {
   return hasSubscribers(storeName, stores);
+}
+
+export function createRequestStore(storeName:string, dataSource: BaseThunkAction){
+  createStore(storeName, stores);
+  createResponseCacheIfNotExists(storeName)
+  subscribeToRequestStore(
+    storeName,
+    dataSource,
+  );
 }
 
 export function initRequestStore(config: ComponentLoadConfig) {
@@ -114,36 +113,33 @@ export function initRequestStore(config: ComponentLoadConfig) {
     return;
   }
 
-  if (onLoadConfig.disableCache) {
-    requestsWithoutCache.add(onLoadConfig.storeName);
+  const storeName =  onLoadConfig.dataSource.getRequestStoreId();
+  if(!storeName){
+    throw new Error("Store name not defined");
   }
+
+  if (onLoadConfig.disableCache) {
+    requestsWithoutCache.add(storeName);
+  }
+
   createRequestStoreWithData(
-    onLoadConfig.storeName,
+    storeName,
     onLoadConfig.dataSource,
     getRequestData,
   );
-
-  if (config.requestStoresToCreate) {
-    config.requestStoresToCreate.forEach(function (
-      requestStoreItem: RequestStoreItem,
-    ) {
-      createStore(requestStoreItem.storeName, stores);
-      responseCache[requestStoreItem.storeName] = {};
-      subscribeToRequestStore(
-        requestStoreItem.storeName,
-        requestStoreItem.dataSource,
-      );
-    });
-  }
 
   if (config.onLoadRequestConfig) {
     config.onLoadRequestConfig.forEach(function (
       requestStoreItem: RequestStoreItem,
     ) {
-      createRequestStoreWithData(
-        requestStoreItem.storeName,
-        requestStoreItem.dataSource,
-      );
+
+      const requestStoreId = requestStoreItem.dataSource.getRequestStoreId();
+      if(requestStoreId){
+        createRequestStoreWithData(
+          requestStoreId,
+          requestStoreItem.dataSource,
+        );
+      }
     });
   }
 }
@@ -154,7 +150,11 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
     return;
   }
 
-  addLoadFunction(onLoadConfig.storeName, function () {
+  const storeName = onLoadConfig.dataSource.getRequestStoreId();
+  if(!storeName){
+    throw new Error("Store name not defined");
+  }
+  addLoadFunction(storeName, function () {
     initRequestStore(config);
   });
 }

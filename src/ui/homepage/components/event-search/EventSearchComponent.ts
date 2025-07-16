@@ -2,12 +2,10 @@ import {
   DAYS_IN_WEEK,
   DEFAULT_SEARCH_PARAMETER,
   SEARCH_CITY_ID,
-  SEARCH_FORM_ID,
-  SEARCH_REQUEST_STORE,
+  SEARCH_FORM_ID
 } from "./Constants.ts";
 
-import { EVENT_LIST_THUNK } from "../../data/search/EventListThunk.ts";
-import { LOCATIONS_THUNK } from "../../data/search/LocationsThunk.ts";
+import { EVENT_SEARCH_THUNK } from "../../data/search/EventSearchThunk.ts";
 import {
   CITY_LIST_THUNK,
   updateCities,
@@ -19,11 +17,11 @@ import {
   UPDATE_DAY_CONFIG,
 } from "./EventSearchHandlers.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {LOCATIONS_THUNK} from "../../data/search/LocationsThunk.ts";
 
 const loadConfig = {
   onLoadStoreConfig: {
-    storeName: SEARCH_REQUEST_STORE,
-    dataSource: EVENT_LIST_THUNK,
+    dataSource: EVENT_SEARCH_THUNK,
   },
   onLoadRequestData: {
     city: DEFAULT_SEARCH_PARAMETER,
@@ -31,15 +29,19 @@ const loadConfig = {
   },
   onLoadRequestConfig: [
     {
-      storeName: "search-component-loaded",
       dataSource: LOCATIONS_THUNK,
     },
     {
-      storeName: "search-component-loaded-cities",
       dataSource: CITY_LIST_THUNK,
     },
   ],
   thunkReducers: [
+    {
+      thunk: EVENT_SEARCH_THUNK,
+      componentStoreReducer: function(data: any){
+        return data;
+      }
+    },
     {
       thunk: CITY_LIST_THUNK,
       componentStoreReducer: updateCities,

@@ -17,7 +17,6 @@ export class EventThunk extends BaseThunk {
       }
     }
     const response = await this.thunkAction.retrieveData(e);
-
     this.updateStore(response);
   }
 }

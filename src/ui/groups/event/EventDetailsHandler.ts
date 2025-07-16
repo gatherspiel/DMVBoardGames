@@ -1,17 +1,18 @@
 import type {EventHandlerThunkConfig} from "../../../framework/state/update/event/types/EventHandlerThunkConfig";
 import {
-  CREATE_EVENT_REQUEST_STORE,
-  DELETE_EVENT_REQUEST_STORE,
   END_TIME_INPUT,
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT, EVENT_URL_INPUT,
-  UPDATE_EVENT_REQUEST_STORE, START_DATE_INPUT, START_TIME_INPUT,
+  START_DATE_INPUT, START_TIME_INPUT,
 } from "../Constants.ts";
 import {combineDateAndTime} from "../../../framework/utils/EventDataUtils.ts";
 import type {EventValidationResult} from "../../../framework/state/update/event/types/EventValidationResult.ts";
 import {validateEventFormData} from "./data/EventFormDataValidator.ts";
 import type {FormSelector} from "../../../framework/FormSelector.ts";
 import {getUrlParameter} from "../../../framework/utils/UrlParamUtils.ts";
+import {UPDATE_EVENT_REQUEST_THUNK} from "./data/UpdateEventThunk.ts";
+import {CREATE_EVENT_THUNK} from "./data/CreateEventThunk.ts";
+import {DELETE_EVENT_REQUEST_THUNK} from "./data/DeleteEventRequestThunk.ts";
 
 export const CONFIRM_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(params: any) {
@@ -20,7 +21,7 @@ export const CONFIRM_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
       groupId: params.componentStore.groupId,
     }
   },
-  requestStoreToUpdate: DELETE_EVENT_REQUEST_STORE,
+  apiRequestThunk: DELETE_EVENT_REQUEST_THUNK,
   componentReducer: function (data: any) {
     return {
       errorMessage: data.error,
@@ -32,6 +33,7 @@ export const EDIT_EVENT_DETAILS_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function() {
     return {
       isEditing: true,
+      successMessage:''
     }
   }
 }
@@ -40,6 +42,7 @@ export const DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(){
     return {
       isDeleting: true,
+      successMessage:''
     }
   }
 }
@@ -48,6 +51,7 @@ export const CANCEL_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(){
     return {
       isDeleting: false,
+      successMessage:''
     }
   }
 }
@@ -83,7 +87,7 @@ const eventDataHandler = function(params:any){
 
 export const CREATE_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: eventDataHandler,
-  requestStoreToUpdate: CREATE_EVENT_REQUEST_STORE,
+  apiRequestThunk: CREATE_EVENT_THUNK,
   componentReducer: eventDataReducer,
   validator: function(a: FormSelector):EventValidationResult{
     let errorMessages = validateEventFormData(a);
@@ -96,7 +100,7 @@ export const CREATE_EVENT_CONFIG: EventHandlerThunkConfig = {
 
 export const SAVE_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: eventDataHandler,
-  requestStoreToUpdate: UPDATE_EVENT_REQUEST_STORE,
+  apiRequestThunk: UPDATE_EVENT_REQUEST_THUNK,
   componentReducer: eventDataReducer
 };
 

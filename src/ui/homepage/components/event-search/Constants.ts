@@ -13,4 +13,3 @@ export const DAYS_IN_WEEK: string[] = [
 
 export const SEARCH_CITY_ID: string = "search-cities";
 export const SEARCH_FORM_ID: string = "search-form";
-export const SEARCH_REQUEST_STORE: string = "search-request-store";

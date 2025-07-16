@@ -2,10 +2,10 @@ import type { EventHandlerThunkConfig } from "../../../framework/state/update/ev
 import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
-  GROUP_URL_INPUT,
-  UPDATE_GROUP_REQUEST_STORE,
+  GROUP_URL_INPUT
 } from "../Constants.ts";
 import type { UpdateGroupRequest } from "./data/types/UpdateGroupRequest.ts";
+import {UPDATE_GROUP_REQUEST_THUNK} from "./data/UpdateGroupThunk.ts";
 
 export const EDIT_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function () {
@@ -24,7 +24,7 @@ export const SAVE_GROUP_CONFIG: EventHandlerThunkConfig = {
       url: params.formSelector.getValue(GROUP_URL_INPUT)
     };
   },
-  requestStoreToUpdate: UPDATE_GROUP_REQUEST_STORE,
+  apiRequestThunk: UPDATE_GROUP_REQUEST_THUNK,
   componentReducer: function (a: any) {
     return {
       name: a.name,

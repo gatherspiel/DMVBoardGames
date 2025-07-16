@@ -1,6 +1,5 @@
 import { getUrlParameter } from "../../../../framework/utils/UrlParamUtils.ts";
 import {
-  GET_GROUP_REQUEST_STORE,
   GROUP_COMPONENT_STORE,
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
@@ -61,7 +60,6 @@ const template = `
 
 const loadConfig = {
   onLoadStoreConfig: {
-    storeName: GET_GROUP_REQUEST_STORE,
     dataSource: GROUP_REQUEST_THUNK,
   },
   onLoadRequestData: {
@@ -95,7 +93,7 @@ const loadConfig = {
   },
 };
 
-export class GroupComponent extends BaseTemplateDynamicComponent {
+export class GroupPageComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(GROUP_COMPONENT_STORE, loadConfig);
   }
@@ -186,5 +184,5 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
 }
 
 if (!customElements.get("group-component")) {
-  customElements.define("group-component", GroupComponent);
+  customElements.define("group-component", GroupPageComponent);
 }

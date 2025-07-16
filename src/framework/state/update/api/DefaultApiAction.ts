@@ -13,5 +13,5 @@ export interface DefaultApiAction {
    * development and testing.
    * @param defaultFunctionPriority.
    */
-  defaultFunctionPriority: boolean;
+  defaultFunctionPriority?: boolean;
 }

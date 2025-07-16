@@ -1,10 +1,10 @@
 import type { EventHandlerThunkConfig } from "../../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
 import {
-  CREATE_GROUP_REQUEST_STORE,
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
 } from "../Constants.ts";
+import {CREATE_GROUP_REQUEST_THUNK} from "./data/CreateGroupRequestThunk.ts";
 
 export const CREATE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params): any {
@@ -14,7 +14,7 @@ export const CREATE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
       url: params.formSelector.getValue(GROUP_URL_INPUT)
     };
   },
-  requestStoreToUpdate: CREATE_GROUP_REQUEST_STORE,
+  apiRequestThunk: CREATE_GROUP_REQUEST_THUNK,
   componentReducer: function (data: any) {
     return data;
   },

@@ -1,9 +1,9 @@
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import { GROUP_NAME_INPUT } from "../Constants.ts";
 import { DELETE_GROUP_EVENT_CONFIG } from "./DeleteGroupPageHandlers.ts";
-import { DELETE_GROUP_REQUEST_THUNK } from "./DeleteGroupRequestThunk.ts";
 import type { DeleteGroupData } from "./types/DeleteGroupData.ts";
-import { getUrlParameter } from "../../../framework/utils/UrlParamUtils.ts";
+import {getUrlParameter} from "../../../framework/utils/UrlParamUtils.ts";
+import {DELETE_GROUP_REQUEST_THUNK} from "./DeleteGroupRequestThunk.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -23,12 +23,15 @@ const loadConfig = {
     {
       thunk: DELETE_GROUP_REQUEST_THUNK,
       componentStoreReducer: function (data: any) {
+        console.log(data)
         if (data.errorMessage) {
           return {
             errorMessage: data.errorMessage,
+            successMessage: "",
           };
         } else {
           return {
+            errorMessage: "",
             successMessage: "Successfully deleted group",
           };
         }
@@ -40,10 +43,10 @@ const loadConfig = {
     defaultGlobalStateReducer: function (updates: Record<string, string>) {
       return {
         name: "",
-        summary: "",
+        description: "",
         url: "",
         isVisible: updates["isLoggedIn"],
-        existingGroupName: getUrlParameter("name"),
+        existingGroupName: getUrlParameter("name")
       };
     },
   },
@@ -75,7 +78,7 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
               </form> 
               ${this.generateErrorMessage(data.errorMessage)}
               
-              <p>${data.successMessage ? data.successMessage.trim() : ""}</p>
+              <p>${data.successMessage.trim() ?? ""}</p>
 
             `
             : `<p>Insufficient permissions to delete group </p>`

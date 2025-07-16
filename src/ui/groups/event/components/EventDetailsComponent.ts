@@ -4,11 +4,10 @@ import {
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT,
   EVENT_URL_INPUT,
-  GET_EVENT_REQUEST_STORE,
   GROUP_NAME_PARAM, START_DATE_INPUT, START_TIME_INPUT
 } from "../../Constants.ts";
 import {getUrlParameter} from "../../../../framework/utils/UrlParamUtils.ts";
-import {EVENT_REQUEST_THUNK} from "../data/EventRequestThunk.ts";
+import {GROUP_EVENT_REQUEST_THUNK} from "../data/GroupEventRequestThunk.ts";
 import type {EventDetailsData} from "../data/EventDetailsData.ts";
 import {
   CANCEL_DELETE_EVENT_CONFIG,
@@ -44,15 +43,14 @@ const template = `
 
 const loadConfig = {
   onLoadStoreConfig: {
-    storeName: GET_EVENT_REQUEST_STORE,
-    dataSource: EVENT_REQUEST_THUNK,
+    dataSource: GROUP_EVENT_REQUEST_THUNK,
   },
   onLoadRequestData: {
     name: getUrlParameter(GROUP_NAME_PARAM),
   },
   thunkReducers: [
     {
-      thunk: EVENT_REQUEST_THUNK,
+      thunk: GROUP_EVENT_REQUEST_THUNK,
       componentStoreReducer: function (data: any) {
         return data;
       },
@@ -116,11 +114,21 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   }
 
   renderDeleteMode(data:EventDetailsData): string {
+    if (data.successMessage) {
+      return `
+        <div class="ui-section">
+          ${this.generateSuccessMessage(data.successMessage)}
+          
+          <a href="${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}">Back to group</a>
+        </div>
+      `
+    }
     return `
       <h1>Are you sure you want to delete ${data.name} on ${convertDateTimeForDisplay(data.startTime)}</h1>
       <button ${this.createClickEvent(CONFIRM_DELETE_EVENT_CONFIG)}>Confirm delete</button>
       <button ${this.createClickEvent(CANCEL_DELETE_EVENT_CONFIG)}>Cancel</button>
       ${this.generateErrorMessage(data.errorMessage)}
+      ${this.generateSuccessMessage(data.successMessage)}
     `
   }
   renderEditMode(data:EventDetailsData): string {
