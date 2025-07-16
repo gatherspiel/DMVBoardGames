@@ -18,6 +18,7 @@ export default defineConfig({
   root: "src/",
   publicDir: "../public",
   build: {
+    cssCodeSplit: false,
     outDir: "../dist",
     rollupOptions: {
       input: {

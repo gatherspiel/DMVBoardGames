@@ -3,6 +3,7 @@ import { OpenCreateGroupPageComponent } from "../../ui/groups/createGroup/compon
 import { CreateGroupPageComponent } from "../../ui/groups/createGroup/components/CreateGroupPageComponent.ts";
 import { EventDetailsComponent } from "../../ui/groups/event/components/EventDetailsComponent.ts";
 import {CreateEventComponent} from "../../ui/groups/event/components/CreateEventComponent.ts";
+import {HomepageComponent} from "../../ui/homepage/components/HomepageComponent.ts";
 
 //This function is for dynamically creating components without having to manually import them from a HTML file
 export function getComponent(componentName: string): HTMLElement {
@@ -27,6 +28,10 @@ export function getComponent(componentName: string): HTMLElement {
 
   if (componentName === "create-event-component") {
     return new CreateEventComponent();
+  }
+
+  if (componentName === "homepage-component"){
+    return new HomepageComponent();
   }
   throw Error(
     `Component ${componentName} is not configured to be dynamically created through a JavaScript constructor`,
