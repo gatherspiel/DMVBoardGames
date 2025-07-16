@@ -28,10 +28,8 @@ async function retrieveData(
       return new AuthResponse(true, authData);
     }
 
-    if (!params.username || !params.password) {
-      return backupResponse.defaultFunction({
-        errorMessage: "Enter a valid username and password",
-      });
+    if(!params.username && !params.password){
+      return backupResponse.defaultFunction({});
     }
 
     const authResponse: AuthTokenResponsePassword =

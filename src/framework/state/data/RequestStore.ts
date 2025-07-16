@@ -140,24 +140,6 @@ export function initRequestStore(config: ComponentLoadConfig) {
     getRequestData,
   );
 
-
-  if (config.requestStoresToCreate) {
-    console.error("config.requestStoresToCreate should be null")
-
-    config.requestStoresToCreate.forEach(function (
-      requestStoreItem: RequestStoreItem,
-    ) {
-      createStore(storeName, stores);
-      responseCache[storeName] = {};
-      subscribeToRequestStore(
-        storeName,
-        requestStoreItem.dataSource,
-      );
-    });
-  }
-
-
-
   if (config.onLoadRequestConfig) {
     config.onLoadRequestConfig.forEach(function (
       requestStoreItem: RequestStoreItem,
@@ -167,11 +149,6 @@ export function initRequestStore(config: ComponentLoadConfig) {
       if(requestStoreId){
         createRequestStoreWithData(
           requestStoreId,
-          requestStoreItem.dataSource,
-        );
-      } else {
-        createRequestStoreWithData(
-          storeName,
           requestStoreItem.dataSource,
         );
       }

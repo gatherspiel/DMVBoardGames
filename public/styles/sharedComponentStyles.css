@@ -47,7 +47,7 @@ p {
   display: inline-block;
 }
 
-.api-error-message {
+.error-message {
   color: darkred;
 }
 

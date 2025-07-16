@@ -47,3 +47,7 @@ export function updateComponentStore(
 export function getComponentStore(storeName: string) {
   return stores[storeName].data;
 }
+
+export function hasUserEditPermissions(componentStoreName:string){
+  return getComponentStore(componentStoreName)?.permissions?.userCanEdit
+}

@@ -114,11 +114,21 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   }
 
   renderDeleteMode(data:EventDetailsData): string {
+    if (data.successMessage) {
+      return `
+        <div class="ui-section">
+          ${this.generateSuccessMessage(data.successMessage)}
+          
+          <a href="${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}">Back to group</a>
+        </div>
+      `
+    }
     return `
       <h1>Are you sure you want to delete ${data.name} on ${convertDateTimeForDisplay(data.startTime)}</h1>
       <button ${this.createClickEvent(CONFIRM_DELETE_EVENT_CONFIG)}>Confirm delete</button>
       <button ${this.createClickEvent(CANCEL_DELETE_EVENT_CONFIG)}>Cancel</button>
       ${this.generateErrorMessage(data.errorMessage)}
+      ${this.generateSuccessMessage(data.successMessage)}
     `
   }
   renderEditMode(data:EventDetailsData): string {

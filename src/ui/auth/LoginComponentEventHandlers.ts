@@ -7,7 +7,20 @@ import type { EventHandlerData } from "../../framework/state/update/event/types/
 import {REGISTER_USER_THUNK} from "./data/RegisterUserThunk.ts";
 import {LOGOUT_THUNK} from "./data/LogoutThunk.ts";
 import {LOGIN_THUNK} from "./data/LoginThunk.ts";
+import type {FormSelector} from "../../framework/FormSelector.ts";
+import type {EventValidationResult} from "../../framework/state/update/event/types/EventValidationResult.ts";
 
+const loginInputValidator= function(
+  formSelector: FormSelector
+  ): EventValidationResult {
+
+  if(!formSelector.getValue(USERNAME_INPUT) || !formSelector.getValue(PASSWORD_INPUT)) {
+    return {
+      errorMessage: "Enter a valid username and password"
+    }
+  }
+  return {};
+}
 export const LOGIN_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params: EventHandlerData) {
     return {
@@ -15,6 +28,7 @@ export const LOGIN_EVENT_CONFIG: EventHandlerThunkConfig = {
       password: params.formSelector.getValue(PASSWORD_INPUT)
     };
   },
+  validator: loginInputValidator,
   apiRequestThunk: LOGIN_THUNK,
 };
 
@@ -30,5 +44,6 @@ export const REGISTER_EVENT_CONFIG: EventHandlerThunkConfig = {
       password: params.formSelector.getValue(PASSWORD_INPUT),
     };
   },
+  validator: loginInputValidator,
   apiRequestThunk: REGISTER_USER_THUNK
 };
