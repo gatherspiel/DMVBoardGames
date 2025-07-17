@@ -6,7 +6,7 @@ import {
   GROUP_NAME_PARAM,
   GROUP_URL_INPUT,
 } from "../../Constants.js";
-import { GROUP_REQUEST_THUNK } from "../data/GroupRequestThunk.ts";
+import {GROUP_PRELOAD_THUNK, GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
 
 import { createJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
 import type { GroupPageData } from "../data/types/GroupPageData.ts";
@@ -58,9 +58,19 @@ const template = `
   <div></div>
 `;
 
+const groupDataStoreReducer = function(data:any){
+  const isLoggedIn = getGlobalStateValue(stateFields.LOGGED_IN);
+
+  if (!isLoggedIn) {
+    data.isEditing = false;
+  }
+  data.successMessage = '';
+  return data;
+}
+
 const loadConfig = {
   onLoadStoreConfig: {
-    dataSource: GROUP_REQUEST_THUNK,
+    dataSource: GROUP_PRELOAD_THUNK,
   },
   onLoadRequestData: {
     name: getUrlParameter(GROUP_NAME_PARAM),
@@ -68,15 +78,11 @@ const loadConfig = {
   thunkReducers: [
     {
       thunk: GROUP_REQUEST_THUNK,
-      componentStoreReducer: function (data: any) {
-        const isLoggedIn = getGlobalStateValue(stateFields.LOGGED_IN);
-
-        if (!isLoggedIn) {
-          data.isEditing = false;
-        }
-        data.successMessage = '';
-        return data;
-      },
+      componentStoreReducer: groupDataStoreReducer
+    },
+    {
+      thunk: GROUP_PRELOAD_THUNK,
+      componentStoreReducer: groupDataStoreReducer
     },
     {
       thunk: UPDATE_GROUP_REQUEST_THUNK,
