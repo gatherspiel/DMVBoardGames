@@ -2,13 +2,9 @@
 <html lang="en">
 <head>
 
-  <script inline-source src="ui/preload/SearchPreload.js">
-  </script>
 
-  <script
-    type="module"
-    src="shared/components/PageComponent.ts"
-  ></script>
+  <script async inline-source src="ui/preload/SearchPreload.js">  </script>
+
 
   <meta charset="UTF-8"/>
 
@@ -19,48 +15,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DMV Board Games</title>
 
-  <script
-    type="module"
-    src="shared/InitGlobalStateConfig.ts"
-  ></script>
 
-  <script
-    type="module"
-    src="ui/homepage/components/event-search/EventSearchComponent.ts"
-  ></script>
-  <script
-    type="module"
-    src="ui/homepage/components/event-list/EventListComponent.ts"
-  ></script>
-  <script
-    type="module"
-    src="ui/groups/viewGroup/components/GroupPageEventComponent.ts"
-  >
-  </script>
-  <script
-    type="module"
-    src="framework/state/data/InitStoreManager.ts"
-  ></script>
-  <script
-    type="module"
-    src="ui/homepage/components/ConventionListComponent.ts"
-  ></script>
-  <script
-    type="module"
-    src="ui/homepage/components/GameRestaurantComponent.ts"
-  ></script>
-  <script
-    type="module"
-    src="ui/homepage/components/GameStoreListComponent.ts"
-  ></script>
 
 </head>
 <body>
-  <div id="container">
+
+
+<div id="container">
     <page-component
       componentName="homepage-component"
     >
     </page-component>
   </div>
+
+
+  <script
+    defer
+    fetchpriority="low"
+    type="module"
+    src="shared/components/PageComponent.ts"
+  ></script>
+
+
+
+  
+
+
 </body>
 </html>
