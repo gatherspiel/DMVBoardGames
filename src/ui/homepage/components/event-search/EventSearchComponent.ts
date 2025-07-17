@@ -5,7 +5,7 @@ import {
   SEARCH_FORM_ID
 } from "./Constants.ts";
 
-import { EVENT_SEARCH_THUNK } from "../../data/search/EventSearchThunk.ts";
+import {EVENT_PRELOAD_THUNK, EVENT_SEARCH_THUNK} from "../../data/search/EventSearchThunk.ts";
 import {
   CITY_LIST_THUNK,
   updateCities,
@@ -18,12 +18,10 @@ import {
 } from "./EventSearchHandlers.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {LOCATIONS_THUNK} from "../../data/search/LocationsThunk.ts";
-import {generatePreloadThunk} from "../../../../framework/state/update/PreloadThunk.ts";
 
-const PRELOAD_THUNK = generatePreloadThunk();
 const loadConfig = {
   onLoadStoreConfig: {
-    dataSource: PRELOAD_THUNK,
+    dataSource: EVENT_PRELOAD_THUNK,
   },
   onLoadRequestData: {
     city: DEFAULT_SEARCH_PARAMETER,
@@ -39,7 +37,7 @@ const loadConfig = {
   ],
   thunkReducers: [
     {
-      thunk: EVENT_SEARCH_THUNK,
+      thunk: EVENT_PRELOAD_THUNK,
       componentStoreReducer: function(data: any){
         return data;
       }
@@ -49,9 +47,8 @@ const loadConfig = {
       componentStoreReducer: updateCities,
     },
     {
-      thunk: PRELOAD_THUNK,
+      thunk: EVENT_SEARCH_THUNK,
       componentStoreReducer: function(data: any){
-        console.log("Preload data:"+JSON.stringify(data))
         return data;
       }
     }
@@ -123,6 +120,10 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
     return template;
   }
   render(eventSearchStore: any) {
+
+    const time = Date.now();
+    // @ts-ignore
+    console.log("Render time of event search component from navbar load:"+(time-window.start))
     return `
 
       <div class="ui-section">

@@ -111,7 +111,7 @@ export class InternalApiAction extends BaseThunkAction {
 
       const cachedResponse = getRequestFromCache(cacheKey, requestKey);
 
-      if(false){
+      if(cachedResponse){
         return cachedResponse;
       }
     }

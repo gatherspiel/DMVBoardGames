@@ -2,10 +2,7 @@ import {BaseThunkAction} from "../BaseThunkAction.ts";
 
 export class PreloadApiAction extends BaseThunkAction{
 
-  async retrieveData(params: any, cacheKey?: string): Promise<any>{
-
-    console.log(params+cacheKey);
-    await new Promise(resolve => setTimeout(resolve, 1000));
+  async retrieveData(): Promise<any>{
 
     let promise = new Promise(function(resolve){
       const id = setInterval(function(){
@@ -13,6 +10,8 @@ export class PreloadApiAction extends BaseThunkAction{
         // @ts-ignore
         if(window.preloadData) {
           clearInterval(id);
+          // @ts-ignore
+          console.log("Time since navbar load:"+(Date.now()-window.start))
           // @ts-ignore
           resolve(window.preloadData)
         }

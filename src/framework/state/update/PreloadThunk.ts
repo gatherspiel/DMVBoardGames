@@ -9,12 +9,10 @@ export class PreloadThunk extends BaseThunk {
   }
 }
 
-
-export function generatePreloadThunk(){
+export function generatePreloadThunk(thunkId: string){
   const action = new PreloadApiAction();
   const thunk = new PreloadThunk(action);
-  let id = "searchPreload_1";
-  thunk.createRequestStore(id);
+  thunk.createRequestStore(thunkId);
 
   return thunk
 }
