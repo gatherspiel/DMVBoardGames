@@ -1,10 +1,15 @@
 import type { GroupSearchResult } from "../../data/types/group/GroupSearchResult.ts";
-import { EVENT_SEARCH_THUNK } from "../../data/search/EventSearchThunk.ts";
+import {EVENT_PRELOAD_THUNK, EVENT_SEARCH_THUNK} from "../../data/search/EventSearchThunk.ts";
 import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 
 const loadConfig = {
   thunkReducers: [
+    {
+      thunk: EVENT_PRELOAD_THUNK,
+      componentStoreReducer: updateSearchResultGroupStore,
+      reducerField: "groupData"
+    },
     {
       thunk: EVENT_SEARCH_THUNK,
       componentStoreReducer: updateSearchResultGroupStore,

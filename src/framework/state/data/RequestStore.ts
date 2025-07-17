@@ -74,19 +74,18 @@ export function updateRequestStore(
 
   stores[storeName].subscribers.forEach(function (item: any) {
     const requestData = stores[storeName].data;
+
     if (!item.dispatchers || item.dispatchers.length === 0) {
       throw new Error(
         `No dispatchers for the response associated with: ${storeName} Make sure a component is subscribed to the store thunk`,
       );
     }
 
-    //TODO: If a response would invalidate a cache item, do a page refresh or clear the whole cache.
-
     const cacheKey = requestsWithoutCache.has(storeName) ? '' : storeName;
+
     item.retrieveData(requestData, cacheKey).then((response: any) => {
       item.updateStore(response);
     });
-
   });
 }
 

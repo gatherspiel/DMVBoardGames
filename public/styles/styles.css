@@ -72,3 +72,93 @@ h1 {
   }
 }
 
+#root {
+  padding-top: 0.25rem;
+}
+
+#nav-container {
+  padding-top: 0.25rem;
+}
+
+#nav-container div {
+  font-weight: 600;
+  height:38px;
+  vertical-align: middle;
+  line-height: 38px;
+  padding-bottom: 0.25rem;
+  padding-top: 0.25rem;
+  padding-right: 1rem;
+  display: inline-block;
+}
+
+select:focus,
+select:focus-visible {
+  outline: 1px solid var(--clr-light-blue);
+}
+
+
+.page-section h3 {
+  color: var(--clr-dark-blue);
+  font-size: 1.5rem;
+  margin: 0.5rem 0 0 3rem;
+}
+
+.page-section p {
+  color: var(--clr-dark-blue);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+
+@media screen and (width < 50em) {
+
+
+  #search-days {
+    margin-top: 1rem;
+  }
+
+  .event-group h2 {
+    font-size: 1.25rem;
+  }
+
+  .page-section h3 {
+    font-size: 1.25rem;
+  }
+
+  #root h1 {
+    font-size: 2rem;
+    margin-right: 0.75rem;
+  }
+}
+
+.ui-info-section {
+  background: hsl(from var(--clr-lighter-blue) h s l / 0.05);
+  color: var(--clr-dark-blue);
+  font-weight: 600;
+  padding-left: 1rem;
+}
+
+.ui-info-section a {
+  border-color: var(--clr-darker-blue);
+  border-width:1px;
+  font-weight: 400;
+}
+
+.ui-section {
+  padding-left: 1rem;
+  font-size: 1.25rem;
+}
+
+.ui-separator {
+  border-top: 1px solid var(--clr-lighter-blue);
+}
+
+
+@media screen and (width < 32em) {
+  #root {
+    padding: 0;
+  }
+}
+
+
+

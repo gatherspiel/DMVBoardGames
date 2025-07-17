@@ -140,6 +140,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   generateAndSaveHTML(data: any) {
+    console.log("HI")
     if (!this.dependenciesLoaded) {
       this.innerHTML = this.getLoadingIndicator();
     } else {
@@ -379,13 +380,20 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       throw new Error(`Component global state config is not defined for component ${this.componentStoreName}`);
     }
 
-    const loadStatus = componentLoadConfig?.onLoadStoreConfig?.dataSource.initRequestStoreData(
-      componentLoadConfig,
-      this.componentStoreName)
+    const dataSource = componentLoadConfig?.onLoadStoreConfig?.dataSource;
 
-    if(loadStatus && loadStatus.dependenciesLoaded) {
-      this.dependenciesLoaded = true;
+    if(dataSource){
+      const loadStatus = dataSource.initRequestStoreData(
+        componentLoadConfig,
+        this.componentStoreName)
+
+      if(loadStatus && loadStatus.dependenciesLoaded) {
+        this.dependenciesLoaded = true;
+      }
+    } else {
+      console.log("Hi")
     }
+
   }
 
   abstract render(data: Record<any, DisplayItem> | any): string;
