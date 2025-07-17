@@ -18,10 +18,12 @@ import {
 } from "./EventSearchHandlers.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {LOCATIONS_THUNK} from "../../data/search/LocationsThunk.ts";
+import {generatePreloadThunk} from "../../../../framework/state/update/PreloadThunk.ts";
 
+const PRELOAD_THUNK = generatePreloadThunk();
 const loadConfig = {
   onLoadStoreConfig: {
-    dataSource: EVENT_SEARCH_THUNK,
+    dataSource: PRELOAD_THUNK,
   },
   onLoadRequestData: {
     city: DEFAULT_SEARCH_PARAMETER,
@@ -46,6 +48,13 @@ const loadConfig = {
       thunk: CITY_LIST_THUNK,
       componentStoreReducer: updateCities,
     },
+    {
+      thunk: PRELOAD_THUNK,
+      componentStoreReducer: function(data: any){
+        console.log("Preload data:"+JSON.stringify(data))
+        return data;
+      }
+    }
   ],
 };
 

@@ -1,6 +1,20 @@
 <!doctype html>
 <html lang="en">
 <head>
+
+  <script>
+    fetch("http://localhost:7070/searchEvents").then((response)=>{
+      return response.json();
+    }).then((response)=>{
+      window.preloadData = response;
+    })
+  </script>
+
+  <script
+    type="module"
+    src="shared/components/PageComponent.ts"
+  ></script>
+
   <meta charset="UTF-8"/>
   <link rel="stylesheet" type="text/css" href="/styles/styles.css"/>
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -16,24 +30,6 @@
 
   <script
     type="module"
-    src="ui/homepage/components/event-search/Constants.ts"
-  ></script>
-
-  <script
-    type="module"
-    src="ui/homepage/data/mock/MockGameRestaurantData.ts"
-  ></script>
-  <script
-    type="module"
-    src="ui/homepage/data/mock/MockGameStoreData.ts"
-  ></script>
-
-  <script
-    type="module"
-    src="ui/homepage/data/mock/MockGroupData.ts"
-  ></script>
-  <script
-    type="module"
     src="ui/homepage/components/event-search/EventSearchComponent.ts"
   ></script>
   <script
@@ -45,10 +41,6 @@
     src="ui/groups/viewGroup/components/GroupPageEventComponent.ts"
   >
   </script>
-  <script
-    type="module"
-    src="ui/static/navbarComponent.ts"
-  ></script>
   <script
     type="module"
     src="framework/state/data/InitStoreManager.ts"
@@ -66,10 +58,6 @@
     src="ui/homepage/components/GameStoreListComponent.ts"
   ></script>
 
-  <script
-    type="module"
-    src="shared/components/PageComponent.ts"
-  ></script>
 </head>
 <body>
 <div id="container">
