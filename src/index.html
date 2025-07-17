@@ -1,11 +1,24 @@
 <!doctype html>
 <html lang="en">
 <head>
+
+  <script>
+    fetch("http://localhost:7070/searchEvents").then((response)=>{
+      return response.json();
+    }).then((response)=>{
+      window.preloadData = response;
+    })
+  </script>
+
+  <script
+    type="module"
+    src="shared/components/PageComponent.ts"
+  ></script>
+
   <meta charset="UTF-8"/>
   <link rel="stylesheet" type="text/css" href="/styles/styles.css"/>
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
 
-  <link rel="stylesheet" href="/styles/eventListing.css"/>
   <link rel="icon" type="image/ico" href="/assets/favicon.ico"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DMV Board Games</title>
@@ -15,24 +28,6 @@
     src="shared/InitGlobalStateConfig.ts"
   ></script>
 
-  <script
-    type="module"
-    src="ui/homepage/components/event-search/Constants.ts"
-  ></script>
-
-  <script
-    type="module"
-    src="ui/homepage/data/mock/MockGameRestaurantData.ts"
-  ></script>
-  <script
-    type="module"
-    src="ui/homepage/data/mock/MockGameStoreData.ts"
-  ></script>
-
-  <script
-    type="module"
-    src="ui/homepage/data/mock/MockGroupData.ts"
-  ></script>
   <script
     type="module"
     src="ui/homepage/components/event-search/EventSearchComponent.ts"
@@ -48,15 +43,7 @@
   </script>
   <script
     type="module"
-    src="ui/static/navbarComponent.ts"
-  ></script>
-  <script
-    type="module"
     src="framework/state/data/InitStoreManager.ts"
-  ></script>
-  <script
-    type="module"
-    src="shared/components/FeatureFlagComponent.ts"
   ></script>
   <script
     type="module"
@@ -70,71 +57,18 @@
     type="module"
     src="ui/homepage/components/GameStoreListComponent.ts"
   ></script>
+
 </head>
 <body>
 <div id="container">
-  <navbar-component></navbar-component>
 
-  <feature-flag-component
-    componentName="login-component"
-    featureFlagName="loginEnabled"
+
+  <page-component
+    componentName="homepage-component"
   >
-  </feature-flag-component>
+  </page-component>
 
 
-
-
-      <feature-flag-component
-        componentName="open-create-group-page-component"
-        featureFlagName="loginEnabled"
-      >
-      </feature-flag-component>
-
-  <div class="ui-separator"></div>
-  <div class="ui-section">
-    <nav>
-      <div id="nav-container">
-
-        <div>Click for more info about</div>
-
-        <button onclick="document.location='#convention-list'">Conventions</button>
-        <button onclick="document.location='#game-store'">Game Stores</button>
-        <button onclick="document.location='#game-restaurant-list'">Bars And Cafés</button>
-
-      </div>
-
-    </nav>
-
-  </div>
-
-
-  <div id="event-search" class="page-section"></div>
-
-  <div data-container="root">
-    <event-search-component id="eventList" class="page-section">
-    </event-search-component>
-
-    <div class="ui-separator"></div>
-
-    <div id="event-list" class="page-section">
-      <event-list-component></event-list-component>
-    </div>
-
-    <div id="convention-list" class="page-section">
-      <convention-list-component data-test="testing">
-        <p></p>
-      </convention-list-component>
-    </div>
-
-    <div id="game-restaurant-list" class="page-section">
-      <game-restaurant-list-component></game-restaurant-list-component>
-    </div>
-
-    <div id="game-store" class="page-section">
-      <game-store-list-component></game-store-list-component>
-    </div>
-  </div>
-</div>
 </div>
 </body>
 </html>

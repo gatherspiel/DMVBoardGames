@@ -76,6 +76,9 @@ template.innerHTML = `
 export class NavbarComponent extends BaseTemplateComponent {
   constructor() {
     super();
+    // @ts-ignore
+    window.start = Date.now();
+    // @ts-ignore
   }
 
   override getTemplate(): HTMLTemplateElement {
@@ -95,10 +98,7 @@ export class NavbarComponent extends BaseTemplateComponent {
           </a><a href="${window.location.origin}/useful_links.html">Useful Links
           </a><a href="${window.location.origin}/feedback.html">Feedback     
           </a><a href="https://gatherspiel.com/help.html">Want to help with development </a>  
-
- 
         <div id="nav-filler"></div>
-
         </div>
 
       </nav>
