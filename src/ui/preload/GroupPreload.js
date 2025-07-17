@@ -13,10 +13,10 @@ function getData(){
   const AUTH_TOKEN_KEY = IS_LOCAL ? "sb-localhost-auth-token" : "sb-karqyskuudnvfxohwkok-auth-token";
   const authToken = window.localStorage.getItem(AUTH_TOKEN_KEY);
 
-  let headers:any = IS_LOCAL ? {} : {'apikey': AUTH_KEY};
+  let headers = IS_LOCAL ? {} : {'apikey': AUTH_KEY};
 
   if(authToken !== null){
-    const data:any = JSON.parse(authToken);
+    const data = JSON.parse(authToken);
     const authData = data.access_token;
     headers.authToken = authData;
   }
