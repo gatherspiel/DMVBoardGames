@@ -2,12 +2,7 @@
 <html lang="en">
 <head>
 
-  <script>
-    fetch("http://localhost:7070/searchEvents").then((response)=>{
-      return response.json();
-    }).then((response)=>{
-      window.preloadData = response;
-    })
+  <script inline-source src="ui/preload/SearchPreload.ts">
   </script>
 
   <script
@@ -16,8 +11,9 @@
   ></script>
 
   <meta charset="UTF-8"/>
-  <link rel="stylesheet" type="text/css" href="/styles/styles.css"/>
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
+  <style inline-source src="/styles/styles.css" type="text/css"></style>
+
 
   <link rel="icon" type="image/ico" href="/assets/favicon.ico"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -60,15 +56,11 @@
 
 </head>
 <body>
-<div id="container">
-
-
-  <page-component
-    componentName="homepage-component"
-  >
-  </page-component>
-
-
-</div>
+  <div id="container">
+    <page-component
+      componentName="homepage-component"
+    >
+    </page-component>
+  </div>
 </body>
 </html>

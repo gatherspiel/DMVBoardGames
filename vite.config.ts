@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import { dirname, resolve } from "node:path";
 import checker from "vite-plugin-checker";
 import { fileURLToPath } from "node:url";
-// https://vite.dev/config/
+import inlineSource from "vite-plugin-inline-source";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -13,6 +13,7 @@ export default defineConfig({
       // e.g. use TypeScript check
       typescript: true,
     }),
+    inlineSource()
   ],
 
   root: "src/",
