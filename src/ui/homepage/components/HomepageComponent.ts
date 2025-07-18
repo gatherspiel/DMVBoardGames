@@ -1,3 +1,7 @@
+/*
+  These imports are to load the Web Components that will be displayed.
+ */
+
 // @ts-ignore
 import {GameStoreListComponent} from "./GameStoreListComponent.ts";
 // @ts-ignore
@@ -10,6 +14,13 @@ import {EventListComponent} from "./event-list/EventListComponent.ts";
 import {EventSearchComponent} from "./event-search/EventSearchComponent.ts";
 
 export class HomepageComponent extends HTMLElement {
+
+  isFromBackButton: boolean | undefined;
+
+  constructor(isFromBackButton?:boolean){
+    super();
+    this.isFromBackButton = isFromBackButton;
+  }
 
   connectedCallback(){
     this.innerHTML = `
@@ -54,7 +65,6 @@ export class HomepageComponent extends HTMLElement {
       </div>
     </div>
     
-  
     `
   }
 }

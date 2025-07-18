@@ -153,6 +153,13 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
   if(!storeName){
     throw new Error("Store name not defined");
   }
+
+  if(storeName.includes("Group")){
+    document.addEventListener('WebComponentsReady', function(){
+      initRequestStore(config)
+    })
+  }
+
   addLoadFunction(storeName, function () {
     initRequestStore(config);
   });
