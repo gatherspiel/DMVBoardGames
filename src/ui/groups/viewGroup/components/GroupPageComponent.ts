@@ -17,7 +17,6 @@ import {
   SAVE_GROUP_CONFIG,
 } from "../GroupPageHandlers.ts";
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
-import { stateFields } from "../../../../shared/InitGlobalStateConfig.ts";
 
 import { getGlobalStateValue } from "../../../../framework/state/data/GlobalStore.ts";
 
@@ -59,7 +58,7 @@ const template = `
 `;
 
 const groupDataStoreReducer = function(data:any){
-  const isLoggedIn = getGlobalStateValue(stateFields.LOGGED_IN);
+  const isLoggedIn = getGlobalStateValue("isLoggedIn");
 
   if (!isLoggedIn) {
     data.isEditing = false;
@@ -189,6 +188,6 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
   }
 }
 
-if (!customElements.get("group-component")) {
-  customElements.define("group-component", GroupPageComponent);
+if (!customElements.get("group-page-component")) {
+  customElements.define("group-page-component", GroupPageComponent);
 }

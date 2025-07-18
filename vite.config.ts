@@ -32,8 +32,17 @@ export default defineConfig({
         event: resolve(__dirname, "src/groups/event.html"),
         create_event: resolve(__dirname, "src/groups/addEvent.html"),
         feedback: resolve(__dirname, "src/feedback.html"),
-
       },
+      output:{
+        chunkFileNames: (chunkInfo) => {
+          // Filenames you want to keep unhashed
+          const noHashFiles = ["PageComponent", "content"];
+          if (noHashFiles.includes(chunkInfo.name)) {
+            return "[name].js"; // Keep file unhashed
+          }
+          return "assets/[name]-[hash].js"; // Hash other entry files
+        },
+      }
     },
   },
 });
