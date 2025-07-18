@@ -1,20 +1,27 @@
+/*
+  These imports are to load the Web Components that will be displayed.
+ */
+// @ts-ignore
 import {GameStoreListComponent} from "./GameStoreListComponent.ts";
+// @ts-ignore
 import {ConventionListComponent} from "./ConventionListComponent.ts";
+// @ts-ignore
 import {GroupPageEventComponent} from "../../groups/viewGroup/components/GroupPageEventComponent.ts";
+// @ts-ignore
 import {EventListComponent} from "./event-list/EventListComponent.ts";
+// @ts-ignore
 import {EventSearchComponent} from "./event-search/EventSearchComponent.ts";
 
 export class HomepageComponent extends HTMLElement {
 
+  isFromBackButton: boolean | undefined;
+
+  constructor(isFromBackButton?:boolean){
+    super();
+    this.isFromBackButton = isFromBackButton;
+  }
 
   connectedCallback(){
-
-    console.log(GameStoreListComponent.name)
-    console.log(ConventionListComponent.name)
-    console.log(GroupPageEventComponent.name);
-    console.log(EventListComponent.name);
-    console.log(EventSearchComponent.name);
-
     this.innerHTML = `
      <div class="ui-separator"></div>
       <div class="ui-section">
@@ -62,8 +69,9 @@ export class HomepageComponent extends HTMLElement {
       </div>
     </div>
     
-  
     `
+
+    console.log("Hi");
   }
 }
 

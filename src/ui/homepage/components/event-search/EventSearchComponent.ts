@@ -18,6 +18,7 @@ import {
 } from "./EventSearchHandlers.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {LOCATIONS_THUNK} from "../../data/search/LocationsThunk.ts";
+import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 
 const loadConfig = {
   onLoadStoreConfig: {
@@ -114,11 +115,17 @@ const template = `
 export class EventSearchComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("event-search-component-store", loadConfig);
+    console.log("Reloading event search component store")
   }
 
   override getTemplateStyle(): string {
     return template;
   }
+
+  connectedCallback(){
+    initRequestStore(loadConfig);
+  }
+
   render(eventSearchStore: any) {
 
     const time = Date.now();
@@ -155,6 +162,7 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
         </form>
       </div>
   `;
+
   }
 
   getCityHtml(eventSearchStore: any) {

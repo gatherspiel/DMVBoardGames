@@ -95,15 +95,17 @@ export class BaseThunk {
 
     let oldDispatcherIndex = -1;
 
+
     let i = 0;
     this.dispatchers.forEach(function (dispatcher: BaseDispatcher) {
       const number = parseInt(dispatcher.storeField.split("-")[1]);
       const dispatcherName = dispatcher.storeField.split("-")[0];
 
       if (number > stateNumber && dispatcherName === newDispatcherName) {
+        /*
         throw new Error(
           `Cannot subscribe ${dispatcherName} to an old component state`,
-        );
+        );*/
       }
       if (dispatcherName === newDispatcherName) {
         oldDispatcherIndex = i;
