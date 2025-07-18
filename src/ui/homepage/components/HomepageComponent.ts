@@ -1,39 +1,31 @@
+// @ts-ignore
 import {GameStoreListComponent} from "./GameStoreListComponent.ts";
+// @ts-ignore
 import {ConventionListComponent} from "./ConventionListComponent.ts";
+// @ts-ignore
 import {GroupPageEventComponent} from "../../groups/viewGroup/components/GroupPageEventComponent.ts";
+// @ts-ignore
 import {EventListComponent} from "./event-list/EventListComponent.ts";
+// @ts-ignore
 import {EventSearchComponent} from "./event-search/EventSearchComponent.ts";
 
 export class HomepageComponent extends HTMLElement {
 
-
   connectedCallback(){
-
-    console.log(GameStoreListComponent.name)
-    console.log(ConventionListComponent.name)
-    console.log(GroupPageEventComponent.name);
-    console.log(EventListComponent.name);
-    console.log(EventSearchComponent.name);
-
     this.innerHTML = `
      <div class="ui-separator"></div>
       <div class="ui-section">
         <nav>
           <div id="nav-container">
-    
             <div>Click for more info about</div>
-    
             <button onclick="document.location='#convention-list'">Conventions</button>
             <button onclick="document.location='#game-store'">Game Stores</button>
             <button onclick="document.location='#game-restaurant-list'">Bars And Cafés</button>
-    
           </div>
-    
         </nav>
-    
       </div>
     
-    
+   
       <div id="event-search" class="page-section"></div>
     
       <div data-container="root">
