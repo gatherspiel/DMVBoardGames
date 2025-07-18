@@ -8,6 +8,8 @@ export function addLoadFunction(componentName: string, loadFunction: any) {
 }
 
 window.onload = () => {
+  // @ts-ignore
+  window.contentLoaded = true;
   Object.keys(loadFunctions).forEach(function (componentName: string) {
     loadFunctions[componentName]();
   });

@@ -102,7 +102,6 @@ const loadConfig = {
 export class GroupPageComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(GROUP_COMPONENT_STORE, loadConfig);
-    console.log("Hi");
   }
 
   async fetchData(){
@@ -111,7 +110,6 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    console.log("Hi");
     initRequestStore(loadConfig)
   }
 

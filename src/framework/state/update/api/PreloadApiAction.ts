@@ -7,7 +7,6 @@ export class PreloadApiAction extends BaseThunkAction{
     let promise = new Promise(function(resolve){
       const id = setInterval(function(){
 
-        console.log("Waiting");
         // @ts-ignore
         if(window.preloadData) {
           clearInterval(id);

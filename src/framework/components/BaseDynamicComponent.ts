@@ -80,7 +80,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
         });
       } else {
-        console.log("Initializing on load")
         initRequestStoresOnLoad(loadConfig);
       }
 

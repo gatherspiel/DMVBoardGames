@@ -102,7 +102,6 @@ export class InternalApiAction extends BaseThunkAction {
    */
   async retrieveData(params: any, cacheKey?: string): Promise<any> {
 
-    console.log("Retrieving?")
     const queryConfig: ApiRequestConfig = this.#getQueryConfig(params);
     const authData = getAccessTokenIfPresent();
 

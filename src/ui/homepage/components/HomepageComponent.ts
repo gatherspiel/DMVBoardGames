@@ -21,7 +21,7 @@ export class HomepageComponent extends HTMLElement {
     super();
     this.isFromBackButton = isFromBackButton;
   }
-  
+
   connectedCallback(){
     this.innerHTML = `
      <div class="ui-separator"></div>
@@ -66,8 +66,6 @@ export class HomepageComponent extends HTMLElement {
     </div>
     
     `
-
-    console.log("Hi");
   }
 }
 

@@ -107,7 +107,6 @@ export function initRequestStore(config: ComponentLoadConfig) {
     return config.onLoadRequestData;
   }
 
-  console.log("Init")
   const onLoadConfig = config.onLoadStoreConfig;
   if (!onLoadConfig) {
     return;
@@ -122,7 +121,6 @@ export function initRequestStore(config: ComponentLoadConfig) {
     requestsWithoutCache.add(storeName);
   }
 
-  console.log("Creating");
   createRequestStoreWithData(
     storeName,
     onLoadConfig.dataSource,
@@ -156,15 +154,10 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
     throw new Error("Store name not defined");
   }
 
-  console.log("Init:"+storeName);
-
   if(storeName.includes("Group")){
-
     document.addEventListener('WebComponentsReady', function(){
-      console.log("Reloading group");
       initRequestStore(config)
     })
-
   }
 
   addLoadFunction(storeName, function () {
