@@ -1,6 +1,7 @@
 /*
   These imports are to load the Web Components that will be displayed.
  */
+
 // @ts-ignore
 import {GameStoreListComponent} from "./GameStoreListComponent.ts";
 // @ts-ignore
@@ -20,27 +21,22 @@ export class HomepageComponent extends HTMLElement {
     super();
     this.isFromBackButton = isFromBackButton;
   }
-
+  
   connectedCallback(){
     this.innerHTML = `
      <div class="ui-separator"></div>
       <div class="ui-section">
         <nav>
           <div id="nav-container">
-    
             <div>Click for more info about</div>
-    
             <button onclick="document.location='#convention-list'">Conventions</button>
             <button onclick="document.location='#game-store'">Game Stores</button>
             <button onclick="document.location='#game-restaurant-list'">Bars And Cafés</button>
-    
           </div>
-    
         </nav>
-    
       </div>
     
-    
+   
       <div id="event-search" class="page-section"></div>
     
       <div data-container="root">

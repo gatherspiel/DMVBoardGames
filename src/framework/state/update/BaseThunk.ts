@@ -90,8 +90,8 @@ export class BaseThunk {
     reducerFunction: (a: any) => any,
     field?: string,
   ) {
-    let stateNumber: number = -1;
     const newDispatcherName = componentStoreName.split("-")[0];
+    const newStateNumber = parseInt(componentStoreName.split("-")[1]);
 
     let oldDispatcherIndex = -1;
 
@@ -101,11 +101,11 @@ export class BaseThunk {
       const number = parseInt(dispatcher.storeField.split("-")[1]);
       const dispatcherName = dispatcher.storeField.split("-")[0];
 
-      if (number > stateNumber && dispatcherName === newDispatcherName) {
-        /*
+
+      if (number > newStateNumber && dispatcherName === newDispatcherName) {
         throw new Error(
           `Cannot subscribe ${dispatcherName} to an old component state`,
-        );*/
+        );
       }
       if (dispatcherName === newDispatcherName) {
         oldDispatcherIndex = i;

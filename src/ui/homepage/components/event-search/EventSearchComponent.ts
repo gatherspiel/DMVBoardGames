@@ -128,9 +128,6 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
 
   render(eventSearchStore: any) {
 
-    const time = Date.now();
-    // @ts-ignore
-    console.log("Render time of event search component from navbar load:"+(time-window.start))
     return `
 
       <div class="ui-section">
