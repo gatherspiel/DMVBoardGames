@@ -10,30 +10,15 @@
 
   <script
     type="module"
-    src="./../ui/utils/InitGlobalStateConfig.ts"
+    src="../shared/InitGlobalStateConfig.ts"
   ></script>
 
-  <script
-    type="module"
-    src="./../ui/utils/components/FeatureFlagComponent.ts"
-  ></script>
-
-  <script
-    type="module"
-    src="./../ui/groups/deleteGroup/DeleteGroupPageComponent.ts"
-  ></script>
 
   <title>Delete group?</title>
 </head>
 <body>
 
 <h2>Are you sure you want to delete this group?</h2>
-
-  <feature-flag-component
-    componentName="login-component"
-    featureFlagName="loginEnabled"
-  >
-  </feature-flag-component>
   <delete-group-page-component>
 
   </delete-group-page-component>

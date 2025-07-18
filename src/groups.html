@@ -1,41 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+  <script inline-source src="ui/preload/GroupPreload.js">
+  </script>
+
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GroupSearchResult Information</title>
 
-  <link rel="stylesheet" href="/styles/styles.css">
   <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
 
   <script
+    defer
+    fetchpriority="low"
     type="module"
-    src="ui/events/components/EventComponent.ts"
-  > </script>
-  <script
-    type="module"
-    src="ui/utils/components/FeatureFlagComponent.ts"
-  ></script>
-  <script
-    type="module"
-    src="ui/groups/viewGroup/components/GroupComponent.ts"
-  ></script>
-  <script
-    type="module"
-    src="ui/static/navbarComponent.ts"
+    src="shared/components/PageComponent.ts"
   ></script>
 </head>
 <body>
-  <navbar-component>
-
-  </navbar-component>
-  <feature-flag-component
-    componentName="login-component"
-    featureFlagName="loginEnabled"
+  <page-component
+    componentName="group-page-component"
   >
-  </feature-flag-component>
-  <group-component>
-  </group-component>
+  </page-component>
 
 </body>
 </html>

@@ -3,4 +3,5 @@ export interface LoginComponentStore {
   errorMessage?: string;
   email?: string;
   successMessage?: string;
+  hasAttemptedLogin?: boolean
 }

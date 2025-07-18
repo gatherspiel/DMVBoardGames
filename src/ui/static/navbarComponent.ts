@@ -3,15 +3,7 @@ import { BaseTemplateComponent } from "../../framework/components/BaseTemplateCo
 const template = document.createElement("template");
 template.innerHTML = `
   <style>
-  
-    #nav-container {
-      background-color:var(--clr-lighter-blue); 
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 5px;
-      padding-left: 0.5rem;
-    }
-  
+    
     nav a,
     #jump-to a {
       background-color: var(--clr-lighter-blue);
@@ -44,17 +36,37 @@ template.innerHTML = `
       text-wrap: nowrap;
             text-decoration: none;
     }
-    
-    nav a + a {
-      margin-left: 1px;
-      border-color: white;
-      border-width: 1px;
-    }
-    
+        
     #nav-filler {
       display: inline-block;
       background-color: var(--clr-lighter-blue); 
       flex-grow:1;
+    }
+   
+    @media not screen and (width < 32em) {
+      .top-nav {
+         background-color:var(--clr-lighter-blue); 
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 5px;
+        padding-left: 0.5rem;
+      }
+      nav a + a {
+        margin-left: 1px;
+        border-color: white;
+        border-width: 1px;
+      }
+    }
+    
+    @media screen and (width < 32em) {
+      .top-nav {
+        display: grid;
+        text-align: center;
+      }
+      nav a + a {
+        border-color: white;
+        border-width: 1px;
+      }
     }
   </style>
   <div>
@@ -64,26 +76,29 @@ template.innerHTML = `
 export class NavbarComponent extends BaseTemplateComponent {
   constructor() {
     super();
+    // @ts-ignore
+    window.start = Date.now();
+    // @ts-ignore
   }
 
   override getTemplate(): HTMLTemplateElement {
     return template;
   }
 
-
-
   override render() {
-    // Closing tags on separate lines are to prevent extra spaces between links
+
+    // Closing tags are on separate lines are to prevent extra spaces between links
     return `
       <nav>
-        <div class="ui-section" id="nav-container">
-          <a href="index.html">Home
-          </a><a class="mid-element" href="designers.html">Local designers
-          </a><a href="print_and_play.html">Print and Play
-          </a><a href="/plans.html">Future plans
-          </a><a href="useful_links.html">Useful Links</a>       
+        <div class="ui-section top-nav">
+          <a href="${window.location.origin}/index.html">Home
+          </a><a class="mid-element" href="${window.location.origin}/designers.html">Local designers
+          </a><a href="${window.location.origin}/print_and_play.html">Print and Play
+          </a><a href="https://gatherspiel.com/vision.html">Future plans
+          </a><a href="${window.location.origin}/useful_links.html">Useful Links
+          </a><a href="${window.location.origin}/feedback.html">Feedback     
+          </a><a href="https://gatherspiel.com/help.html">Want to help with development </a>  
         <div id="nav-filler"></div>
-
         </div>
 
       </nav>

@@ -1,39 +1,34 @@
-import type { EventHandlerThunkConfig } from "../../../framework/store/update/event/types/EventHandlerThunkConfig.ts";
-import { DELETE_GROUP_REQUEST_STORE, GROUP_NAME_INPUT } from "../Constants.ts";
-import type { EventValidationResult } from "../../../framework/store/update/event/types/EventValidationResult.ts";
+import type { EventHandlerThunkConfig } from "../../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
+import { GROUP_NAME_INPUT } from "../Constants.ts";
+import type { EventValidationResult } from "../../../framework/state/update/event/types/EventValidationResult.ts";
 import type { DeleteGroupData } from "./types/DeleteGroupData.ts";
 import { getUrlParameter } from "../../../framework/utils/UrlParamUtils.ts";
+import type {FormSelector} from "../../../framework/FormSelector.ts";
+import {DELETE_GROUP_REQUEST_THUNK} from "./DeleteGroupRequestThunk.ts";
 
 export const DELETE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params: any) {
-    if (!params.shadowRoot) {
-      throw new Error("Invalid shadow root for save group event handler");
-    }
     return {
-      name:
-        (
-          params.shadowRoot.getElementById(
-            GROUP_NAME_INPUT,
-          ) as HTMLTextAreaElement
-        )?.value ?? "",
-      id: getUrlParameter("id"),
+      name: params.formSelector.getValue(GROUP_NAME_INPUT),
+      id: getUrlParameter("groupId"),
     };
   },
   validator: function (
-    eventData: any,
+    formSelector: FormSelector,
     componentState: DeleteGroupData,
   ): EventValidationResult {
-    if (eventData.name !== componentState.existingGroupName) {
+
+    if (formSelector.getValue(GROUP_NAME_INPUT) !== componentState.existingGroupName) {
       return {
-        error: "Group name not entered correctly",
+        errorMessage: "Group name not entered correctly",
       };
     }
     return {};
   },
-  requestStoreToUpdate: DELETE_GROUP_REQUEST_STORE,
+  apiRequestThunk: DELETE_GROUP_REQUEST_THUNK,
   componentReducer: function (data: any) {
     return {
-      errorMessage: data.error,
+      errorMessage: data.errorMessage,
     };
   },
 };

@@ -1,28 +1,17 @@
-import { API_ROOT } from "../../../../utils/params.js";
-import { generateApiThunk } from "../../../../framework/store/update/api/ApiThunkFactory.ts";
-import type { ApiRequestConfig } from "../../../../framework/store/update/api/types/ApiRequestConfig.ts";
-import { AUTH_TOKEN_HEADER_KEY } from "../../../auth/Constants.ts";
-import { getAccessTokenIfPresent } from "../../../auth/AuthUtils.ts";
+import { API_ROOT } from "../../../../shared/params.js";
+import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
+import type { ApiRequestConfig } from "../../../../framework/state/update/api/types/ApiRequestConfig.ts";
+import {generatePreloadThunk} from "../../../../framework/state/update/PreloadThunk.ts";
 
-function getGroupsRequestConfig(requestParams: any): ApiRequestConfig {
-  let headers: Record<string, string> = {};
-  const authData = getAccessTokenIfPresent();
-  if (authData) {
-    headers[AUTH_TOKEN_HEADER_KEY] = authData;
-  }
+function getGroupRequestConfig(requestParams: any): ApiRequestConfig {
   return {
     url: API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`,
-    headers: headers,
   };
 }
 
-const defaultFunctionConfig = {
-  defaultFunction: function () {
-    return {};
-  },
-  defaultFunctionPriority: false,
-};
 export const GROUP_REQUEST_THUNK = generateApiThunk({
-  queryConfig: getGroupsRequestConfig,
-  defaultFunctionConfig: defaultFunctionConfig,
+  queryConfig: getGroupRequestConfig,
 });
+
+export const GROUP_PRELOAD_THUNK = generatePreloadThunk("preload_"+GROUP_REQUEST_THUNK.requestStoreId)
+

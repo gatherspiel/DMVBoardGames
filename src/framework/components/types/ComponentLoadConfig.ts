@@ -1,9 +1,10 @@
-import type { BaseThunk } from "../../store/update/BaseThunk.ts";
+import type { BaseThunk } from "../../state/update/BaseThunk.ts";
+import type {PreloadThunk} from "../../state/update/PreloadThunk.ts";
 
 export type RequestStoreItem = {
-  storeName: string;
   dataSource: BaseThunk;
   disableCache?: boolean;
+  preloadData?:PreloadThunk
 };
 
 export type ThunkDispatcherConfig = {
@@ -15,7 +16,6 @@ export type ThunkDispatcherConfig = {
 
 export type GlobalStateLoadConfig = {
   globalFieldSubscriptions: string[];
-  waitForGlobalState?: string; //Wait for this global state to be ready before loading.
   defaultGlobalStateReducer?: (updates: Record<string, string>) => any; //Default reducer from global state if there is no dependent API request.
 };
 
@@ -24,7 +24,6 @@ export type ComponentLoadConfig = {
   onLoadRequestData?: any;
   onLoadInitStore?: () => any;
   onLoadRequestConfig?: RequestStoreItem[];
-  requestStoresToCreate?: RequestStoreItem[];
   thunkReducers?: ThunkDispatcherConfig[];
   globalStateLoadConfig?: GlobalStateLoadConfig;
 };
@@ -34,7 +33,6 @@ export const validComponentLoadConfigFields = [
   "onLoadRequestData",
   "onLoadInitStore",
   "onLoadRequestConfig",
-  "requestStoresToCreate",
   "thunkReducers",
   "globalStateLoadConfig",
 ];

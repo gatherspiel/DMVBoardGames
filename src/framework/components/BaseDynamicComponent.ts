@@ -1,33 +1,28 @@
-import type { DisplayItem } from "../../ui/events/data/types/DisplayItem.ts";
+import type { DisplayItem } from "../../ui/homepage/data/types/DisplayItem.ts";
 
 import {
   createComponentStore,
-  getComponentStore,
-  hasComponentStoreSubscribers,
-  updateComponentStore,
-} from "../store/data/ComponentStore.ts";
+  getComponentStore, hasUserEditPermissions,
+} from "../state/data/ComponentStore.ts";
 import {
-  hasRequestStore,
-  hasRequestStoreSubscribers,
-  initRequestStore,
   initRequestStoresOnLoad,
-  updateRequestStoreAndClearCache,
-} from "../store/data/RequestStore.ts";
-import { EventHandlerAction } from "../store/update/event/EventHandlerAction.ts";
-import { BaseDispatcher } from "../store/update/BaseDispatcher.ts";
-import { EventThunk } from "../store/update/event/EventThunk.ts";
-import type { EventHandlerThunkConfig } from "../store/update/event/types/EventHandlerThunkConfig.ts";
+} from "../state/data/RequestStore.ts";
+import { EventHandlerAction } from "../state/update/event/EventHandlerAction.ts";
+import { BaseDispatcher } from "../state/update/BaseDispatcher.ts";
+import { EventThunk } from "../state/update/event/EventThunk.ts";
+import type { EventHandlerThunkConfig } from "../state/update/event/types/EventHandlerThunkConfig.ts";
 import {
   type ComponentLoadConfig,
   type ThunkDispatcherConfig,
   validComponentLoadConfigFields,
 } from "./types/ComponentLoadConfig.ts";
-import type { BaseThunk } from "../store/update/BaseThunk.ts";
+import type {BaseThunk} from "../state/update/BaseThunk.ts";
 import {
-  getGlobalStateValue,
   subscribeComponentToGlobalField,
-} from "../store/data/GlobalStore.ts";
-import type { EventValidationResult } from "../store/update/event/types/EventValidationResult.ts";
+} from "../state/data/GlobalStore.ts";
+import type { EventValidationResult } from "../state/update/event/types/EventValidationResult.ts";
+import type {FormItemConfig} from "./types/FormItemConfig.ts";
+import  {FormSelector} from "../FormSelector.ts";
 
 type EventConfig = {
   eventType: string;
@@ -36,17 +31,17 @@ type EventConfig = {
 
 export abstract class BaseDynamicComponent extends HTMLElement {
   componentStoreName: string;
-  eventHandlers: Record<string, EventConfig>;
+  eventHandlerConfig: Record<string, EventConfig>;
   eventTagIdCount = 0;
 
-  requestStoreName?: string;
   requestStoreReducer?: BaseThunk;
 
   instanceId: number;
 
   dependenciesLoaded: boolean = true;
-  componentLoadConfig: ComponentLoadConfig | undefined = undefined; //Used if global state is needed before loading the component
+  componentLoadConfig: ComponentLoadConfig | undefined = undefined;
 
+  formSelector: FormSelector
   static instanceCount = 1;
 
   constructor(componentStoreName: string, loadConfig?: ComponentLoadConfig) {
@@ -54,16 +49,15 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
     this.instanceId = BaseDynamicComponent.instanceCount;
     BaseDynamicComponent.instanceCount++;
-    this.eventHandlers = {};
-
+    this.eventHandlerConfig = {};
     this.componentStoreName = `${componentStoreName}-${BaseDynamicComponent.instanceCount}`;
 
+    this.formSelector = new FormSelector();
     createComponentStore(this.componentStoreName, this);
 
     if (loadConfig) {
       const self = this;
 
-      self.requestStoreName = loadConfig.onLoadStoreConfig?.storeName;
       self.requestStoreReducer = loadConfig.onLoadStoreConfig?.dataSource;
 
       Object.keys(loadConfig).forEach((configField: any) => {
@@ -76,25 +70,19 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       });
 
       const globalStateLoadConfig = loadConfig.globalStateLoadConfig;
-      if (globalStateLoadConfig?.waitForGlobalState) {
-        subscribeComponentToGlobalField(
-          self,
-          globalStateLoadConfig.waitForGlobalState,
-        );
-        self.componentLoadConfig = loadConfig;
-      } else {
-        initRequestStoresOnLoad(loadConfig);
-      }
 
       if (globalStateLoadConfig?.globalFieldSubscriptions) {
         globalStateLoadConfig.globalFieldSubscriptions.forEach(function (
           fieldName: string,
         ) {
           subscribeComponentToGlobalField(self, fieldName);
+          self.componentLoadConfig = loadConfig;
+
         });
+      } else {
+        initRequestStoresOnLoad(loadConfig);
       }
 
-      // TODO: Handle case where there are multiple instances of a component that each need different state
       if (loadConfig.thunkReducers) {
         const component = this;
 
@@ -117,7 +105,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   updateStore(data: any) {
-    this.eventHandlers = {};
+    this.eventHandlerConfig = {};
     this.eventTagIdCount = 0;
 
     this.generateAndSaveHTML(data);
@@ -125,7 +113,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   attachEventHandlersToDom() {
-    const eventHandlers = this.eventHandlers;
+    const eventHandlers = this.eventHandlerConfig;
     const elementIdTag = this.getElementIdTag();
 
     const addEventHandler = function (item: Element) {
@@ -135,6 +123,8 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     };
 
     if (this.shadowRoot) {
+
+      this.formSelector.setShadowRoot(this.shadowRoot);
       this.shadowRoot?.querySelectorAll(`[${elementIdTag}]`).forEach(function (
         item: Element,
       ) {
@@ -150,16 +140,119 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   generateAndSaveHTML(data: any) {
+    console.log("HI")
     if (!this.dependenciesLoaded) {
-      return;
+      this.innerHTML = this.getLoadingIndicator();
+    } else {
+      this.formSelector.clearFormSelectors();
+      this.innerHTML = this.render(data);
     }
-    this.innerHTML = this.render(data);
+  }
+
+  getLoadingIndicator(){
+    return `<h1>Loading</h1>`
   }
 
   getElementIdTag() {
     return `data-${this.componentStoreName}-element-id`;
   }
-  //TODO: Handle case where there are multiple instances of the same component when generating the ids for event handlers.
+
+  generateButtonsForEditPermission(buttonConfig:Record<string, EventHandlerThunkConfig>):string{
+    const userCanEditPermission = hasUserEditPermissions(this.componentStoreName);
+    if(userCanEditPermission === undefined){
+      throw new Error(`permissions.userCanEdit state not defined for component state ${this.componentStoreName}`);
+    }
+    if(!userCanEditPermission) {
+      return '';
+    }
+
+    let html = ''
+    var self = this;
+    Object.keys(buttonConfig).forEach(function(buttonText){
+      html+= `<button ${self.createClickEvent(buttonConfig[buttonText])}> ${buttonText}</button>`;
+    });
+    return html;
+  }
+
+  generateLinksForEditPermission(linkConfig:Record<string, string>):string{
+    const userCanEditPermission = getComponentStore(this.componentStoreName)?.permissions?.userCanEdit
+    if(userCanEditPermission === undefined){
+      throw new Error(`permissions.userCanEdit state not defined for component state ${this.componentStoreName}`);
+    }
+    if(!userCanEditPermission) {
+      return '';
+    }
+
+    let html = ''
+    Object.keys(linkConfig).forEach(function(linkText){
+      html+= `<a href="${window.location.origin}/${linkConfig[linkText]}">${linkText}</a>`;
+    });
+    return html;
+  }
+
+  generateErrorMessage(message: string | string[] | undefined){
+    if(Array.isArray(message)){
+      let html = ''
+      message.forEach((item)=>{
+        html+=`<p class="error-message">${item.trim()}</p>`
+
+      })
+      return html;
+    }
+    return `
+      <p class="error-message">${message? message.trim() : ""}</p>
+        `
+  }
+
+  generateSuccessMessage(message: string | undefined){
+    return `
+      ${message  ? `<p class="success-message">${message}</p>` : ''}
+    `
+  }
+
+  generateInputFormItem(formConfig:FormItemConfig){
+
+    let formValue = formConfig.value;
+    if(!formValue && this.formSelector.hasValue(formConfig.id)){
+      formValue = this.formSelector.getValue(formConfig.id);
+    }
+
+    this.formSelector.addFormSelector(formConfig.id);
+    return `
+      <label for=${formConfig.id}>${formConfig.componentLabel}</label>
+      ${formConfig.lineBreakAfterLabel !== false? `<br>` : ''}
+      <input
+        ${formConfig.className ? `class="${formConfig.className}"` : ``}
+        id=${formConfig.id}
+        name=${formConfig.id}
+        type=${formConfig.inputType}
+        value="${formValue}"
+        />
+        <br>
+    `
+  }
+
+  generateTextInputFormItem(formConfig:FormItemConfig){
+    let formValue = formConfig.value;
+    if(!formValue && this.formSelector.hasValue(formConfig.id)){
+      formValue = this.formSelector.getValue(formConfig.id);
+    }
+    this.formSelector.addFormSelector(formConfig.id);
+
+    return `
+      <label for=${formConfig.id}>${formConfig.componentLabel}</label>
+      ${formConfig.lineBreakAfterLabel !== false? `<br>` : ''}
+      <textarea
+        ${formConfig.className ? `class="${formConfig.className}"` : ``}
+        id=${formConfig.id}
+        name=${formConfig.id}
+        type=${formConfig.inputType}
+        /> ${formValue}
+      </textarea>
+      <br>
+    `
+  }
+
   saveEventHandler(
     eventFunction: (e: Event) => any,
     eventType: string,
@@ -167,7 +260,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   ): string {
     let id = `${this.getElementIdTag()}=${this.eventTagIdCount}`;
 
-    this.eventHandlers[this.eventTagIdCount] = {
+    this.eventHandlerConfig[this.eventTagIdCount] = {
       eventType: eventType,
       eventFunction: eventFunction,
     };
@@ -182,6 +275,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   createOnChangeEvent(eventConfig: any) {
     const eventHandler = BaseDynamicComponent.createHandler(
       eventConfig,
+      this.formSelector,
       this?.componentStoreName,
     );
     return this.saveEventHandler(eventHandler, "change");
@@ -189,48 +283,33 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   createSubmitEvent(eventConfig: any) {
     let eventHandler;
-    if (this.shadowRoot) {
-      eventHandler = BaseDynamicComponent.createHandler(
-        eventConfig,
-        this?.componentStoreName,
-        this?.shadowRoot,
-      );
-    } else {
-      eventHandler = BaseDynamicComponent.createHandler(
-        eventConfig,
-        this?.componentStoreName,
-      );
-    }
+    eventHandler = BaseDynamicComponent.createHandler(
+      eventConfig,
+      this.formSelector,
+      this?.componentStoreName,
+    );
     return this.saveEventHandler(eventHandler, "submit");
   }
 
   createClickEvent(eventConfig: any, id?: string) {
     let eventHandler;
-    if (this.shadowRoot) {
-      eventHandler = BaseDynamicComponent.createHandler(
-        eventConfig,
-        this?.componentStoreName,
-        this?.shadowRoot,
-      );
-    } else {
-      eventHandler = BaseDynamicComponent.createHandler(
-        eventConfig,
-        this?.componentStoreName,
-      );
-    }
+    eventHandler = BaseDynamicComponent.createHandler(
+      eventConfig,
+      this.formSelector,
+      this?.componentStoreName,
+    );
     return this.saveEventHandler(eventHandler, "click", id);
   }
 
   static createHandler(
     eventConfig: EventHandlerThunkConfig,
-    storeName?: string,
-    shadowRoot?: ShadowRoot,
+    formSelector: FormSelector,
+    componentStoreName?: string,
   ) {
+
+    const eventThunk = eventConfig.apiRequestThunk;
     const storeToUpdate =
-      eventConfig?.requestStoreToUpdate &&
-      eventConfig.requestStoreToUpdate.length > 0
-        ? eventConfig.requestStoreToUpdate
-        : storeName;
+      eventThunk?.getRequestStoreId() ?? componentStoreName;
 
     if (!storeToUpdate) {
       throw new Error("Event handler must be associated with a valid state");
@@ -239,28 +318,29 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     const dispatchers: BaseDispatcher[] = [];
 
     let componentStoreUpdate: any;
-    if (eventConfig.componentReducer && storeName) {
+
+    let componentReducer = eventConfig.componentReducer;
+    if(!componentReducer){
+      componentReducer = function(data:any){
+        return data;
+      }
+    }
+    if (componentStoreName) {
       componentStoreUpdate = new BaseDispatcher(
-        storeName,
-        eventConfig.componentReducer,
+        componentStoreName,
+        componentReducer,
       );
       dispatchers.push(componentStoreUpdate);
     }
 
     const handler = function (e: Event) {
-      if (
-        !hasRequestStoreSubscribers(storeToUpdate) &&
-        !hasComponentStoreSubscribers(storeToUpdate)
-      ) {
-        // throw new Error(`No subscribers for store ${storeToUpdate}`);
-      }
 
       e.preventDefault();
 
       const request: EventHandlerAction = new EventHandlerAction(
         eventConfig.eventHandler,
-        storeName,
-        shadowRoot,
+        componentStoreName,
+        formSelector
       );
 
       const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {
@@ -271,15 +351,13 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
       if (eventConfig.validator) {
         const eventConfigValidator = eventConfig.validator;
-        const validator = function (
-          eventHandlerResult: any,
-        ): EventValidationResult {
-          const componentData = getComponentStore(storeName ?? "");
-          return eventConfigValidator(eventHandlerResult, componentData);
+        const validator = function (): EventValidationResult {
+          const componentData = getComponentStore(componentStoreName ?? "");
+          return eventConfigValidator(formSelector, componentData);
         };
 
         eventUpdater.processEvent(e, validator).then((result: any) => {
-          if (result?.error) {
+          if (result?.errorMessage) {
             componentStoreUpdate.updateStore(result);
           }
         });
@@ -292,56 +370,30 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   updateFromGlobalState() {
 
-    const componentData = getComponentStore(this.componentStoreName);
-
+    const componentLoadConfig = this.componentLoadConfig;
+    if(!componentLoadConfig){
+      throw new Error(`Component load config is not defined for component ${this.componentStoreName}`)
+    }
     const globalStateLoadConfig =
-      this.componentLoadConfig?.globalStateLoadConfig;
+      componentLoadConfig.globalStateLoadConfig;
     if (!globalStateLoadConfig) {
-      throw new Error("Component global state config is not defined");
+      throw new Error(`Component global state config is not defined for component ${this.componentStoreName}`);
     }
 
-    //Component is still waiting for state.
-    if (
-      globalStateLoadConfig.waitForGlobalState &&
-      getGlobalStateValue(globalStateLoadConfig.waitForGlobalState) ===
-        undefined
-    ) {
-      return;
-    }
+    const dataSource = componentLoadConfig?.onLoadStoreConfig?.dataSource;
 
-    //The component should make an API request based on the data received before rerendering.
-    if (this.requestStoreName) {
-      if (this.componentLoadConfig && !hasRequestStore(this.requestStoreName)) {
-        initRequestStore(this.componentLoadConfig);
-      } else {
-        updateRequestStoreAndClearCache(this.requestStoreName, {
-          name: componentData.name,
-        });
+    if(dataSource){
+      const loadStatus = dataSource.initRequestStoreData(
+        componentLoadConfig,
+        this.componentStoreName)
+
+      if(loadStatus && loadStatus.dependenciesLoaded) {
+        this.dependenciesLoaded = true;
       }
-      this.dependenciesLoaded = true;
-    } else if (globalStateLoadConfig?.defaultGlobalStateReducer) {
-      this.dependenciesLoaded = true;
-      /*TODO: Handle case where the component is subscribed to global state created by multiple components to prevent
-      extra rerenders.
-       */
-      let dataToUpdate: Record<string, string> = {};
-
-      globalStateLoadConfig?.globalFieldSubscriptions?.forEach(
-        function (fieldName) {
-          const fieldValue = getGlobalStateValue(fieldName);
-          dataToUpdate[fieldName] = fieldValue;
-        },
-      );
-      updateComponentStore(
-        this.componentStoreName,
-        globalStateLoadConfig.defaultGlobalStateReducer,
-        dataToUpdate,
-      );
     } else {
-      console.error(
-        "A default global state reducer or API request store should be defined to subscribe to global state",
-      );
+      console.log("Hi")
     }
+
   }
 
   abstract render(data: Record<any, DisplayItem> | any): string;

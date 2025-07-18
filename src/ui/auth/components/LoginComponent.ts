@@ -1,16 +1,13 @@
 import {
-  AUTH_THUNK,
+  LOGIN_THUNK,
   getLoginComponentStoreFromLoginResponse,
-} from "../data/AuthThunk.ts";
+} from "../data/LoginThunk.ts";
 
 import { getLoginComponentStoreFromLogoutResponse } from "../data/LogoutThunk.ts";
 
 import {
-  AUTH_REQUEST_STORE,
   LOGIN_FORM_ID,
-  LOGOUT_REQUEST_STORE,
   PASSWORD_INPUT,
-  REGISTER_REQUEST_STORE,
   USERNAME_INPUT,
 } from "../Constants.js";
 import type { LoginComponentStore } from "../types/LoginComponentStore.ts";
@@ -18,7 +15,7 @@ import {
   LOGIN_EVENT_CONFIG,
   LOGOUT_EVENT_CONFIG,
   REGISTER_EVENT_CONFIG,
-} from "../AuthEventHandlers.ts";
+} from "../LoginComponentEventHandlers.ts";
 import { LOGOUT_THUNK } from "../data/LogoutThunk.ts";
 import {
   getLoginComponentStoreFromRegisterResponse,
@@ -33,35 +30,35 @@ const template = `
     #login-component-container {
       padding-top: 0.25rem;
     }
-    #authentication-error-message {
-      color:darkred;
-    }
     .login-element {
       display: inline-block;
     }
+    @media screen and (width < 32em) {
+      #login-component-container {
+        text-align: center;
+      }
+    }
+
   </style>
 
 `;
 
 export class LoginComponent extends BaseTemplateDynamicComponent {
+
+  hasRendered: boolean;
   constructor() {
     super("loginComponentStore", {
       onLoadStoreConfig: {
-        storeName: AUTH_REQUEST_STORE,
-        dataSource: AUTH_THUNK,
+        dataSource: LOGIN_THUNK,
         disableCache: true,
       },
       onLoadRequestData: {
         username: "",
         password: "",
       },
-      requestStoresToCreate: [
-        { storeName: LOGOUT_REQUEST_STORE, dataSource: LOGOUT_THUNK },
-        { storeName: REGISTER_REQUEST_STORE, dataSource: REGISTER_USER_THUNK },
-      ],
       thunkReducers: [
         {
-          thunk: AUTH_THUNK,
+          thunk: LOGIN_THUNK,
           componentStoreReducer: getLoginComponentStoreFromLoginResponse,
         },
         {
@@ -74,6 +71,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
         },
       ],
     });
+    this.hasRendered = false;
   }
 
   override getTemplateStyle(): string {
@@ -93,18 +91,28 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
     }
   }
   generateLogin(data: LoginComponentStore) {
-    return `
+    const html = `
      <div class="ui-section" id="login-component-container">
       <form id=${LOGIN_FORM_ID} ${this.createSubmitEvent(LOGIN_EVENT_CONFIG)}>
       
+      
+       
         <div class="ui-input">
-          <label for="username">Email:</label>
-          <input type="text" id=${USERNAME_INPUT} name=${USERNAME_INPUT} />
+          ${this.generateInputFormItem({
+            id: USERNAME_INPUT,
+            componentLabel: "Email",
+            inputType: "text",
+            value: ""
+          })}
         </div>
         
         <div class="ui-input">
-          <label for="username">Password:</label>
-          <input type="password" id=${PASSWORD_INPUT} name=${PASSWORD_INPUT} />
+          ${this.generateInputFormItem({
+            id: PASSWORD_INPUT,
+            componentLabel: "password",
+            inputType: "text",
+            value: ""
+          })}
         </div>
         
         <br>
@@ -119,12 +127,14 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
                 Register 
             </button>       
           </div>
-          <p class="login-element" id="authentication-error-message">${data.errorMessage ? data.errorMessage.trim() : ""}</p>
+          ${this.hasRendered ? this.generateErrorMessage(data.errorMessage) : ''}
           <p class="login-element">${data.successMessage}</p>
         </form>
 
     </div>
     `;
+    this.hasRendered = true;
+    return html;
   }
 }
 
