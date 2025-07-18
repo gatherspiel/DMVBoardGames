@@ -19,6 +19,7 @@ import {
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 
 import { getGlobalStateValue } from "../../../../framework/state/data/GlobalStore.ts";
+import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -69,10 +70,10 @@ const groupDataStoreReducer = function(data:any){
 
 const loadConfig = {
   onLoadStoreConfig: {
-    dataSource: GROUP_PRELOAD_THUNK,
+    dataSource: GROUP_REQUEST_THUNK,
   },
   onLoadRequestData: {
-    name: getUrlParameter(GROUP_NAME_PARAM),
+    name: "Beer & Board Games",
   },
   thunkReducers: [
     {
@@ -101,6 +102,17 @@ const loadConfig = {
 export class GroupPageComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(GROUP_COMPONENT_STORE, loadConfig);
+    console.log("Hi");
+  }
+
+  async fetchData(){
+    const data = await GROUP_REQUEST_THUNK.retrieveData({"name":"Beer & Board Games"});
+    this.updateStore(data);
+  }
+
+  connectedCallback(){
+    console.log("Hi");
+    initRequestStore(loadConfig)
   }
 
   getTemplateStyle(): string {
@@ -108,6 +120,7 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   render(groupData: GroupPageData): string {
+
     if (!groupData.permissions) {
       return `<h1>Failed to load group ${getUrlParameter(GROUP_NAME_PARAM)}</h1>`;
     }

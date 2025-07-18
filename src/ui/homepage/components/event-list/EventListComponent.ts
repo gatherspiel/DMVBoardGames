@@ -2,6 +2,7 @@ import type { GroupSearchResult } from "../../data/types/group/GroupSearchResult
 import {EVENT_PRELOAD_THUNK, EVENT_SEARCH_THUNK} from "../../data/search/EventSearchThunk.ts";
 import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {EVENT_LIST_HANDLER_CONFIG} from "./EventListHandler.ts";
 
 const loadConfig = {
   thunkReducers: [
@@ -61,6 +62,7 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
         <div class = "group-page-links">
           <a href="groups.html?name=${encodeURIComponent(group.title)}">Show info</a>
           <a class="group-webpage-link" href=${group.url}> Group webpage</a>
+          <button ${this.createClickEvent(EVENT_LIST_HANDLER_CONFIG)}>Test</button>
         </div>
 
         <p>${group.title}</p>
