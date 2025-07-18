@@ -4,29 +4,35 @@ import type {FormSelector} from "../../../FormSelector.ts";
 export class EventHandlerAction {
   eventHandler: (a: any, componentStore?: any) => any;
   eventComponentStoreName?: string;
-  formSelector?:FormSelector
+  formSelector?:FormSelector;
+  params: any;
   constructor(
     eventHandler: (a: any) => any,
     componentStoreName?: string,
-    formSelector?:FormSelector
+    formSelector?:FormSelector,
+    params?: any
   ) {
     this.eventHandler = eventHandler;
     this.eventComponentStoreName = componentStoreName;
     this.formSelector = formSelector;
+    this.params = params;
   }
 
-  retrieveData(params: Event): any {
+  retrieveData(event: Event): any {
+    console.log(this.params);
     const formSelector = this.formSelector;
     if (this.eventComponentStoreName) {
       return this.eventHandler({
-        event: params,
+        event: event,
         componentStore: getComponentStore(this.eventComponentStoreName),
-        targetId: (params.target as HTMLElement).id,
-        formSelector: formSelector
+        targetId: (event.target as HTMLElement).id,
+        formSelector: formSelector,
+        params: this.params
       });
     }
+    console.log("Test");
     return this.eventHandler({
-      event: params,
+      event: event,
     });
   }
 }

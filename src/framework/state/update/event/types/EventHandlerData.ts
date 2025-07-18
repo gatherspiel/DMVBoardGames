@@ -4,5 +4,6 @@ export interface EventHandlerData {
   event?: Event;
   componentStore?: any;
   targetId: string;
-  formSelector: FormSelector
+  formSelector: FormSelector,
+  params: any;
 }

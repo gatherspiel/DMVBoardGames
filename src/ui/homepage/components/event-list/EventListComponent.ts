@@ -62,7 +62,7 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
         <div class = "group-page-links">
           <a href="groups.html?name=${encodeURIComponent(group.title)}">Show info</a>
           <a class="group-webpage-link" href=${group.url}> Group webpage</a>
-          <button ${this.createClickEvent(EVENT_LIST_HANDLER_CONFIG)}>Test</button>
+          <button ${this.createClickEvent(EVENT_LIST_HANDLER_CONFIG, {name:group.title})}>Test</button>
         </div>
 
         <p>${group.title}</p>

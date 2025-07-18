@@ -123,7 +123,7 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
 
   connectedCallback(){
     // @ts-ignore
-    console.log(window.contentLoaded);
+    console.log("Loading EventSearchComponent");
     initRequestStore(loadConfig);
   }
 

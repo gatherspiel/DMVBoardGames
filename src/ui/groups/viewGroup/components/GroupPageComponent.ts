@@ -68,12 +68,13 @@ const groupDataStoreReducer = function(data:any){
   return data;
 }
 
+
 const loadConfig = {
   onLoadStoreConfig: {
     dataSource: GROUP_REQUEST_THUNK,
   },
   onLoadRequestData: {
-    name: "Beer & Board Games",
+    name: getUrlParameter(GROUP_NAME_PARAM),
   },
   thunkReducers: [
     {
@@ -102,6 +103,7 @@ const loadConfig = {
 export class GroupPageComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(GROUP_COMPONENT_STORE, loadConfig);
+
   }
 
   async fetchData(){
@@ -110,6 +112,7 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
+    loadConfig.onLoadRequestData.name = getUrlParameter("name");
     initRequestStore(loadConfig)
   }
 
