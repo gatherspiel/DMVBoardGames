@@ -1,6 +1,20 @@
+import {GameStoreListComponent} from "./GameStoreListComponent.ts";
+import {ConventionListComponent} from "./ConventionListComponent.ts";
+import {GroupPageEventComponent} from "../../groups/viewGroup/components/GroupPageEventComponent.ts";
+import {EventListComponent} from "./event-list/EventListComponent.ts";
+import {EventSearchComponent} from "./event-search/EventSearchComponent.ts";
+
 export class HomepageComponent extends HTMLElement {
 
+
   connectedCallback(){
+
+    console.log(GameStoreListComponent.name)
+    console.log(ConventionListComponent.name)
+    console.log(GroupPageEventComponent.name);
+    console.log(EventListComponent.name);
+    console.log(EventSearchComponent.name);
+
     this.innerHTML = `
      <div class="ui-separator"></div>
       <div class="ui-section">

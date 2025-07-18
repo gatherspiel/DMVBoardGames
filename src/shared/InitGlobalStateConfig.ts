@@ -1,8 +1,14 @@
 import { setupGlobalState } from "../framework/state/data/GlobalStore.ts";
 
-export const stateFields: Record<string, string> = {
-  LOGGED_IN: "isLoggedIn",
-};
+let stateFields:Record<string, string> = {};
 
-setupGlobalState(stateFields);
+export function setupStateFields(){
+  console.log("Setting up global state");
+  stateFields =  {
+    LOGGED_IN: "isLoggedIn",
+  };
+  setupGlobalState(stateFields);
+}
+
+
 

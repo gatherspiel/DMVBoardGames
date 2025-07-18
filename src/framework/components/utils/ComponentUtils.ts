@@ -1,5 +1,8 @@
 import type { BaseTemplateComponent } from "../BaseTemplateComponent.ts";
 
+
+
+
 export function createJSONProp(data: any) {
   let json = JSON.stringify(data);
   return json.replaceAll(" ", "\u00A0");
