@@ -1,4 +1,6 @@
 
+
+
 const IS_LOCAL = !window.location.href.includes(
   "https://dmvboardgames.com/",
 );
@@ -18,4 +20,5 @@ fetch(`${API_ROOT}/searchEvents`,{priority: 'high'}).then((response)=>{
   //@ts-ignore
   window.preloadData = response;
 })
+
 

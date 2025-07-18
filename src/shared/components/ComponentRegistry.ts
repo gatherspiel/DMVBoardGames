@@ -4,6 +4,7 @@ import { CreateGroupPageComponent } from "../../ui/groups/createGroup/components
 import { EventDetailsComponent } from "../../ui/groups/event/components/EventDetailsComponent.ts";
 import {CreateEventComponent} from "../../ui/groups/event/components/CreateEventComponent.ts";
 import {HomepageComponent} from "../../ui/homepage/components/HomepageComponent.ts";
+import {GroupPageComponent} from "../../ui/groups/viewGroup/components/GroupPageComponent.ts";
 
 //This function is for dynamically creating components without having to manually import them from a HTML file
 export function getComponent(componentName: string): HTMLElement {
@@ -14,8 +15,8 @@ export function getComponent(componentName: string): HTMLElement {
     return new OpenCreateGroupPageComponent();
   }
 
-  if (componentName === "create-group-page-component") {
-    return new CreateGroupPageComponent();
+  if (componentName === "group-page-component") {
+    return new GroupPageComponent();
   }
 
   if (componentName === "create-group-page-component") {
