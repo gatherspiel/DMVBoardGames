@@ -5,6 +5,7 @@ import { setupStateFields} from "../InitGlobalStateConfig.ts";
 import {GroupPageComponent} from "../../ui/groups/viewGroup/components/GroupPageComponent.ts";
 import {HomepageComponent} from "../../ui/homepage/components/HomepageComponent.ts";
 import {getUrlParameter} from "../../framework/utils/UrlParamUtils.ts";
+import {PageState} from "../../framework/state/pageState.ts";
 
 export const GROUP_PAGE_ROUTE = "groupPageRoute";
 
@@ -12,8 +13,6 @@ export class PageComponent extends HTMLElement {
 
   static currentComponent: PageComponent;
 
-  activeComponent: HTMLElement;
-  prevComponent: HTMLElement | undefined;
 
   constructor() {
     super();
@@ -23,19 +22,19 @@ export class PageComponent extends HTMLElement {
     this.appendChild(new NavbarComponent());
     this.appendChild(new LoginComponent());
 
-    this.activeComponent = getComponent(componentName);
-    this.appendChild(this.activeComponent);
+    PageState.activeComponent = getComponent(componentName);
+    this.appendChild(PageState.activeComponent);
 
     PageComponent.currentComponent = this;
 
     const self = this;
     window.addEventListener("popstate", (event) => {
       console.log("Event:"+event.state)
-        self.removeChild(self.activeComponent);
+        self.removeChild(PageState.activeComponent);
 
-        if(self.prevComponent){
-          self.activeComponent = new HomepageComponent()
-          self.appendChild(self.activeComponent);
+        if(PageState.prevComponent){
+          PageState.activeComponent = new HomepageComponent()
+          self.appendChild(PageState.activeComponent);
         }
 
     });
@@ -43,8 +42,8 @@ export class PageComponent extends HTMLElement {
   }
 
   update(route:string,params?:Record<string, string>){
-    this.removeChild(this.activeComponent)
-    this.prevComponent = this.activeComponent;
+    this.removeChild(PageState.activeComponent)
+    PageState.prevComponent = PageState.activeComponent;
 
     const routeData = this.#getRouteData(route);
 
@@ -68,7 +67,7 @@ export class PageComponent extends HTMLElement {
 
     const component = new GroupPageComponent();
     this.appendChild(component)
-    this.activeComponent = component;
+    PageState.activeComponent = component;
   }
 
 

@@ -71,7 +71,7 @@ const groupDataStoreReducer = function(data:any){
 
 const loadConfig = {
   onLoadStoreConfig: {
-    dataSource: GROUP_REQUEST_THUNK,
+    dataSource: GROUP_PRELOAD_THUNK,
   },
   onLoadRequestData: {
     name: getUrlParameter(GROUP_NAME_PARAM),

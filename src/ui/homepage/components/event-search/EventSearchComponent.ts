@@ -19,6 +19,7 @@ import {
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {LOCATIONS_THUNK} from "../../data/search/LocationsThunk.ts";
 import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
+import {PageState} from "../../../../framework/state/pageState.ts";
 
 const loadConfig = {
   onLoadStoreConfig: {
@@ -124,7 +125,9 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
   connectedCallback(){
     // @ts-ignore
     console.log("Loading EventSearchComponent");
-    initRequestStore(loadConfig);
+    if(PageState.pageLoaded){
+      initRequestStore(loadConfig);
+    }
   }
 
   render(eventSearchStore: any) {

@@ -97,6 +97,9 @@ export function convertTimeTo24Hours(time:string){
 }
 
 export function convertLocationStringForDisplay(location:string) {
+  if(!location){
+    return ""
+  }
   const split = location.split(',');
   return `${split[0].trim()}, ${split[1].trim()}, ${split[2].trim()}`
 }

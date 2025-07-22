@@ -367,7 +367,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     return handler;
   }
 
+
   disconnectedCallback(){
+    console.log("Hi");
     clearSubscribers(this.componentStoreName);
   }
 
