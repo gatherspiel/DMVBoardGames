@@ -38,4 +38,4 @@ export const AUTH_TOKEN_KEY =
     : import.meta.env.VITE_LOCAL_AUTH_TOKEN_KEY;
 
 
-export const DISABLE_INTERNAL_REQUEST_CACHE = import.meta.env.VITE_DISABLE_INTERNAL_REQUEST_CACHE === "true"
+export const DISABLE_INTERNAL_REQUEST_CACHE = !IS_PRODUCTION && import.meta.env.VITE_DISABLE_INTERNAL_REQUEST_CACHE === "true"
