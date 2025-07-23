@@ -141,7 +141,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   generateAndSaveHTML(data: any) {
-    console.log("HI")
     if (!this.dependenciesLoaded) {
       this.innerHTML = this.getLoadingIndicator();
     } else {
@@ -369,7 +368,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
 
   disconnectedCallback(){
-    console.log("Hi");
     clearSubscribers(this.componentStoreName);
   }
 

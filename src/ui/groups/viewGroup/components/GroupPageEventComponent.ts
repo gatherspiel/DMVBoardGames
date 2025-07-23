@@ -4,6 +4,7 @@ import {
   convertDateTimeForDisplay,
   convertLocationStringForDisplay
 } from "../../../../framework/utils/EventDataUtils.ts";
+import {VIEW_GROUP_EVENT_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 
 const template = `
 
@@ -29,7 +30,8 @@ const template = `
    }
    
    .event {
-      border-top: 1px solid var(--clr-lighter-blue);
+      border-bottom: 1px solid var(--clr-lighter-blue);
+
    }
     
   </style>
@@ -58,8 +60,9 @@ export class GroupPageEventComponent extends BaseTemplateDynamicComponent {
           <p class = "event-time">${convertDateTimeForDisplay(eventData.startTime)}</p>
           <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
           </br>  
-          
-          <a href="/groups/event.html?id=${eventData.id}&groupId=${eventData.groupId}">View event details</a>
+          <button ${this.createClickEvent(VIEW_GROUP_EVENT_HANDLER_CONFIG, {id:eventData.id,groupId:eventData.groupId})}>
+            View event details
+    </button>
         </div>
            
       </div>

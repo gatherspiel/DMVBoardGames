@@ -10,6 +10,7 @@ import {
   getRequestFromCache,
   updateCache
 } from "../../data/SessionStorageUtils.ts";
+import {DISABLE_INTERNAL_REQUEST_CACHE} from "../../../../shared/params.ts";
 export class InternalApiAction extends BaseThunkAction {
   readonly #defaultResponse: DefaultApiAction;
   readonly #getQueryConfig: (a: any) => ApiRequestConfig;
@@ -111,7 +112,7 @@ export class InternalApiAction extends BaseThunkAction {
 
       const cachedResponse = getRequestFromCache(cacheKey, requestKey);
 
-      if(false){
+      if(cachedResponse && !DISABLE_INTERNAL_REQUEST_CACHE){
         return cachedResponse;
       }
     }

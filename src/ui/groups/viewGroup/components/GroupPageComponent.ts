@@ -19,7 +19,7 @@ import {
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 
 import { getGlobalStateValue } from "../../../../framework/state/data/GlobalStore.ts";
-import {PageState} from "../../../../framework/state/pageState.ts";
+import {PageState} from "../../../../framework/state/PageState.ts";
 import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 
 const template = `
@@ -53,6 +53,10 @@ const template = `
     #${GROUP_DESCRIPTION_INPUT} {
       height: 500px;
       width: 800px;
+    }
+    
+    #group-events {
+      border-top: 1px solid var(--clr-lighter-blue);
     }
         
   </style>
@@ -114,6 +118,7 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
 
   connectedCallback(){
     if(PageState.pageLoaded) {
+      console.log("Render time:"+Date.now())
       //@ts-ignore
       loadConfig.onLoadStoreConfig.dataSource = GROUP_REQUEST_THUNK
       loadConfig.onLoadRequestData.name = getUrlParameter(GROUP_NAME_PARAM)
@@ -182,7 +187,7 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
       `
      }
     <h1>Upcoming events</h1>
-
+      <div id="group-events">
       ${
         groupData.eventData.length === 0
           ? `<p id="no-event">Click on group link above for event information</p>`

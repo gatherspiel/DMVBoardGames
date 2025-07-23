@@ -1,4 +1,4 @@
-import {PageState} from "../pageState.ts";
+import {PageState} from "../PageState.ts";
 
 const loadFunctions: Record<string, () => any> = {};
 

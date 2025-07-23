@@ -21,7 +21,6 @@ function getData(){
     headers.authToken = authData;
   }
 
-  console.log("Loading with group:"+name)
   fetch(`${API_ROOT}/groups?name=${encodeURIComponent(name)}`,{
     headers: headers
   }).then((response)=>{

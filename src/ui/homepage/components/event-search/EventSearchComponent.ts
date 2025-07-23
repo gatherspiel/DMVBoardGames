@@ -19,7 +19,7 @@ import {
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {LOCATIONS_THUNK} from "../../data/search/LocationsThunk.ts";
 import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
-import {PageState} from "../../../../framework/state/pageState.ts";
+import {PageState} from "../../../../framework/state/PageState.ts";
 
 const loadConfig = {
   onLoadStoreConfig: {
