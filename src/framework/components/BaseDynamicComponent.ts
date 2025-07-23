@@ -366,7 +366,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     return handler;
   }
 
-
   disconnectedCallback(){
     clearSubscribers(this.componentStoreName);
   }
@@ -393,13 +392,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       if(loadStatus && loadStatus.dependenciesLoaded) {
         this.dependenciesLoaded = true;
       }
-    } else {
-      console.log("Hi")
     }
-
   }
-
-
-
   abstract render(data: Record<any, DisplayItem> | any): string;
 }
