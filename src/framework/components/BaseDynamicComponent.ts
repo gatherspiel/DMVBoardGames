@@ -1,6 +1,7 @@
 import type { DisplayItem } from "../../ui/homepage/data/types/DisplayItem.ts";
 
 import {
+  clearSubscribers,
   createComponentStore,
   getComponentStore, hasUserEditPermissions,
 } from "../state/data/ComponentStore.ts";
@@ -140,7 +141,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   generateAndSaveHTML(data: any) {
-    console.log("HI")
     if (!this.dependenciesLoaded) {
       this.innerHTML = this.getLoadingIndicator();
     } else {
@@ -256,7 +256,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   saveEventHandler(
     eventFunction: (e: Event) => any,
     eventType: string,
-    targetId?: string,
   ): string {
     let id = `${this.getElementIdTag()}=${this.eventTagIdCount}`;
 
@@ -265,10 +264,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       eventFunction: eventFunction,
     };
     this.eventTagIdCount++;
-
-    if (targetId) {
-      id += ` id=${targetId}`;
-    }
     return id;
   }
 
@@ -291,20 +286,22 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     return this.saveEventHandler(eventHandler, "submit");
   }
 
-  createClickEvent(eventConfig: any, id?: string) {
+  createClickEvent(eventConfig: any, params?: any) {
     let eventHandler;
     eventHandler = BaseDynamicComponent.createHandler(
       eventConfig,
       this.formSelector,
-      this?.componentStoreName,
+      this.componentStoreName,
+      params,
     );
-    return this.saveEventHandler(eventHandler, "click", id);
+    return this.saveEventHandler(eventHandler, "click");
   }
 
   static createHandler(
     eventConfig: EventHandlerThunkConfig,
     formSelector: FormSelector,
     componentStoreName?: string,
+    params?: any
   ) {
 
     const eventThunk = eventConfig.apiRequestThunk;
@@ -340,7 +337,8 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       const request: EventHandlerAction = new EventHandlerAction(
         eventConfig.eventHandler,
         componentStoreName,
-        formSelector
+        formSelector,
+        params
       );
 
       const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {
@@ -368,6 +366,10 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     return handler;
   }
 
+  disconnectedCallback(){
+    clearSubscribers(this.componentStoreName);
+  }
+
   updateFromGlobalState() {
 
     const componentLoadConfig = this.componentLoadConfig;
@@ -390,11 +392,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       if(loadStatus && loadStatus.dependenciesLoaded) {
         this.dependenciesLoaded = true;
       }
-    } else {
-      console.log("Hi")
     }
-
   }
-
   abstract render(data: Record<any, DisplayItem> | any): string;
 }

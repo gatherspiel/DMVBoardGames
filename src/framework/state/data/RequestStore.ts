@@ -153,6 +153,8 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
   if(!storeName){
     throw new Error("Store name not defined");
   }
+
+
   addLoadFunction(storeName, function () {
     initRequestStore(config);
   });

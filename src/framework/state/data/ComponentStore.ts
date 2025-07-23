@@ -40,6 +40,12 @@ export function updateComponentStore(
   updateStore(storeName, updateFunction, stores, data);
 }
 
+export function clearSubscribers(storeName:string){
+ if(storeName in stores){
+   delete stores[storeName]
+ }
+}
+
 /**
  * @Depreacted
  * @param storeName
