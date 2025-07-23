@@ -19,6 +19,7 @@ import {
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 
 import { getGlobalStateValue } from "../../../../framework/state/data/GlobalStore.ts";
+import {PageState} from "../../../../framework/state/pageState.ts";
 import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 
 const template = `
@@ -112,8 +113,12 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    loadConfig.onLoadRequestData.name = getUrlParameter("name");
-    initRequestStore(loadConfig)
+    if(PageState.pageLoaded) {
+      //@ts-ignore
+      loadConfig.onLoadStoreConfig.dataSource = GROUP_REQUEST_THUNK
+      loadConfig.onLoadRequestData.name = getUrlParameter(GROUP_NAME_PARAM)
+      initRequestStore(loadConfig);
+    }
   }
 
   getTemplateStyle(): string {

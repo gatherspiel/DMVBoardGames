@@ -19,7 +19,6 @@ export class EventHandlerAction {
   }
 
   retrieveData(event: Event): any {
-    console.log(this.params);
     const formSelector = this.formSelector;
     if (this.eventComponentStoreName) {
       return this.eventHandler({

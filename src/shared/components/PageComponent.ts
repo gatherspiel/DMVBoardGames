@@ -4,7 +4,6 @@ import { getComponent } from "./ComponentRegistry.ts";
 import { setupStateFields} from "../InitGlobalStateConfig.ts";
 import {GroupPageComponent} from "../../ui/groups/viewGroup/components/GroupPageComponent.ts";
 import {HomepageComponent} from "../../ui/homepage/components/HomepageComponent.ts";
-import {getUrlParameter} from "../../framework/utils/UrlParamUtils.ts";
 import {PageState} from "../../framework/state/pageState.ts";
 
 export const GROUP_PAGE_ROUTE = "groupPageRoute";
@@ -45,10 +44,25 @@ export class PageComponent extends HTMLElement {
     this.removeChild(PageState.activeComponent)
     PageState.prevComponent = PageState.activeComponent;
 
-    const routeData = this.#getRouteData(route);
+    const componentToAdd = this.#getComponentAndUpdateUrl(route, params);
 
-    let updatedUrl = routeData.url;
+    this.appendChild(componentToAdd)
+    PageState.activeComponent = componentToAdd;
+  }
 
+
+  #getComponentAndUpdateUrl(route:string, params?:Record<string, string>): HTMLElement{
+
+    if(route === GROUP_PAGE_ROUTE) {
+      this.#updateUrlWithQuery("groups.html", params)
+      return new GroupPageComponent();
+    }else {
+      throw new Error(`No route defined for ${route}`);
+    }
+  }
+
+  #updateUrlWithQuery(route:string, params: any){
+    let updatedUrl = route;
     if(params){
       const paramData:string[] = [];
       Object.keys(params).forEach((function(key){
@@ -59,26 +73,7 @@ export class PageComponent extends HTMLElement {
         updatedUrl += `?${paramData.join("&")}`
       }
     }
-
-    console.log(updatedUrl)
     window.history.pushState({"Test":"Test"},"Test",updatedUrl)
-
-    console.log(getUrlParameter("name"));
-
-    const component = new GroupPageComponent();
-    this.appendChild(component)
-    PageState.activeComponent = component;
-  }
-
-
-  #getRouteData(route:string):any{
-    if(route === GROUP_PAGE_ROUTE) {
-      return {
-        url:`groups.html`,
-      }
-    }else {
-      throw new Error(`No route defined for ${route}`);
-    }
   }
 }
 
