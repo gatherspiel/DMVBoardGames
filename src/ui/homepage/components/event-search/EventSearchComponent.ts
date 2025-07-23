@@ -18,6 +18,8 @@ import {
 } from "./EventSearchHandlers.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {LOCATIONS_THUNK} from "../../data/search/LocationsThunk.ts";
+import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
+import {PageState} from "../../../../framework/state/PageState.ts";
 
 const loadConfig = {
   onLoadStoreConfig: {
@@ -119,6 +121,13 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
   override getTemplateStyle(): string {
     return template;
   }
+
+  connectedCallback(){
+    if(PageState.pageLoaded){
+      initRequestStore(loadConfig);
+    }
+  }
+
   render(eventSearchStore: any) {
 
     return `
@@ -152,6 +161,7 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
         </form>
       </div>
   `;
+
   }
 
   getCityHtml(eventSearchStore: any) {

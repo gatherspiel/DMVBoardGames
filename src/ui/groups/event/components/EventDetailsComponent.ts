@@ -22,6 +22,9 @@ import {
 } from "../../../../framework/utils/EventDataUtils.ts";
 import {UPDATE_EVENT_REQUEST_THUNK} from "../data/UpdateEventThunk.ts";
 import {DELETE_EVENT_REQUEST_THUNK} from "../data/DeleteEventRequestThunk.ts";
+import {PageState} from "../../../../framework/state/PageState.ts";
+import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
+import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -100,6 +103,13 @@ const loadConfig = {
 export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("group-event-component", loadConfig);
+  }
+
+  connectedCallback(){
+    if(PageState.pageLoaded) {
+      console.log("Render time:"+Date.now())
+      initRequestStore(loadConfig);
+    }
   }
 
   render(data: EventDetailsData): string {
@@ -212,10 +222,8 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
           "Delete event": DELETE_EVENT_CONFIG
         })}
        
-       
-      <p>${data.successMessage ? data.successMessage.trim(): ""}</p>
-
-        <a href="/groups.html?name=${encodeURIComponent(data.groupName)}">Back to group</a> 
+        <p>${data.successMessage ? data.successMessage.trim(): ""}</p>
+        <button ${this.createClickEvent(VIEW_GROUP_PAGE_HANDLER_CONFIG, {name: data.groupName})}>Back to group </button>
       </div>
     `;
   }

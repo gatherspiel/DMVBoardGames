@@ -55,12 +55,6 @@ export function updateStore(
   });
   storeData[storeName].data = updatedData;
 
-  if (storeData[storeName].subscribers.length === 0) {
-    console.warn(
-      `No subscribers to store ${storeName}. Make sure to call subscribeToReducer in component constructor.`,
-    );
-    throw Error("Error updating");
-  }
 
   storeData[storeName].subscribers.forEach(function (
     component: BaseDynamicComponent | BaseThunk,

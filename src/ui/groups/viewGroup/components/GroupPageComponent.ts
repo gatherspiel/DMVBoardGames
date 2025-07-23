@@ -19,6 +19,8 @@ import {
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 
 import { getGlobalStateValue } from "../../../../framework/state/data/GlobalStore.ts";
+import {PageState} from "../../../../framework/state/PageState.ts";
+import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -52,6 +54,10 @@ const template = `
       height: 500px;
       width: 800px;
     }
+    
+    #group-events {
+      border-top: 1px solid var(--clr-lighter-blue);
+    }
         
   </style>
   <div></div>
@@ -66,6 +72,7 @@ const groupDataStoreReducer = function(data:any){
   data.successMessage = '';
   return data;
 }
+
 
 const loadConfig = {
   onLoadStoreConfig: {
@@ -101,6 +108,22 @@ const loadConfig = {
 export class GroupPageComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(GROUP_COMPONENT_STORE, loadConfig);
+
+  }
+
+  async fetchData(){
+    const data = await GROUP_REQUEST_THUNK.retrieveData({"name":"Beer & Board Games"});
+    this.updateStore(data);
+  }
+
+  connectedCallback(){
+    if(PageState.pageLoaded) {
+      console.log("Render time:"+Date.now())
+      //@ts-ignore
+      loadConfig.onLoadStoreConfig.dataSource = GROUP_REQUEST_THUNK
+      loadConfig.onLoadRequestData.name = getUrlParameter(GROUP_NAME_PARAM)
+      initRequestStore(loadConfig);
+    }
   }
 
   getTemplateStyle(): string {
@@ -108,6 +131,7 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   render(groupData: GroupPageData): string {
+
     if (!groupData.permissions) {
       return `<h1>Failed to load group ${getUrlParameter(GROUP_NAME_PARAM)}</h1>`;
     }
@@ -163,7 +187,7 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
       `
      }
     <h1>Upcoming events</h1>
-
+      <div id="group-events">
       ${
         groupData.eventData.length === 0
           ? `<p id="no-event">Click on group link above for event information</p>`

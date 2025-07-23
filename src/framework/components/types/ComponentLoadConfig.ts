@@ -1,10 +1,9 @@
 import type { BaseThunk } from "../../state/update/BaseThunk.ts";
-import type {PreloadThunk} from "../../state/update/PreloadThunk.ts";
 
 export type RequestStoreItem = {
   dataSource: BaseThunk;
   disableCache?: boolean;
-  preloadData?:PreloadThunk
+  preloadData?:BaseThunk
 };
 
 export type ThunkDispatcherConfig = {
