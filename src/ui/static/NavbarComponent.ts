@@ -5,13 +5,10 @@ template.innerHTML = `
   <style>
     
     nav {
-     background-color:var(--clr-lighter-blue); 
+      background-color: var(--clr-lighter-blue);
+      background-image: url("/assets/wood.png");
     }
-    
-    #logo-div {
-      float: left;
-    }
-    
+        
     #logo-div img {
       max-height: 4.5rem;
       padding-left: 0.5rem;
@@ -20,7 +17,7 @@ template.innerHTML = `
     
     nav a,
     #jump-to a {
-      background-color: var(--clr-lighter-blue);
+      background-color: none;
       color: white;
       font-size: 1.25rem;
       padding-bottom: 0.25rem;
@@ -58,6 +55,9 @@ template.innerHTML = `
     }
    
     @media not screen and (width < 32em) {
+      #logo-div {
+        float: left;
+      }
       .top-nav {
         display: flex;
         flex-wrap: wrap;
@@ -72,6 +72,10 @@ template.innerHTML = `
     }
     
     @media screen and (width < 32em) {
+      #logo-div {
+        display: flex;
+        justify-content: center;
+      }
       .top-nav {
         display: grid;
         text-align: center;

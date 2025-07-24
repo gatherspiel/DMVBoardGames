@@ -32,7 +32,8 @@ const template = `
         margin-right:1rem;
     }
     .group-description {
-      background: hsl(from var(--clr-lighter-blue) h s l / 0.1);
+      background-color: var(--clr-lighter-blue);
+      background-image: url("/assets/wood.png");
       border-radius: 10px;
       color: var(--clr-dark-blue);
       font-size: 1.25rem;

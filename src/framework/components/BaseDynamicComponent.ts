@@ -124,7 +124,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     };
 
     if (this.shadowRoot) {
-
       this.formSelector.setShadowRoot(this.shadowRoot);
       this.shadowRoot?.querySelectorAll(`[${elementIdTag}]`).forEach(function (
         item: Element,
