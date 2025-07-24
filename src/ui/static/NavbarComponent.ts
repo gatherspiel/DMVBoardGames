@@ -4,6 +4,20 @@ const template = document.createElement("template");
 template.innerHTML = `
   <style>
     
+    nav {
+     background-color:var(--clr-lighter-blue); 
+    }
+    
+    #logo-div {
+      float: left;
+    }
+    
+    #logo-div img {
+      max-height: 4.5rem;
+      padding-left: 0.5rem;
+      padding-top: 0.25rem;
+    }
+    
     nav a,
     #jump-to a {
       background-color: var(--clr-lighter-blue);
@@ -34,7 +48,7 @@ template.innerHTML = `
     
     nav a:last-child {
       text-wrap: nowrap;
-            text-decoration: none;
+      text-decoration: none;
     }
         
     #nav-filler {
@@ -45,11 +59,10 @@ template.innerHTML = `
    
     @media not screen and (width < 32em) {
       .top-nav {
-         background-color:var(--clr-lighter-blue); 
         display: flex;
         flex-wrap: wrap;
         margin-top: 5px;
-        padding-left: 0.5rem;
+        padding-left: 0.5rem;     
       }
       nav a + a {
         margin-left: 1px;
@@ -90,14 +103,19 @@ export class NavbarComponent extends BaseTemplateComponent {
     // Closing tags are on separate lines are to prevent extra spaces between links
     return `
       <nav>
+        <div id="logo-div">
+          <img src="assets/logo.svg"> </img>
+        </div>
         <div class="ui-section top-nav">
-          <a href="${window.location.origin}/index.html">Home
-          </a><a class="mid-element" href="${window.location.origin}/designers.html">Local designers
-          </a><a href="${window.location.origin}/print_and_play.html">Print and Play
-          </a><a href="https://gatherspiel.com/vision.html">Future plans
-          </a><a href="${window.location.origin}/useful_links.html">Useful Links
-          </a><a href="${window.location.origin}/feedback.html">Feedback     
-          </a><a href="https://gatherspiel.com/help.html">Want to help with development </a>  
+          <div class="top-nav">
+            <a href="${window.location.origin}/index.html">Home
+            </a><a class="mid-element" href="${window.location.origin}/designers.html">Local designers
+            </a><a href="${window.location.origin}/print_and_play.html">Print and Play
+            </a><a href="https://gatherspiel.com/vision.html">Future plans
+            </a><a href="${window.location.origin}/useful_links.html">Useful Links
+            </a><a href="${window.location.origin}/feedback.html">Feedback     
+            </a><a href="https://gatherspiel.com/help.html">Want to help with development </a>           
+          </div>
         <div id="nav-filler"></div>
         </div>
 
