@@ -10,7 +10,7 @@ import {
   getRequestFromCache,
   updateCache
 } from "../../data/SessionStorageUtils.ts";
-import {DISABLE_INTERNAL_REQUEST_CACHE} from "../../../../shared/params.ts";
+import {DISABLE_INTERNAL_REQUEST_CACHE} from "../../../../shared/Params.ts";
 export class InternalApiAction extends BaseThunkAction {
   readonly #defaultResponse: DefaultApiAction;
   readonly #getQueryConfig: (a: any) => ApiRequestConfig;

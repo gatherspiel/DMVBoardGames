@@ -22,6 +22,8 @@ const loadConfig = {
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
   <style>
+  
+
     @media not screen and (width < 32em) {
       .event-group p {
         display: inline-block;

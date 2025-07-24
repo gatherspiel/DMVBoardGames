@@ -22,11 +22,4 @@ export abstract class BaseTemplateDynamicComponent extends BaseDynamicComponent 
    */
   abstract getTemplateStyle(): string;
 
-  /*
-  - This method is for returning any CSS styles that are shared between different components. If there is a conflict
-  between shared styling and component styling for an element, the component styling will be used. 
-   */
-  getSharedStyle(): string {
-    return "";
-  }
 }
