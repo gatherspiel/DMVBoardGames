@@ -1,4 +1,4 @@
-import { API_ROOT, USE_MOCK } from "../../../../shared/params.ts";
+import { API_ROOT, USE_MOCK } from "../../../../shared/Params.ts";
 
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.ts";
 import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";

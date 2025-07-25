@@ -20,8 +20,13 @@ const loadConfig = {
 };
 
 const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
+  <link rel="preload" as="style" href="/styles/sharedComponentStyles.css" onload="this.rel='stylesheet'"/>
   <style>
+    .ui-section {
+      visibility: hidden;
+    }
+    
     @media not screen and (width < 32em) {
       .event-group p {
         display: inline-block;
@@ -70,6 +75,7 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
     `;
     return groupHtml;
   }
+
 
   override getTemplateStyle(): string {
     return template;

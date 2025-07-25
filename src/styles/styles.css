@@ -3,6 +3,8 @@
   --clr-darker-blue: hsl(199, 100%, 10%);
   --clr-light-blue: hsl(199, 100%, 33%);
   --clr-lighter-blue: hsl(206, 100%, 52%);
+  --clr-very-light-blue: hsl(206, 100%, 92%);
+
 }
 
 html,
@@ -18,10 +20,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-padding: 1.5rem;
+  cursor: url(/assets/meeple.png) 16 16, pointer;
+
 }
 
 button {
   background-color: var(--clr-lighter-blue);
+  background-image: url("/assets/wood.png");
   border-color: var(--clr-darker-blue);
   border-radius: 5px;
   border-width:1px;
@@ -52,7 +57,8 @@ h1 {
 }
 
 #page-info {
-  background: hsl(from var(--clr-lighter-blue) h s l / 0.1);
+  background-color: var(--clr-very-light-blue);
+  background-image: url("/assets/wood.png");
   border-radius: 10px;
   color: var(--clr-dark-blue);
 }
@@ -159,6 +165,7 @@ select:focus-visible {
     padding: 0;
   }
 }
+
 
 
 

@@ -1,5 +1,6 @@
 a, button {
   background-color: var(--clr-lighter-blue);
+  background-image: url("/assets/wood.png");
   border-color: var(--clr-darker-blue);
   border-radius: 5px;
   border-width: 1px;
@@ -9,6 +10,7 @@ a, button {
   margin-top: 0.5rem;
   padding: 0.5rem;
 }
+
 
 button:hover {
   background-color: var(--clr-darker-blue);
@@ -56,5 +58,9 @@ p {
     text-align: center;
     justify-items: center;
   }
+}
+
+.ui-section {
+  visibility: visible !important;
 }
 
