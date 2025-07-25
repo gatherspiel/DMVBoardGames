@@ -7,7 +7,7 @@ import { generateApiThunkWithExternalConfig } from "../../../framework/state/upd
 import { getLocalStorageDataIfPresent } from "../../../framework/utils/LocalStorageUtils.ts";
 import { isAfterNow } from "../../../framework/utils/EventDataUtils.ts";
 import type { AuthReducerError } from "../types/AuthReducerError.ts";
-import { AUTH_TOKEN_KEY } from "../../../shared/params.ts";
+import { AUTH_TOKEN_KEY } from "../../../shared/Params.ts";
 import { getSupabaseClient } from "../SupabaseClient.ts";
 
 async function retrieveData(

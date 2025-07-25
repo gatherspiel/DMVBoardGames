@@ -1,6 +1,6 @@
 import type { BaseThunk } from "../../../framework/state/update/BaseThunk.ts";
 import { generateApiThunk } from "../../../framework/state/update/api/ApiThunkFactory.ts";
-import { API_ROOT } from "../../../shared/params.ts";
+import { API_ROOT } from "../../../shared/Params.ts";
 import type { ApiRequestConfig } from "../../../framework/state/update/api/types/ApiRequestConfig.ts";
 
 function registerUserConfig(params: any): ApiRequestConfig {

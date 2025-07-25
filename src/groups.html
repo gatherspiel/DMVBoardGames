@@ -1,31 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-  <script inline-source src="ui/preload/GroupPreload.js">
-  </script>
+  <script inline-source src="ui/preload/GroupPreload.js"></script>
+  <meta charset="UTF-8"/>
 
   <style inline-source src="/styles/styles.css" type="text/css"></style>
 
-  <meta charset="UTF-8">
+  <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GroupSearchResult Information</title>
 
-  <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
-  <style inline-source src="/styles/styles.css" type="text/css"></style>
-
-  <script
-    defer
-    fetchpriority="low"
-    type="module"
-    src="shared/components/PageComponent.ts"
-  ></script>
 </head>
 <body>
+<div id="container">
   <page-component
     componentName="group-page-component"
   >
   </page-component>
+</div>
 
+<script
+  defer
+  fetchpriority="low"
+  type="module"
+  src="shared/components/PageComponent.ts"
+></script>
 </body>
 </html>

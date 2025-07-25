@@ -1,4 +1,4 @@
-import { NavbarComponent } from "../../ui/static/navbarComponent.ts";
+import { NavbarComponent } from "../../ui/static/NavbarComponent.ts";
 import { LoginComponent } from "../../ui/auth/components/LoginComponent.ts";
 import { getComponent } from "./ComponentRegistry.ts";
 import { setupStateFields} from "../InitGlobalStateConfig.ts";

@@ -1,5 +1,5 @@
 import { getGameRestaurants, getGameStores } from "../mock/MockPageData.ts";
-import { API_ROOT, USE_MOCK } from "../../../../shared/params.ts";
+import { API_ROOT, USE_MOCK } from "../../../../shared/Params.ts";
 import { getConventionData } from "../mock/MockConventionData.ts";
 import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
 

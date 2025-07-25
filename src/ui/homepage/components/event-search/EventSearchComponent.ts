@@ -61,6 +61,7 @@ const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
 
   <style>
+  
   #event-search {
     border-top: 1px solid var(--clr-lighter-blue);
     padding-block: 1.5rem;
