@@ -39,6 +39,7 @@ const template = `
       font-size: 1.25rem;
       font-weight:600;
       padding: 2rem;
+      margin-top: 2rem;
     }
    
     .group-data-input {
