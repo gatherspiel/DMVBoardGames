@@ -65,7 +65,13 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
         <div class = "group-page-links">
-          <button ${this.createClickEvent(VIEW_GROUP_PAGE_HANDLER_CONFIG, {name:group.title})}>Show info</button>
+          <button class="pushable" ${this.createClickEvent(VIEW_GROUP_PAGE_HANDLER_CONFIG, {name:group.title})}>
+          
+          <span class="front">
+              Show info
+
+          </span>
+          </button>
           <a class="group-webpage-link" href=${group.url}> Group webpage</a>
         </div>
 
