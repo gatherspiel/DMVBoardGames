@@ -11,7 +11,6 @@ export function addLoadFunction(componentName: string, loadFunction: any) {
 
 window.onload = () => {
 
-  console.log("Hi");
   PageState.pageLoaded = true;
   // @ts-ignore
   window.contentLoaded = true;

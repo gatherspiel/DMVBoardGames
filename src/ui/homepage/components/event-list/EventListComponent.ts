@@ -3,6 +3,7 @@ import {EVENT_PRELOAD_THUNK, EVENT_SEARCH_THUNK} from "../../data/search/EventSe
 import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
+import {GROUP_WEBPAGE_HANDLER_CONFIG} from "./EventListHandler.ts";
 
 const loadConfig = {
   thunkReducers: [
@@ -25,6 +26,10 @@ const template = `
   <style>
     .ui-section {
       visibility: hidden;
+    }
+    
+    .pushable {
+      display: inline-block;
     }
     
     @media not screen and (width < 32em) {
@@ -66,13 +71,20 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
       <div id=${groupId} class=${"event-group"}>
         <div class = "group-page-links">
           <button class="pushable" ${this.createClickEvent(VIEW_GROUP_PAGE_HANDLER_CONFIG, {name:group.title})}>
-          
-          <span class="front">
-              Show info
-
-          </span>
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front">
+                Show info
+            </span>
           </button>
-          <a class="group-webpage-link" href=${group.url}> Group webpage</a>
+          
+          <button class="pushable group-webpage-link" ${this.createClickEvent(GROUP_WEBPAGE_HANDLER_CONFIG, {url:group.url})}>
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front">
+                Group webpage
+            </span>
+          </a>
         </div>
 
         <p>${group.title}</p>

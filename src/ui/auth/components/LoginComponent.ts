@@ -118,14 +118,30 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
         <br>
 
         <div id="component-buttons">
-          <button class="login-element" type="submit"  name="action" value="Login"> Login </button>
-            <button 
-              class="login-button"
-              type="submit" 
-              ${this.createClickEvent(REGISTER_EVENT_CONFIG)} 
-              name="action" value="Register"> 
-                Register 
-            </button>       
+        
+         <button class="login-element pushable" type="submit"  name="action" value="Login">
+          <span class="shadow"></span>
+          <span class="edge"></span>
+          <span class="front">
+              Login
+          </span>
+         </button>
+            
+            
+        
+        <button 
+          class="login-button pushable"
+          type="submit" 
+          ${this.createClickEvent(REGISTER_EVENT_CONFIG)} 
+          name="action" value="Register"> 
+           <span class="shadow"></span>
+           <span class="edge"></span>
+           <span class="front">
+              Register 
+            </span>
+        </button>  
+        
+             
           </div>
           ${this.hasRendered ? this.generateErrorMessage(data.errorMessage) : ''}
           <p class="login-element">${data.successMessage}</p>

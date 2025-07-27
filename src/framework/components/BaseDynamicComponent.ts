@@ -315,19 +315,21 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
     let componentStoreUpdate: any;
 
-    let componentReducer = eventConfig.componentReducer;
-    if(!componentReducer){
-      componentReducer = function(data:any){
-        return data;
+
+      let componentReducer = eventConfig.componentReducer;
+      if(!componentReducer){
+        componentReducer = function(data:any){
+          return data;
+        }
       }
-    }
-    if (componentStoreName) {
-      componentStoreUpdate = new BaseDispatcher(
-        componentStoreName,
-        componentReducer,
-      );
-      dispatchers.push(componentStoreUpdate);
-    }
+      if (componentStoreName) {
+        componentStoreUpdate = new BaseDispatcher(
+          componentStoreName,
+          componentReducer,
+        );
+        dispatchers.push(componentStoreUpdate);
+      }
+
 
     const handler = function (e: Event) {
 
@@ -343,6 +345,8 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {
         return a;
       });
+
+
       dispatchers.push(storeUpdate);
       const eventUpdater: EventThunk = new EventThunk(request, dispatchers);
 
