@@ -4,7 +4,8 @@ import {
   convertDateTimeForDisplay,
   convertLocationStringForDisplay
 } from "../../../../framework/utils/EventDataUtils.ts";
-import {VIEW_GROUP_EVENT_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
+import {VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
+import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 
 const template = `
 
@@ -31,7 +32,6 @@ const template = `
    
    .event {
       border-bottom: 1px solid var(--clr-lighter-blue);
-
    }
     
   </style>
@@ -51,7 +51,6 @@ export class GroupPageEventComponent extends BaseTemplateDynamicComponent {
     this.id = this.getAttribute("key") ?? "";
     const eventData = retrieveJSONProp(this, "data");
 
-
     return `
       <div id=${this.id} class="event">
       
@@ -60,11 +59,17 @@ export class GroupPageEventComponent extends BaseTemplateDynamicComponent {
           <p class = "event-time">${convertDateTimeForDisplay(eventData.startTime)}</p>
           <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
           </br>  
-          <button ${this.createClickEvent(VIEW_GROUP_EVENT_HANDLER_CONFIG, {id:eventData.id,groupId:eventData.groupId})}>
-            View event details
-    </button>
+          
+           ${generateButton({
+            class: "group-webpage-link",
+            text: "View event details",
+            component: this,
+            eventHandlerConfig: VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG,
+            eventHandlerParams: {id:eventData.id,groupId:eventData.groupId}
+          })}
+
         </div>
-           
+          
       </div>
     `;
   }

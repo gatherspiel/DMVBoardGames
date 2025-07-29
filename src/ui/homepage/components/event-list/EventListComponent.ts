@@ -3,6 +3,8 @@ import {EVENT_PRELOAD_THUNK, EVENT_SEARCH_THUNK} from "../../data/search/EventSe
 import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
+import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
+import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 
 const loadConfig = {
   thunkReducers: [
@@ -25,6 +27,10 @@ const template = `
   <style>
     .ui-section {
       visibility: hidden;
+    }
+    
+    .pushable {
+      display: inline-block;
     }
     
     @media not screen and (width < 32em) {
@@ -65,10 +71,24 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
         <div class = "group-page-links">
-          <button ${this.createClickEvent(VIEW_GROUP_PAGE_HANDLER_CONFIG, {name:group.title})}>Show info</button>
-          <a class="group-webpage-link" href=${group.url}> Group webpage</a>
-        </div>
-
+        
+         ${generateButton({
+          type: "submit",
+          text: "Show info",
+          component: this,
+          eventHandlerConfig: VIEW_GROUP_PAGE_HANDLER_CONFIG,
+          eventHandlerParams: {name: group.title}
+        })}
+         
+         
+         ${generateButton({
+          class: "group-webpage-link",
+          text: "Group webpage",
+          component: this,
+          eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
+          eventHandlerParams: {url: group.url}
+        })}
+         
         <p>${group.title}</p>
         <p class="event-group-location">${group.locations?.join(", ") ?? ""}</p>              
       </div> 

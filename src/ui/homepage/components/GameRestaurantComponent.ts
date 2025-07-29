@@ -1,6 +1,8 @@
 import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
 import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
 
 export const GAME_RESTAURANT_LIST_STORE = "gameRestaurantListStore";
 
@@ -37,7 +39,12 @@ export class GameRestaurantComponent extends BaseTemplateDynamicComponent {
     return `
     <div id = convention-${gameRestaurant.id} class="game-restaurant-list-item">
      <h3>
-        <a href=${gameRestaurant.url}>${gameRestaurant.name}</a>
+        ${generateButton({
+          text: `${gameRestaurant.name}`,
+          component: this,
+          eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
+          eventHandlerParams: {url: gameRestaurant.url}
+        })}
       </h3>
     <p>Location: ${gameRestaurant.location}</p>
     </div>
