@@ -55,17 +55,17 @@ export class PageComponent extends HTMLElement {
   }
 
   #getComponentAndUpdateUrl(route:string, params?:Record<string, string>): HTMLElement{
-
+    
     if(route === GROUP_PAGE_ROUTE) {
       this.#updateUrlWithQuery("groups.html", params)
       return new GroupPageComponent();
     }
     else if (route === CREATE_GROUP_PAGE_ROUTE){
-      if(params){
-        const url =`groups/create.html`
-        this.#updateUrlWithQuery(url);
-        return new CreateGroupPageComponent();
-      }
+
+      const url =`groups/create.html`
+      this.#updateUrlWithQuery(url);
+      return new CreateGroupPageComponent();
+
     }
     else if (route === DELETE_GROUP_PAGE_ROUTE){
       if(params){

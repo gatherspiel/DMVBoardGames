@@ -17,8 +17,9 @@ import {
   type ThunkDispatcherConfig,
   validComponentLoadConfigFields,
 } from "./types/ComponentLoadConfig.ts";
-import type {BaseThunk} from "../state/update/BaseThunk.ts";
+import type {BaseThunk, LoadStatus} from "../state/update/BaseThunk.ts";
 import {
+  getGlobalStateValue,
   subscribeComponentToGlobalField,
 } from "../state/data/GlobalStore.ts";
 import type { EventValidationResult } from "../state/update/event/types/EventValidationResult.ts";
@@ -376,14 +377,39 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
     const dataSource = componentLoadConfig?.onLoadStoreConfig?.dataSource;
 
+    let loadStatus: LoadStatus = {};
     if(dataSource){
-      const loadStatus = dataSource.initRequestStoreData(
+      loadStatus = dataSource.initRequestStoreData(
         componentLoadConfig,
         this.componentStoreName)
 
-      if(loadStatus && loadStatus.dependenciesLoaded) {
-        this.dependenciesLoaded = true;
+
+    } else {
+      let reducer = componentLoadConfig.globalStateLoadConfig?.defaultGlobalStateReducer;
+      if(!reducer){
+        reducer = function (updates: Record<string, string>) {
+          return updates
+        }
       }
+
+      loadStatus.dependenciesLoaded = true;
+      let dataToUpdate: Record<string, string> = {};
+
+      componentLoadConfig.globalStateLoadConfig?.globalFieldSubscriptions?.forEach(
+        function (fieldName) {
+          const fieldValue = getGlobalStateValue(fieldName);
+          dataToUpdate[fieldName] = fieldValue;
+        },
+      );
+      updateComponentStore(
+        this.componentStoreName,
+        reducer,
+        dataToUpdate,
+      );
+    }
+
+    if(loadStatus && loadStatus.dependenciesLoaded) {
+      this.dependenciesLoaded = true;
     }
   }
   abstract render(data: Record<any, DisplayItem> | any): string;

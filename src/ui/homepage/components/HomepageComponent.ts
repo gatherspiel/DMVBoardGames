@@ -14,30 +14,24 @@ import {GroupPageEventComponent} from "../../groups/viewGroup/components/GroupPa
 import {EventListComponent} from "./event-list/EventListComponent.ts";
 // @ts-ignore
 import {EventSearchComponent} from "./event-search/EventSearchComponent.ts";
+// @ts-ignore
+import {OpenCreateGroupPageComponent} from "./OpenCreateGroupPageComponent.ts";
+
 import {HOMEPAGE_COMPONENT_NAV} from "./HomepageComponentHandler.ts";
 import {BaseTemplateDynamicComponent} from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
-import {CREATE_GROUP_PAGE_HANDLER_CONFIG} from "../../../shared/nav/NavEventHandlers.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
   `
 
-const loadConfig = {
-  globalStateLoadConfig: {
-    globalFieldSubscriptions: ["isLoggedIn"],
-    defaultGlobalStateReducer: function(updates:any){
-      console.log(JSON.stringify(updates));
-      return {}
-    }
-  },
-}
+
 export class HomepageComponent extends BaseTemplateDynamicComponent {
 
   isFromBackButton: boolean | undefined;
 
   constructor(isFromBackButton?:boolean){
-    super("homepage-component", loadConfig);
+    super("homepage-component");
     this.isFromBackButton = isFromBackButton;
   }
   override getTemplateStyle(): string {
@@ -50,15 +44,16 @@ export class HomepageComponent extends BaseTemplateDynamicComponent {
     return `
      <div class="ui-separator"></div>
       <div class="ui-section">
-        ${generateButton({
-          text: "Create group",
-          component: this,
-          eventHandlerConfig: CREATE_GROUP_PAGE_HANDLER_CONFIG,
-        })}  
+    
+        <create-group-component>
+        
+        </create-group-component>
         <nav>
           <div id="nav-container">
             <div>Click for more info about</div>
             
+    
+              
             ${generateButton({
               text: "Conventions",
               component: this,

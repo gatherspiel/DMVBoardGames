@@ -7,6 +7,7 @@ import {
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
 } from "../../Constants.ts";
+import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -58,6 +59,10 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
     return templateStyle;
   }
 
+  connectedCallback(){
+    this.updateStore({isVisible: true})
+  }
+
   render(createGroupData: CreateGroupData): string {
 
     return `
@@ -90,7 +95,12 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
               })}   
   
               <br>
-              <button type="submit" ${this.createClickEvent(CREATE_GROUP_EVENT_CONFIG)}>Create group</button>
+              
+               ${generateButton({
+                text: "Create group",
+                component: this,
+                eventHandlerConfig: CREATE_GROUP_EVENT_CONFIG,
+              })}
            
               </form>
              
