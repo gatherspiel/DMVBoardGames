@@ -3,7 +3,7 @@ import type { DisplayItem } from "../../ui/homepage/data/types/DisplayItem.ts";
 import {
   clearSubscribers,
   createComponentStore,
-  getComponentStore, hasUserEditPermissions,
+  getComponentStore, updateComponentStore,
 } from "../state/data/ComponentStore.ts";
 import {
   initRequestStoresOnLoad,
@@ -105,12 +105,17 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     }
   }
 
-  updateStore(data: any) {
+
+  updateWithStoreData(data: any) {
     this.eventHandlerConfig = {};
     this.eventTagIdCount = 0;
 
     this.generateAndSaveHTML(data);
     this.attachEventHandlersToDom();
+  }
+
+  updateStore(data: any) {
+    updateComponentStore(this.componentStoreName, function(){return data})
   }
 
   attachEventHandlersToDom() {
@@ -156,22 +161,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     return `data-${this.componentStoreName}-element-id`;
   }
 
-  generateButtonsForEditPermission(buttonConfig:Record<string, EventHandlerThunkConfig>):string{
-    const userCanEditPermission = hasUserEditPermissions(this.componentStoreName);
-    if(userCanEditPermission === undefined){
-      throw new Error(`permissions.userCanEdit state not defined for component state ${this.componentStoreName}`);
-    }
-    if(!userCanEditPermission) {
-      return '';
-    }
-
-    let html = ''
-    var self = this;
-    Object.keys(buttonConfig).forEach(function(buttonText){
-      html+= `<button ${self.createClickEvent(buttonConfig[buttonText])}> ${buttonText}</button>`;
-    });
-    return html;
-  }
 
   generateLinksForEditPermission(linkConfig:Record<string, string>):string{
     const userCanEditPermission = getComponentStore(this.componentStoreName)?.permissions?.userCanEdit

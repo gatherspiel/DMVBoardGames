@@ -5,9 +5,15 @@ import { setupStateFields} from "../InitGlobalStateConfig.ts";
 import {GroupPageComponent} from "../../ui/groups/viewGroup/components/GroupPageComponent.ts";
 import {PageState} from "../../framework/state/PageState.ts";
 import {EventDetailsComponent} from "../../ui/groups/event/components/EventDetailsComponent.ts";
+import {CreateEventComponent} from "../../ui/groups/event/components/CreateEventComponent.ts";
+import {DeleteGroupPageComponent} from "../../ui/groups/deleteGroup/DeleteGroupPageComponent.ts";
+import {CreateGroupPageComponent} from "../../ui/groups/createGroup/components/CreateGroupPageComponent.ts";
 
 export const GROUP_PAGE_ROUTE = "groupPageRoute";
 export const GROUP_EVENT_PAGE_ROUTE ="groupEventPageRoute";
+export const ADD_GROUP_EVENT_PAGE_ROUTE ="addGroupEventPageRoute";
+export const DELETE_GROUP_PAGE_ROUTE ="deleteGroupPageRoute";
+export const CREATE_GROUP_PAGE_ROUTE ="createGroupPageRoute";
 
 export class PageComponent extends HTMLElement {
 
@@ -25,7 +31,6 @@ export class PageComponent extends HTMLElement {
     this.appendChild(PageState.activeComponent);
 
     PageComponent.currentComponent = this;
-
     const self = this;
     window.addEventListener("popstate", () => {
       self.removeChild(PageState.activeComponent);
@@ -54,6 +59,26 @@ export class PageComponent extends HTMLElement {
     if(route === GROUP_PAGE_ROUTE) {
       this.#updateUrlWithQuery("groups.html", params)
       return new GroupPageComponent();
+    }
+    else if (route === CREATE_GROUP_PAGE_ROUTE){
+      if(params){
+        const url =`groups/create.html`
+        this.#updateUrlWithQuery(url);
+        return new CreateGroupPageComponent();
+      }
+    }
+    else if (route === DELETE_GROUP_PAGE_ROUTE){
+      if(params){
+        const url =`groups/delete.html?name=${encodeURIComponent(params.name)}&groupId=${params.id}`
+        this.#updateUrlWithQuery(url);
+        return new DeleteGroupPageComponent();
+      }
+    } if(route=== ADD_GROUP_EVENT_PAGE_ROUTE){
+      if(params){
+        const url = `groups/addEvent.html?groupName=${encodeURIComponent(params.name)}&groupId=${params.id}`
+        this.#updateUrlWithQuery(url);
+        return new CreateEventComponent();
+      }
     } else if(route === GROUP_EVENT_PAGE_ROUTE) {
       if(params){
         const url = `/groups/event.html?id=${params.id}&groupId=${params.groupId}`
@@ -62,9 +87,8 @@ export class PageComponent extends HTMLElement {
       } else {
         throw new Error(`Cannot navigate to group event page route without parameters`)
       }
-    } else {
-      throw new Error(`No route defined for ${route}`);
     }
+    throw new Error(`No route defined for ${route}`);
   }
 
   #updateUrlWithQuery(route:string, params?: any){

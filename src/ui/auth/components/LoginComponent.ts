@@ -22,6 +22,7 @@ import {
   REGISTER_USER_THUNK,
 } from "../data/RegisterUserThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -85,7 +86,12 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
       return `
        <div class="ui-section" id="login-component-container">
         <p class="login-element">${data.successMessage}</p>
-        <button class="login-element" ${this.createClickEvent(LOGOUT_EVENT_CONFIG)}>Logout</button>
+        ${generateButton({
+          type: "submit",
+          text: "Logout",
+          component: this,
+          eventHandlerConfig: LOGOUT_EVENT_CONFIG
+        })}
       </div>
        `;
     }
@@ -119,29 +125,23 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
 
         <div id="component-buttons">
         
-         <button class="login-element pushable" type="submit"  name="action" value="Login">
-          <span class="shadow"></span>
-          <span class="edge"></span>
-          <span class="front">
-              Login
-          </span>
-         </button>
-            
-            
+        ${generateButton({
+          class: "login-element",
+          type: "submit",
+          text: "Login",
+          component: this,
+          eventHandlerConfig: LOGIN_EVENT_CONFIG
+        })}
         
-        <button 
-          class="login-button pushable"
-          type="submit" 
-          ${this.createClickEvent(REGISTER_EVENT_CONFIG)} 
-          name="action" value="Register"> 
-           <span class="shadow"></span>
-           <span class="edge"></span>
-           <span class="front">
-              Register 
-            </span>
-        </button>  
-        
-             
+        ${generateButton({
+          class: "login-element",
+          type: "submit",
+          text: "Register",
+          component: this,
+          eventHandlerConfig: REGISTER_EVENT_CONFIG
+        })}
+
+                    
           </div>
           ${this.hasRendered ? this.generateErrorMessage(data.errorMessage) : ''}
           <p class="login-element">${data.successMessage}</p>

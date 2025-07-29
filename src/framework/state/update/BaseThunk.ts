@@ -44,6 +44,7 @@ export class BaseThunk {
 
       status.dependenciesLoaded = true;
     } else {
+
       let reducer = componentLoadConfig.globalStateLoadConfig?.defaultGlobalStateReducer;
       if(!reducer){
         reducer = function (updates: Record<string, string>) {

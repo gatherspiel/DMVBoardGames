@@ -16,16 +16,28 @@ import {EventListComponent} from "./event-list/EventListComponent.ts";
 import {EventSearchComponent} from "./event-search/EventSearchComponent.ts";
 import {HOMEPAGE_COMPONENT_NAV} from "./HomepageComponentHandler.ts";
 import {BaseTemplateDynamicComponent} from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {CREATE_GROUP_PAGE_HANDLER_CONFIG} from "../../../shared/nav/NavEventHandlers.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
   `
+
+const loadConfig = {
+  globalStateLoadConfig: {
+    globalFieldSubscriptions: ["isLoggedIn"],
+    defaultGlobalStateReducer: function(updates:any){
+      console.log(JSON.stringify(updates));
+      return {}
+    }
+  },
+}
 export class HomepageComponent extends BaseTemplateDynamicComponent {
 
   isFromBackButton: boolean | undefined;
 
   constructor(isFromBackButton?:boolean){
-    super("homepage-component");
+    super("homepage-component", loadConfig);
     this.isFromBackButton = isFromBackButton;
   }
   override getTemplateStyle(): string {
@@ -38,38 +50,36 @@ export class HomepageComponent extends BaseTemplateDynamicComponent {
     return `
      <div class="ui-separator"></div>
       <div class="ui-section">
+        ${generateButton({
+          text: "Create group",
+          component: this,
+          eventHandlerConfig: CREATE_GROUP_PAGE_HANDLER_CONFIG,
+        })}  
         <nav>
           <div id="nav-container">
             <div>Click for more info about</div>
             
-            <button class="pushable" ${this.createClickEvent(HOMEPAGE_COMPONENT_NAV,{location:"#convention-list"})}>
-              <span class="shadow"></span>
-                  <span class="edge"></span>
-                  <span class="front">
-                      Conventions
-                  </span>
-            </button>
-            
-               <button class="pushable" ${this.createClickEvent(HOMEPAGE_COMPONENT_NAV,{location:"#game-store"})}>
-              <span class="shadow"></span>
-                  <span class="edge"></span>
-                  <span class="front">
-                      Game Stores
-                  </span>
-            </button>
-            
-            
-               <button class="pushable" ${this.createClickEvent(HOMEPAGE_COMPONENT_NAV,{location:"#game-restaurant-list"})}>
-              <span class="shadow"></span>
-                  <span class="edge"></span>
-                  <span class="front">
-                      Bars And Cafés
-                  </span>
-            </button>
-            
-
-            
-
+            ${generateButton({
+              text: "Conventions",
+              component: this,
+              eventHandlerConfig: HOMEPAGE_COMPONENT_NAV,
+              eventHandlerParams: {location:"#convention-list"}
+            })}       
+         
+            ${generateButton({
+              text: "Game Stores",
+              component: this,
+              eventHandlerConfig: HOMEPAGE_COMPONENT_NAV,
+              eventHandlerParams: {location:"#game-store"}
+            })}  
+         
+            ${generateButton({
+              text: "Bars and Cafés",
+              component: this,
+              eventHandlerConfig: HOMEPAGE_COMPONENT_NAV,
+              eventHandlerParams: {location:"#game-store"}
+            })} 
+             
           </div>
         </nav>
       </div>
@@ -98,12 +108,12 @@ export class HomepageComponent extends BaseTemplateDynamicComponent {
         ` : ''}
     
  
-${data && !data.hideRestaurants ?`
+      ${data && !data.hideRestaurants ?`
         <div id="game-restaurant-list" class="page-section">
           <game-restaurant-list-component></game-restaurant-list-component>
         </div>` : ''}
     
-    ${data && !data.hideStores ? `
+      ${data && !data.hideStores ? `
         <div id="game-store" class="page-section">
           <game-store-list-component></game-store-list-component>
         </div>` : ''}

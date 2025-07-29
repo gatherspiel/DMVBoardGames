@@ -21,6 +21,9 @@ import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 import { getGlobalStateValue } from "../../../../framework/state/data/GlobalStore.ts";
 import {PageState} from "../../../../framework/state/PageState.ts";
 import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
+import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
+import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
+import {ADD_EVENT_PAGE_HANDLER_CONFIG, DELETE_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -28,8 +31,8 @@ const template = `
   <style>
  
     a {
-        margin-left:1rem;
-        margin-right:1rem;
+      margin-left:1rem;
+      margin-right:1rem;
     }
     .group-description {
       background-color: var(--clr-lighter-blue);
@@ -145,15 +148,36 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
      ${
        !groupData.isEditing
          ? `<div class="group-title">
-       <h1>${groupData.name} <a href=${groupData.url}>Group webpage</a></h1>
+       <h1>${groupData.name}
+         ${generateButton({
+           class: "group-webpage-link",
+           text: "Group webpage",
+           component: this,
+           eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
+           eventHandlerParams: {url: groupData.url}
+         })}
+       </h1>
 
-       ${this.generateButtonsForEditPermission({
-         "Edit group": EDIT_GROUP_EVENT_CONFIG
+       ${generateButtonForEditPermission({
+           text: "Edit group",
+           component: this,
+           eventHandlerConfig: EDIT_GROUP_EVENT_CONFIG,
        })}
-       ${this.generateLinksForEditPermission({
-         "Add event": `groups/addEvent.html?groupName=${encodeURIComponent(groupData.name)}&groupId=${groupData.id}`,
-         "Delete group": `groups/delete.html?name=${encodeURIComponent(groupData.name)}&groupId=${groupData.id}`
-       })}
+       
+       ${generateButtonForEditPermission({
+           text: "Add event",
+           component: this,
+           eventHandlerConfig: ADD_EVENT_PAGE_HANDLER_CONFIG,
+           eventHandlerParams:{name:groupData.name, id: groupData.id}
+         })}
+       
+       ${generateButtonForEditPermission({
+           text: "Delete group",
+           component: this,
+           eventHandlerConfig: DELETE_GROUP_PAGE_HANDLER_CONFIG,
+           eventHandlerParams:{name:groupData.name, id: groupData.id}
+         })}
+
        </div>
     
        <div class="group-description">
@@ -162,7 +186,7 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
          : `
        <h1>Editing group information</h1>
         
-       <form ${this.createSubmitEvent(SAVE_GROUP_CONFIG)}>
+       <form>
        
          ${this.generateInputFormItem({
            id: GROUP_NAME_INPUT,
@@ -184,7 +208,14 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
            inputType: "text",
            value: groupData.description
          })}   
-          <button type="submit" >Save updates</button>
+
+         ${generateButton({
+           text: "Save updates",
+           type: "submit",
+           component: this,
+           eventHandlerConfig: SAVE_GROUP_CONFIG,
+         })}
+         
         </form> 
       `
      }

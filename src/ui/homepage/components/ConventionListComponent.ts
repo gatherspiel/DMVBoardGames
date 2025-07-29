@@ -1,6 +1,8 @@
 import type { Convention } from "../data/types/Convention.ts";
 import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
 
 export const CONVENTION_LIST_STORE = "conventionListStore";
 
@@ -43,7 +45,12 @@ export class ConventionListComponent extends BaseTemplateDynamicComponent {
     return `
     <div id = convention-${convention.id} class="conv-list-item">
      <h3>
-        <a href=${convention.url}>${convention.name}</a>
+      ${generateButton({
+        text: `${convention.name}`,
+        component: this,
+        eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
+        eventHandlerParams: {url: convention.url}
+      })}
       </h3>
       <p>Days: ${convention.days.join(", ")}</p>
     

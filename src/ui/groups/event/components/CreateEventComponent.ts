@@ -10,6 +10,8 @@ import {
 } from "../../Constants.ts";
 import {CREATE_EVENT_CONFIG} from "../EventDetailsHandler.ts";
 import {CREATE_EVENT_THUNK} from "../data/CreateEventThunk.ts";
+import {PageState} from "../../../../framework/state/PageState.ts";
+import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -45,6 +47,8 @@ const loadConfig = {
   globalStateLoadConfig: {
     globalFieldSubscriptions: ["isLoggedIn"],
     defaultGlobalStateReducer: function (updates: Record<string, string>) {
+      console.log("Hi")
+      PageState.pageLoaded = true;
       return {
         name: "",
         description: "",
@@ -58,6 +62,11 @@ const loadConfig = {
 export class CreateEventComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("create-event-component", loadConfig);
+
+  }
+
+  connectedCallback(){
+    this.updateStore({isVisible: true})
   }
 
   getTemplateStyle(): string {
@@ -66,13 +75,14 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
 
   render(data: any): string {
 
+    console.log("Hi");
     return `
     
     ${this.generateErrorMessage(data.errorMessage)}
     
     ${data.successMessage ? `<p>${data.successMessage}</p>`: ``}
     <form onsubmit="return false">
-      ${data.isVisible ? `
+      
         <h1>Create board game event for group ${getUrlParameter("groupName")}</h1>
          <form>
     
@@ -126,14 +136,17 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
         value: data.location ?? ""
       })}     
     </form>
+    
+        ${generateButton({
+          text: "Create event",
+          component: this,
+          eventHandlerConfig: CREATE_EVENT_CONFIG,
+        })}
         <button ${this.createClickEvent(CREATE_EVENT_CONFIG)}>Create event</button>
         <a href="${window.location.origin}/groups.html?name=${encodeURIComponent(getUrlParameter("groupName"))}">
           Back to group
         </a>
-      `
-      : `<p>User does not have permission to access this page </p>`
       
-      }  
     `;
   }
 }

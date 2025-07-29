@@ -18,6 +18,8 @@ export const DELETE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
     componentState: DeleteGroupData,
   ): EventValidationResult {
 
+    console.log(formSelector.getValue(GROUP_NAME_INPUT));
+    console.log(componentState.existingGroupName);
     if (formSelector.getValue(GROUP_NAME_INPUT) !== componentState.existingGroupName) {
       return {
         errorMessage: "Group name not entered correctly",

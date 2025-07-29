@@ -44,7 +44,6 @@ export function validateEventFormData(formSelector:FormSelector): string[] {
     errorMessages.push("End time must be defined");
   }
 
-
   if(startDate && startTime && endTime) {
     try {
       validateDateFormat(startDate)
