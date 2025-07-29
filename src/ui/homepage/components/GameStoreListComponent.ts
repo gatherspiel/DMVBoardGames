@@ -1,6 +1,8 @@
 import type { GameStore } from "../data/types/GameStore.ts";
 import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
 
 export const GAME_STORE_LIST_STORE = "gameStoreListStore";
 
@@ -43,7 +45,12 @@ export class GameStoreListComponent extends BaseTemplateDynamicComponent {
     return `
     <div id = convention-${gameStore.id} class="game-store-list-item">
      <h3>
-        <a href=${gameStore.url}>${gameStore.name}</a>
+        ${generateButton({
+          text: `${gameStore.name}`,
+          component: this,
+          eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
+          eventHandlerParams: {url: gameStore.url}
+        })}
       </h3>
     <p>Location: ${gameStore.location}</p>
     </div>

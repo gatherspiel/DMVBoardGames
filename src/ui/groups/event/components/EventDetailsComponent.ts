@@ -25,6 +25,8 @@ import {DELETE_EVENT_REQUEST_THUNK} from "../data/DeleteEventRequestThunk.ts";
 import {PageState} from "../../../../framework/state/PageState.ts";
 import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
+import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
+import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -198,8 +200,20 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
     </form>
     ${this.generateErrorMessage(data.errorMessage)}
 
-    <button ${this.createClickEvent(SAVE_EVENT_CONFIG)}>Save event</button>
-    <button ${this.createClickEvent(CANCEL_EDIT_EVENT_DETAILS_CONFIG)}>Back to event</button>
+    ${generateButton({
+      class: "group-webpage-link",
+      text: "Save event",
+      component: this,
+      eventHandlerConfig: SAVE_EVENT_CONFIG,
+    })}
+    
+    ${generateButton({
+      class: "group-webpage-link",
+      text: "Back to event",
+      component: this,
+      eventHandlerConfig: CANCEL_EDIT_EVENT_DETAILS_CONFIG,
+    })}  
+
    `
   }
 
@@ -210,20 +224,40 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
     return `
       <div class="ui-section">
         <h1>${data.name}</h1>
-        
-        <a href="${data.url}">Event page</a>
-        
+           
+        ${generateButton({
+          text: "Event page",
+          component: this,
+          eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
+          eventHandlerParams: {url: data.url}
+        })}
+             
         <p>Time: ${convertDayOfWeekForDisplay(data.day)}, ${convertDateTimeForDisplay(data.startTime)}</p>
         <p>Location: ${convertLocationStringForDisplay(data.location)}</p>
         <p>${data.description}</p>
-        
-        ${this.generateButtonsForEditPermission({
-          "Edit event": EDIT_EVENT_DETAILS_CONFIG,
-          "Delete event": DELETE_EVENT_CONFIG
+           
+        ${generateButtonForEditPermission({
+          text: "Edit event",
+          component: this,
+          eventHandlerConfig: EDIT_EVENT_DETAILS_CONFIG,
         })}
+        
+        ${generateButtonForEditPermission({
+          text: "Delete event",
+          component: this,
+          eventHandlerConfig: DELETE_EVENT_CONFIG,
+        })}
+        
        
         <p>${data.successMessage ? data.successMessage.trim(): ""}</p>
-        <button ${this.createClickEvent(VIEW_GROUP_PAGE_HANDLER_CONFIG, {name: data.groupName})}>Back to group </button>
+        
+        ${generateButtonForEditPermission({
+          text: "Back to group",
+          component: this,
+          eventHandlerConfig: VIEW_GROUP_PAGE_HANDLER_CONFIG,
+          eventHandlerParams:{name: data.groupName}
+        })}
+
       </div>
     `;
   }

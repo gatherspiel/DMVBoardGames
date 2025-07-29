@@ -131,8 +131,11 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
 
   render(eventSearchStore: any) {
 
+    if(!this.getAttribute("isVisible") || this.getAttribute("isVisible")=== "false"){
+      return ''
+    }
     return `
-
+   
       <div class="ui-section">
         <form id=${SEARCH_FORM_ID} ${this.createSubmitEvent(SEARCH_EVENT_HANDLER_CONFIG)}>
           <div id='search-input-wrapper'>
@@ -156,7 +159,13 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
               </select>
             </div>
             <div>
-              <button type="submit" >Search Groups</button>
+              <button class="pushable" >
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">
+                    Search groups
+                </span>
+              </button>
             </div>
           </div>
         </form>
@@ -166,22 +175,27 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
   }
 
   getCityHtml(eventSearchStore: any) {
+    const defautCityInfo = {id:0, name: "potato"}
     return ` 
     <label>Select event city: </label>
     <select
       id=${SEARCH_CITY_ID}
       name="cities"
-      value=${eventSearchStore.cities}
+      value=${eventSearchStore.cities  ?? defautCityInfo}
       ${this.createOnChangeEvent(UPDATE_CITY_CONFIG)}
     >
 
-    ${this.getLocationSelect(eventSearchStore)}
+    ${this.getLocationSelect(eventSearchStore) ?? 'Any location'}
     </select>`;
   }
 
   getLocationSelect(eventSearchStore: any) {
+    let cities = eventSearchStore.cities;
+    if(!eventSearchStore.cities){
+      cities = [{name:"Any location"}];
+    }
     const data = `
-    ${eventSearchStore.cities?.map(
+    ${cities?.map(
       (location: EventSearchCity) =>
         `<option key=${location.index} value="${location.name}" ${location.name === eventSearchStore.location ? "selected" : ""}>
           ${

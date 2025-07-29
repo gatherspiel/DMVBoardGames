@@ -3,7 +3,7 @@ import type { DisplayItem } from "../../ui/homepage/data/types/DisplayItem.ts";
 import {
   clearSubscribers,
   createComponentStore,
-  getComponentStore, hasUserEditPermissions,
+  getComponentStore, updateComponentStore,
 } from "../state/data/ComponentStore.ts";
 import {
   initRequestStoresOnLoad,
@@ -17,8 +17,9 @@ import {
   type ThunkDispatcherConfig,
   validComponentLoadConfigFields,
 } from "./types/ComponentLoadConfig.ts";
-import type {BaseThunk} from "../state/update/BaseThunk.ts";
+import type {BaseThunk, LoadStatus} from "../state/update/BaseThunk.ts";
 import {
+  getGlobalStateValue,
   subscribeComponentToGlobalField,
 } from "../state/data/GlobalStore.ts";
 import type { EventValidationResult } from "../state/update/event/types/EventValidationResult.ts";
@@ -105,12 +106,17 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     }
   }
 
-  updateStore(data: any) {
+
+  updateWithStoreData(data: any) {
     this.eventHandlerConfig = {};
     this.eventTagIdCount = 0;
 
     this.generateAndSaveHTML(data);
     this.attachEventHandlersToDom();
+  }
+
+  updateStore(data: any) {
+    updateComponentStore(this.componentStoreName, function(){return data})
   }
 
   attachEventHandlersToDom() {
@@ -156,22 +162,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     return `data-${this.componentStoreName}-element-id`;
   }
 
-  generateButtonsForEditPermission(buttonConfig:Record<string, EventHandlerThunkConfig>):string{
-    const userCanEditPermission = hasUserEditPermissions(this.componentStoreName);
-    if(userCanEditPermission === undefined){
-      throw new Error(`permissions.userCanEdit state not defined for component state ${this.componentStoreName}`);
-    }
-    if(!userCanEditPermission) {
-      return '';
-    }
-
-    let html = ''
-    var self = this;
-    Object.keys(buttonConfig).forEach(function(buttonText){
-      html+= `<button ${self.createClickEvent(buttonConfig[buttonText])}> ${buttonText}</button>`;
-    });
-    return html;
-  }
 
   generateLinksForEditPermission(linkConfig:Record<string, string>):string{
     const userCanEditPermission = getComponentStore(this.componentStoreName)?.permissions?.userCanEdit
@@ -315,19 +305,21 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
     let componentStoreUpdate: any;
 
-    let componentReducer = eventConfig.componentReducer;
-    if(!componentReducer){
-      componentReducer = function(data:any){
-        return data;
+
+      let componentReducer = eventConfig.componentReducer;
+      if(!componentReducer){
+        componentReducer = function(data:any){
+          return data;
+        }
       }
-    }
-    if (componentStoreName) {
-      componentStoreUpdate = new BaseDispatcher(
-        componentStoreName,
-        componentReducer,
-      );
-      dispatchers.push(componentStoreUpdate);
-    }
+      if (componentStoreName) {
+        componentStoreUpdate = new BaseDispatcher(
+          componentStoreName,
+          componentReducer,
+        );
+        dispatchers.push(componentStoreUpdate);
+      }
+
 
     const handler = function (e: Event) {
 
@@ -343,6 +335,8 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {
         return a;
       });
+
+
       dispatchers.push(storeUpdate);
       const eventUpdater: EventThunk = new EventThunk(request, dispatchers);
 
@@ -383,14 +377,39 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
     const dataSource = componentLoadConfig?.onLoadStoreConfig?.dataSource;
 
+    let loadStatus: LoadStatus = {};
     if(dataSource){
-      const loadStatus = dataSource.initRequestStoreData(
+      loadStatus = dataSource.initRequestStoreData(
         componentLoadConfig,
         this.componentStoreName)
 
-      if(loadStatus && loadStatus.dependenciesLoaded) {
-        this.dependenciesLoaded = true;
+
+    } else {
+      let reducer = componentLoadConfig.globalStateLoadConfig?.defaultGlobalStateReducer;
+      if(!reducer){
+        reducer = function (updates: Record<string, string>) {
+          return updates
+        }
       }
+
+      loadStatus.dependenciesLoaded = true;
+      let dataToUpdate: Record<string, string> = {};
+
+      componentLoadConfig.globalStateLoadConfig?.globalFieldSubscriptions?.forEach(
+        function (fieldName) {
+          const fieldValue = getGlobalStateValue(fieldName);
+          dataToUpdate[fieldName] = fieldValue;
+        },
+      );
+      updateComponentStore(
+        this.componentStoreName,
+        reducer,
+        dataToUpdate,
+      );
+    }
+
+    if(loadStatus && loadStatus.dependenciesLoaded) {
+      this.dependenciesLoaded = true;
     }
   }
   abstract render(data: Record<any, DisplayItem> | any): string;
