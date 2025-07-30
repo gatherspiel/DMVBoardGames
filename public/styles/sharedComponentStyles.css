@@ -1,6 +1,4 @@
 a, button {
-  background-color: var(--clr-lighter-blue);
-  background-image: url("/assets/wood.png");
   border-color: var(--clr-darker-blue);
   border-radius: 5px;
   border-width: 1px;
@@ -10,7 +8,6 @@ a, button {
   margin-top: 0.5rem;
   padding: 0.5rem;
 }
-
 
 .ui-separator {
   border-top: 1px solid var(--clr-lighter-blue);
@@ -27,7 +24,7 @@ a {
 
 .ui-section {
   color: var(--clr-dark-blue);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
   padding-left: 1rem;
   padding-top: 0.5rem;
@@ -35,13 +32,13 @@ a {
 }
 
 label {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
 }
 
 p {
   color: var(--clr-dark-blue);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
 }
 
@@ -97,11 +94,11 @@ p {
   height: 100%;
   border-radius: 12px;
   background: linear-gradient(
-          to left,
-          var(--clr-darker-blue) 0%,
-          var(--clr-light-blue) 8%,
-          var(--clr-dark-blue) 92%,
-          var(--clr-darker-blue) 100%
+    to left,
+    var(--clr-darker-blue) 0%,
+    var(--clr-light-blue) 8%,
+    var(--clr-dark-blue) 92%,
+    var(--clr-darker-blue) 100%
   );
 }
 
@@ -110,7 +107,7 @@ p {
   position: relative;
   padding: 0.5rem;
   border-radius: 12px;
-  font-size: 1rem;
+  font-size: 1.5rem;
   color: white;
   background: var(--clr-light-blue);
   will-change: transform;
@@ -119,31 +116,31 @@ p {
 }
 
 
-.pushable:hover {
+.activeHover:hover {
   filter: brightness(110%);
 }
 
-.pushable:hover .front {
+.activeHover:hover .front {
   transform: translateY(-6px);
   transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
 }
 
-.pushable:active .front {
+.activeHover:active .front {
   transform: translateY(-2px);
   transition: transform 34ms;
 }
 
-.pushable:hover .shadow {
+.activeHover:hover .shadow {
   transform: translateY(4px);
   transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
 }
 
-.pushable:active .shadow {
+.activeHover:active .shadow {
   transform: translateY(1px);
   transition: transform 34ms;
 }
 
-.pushable:focus:not(:focus-visible) {
+.activeHover:focus:not(:focus-visible) {
   outline: none;
 }
 

@@ -106,7 +106,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     }
   }
 
-
   updateWithStoreData(data: any) {
     this.eventHandlerConfig = {};
     this.eventTagIdCount = 0;
@@ -183,46 +182,11 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   generateInputFormItem(formConfig:FormItemConfig){
-
-    let formValue = formConfig.value;
-    if(!formValue && this.formSelector.hasValue(formConfig.id)){
-      formValue = this.formSelector.getValue(formConfig.id);
-    }
-
-    this.formSelector.addFormSelector(formConfig.id);
-    return `
-      <label for=${formConfig.id}>${formConfig.componentLabel}</label>
-      ${formConfig.lineBreakAfterLabel !== false? `<br>` : ''}
-      <input
-        ${formConfig.className ? `class="${formConfig.className}"` : ``}
-        id=${formConfig.id}
-        name=${formConfig.id}
-        type=${formConfig.inputType}
-        value="${formValue}"
-        />
-        <br>
-    `
+    return this.formSelector.generateInputFormSelector(formConfig);
   }
 
   generateTextInputFormItem(formConfig:FormItemConfig){
-    let formValue = formConfig.value;
-    if(!formValue && this.formSelector.hasValue(formConfig.id)){
-      formValue = this.formSelector.getValue(formConfig.id);
-    }
-    this.formSelector.addFormSelector(formConfig.id);
-
-    return `
-      <label for=${formConfig.id}>${formConfig.componentLabel}</label>
-      ${formConfig.lineBreakAfterLabel !== false? `<br>` : ''}
-      <textarea
-        ${formConfig.className ? `class="${formConfig.className}"` : ``}
-        id=${formConfig.id}
-        name=${formConfig.id}
-        type=${formConfig.inputType}
-        />${formValue}
-      </textarea>
-      <br>
-    `
+    return this.formSelector.generateTextInputFormItem(formConfig);
   }
 
   saveEventHandler(
