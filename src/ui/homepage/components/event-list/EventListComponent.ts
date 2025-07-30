@@ -33,7 +33,11 @@ const template = `
       display: inline-block;
     }
     
+    .event-group:not(:first-child){
+      border-top: 1px solid var(--clr-lighter-blue);
+    }
     @media not screen and (width < 32em) {
+    
       .event-group p {
         display: inline-block;
         margin-left: 2rem;
@@ -74,7 +78,7 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
         
          ${generateButton({
           type: "submit",
-          text: "Show info",
+          text: "Group info",
           component: this,
           eventHandlerConfig: VIEW_GROUP_PAGE_HANDLER_CONFIG,
           eventHandlerParams: {name: group.title}

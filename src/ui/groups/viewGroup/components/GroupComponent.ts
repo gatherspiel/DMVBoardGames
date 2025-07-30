@@ -157,7 +157,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
        </h1>
 
        ${generateButtonForEditPermission({
-           text: "Edit group",
+           text: "Edit group info",
            component: this,
            eventHandlerConfig: EDIT_GROUP_EVENT_CONFIG,
        })}

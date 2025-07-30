@@ -32,7 +32,6 @@ const template = `
       padding-top: 0.25rem;
     }
     .login-element {
-      display: inline-block;
     }
     @media screen and (width < 32em) {
       #login-component-container {
@@ -85,7 +84,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
     } else {
       return `
        <div class="ui-section" id="login-component-container">
-        <p class="login-element">${data.successMessage}</p>
+        <div class="login-element">${data.successMessage}</div>
         ${generateButton({
           type: "submit",
           text: "Logout",
@@ -100,9 +99,6 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
     const html = `
      <div class="ui-section" id="login-component-container">
       <form id=${LOGIN_FORM_ID} ${this.createSubmitEvent(LOGIN_EVENT_CONFIG)}>
-      
-      
-       
         <div class="ui-input">
           ${this.generateInputFormItem({
             id: USERNAME_INPUT,
@@ -115,7 +111,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
         <div class="ui-input">
           ${this.generateInputFormItem({
             id: PASSWORD_INPUT,
-            componentLabel: "password",
+            componentLabel: "Password",
             inputType: "text",
             value: ""
           })}
@@ -144,7 +140,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
                     
           </div>
           ${this.hasRendered ? this.generateErrorMessage(data.errorMessage) : ''}
-          <p class="login-element">${data.successMessage}</p>
+          <div class="login-element">${data.successMessage}</div>
         </form>
 
     </div>
