@@ -5,6 +5,7 @@ import type { DeleteGroupData } from "./types/DeleteGroupData.ts";
 import {getUrlParameter} from "../../../framework/utils/UrlParamUtils.ts";
 import {DELETE_GROUP_REQUEST_THUNK} from "./DeleteGroupRequestThunk.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {generateErrorMessage} from "../../../framework/components/utils/StatusIndicators.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -81,7 +82,7 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
           eventHandlerConfig: DELETE_GROUP_EVENT_CONFIG,
         })}
       </form> 
-      ${this.generateErrorMessage(data.errorMessage)}
+      ${generateErrorMessage(data.errorMessage)}
       
       <p>${data?.successMessage?.trim() ?? ""}</p>   
     `;

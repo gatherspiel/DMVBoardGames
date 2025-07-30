@@ -8,6 +8,7 @@ import {
   GROUP_URL_INPUT,
 } from "../../Constants.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
+import {generateErrorMessage} from "../../../../framework/components/utils/StatusIndicators.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -105,7 +106,7 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
               </form>
              
               <p>${createGroupData?.successMessage?.trim() ?? ""}</p>
-              ${this.generateErrorMessage(createGroupData.errorMessage)}
+              ${generateErrorMessage(createGroupData.errorMessage)}
             `
             : `<p>You must log in to create a group </p>`
         }    
