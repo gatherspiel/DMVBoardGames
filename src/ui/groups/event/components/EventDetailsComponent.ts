@@ -27,6 +27,7 @@ import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts
 import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
+import {generateErrorMessage, generateSuccessMessage} from "../../../../framework/components/utils/StatusIndicators.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -114,7 +115,6 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: EventDetailsData): string {
-
     if(data.isEditing){
       return this.renderEditMode(data);
     }
@@ -128,8 +128,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
     if (data.successMessage) {
       return `
         <div class="ui-section">
-          ${this.generateSuccessMessage(data.successMessage)}
-          
+          ${generateSuccessMessage(data.successMessage)}
           
           ${generateButton({
             text: "Back to group",
@@ -155,6 +154,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
       })}
     `
   }
+
   renderEditMode(data:EventDetailsData): string {
     return `<h1>Editing: ${data.name}</h1>
 
@@ -210,7 +210,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         value: data.location
       })}     
     </form>
-    ${this.generateErrorMessage(data.errorMessage)}
+    ${generateErrorMessage(data.errorMessage)}
 
     ${generateButton({
       class: "group-webpage-link",
@@ -231,7 +231,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
 
   renderViewMode(data:EventDetailsData): string {
     if(data.errorMessage){
-      return `${this.generateErrorMessage(data.errorMessage)}`
+      return `${generateErrorMessage(data.errorMessage)}`
     }
     return `
       <div class="ui-section">

@@ -79,7 +79,6 @@ const groupDataStoreReducer = function(data:any){
   return data;
 }
 
-
 const loadConfig = {
   onLoadStoreConfig: {
     dataSource: GROUP_PRELOAD_THUNK,
@@ -114,18 +113,14 @@ const loadConfig = {
 export class GroupComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(GROUP_COMPONENT_STORE, loadConfig);
-
   }
-
 
   connectedCallback(){
     if(PageState.pageLoaded) {
-      console.log("Render time for group page:"+Date.now())
       //@ts-ignore
       loadConfig.onLoadStoreConfig.dataSource = GROUP_REQUEST_THUNK
       loadConfig.onLoadRequestData.name = getUrlParameter(GROUP_NAME_PARAM)
       initRequestStore(loadConfig);
-
     }
   }
 

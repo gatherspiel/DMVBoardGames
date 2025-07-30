@@ -23,6 +23,7 @@ import {
 } from "../data/RegisterUserThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {generateErrorMessage} from "../../../framework/components/utils/StatusIndicators.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -139,7 +140,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
 
                     
           </div>
-          ${this.hasRendered ? this.generateErrorMessage(data.errorMessage) : ''}
+          ${this.hasRendered ? generateErrorMessage(data.errorMessage) : ''}
           <div class="login-element">${data.successMessage}</div>
         </form>
 
