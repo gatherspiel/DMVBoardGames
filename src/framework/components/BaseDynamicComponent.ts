@@ -25,6 +25,7 @@ import {
 import type { EventValidationResult } from "../state/update/event/types/EventValidationResult.ts";
 import type {FormItemConfig} from "./types/FormItemConfig.ts";
 import  {FormSelector} from "../FormSelector.ts";
+import {PageState} from "../state/PageState.ts";
 
 type EventConfig = {
   eventType: string;
@@ -57,6 +58,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     this.formSelector = new FormSelector();
     createComponentStore(this.componentStoreName, this);
 
+    console.log(PageState.pageLoaded);
     if (loadConfig) {
       const self = this;
 
@@ -160,23 +162,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   getElementIdTag() {
     return `data-${this.componentStoreName}-element-id`;
-  }
-
-
-  generateLinksForEditPermission(linkConfig:Record<string, string>):string{
-    const userCanEditPermission = getComponentStore(this.componentStoreName)?.permissions?.userCanEdit
-    if(userCanEditPermission === undefined){
-      throw new Error(`permissions.userCanEdit state not defined for component state ${this.componentStoreName}`);
-    }
-    if(!userCanEditPermission) {
-      return '';
-    }
-
-    let html = ''
-    Object.keys(linkConfig).forEach(function(linkText){
-      html+= `<a href="${window.location.origin}/${linkConfig[linkText]}">${linkText}</a>`;
-    });
-    return html;
   }
 
   generateErrorMessage(message: string | string[] | undefined){
@@ -297,19 +282,15 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     const storeToUpdate =
       eventThunk?.getRequestStoreId();
 
+
     const dispatchers: BaseDispatcher[] = [];
     let componentStoreUpdate: any;
 
-    let componentReducer = eventConfig.componentReducer;
-    if(!componentReducer){
-      componentReducer = function(data:any){
-        return data;
-      }
-    }
+
     if (componentStoreName) {
       componentStoreUpdate = new BaseDispatcher(
         componentStoreName,
-        componentReducer,
+        eventConfig.componentReducer,
       );
       dispatchers.push(componentStoreUpdate);
     }
@@ -330,7 +311,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {
           return a;
         });
-
         dispatchers.push(storeUpdate);
       }
 

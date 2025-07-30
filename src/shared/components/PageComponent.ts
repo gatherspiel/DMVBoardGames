@@ -82,7 +82,10 @@ export class PageComponent extends HTMLElement {
     PageState.pushComponentToHistory(PageState.activeComponent, window.location.href)
     const componentToAdd = this.#getComponentAndUpdateUrl(route, params);
 
+    console.log("Updating")
     this.appendChild(componentToAdd)
+    console.log("Done updating");
+
     PageState.activeComponent = componentToAdd;
   }
 

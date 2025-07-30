@@ -5,7 +5,6 @@ import type {
   ComponentLoadConfig,
   RequestStoreItem,
 } from "../../components/types/ComponentLoadConfig.ts";
-import type {BaseThunkAction} from "../update/BaseThunkAction.ts";
 import {createResponseCacheIfNotExists} from "./SessionStorageUtils.ts";
 
 let stores: Record<string, any> = {};
@@ -27,6 +26,10 @@ export function createRequestStoreWithData(
 }
 
 export function subscribeToRequestStore(storeName: string, item: any) {
+
+  if(!item.dispatchers){
+    throw Error(`Invalid subscription to ${storeName}. Dispatchers must be defined`)
+  }
   subscribeToStore(storeName, item, stores);
 }
 
@@ -38,7 +41,6 @@ export function updateRequestStoreAndClearCache(
   storeName: string,
   params: Record<string, string>,
 ) {
-  //createNewResponseCache(storeName);
   updateRequestStore(
     storeName,
     () => {
@@ -93,7 +95,7 @@ export function hasRequestStoreSubscribers(storeName: string): boolean {
   return hasSubscribers(storeName, stores);
 }
 
-export function createRequestStore(storeName:string, dataSource: BaseThunkAction){
+export function createRequestStore(storeName:string, dataSource: BaseThunk){
   createStore(storeName, stores);
   createResponseCacheIfNotExists(storeName)
   subscribeToRequestStore(

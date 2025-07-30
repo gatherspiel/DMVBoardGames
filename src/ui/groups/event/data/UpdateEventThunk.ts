@@ -7,6 +7,7 @@ function updateEventRequestThunk(
   requestParams: any,
 ): ApiRequestConfig {
 
+  console.log("Updating event")
   return {
     body: JSON.stringify(requestParams),
     method: ApiActionTypes.PUT,

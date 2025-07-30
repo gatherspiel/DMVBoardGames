@@ -5,6 +5,7 @@ import type { DeleteGroupData } from "./types/DeleteGroupData.ts";
 import {getUrlParameter} from "../../../framework/utils/UrlParamUtils.ts";
 import {DELETE_GROUP_REQUEST_THUNK} from "./DeleteGroupRequestThunk.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {createRequestStore} from "../../../framework/state/data/RequestStore.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -55,7 +56,7 @@ const loadConfig = {
 
 export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("create-group-page-component", loadConfig);
+    super("delete-group-page-component", loadConfig);
   }
 
   getTemplateStyle(): string {
@@ -63,12 +64,11 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
+    createRequestStore(DELETE_GROUP_REQUEST_THUNK.requestStoreId ?? '', DELETE_GROUP_REQUEST_THUNK)
     this.updateStore({isVisible: true, existingGroupName: getUrlParameter("name")})
   }
 
-
   render(data: DeleteGroupData): string {
-    console.log("Data:"+JSON.stringify(data));
     return `
       <form onsubmit="return false">
         ${this.generateInputFormItem({

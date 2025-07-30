@@ -12,6 +12,10 @@ import {CREATE_EVENT_CONFIG} from "../EventDetailsHandler.ts";
 import {CREATE_EVENT_THUNK} from "../data/CreateEventThunk.ts";
 import {PageState} from "../../../../framework/state/PageState.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
+import {createRequestStore} from "../../../../framework/state/data/RequestStore.ts";
+import {
+  VIEW_GROUP_PAGE_HANDLER_CONFIG
+} from "../../../../shared/nav/NavEventHandlers.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -47,7 +51,6 @@ const loadConfig = {
   globalStateLoadConfig: {
     globalFieldSubscriptions: ["isLoggedIn"],
     defaultGlobalStateReducer: function (updates: Record<string, string>) {
-      console.log("Hi")
       PageState.pageLoaded = true;
       return {
         name: "",
@@ -66,7 +69,11 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    this.updateStore({isVisible: true})
+    if(PageState.pageLoaded) {
+      console.log("Render time:"+Date.now())
+      createRequestStore(CREATE_EVENT_THUNK.requestStoreId ?? '', CREATE_EVENT_THUNK)
+      this.updateStore({isVisible: true})
+    }
   }
 
   getTemplateStyle(): string {
@@ -75,7 +82,6 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
 
   render(data: any): string {
 
-    console.log("Hi");
     return `
     
     ${this.generateErrorMessage(data.errorMessage)}
@@ -137,15 +143,20 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
       })}     
     </form>
     
-        ${generateButton({
-          text: "Create event",
-          component: this,
-          eventHandlerConfig: CREATE_EVENT_CONFIG,
-        })}
-        <button ${this.createClickEvent(CREATE_EVENT_CONFIG)}>Create event</button>
-        <a href="${window.location.origin}/groups.html?name=${encodeURIComponent(getUrlParameter("groupName"))}">
-          Back to group
-        </a>
+    ${generateButton({
+      text: "Create event",
+      component: this,
+      eventHandlerConfig: CREATE_EVENT_CONFIG,
+    })}
+        
+        
+    ${generateButton({
+      text: "Back to group",
+      component: this,
+      eventHandlerConfig: VIEW_GROUP_PAGE_HANDLER_CONFIG,
+      eventHandlerParams: {"name":getUrlParameter("groupName")}
+    })}
+
       
     `;
   }
