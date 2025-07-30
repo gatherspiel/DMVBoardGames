@@ -8,7 +8,7 @@ import type {
 import type {BaseThunkAction} from "../update/BaseThunkAction.ts";
 import {createResponseCacheIfNotExists} from "./SessionStorageUtils.ts";
 
-const stores: Record<string, any> = {};
+let stores: Record<string, any> = {};
 const requestsWithoutCache = new Set<string>();
 
 export function createRequestStoreWithData(
@@ -158,4 +158,9 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
   addLoadFunction(storeName, function () {
     initRequestStore(config);
   });
+}
+
+export function clearRequestStores(){
+  stores = {};
+  requestsWithoutCache.clear();
 }

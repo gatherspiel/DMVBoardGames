@@ -295,30 +295,24 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
     const eventThunk = eventConfig.apiRequestThunk;
     const storeToUpdate =
-      eventThunk?.getRequestStoreId() ?? componentStoreName;
-
-    if (!storeToUpdate) {
-      throw new Error("Event handler must be associated with a valid state");
-    }
+      eventThunk?.getRequestStoreId();
 
     const dispatchers: BaseDispatcher[] = [];
-
     let componentStoreUpdate: any;
 
-
-      let componentReducer = eventConfig.componentReducer;
-      if(!componentReducer){
-        componentReducer = function(data:any){
-          return data;
-        }
+    let componentReducer = eventConfig.componentReducer;
+    if(!componentReducer){
+      componentReducer = function(data:any){
+        return data;
       }
-      if (componentStoreName) {
-        componentStoreUpdate = new BaseDispatcher(
-          componentStoreName,
-          componentReducer,
-        );
-        dispatchers.push(componentStoreUpdate);
-      }
+    }
+    if (componentStoreName) {
+      componentStoreUpdate = new BaseDispatcher(
+        componentStoreName,
+        componentReducer,
+      );
+      dispatchers.push(componentStoreUpdate);
+    }
 
 
     const handler = function (e: Event) {
@@ -332,12 +326,14 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         params
       );
 
-      const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {
-        return a;
-      });
+      if(storeToUpdate){
+        const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {
+          return a;
+        });
 
+        dispatchers.push(storeUpdate);
+      }
 
-      dispatchers.push(storeUpdate);
       const eventUpdater: EventThunk = new EventThunk(request, dispatchers);
 
       if (eventConfig.validator) {

@@ -13,6 +13,7 @@ import type { GroupPageData } from "../data/types/GroupPageData.ts";
 import type { Event } from "../../../homepage/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
+  CANCEL_GROUP_EDIT_HANDLER,
   EDIT_GROUP_EVENT_CONFIG,
   SAVE_GROUP_CONFIG,
 } from "../GroupPageHandlers.ts";
@@ -214,6 +215,13 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
            type: "submit",
            component: this,
            eventHandlerConfig: SAVE_GROUP_CONFIG,
+         })}
+         
+         ${generateButton({
+           text: "Cancel updates",
+           type: "submit",
+           component: this,
+           eventHandlerConfig: CANCEL_GROUP_EDIT_HANDLER,
          })}
          
         </form> 

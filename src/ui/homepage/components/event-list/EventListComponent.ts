@@ -5,6 +5,7 @@ import { BaseTemplateDynamicComponent } from "../../../../framework/components/B
 import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
+import {PageState} from "../../../../framework/state/PageState.ts";
 
 const loadConfig = {
   thunkReducers: [
@@ -101,7 +102,18 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
+
+  connectedCallback(){
+    if(PageState.pageLoaded){
+
+      //@ts-ignore
+      //initRequestStore(loadConfig);
+      //this.updateStore({})
+    }
+  }
+
   render(data: any): string {
+
     const groups = data.groups;
     let html = `<div class="ui-section">`;
     let visibleEvents = 0;
