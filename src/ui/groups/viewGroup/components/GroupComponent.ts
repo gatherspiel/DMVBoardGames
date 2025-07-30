@@ -13,9 +13,10 @@ import type { GroupPageData } from "../data/types/GroupPageData.ts";
 import type { Event } from "../../../homepage/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
+  CANCEL_GROUP_EDIT_HANDLER,
   EDIT_GROUP_EVENT_CONFIG,
   SAVE_GROUP_CONFIG,
-} from "../GroupPageHandlers.ts";
+} from "../GroupHandlers.ts";
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 
 import { getGlobalStateValue } from "../../../../framework/state/data/GlobalStore.ts";
@@ -110,24 +111,21 @@ const loadConfig = {
   },
 };
 
-export class GroupPageComponent extends BaseTemplateDynamicComponent {
+export class GroupComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(GROUP_COMPONENT_STORE, loadConfig);
 
   }
 
-  async fetchData(){
-    const data = await GROUP_REQUEST_THUNK.retrieveData({"name":"Beer & Board Games"});
-    this.updateStore(data);
-  }
 
   connectedCallback(){
     if(PageState.pageLoaded) {
-      console.log("Render time:"+Date.now())
+      console.log("Render time for group page:"+Date.now())
       //@ts-ignore
       loadConfig.onLoadStoreConfig.dataSource = GROUP_REQUEST_THUNK
       loadConfig.onLoadRequestData.name = getUrlParameter(GROUP_NAME_PARAM)
       initRequestStore(loadConfig);
+
     }
   }
 
@@ -216,6 +214,13 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
            eventHandlerConfig: SAVE_GROUP_CONFIG,
          })}
          
+         ${generateButton({
+           text: "Cancel updates",
+           type: "submit",
+           component: this,
+           eventHandlerConfig: CANCEL_GROUP_EDIT_HANDLER,
+         })}
+         
         </form> 
       `
      }
@@ -246,5 +251,5 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
 }
 
 if (!customElements.get("group-page-component")) {
-  customElements.define("group-page-component", GroupPageComponent);
+  customElements.define("group-page-component", GroupComponent);
 }

@@ -51,6 +51,7 @@ export const CANCEL_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(){
     return {
       isDeleting: false,
+      errorMessage: '',
       successMessage:''
     }
   }
@@ -73,7 +74,6 @@ const eventDataHandler = function(params:any){
   const startTime = params.formSelector.getValue(START_TIME_INPUT)
   const endTime =  params.formSelector.getValue(END_TIME_INPUT)
 
-  console.log("Creating")
   return {
     id: params.componentStore.id,
     groupId: getUrlParameter("groupId"),
@@ -109,6 +109,7 @@ export const CANCEL_EDIT_EVENT_DETAILS_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function() {
     return {
       isEditing: false,
+      errorMessage: ''
     }
   }
 }

@@ -55,7 +55,6 @@ export function updateStore(
   });
   storeData[storeName].data = updatedData;
 
-
   storeData[storeName].subscribers.forEach(function (
     component:  BaseDynamicComponent| BaseThunk,
   ) {

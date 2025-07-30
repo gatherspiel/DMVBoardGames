@@ -1,7 +1,7 @@
 import { createStore, subscribeToStore, updateStore } from "./StoreUtils.js";
 import { hasSubscribers } from "./StoreUtils.js";
 
-const stores: Record<string, any> = {};
+let stores: Record<string, any> = {};
 
 export function createComponentStore(
   storeName: string,
@@ -56,4 +56,8 @@ export function getComponentStore(storeName: string) {
 
 export function hasUserEditPermissions(componentStoreName:string){
   return getComponentStore(componentStoreName)?.permissions?.userCanEdit
+}
+
+export function clearComponentStores(){
+  stores = {};
 }

@@ -14,5 +14,4 @@ export type EventDetailsData = {
   url: string;
   errorMessage?: string;
   successMessage?: string;
-
 }

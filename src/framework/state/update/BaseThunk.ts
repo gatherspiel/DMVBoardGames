@@ -91,6 +91,8 @@ export class BaseThunk {
     reducerFunction: (a: any) => any,
     field?: string,
   ) {
+
+
     const newDispatcherName = componentStoreName.split("-")[0];
     const newStateNumber = parseInt(componentStoreName.split("-")[1]);
 

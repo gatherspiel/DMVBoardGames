@@ -109,7 +109,6 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
 
   connectedCallback(){
     if(PageState.pageLoaded) {
-      console.log("Render time:"+Date.now())
       initRequestStore(loadConfig);
     }
   }
@@ -131,16 +130,29 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         <div class="ui-section">
           ${this.generateSuccessMessage(data.successMessage)}
           
-          <a href="${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}">Back to group</a>
+          
+          ${generateButton({
+            text: "Back to group",
+            component: this,
+            eventHandlerConfig: VIEW_GROUP_PAGE_HANDLER_CONFIG,
+            eventHandlerParams: {name:data.groupName}
+          })}
         </div>
       `
     }
     return `
       <h1>Are you sure you want to delete ${data.name} on ${convertDateTimeForDisplay(data.startTime)}</h1>
-      <button ${this.createClickEvent(CONFIRM_DELETE_EVENT_CONFIG)}>Confirm delete</button>
-      <button ${this.createClickEvent(CANCEL_DELETE_EVENT_CONFIG)}>Cancel</button>
-      ${this.generateErrorMessage(data.errorMessage)}
-      ${this.generateSuccessMessage(data.successMessage)}
+      ${generateButton({
+        text: "Confirm delete",
+        component: this,
+        eventHandlerConfig: CONFIRM_DELETE_EVENT_CONFIG,
+      })}
+      
+      ${generateButton({
+        text: "Cancel",
+        component: this,
+        eventHandlerConfig: CANCEL_DELETE_EVENT_CONFIG,
+      })}
     `
   }
   renderEditMode(data:EventDetailsData): string {

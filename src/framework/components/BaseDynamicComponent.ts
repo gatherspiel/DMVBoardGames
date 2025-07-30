@@ -162,23 +162,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     return `data-${this.componentStoreName}-element-id`;
   }
 
-
-  generateLinksForEditPermission(linkConfig:Record<string, string>):string{
-    const userCanEditPermission = getComponentStore(this.componentStoreName)?.permissions?.userCanEdit
-    if(userCanEditPermission === undefined){
-      throw new Error(`permissions.userCanEdit state not defined for component state ${this.componentStoreName}`);
-    }
-    if(!userCanEditPermission) {
-      return '';
-    }
-
-    let html = ''
-    Object.keys(linkConfig).forEach(function(linkText){
-      html+= `<a href="${window.location.origin}/${linkConfig[linkText]}">${linkText}</a>`;
-    });
-    return html;
-  }
-
   generateErrorMessage(message: string | string[] | undefined){
     if(Array.isArray(message)){
       let html = ''
@@ -236,7 +219,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         id=${formConfig.id}
         name=${formConfig.id}
         type=${formConfig.inputType}
-        /> ${formValue}
+        />${formValue}
       </textarea>
       <br>
     `
@@ -295,30 +278,20 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
     const eventThunk = eventConfig.apiRequestThunk;
     const storeToUpdate =
-      eventThunk?.getRequestStoreId() ?? componentStoreName;
+      eventThunk?.getRequestStoreId();
 
-    if (!storeToUpdate) {
-      throw new Error("Event handler must be associated with a valid state");
-    }
 
     const dispatchers: BaseDispatcher[] = [];
-
     let componentStoreUpdate: any;
 
 
-      let componentReducer = eventConfig.componentReducer;
-      if(!componentReducer){
-        componentReducer = function(data:any){
-          return data;
-        }
-      }
-      if (componentStoreName) {
-        componentStoreUpdate = new BaseDispatcher(
-          componentStoreName,
-          componentReducer,
-        );
-        dispatchers.push(componentStoreUpdate);
-      }
+    if (componentStoreName) {
+      componentStoreUpdate = new BaseDispatcher(
+        componentStoreName,
+        eventConfig.componentReducer,
+      );
+      dispatchers.push(componentStoreUpdate);
+    }
 
 
     const handler = function (e: Event) {
@@ -332,12 +305,13 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         params
       );
 
-      const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {
-        return a;
-      });
+      if(storeToUpdate){
+        const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {
+          return a;
+        });
+        dispatchers.push(storeUpdate);
+      }
 
-
-      dispatchers.push(storeUpdate);
       const eventUpdater: EventThunk = new EventThunk(request, dispatchers);
 
       if (eventConfig.validator) {

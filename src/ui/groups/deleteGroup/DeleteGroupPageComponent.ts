@@ -55,7 +55,7 @@ const loadConfig = {
 
 export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("create-group-page-component", loadConfig);
+    super("delete-group-page-component", loadConfig);
   }
 
   getTemplateStyle(): string {
@@ -66,9 +66,7 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
     this.updateStore({isVisible: true, existingGroupName: getUrlParameter("name")})
   }
 
-
   render(data: DeleteGroupData): string {
-    console.log("Data:"+JSON.stringify(data));
     return `
       <form onsubmit="return false">
         ${this.generateInputFormItem({

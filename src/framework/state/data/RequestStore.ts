@@ -5,11 +5,15 @@ import type {
   ComponentLoadConfig,
   RequestStoreItem,
 } from "../../components/types/ComponentLoadConfig.ts";
-import type {BaseThunkAction} from "../update/BaseThunkAction.ts";
 import {createResponseCacheIfNotExists} from "./SessionStorageUtils.ts";
 
-const stores: Record<string, any> = {};
+let stores: Record<string, RequestStoreData> = {};
 const requestsWithoutCache = new Set<string>();
+
+type RequestStoreData = {
+  data:any,
+  subscribers: BaseThunk[]
+}
 
 export function createRequestStoreWithData(
   storeName: string,
@@ -27,6 +31,10 @@ export function createRequestStoreWithData(
 }
 
 export function subscribeToRequestStore(storeName: string, item: any) {
+
+  if(!item.dispatchers){
+    throw Error(`Invalid subscription to ${storeName}. Dispatchers must be defined`)
+  }
   subscribeToStore(storeName, item, stores);
 }
 
@@ -38,7 +46,6 @@ export function updateRequestStoreAndClearCache(
   storeName: string,
   params: Record<string, string>,
 ) {
-  //createNewResponseCache(storeName);
   updateRequestStore(
     storeName,
     () => {
@@ -93,7 +100,7 @@ export function hasRequestStoreSubscribers(storeName: string): boolean {
   return hasSubscribers(storeName, stores);
 }
 
-export function createRequestStore(storeName:string, dataSource: BaseThunkAction){
+export function createRequestStore(storeName:string, dataSource: BaseThunk){
   createStore(storeName, stores);
   createResponseCacheIfNotExists(storeName)
   subscribeToRequestStore(
@@ -158,4 +165,16 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
   addLoadFunction(storeName, function () {
     initRequestStore(config);
   });
+}
+
+export function clearRequestStores(){
+  const thunks: any = [];
+  Object.values(stores).forEach((item:RequestStoreData)=>{
+    thunks.push(item.subscribers[0]);
+  })
+  stores = {};
+
+  thunks.forEach(function(thunk:any){
+    createRequestStore(thunk.requestStoreId ?? '', thunk)
+  })
 }
