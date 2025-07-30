@@ -12,7 +12,6 @@ import {CREATE_EVENT_CONFIG} from "../EventDetailsHandler.ts";
 import {CREATE_EVENT_THUNK} from "../data/CreateEventThunk.ts";
 import {PageState} from "../../../../framework/state/PageState.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
-import {createRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 import {
   VIEW_GROUP_PAGE_HANDLER_CONFIG
 } from "../../../../shared/nav/NavEventHandlers.ts";
@@ -70,8 +69,6 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
 
   connectedCallback(){
     if(PageState.pageLoaded) {
-      console.log("Render time:"+Date.now())
-      createRequestStore(CREATE_EVENT_THUNK.requestStoreId ?? '', CREATE_EVENT_THUNK)
       this.updateStore({isVisible: true})
     }
   }

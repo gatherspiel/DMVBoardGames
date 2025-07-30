@@ -25,7 +25,6 @@ import {
 import type { EventValidationResult } from "../state/update/event/types/EventValidationResult.ts";
 import type {FormItemConfig} from "./types/FormItemConfig.ts";
 import  {FormSelector} from "../FormSelector.ts";
-import {PageState} from "../state/PageState.ts";
 
 type EventConfig = {
   eventType: string;
@@ -58,7 +57,6 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     this.formSelector = new FormSelector();
     createComponentStore(this.componentStoreName, this);
 
-    console.log(PageState.pageLoaded);
     if (loadConfig) {
       const self = this;
 
@@ -221,7 +219,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         id=${formConfig.id}
         name=${formConfig.id}
         type=${formConfig.inputType}
-        /> ${formValue}
+        />${formValue}
       </textarea>
       <br>
     `

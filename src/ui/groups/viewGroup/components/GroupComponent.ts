@@ -16,12 +16,12 @@ import {
   CANCEL_GROUP_EDIT_HANDLER,
   EDIT_GROUP_EVENT_CONFIG,
   SAVE_GROUP_CONFIG,
-} from "../GroupPageHandlers.ts";
+} from "../GroupHandlers.ts";
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 
 import { getGlobalStateValue } from "../../../../framework/state/data/GlobalStore.ts";
 import {PageState} from "../../../../framework/state/PageState.ts";
-import {createRequestStore, initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
+import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
 import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
 import {ADD_EVENT_PAGE_HANDLER_CONFIG, DELETE_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
@@ -111,16 +111,12 @@ const loadConfig = {
   },
 };
 
-export class GroupPageComponent extends BaseTemplateDynamicComponent {
+export class GroupComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(GROUP_COMPONENT_STORE, loadConfig);
 
   }
 
-  async fetchData(){
-    const data = await GROUP_REQUEST_THUNK.retrieveData({"name":"Beer & Board Games"});
-    this.updateStore(data);
-  }
 
   connectedCallback(){
     if(PageState.pageLoaded) {
@@ -129,7 +125,6 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
       loadConfig.onLoadStoreConfig.dataSource = GROUP_REQUEST_THUNK
       loadConfig.onLoadRequestData.name = getUrlParameter(GROUP_NAME_PARAM)
       initRequestStore(loadConfig);
-      createRequestStore(UPDATE_GROUP_REQUEST_THUNK.requestStoreId ?? '', UPDATE_GROUP_REQUEST_THUNK)
 
     }
   }
@@ -256,5 +251,5 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
 }
 
 if (!customElements.get("group-page-component")) {
-  customElements.define("group-page-component", GroupPageComponent);
+  customElements.define("group-page-component", GroupComponent);
 }

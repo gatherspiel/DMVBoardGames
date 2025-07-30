@@ -7,8 +7,13 @@ import type {
 } from "../../components/types/ComponentLoadConfig.ts";
 import {createResponseCacheIfNotExists} from "./SessionStorageUtils.ts";
 
-let stores: Record<string, any> = {};
+let stores: Record<string, RequestStoreData> = {};
 const requestsWithoutCache = new Set<string>();
+
+type RequestStoreData = {
+  data:any,
+  subscribers: BaseThunk[]
+}
 
 export function createRequestStoreWithData(
   storeName: string,
@@ -163,6 +168,13 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
 }
 
 export function clearRequestStores(){
+  const thunks: any = [];
+  Object.values(stores).forEach((item:RequestStoreData)=>{
+    thunks.push(item.subscribers[0]);
+  })
   stores = {};
-  requestsWithoutCache.clear();
+
+  thunks.forEach(function(thunk:any){
+    createRequestStore(thunk.requestStoreId ?? '', thunk)
+  })
 }

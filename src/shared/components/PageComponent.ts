@@ -2,7 +2,7 @@ import { NavbarComponent } from "../../ui/static/NavbarComponent.ts";
 import { LoginComponent } from "../../ui/auth/components/LoginComponent.ts";
 import { getComponent } from "./ComponentRegistry.ts";
 import { setupStateFields} from "../InitGlobalStateConfig.ts";
-import {GroupPageComponent} from "../../ui/groups/viewGroup/components/GroupPageComponent.ts";
+import {GroupComponent} from "../../ui/groups/viewGroup/components/GroupComponent.ts";
 import {PageState} from "../../framework/state/PageState.ts";
 import {EventDetailsComponent} from "../../ui/groups/event/components/EventDetailsComponent.ts";
 import {CreateEventComponent} from "../../ui/groups/event/components/CreateEventComponent.ts";
@@ -46,7 +46,7 @@ export class PageComponent extends HTMLElement {
         const componentName = prevState.component.localName;
         switch(componentName){
           case 'group-page-component':
-            component = new GroupPageComponent()
+            component = new GroupComponent()
             break;
           case 'create-group-page-component':
             component = new CreateGroupPageComponent()
@@ -74,7 +74,6 @@ export class PageComponent extends HTMLElement {
   }
 
   update(route:string,params?:Record<string, string>){
-
     clearRequestStores();
     clearComponentStores();
     this.removeChild(PageState.activeComponent)
@@ -82,10 +81,7 @@ export class PageComponent extends HTMLElement {
     PageState.pushComponentToHistory(PageState.activeComponent, window.location.href)
     const componentToAdd = this.#getComponentAndUpdateUrl(route, params);
 
-    console.log("Updating")
     this.appendChild(componentToAdd)
-    console.log("Done updating");
-
     PageState.activeComponent = componentToAdd;
   }
 
@@ -93,7 +89,7 @@ export class PageComponent extends HTMLElement {
 
     if(route === GROUP_PAGE_ROUTE) {
       this.#updateUrlWithQuery("groups.html", params)
-      return new GroupPageComponent();
+      return new GroupComponent();
     }
     else if (route === CREATE_GROUP_PAGE_ROUTE){
 
@@ -142,9 +138,7 @@ export class PageComponent extends HTMLElement {
   }
 }
 
-
 if (!customElements.get("page-component")) {
   customElements.define("page-component", PageComponent);
 }
-
 
