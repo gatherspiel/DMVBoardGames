@@ -23,7 +23,7 @@ import {
 import {UPDATE_EVENT_REQUEST_THUNK} from "../data/UpdateEventThunk.ts";
 import {DELETE_EVENT_REQUEST_THUNK} from "../data/DeleteEventRequestThunk.ts";
 import {PageState} from "../../../../framework/state/PageState.ts";
-import {createRequestStore, initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
+import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
@@ -63,7 +63,6 @@ const loadConfig = {
     {
       thunk: UPDATE_EVENT_REQUEST_THUNK,
       componentStoreReducer: function (data:any) {
-        console.log("Updating")
         if (data.errorMessage) {
           return {
             errorMessage: data.errorMessage,
@@ -110,9 +109,6 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
 
   connectedCallback(){
     if(PageState.pageLoaded) {
-      console.log("Render time:"+Date.now())
-      createRequestStore(DELETE_EVENT_REQUEST_THUNK.requestStoreId ?? '', DELETE_EVENT_REQUEST_THUNK)
-
       initRequestStore(loadConfig);
     }
   }
@@ -157,7 +153,6 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         component: this,
         eventHandlerConfig: CANCEL_DELETE_EVENT_CONFIG,
       })}
-  
     `
   }
   renderEditMode(data:EventDetailsData): string {

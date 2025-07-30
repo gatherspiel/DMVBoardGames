@@ -37,7 +37,7 @@ const template = `
   </style>
 `;
 
-export class GroupPageEventComponent extends BaseTemplateDynamicComponent {
+export class GroupEventComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("event-component");
     this.id = "";
@@ -80,5 +80,5 @@ export class GroupPageEventComponent extends BaseTemplateDynamicComponent {
 }
 
 if (!customElements.get("group-page-event-component")) {
-  customElements.define("group-page-event-component", GroupPageEventComponent);
+  customElements.define("group-page-event-component", GroupEventComponent);
 }

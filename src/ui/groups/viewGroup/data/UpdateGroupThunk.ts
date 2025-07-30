@@ -8,7 +8,6 @@ function updateGroupRequestThunk(
   requestParams: UpdateGroupRequest,
 ): ApiRequestConfig {
 
-  console.log("Updating")
   return {
     body: JSON.stringify(requestParams),
     method: ApiActionTypes.PUT,

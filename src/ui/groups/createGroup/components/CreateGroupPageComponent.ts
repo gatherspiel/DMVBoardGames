@@ -8,7 +8,6 @@ import {
   GROUP_URL_INPUT,
 } from "../../Constants.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
-import {createRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -62,8 +61,6 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
 
   connectedCallback(){
     this.updateStore({isVisible: true})
-    createRequestStore(CREATE_GROUP_REQUEST_THUNK.requestStoreId ?? '', CREATE_GROUP_REQUEST_THUNK)
-
   }
 
   render(createGroupData: CreateGroupData): string {
