@@ -11,12 +11,19 @@ export class BaseDispatcher {
 
   constructor(
     storeName: string,
-    storeUpdate: (a: any) => any,
+    storeUpdate?: (a: any) => any,
     responseField?: string,
   ) {
     this.storeField = storeName;
-    this.reducerUpdate = storeUpdate;
     this.responseField = responseField;
+
+    if(storeUpdate){
+      this.reducerUpdate = storeUpdate;
+    } else {
+      this.reducerUpdate = function(data:any){
+        return data;
+      }
+    }
   }
 
   updateStore(response: any) {

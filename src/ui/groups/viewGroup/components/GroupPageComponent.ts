@@ -13,6 +13,7 @@ import type { GroupPageData } from "../data/types/GroupPageData.ts";
 import type { Event } from "../../../homepage/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
+  CANCEL_GROUP_EDIT_HANDLER,
   EDIT_GROUP_EVENT_CONFIG,
   SAVE_GROUP_CONFIG,
 } from "../GroupPageHandlers.ts";
@@ -20,7 +21,7 @@ import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 
 import { getGlobalStateValue } from "../../../../framework/state/data/GlobalStore.ts";
 import {PageState} from "../../../../framework/state/PageState.ts";
-import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
+import {createRequestStore, initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
 import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
 import {ADD_EVENT_PAGE_HANDLER_CONFIG, DELETE_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
@@ -123,11 +124,13 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
 
   connectedCallback(){
     if(PageState.pageLoaded) {
-      console.log("Render time:"+Date.now())
+      console.log("Render time for group page:"+Date.now())
       //@ts-ignore
       loadConfig.onLoadStoreConfig.dataSource = GROUP_REQUEST_THUNK
       loadConfig.onLoadRequestData.name = getUrlParameter(GROUP_NAME_PARAM)
       initRequestStore(loadConfig);
+      createRequestStore(UPDATE_GROUP_REQUEST_THUNK.requestStoreId ?? '', UPDATE_GROUP_REQUEST_THUNK)
+
     }
   }
 
@@ -214,6 +217,13 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
            type: "submit",
            component: this,
            eventHandlerConfig: SAVE_GROUP_CONFIG,
+         })}
+         
+         ${generateButton({
+           text: "Cancel updates",
+           type: "submit",
+           component: this,
+           eventHandlerConfig: CANCEL_GROUP_EDIT_HANDLER,
          })}
          
         </form> 

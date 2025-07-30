@@ -8,6 +8,9 @@ import {EventDetailsComponent} from "../../ui/groups/event/components/EventDetai
 import {CreateEventComponent} from "../../ui/groups/event/components/CreateEventComponent.ts";
 import {DeleteGroupPageComponent} from "../../ui/groups/deleteGroup/DeleteGroupPageComponent.ts";
 import {CreateGroupPageComponent} from "../../ui/groups/createGroup/components/CreateGroupPageComponent.ts";
+import {clearRequestStores} from "../../framework/state/data/RequestStore.ts";
+import {clearComponentStores} from "../../framework/state/data/ComponentStore.ts";
+import {HomepageComponent} from "../../ui/homepage/components/HomepageComponent.ts";
 
 export const GROUP_PAGE_ROUTE = "groupPageRoute";
 export const GROUP_EVENT_PAGE_ROUTE ="groupEventPageRoute";
@@ -38,24 +41,56 @@ export class PageComponent extends HTMLElement {
       const prevState = PageState.popPrevComponent();
       if(prevState){
         window.history.replaceState({"Test":"Test"},"Test",prevState.url)
-        PageState.activeComponent = prevState.component;
-        self.appendChild(prevState.component);
+
+        let component;
+        const componentName = prevState.component.localName;
+        switch(componentName){
+          case 'group-page-component':
+            component = new GroupPageComponent()
+            break;
+          case 'create-group-page-component':
+            component = new CreateGroupPageComponent()
+            break;
+          case 'delete-group-page-component':
+            component = new DeleteGroupPageComponent()
+            break;
+          case 'create-event-component':
+            component = new CreateEventComponent()
+            break;
+          case 'event-details-component':
+            component = new EventDetailsComponent()
+            break;
+          case 'homepage-component':
+            component = new HomepageComponent()
+            break;
+          default:
+            throw new Error(`Invalid component with class name ${componentName}`)
+        }
+
+        PageState.activeComponent = component;
+        self.appendChild(component);
       }
     });
   }
 
   update(route:string,params?:Record<string, string>){
+
+    clearRequestStores();
+    clearComponentStores();
     this.removeChild(PageState.activeComponent)
 
     PageState.pushComponentToHistory(PageState.activeComponent, window.location.href)
     const componentToAdd = this.#getComponentAndUpdateUrl(route, params);
 
+    console.log("Updating")
     this.appendChild(componentToAdd)
+    console.log("Done updating");
+
     PageState.activeComponent = componentToAdd;
   }
 
   #getComponentAndUpdateUrl(route:string, params?:Record<string, string>): HTMLElement{
-    
+
     if(route === GROUP_PAGE_ROUTE) {
       this.#updateUrlWithQuery("groups.html", params)
       return new GroupPageComponent();

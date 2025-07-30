@@ -101,7 +101,10 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
+
+
   render(data: any): string {
+
     const groups = data.groups;
     let html = `<div class="ui-section">`;
     let visibleEvents = 0;

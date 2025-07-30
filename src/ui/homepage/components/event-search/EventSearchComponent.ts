@@ -20,7 +20,6 @@ import { BaseTemplateDynamicComponent } from "../../../../framework/components/B
 import {LOCATIONS_THUNK} from "../../data/search/LocationsThunk.ts";
 import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 import {PageState} from "../../../../framework/state/PageState.ts";
-
 const loadConfig = {
   onLoadStoreConfig: {
     dataSource: EVENT_PRELOAD_THUNK,
@@ -47,12 +46,6 @@ const loadConfig = {
     {
       thunk: CITY_LIST_THUNK,
       componentStoreReducer: updateCities,
-    },
-    {
-      thunk: EVENT_SEARCH_THUNK,
-      componentStoreReducer: function(data: any){
-        return data;
-      }
     }
   ],
 };
@@ -112,8 +105,8 @@ const template = `
     }
   }
 </style>
-
 `;
+
 export class EventSearchComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("event-search-component-store", loadConfig);
@@ -125,6 +118,8 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
 
   connectedCallback(){
     if(PageState.pageLoaded){
+      //@ts-ignore
+      loadConfig.onLoadStoreConfig.dataSource = EVENT_SEARCH_THUNK
       initRequestStore(loadConfig);
     }
   }
