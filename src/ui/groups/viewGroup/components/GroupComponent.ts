@@ -52,6 +52,10 @@ const template = `
       display: block;
     }
     
+    #${GROUP_NAME_INPUT} {
+      width: 600px;
+    }
+    
     #${GROUP_URL_INPUT} {
       width: 600px;
     }
