@@ -7,7 +7,7 @@ import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandle
 export const CONVENTION_LIST_STORE = "conventionListStore";
 
 const loadConfig = {
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: LOCATIONS_THUNK,
       componentStoreReducer: (data: any) => {

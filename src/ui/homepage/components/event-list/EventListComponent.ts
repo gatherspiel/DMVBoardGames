@@ -6,7 +6,7 @@ import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHan
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 
 const loadConfig = {
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: EVENT_PRELOAD_THUNK,
       componentStoreReducer: updateSearchResultGroupStore,

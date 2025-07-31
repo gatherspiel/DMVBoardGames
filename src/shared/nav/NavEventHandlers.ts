@@ -8,31 +8,31 @@ import {
 
 export const VIEW_GROUP_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(event){
-    PageComponent.currentComponent.update(GROUP_PAGE_ROUTE, event.params);
+    PageComponent.updateRoute(GROUP_PAGE_ROUTE, event.params);
   }
 }
 
 export const VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(event){
-    PageComponent.currentComponent.update(GROUP_EVENT_PAGE_ROUTE, event.params);
+    PageComponent.updateRoute(GROUP_EVENT_PAGE_ROUTE, event.params);
   }
 }
 
 export const ADD_EVENT_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(event){
-    PageComponent.currentComponent.update(ADD_GROUP_EVENT_PAGE_ROUTE, event.params);
+    PageComponent.updateRoute(ADD_GROUP_EVENT_PAGE_ROUTE, event.params);
   }
 }
 
 export const DELETE_GROUP_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(event){
-    PageComponent.currentComponent.update(DELETE_GROUP_PAGE_ROUTE, event.params);
+    PageComponent.updateRoute(DELETE_GROUP_PAGE_ROUTE, event.params);
   }
 }
 
 
 export const CREATE_GROUP_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(event){
-    PageComponent.currentComponent.update(CREATE_GROUP_PAGE_ROUTE, event.params);
+    PageComponent.updateRoute(CREATE_GROUP_PAGE_ROUTE, event.params);
   }
 }

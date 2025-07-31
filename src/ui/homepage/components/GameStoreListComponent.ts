@@ -7,7 +7,7 @@ import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandle
 export const GAME_STORE_LIST_STORE = "gameStoreListStore";
 
 const loadConfig = {
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: LOCATIONS_THUNK,
       componentStoreReducer: (data: any) => {

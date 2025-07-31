@@ -18,7 +18,6 @@ export const EDIT_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
 export const CANCEL_GROUP_EDIT_HANDLER: EventHandlerThunkConfig = {
 
   eventHandler: function () {
-    console.log(Date.now());
     return {
       isEditing: false,
     };

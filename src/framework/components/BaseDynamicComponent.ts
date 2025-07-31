@@ -10,7 +10,7 @@ import {
 } from "../state/data/RequestStore.ts";
 import {
   type ComponentLoadConfig,
-  type ThunkDispatcherConfig,
+  type RequestThunkReducerConfig,
   validComponentLoadConfigFields,
 } from "./types/ComponentLoadConfig.ts";
 import type {BaseThunk, LoadStatus} from "../state/update/BaseThunk.ts";
@@ -18,7 +18,7 @@ import {
   getGlobalStateValue,
   subscribeComponentToGlobalField,
 } from "../state/data/GlobalStore.ts";
-import type {FormItemConfig} from "./types/FormItemConfig.ts";
+import type {FormInputConfig} from "./types/FormInputConfig.ts";
 import  {FormSelector} from "../FormSelector.ts";
 import {EventHandlerData} from "../handler/EventHandlerData.ts";
 import {generateLoadingIndicator} from "./utils/StatusIndicators.ts";
@@ -55,7 +55,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       Object.keys(loadConfig).forEach((configField: any) => {
         if (!validComponentLoadConfigFields.includes(configField)) {
           throw new Error(
-            `Invalid component load config field ${configField} for ${self.componentStoreName}. Valid fields are
+            `Invalid component load config field ${configField} for ${self.localName}. Valid fields are
             ${validComponentLoadConfigFields}`,
           );
         }
@@ -74,11 +74,11 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         initRequestStoresOnLoad(loadConfig);
       }
 
-      if (loadConfig.thunkReducers) {
+      if (loadConfig.requestThunkReducers) {
         const component = this;
 
-        loadConfig.thunkReducers.forEach(function (
-          config: ThunkDispatcherConfig,
+        loadConfig.requestThunkReducers.forEach(function (
+          config: RequestThunkReducerConfig,
         ) {
           if (!config.thunk) {
             throw new Error(
@@ -119,11 +119,11 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     }
   }
 
-  generateInputFormItem(formConfig:FormItemConfig){
+  generateInputFormItem(formConfig:FormInputConfig){
     return this.formSelector.generateInputFormSelector(formConfig);
   }
 
-  generateTextInputFormItem(formConfig:FormItemConfig){
+  generateTextInputFormItem(formConfig:FormInputConfig){
     return this.formSelector.generateTextInputFormItem(formConfig);
   }
 

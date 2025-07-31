@@ -23,8 +23,9 @@ export class ExternalApiAction extends BaseThunkAction {
         externalRequest.defaultResponse,
       );
     } catch (e: any) {
-      if (this.defaultResponse.defaultFunction) {
-        return this.defaultResponse.defaultFunction();
+      const defaultFunction = this.defaultResponse.defaultFunction
+      if (defaultFunction) {
+        return defaultFunction();
       } else {
         console.error("No custom error response defined for:" + e.message);
       }

@@ -54,7 +54,7 @@ const loadConfig = {
   onLoadRequestData: {
     name: getUrlParameter(GROUP_NAME_PARAM),
   },
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: GROUP_EVENT_REQUEST_THUNK,
       componentStoreReducer: function (data: any) {
@@ -105,7 +105,7 @@ const loadConfig = {
 
 export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("group-event-component", loadConfig);
+    super("event-details-component", loadConfig);
   }
 
   connectedCallback(){

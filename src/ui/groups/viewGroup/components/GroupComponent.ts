@@ -8,7 +8,7 @@ import {
 } from "../../Constants.js";
 import {GROUP_PRELOAD_THUNK, GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
 
-import { createJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
+import { serializeJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
 import type { GroupPageData } from "../data/types/GroupPageData.ts";
 import type { Event } from "../../../homepage/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
@@ -86,7 +86,7 @@ const loadConfig = {
   onLoadRequestData: {
     name: getUrlParameter(GROUP_NAME_PARAM),
   },
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: GROUP_REQUEST_THUNK,
       componentStoreReducer: groupDataStoreReducer
@@ -229,7 +229,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
                 return `
               <group-page-event-component
                 key = ${groupData.id + "event-" + event.id}
-                data =${createJSONProp({groupId: groupData.id,...event})}
+                data =${serializeJSONProp({groupId: groupData.id,...event})}
               >
  
               </group-page-event-component>

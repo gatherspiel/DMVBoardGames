@@ -1,4 +1,4 @@
-import { retrieveJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
+import { deserializeJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
   convertDateTimeForDisplay,
@@ -49,7 +49,7 @@ export class GroupEventComponent extends BaseTemplateDynamicComponent {
 
   render(): string {
     this.id = this.getAttribute("key") ?? "";
-    const eventData = retrieveJSONProp(this, "data");
+    const eventData = deserializeJSONProp(this, "data");
 
     return `
       <div id=${this.id} class="event">

@@ -1,4 +1,4 @@
-import type {FormItemConfig} from "./components/types/FormItemConfig.ts";
+import type {FormInputConfig} from "./components/types/FormInputConfig.ts";
 
 export class FormSelector {
 
@@ -28,7 +28,7 @@ export class FormSelector {
     return (this.shadowRoot.getElementById(formSelector) as HTMLTextAreaElement | HTMLInputElement)?.value ?? "";
   }
 
-  generateInputFormSelector(formConfig:FormItemConfig){
+  generateInputFormSelector(formConfig:FormInputConfig){
     let formValue = formConfig.value;
     if(!formValue && this.formSelectors.has(formConfig.id)){
       formValue = this.getValue(formConfig.id);
@@ -49,7 +49,7 @@ export class FormSelector {
     `
   }
 
-  generateTextInputFormItem(formConfig:FormItemConfig){
+  generateTextInputFormItem(formConfig:FormInputConfig){
     let formValue = formConfig.value;
     if(!formValue && this.formSelectors.has(formConfig.id)){
       formValue = this.getValue(formConfig.id);

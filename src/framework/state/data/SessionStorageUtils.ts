@@ -1,6 +1,4 @@
 
-//TODO: Make sure relevant cache items are cleared when saving data or just reload the page.
-
 export function createResponseCacheIfNotExists(requestStoreName:string){
   if(!sessionStorage.getItem(requestStoreName)){
     createNewResponseCache(requestStoreName);

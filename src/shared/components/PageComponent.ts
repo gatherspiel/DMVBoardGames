@@ -20,7 +20,7 @@ export const CREATE_GROUP_PAGE_ROUTE ="createGroupPageRoute";
 
 export class PageComponent extends HTMLElement {
 
-  static currentComponent: PageComponent;
+  static #currentComponent: PageComponent;
 
   constructor() {
     super();
@@ -33,7 +33,7 @@ export class PageComponent extends HTMLElement {
     PageState.activeComponent = getComponent(componentName);
     this.appendChild(PageState.activeComponent);
 
-    PageComponent.currentComponent = this;
+    PageComponent.#currentComponent = this;
     const self = this;
     window.addEventListener("popstate", () => {
       self.removeChild(PageState.activeComponent);
@@ -71,6 +71,10 @@ export class PageComponent extends HTMLElement {
         self.appendChild(component);
       }
     });
+  }
+
+  static updateRoute(route:string, params?:Record<string, string>){
+    PageComponent.#currentComponent.update(route, params);
   }
 
   update(route:string,params?:Record<string, string>){

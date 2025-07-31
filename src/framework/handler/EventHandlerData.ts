@@ -86,66 +86,57 @@ export class EventHandlerData {
     eventFunction: (e: Event) => any,
     eventType: string,
   ): string {
-    let id = `${this.elementIdTag}=${this.eventTagIdCount}`;
+    let eventId = `${this.elementIdTag}=${this.eventTagIdCount}`;
 
     this.eventHandlerConfig[this.eventTagIdCount] = {
       eventType: eventType,
       eventFunction: eventFunction,
     };
     this.eventTagIdCount++;
-    return id;
+    return eventId;
   }
 
   #createHandler(
     eventConfig: EventHandlerThunkConfig,
     formSelector: FormSelector,
-    componentStoreName?: string,
+    componentStoreName: string,
     params?: any
   ) {
 
-    const eventThunk = eventConfig.apiRequestThunk;
-    const storeToUpdate =
-      eventThunk?.getRequestStoreId();
-
 
     const dispatchers: BaseDispatcher[] = [];
-    let componentStoreUpdate: any;
-
-
-    if (componentStoreName) {
-      componentStoreUpdate = new BaseDispatcher(
+    let componentStoreUpdate = new BaseDispatcher(
         componentStoreName,
         eventConfig.componentReducer,
       );
-      dispatchers.push(componentStoreUpdate);
+    dispatchers.push(componentStoreUpdate);
+
+    const requestStoreToUpdate = eventConfig.apiRequestThunk?.getRequestStoreId();
+    if(requestStoreToUpdate){
+      const storeUpdate = new BaseDispatcher(requestStoreToUpdate, (a: any): any => {
+        return a;
+      });
+      dispatchers.push(storeUpdate);
     }
 
+    const request: EventHandlerAction = new EventHandlerAction(
+      eventConfig.eventHandler,
+      componentStoreName,
+      formSelector,
+      params
+    );
+
+    const eventUpdater: EventThunk = new EventThunk(request, dispatchers);
 
     const handler = function (e: Event) {
 
       e.preventDefault();
 
-      const request: EventHandlerAction = new EventHandlerAction(
-        eventConfig.eventHandler,
-        componentStoreName,
-        formSelector,
-        params
-      );
-
-      if(storeToUpdate){
-        const storeUpdate = new BaseDispatcher(storeToUpdate, (a: any): any => {
-          return a;
-        });
-        dispatchers.push(storeUpdate);
-      }
-
-      const eventUpdater: EventThunk = new EventThunk(request, dispatchers);
-
-      if (eventConfig.validator) {
-        const eventConfigValidator = eventConfig.validator;
+      const validatorFunction = eventConfig.validator;
+      if (validatorFunction) {
         const validator = function (): EventValidationResult {
-          const componentData = getComponentStore(componentStoreName ?? "");
-          return eventConfigValidator(formSelector, componentData);
+          const componentData = getComponentStore(componentStoreName);
+          return validatorFunction(formSelector, componentData);
         };
 
         eventUpdater.processEvent(e, validator).then((result: any) => {
