@@ -20,6 +20,7 @@ import { BaseTemplateDynamicComponent } from "../../../../framework/components/B
 import {LOCATIONS_THUNK} from "../../data/search/LocationsThunk.ts";
 import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 import {PageState} from "../../../../framework/state/PageState.ts";
+import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 const loadConfig = {
   onLoadStoreConfig: {
     dataSource: EVENT_PRELOAD_THUNK,
@@ -132,7 +133,7 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
     return `
    
       <div class="ui-section">
-        <form id=${SEARCH_FORM_ID} ${this.createSubmitEvent(SEARCH_EVENT_HANDLER_CONFIG)}>
+        <form id=${SEARCH_FORM_ID}>
           <div id='search-input-wrapper'>
             <div>
               ${this.getCityHtml(eventSearchStore)}
@@ -153,14 +154,12 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
                 )}
               </select>
             </div>
-            <div>
-              <button class="pushable" >
-                <span class="shadow"></span>
-                <span class="edge"></span>
-                <span class="front">
-                    Search groups
-                </span>
-              </button>
+            <div> 
+              ${generateButton({
+                text: "Search groups",
+                component: this,
+                eventHandlerConfig: SEARCH_EVENT_HANDLER_CONFIG,
+              })}
             </div>
           </div>
         </form>
