@@ -1,38 +1,40 @@
 import type {EventHandlerThunkConfig} from "../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
 import {
-  ADD_GROUP_EVENT_PAGE_ROUTE, CREATE_GROUP_PAGE_ROUTE, DELETE_GROUP_PAGE_ROUTE,
-  GROUP_EVENT_PAGE_ROUTE,
-  GROUP_PAGE_ROUTE,
   PageComponent
 } from "../components/PageComponent.ts";
+import {GroupComponent} from "../../ui/groups/viewGroup/components/GroupComponent.ts";
+import {EventDetailsComponent} from "../../ui/groups/event/components/EventDetailsComponent.ts";
+import {CreateEventComponent} from "../../ui/groups/event/components/CreateEventComponent.ts";
+import {DeleteGroupPageComponent} from "../../ui/groups/deleteGroup/DeleteGroupPageComponent.ts";
+import {CreateGroupPageComponent} from "../../ui/groups/createGroup/components/CreateGroupPageComponent.ts";
 
 export const VIEW_GROUP_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(event){
-    PageComponent.updateRoute(GROUP_PAGE_ROUTE, event.params);
+    PageComponent.updateRoute(GroupComponent, event.params);
   }
 }
 
 export const VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(event){
-    PageComponent.updateRoute(GROUP_EVENT_PAGE_ROUTE, event.params);
+    PageComponent.updateRoute(EventDetailsComponent, event.params);
   }
 }
 
-export const ADD_EVENT_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
+export const CREATE_EVENT_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(event){
-    PageComponent.updateRoute(ADD_GROUP_EVENT_PAGE_ROUTE, event.params);
+    PageComponent.updateRoute(CreateEventComponent, event.params);
   }
 }
 
 export const DELETE_GROUP_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(event){
-    PageComponent.updateRoute(DELETE_GROUP_PAGE_ROUTE, event.params);
+    PageComponent.updateRoute(DeleteGroupPageComponent, event.params);
   }
 }
 
 
 export const CREATE_GROUP_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(event){
-    PageComponent.updateRoute(CREATE_GROUP_PAGE_ROUTE, event.params);
+    PageComponent.updateRoute(CreateGroupPageComponent, event.params);
   }
 }

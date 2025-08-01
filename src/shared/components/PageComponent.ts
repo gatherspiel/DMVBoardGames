@@ -10,18 +10,28 @@ import {DeleteGroupPageComponent} from "../../ui/groups/deleteGroup/DeleteGroupP
 import {CreateGroupPageComponent} from "../../ui/groups/createGroup/components/CreateGroupPageComponent.ts";
 import {clearRequestStores} from "../../framework/state/data/RequestStore.ts";
 import {clearComponentStores} from "../../framework/state/data/ComponentStore.ts";
-import {HomepageComponent} from "../../ui/homepage/components/HomepageComponent.ts";
+import type {BaseDynamicComponent} from "../../framework/components/BaseDynamicComponent.ts";
 
-export const GROUP_PAGE_ROUTE = "groupPageRoute";
-export const GROUP_EVENT_PAGE_ROUTE ="groupEventPageRoute";
-export const ADD_GROUP_EVENT_PAGE_ROUTE ="addGroupEventPageRoute";
-export const DELETE_GROUP_PAGE_ROUTE ="deleteGroupPageRoute";
-export const CREATE_GROUP_PAGE_ROUTE ="createGroupPageRoute";
+//@ts-ignore
+import {HomepageComponent} from "../../ui/homepage/components/HomepageComponent.ts";
 
 export class PageComponent extends HTMLElement {
 
   static #currentComponent: PageComponent;
-
+  routeMap:any = {
+    [GroupComponent.name]: function(){return "groups.html"},
+    [CreateGroupPageComponent.name]: function(){return "groups/create.html"},
+    [DeleteGroupPageComponent.name]: function(params:any){
+      return `groups/delete.html?name=${encodeURIComponent(params.name)}&groupId=${params.id}`
+    },
+    [CreateEventComponent.name]: function(params:any){
+      return `groups/delete.html?name=${encodeURIComponent(params.name)}&groupId=${params.id}`
+    },
+    [EventDetailsComponent.name]: function(params:any) {
+      return `/groups/event.html?id=${params.id}&groupId=${params.groupId}`
+    }
+  }
+  
   constructor() {
     super();
 
@@ -31,6 +41,7 @@ export class PageComponent extends HTMLElement {
     this.appendChild(new LoginComponent());
 
     PageState.activeComponent = getComponent(componentName);
+
     this.appendChild(PageState.activeComponent);
 
     PageComponent.#currentComponent = this;
@@ -42,92 +53,43 @@ export class PageComponent extends HTMLElement {
       if(prevState){
         window.history.replaceState({"Test":"Test"},"Test",prevState.url)
 
-        let component;
-        const componentName = prevState.component.localName;
-        switch(componentName){
-          case 'group-page-component':
-            component = new GroupComponent()
-            break;
-          case 'create-group-page-component':
-            component = new CreateGroupPageComponent()
-            break;
-          case 'delete-group-page-component':
-            component = new DeleteGroupPageComponent()
-            break;
-          case 'create-event-component':
-            component = new CreateEventComponent()
-            break;
-          case 'event-details-component':
-            component = new EventDetailsComponent()
-            break;
-          case 'homepage-component':
-            component = new HomepageComponent()
-            break;
-          default:
-            throw new Error(`Invalid component with class name ${componentName}`)
-        }
-
-        PageState.activeComponent = component;
-        self.appendChild(component);
+        // @ts-ignore
+        PageState.activeComponent = getComponent(prevState.component.localName)
+        self.appendChild(PageState.activeComponent);
       }
     });
   }
 
-  static updateRoute(route:string, params?:Record<string, string>){
-    PageComponent.#currentComponent.update(route, params);
+  static updateRoute(componentType:typeof BaseDynamicComponent, params?:Record<string, string>){
+    PageComponent.#currentComponent.update(componentType, params);
   }
 
-  update(route:string,params?:Record<string, string>){
+  update(componentType:typeof BaseDynamicComponent,params?:Record<string, string>){
     clearRequestStores();
     clearComponentStores();
     this.removeChild(PageState.activeComponent)
 
-    PageState.pushComponentToHistory(PageState.activeComponent, window.location.href)
-    const componentToAdd = this.#getComponentAndUpdateUrl(route, params);
-
+    PageState.pushComponentToHistory(PageState.activeComponent, window.location.href, PageState.activeComponentType)
+    const componentToAdd = this.#getComponentAndUpdateUrl(componentType, params);
     this.appendChild(componentToAdd)
+
     PageState.activeComponent = componentToAdd;
+    PageState.activeComponentType = componentType;
   }
 
-  #getComponentAndUpdateUrl(route:string, params?:Record<string, string>): HTMLElement{
-
-    if(route === GROUP_PAGE_ROUTE) {
-      this.#updateUrlWithQuery("groups.html", params)
-      return new GroupComponent();
+  #getComponentAndUpdateUrl(componentType:any, params?:Record<string, string>): HTMLElement{
+    if(!(componentType.name in this.routeMap)){
+      throw new Error(`No route defined for ${componentType.name}`);
     }
-    else if (route === CREATE_GROUP_PAGE_ROUTE){
 
-      const url =`groups/create.html`
-      this.#updateUrlWithQuery(url);
-      return new CreateGroupPageComponent();
+    const url = this.routeMap[componentType.name](params);
+    this.#updateUrlWithQuery(url,params);
 
-    }
-    else if (route === DELETE_GROUP_PAGE_ROUTE){
-      if(params){
-        const url =`groups/delete.html?name=${encodeURIComponent(params.name)}&groupId=${params.id}`
-        this.#updateUrlWithQuery(url);
-        return new DeleteGroupPageComponent();
-      }
-    } if(route=== ADD_GROUP_EVENT_PAGE_ROUTE){
-      if(params){
-        const url = `groups/addEvent.html?groupName=${encodeURIComponent(params.name)}&groupId=${params.id}`
-        this.#updateUrlWithQuery(url);
-        return new CreateEventComponent();
-      }
-    } else if(route === GROUP_EVENT_PAGE_ROUTE) {
-      if(params){
-        const url = `/groups/event.html?id=${params.id}&groupId=${params.groupId}`
-        this.#updateUrlWithQuery(url);
-        return new EventDetailsComponent();
-      } else {
-        throw new Error(`Cannot navigate to group event page route without parameters`)
-      }
-    }
-    throw new Error(`No route defined for ${route}`);
+    return new componentType();
   }
 
-  #updateUrlWithQuery(route:string, params?: any){
-    let updatedUrl = route;
+  #updateUrlWithQuery(url:string, params?: any){
+    let updatedUrl = url;
     if(params){
       const paramData:string[] = [];
       Object.keys(params).forEach((function(key){
@@ -145,4 +107,3 @@ export class PageComponent extends HTMLElement {
 if (!customElements.get("page-component")) {
   customElements.define("page-component", PageComponent);
 }
-

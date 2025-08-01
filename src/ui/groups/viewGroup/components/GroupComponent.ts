@@ -24,7 +24,7 @@ import {PageState} from "../../../../framework/state/PageState.ts";
 import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
 import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
-import {ADD_EVENT_PAGE_HANDLER_CONFIG, DELETE_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
+import {CREATE_EVENT_PAGE_HANDLER_CONFIG, DELETE_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -164,7 +164,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
        ${generateButtonForEditPermission({
            text: "Add event",
            component: this,
-           eventHandlerConfig: ADD_EVENT_PAGE_HANDLER_CONFIG,
+           eventHandlerConfig: CREATE_EVENT_PAGE_HANDLER_CONFIG,
            eventHandlerParams:{name:groupData.name, id: groupData.id}
          })}
        

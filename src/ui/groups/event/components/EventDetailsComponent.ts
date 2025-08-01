@@ -95,8 +95,6 @@ const loadConfig = {
         }
       }
     }
-
-
   ],
   globalStateLoadConfig: {
     globalFieldSubscriptions: ["isLoggedIn"],
@@ -225,7 +223,6 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
       component: this,
       eventHandlerConfig: CANCEL_EDIT_EVENT_DETAILS_CONFIG,
     })}  
-
    `
   }
 
@@ -259,8 +256,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
           component: this,
           eventHandlerConfig: DELETE_EVENT_CONFIG,
         })}
-        
-       
+  
         <p>${data.successMessage ? data.successMessage.trim(): ""}</p>
         
         ${generateButtonForEditPermission({
