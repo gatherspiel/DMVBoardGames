@@ -54,7 +54,7 @@ const loadConfig = {
   onLoadRequestData: {
     name: getUrlParameter(GROUP_NAME_PARAM),
   },
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: GROUP_EVENT_REQUEST_THUNK,
       componentStoreReducer: function (data: any) {
@@ -95,8 +95,6 @@ const loadConfig = {
         }
       }
     }
-
-
   ],
   globalStateLoadConfig: {
     globalFieldSubscriptions: ["isLoggedIn"],
@@ -105,7 +103,7 @@ const loadConfig = {
 
 export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("group-event-component", loadConfig);
+    super("event-details-component", loadConfig);
   }
 
   connectedCallback(){
@@ -225,7 +223,6 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
       component: this,
       eventHandlerConfig: CANCEL_EDIT_EVENT_DETAILS_CONFIG,
     })}  
-
    `
   }
 
@@ -259,8 +256,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
           component: this,
           eventHandlerConfig: DELETE_EVENT_CONFIG,
         })}
-        
-       
+  
         <p>${data.successMessage ? data.successMessage.trim(): ""}</p>
         
         ${generateButtonForEditPermission({

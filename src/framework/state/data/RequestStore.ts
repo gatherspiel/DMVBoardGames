@@ -1,4 +1,4 @@
-import { createStore, hasSubscribers, subscribeToStore } from "./StoreUtils.js";
+import { createStore, subscribeToStore } from "./StoreUtils.js";
 import { addLoadFunction } from "./InitStoreManager.js";
 import type { BaseThunk } from "../update/BaseThunk.ts";
 import type {
@@ -31,7 +31,6 @@ export function createRequestStoreWithData(
 }
 
 export function subscribeToRequestStore(storeName: string, item: any) {
-
   if(!item.dispatchers){
     throw Error(`Invalid subscription to ${storeName}. Dispatchers must be defined`)
   }
@@ -96,9 +95,6 @@ export function updateRequestStore(
   });
 }
 
-export function hasRequestStoreSubscribers(storeName: string): boolean {
-  return hasSubscribers(storeName, stores);
-}
 
 export function createRequestStore(storeName:string, dataSource: BaseThunk){
   createStore(storeName, stores);

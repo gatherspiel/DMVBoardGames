@@ -19,6 +19,7 @@ export class EventHandlerAction {
   }
 
   retrieveData(event: Event): any {
+
     const formSelector = this.formSelector;
     if (this.eventComponentStoreName) {
       return this.eventHandler({
@@ -29,7 +30,6 @@ export class EventHandlerAction {
         params: this.params
       });
     }
-    console.log("Test");
     return this.eventHandler({
       event: event,
     });

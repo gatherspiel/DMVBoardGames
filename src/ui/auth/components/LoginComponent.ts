@@ -57,7 +57,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
         username: "",
         password: "",
       },
-      thunkReducers: [
+      requestThunkReducers: [
         {
           thunk: LOGIN_THUNK,
           componentStoreReducer: getLoginComponentStoreFromLoginResponse,

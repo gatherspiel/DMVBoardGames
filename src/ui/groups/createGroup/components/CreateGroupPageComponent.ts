@@ -20,7 +20,7 @@ const templateStyle = `
 `;
 
 const loadConfig = {
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: CREATE_GROUP_REQUEST_THUNK,
       componentStoreReducer: function (data: any) {

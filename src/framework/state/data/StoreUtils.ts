@@ -12,10 +12,6 @@ export function createStore(storeName: string, stores: any) {
   };
 }
 
-export function hasSubscribers(storeName: string, store: any) {
-  return storeName in store && store[storeName].subscribers.length > 0;
-}
-
 export function subscribeToStore(storeName: string, item: any, store: any) {
   if (!(storeName in store)) {
     createStore(storeName, store);

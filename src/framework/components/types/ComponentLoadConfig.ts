@@ -6,8 +6,8 @@ export type RequestStoreItem = {
   preloadData?:BaseThunk
 };
 
-export type ThunkDispatcherConfig = {
-  thunk: BaseThunk;
+export type RequestThunkReducerConfig = {
+  thunk: BaseThunk
   componentStoreReducer: (a: any) => any;
   globalStoreReducer?: (a: any) => any;
   reducerField?: string;
@@ -23,7 +23,7 @@ export type ComponentLoadConfig = {
   onLoadRequestData?: any;
   onLoadInitStore?: () => any;
   onLoadRequestConfig?: RequestStoreItem[];
-  thunkReducers?: ThunkDispatcherConfig[];
+  requestThunkReducers?: RequestThunkReducerConfig[];
   globalStateLoadConfig?: GlobalStateLoadConfig;
 };
 
@@ -32,6 +32,6 @@ export const validComponentLoadConfigFields = [
   "onLoadRequestData",
   "onLoadInitStore",
   "onLoadRequestConfig",
-  "thunkReducers",
+  "requestThunkReducers",
   "globalStateLoadConfig",
 ];

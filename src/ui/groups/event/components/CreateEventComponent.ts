@@ -35,7 +35,7 @@ const templateStyle = `
 `;
 
 const loadConfig = {
-  thunkReducers:[
+  requestThunkReducers:[
     {
       thunk: CREATE_EVENT_THUNK,
       componentStoreReducer: function(data: any){

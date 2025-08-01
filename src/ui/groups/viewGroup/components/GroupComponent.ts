@@ -8,7 +8,7 @@ import {
 } from "../../Constants.js";
 import {GROUP_PRELOAD_THUNK, GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
 
-import { createJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
+import { serializeJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
 import type { GroupPageData } from "../data/types/GroupPageData.ts";
 import type { Event } from "../../../homepage/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
@@ -24,7 +24,7 @@ import {PageState} from "../../../../framework/state/PageState.ts";
 import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
 import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
-import {ADD_EVENT_PAGE_HANDLER_CONFIG, DELETE_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
+import {CREATE_EVENT_PAGE_HANDLER_CONFIG, DELETE_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -50,6 +50,10 @@ const template = `
       height:24px;
       font-size:24px;
       display: block;
+    }
+    
+    #${GROUP_NAME_INPUT} {
+      width: 600px;
     }
     
     #${GROUP_URL_INPUT} {
@@ -86,7 +90,7 @@ const loadConfig = {
   onLoadRequestData: {
     name: getUrlParameter(GROUP_NAME_PARAM),
   },
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: GROUP_REQUEST_THUNK,
       componentStoreReducer: groupDataStoreReducer
@@ -160,7 +164,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
        ${generateButtonForEditPermission({
            text: "Add event",
            component: this,
-           eventHandlerConfig: ADD_EVENT_PAGE_HANDLER_CONFIG,
+           eventHandlerConfig: CREATE_EVENT_PAGE_HANDLER_CONFIG,
            eventHandlerParams:{name:groupData.name, id: groupData.id}
          })}
        
@@ -229,7 +233,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
                 return `
               <group-page-event-component
                 key = ${groupData.id + "event-" + event.id}
-                data =${createJSONProp({groupId: groupData.id,...event})}
+                data =${serializeJSONProp({groupId: groupData.id,...event})}
               >
  
               </group-page-event-component>
