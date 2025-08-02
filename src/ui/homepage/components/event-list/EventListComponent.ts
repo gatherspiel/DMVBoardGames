@@ -88,32 +88,25 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
     `;
     return groupHtml;
   }
-
-
+  
   override getTemplateStyle(): string {
     return template;
   }
-
-
 
   render(data: any): string {
 
     const groups = data.groups;
     let html = `<div class="ui-section">`;
-    let visibleEvents = 0;
     if (data && Object.values(groups).length > 0) {
       Object.keys(groups).forEach((groupId) => {
         const group = groups[groupId];
-        let groupHtml = "";
-        groupHtml = this.getItemHtml(groupId, group);
-        html += groupHtml;
-        visibleEvents++;
+        html += this.getItemHtml(groupId, group);
       });
     }
 
-    if (visibleEvents === 0) {
+    else  {
       html += `
-      <p>No groups with events found.</p>
+      <p>No groups found.</p>
     `;
     }
     return html + `</div>`;

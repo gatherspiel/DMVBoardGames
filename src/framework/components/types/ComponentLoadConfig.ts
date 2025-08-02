@@ -13,6 +13,10 @@ export type RequestThunkReducerConfig = {
   reducerField?: string;
 };
 
+/**
+ * Global state that the component depends on. The component will not be rendered until the global state
+ * is ready.
+ */
 export type GlobalStateLoadConfig = {
   globalFieldSubscriptions: string[];
   defaultGlobalStateReducer?: (updates: Record<string, string>) => any; //Default reducer from global state if there is no dependent API request.
