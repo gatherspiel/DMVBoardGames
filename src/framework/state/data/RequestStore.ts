@@ -78,7 +78,7 @@ export function updateRequestStore(
     ...updateFunction(data),
   };
 
-  stores[storeName].subscribers.forEach(function (item: any) {
+  stores[storeName].subscribers.forEach(function (item: BaseThunk) {
     const requestData = stores[storeName].data;
 
     if (!item.dispatchers || item.dispatchers.length === 0) {
