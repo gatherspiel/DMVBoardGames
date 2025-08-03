@@ -56,9 +56,11 @@ const template = `
   
   #event-search {
     border-top: 1px solid var(--clr-lighter-blue);
-    padding-block: 1.5rem;
   }
   
+  .search-button {
+    margin-top:2rem;
+  }
   #search-form {
     align-items: center;
     display: flex;
@@ -77,7 +79,6 @@ const template = `
     border-radius: 5px;
     color: var(--clr-light-blue);
     cursor: pointer;
-    margin-right: 1.25rem;
     padding: 0.25rem;
   }
   
@@ -107,10 +108,6 @@ const template = `
     button {
       justify-content: center;
     }
-    
-    
-    #searchButtonWrapper {
-    }
   }
 </style>
 `;
@@ -139,7 +136,7 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
     }
     return `
    
-      <div class="ui-section">
+      <div id="event-search" class="ui-section">
         <form id=${SEARCH_FORM_ID}>
           <div id='search-input-wrapper'>
              <div>
@@ -181,12 +178,10 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
               })}</div>` :
                ``}
             
-           
-            
-            
             <div> 
               ${generateButton({
                 text: "Search groups",
+                class: "search-button",
                 component: this,
                 eventHandlerConfig: SEARCH_EVENT_HANDLER_CONFIG,
               })}

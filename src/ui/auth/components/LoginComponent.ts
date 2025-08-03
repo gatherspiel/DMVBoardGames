@@ -38,6 +38,9 @@ const template = `
       #login-component-container {
         text-align: center;
       }
+      .login-element {
+        font-size:1rem;
+      }
     }
 
   </style>

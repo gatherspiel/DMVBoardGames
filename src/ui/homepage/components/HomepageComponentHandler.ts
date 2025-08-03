@@ -24,7 +24,7 @@ export const HOMEPAGE_COMPONENT_NAV: EventHandlerThunkConfig = {
       }
     }
 
-    if(event.params.location === '#game-restaurant-list'){
+    if(event.params.location === '#game-restaurant'){
       return {
         hideEvents: true,
         hideConventions: true,

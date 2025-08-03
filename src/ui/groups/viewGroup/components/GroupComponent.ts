@@ -68,6 +68,21 @@ const template = `
     #group-events {
       border-top: 1px solid var(--clr-lighter-blue);
     }
+    
+    @media screen and (width < 32em) {
+      h1 {
+        margin: 0;    
+      }
+      .group-description {
+        padding: 0.5rem;
+        margin-top: 1rem;
+        font-size:1rem;
+      }
+      p {
+        font-size:1rem;
+      }
+    }
+    
         
   </style>
   <div></div>
@@ -145,10 +160,10 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
      ${
        !groupData.isEditing
          ? `<div class="group-title">
-       <h1>${groupData.name}
+       <h1>
          ${generateButton({
            class: "group-webpage-link",
-           text: "Group webpage",
+           text: groupData.name,
            component: this,
            eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
            eventHandlerParams: {url: groupData.url}
@@ -223,7 +238,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
         </form> 
       `
      }
-    <h1>Upcoming events</h1>
+    <h1 class="hideOnMobile">Upcoming events</h1>
       <div id="group-events">
       ${
         groupData.eventData.length === 0
