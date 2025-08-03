@@ -1,6 +1,6 @@
 import {
   DAYS_IN_WEEK,
-  DEFAULT_SEARCH_PARAMETER, SEARCH_CITY_ID,
+  DEFAULT_SEARCH_PARAMETER, DISTANCE_OPTIONS, SEARCH_CITY_ID,
   SEARCH_FORM_ID
 } from "./Constants.ts";
 
@@ -10,7 +10,7 @@ import {
   updateCities,
 } from "../../data/search/CityListThunk.ts";
 import {
-  SEARCH_EVENT_HANDLER_CONFIG, UPDATE_CITY_CONFIG, UPDATE_DAY_CONFIG,
+  SEARCH_EVENT_HANDLER_CONFIG, UPDATE_CITY_CONFIG, UPDATE_DAY_CONFIG, UPDATE_DISTANCE_CONFIG,
 } from "./EventSearchHandlers.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {LOCATIONS_THUNK} from "../../data/search/LocationsThunk.ts";
@@ -84,6 +84,10 @@ const template = `
     width:10rem;
   }
   
+  #search-distance {
+      margin-left:1rem;
+    }
+    
   not  @media screen and (width < 32em) {
     display: flex;
     flex-wrap: wrap;
@@ -102,6 +106,7 @@ const template = `
     button {
       justify-content: center;
     }
+    
     
     #searchButtonWrapper {
     }
@@ -136,6 +141,18 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
       <div class="ui-section">
         <form id=${SEARCH_FORM_ID}>
           <div id='search-input-wrapper'>
+             <div>
+              ${this.getDropdownHtml({
+              label:"Select event day:",
+              id: 'search-days',
+              name: "days",
+              data: DAYS_IN_WEEK,
+              selected: eventSearchStore.day,
+              defaultParameter:DEFAULT_SEARCH_PARAMETER,
+              defaultParameterDisplay: "Any day",
+              eventHandlerConfig: UPDATE_DAY_CONFIG
+            })}
+            </div>
             <div>
               ${this.getDropdownHtml({
                 label:"Select event city:",
@@ -148,19 +165,24 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
                 eventHandlerConfig: UPDATE_CITY_CONFIG
               })}
             </div>
-            <div>
+            ${eventSearchStore.location ?
+              `<div>
               ${this.getDropdownHtml({
-                label:"Select event day:",
-                id: 'search-days',
-                name: "days",
-                data: DAYS_IN_WEEK,
-                selected: eventSearchStore.day,
-                defaultParameter:DEFAULT_SEARCH_PARAMETER,
-                defaultParameterDisplay: "Any location",
-                eventHandlerConfig: UPDATE_DAY_CONFIG
-              })}
-  
-            </div>
+                label:"Select distance:",
+                id: "search-distance",
+                name: "distance",
+                data: DISTANCE_OPTIONS,
+                selected: eventSearchStore.distance,
+                defaultParameter:"0 miles",
+                defaultParameterDisplay: "0 miles",
+                eventHandlerConfig: UPDATE_DISTANCE_CONFIG
+                
+              })}</div>` :
+               ``}
+            
+           
+            
+            
             <div> 
               ${generateButton({
                 text: "Search groups",
@@ -179,7 +201,7 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
     return ` 
     <label>${dropdownConfig.label} </label>
     <select
-      id=${SEARCH_CITY_ID}
+      id=${dropdownConfig.id}
       name=${dropdownConfig.name}
       value=${dropdownConfig.data}
       ${this.createOnChangeEvent(dropdownConfig.eventHandlerConfig)}

@@ -8,6 +8,7 @@ import {generatePreloadThunk} from "../../../../framework/state/update/PreloadTh
 
 const CITY_PARAM = "city";
 const DAY_PARAM = "day";
+const DISTANCE_PARAM="distance";
 
 function getEventsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
   let url = API_ROOT + "/searchEvents";
@@ -23,6 +24,10 @@ function getEventsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
     searchParams.location !== undefined
   ) {
     paramMap[CITY_PARAM] = searchParams.location;
+
+    if(searchParams.distance){
+      paramMap[DISTANCE_PARAM] = searchParams.distance.split(" ")[0];
+    }
   }
 
   if (paramMap && Object.keys(paramMap).length > 0) {
