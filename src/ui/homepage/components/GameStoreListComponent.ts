@@ -58,7 +58,8 @@ export class GameStoreListComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: Record<any, GameStore>) {
-    let html = `<div class="ui-section"><h1 class="hideOnMobile">Game Stores</h1>`;
+    let html = `<div class="ui-section"><h1 class="hideOnMobile">Game Stores</h1>
+    <h2>Game stores</h2>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
