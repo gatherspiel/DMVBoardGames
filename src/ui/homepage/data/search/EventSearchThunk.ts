@@ -26,7 +26,7 @@ function getEventsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
     paramMap[CITY_PARAM] = searchParams.location;
 
     if(searchParams.distance){
-      paramMap[DISTANCE_PARAM] = searchParams.distance.split(" ")[0];
+      paramMap[DISTANCE_PARAM] = searchParams.distance;
     }
   }
 

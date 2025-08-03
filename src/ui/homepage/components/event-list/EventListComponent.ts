@@ -4,6 +4,7 @@ import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroup
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
+import {getDisplayNameArray} from "../../../../shared/DisplayNameConversion.ts";
 
 const loadConfig = {
   requestThunkReducers: [
@@ -82,7 +83,7 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
         })}
          
         
-        <p class="event-group-location">${group.locations?.join(", ") ?? ""}</p>              
+        <p class="event-group-location">${getDisplayNameArray(group.locations)?.join(", ") ?? ""}</p>              
         </div> 
       </div>
     `;

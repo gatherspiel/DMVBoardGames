@@ -18,6 +18,7 @@ import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts
 import {PageState} from "../../../../framework/state/PageState.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import type {DropdownConfig} from "../../../../framework/components/types/DropdownConfig.ts";
+import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
 const loadConfig = {
   onLoadStoreConfig: {
     dataSource: EVENT_PRELOAD_THUNK,
@@ -207,12 +208,12 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
       ${this.createOnChangeEvent(dropdownConfig.eventHandlerConfig)}
     >
     ${dropdownConfig.data?.map(
-      (location: any) =>
-        `<option key=${location.index} value="${location.name}" ${location.name === dropdownConfig.selected ? "selected" : ""}>
+      (item: any) =>
+        `<option key=${item.index} value="${item.name}" ${item.name === dropdownConfig.selected ? "selected" : ""}>
           ${
-          location.name === DEFAULT_SEARCH_PARAMETER
+          item.name === DEFAULT_SEARCH_PARAMETER
             ? dropdownConfig.defaultParameterDisplay
-            : location.name
+            : getDisplayName(item.name)
         }
         </option>`,
     )}

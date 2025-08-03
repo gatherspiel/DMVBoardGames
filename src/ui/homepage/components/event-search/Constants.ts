@@ -15,12 +15,12 @@ export const DAYS_IN_WEEK: DropdownConfigItem[] = [
 
 
 export const DISTANCE_OPTIONS: DropdownConfigItem[] = [
-  {index:0, name:"0 miles"},
-  {index:1,name: "5 miles"},
-  {index:2, name:"10 miles"},
-  {index:3, name:"15 miles"},
-  {index:4, name:"30 miles"},
-  {index:5, name:"50 miles"},
+  {index:0, name:"0"},
+  {index:1,name: "5"},
+  {index:2, name:"10"},
+  {index:3, name:"15"},
+  {index:4, name:"30"},
+  {index:5, name:"50"},
 ];
 
 export const SEARCH_CITY_ID: string = "search-cities";
