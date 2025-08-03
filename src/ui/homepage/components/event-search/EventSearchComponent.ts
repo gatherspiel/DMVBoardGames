@@ -86,13 +86,12 @@ const template = `
     width:10rem;
   }
   
-  #search-distance {
+
+    
+ @media not screen and (width < 32em) {
+    #search-distance {
       margin-left:1rem;
     }
-    
-  not  @media screen and (width < 32em) {
-    display: flex;
-    flex-wrap: wrap;
   }
   
   @media screen and (width < 32em) {
