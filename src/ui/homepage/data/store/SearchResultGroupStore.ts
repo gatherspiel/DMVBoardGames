@@ -1,7 +1,6 @@
 export function updateSearchResultGroupStore(groupResults: any) {
   const updatedGroupStore: Record<string, any> = {};
 
-  console.log(Date.now());
   Object.keys(groupResults).forEach(function (groupId) {
     const group = groupResults[groupId];
 
