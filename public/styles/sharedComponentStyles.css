@@ -50,10 +50,24 @@ p {
   color: darkred;
 }
 
+
+
+@media not screen and (width < 32em) {
+  .showOnMobile {
+    display:none
+  }
+}
+
 @media screen and (width < 32em) {
   .ui-section {
     text-align: center;
     justify-items: center;
+  }
+  .hideOnMobile {
+    display:none;
+  }
+  .showOnMobile {
+    display:initial;
   }
 }
 
@@ -144,6 +158,4 @@ p {
   outline: none;
 }
 
-.hideOnMobile {
-  display:none;
-}
+
