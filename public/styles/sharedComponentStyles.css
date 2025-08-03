@@ -144,3 +144,6 @@ p {
   outline: none;
 }
 
+.hideOnMobile {
+  display:none;
+}

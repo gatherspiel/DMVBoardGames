@@ -26,7 +26,7 @@ const template = `
     }
   </style>
 `;
-export class GameRestaurantComponent extends BaseTemplateDynamicComponent {
+export class GameRestaurantListComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(GAME_RESTAURANT_LIST_STORE, loadConfig);
   }
@@ -52,7 +52,7 @@ export class GameRestaurantComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: Record<any, GameRestaurant>) {
-    let html = `<div class ="ui-section"><h1>Board Game Bars and Cafés</h1>`;
+    let html = `<div class ="ui-section"><h1 class="hideOnMobile">Board Game Bars and Cafés</h1>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
@@ -64,6 +64,6 @@ export class GameRestaurantComponent extends BaseTemplateDynamicComponent {
 if (!customElements.get("game-restaurant-list-component")) {
   customElements.define(
     "game-restaurant-list-component",
-    GameRestaurantComponent,
+    GameRestaurantListComponent,
   );
 }

@@ -22,7 +22,6 @@ const template = `
         
       max-width: 65ch;
       margin-top: 0.5rem;
-      margin-right: 5rem;
     }
     
     .event-time, .event-location {
