@@ -7,7 +7,7 @@ import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandle
 export const GAME_STORE_LIST_STORE = "gameStoreListStore";
 
 const loadConfig = {
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: LOCATIONS_THUNK,
       componentStoreReducer: (data: any) => {
@@ -58,7 +58,7 @@ export class GameStoreListComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: Record<any, GameStore>) {
-    let html = `<div class="ui-section"><h1>Game Stores</h1>`;
+    let html = `<div class="ui-section"><h1 class="hideOnMobile">Game Stores</h1>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;

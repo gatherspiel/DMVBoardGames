@@ -36,18 +36,17 @@ export class BaseThunk {
 
     let status:LoadStatus = {}
     if (this.requestStoreId) {
-      if ( !hasRequestStore(this.requestStoreId)) {
+      if (!hasRequestStore(this.requestStoreId)) {
         initRequestStore(componentLoadConfig);
       } else {
         updateRequestStoreAndClearCache(this.requestStoreId, componentLoadConfig.onLoadRequestData);
       }
-
       status.dependenciesLoaded = true;
     } else {
 
-      let reducer = componentLoadConfig.globalStateLoadConfig?.defaultGlobalStateReducer;
-      if(!reducer){
-        reducer = function (updates: Record<string, string>) {
+      let globalStateReducer = componentLoadConfig.globalStateLoadConfig?.defaultGlobalStateReducer;
+      if(!globalStateReducer){
+        globalStateReducer = function (updates: Record<string, string>) {
           return updates
         }
       }
@@ -57,13 +56,13 @@ export class BaseThunk {
 
       componentLoadConfig.globalStateLoadConfig?.globalFieldSubscriptions?.forEach(
         function (fieldName) {
-          const fieldValue = getGlobalStateValue(fieldName);
-          dataToUpdate[fieldName] = fieldValue;
+          dataToUpdate[fieldName] = getGlobalStateValue(fieldName);;
         },
       );
+
       updateComponentStore(
         componentStoreName,
-        reducer,
+        globalStateReducer,
         dataToUpdate,
       );
     }

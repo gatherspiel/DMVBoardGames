@@ -6,13 +6,17 @@ export type RequestStoreItem = {
   preloadData?:BaseThunk
 };
 
-export type ThunkDispatcherConfig = {
-  thunk: BaseThunk;
+export type RequestThunkReducerConfig = {
+  thunk: BaseThunk
   componentStoreReducer: (a: any) => any;
   globalStoreReducer?: (a: any) => any;
   reducerField?: string;
 };
 
+/**
+ * Global state that the component depends on. The component will not be rendered until the global state
+ * is ready.
+ */
 export type GlobalStateLoadConfig = {
   globalFieldSubscriptions: string[];
   defaultGlobalStateReducer?: (updates: Record<string, string>) => any; //Default reducer from global state if there is no dependent API request.
@@ -23,7 +27,7 @@ export type ComponentLoadConfig = {
   onLoadRequestData?: any;
   onLoadInitStore?: () => any;
   onLoadRequestConfig?: RequestStoreItem[];
-  thunkReducers?: ThunkDispatcherConfig[];
+  requestThunkReducers?: RequestThunkReducerConfig[];
   globalStateLoadConfig?: GlobalStateLoadConfig;
 };
 
@@ -32,6 +36,6 @@ export const validComponentLoadConfigFields = [
   "onLoadRequestData",
   "onLoadInitStore",
   "onLoadRequestConfig",
-  "thunkReducers",
+  "requestThunkReducers",
   "globalStateLoadConfig",
 ];

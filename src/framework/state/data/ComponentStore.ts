@@ -1,5 +1,4 @@
 import { createStore, subscribeToStore, updateStore } from "./StoreUtils.js";
-import { hasSubscribers } from "./StoreUtils.js";
 
 let stores: Record<string, any> = {};
 
@@ -11,9 +10,6 @@ export function createComponentStore(
   subscribeComponentToStore(storeName, component);
 }
 
-export function hasComponentStoreSubscribers(storeName: string): boolean {
-  return hasSubscribers(storeName, stores);
-}
 /**
  * Make sure a component is subscribed to a store.
  * @param store Name of store that the component will subscribe to.

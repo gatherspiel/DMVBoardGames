@@ -2,24 +2,39 @@ import { BaseTemplateComponent } from "../../framework/components/BaseTemplateCo
 
 const template = document.createElement("template");
 template.innerHTML = `
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
   <style>
+
+    .ui-section {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
     
-    nav {
-      background-color: var(--clr-lighter-blue);
-      background-image: url("/assets/wood.png");
+    .pushable:hover {
+      transform:none;
+      transition: none;
+    }
+    
+    .pushable:active {
+      transform:none;
+      transition: none;
     }
         
     #logo-div img {
       max-height: 4.5rem;
       padding-left: 0.5rem;
-      padding-top: 0.25rem;
+      padding-top: 0.2rem;
     }
     
     nav a,
     #jump-to a {
+      border:none;
       background-color: none;
       color: white;
-      font-size: 1.25rem;
+      font-weight: 400;
+      font-size: 1.5rem;
+      margin-top: 0rem;
       padding-bottom: 0.25rem;
       padding-top: 0.25rem;
       padding-left: 1rem;
@@ -39,8 +54,7 @@ template.innerHTML = `
     #jump-to a:hover {
       background-color: var(--clr-darker-blue);
       color: white;
-            text-decoration: none;
-
+      text-decoration: none;
     }
     
     nav a:last-child {
@@ -61,7 +75,6 @@ template.innerHTML = `
       .top-nav {
         display: flex;
         flex-wrap: wrap;
-        margin-top: 5px;
         padding-left: 0.5rem;     
       }
       nav a + a {
@@ -106,7 +119,11 @@ export class NavbarComponent extends BaseTemplateComponent {
 
     // Closing tags are on separate lines are to prevent extra spaces between links
     return `
-      <nav>
+      <nav class="pushable">
+      <span class="shadow"></span>
+      <span class="edge"></span>
+
+      <span class="front">
         <div id="logo-div">
           <img src="assets/logo.svg"> </img>
         </div>
@@ -118,10 +135,13 @@ export class NavbarComponent extends BaseTemplateComponent {
             </a><a href="https://gatherspiel.com/vision.html">Future plans
             </a><a href="${window.location.origin}/useful_links.html">Useful Links
             </a><a href="${window.location.origin}/feedback.html">Feedback     
-            </a><a href="https://gatherspiel.com/help.html">Want to help with development </a>           
+            </a><a href="https://gatherspiel.com/help.html">Want to help development </a>           
           </div>
         <div id="nav-filler"></div>
-        </div>
+        </div>       
+       
+      </span>
+ 
 
       </nav>
     `;

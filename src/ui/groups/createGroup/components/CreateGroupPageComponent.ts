@@ -8,6 +8,7 @@ import {
   GROUP_URL_INPUT,
 } from "../../Constants.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
+import {generateErrorMessage} from "../../../../framework/components/utils/StatusIndicators.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -19,7 +20,7 @@ const templateStyle = `
 `;
 
 const loadConfig = {
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: CREATE_GROUP_REQUEST_THUNK,
       componentStoreReducer: function (data: any) {
@@ -105,7 +106,7 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
               </form>
              
               <p>${createGroupData?.successMessage?.trim() ?? ""}</p>
-              ${this.generateErrorMessage(createGroupData.errorMessage)}
+              ${generateErrorMessage(createGroupData.errorMessage)}
             `
             : `<p>You must log in to create a group </p>`
         }    

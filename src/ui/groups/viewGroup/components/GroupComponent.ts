@@ -8,7 +8,7 @@ import {
 } from "../../Constants.js";
 import {GROUP_PRELOAD_THUNK, GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
 
-import { createJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
+import { serializeJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
 import type { GroupPageData } from "../data/types/GroupPageData.ts";
 import type { Event } from "../../../homepage/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
@@ -24,7 +24,7 @@ import {PageState} from "../../../../framework/state/PageState.ts";
 import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
 import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
-import {ADD_EVENT_PAGE_HANDLER_CONFIG, DELETE_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
+import {CREATE_EVENT_PAGE_HANDLER_CONFIG, DELETE_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -52,6 +52,10 @@ const template = `
       display: block;
     }
     
+    #${GROUP_NAME_INPUT} {
+      width: 600px;
+    }
+    
     #${GROUP_URL_INPUT} {
       width: 600px;
     }
@@ -64,6 +68,21 @@ const template = `
     #group-events {
       border-top: 1px solid var(--clr-lighter-blue);
     }
+    
+    @media screen and (width < 32em) {
+      h1 {
+        margin: 0;    
+      }
+      .group-description {
+        padding: 0.5rem;
+        margin-top: 1rem;
+        font-size:1rem;
+      }
+      p {
+        font-size:1rem;
+      }
+    }
+    
         
   </style>
   <div></div>
@@ -79,7 +98,6 @@ const groupDataStoreReducer = function(data:any){
   return data;
 }
 
-
 const loadConfig = {
   onLoadStoreConfig: {
     dataSource: GROUP_PRELOAD_THUNK,
@@ -87,7 +105,7 @@ const loadConfig = {
   onLoadRequestData: {
     name: getUrlParameter(GROUP_NAME_PARAM),
   },
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: GROUP_REQUEST_THUNK,
       componentStoreReducer: groupDataStoreReducer
@@ -114,18 +132,14 @@ const loadConfig = {
 export class GroupComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(GROUP_COMPONENT_STORE, loadConfig);
-
   }
-
 
   connectedCallback(){
     if(PageState.pageLoaded) {
-      console.log("Render time for group page:"+Date.now())
       //@ts-ignore
       loadConfig.onLoadStoreConfig.dataSource = GROUP_REQUEST_THUNK
       loadConfig.onLoadRequestData.name = getUrlParameter(GROUP_NAME_PARAM)
       initRequestStore(loadConfig);
-
     }
   }
 
@@ -146,10 +160,10 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
      ${
        !groupData.isEditing
          ? `<div class="group-title">
-       <h1>${groupData.name}
+       <h1>
          ${generateButton({
            class: "group-webpage-link",
-           text: "Group webpage",
+           text: groupData.name,
            component: this,
            eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
            eventHandlerParams: {url: groupData.url}
@@ -157,7 +171,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
        </h1>
 
        ${generateButtonForEditPermission({
-           text: "Edit group",
+           text: "Edit group info",
            component: this,
            eventHandlerConfig: EDIT_GROUP_EVENT_CONFIG,
        })}
@@ -165,7 +179,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
        ${generateButtonForEditPermission({
            text: "Add event",
            component: this,
-           eventHandlerConfig: ADD_EVENT_PAGE_HANDLER_CONFIG,
+           eventHandlerConfig: CREATE_EVENT_PAGE_HANDLER_CONFIG,
            eventHandlerParams:{name:groupData.name, id: groupData.id}
          })}
        
@@ -224,7 +238,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
         </form> 
       `
      }
-    <h1>Upcoming events</h1>
+    <h1 class="hideOnMobile">Upcoming events</h1>
       <div id="group-events">
       ${
         groupData.eventData.length === 0
@@ -234,7 +248,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
                 return `
               <group-page-event-component
                 key = ${groupData.id + "event-" + event.id}
-                data =${createJSONProp({groupId: groupData.id,...event})}
+                data =${serializeJSONProp({groupId: groupData.id,...event})}
               >
  
               </group-page-event-component>

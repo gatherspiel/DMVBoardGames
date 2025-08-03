@@ -7,7 +7,7 @@ import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandle
 export const CONVENTION_LIST_STORE = "conventionListStore";
 
 const loadConfig = {
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: LOCATIONS_THUNK,
       componentStoreReducer: (data: any) => {
@@ -62,7 +62,7 @@ export class ConventionListComponent extends BaseTemplateDynamicComponent {
     return template;
   }
   render(data: Record<any, Convention>) {
-    let html = `<div class="ui-section"><h1>Upcoming conventions</h1>`;
+    let html = `<div class="ui-section"><h1 class="hideOnMobile">Upcoming conventions</h1>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;

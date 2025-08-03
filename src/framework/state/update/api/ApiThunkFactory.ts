@@ -52,7 +52,3 @@ export function generateApiThunkWithExternalConfig(
 
   return thunk;
 }
-
-export function resetThunkCount(){
-  thunkCount = 0;
-}

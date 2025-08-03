@@ -3,7 +3,7 @@
  */
 
 // @ts-ignore
-import {GameRestaurantComponent} from "./GameRestaurantComponent.ts";
+import {GameRestaurantListComponent} from "./GameRestaurantListComponent.ts";
 // @ts-ignore
 import {GameStoreListComponent} from "./GameStoreListComponent.ts";
 // @ts-ignore
@@ -72,7 +72,7 @@ export class HomepageComponent extends BaseTemplateDynamicComponent {
               text: "Bars and Cafés",
               component: this,
               eventHandlerConfig: HOMEPAGE_COMPONENT_NAV,
-              eventHandlerParams: {location:"#game-store"}
+              eventHandlerParams: {location:"#game-restaurant"}
             })} 
              
           </div>

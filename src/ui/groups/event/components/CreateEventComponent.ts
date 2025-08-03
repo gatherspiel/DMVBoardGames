@@ -15,6 +15,7 @@ import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import {
   VIEW_GROUP_PAGE_HANDLER_CONFIG
 } from "../../../../shared/nav/NavEventHandlers.ts";
+import {generateErrorMessage} from "../../../../framework/components/utils/StatusIndicators.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -34,7 +35,7 @@ const templateStyle = `
 `;
 
 const loadConfig = {
-  thunkReducers:[
+  requestThunkReducers:[
     {
       thunk: CREATE_EVENT_THUNK,
       componentStoreReducer: function(data: any){
@@ -81,7 +82,7 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
 
     return `
     
-    ${this.generateErrorMessage(data.errorMessage)}
+    ${generateErrorMessage(data.errorMessage)}
     
     ${data.successMessage ? `<p>${data.successMessage}</p>`: ``}
     <form onsubmit="return false">

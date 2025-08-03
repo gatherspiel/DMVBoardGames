@@ -1,4 +1,4 @@
-import { retrieveJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
+import { deserializeJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
   convertDateTimeForDisplay,
@@ -22,7 +22,6 @@ const template = `
         
       max-width: 65ch;
       margin-top: 0.5rem;
-      margin-right: 5rem;
     }
     
     .event-time, .event-location {
@@ -49,7 +48,7 @@ export class GroupEventComponent extends BaseTemplateDynamicComponent {
 
   render(): string {
     this.id = this.getAttribute("key") ?? "";
-    const eventData = retrieveJSONProp(this, "data");
+    const eventData = deserializeJSONProp(this, "data");
 
     return `
       <div id=${this.id} class="event">
