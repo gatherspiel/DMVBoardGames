@@ -62,7 +62,8 @@ export class ConventionListComponent extends BaseTemplateDynamicComponent {
     return template;
   }
   render(data: Record<any, Convention>) {
-    let html = `<div class="ui-section"><h1 class="hideOnMobile">Upcoming conventions</h1>`;
+    let html = `<div class="ui-section"><h1 class="hideOnMobile">Upcoming conventions</h1>
+        <h2 class="showOnMobile">Upcoming conventions</h2>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;

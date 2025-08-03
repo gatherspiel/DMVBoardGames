@@ -52,7 +52,10 @@ export class GameRestaurantListComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: Record<any, GameRestaurant>) {
-    let html = `<div class ="ui-section"><h1 class="hideOnMobile">Board Game Bars and Cafés</h1>`;
+    let html = `<div class ="ui-section">
+    <h1 class="hideOnMobile">Board Game Bars and Cafés</h1>
+    <h2 class="showOnMobile">Board Game Bars and Cafés</h2>
+    `;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
