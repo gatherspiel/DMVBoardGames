@@ -1,7 +1,6 @@
 import {
   DAYS_IN_WEEK,
-  DEFAULT_SEARCH_PARAMETER,
-  SEARCH_CITY_ID,
+  DEFAULT_SEARCH_PARAMETER, SEARCH_CITY_ID,
   SEARCH_FORM_ID
 } from "./Constants.ts";
 
@@ -10,17 +9,15 @@ import {
   CITY_LIST_THUNK,
   updateCities,
 } from "../../data/search/CityListThunk.ts";
-import type { EventSearchCity } from "./types/EventSearchCity.ts";
 import {
-  SEARCH_EVENT_HANDLER_CONFIG,
-  UPDATE_CITY_CONFIG,
-  UPDATE_DAY_CONFIG,
+  SEARCH_EVENT_HANDLER_CONFIG, UPDATE_CITY_CONFIG, UPDATE_DAY_CONFIG,
 } from "./EventSearchHandlers.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {LOCATIONS_THUNK} from "../../data/search/LocationsThunk.ts";
 import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 import {PageState} from "../../../../framework/state/PageState.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
+import type {DropdownConfig} from "../../../../framework/components/types/DropdownConfig.ts";
 const loadConfig = {
   onLoadStoreConfig: {
     dataSource: EVENT_PRELOAD_THUNK,
@@ -83,6 +80,10 @@ const template = `
     padding: 0.25rem;
   }
   
+  select {
+    width:10rem;
+  }
+  
   not  @media screen and (width < 32em) {
     display: flex;
     flex-wrap: wrap;
@@ -136,23 +137,29 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
         <form id=${SEARCH_FORM_ID}>
           <div id='search-input-wrapper'>
             <div>
-              ${this.getCityHtml(eventSearchStore)}
+              ${this.getDropdownHtml({
+                label:"Select event city:",
+                id: SEARCH_CITY_ID,
+                name: "cities",
+                data: eventSearchStore.cities ?? [{name:"Any location"}],
+                selected: eventSearchStore.location,
+                defaultParameter:DEFAULT_SEARCH_PARAMETER,
+                defaultParameterDisplay: "Any location",
+                eventHandlerConfig: UPDATE_CITY_CONFIG
+              })}
             </div>
-            <div >
-              <label htmlFor="days">Select event day:</label>
-              <select
-                name="days"
-                id="search-days"
-                value=${eventSearchStore.day}
-                ${this.createOnChangeEvent(UPDATE_DAY_CONFIG)}
-              >
-                ${DAYS_IN_WEEK.map(
-                  (day, index) =>
-                    `<option key=${index} value=${day} ${day === eventSearchStore.day ? "selected" : ""}>
-                      ${day === DEFAULT_SEARCH_PARAMETER ? "Any day" : day}
-                     </option>`,
-                )}
-              </select>
+            <div>
+              ${this.getDropdownHtml({
+                label:"Select event day:",
+                id: 'search-days',
+                name: "days",
+                data: DAYS_IN_WEEK,
+                selected: eventSearchStore.day,
+                defaultParameter:DEFAULT_SEARCH_PARAMETER,
+                defaultParameterDisplay: "Any location",
+                eventHandlerConfig: UPDATE_DAY_CONFIG
+              })}
+  
             </div>
             <div> 
               ${generateButton({
@@ -168,40 +175,29 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
 
   }
 
-  getCityHtml(eventSearchStore: any) {
-    const defautCityInfo = {id:0, name: "potato"}
+  getDropdownHtml(dropdownConfig: DropdownConfig) {
     return ` 
-    <label>Select event city: </label>
+    <label>${dropdownConfig.label} </label>
     <select
       id=${SEARCH_CITY_ID}
-      name="cities"
-      value=${eventSearchStore.cities  ?? defautCityInfo}
-      ${this.createOnChangeEvent(UPDATE_CITY_CONFIG)}
+      name=${dropdownConfig.name}
+      value=${dropdownConfig.data}
+      ${this.createOnChangeEvent(dropdownConfig.eventHandlerConfig)}
     >
-
-    ${this.getLocationSelect(eventSearchStore) ?? 'Any location'}
+    ${dropdownConfig.data?.map(
+      (location: any) =>
+        `<option key=${location.index} value="${location.name}" ${location.name === dropdownConfig.selected ? "selected" : ""}>
+          ${
+          location.name === DEFAULT_SEARCH_PARAMETER
+            ? dropdownConfig.defaultParameterDisplay
+            : location.name
+        }
+        </option>`,
+    )}
     </select>`;
   }
-
-  getLocationSelect(eventSearchStore: any) {
-    let cities = eventSearchStore.cities;
-    if(!eventSearchStore.cities){
-      cities = [{name:"Any location"}];
-    }
-    const data = `
-    ${cities?.map(
-      (location: EventSearchCity) =>
-        `<option key=${location.index} value="${location.name}" ${location.name === eventSearchStore.location ? "selected" : ""}>
-          ${
-            location.name === DEFAULT_SEARCH_PARAMETER
-              ? "Any location"
-              : location.name
-          }
-        </option>`,
-    )}`;
-    return data;
-  }
 }
+
 if (!customElements.get("event-search-component")) {
   customElements.define("event-search-component", EventSearchComponent);
 }
