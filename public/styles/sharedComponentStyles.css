@@ -46,11 +46,12 @@ p {
   display: inline-block;
 }
 
+.success-message {
+  color: #00BB51
+}
 .error-message {
   color: darkred;
 }
-
-
 
 @media not screen and (width < 32em) {
   .showOnMobile {
