@@ -84,7 +84,7 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
     
     ${generateErrorMessage(data.errorMessage)}
     
-    ${data.successMessage ? `<p>${data.successMessage}</p>`: ``}
+    ${data.successMessage ? `<p class="success-message">${data.successMessage}</p>`: ``}
     <form onsubmit="return false">
       
         <h1>Create board game event for group ${getUrlParameter("groupName")}</h1>

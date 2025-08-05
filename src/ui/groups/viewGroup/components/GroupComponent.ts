@@ -119,7 +119,7 @@ const loadConfig = {
       componentStoreReducer: function () {
         return {
           isEditing: false,
-          successMessage: 'Group update sucessful'
+          successMessage: 'Group update successful'
         };
       },
     },

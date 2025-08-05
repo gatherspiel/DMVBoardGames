@@ -84,7 +84,7 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
       </form> 
       ${generateErrorMessage(data.errorMessage)}
       
-      <p>${data?.successMessage?.trim() ?? ""}</p>   
+      <p class="success-message">${data?.successMessage?.trim() ?? ""}</p>   
     `;
   }
 }

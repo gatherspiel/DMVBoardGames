@@ -125,7 +125,7 @@ export class NavbarComponent extends BaseTemplateComponent {
 
       <span class="front">
         <div id="logo-div">
-          <img src="assets/logo.svg"> </img>
+          <img src="/assets/logo.svg"> </img>
         </div>
         <div class="ui-section top-nav">
           <div class="top-nav">
