@@ -257,7 +257,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
           eventHandlerConfig: DELETE_EVENT_CONFIG,
         })}
   
-        <p>${data.successMessage ? data.successMessage.trim(): ""}</p>
+        <p class="success-message">${data.successMessage ? data.successMessage.trim(): ""}</p>
         
         ${generateButtonForEditPermission({
           text: "Back to group",

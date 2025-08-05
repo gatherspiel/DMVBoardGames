@@ -88,13 +88,13 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
     } else {
       return `
        <div class="ui-section" id="login-component-container">
-        <div class="login-element">${data.successMessage}</div>
-        ${generateButton({
-          type: "submit",
-          text: "Logout",
-          component: this,
-          eventHandlerConfig: LOGOUT_EVENT_CONFIG
-        })}
+       <div class="login-element">${data.successMessage}</div>
+       ${generateButton({
+        type: "submit",
+        text: "Logout",
+        component: this,
+        eventHandlerConfig: LOGOUT_EVENT_CONFIG
+       })}
       </div>
        `;
     }
@@ -144,7 +144,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
                     
           </div>
           ${this.hasRendered ? generateErrorMessage(data.errorMessage) : ''}
-          <div class="login-element">${data.successMessage}</div>
+          <div class="login-element success-message">${data.successMessage}</div>
         </form>
 
     </div>
