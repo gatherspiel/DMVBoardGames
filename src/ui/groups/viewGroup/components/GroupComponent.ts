@@ -35,16 +35,19 @@ const template = `
       margin-left:1rem;
       margin-right:1rem;
     }
-    .group-description {
-      background-color: var(--clr-lighter-blue);
-      background-image: url("/assets/wood.png");
-      border-radius: 10px;
+    .group-description-text {
+      display: block;
+      position: relative;
+      padding: 0.5rem;
+      border-radius: 12px;
+      font-size: 1.5rem;
       color: var(--clr-dark-blue);
-      font-size: 1.25rem;
-      font-weight:600;
-      padding: 2rem;
-      margin-top: 2rem;
+      background-color: #0AACFB;
+      will-change: transform;
+      transform: translateY(-4px);
+      transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
     }
+    
    
     .group-data-input {
       height:24px;
@@ -192,8 +195,12 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
 
        </div>
     
-       <div class="group-description">
-       <p>${groupData.description}</p>
+       <div class="raised">
+        <span class="shadow"></span>
+        <span class="edge"></span>
+        <p class="group-description-text">
+          ${groupData.description}
+        </p> 
        </div>` 
          : `
        <h1>Editing group information</h1>

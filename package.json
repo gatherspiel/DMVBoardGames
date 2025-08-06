@@ -19,7 +19,6 @@
     "vite-plugin-handlebars": "^2.0.0"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.49.1",
     "vite-plugin-checker": "^0.9.3",
     "vite-plugin-inline-source": "^4.0.0"
   }

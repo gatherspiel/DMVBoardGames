@@ -29,7 +29,7 @@ const template = `
       visibility: hidden;
     }
     
-    .pushable {
+    .raised {
       display: inline-block;
     }
     

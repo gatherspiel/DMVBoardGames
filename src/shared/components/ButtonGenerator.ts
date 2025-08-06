@@ -12,7 +12,7 @@ export type ButtonConfig ={
 }
 
 export function generateButton(config:ButtonConfig){
-  const buttonClasses = `pushable activeHover${config.class ? ` ${config.class}` : ``}`;
+  const buttonClasses = `raised activeHover${config.class ? ` ${config.class}` : ``}`;
   return `
     <button 
       class="${buttonClasses}"
