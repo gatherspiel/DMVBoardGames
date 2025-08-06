@@ -3,6 +3,7 @@ import { dirname, resolve } from "node:path";
 import checker from "vite-plugin-checker";
 import { fileURLToPath } from "node:url";
 import inlineSource from "vite-plugin-inline-source";
+import handlebars from 'vite-plugin-handlebars';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -12,6 +13,9 @@ export default defineConfig({
     checker({
       // e.g. use TypeScript check
       typescript: true,
+    }),
+    handlebars({
+      partialDirectory: resolve(__dirname, 'src/partials'),
     }),
     inlineSource()
   ],
