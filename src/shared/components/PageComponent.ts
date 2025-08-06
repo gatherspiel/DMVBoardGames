@@ -1,5 +1,4 @@
 import {AbstractPageComponent} from "../../framework/components/AbstractPageComponent.ts";
-import {NavbarComponent} from "../../ui/static/NavbarComponent.ts";
 import {LoginComponent} from "../../ui/auth/components/LoginComponent.ts";
 import {GroupComponent} from "../../ui/groups/viewGroup/components/GroupComponent.ts";
 import {CreateGroupPageComponent} from "../../ui/groups/createGroup/components/CreateGroupPageComponent.ts";
@@ -11,7 +10,7 @@ import {EventDetailsComponent} from "../../ui/groups/event/components/EventDetai
 export class PageComponent extends  AbstractPageComponent {
 
   override getCommonComponents(): HTMLElement[] {
-    return [new NavbarComponent(), new LoginComponent()];
+    return [new LoginComponent()];
   }
 
   override getRouteMap(): Record<string, (params: any) => string> {
