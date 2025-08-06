@@ -1,6 +1,5 @@
-import { API_ROOT, USE_MOCK } from "../../../../shared/Params.ts";
+import { API_ROOT } from "../../../../shared/Params.ts";
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.ts";
-import { getGroups } from "../mock/MockPageData.ts";
 import type { SearchParams } from "./model/SearchParams.ts";
 import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
 import type { ApiRequestConfig } from "../../../../framework/state/update/api/types/ApiRequestConfig.ts";
@@ -45,14 +44,9 @@ function getEventsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
   };
 }
 
-const defaultFunctionConfig = {
-  defaultFunction: getGroups,
-  defaultFunctionPriority: USE_MOCK,
-};
 
 export const EVENT_SEARCH_THUNK = generateApiThunk({
   queryConfig: getEventsQueryConfig,
-  defaultFunctionConfig: defaultFunctionConfig,
 });
 
 export const EVENT_PRELOAD_THUNK = generatePreloadThunk("preload_"+EVENT_SEARCH_THUNK.requestStoreId)

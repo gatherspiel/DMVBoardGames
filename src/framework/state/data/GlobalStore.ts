@@ -14,7 +14,8 @@ export function getGlobalStateValue(fieldName: string): string {
 
 export function setupGlobalState(fields: Record<string, string>) {
   if (globalStateCreated) {
-    throw new Error("Global state has already been initialized");
+    return;
+    //throw new Error("Global state has already been initialized");
   }
 
   Object.values(fields).forEach(function (fieldName: string) {
