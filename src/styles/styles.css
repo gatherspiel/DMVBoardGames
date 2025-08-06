@@ -26,7 +26,6 @@ body {
 
 button {
   background-color: var(--clr-lighter-blue);
-  background-image: url("/assets/wood.png");
   border-color: var(--clr-darker-blue);
   border-radius: 5px;
   border-width:1px;
@@ -51,14 +50,12 @@ h1 {
 }
 
 
-
 #page-info {
   padding-top: 8px;
 }
 
 #page-info {
   background-color: var(--clr-very-light-blue);
-  background-image: url("/assets/wood.png");
   border-radius: 10px;
   color: var(--clr-dark-blue);
 }
@@ -144,12 +141,12 @@ select:focus-visible {
   padding-bottom: 0;
 }
 
-.pushable:hover {
+.raised:hover {
   transform:none;
   transition: none;
 }
 
-.pushable:active {
+.raised:active {
   transform:none;
   transition: none;
 }
@@ -202,7 +199,7 @@ nav a:last-child {
 }
 
 
-.pushable {
+.raised {
   position: relative;
   -webkit-tap-highlight-color: transparent;
   background: transparent;

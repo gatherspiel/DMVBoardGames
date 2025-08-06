@@ -11,12 +11,12 @@ template.innerHTML = `
       padding-bottom: 0;
     }
     
-    .pushable:hover {
+    .raised:hover {
       transform:none;
       transition: none;
     }
     
-    .pushable:active {
+    .raised:active {
       transform:none;
       transition: none;
     }
@@ -119,7 +119,7 @@ export class NavbarComponent extends BaseTemplateComponent {
 
     // Closing tags are on separate lines are to prevent extra spaces between links
     return `
-      <nav class="pushable">
+      <nav class="raised">
       <span class="shadow"></span>
       <span class="edge"></span>
 
