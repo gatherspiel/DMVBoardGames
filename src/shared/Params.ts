@@ -4,12 +4,12 @@ export const IS_PRODUCTION = window.location.href.includes(
   "https://dmvboardgames.com/",
 );
 export const IS_TEST = window.location.href.includes(
-  "https://test.dmvboardgames.com/",
+  "https://dmvboardgames-60o0k.kinsta.page/",
 );
 
 export const API_ROOT: string =
   IS_PRODUCTION || IS_TEST
-    ? `${import.meta.env.VITE_API_ROOT}`
+    ? `https://gatherspiel-api-6mued.kinsta.app/`
     : import.meta.env.VITE_LOCAL_API_ROOT;
 
 export const USE_MOCK: boolean = import.meta.env.VITE_USE_API_MOCK === "true";
