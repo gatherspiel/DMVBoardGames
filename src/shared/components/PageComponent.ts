@@ -1,58 +1,32 @@
-import { NavbarComponent } from "../../ui/static/navbarComponent.ts";
-import { LoginComponent } from "../../ui/auth/components/LoginComponent.ts";
-import { getComponent } from "./ComponentRegistry.ts";
-import { setupStateFields} from "../InitGlobalStateConfig.ts";
-import {GroupPageComponent} from "../../ui/groups/viewGroup/components/GroupPageComponent.ts";
-import {HomepageComponent} from "../../ui/homepage/components/HomepageComponent.ts";
+import {AbstractPageComponent} from "../../framework/components/AbstractPageComponent.ts";
+import {LoginComponent} from "../../ui/auth/components/LoginComponent.ts";
+import {GroupComponent} from "../../ui/groups/viewGroup/components/GroupComponent.ts";
+import {CreateGroupPageComponent} from "../../ui/groups/createGroup/components/CreateGroupPageComponent.ts";
+import {DeleteGroupPageComponent} from "../../ui/groups/deleteGroup/DeleteGroupPageComponent.ts";
+import {CreateEventComponent} from "../../ui/groups/event/components/CreateEventComponent.ts";
+import {EventDetailsComponent} from "../../ui/groups/event/components/EventDetailsComponent.ts";
 
 
-export class PageComponent extends HTMLElement {
+export class PageComponent extends  AbstractPageComponent {
 
-  static currentComponent: PageComponent;
-
-  activeComponent: HTMLElement;
-  prevComponent: HTMLElement | undefined;
-
-  constructor() {
-    super();
-
-    setupStateFields();
-    const componentName: string = this.getAttribute("componentName") ?? "";
-    this.appendChild(new NavbarComponent());
-    this.appendChild(new LoginComponent());
-
-    this.activeComponent = getComponent(componentName);
-    this.appendChild(this.activeComponent);
-
-    PageComponent.currentComponent = this;
-
-    const self = this;
-    // Handle forward/back buttons
-    window.addEventListener("popstate", (event) => {
-      // If a state has been provided, we have a "simulated" page
-      // and we update the current page.
-      console.log("Event:"+event.state)
-        self.removeChild(self.activeComponent);
-        // Simulate the loading of the previous page
-
-        if(self.prevComponent){
-          self.activeComponent = new HomepageComponent()
-          self.appendChild(self.activeComponent);
-        }
-
-    });
-
+  override getCommonComponents(): HTMLElement[] {
+    return [new LoginComponent()];
   }
 
-  update(){
-    this.removeChild(this.activeComponent)
-
-    this.prevComponent = this.activeComponent;
-    window.history.pushState({"Test":"Test"},"Test","groups.html?name=Beer & Board Games")
-
-    const component = new GroupPageComponent();
-    this.appendChild(component)
-    this.activeComponent = component;
+  override getRouteMap(): Record<string, (params: any) => string> {
+    return {
+      [GroupComponent.name]: function(){return "groups.html"},
+      [CreateGroupPageComponent.name]: function(){return "groups/create.html"},
+      [DeleteGroupPageComponent.name]: function(params:any){
+        return `groups/delete.html?name=${encodeURIComponent(params.name)}&groupId=${params.id}`
+      },
+      [CreateEventComponent.name]: function(params:any){
+        return `groups/delete.html?name=${encodeURIComponent(params.name)}&groupId=${params.id}`
+      },
+      [EventDetailsComponent.name]: function(params:any) {
+        return `/groups/event.html?id=${params.id}&groupId=${params.groupId}`
+      }
+    }
   }
 }
 
@@ -60,5 +34,3 @@ export class PageComponent extends HTMLElement {
 if (!customElements.get("page-component")) {
   customElements.define("page-component", PageComponent);
 }
-
-

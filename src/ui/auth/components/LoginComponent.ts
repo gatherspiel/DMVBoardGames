@@ -22,6 +22,8 @@ import {
   REGISTER_USER_THUNK,
 } from "../data/RegisterUserThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {generateErrorMessage} from "../../../framework/components/utils/StatusIndicators.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -31,11 +33,13 @@ const template = `
       padding-top: 0.25rem;
     }
     .login-element {
-      display: inline-block;
     }
     @media screen and (width < 32em) {
       #login-component-container {
         text-align: center;
+      }
+      .login-element {
+        font-size:1rem;
       }
     }
 
@@ -56,7 +60,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
         username: "",
         password: "",
       },
-      thunkReducers: [
+      requestThunkReducers: [
         {
           thunk: LOGIN_THUNK,
           componentStoreReducer: getLoginComponentStoreFromLoginResponse,
@@ -84,8 +88,13 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
     } else {
       return `
        <div class="ui-section" id="login-component-container">
-        <p class="login-element">${data.successMessage}</p>
-        <button class="login-element" ${this.createClickEvent(LOGOUT_EVENT_CONFIG)}>Logout</button>
+       <div class="login-element">${data.successMessage}</div>
+       ${generateButton({
+        type: "submit",
+        text: "Logout",
+        component: this,
+        eventHandlerConfig: LOGOUT_EVENT_CONFIG
+       })}
       </div>
        `;
     }
@@ -94,9 +103,6 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
     const html = `
      <div class="ui-section" id="login-component-container">
       <form id=${LOGIN_FORM_ID} ${this.createSubmitEvent(LOGIN_EVENT_CONFIG)}>
-      
-      
-       
         <div class="ui-input">
           ${this.generateInputFormItem({
             id: USERNAME_INPUT,
@@ -109,7 +115,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
         <div class="ui-input">
           ${this.generateInputFormItem({
             id: PASSWORD_INPUT,
-            componentLabel: "password",
+            componentLabel: "Password",
             inputType: "text",
             value: ""
           })}
@@ -118,17 +124,27 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
         <br>
 
         <div id="component-buttons">
-          <button class="login-element" type="submit"  name="action" value="Login"> Login </button>
-            <button 
-              class="login-button"
-              type="submit" 
-              ${this.createClickEvent(REGISTER_EVENT_CONFIG)} 
-              name="action" value="Register"> 
-                Register 
-            </button>       
+        
+        ${generateButton({
+          class: "login-element",
+          type: "submit",
+          text: "Login",
+          component: this,
+          eventHandlerConfig: LOGIN_EVENT_CONFIG
+        })}
+        
+        ${generateButton({
+          class: "login-element",
+          type: "submit",
+          text: "Register",
+          component: this,
+          eventHandlerConfig: REGISTER_EVENT_CONFIG
+        })}
+
+                    
           </div>
-          ${this.hasRendered ? this.generateErrorMessage(data.errorMessage) : ''}
-          <p class="login-element">${data.successMessage}</p>
+          ${this.hasRendered ? generateErrorMessage(data.errorMessage) : ''}
+          <div class="login-element success-message">${data.successMessage}</div>
         </form>
 
     </div>

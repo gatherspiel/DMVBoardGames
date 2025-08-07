@@ -1,5 +1,5 @@
 import type { ApiRequestConfig } from "../../../../framework/state/update/api/types/ApiRequestConfig.ts";
-import { API_ROOT } from "../../../../shared/params.ts";
+import { API_ROOT } from "../../../../shared/Params.ts";
 import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
 import { ApiActionTypes } from "../../../../framework/state/update/api/types/ApiActionTypes.ts";
 
@@ -7,6 +7,7 @@ function updateEventRequestThunk(
   requestParams: any,
 ): ApiRequestConfig {
 
+  console.log("Updating event")
   return {
     body: JSON.stringify(requestParams),
     method: ApiActionTypes.PUT,

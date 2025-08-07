@@ -1,11 +1,13 @@
 import type { Convention } from "../data/types/Convention.ts";
 import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
 
 export const CONVENTION_LIST_STORE = "conventionListStore";
 
 const loadConfig = {
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: LOCATIONS_THUNK,
       componentStoreReducer: (data: any) => {
@@ -43,7 +45,12 @@ export class ConventionListComponent extends BaseTemplateDynamicComponent {
     return `
     <div id = convention-${convention.id} class="conv-list-item">
      <h3>
-        <a href=${convention.url}>${convention.name}</a>
+      ${generateButton({
+        text: `${convention.name}`,
+        component: this,
+        eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
+        eventHandlerParams: {url: convention.url}
+      })}
       </h3>
       <p>Days: ${convention.days.join(", ")}</p>
     
@@ -55,7 +62,8 @@ export class ConventionListComponent extends BaseTemplateDynamicComponent {
     return template;
   }
   render(data: Record<any, Convention>) {
-    let html = `<div class="ui-section"><h1>Upcoming conventions</h1>`;
+    let html = `<div class="ui-section"><h1 class="hideOnMobile">Upcoming conventions</h1>
+        <h2 class="showOnMobile">Upcoming conventions</h2>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;

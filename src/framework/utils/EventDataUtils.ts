@@ -97,6 +97,9 @@ export function convertTimeTo24Hours(time:string){
 }
 
 export function convertLocationStringForDisplay(location:string) {
+  if(!location){
+    return ""
+  }
   const split = location.split(',');
   return `${split[0].trim()}, ${split[1].trim()}, ${split[2].trim()}`
 }
@@ -115,7 +118,8 @@ export function validateAddress(addressStr:string) {
   if(split.length !==3 || split[2].trim().split(" ").length !==2 ) {
     throw new Error("Invalid address format. Address should be in the form 'street, city, state_code zip_code ")
   }
-  if(!validStates.includes(split[2].split(" ")[1].trim())){
+  console.log(split[2].split(" ")[1].trim());
+  if(!validStates.includes(split[2].split(" ")[0].trim())){
     throw new Error("Invalid state code");
   }
 }

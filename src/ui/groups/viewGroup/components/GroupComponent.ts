@@ -8,18 +8,23 @@ import {
 } from "../../Constants.js";
 import {GROUP_PRELOAD_THUNK, GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
 
-import { createJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
+import { serializeJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
 import type { GroupPageData } from "../data/types/GroupPageData.ts";
 import type { Event } from "../../../homepage/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
+  CANCEL_GROUP_EDIT_HANDLER,
   EDIT_GROUP_EVENT_CONFIG,
   SAVE_GROUP_CONFIG,
-} from "../GroupPageHandlers.ts";
+} from "../GroupHandlers.ts";
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 
 import { getGlobalStateValue } from "../../../../framework/state/data/GlobalStore.ts";
+import {PageState} from "../../../../framework/state/PageState.ts";
 import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
+import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
+import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
+import {CREATE_EVENT_PAGE_HANDLER_CONFIG, DELETE_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -27,22 +32,31 @@ const template = `
   <style>
  
     a {
-        margin-left:1rem;
-        margin-right:1rem;
+      margin-left:1rem;
+      margin-right:1rem;
     }
-    .group-description {
-      background: hsl(from var(--clr-lighter-blue) h s l / 0.1);
-      border-radius: 10px;
+    .group-description-text {
+      display: block;
+      position: relative;
+      padding: 0.5rem;
+      border-radius: 12px;
+      font-size: 1.5rem;
       color: var(--clr-dark-blue);
-      font-size: 1.25rem;
-      font-weight:600;
-      padding: 2rem;
+      background-color: #0AACFB;
+      will-change: transform;
+      transform: translateY(-4px);
+      transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
     }
+    
    
     .group-data-input {
       height:24px;
       font-size:24px;
       display: block;
+    }
+    
+    #${GROUP_NAME_INPUT} {
+      width: 600px;
     }
     
     #${GROUP_URL_INPUT} {
@@ -53,6 +67,25 @@ const template = `
       height: 500px;
       width: 800px;
     }
+    
+    #group-events {
+      border-top: 1px solid var(--clr-lighter-blue);
+    }
+    
+    @media screen and (width < 32em) {
+      h1 {
+        margin: 0;    
+      }
+      .group-description {
+        padding: 0.5rem;
+        margin-top: 1rem;
+        font-size:1rem;
+      }
+      p {
+        font-size:1rem;
+      }
+    }
+    
         
   </style>
   <div></div>
@@ -70,12 +103,12 @@ const groupDataStoreReducer = function(data:any){
 
 const loadConfig = {
   onLoadStoreConfig: {
-    dataSource: GROUP_REQUEST_THUNK,
+    dataSource: GROUP_PRELOAD_THUNK,
   },
   onLoadRequestData: {
-    name: "Beer & Board Games",
+    name: getUrlParameter(GROUP_NAME_PARAM),
   },
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: GROUP_REQUEST_THUNK,
       componentStoreReducer: groupDataStoreReducer
@@ -89,7 +122,7 @@ const loadConfig = {
       componentStoreReducer: function () {
         return {
           isEditing: false,
-          successMessage: 'Group update sucessful'
+          successMessage: 'Group update successful'
         };
       },
     },
@@ -99,20 +132,18 @@ const loadConfig = {
   },
 };
 
-export class GroupPageComponent extends BaseTemplateDynamicComponent {
+export class GroupComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(GROUP_COMPONENT_STORE, loadConfig);
-    console.log("Hi");
-  }
-
-  async fetchData(){
-    const data = await GROUP_REQUEST_THUNK.retrieveData({"name":"Beer & Board Games"});
-    this.updateStore(data);
   }
 
   connectedCallback(){
-    console.log("Hi");
-    initRequestStore(loadConfig)
+    if(PageState.pageLoaded) {
+      //@ts-ignore
+      loadConfig.onLoadStoreConfig.dataSource = GROUP_REQUEST_THUNK
+      loadConfig.onLoadRequestData.name = getUrlParameter(GROUP_NAME_PARAM)
+      initRequestStore(loadConfig);
+    }
   }
 
   getTemplateStyle(): string {
@@ -132,24 +163,49 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
      ${
        !groupData.isEditing
          ? `<div class="group-title">
-       <h1>${groupData.name} <a href=${groupData.url}>Group webpage</a></h1>
+       <h1>
+         ${generateButton({
+           class: "group-webpage-link",
+           text: groupData.name,
+           component: this,
+           eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
+           eventHandlerParams: {url: groupData.url}
+         })}
+       </h1>
 
-       ${this.generateButtonsForEditPermission({
-         "Edit group": EDIT_GROUP_EVENT_CONFIG
+       ${generateButtonForEditPermission({
+           text: "Edit group info",
+           component: this,
+           eventHandlerConfig: EDIT_GROUP_EVENT_CONFIG,
        })}
-       ${this.generateLinksForEditPermission({
-         "Add event": `groups/addEvent.html?groupName=${encodeURIComponent(groupData.name)}&groupId=${groupData.id}`,
-         "Delete group": `groups/delete.html?name=${encodeURIComponent(groupData.name)}&groupId=${groupData.id}`
-       })}
+       
+       ${generateButtonForEditPermission({
+           text: "Add event",
+           component: this,
+           eventHandlerConfig: CREATE_EVENT_PAGE_HANDLER_CONFIG,
+           eventHandlerParams:{name:groupData.name, id: groupData.id}
+         })}
+       
+       ${generateButtonForEditPermission({
+           text: "Delete group",
+           component: this,
+           eventHandlerConfig: DELETE_GROUP_PAGE_HANDLER_CONFIG,
+           eventHandlerParams:{name:groupData.name, id: groupData.id}
+         })}
+
        </div>
     
-       <div class="group-description">
-       <p>${groupData.description}</p>
+       <div class="raised">
+        <span class="shadow"></span>
+        <span class="edge"></span>
+        <p class="group-description-text">
+          ${groupData.description}
+        </p> 
        </div>` 
          : `
        <h1>Editing group information</h1>
         
-       <form ${this.createSubmitEvent(SAVE_GROUP_CONFIG)}>
+       <form>
        
          ${this.generateInputFormItem({
            id: GROUP_NAME_INPUT,
@@ -171,12 +227,26 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
            inputType: "text",
            value: groupData.description
          })}   
-          <button type="submit" >Save updates</button>
+
+         ${generateButton({
+           text: "Save updates",
+           type: "submit",
+           component: this,
+           eventHandlerConfig: SAVE_GROUP_CONFIG,
+         })}
+         
+         ${generateButton({
+           text: "Cancel updates",
+           type: "submit",
+           component: this,
+           eventHandlerConfig: CANCEL_GROUP_EDIT_HANDLER,
+         })}
+         
         </form> 
       `
      }
-    <h1>Upcoming events</h1>
-
+    <h1 class="hideOnMobile">Upcoming events</h1>
+      <div id="group-events">
       ${
         groupData.eventData.length === 0
           ? `<p id="no-event">Click on group link above for event information</p>`
@@ -185,7 +255,7 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
                 return `
               <group-page-event-component
                 key = ${groupData.id + "event-" + event.id}
-                data =${createJSONProp({groupId: groupData.id,...event})}
+                data =${serializeJSONProp({groupId: groupData.id,...event})}
               >
  
               </group-page-event-component>
@@ -202,5 +272,5 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
 }
 
 if (!customElements.get("group-page-component")) {
-  customElements.define("group-page-component", GroupPageComponent);
+  customElements.define("group-page-component", GroupComponent);
 }

@@ -13,7 +13,6 @@ if(!IS_LOCAL){
 
 const start = Date.now();
 fetch(`${API_ROOT}/searchEvents`,{priority: 'high'}).then((response)=>{
-  console.log(Date.now()-start);
   return response.json()
 }).then((response)=>{
   //@ts-ignore

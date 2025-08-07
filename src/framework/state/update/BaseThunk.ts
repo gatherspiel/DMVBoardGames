@@ -36,17 +36,17 @@ export class BaseThunk {
 
     let status:LoadStatus = {}
     if (this.requestStoreId) {
-      if ( !hasRequestStore(this.requestStoreId)) {
+      if (!hasRequestStore(this.requestStoreId)) {
         initRequestStore(componentLoadConfig);
       } else {
         updateRequestStoreAndClearCache(this.requestStoreId, componentLoadConfig.onLoadRequestData);
       }
-
       status.dependenciesLoaded = true;
     } else {
-      let reducer = componentLoadConfig.globalStateLoadConfig?.defaultGlobalStateReducer;
-      if(!reducer){
-        reducer = function (updates: Record<string, string>) {
+
+      let globalStateReducer = componentLoadConfig.globalStateLoadConfig?.defaultGlobalStateReducer;
+      if(!globalStateReducer){
+        globalStateReducer = function (updates: Record<string, string>) {
           return updates
         }
       }
@@ -56,13 +56,13 @@ export class BaseThunk {
 
       componentLoadConfig.globalStateLoadConfig?.globalFieldSubscriptions?.forEach(
         function (fieldName) {
-          const fieldValue = getGlobalStateValue(fieldName);
-          dataToUpdate[fieldName] = fieldValue;
+          dataToUpdate[fieldName] = getGlobalStateValue(fieldName);;
         },
       );
+
       updateComponentStore(
         componentStoreName,
-        reducer,
+        globalStateReducer,
         dataToUpdate,
       );
     }
@@ -90,22 +90,22 @@ export class BaseThunk {
     reducerFunction: (a: any) => any,
     field?: string,
   ) {
-    let stateNumber: number = -1;
+
+
     const newDispatcherName = componentStoreName.split("-")[0];
+    const newStateNumber = parseInt(componentStoreName.split("-")[1]);
 
     let oldDispatcherIndex = -1;
-
 
     let i = 0;
     this.dispatchers.forEach(function (dispatcher: BaseDispatcher) {
       const number = parseInt(dispatcher.storeField.split("-")[1]);
       const dispatcherName = dispatcher.storeField.split("-")[0];
 
-      if (number > stateNumber && dispatcherName === newDispatcherName) {
-        /*
+      if (number > newStateNumber && dispatcherName === newDispatcherName) {
         throw new Error(
           `Cannot subscribe ${dispatcherName} to an old component state`,
-        );*/
+        );
       }
       if (dispatcherName === newDispatcherName) {
         oldDispatcherIndex = i;

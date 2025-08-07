@@ -1,11 +1,13 @@
 import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
 import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
 
 export const GAME_RESTAURANT_LIST_STORE = "gameRestaurantListStore";
 
 const loadConfig = {
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: LOCATIONS_THUNK,
       componentStoreReducer: (data: any) => {
@@ -24,7 +26,7 @@ const template = `
     }
   </style>
 `;
-export class GameRestaurantComponent extends BaseTemplateDynamicComponent {
+export class GameRestaurantListComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(GAME_RESTAURANT_LIST_STORE, loadConfig);
   }
@@ -37,7 +39,12 @@ export class GameRestaurantComponent extends BaseTemplateDynamicComponent {
     return `
     <div id = convention-${gameRestaurant.id} class="game-restaurant-list-item">
      <h3>
-        <a href=${gameRestaurant.url}>${gameRestaurant.name}</a>
+        ${generateButton({
+          text: `${gameRestaurant.name}`,
+          component: this,
+          eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
+          eventHandlerParams: {url: gameRestaurant.url}
+        })}
       </h3>
     <p>Location: ${gameRestaurant.location}</p>
     </div>
@@ -45,7 +52,10 @@ export class GameRestaurantComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: Record<any, GameRestaurant>) {
-    let html = `<div class ="ui-section"><h1>Board Game Bars and Cafés</h1>`;
+    let html = `<div class ="ui-section">
+    <h1 class="hideOnMobile">Board Game Bars and Cafés</h1>
+    <h2 class="showOnMobile">Board Game Bars and Cafés</h2>
+    `;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
@@ -57,6 +67,6 @@ export class GameRestaurantComponent extends BaseTemplateDynamicComponent {
 if (!customElements.get("game-restaurant-list-component")) {
   customElements.define(
     "game-restaurant-list-component",
-    GameRestaurantComponent,
+    GameRestaurantListComponent,
   );
 }

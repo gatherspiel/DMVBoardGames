@@ -7,12 +7,9 @@ export class PreloadApiAction extends BaseThunkAction{
     let promise = new Promise(function(resolve){
       const id = setInterval(function(){
 
-        console.log("Waiting");
         // @ts-ignore
         if(window.preloadData) {
           clearInterval(id);
-          // @ts-ignore
-          console.log("Time since navbar load:"+(Date.now()-window.start))
           // @ts-ignore
           resolve(window.preloadData)
         }

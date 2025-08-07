@@ -10,6 +10,12 @@ import {
 } from "../../Constants.ts";
 import {CREATE_EVENT_CONFIG} from "../EventDetailsHandler.ts";
 import {CREATE_EVENT_THUNK} from "../data/CreateEventThunk.ts";
+import {PageState} from "../../../../framework/state/PageState.ts";
+import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
+import {
+  VIEW_GROUP_PAGE_HANDLER_CONFIG
+} from "../../../../shared/nav/NavEventHandlers.ts";
+import {generateErrorMessage} from "../../../../framework/components/utils/StatusIndicators.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -29,7 +35,7 @@ const templateStyle = `
 `;
 
 const loadConfig = {
-  thunkReducers:[
+  requestThunkReducers:[
     {
       thunk: CREATE_EVENT_THUNK,
       componentStoreReducer: function(data: any){
@@ -45,6 +51,7 @@ const loadConfig = {
   globalStateLoadConfig: {
     globalFieldSubscriptions: ["isLoggedIn"],
     defaultGlobalStateReducer: function (updates: Record<string, string>) {
+      PageState.pageLoaded = true;
       return {
         name: "",
         description: "",
@@ -58,6 +65,13 @@ const loadConfig = {
 export class CreateEventComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("create-event-component", loadConfig);
+
+  }
+
+  connectedCallback(){
+    if(PageState.pageLoaded) {
+      this.updateStore({isVisible: true})
+    }
   }
 
   getTemplateStyle(): string {
@@ -68,11 +82,11 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
 
     return `
     
-    ${this.generateErrorMessage(data.errorMessage)}
+    ${generateErrorMessage(data.errorMessage)}
     
-    ${data.successMessage ? `<p>${data.successMessage}</p>`: ``}
+    ${data.successMessage ? `<p class="success-message">${data.successMessage}</p>`: ``}
     <form onsubmit="return false">
-      ${data.isVisible ? `
+      
         <h1>Create board game event for group ${getUrlParameter("groupName")}</h1>
          <form>
     
@@ -126,14 +140,22 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
         value: data.location ?? ""
       })}     
     </form>
-        <button ${this.createClickEvent(CREATE_EVENT_CONFIG)}>Create event</button>
-        <a href="${window.location.origin}/groups.html?name=${encodeURIComponent(getUrlParameter("groupName"))}">
-          Back to group
-        </a>
-      `
-      : `<p>User does not have permission to access this page </p>`
+    
+    ${generateButton({
+      text: "Create event",
+      component: this,
+      eventHandlerConfig: CREATE_EVENT_CONFIG,
+    })}
+        
+        
+    ${generateButton({
+      text: "Back to group",
+      component: this,
+      eventHandlerConfig: VIEW_GROUP_PAGE_HANDLER_CONFIG,
+      eventHandlerParams: {"name":getUrlParameter("groupName")}
+    })}
+
       
-      }  
     `;
   }
 }

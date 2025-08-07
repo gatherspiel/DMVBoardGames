@@ -22,6 +22,12 @@ import {
 } from "../../../../framework/utils/EventDataUtils.ts";
 import {UPDATE_EVENT_REQUEST_THUNK} from "../data/UpdateEventThunk.ts";
 import {DELETE_EVENT_REQUEST_THUNK} from "../data/DeleteEventRequestThunk.ts";
+import {PageState} from "../../../../framework/state/PageState.ts";
+import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
+import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
+import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
+import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
+import {generateErrorMessage, generateSuccessMessage} from "../../../../framework/components/utils/StatusIndicators.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -48,7 +54,7 @@ const loadConfig = {
   onLoadRequestData: {
     name: getUrlParameter(GROUP_NAME_PARAM),
   },
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: GROUP_EVENT_REQUEST_THUNK,
       componentStoreReducer: function (data: any) {
@@ -89,8 +95,6 @@ const loadConfig = {
         }
       }
     }
-
-
   ],
   globalStateLoadConfig: {
     globalFieldSubscriptions: ["isLoggedIn"],
@@ -99,11 +103,16 @@ const loadConfig = {
 
 export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("group-event-component", loadConfig);
+    super("event-details-component", loadConfig);
+  }
+
+  connectedCallback(){
+    if(PageState.pageLoaded) {
+      initRequestStore(loadConfig);
+    }
   }
 
   render(data: EventDetailsData): string {
-
     if(data.isEditing){
       return this.renderEditMode(data);
     }
@@ -117,20 +126,33 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
     if (data.successMessage) {
       return `
         <div class="ui-section">
-          ${this.generateSuccessMessage(data.successMessage)}
+          ${generateSuccessMessage(data.successMessage)}
           
-          <a href="${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}">Back to group</a>
+          ${generateButton({
+            text: "Back to group",
+            component: this,
+            eventHandlerConfig: VIEW_GROUP_PAGE_HANDLER_CONFIG,
+            eventHandlerParams: {name:data.groupName}
+          })}
         </div>
       `
     }
     return `
       <h1>Are you sure you want to delete ${data.name} on ${convertDateTimeForDisplay(data.startTime)}</h1>
-      <button ${this.createClickEvent(CONFIRM_DELETE_EVENT_CONFIG)}>Confirm delete</button>
-      <button ${this.createClickEvent(CANCEL_DELETE_EVENT_CONFIG)}>Cancel</button>
-      ${this.generateErrorMessage(data.errorMessage)}
-      ${this.generateSuccessMessage(data.successMessage)}
+      ${generateButton({
+        text: "Confirm delete",
+        component: this,
+        eventHandlerConfig: CONFIRM_DELETE_EVENT_CONFIG,
+      })}
+      
+      ${generateButton({
+        text: "Cancel",
+        component: this,
+        eventHandlerConfig: CANCEL_DELETE_EVENT_CONFIG,
+      })}
     `
   }
+
   renderEditMode(data:EventDetailsData): string {
     return `<h1>Editing: ${data.name}</h1>
 
@@ -186,36 +208,64 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         value: data.location
       })}     
     </form>
-    ${this.generateErrorMessage(data.errorMessage)}
+    ${generateErrorMessage(data.errorMessage)}
 
-    <button ${this.createClickEvent(SAVE_EVENT_CONFIG)}>Save event</button>
-    <button ${this.createClickEvent(CANCEL_EDIT_EVENT_DETAILS_CONFIG)}>Back to event</button>
+    ${generateButton({
+      class: "group-webpage-link",
+      text: "Save event",
+      component: this,
+      eventHandlerConfig: SAVE_EVENT_CONFIG,
+    })}
+    
+    ${generateButton({
+      class: "group-webpage-link",
+      text: "Back to event",
+      component: this,
+      eventHandlerConfig: CANCEL_EDIT_EVENT_DETAILS_CONFIG,
+    })}  
    `
   }
 
   renderViewMode(data:EventDetailsData): string {
     if(data.errorMessage){
-      return `${this.generateErrorMessage(data.errorMessage)}`
+      return `${generateErrorMessage(data.errorMessage)}`
     }
     return `
       <div class="ui-section">
         <h1>${data.name}</h1>
-        
-        <a href="${data.url}">Event page</a>
-        
+           
+        ${generateButton({
+          text: "Event page",
+          component: this,
+          eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
+          eventHandlerParams: {url: data.url}
+        })}
+             
         <p>Time: ${convertDayOfWeekForDisplay(data.day)}, ${convertDateTimeForDisplay(data.startTime)}</p>
         <p>Location: ${convertLocationStringForDisplay(data.location)}</p>
         <p>${data.description}</p>
-        
-        ${this.generateButtonsForEditPermission({
-          "Edit event": EDIT_EVENT_DETAILS_CONFIG,
-          "Delete event": DELETE_EVENT_CONFIG
+           
+        ${generateButtonForEditPermission({
+          text: "Edit event",
+          component: this,
+          eventHandlerConfig: EDIT_EVENT_DETAILS_CONFIG,
         })}
-       
-       
-      <p>${data.successMessage ? data.successMessage.trim(): ""}</p>
+        
+        ${generateButtonForEditPermission({
+          text: "Delete event",
+          component: this,
+          eventHandlerConfig: DELETE_EVENT_CONFIG,
+        })}
+  
+        <p class="success-message">${data.successMessage ? data.successMessage.trim(): ""}</p>
+        
+        ${generateButtonForEditPermission({
+          text: "Back to group",
+          component: this,
+          eventHandlerConfig: VIEW_GROUP_PAGE_HANDLER_CONFIG,
+          eventHandlerParams:{name: data.groupName}
+        })}
 
-        <a href="/groups.html?name=${encodeURIComponent(data.groupName)}">Back to group</a> 
       </div>
     `;
   }

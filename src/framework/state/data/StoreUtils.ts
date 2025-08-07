@@ -1,4 +1,4 @@
-import type { BaseThunk } from "../update/BaseThunk.ts";
+import { BaseThunk } from "../update/BaseThunk.ts";
 import type { BaseDynamicComponent } from "../../components/BaseDynamicComponent.ts";
 
 export function createStore(storeName: string, stores: any) {
@@ -10,10 +10,6 @@ export function createStore(storeName: string, stores: any) {
     data: {},
     subscribers: [],
   };
-}
-
-export function hasSubscribers(storeName: string, store: any) {
-  return storeName in store && store[storeName].subscribers.length > 0;
 }
 
 export function subscribeToStore(storeName: string, item: any, store: any) {
@@ -55,21 +51,14 @@ export function updateStore(
   });
   storeData[storeName].data = updatedData;
 
-  if (storeData[storeName].subscribers.length === 0) {
-    console.warn(
-      `No subscribers to store ${storeName}. Make sure to call subscribeToReducer in component constructor.`,
-    );
-    throw Error("Error updating");
-  }
-
   storeData[storeName].subscribers.forEach(function (
-    component: BaseDynamicComponent | BaseThunk,
+    component:  BaseDynamicComponent| BaseThunk,
   ) {
-    if (!component || !(typeof component.updateStore === "function")) {
-      throw new Error(
-        `updateStore function not defined for component ${component.constructor.name}`,
-      );
+
+    if(component instanceof BaseThunk){
+      component.updateStore(storeData[storeName].data);
+    } else {
+      (component as BaseDynamicComponent).updateWithStoreData(storeData[storeName].data);
     }
-    component.updateStore(storeData[storeName].data);
   });
 }

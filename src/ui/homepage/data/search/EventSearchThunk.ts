@@ -1,6 +1,5 @@
-import { API_ROOT, USE_MOCK } from "../../../../shared/params.ts";
+import { API_ROOT } from "../../../../shared/Params.ts";
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.ts";
-import { getGroups } from "../mock/MockPageData.ts";
 import type { SearchParams } from "./model/SearchParams.ts";
 import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
 import type { ApiRequestConfig } from "../../../../framework/state/update/api/types/ApiRequestConfig.ts";
@@ -8,6 +7,7 @@ import {generatePreloadThunk} from "../../../../framework/state/update/PreloadTh
 
 const CITY_PARAM = "city";
 const DAY_PARAM = "day";
+const DISTANCE_PARAM="distance";
 
 function getEventsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
   let url = API_ROOT + "/searchEvents";
@@ -23,6 +23,10 @@ function getEventsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
     searchParams.location !== undefined
   ) {
     paramMap[CITY_PARAM] = searchParams.location;
+
+    if(searchParams.distance){
+      paramMap[DISTANCE_PARAM] = searchParams.distance;
+    }
   }
 
   if (paramMap && Object.keys(paramMap).length > 0) {
@@ -40,14 +44,9 @@ function getEventsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
   };
 }
 
-const defaultFunctionConfig = {
-  defaultFunction: getGroups,
-  defaultFunctionPriority: USE_MOCK,
-};
 
 export const EVENT_SEARCH_THUNK = generateApiThunk({
   queryConfig: getEventsQueryConfig,
-  defaultFunctionConfig: defaultFunctionConfig,
 });
 
 export const EVENT_PRELOAD_THUNK = generatePreloadThunk("preload_"+EVENT_SEARCH_THUNK.requestStoreId)

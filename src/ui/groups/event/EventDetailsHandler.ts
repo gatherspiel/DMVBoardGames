@@ -51,6 +51,7 @@ export const CANCEL_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function(){
     return {
       isDeleting: false,
+      errorMessage: '',
       successMessage:''
     }
   }
@@ -108,6 +109,7 @@ export const CANCEL_EDIT_EVENT_DETAILS_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function() {
     return {
       isEditing: false,
+      errorMessage: ''
     }
   }
 }

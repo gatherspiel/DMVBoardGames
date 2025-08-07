@@ -1,15 +1,7 @@
 import { BaseThunkAction } from "../BaseThunkAction.ts";
 import type { DefaultApiAction } from "./DefaultApiAction.ts";
 
-/**
- * TODO: Add automated testing documentation and examples for instances of ExternalAction without the backend
- *
- * - Instances should be created with a custom defaultResponse that functions as a mock instead of an error handler.
- * - The thunk factory could be used with the unit tests to create a mock.
- *
- */
 export class ExternalApiAction extends BaseThunkAction {
-
 
   externalClient: (params: any, defaultResponse: DefaultApiAction) => any;
   defaultResponse: DefaultApiAction;
@@ -31,8 +23,9 @@ export class ExternalApiAction extends BaseThunkAction {
         externalRequest.defaultResponse,
       );
     } catch (e: any) {
-      if (this.defaultResponse.defaultFunction) {
-        return this.defaultResponse.defaultFunction();
+      const defaultFunction = this.defaultResponse.defaultFunction
+      if (defaultFunction) {
+        return defaultFunction();
       } else {
         console.error("No custom error response defined for:" + e.message);
       }

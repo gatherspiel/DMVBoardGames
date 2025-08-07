@@ -1,7 +1,6 @@
 import { createStore, subscribeToStore, updateStore } from "./StoreUtils.js";
-import { hasSubscribers } from "./StoreUtils.js";
 
-const stores: Record<string, any> = {};
+let stores: Record<string, any> = {};
 
 export function createComponentStore(
   storeName: string,
@@ -11,9 +10,6 @@ export function createComponentStore(
   subscribeComponentToStore(storeName, component);
 }
 
-export function hasComponentStoreSubscribers(storeName: string): boolean {
-  return hasSubscribers(storeName, stores);
-}
 /**
  * Make sure a component is subscribed to a store.
  * @param store Name of store that the component will subscribe to.
@@ -40,6 +36,12 @@ export function updateComponentStore(
   updateStore(storeName, updateFunction, stores, data);
 }
 
+export function clearSubscribers(storeName:string){
+ if(storeName in stores){
+   delete stores[storeName]
+ }
+}
+
 /**
  * @Depreacted
  * @param storeName
@@ -50,4 +52,8 @@ export function getComponentStore(storeName: string) {
 
 export function hasUserEditPermissions(componentStoreName:string){
   return getComponentStore(componentStoreName)?.permissions?.userCanEdit
+}
+
+export function clearComponentStores(){
+  stores = {};
 }

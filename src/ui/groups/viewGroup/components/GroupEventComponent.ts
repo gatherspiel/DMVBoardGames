@@ -1,9 +1,11 @@
-import { retrieveJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
+import { deserializeJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {
   convertDateTimeForDisplay,
   convertLocationStringForDisplay
 } from "../../../../framework/utils/EventDataUtils.ts";
+import {VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
+import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 
 const template = `
 
@@ -20,7 +22,6 @@ const template = `
         
       max-width: 65ch;
       margin-top: 0.5rem;
-      margin-right: 5rem;
     }
     
     .event-time, .event-location {
@@ -29,13 +30,13 @@ const template = `
    }
    
    .event {
-      border-top: 1px solid var(--clr-lighter-blue);
+      border-bottom: 1px solid var(--clr-lighter-blue);
    }
     
   </style>
 `;
 
-export class GroupPageEventComponent extends BaseTemplateDynamicComponent {
+export class GroupEventComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("event-component");
     this.id = "";
@@ -47,8 +48,7 @@ export class GroupPageEventComponent extends BaseTemplateDynamicComponent {
 
   render(): string {
     this.id = this.getAttribute("key") ?? "";
-    const eventData = retrieveJSONProp(this, "data");
-
+    const eventData = deserializeJSONProp(this, "data");
 
     return `
       <div id=${this.id} class="event">
@@ -59,9 +59,16 @@ export class GroupPageEventComponent extends BaseTemplateDynamicComponent {
           <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
           </br>  
           
-          <a href="/groups/event.html?id=${eventData.id}&groupId=${eventData.groupId}">View event details</a>
+           ${generateButton({
+            class: "group-webpage-link",
+            text: "View event details",
+            component: this,
+            eventHandlerConfig: VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG,
+            eventHandlerParams: {id:eventData.id,groupId:eventData.groupId}
+          })}
+
         </div>
-           
+          
       </div>
     `;
   }
@@ -72,5 +79,5 @@ export class GroupPageEventComponent extends BaseTemplateDynamicComponent {
 }
 
 if (!customElements.get("group-page-event-component")) {
-  customElements.define("group-page-event-component", GroupPageEventComponent);
+  customElements.define("group-page-event-component", GroupEventComponent);
 }

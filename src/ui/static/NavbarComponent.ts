@@ -2,13 +2,39 @@ import { BaseTemplateComponent } from "../../framework/components/BaseTemplateCo
 
 const template = document.createElement("template");
 template.innerHTML = `
+  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
   <style>
+
+    .ui-section {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    
+    .raised:hover {
+      transform:none;
+      transition: none;
+    }
+    
+    .raised:active {
+      transform:none;
+      transition: none;
+    }
+        
+    #logo-div img {
+      max-height: 4.5rem;
+      padding-left: 0.5rem;
+      padding-top: 0.2rem;
+    }
     
     nav a,
     #jump-to a {
-      background-color: var(--clr-lighter-blue);
+      border:none;
+      background-color: none;
       color: white;
-      font-size: 1.25rem;
+      font-weight: 400;
+      font-size: 1.5rem;
+      margin-top: 0rem;
       padding-bottom: 0.25rem;
       padding-top: 0.25rem;
       padding-left: 1rem;
@@ -28,13 +54,12 @@ template.innerHTML = `
     #jump-to a:hover {
       background-color: var(--clr-darker-blue);
       color: white;
-            text-decoration: none;
-
+      text-decoration: none;
     }
     
     nav a:last-child {
       text-wrap: nowrap;
-            text-decoration: none;
+      text-decoration: none;
     }
         
     #nav-filler {
@@ -44,12 +69,13 @@ template.innerHTML = `
     }
    
     @media not screen and (width < 32em) {
+      #logo-div {
+        float: left;
+      }
       .top-nav {
-         background-color:var(--clr-lighter-blue); 
         display: flex;
         flex-wrap: wrap;
-        margin-top: 5px;
-        padding-left: 0.5rem;
+        padding-left: 0.5rem;     
       }
       nav a + a {
         margin-left: 1px;
@@ -59,6 +85,10 @@ template.innerHTML = `
     }
     
     @media screen and (width < 32em) {
+      #logo-div {
+        display: flex;
+        justify-content: center;
+      }
       .top-nav {
         display: grid;
         text-align: center;
@@ -89,17 +119,29 @@ export class NavbarComponent extends BaseTemplateComponent {
 
     // Closing tags are on separate lines are to prevent extra spaces between links
     return `
-      <nav>
-        <div class="ui-section top-nav">
-          <a href="${window.location.origin}/index.html">Home
-          </a><a class="mid-element" href="${window.location.origin}/designers.html">Local designers
-          </a><a href="${window.location.origin}/print_and_play.html">Print and Play
-          </a><a href="https://gatherspiel.com/vision.html">Future plans
-          </a><a href="${window.location.origin}/useful_links.html">Useful Links
-          </a><a href="${window.location.origin}/feedback.html">Feedback     
-          </a><a href="https://gatherspiel.com/help.html">Want to help with development </a>  
-        <div id="nav-filler"></div>
+      <nav class="raised">
+      <span class="shadow"></span>
+      <span class="edge"></span>
+
+      <span class="front">
+        <div id="logo-div">
+          <img src="/assets/logo.svg"> </img>
         </div>
+        <div class="ui-section top-nav">
+          <div class="top-nav">
+            <a href="${window.location.origin}/index.html">Home
+            </a><a class="mid-element" href="${window.location.origin}/designers.html">Local designers
+            </a><a href="${window.location.origin}/print_and_play.html">Print and Play
+            </a><a href="https://gatherspiel.com/vision.html">Future plans
+            </a><a href="${window.location.origin}/useful_links.html">Useful Links
+            </a><a href="${window.location.origin}/feedback.html">Feedback     
+            </a><a href="https://gatherspiel.com/help.html">Want to help development </a>           
+          </div>
+        <div id="nav-filler"></div>
+        </div>       
+       
+      </span>
+ 
 
       </nav>
     `;

@@ -7,18 +7,25 @@ import {
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
 } from "../../Constants.ts";
+import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
+import {generateErrorMessage} from "../../../../framework/components/utils/StatusIndicators.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
 
   <style>
-    #create-group-error-message {
+    #group-description-input {
+      height:500px;
+      width: 800px;
+    }
+    #create-group-page-container {
+      padding-left: 1rem;
     }
   </style>
 `;
 
 const loadConfig = {
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: CREATE_GROUP_REQUEST_THUNK,
       componentStoreReducer: function (data: any) {
@@ -58,48 +65,60 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
     return templateStyle;
   }
 
+  connectedCallback(){
+    this.updateStore({isVisible: true})
+  }
+
   render(createGroupData: CreateGroupData): string {
 
     return `
-      <h1>Create board game group</h1>
-      
-        ${
-          createGroupData.isVisible
-            ? `
-              <form onsubmit="return false">
-              
-               ${this.generateInputFormItem({
-                id: GROUP_NAME_INPUT,
-                componentLabel: "Group Name",
-                inputType: "text",
-                value: createGroupData.name
-              })}   
-               
-              ${this.generateInputFormItem({
-                id: GROUP_URL_INPUT,
-                componentLabel: "Group URL",
-                inputType: "text",
-                value: createGroupData.url
-              })}   
+      <div id="create-group-page-container">
+        <h1>Create board game group</h1>
+        
+          ${
+            createGroupData.isVisible
+              ? `
+                <form onsubmit="return false">
                 
-              ${this.generateTextInputFormItem({
-                id: GROUP_DESCRIPTION_INPUT,
-                componentLabel: "Group Description",
-                inputType: "text",
-                value: createGroupData.description
-              })}   
-  
-              <br>
-              <button type="submit" ${this.createClickEvent(CREATE_GROUP_EVENT_CONFIG)}>Create group</button>
-           
-              </form>
+                 ${this.generateInputFormItem({
+                  id: GROUP_NAME_INPUT,
+                  componentLabel: "Group Name",
+                  inputType: "text",
+                  value: createGroupData.name ?? ''
+                })}   
+                 
+                ${this.generateInputFormItem({
+                  id: GROUP_URL_INPUT,
+                  componentLabel: "Group URL",
+                  inputType: "text",
+                  value: createGroupData.url ?? ''
+                })}   
+                  
+                ${this.generateTextInputFormItem({
+                  id: GROUP_DESCRIPTION_INPUT,
+                  componentLabel: "Group Description",
+                  inputType: "text",
+                  value: createGroupData.description ?? ''
+                })}   
+    
+                <br>
+                
+                 ${generateButton({
+                  text: "Create group",
+                  component: this,
+                  eventHandlerConfig: CREATE_GROUP_EVENT_CONFIG,
+                })}
              
-              <p>${createGroupData?.successMessage?.trim() ?? ""}</p>
-              ${this.generateErrorMessage(createGroupData.errorMessage)}
-            `
-            : `<p>You must log in to create a group </p>`
-        }    
-    `;
+                </form>
+               
+                <p class="success-message">${createGroupData?.successMessage?.trim() ?? ""}</p>
+                ${generateErrorMessage(createGroupData.errorMessage)}
+              `
+              : `<p>You must log in to create a group </p>`
+          }    
+     </div> 
+     `;
+
   }
 }
 

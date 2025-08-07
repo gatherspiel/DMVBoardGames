@@ -15,6 +15,15 @@ export const EDIT_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
   },
 };
 
+export const CANCEL_GROUP_EDIT_HANDLER: EventHandlerThunkConfig = {
+
+  eventHandler: function () {
+    return {
+      isEditing: false,
+    };
+  },
+};
+
 export const SAVE_GROUP_CONFIG: EventHandlerThunkConfig = {
   eventHandler: function (params): UpdateGroupRequest {
     return {
@@ -33,3 +42,6 @@ export const SAVE_GROUP_CONFIG: EventHandlerThunkConfig = {
     };
   },
 };
+
+
+

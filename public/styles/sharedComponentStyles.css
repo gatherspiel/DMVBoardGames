@@ -1,5 +1,4 @@
 a, button {
-  background-color: var(--clr-lighter-blue);
   border-color: var(--clr-darker-blue);
   border-radius: 5px;
   border-width: 1px;
@@ -10,8 +9,8 @@ a, button {
   padding: 0.5rem;
 }
 
-button:hover {
-  background-color: var(--clr-darker-blue);
+.ui-separator {
+  border-top: 1px solid var(--clr-lighter-blue);
 }
 
 a:hover {
@@ -25,7 +24,7 @@ a {
 
 .ui-section {
   color: var(--clr-dark-blue);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
   padding-left: 1rem;
   padding-top: 0.5rem;
@@ -33,13 +32,13 @@ a {
 }
 
 label {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
 }
 
 p {
   color: var(--clr-dark-blue);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
 }
 
@@ -47,8 +46,17 @@ p {
   display: inline-block;
 }
 
+.success-message {
+  color: #00BB51
+}
 .error-message {
   color: darkred;
+}
+
+@media not screen and (width < 32em) {
+  .showOnMobile {
+    display:none
+  }
 }
 
 @media screen and (width < 32em) {
@@ -56,5 +64,99 @@ p {
     text-align: center;
     justify-items: center;
   }
+  .hideOnMobile {
+    display:none;
+  }
+  .showOnMobile {
+    display:initial;
+  }
 }
+
+.ui-section {
+  visibility: visible !important;
+}
+
+
+.raised {
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline-offset: 4px;
+  transition: filter 600ms;
+}
+
+.shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: hsl(0deg 0% 0% / 0.25);
+  will-change: transform;
+  transform: translateY(2px);
+  transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+
+.edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: linear-gradient(
+    to left,
+    var(--clr-darker-blue) 0%,
+    var(--clr-light-blue) 8%,
+    var(--clr-dark-blue) 92%,
+    var(--clr-darker-blue) 100%
+  );
+}
+
+.front {
+  display: block;
+  position: relative;
+  padding: 0.5rem;
+  border-radius: 12px;
+  font-size: 1.5rem;
+  color: white;
+  background: var(--clr-light-blue);
+  will-change: transform;
+  transform: translateY(-4px);
+  transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+
+
+.activeHover:hover {
+  filter: brightness(110%);
+}
+
+.activeHover:hover .front {
+  transform: translateY(-6px);
+  transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+
+.activeHover:active .front {
+  transform: translateY(-2px);
+  transition: transform 34ms;
+}
+
+.activeHover:hover .shadow {
+  transform: translateY(4px);
+  transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+
+.activeHover:active .shadow {
+  transform: translateY(1px);
+  transition: transform 34ms;
+}
+
+.activeHover:focus:not(:focus-visible) {
+  outline: none;
+}
+
 

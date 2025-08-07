@@ -1,14 +1,12 @@
-import { type AuthTokenResponsePassword } from "@supabase/supabase-js";
 import type { DefaultApiAction } from "../../../framework/state/update/api/DefaultApiAction.ts";
 import { BaseThunk } from "../../../framework/state/update/BaseThunk.ts";
 import type { AuthRequest } from "../types/AuthRequest.ts";
 import { AuthResponse } from "../types/AuthResponse.ts";
 import { generateApiThunkWithExternalConfig } from "../../../framework/state/update/api/ApiThunkFactory.ts";
-import { getLocalStorageDataIfPresent } from "../../../framework/utils/LocalStorageUtils.ts";
+import {addLocalStorageData, getLocalStorageDataIfPresent} from "../../../framework/utils/LocalStorageUtils.ts";
 import { isAfterNow } from "../../../framework/utils/EventDataUtils.ts";
 import type { AuthReducerError } from "../types/AuthReducerError.ts";
-import { AUTH_TOKEN_KEY } from "../../../shared/params.ts";
-import { getSupabaseClient } from "../SupabaseClient.ts";
+import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../../shared/Params.ts";
 
 async function retrieveData(
   params: AuthRequest,
@@ -32,18 +30,38 @@ async function retrieveData(
       return backupResponse.defaultFunction({});
     }
 
-    const authResponse: AuthTokenResponsePassword =
-      await getSupabaseClient().auth.signInWithPassword({
-        email: params.username,
-        password: params.password,
-      });
 
-    if (!authResponse.error) {
-      return new AuthResponse(true, authResponse.data);
+    const url = `${SUPABASE_CLIENT_URL}/auth/v1/token?grant_type=password`
+
+    const headers = {
+      apiKey: SUPABASE_CLIENT_KEY,
     }
+
+    const body = {
+      email:params.username,
+      password: params.password
+    }
+
+
+    const data:Response = await fetch(
+      url, {
+        method: "POST",
+        headers:headers,
+        body:JSON.stringify(body)
+      }
+    )
+
+    if (data.ok) {
+      const authTokenData = await data.json();
+      console.log(JSON.stringify(authTokenData));
+
+      addLocalStorageData(AUTH_TOKEN_KEY, JSON.stringify(authTokenData))
+      return new AuthResponse(true, authTokenData);
+    }
+    const error = data.statusText;
     if (backupResponse.defaultFunction) {
       return backupResponse.defaultFunction({
-        errorMessage: authResponse.error,
+        errorMessage: error,
       });
     } else {
       throw Error("Authentication error");

@@ -1,4 +1,3 @@
-import { getElementWithSelector } from "./utils/ComponentUtils.ts";
 import { BaseDynamicComponent } from "./BaseDynamicComponent.ts";
 
 export abstract class BaseTemplateDynamicComponent extends BaseDynamicComponent {
@@ -13,7 +12,10 @@ export abstract class BaseTemplateDynamicComponent extends BaseDynamicComponent 
       this.shadowRoot!.appendChild(template.content.cloneNode(true));
     }
 
-    const div = getElementWithSelector("div", this.shadowRoot!);
+    const div = this.shadowRoot!.querySelector("div");
+    if (div === null) {
+      throw new Error(`Did not find div when creating template component`);
+    }
     div.innerHTML = this.render(data);
   }
 
@@ -22,11 +24,4 @@ export abstract class BaseTemplateDynamicComponent extends BaseDynamicComponent 
    */
   abstract getTemplateStyle(): string;
 
-  /*
-  - This method is for returning any CSS styles that are shared between different components. If there is a conflict
-  between shared styling and component styling for an element, the component styling will be used. 
-   */
-  getSharedStyle(): string {
-    return "";
-  }
 }

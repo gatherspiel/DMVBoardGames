@@ -2,10 +2,12 @@ import type { GroupSearchResult } from "../../data/types/group/GroupSearchResult
 import {EVENT_PRELOAD_THUNK, EVENT_SEARCH_THUNK} from "../../data/search/EventSearchThunk.ts";
 import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
-import {EVENT_LIST_HANDLER_CONFIG} from "./EventListHandler.ts";
+import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
+import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
+import {getDisplayNameArray} from "../../../../shared/DisplayNameConversion.ts";
 
 const loadConfig = {
-  thunkReducers: [
+  requestThunkReducers: [
     {
       thunk: EVENT_PRELOAD_THUNK,
       componentStoreReducer: updateSearchResultGroupStore,
@@ -20,9 +22,22 @@ const loadConfig = {
 };
 
 const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
+  <link rel="preload" as="style" href="/styles/sharedComponentStyles.css" onload="this.rel='stylesheet'"/>
   <style>
+    .ui-section {
+      visibility: hidden;
+    }
+    
+    .raised {
+      display: inline-block;
+    }
+    
+    .event-group:not(:first-child){
+      border-top: 1px solid var(--clr-lighter-blue);
+    }
     @media not screen and (width < 32em) {
+    
       .event-group p {
         display: inline-block;
         margin-left: 2rem;
@@ -38,9 +53,7 @@ const template = `
       a {
         margin-top: 1rem;
       }
-      .event-group {
-        border-bottom: 1px solid var(--clr-lighter-blue);
-      }
+  
       .event-group-location {
         display: none; 
       }
@@ -60,39 +73,41 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
         <div class = "group-page-links">
-          <a href="groups.html?name=${encodeURIComponent(group.title)}">Show info</a>
-          <a class="group-webpage-link" href=${group.url}> Group webpage</a>
-          <button ${this.createClickEvent(EVENT_LIST_HANDLER_CONFIG)}>Test</button>
-        </div>
-
-        <p>${group.title}</p>
-        <p class="event-group-location">${group.locations?.join(", ") ?? ""}</p>              
-      </div> 
+        
+         ${generateButton({
+          type: "submit",
+          text: group.title,
+          component: this,
+          eventHandlerConfig: VIEW_GROUP_PAGE_HANDLER_CONFIG,
+          eventHandlerParams: {name: group.title}
+        })}
+         
+        
+        <p class="event-group-location">${getDisplayNameArray(group.locations)?.join(", ") ?? ""}</p>              
+        </div> 
+      </div>
     `;
     return groupHtml;
   }
-
+  
   override getTemplateStyle(): string {
     return template;
   }
 
   render(data: any): string {
+
     const groups = data.groups;
     let html = `<div class="ui-section">`;
-    let visibleEvents = 0;
     if (data && Object.values(groups).length > 0) {
       Object.keys(groups).forEach((groupId) => {
         const group = groups[groupId];
-        let groupHtml = "";
-        groupHtml = this.getItemHtml(groupId, group);
-        html += groupHtml;
-        visibleEvents++;
+        html += this.getItemHtml(groupId, group);
       });
     }
 
-    if (visibleEvents === 0) {
+    else  {
       html += `
-      <p>No groups with events found.</p>
+      <p>No groups found.</p>
     `;
     }
     return html + `</div>`;

@@ -1,16 +1,33 @@
 import type { BaseThunk } from "../../../framework/state/update/BaseThunk.ts";
 import { generateApiThunkWithExternalConfig } from "../../../framework/state/update/api/ApiThunkFactory.ts";
 import type { LoginComponentStore } from "../types/LoginComponentStore.ts";
-import { getSupabaseClient } from "../SupabaseClient.ts";
 import { AuthResponse } from "../types/AuthResponse.ts";
+import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../../shared/Params.ts";
+import {deleteLocalStoreData, getLocalStorageDataIfPresent} from "../../../framework/utils/LocalStorageUtils.ts";
 
 async function retrieveData() {
-  const { error } = await getSupabaseClient().auth.signOut();
 
-  if (!error) {
+  const url = `${SUPABASE_CLIENT_URL}/auth/v1/logout?scope=global`
+
+  const authData = await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY);
+
+  const headers = {
+    apiKey: SUPABASE_CLIENT_KEY,
+    authorization: "bearer "+authData.access_token
+  }
+
+  const data:Response = await fetch(
+   url, {
+      method: "POST",
+      headers:headers
+    }
+  )
+
+  if (data.ok) {
+    deleteLocalStoreData(AUTH_TOKEN_KEY)
     return new AuthResponse(false);
   } else {
-    return defaultResponse.defaultFunction(error.toString());
+    return defaultResponse.defaultFunction("Failed to logout:"+JSON.stringify(data));
   }
 }
 
