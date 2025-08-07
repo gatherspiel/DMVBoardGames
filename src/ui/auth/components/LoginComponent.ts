@@ -27,7 +27,7 @@ import {generateErrorMessage} from "../../../framework/components/utils/StatusIn
 
 
 const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+  <link rel="stylesheet" type="text/css"  href="/styles/sharedComponentStyles.css"/>
 
   <style>
     #login-component-container {
