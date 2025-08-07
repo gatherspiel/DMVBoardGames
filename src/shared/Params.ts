@@ -9,7 +9,7 @@ export const IS_TEST = window.location.href.includes(
 
 export const API_ROOT: string =
   IS_PRODUCTION || IS_TEST
-    ? `https://gatherspiel-api-6mued.kinsta.app/`
+    ? `https://gatherspiel-api-6mued.kinsta.app`
     : import.meta.env.VITE_LOCAL_API_ROOT;
 
 console.log("Api root:"+API_ROOT);
