@@ -25,6 +25,7 @@ import { BaseTemplateDynamicComponent } from "../../../framework/components/Base
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage} from "../../../framework/components/utils/StatusIndicators.ts";
 
+
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
 
