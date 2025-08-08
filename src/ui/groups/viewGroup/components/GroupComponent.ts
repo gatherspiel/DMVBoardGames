@@ -35,6 +35,7 @@ const template = `
       margin-left:1rem;
       margin-right:1rem;
     }
+    
     .group-description-text {
       display: block;
       position: relative;
@@ -43,12 +44,8 @@ const template = `
       font-size: 1.5rem;
       color: var(--clr-dark-blue);
       background-color: #0AACFB;
-      will-change: transform;
-      transform: translateY(-4px);
-      transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
     }
     
-   
     .group-data-input {
       height:24px;
       font-size:24px;
@@ -111,15 +108,15 @@ const loadConfig = {
   requestThunkReducers: [
     {
       thunk: GROUP_REQUEST_THUNK,
-      componentStoreReducer: groupDataStoreReducer
+      componentReducer: groupDataStoreReducer
     },
     {
       thunk: GROUP_PRELOAD_THUNK,
-      componentStoreReducer: groupDataStoreReducer
+      componentReducer: groupDataStoreReducer
     },
     {
       thunk: UPDATE_GROUP_REQUEST_THUNK,
-      componentStoreReducer: function () {
+      componentReducer: function () {
         return {
           isEditing: false,
           successMessage: 'Group update successful'
@@ -207,21 +204,21 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
         
        <form>
        
-         ${this.generateInputFormItem({
+         ${this.generateShortInput({
            id: GROUP_NAME_INPUT,
            componentLabel: "Group name",
            inputType: "text",
            value: groupData.name
          })} 
          
-         ${this.generateInputFormItem({
+         ${this.generateShortInput({
            id: GROUP_URL_INPUT,
            componentLabel: "Group url",
            inputType: "text",
            value: groupData.url
          })} 
          
-         ${this.generateTextInputFormItem({
+         ${this.generateTextInput({
            id: GROUP_DESCRIPTION_INPUT,
            componentLabel: "Group description",
            inputType: "text",

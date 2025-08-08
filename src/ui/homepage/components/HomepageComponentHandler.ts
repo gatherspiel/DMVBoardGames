@@ -6,12 +6,22 @@ export const HOMEPAGE_COMPONENT_NAV: EventHandlerThunkConfig = {
   //@ts-ignore
   eventHandler: function(event){
 
+
+    if(event.params.location === '#event-search'){
+      return {
+        hideEvents: false,
+        hideConventions: true,
+        hideRestaurants: true,
+        hideGameStores: true
+      }
+    }
+
     if(event.params.location === '#convention-list'){
       return {
         hideEvents: true,
         hideConventions: false,
         hideRestaurants: true,
-        hideStores: true
+        hideGameStores: true
       }
     }
 
@@ -20,7 +30,7 @@ export const HOMEPAGE_COMPONENT_NAV: EventHandlerThunkConfig = {
         hideEvents: true,
         hideConventions: true,
         hideRestaurants: true,
-        hideStores: false
+        hideGameStores: false
       }
     }
 
@@ -29,7 +39,7 @@ export const HOMEPAGE_COMPONENT_NAV: EventHandlerThunkConfig = {
         hideEvents: true,
         hideConventions: true,
         hideRestaurants: false,
-        hideStores: true
+        hideGameStores: true
       }
     }
 

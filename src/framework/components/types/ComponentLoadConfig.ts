@@ -8,7 +8,7 @@ export type RequestStoreItem = {
 
 export type RequestThunkReducerConfig = {
   thunk: BaseThunk
-  componentStoreReducer: (a: any) => any;
+  componentReducer: (a: any) => any;
   globalStoreReducer?: (a: any) => any;
   reducerField?: string;
 };
@@ -29,6 +29,7 @@ export type ComponentLoadConfig = {
   onLoadRequestConfig?: RequestStoreItem[];
   requestThunkReducers?: RequestThunkReducerConfig[];
   globalStateLoadConfig?: GlobalStateLoadConfig;
+  defaultComponentState?:any
 };
 
 export const validComponentLoadConfigFields = [
@@ -38,4 +39,5 @@ export const validComponentLoadConfigFields = [
   "onLoadRequestConfig",
   "requestThunkReducers",
   "globalStateLoadConfig",
+  "defaultComponentState"
 ];

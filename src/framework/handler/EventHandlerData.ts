@@ -13,23 +13,23 @@ type EventConfig = {
 
 export class EventHandlerData {
 
-  eventHandlerConfig:Record<string, EventConfig>;
-  eventTagIdCount = 0;
-  elementIdTag:string;
+  #eventHandlerConfig:Record<string, EventConfig>;
+  #eventTagIdCount = 0;
+  #elementIdTag:string;
 
   constructor(elementIdTag:string){
-    this.eventHandlerConfig = {};
-    this.elementIdTag = elementIdTag;
+    this.#eventHandlerConfig = {};
+    this.#elementIdTag = elementIdTag;
   }
 
   resetData(){
-    this.eventHandlerConfig = {};
-    this.eventTagIdCount = 0;
+    this.#eventHandlerConfig = {};
+    this.#eventTagIdCount = 0;
   }
 
   attachEventHandlersToDom(shadowRoot?:any){
-    const eventHandlers = this.eventHandlerConfig;
-    const elementIdTag = this.elementIdTag;
+    const eventHandlers = this.#eventHandlerConfig;
+    const elementIdTag = this.#elementIdTag;
 
     const addEventHandler = function (item: Element) {
       const id = item.getAttribute(elementIdTag) ?? "";
@@ -86,13 +86,13 @@ export class EventHandlerData {
     eventFunction: (e: Event) => any,
     eventType: string,
   ): string {
-    let eventId = `${this.elementIdTag}=${this.eventTagIdCount}`;
+    let eventId = `${this.#elementIdTag}=${this.#eventTagIdCount}`;
 
-    this.eventHandlerConfig[this.eventTagIdCount] = {
+    this.#eventHandlerConfig[this.#eventTagIdCount] = {
       eventType: eventType,
       eventFunction: eventFunction,
     };
-    this.eventTagIdCount++;
+    this.#eventTagIdCount++;
     return eventId;
   }
 

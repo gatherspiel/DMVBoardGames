@@ -10,7 +10,7 @@ const loadConfig = {
   requestThunkReducers: [
     {
       thunk: LOCATIONS_THUNK,
-      componentStoreReducer: (data: any) => {
+      componentReducer: (data: any) => {
         return data.gameStores;
       },
     },

@@ -1,5 +1,4 @@
 import type { Convention } from "../data/types/Convention.ts";
-import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
@@ -7,14 +6,12 @@ import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandle
 export const CONVENTION_LIST_STORE = "conventionListStore";
 
 const loadConfig = {
-  requestThunkReducers: [
-    {
-      thunk: LOCATIONS_THUNK,
-      componentStoreReducer: (data: any) => {
-        return data.conventions;
-      },
-    },
-  ],
+  globalStateLoadConfig: {
+    globalFieldSubscriptions: ["gameLocations"],
+    defaultGlobalStateReducer: function(data:any){
+      return data.gameLocations.conventions;
+    }
+  },
 };
 
 const template = `

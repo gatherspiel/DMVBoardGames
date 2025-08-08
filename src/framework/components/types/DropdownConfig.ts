@@ -1,6 +1,6 @@
 import type {EventHandlerThunkConfig} from "../../state/update/event/types/EventHandlerThunkConfig.ts";
 
-export type DropdownConfigItem= {
+export type DropdownConfigItem = {
   index: number
   name:string
 }

@@ -1,5 +1,4 @@
 import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
-import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
@@ -7,14 +6,12 @@ import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandle
 export const GAME_RESTAURANT_LIST_STORE = "gameRestaurantListStore";
 
 const loadConfig = {
-  requestThunkReducers: [
-    {
-      thunk: LOCATIONS_THUNK,
-      componentStoreReducer: (data: any) => {
-        return data.gameRestaurants;
-      },
-    },
-  ],
+  globalStateLoadConfig: {
+    globalFieldSubscriptions: ["gameLocations"],
+    defaultGlobalStateReducer: function(data:any){
+      return data.gameLocations.gameRestaurants;
+    }
+  },
 };
 
 const template = `
@@ -52,6 +49,7 @@ export class GameRestaurantListComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: Record<any, GameRestaurant>) {
+
     let html = `<div class ="ui-section">
     <h1 class="hideOnMobile">Board Game Bars and Cafés</h1>
     <h2 class="showOnMobile">Board Game Bars and Cafés</h2>

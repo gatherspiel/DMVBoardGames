@@ -17,11 +17,6 @@ a:hover {
   background-color: var(--clr-darker-blue);
 }
 
-a {
-  border: 1px solid var(--clr-darker-blue);
-  text-decoration: none
-}
-
 .ui-section {
   color: var(--clr-dark-blue);
   font-size: 1.5rem;
@@ -29,6 +24,7 @@ a {
   padding-left: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  visibility: visible;
 }
 
 label {
@@ -40,10 +36,6 @@ p {
   color: var(--clr-dark-blue);
   font-size: 1.5rem;
   font-weight: 600;
-}
-
-.ui-input {
-  display: inline-block;
 }
 
 .success-message {
@@ -70,10 +62,6 @@ p {
   .showOnMobile {
     display:initial;
   }
-}
-
-.ui-section {
-  visibility: visible !important;
 }
 
 
@@ -158,5 +146,3 @@ p {
 .activeHover:focus:not(:focus-visible) {
   outline: none;
 }
-
-
