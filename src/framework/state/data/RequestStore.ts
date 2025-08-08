@@ -81,11 +81,6 @@ export function updateRequestStore(
   stores[storeName].subscribers.forEach(function (item: BaseThunk) {
     const requestData = stores[storeName].data;
 
-    if (!item.dispatchers || item.dispatchers.length === 0) {
-      throw new Error(
-        `No dispatchers for the response associated with: ${storeName} Make sure a component is subscribed to the store thunk`,
-      );
-    }
 
     const cacheKey = requestsWithoutCache.has(storeName) ? '' : storeName;
 

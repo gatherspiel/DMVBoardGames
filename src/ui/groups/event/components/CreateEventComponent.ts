@@ -38,7 +38,7 @@ const loadConfig = {
   requestThunkReducers:[
     {
       thunk: CREATE_EVENT_THUNK,
-      componentStoreReducer: function(data: any){
+      componentReducer: function(data: any){
         if(!data.errorMessage){
           return {
             successMessage: "Successfully created event"
@@ -90,42 +90,42 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
         <h1>Create board game event for group ${getUrlParameter("groupName")}</h1>
          <form>
     
-      ${this.generateInputFormItem({
+      ${this.generateShortInput({
         id: EVENT_NAME_INPUT,
         componentLabel: "Event name",
         inputType: "text",
         value: data.name
       })}
       
-      ${this.generateTextInputFormItem({
+      ${this.generateTextInput({
         id: EVENT_DESCRIPTION_INPUT,
         componentLabel: "Event description",
         inputType: "text",
         value: data.description
       })}
       
-       ${this.generateInputFormItem({
+       ${this.generateShortInput({
         id: EVENT_URL_INPUT,
         componentLabel: "Event URL",
         inputType: "text",
         value: data.url
       })}
        
-      ${this.generateInputFormItem({
+      ${this.generateShortInput({
         id: START_DATE_INPUT,
         componentLabel: "Start date",
         inputType: "text",
         value: ""
       })}
       
-      ${this.generateInputFormItem({
+      ${this.generateShortInput({
         id: START_TIME_INPUT,
         componentLabel: "Start time",
         inputType: "text",
         value: ""
       })}
  
-      ${this.generateInputFormItem({
+      ${this.generateShortInput({
         id: END_TIME_INPUT,
         componentLabel: "End time",
         inputType: "text",
@@ -133,7 +133,7 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
       })}     
       <br>
   
-      ${this.generateInputFormItem({
+      ${this.generateShortInput({
         id: EVENT_LOCATION_INPUT,
         componentLabel: "Event location",
         inputType: "text",

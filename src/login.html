@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+
+  <meta charset="UTF-8"/>
+  <style inline-source src="../public/styles/styles.css" ></style>
+
+
+  <link rel="icon" type="image/ico" href="/assets/favicon.ico"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DMV Board Games</title>
+</head>
+<body>
+
+<div id="container">
+  {{>navbar}}
+
+  <page-component
+    componentName="login-component"
+  >
+  </page-component>
+</div>
+
+<script
+  defer
+  fetchpriority="low"
+  type="module"
+  src="shared/components/PageComponent.ts"
+></script>
+</body>
+</html>

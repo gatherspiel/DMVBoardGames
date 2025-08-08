@@ -24,7 +24,7 @@ const loadConfig = {
   thunkReducers: [
     {
       thunk: DELETE_GROUP_REQUEST_THUNK,
-      componentStoreReducer: function (data: any) {
+      componentReducer: function (data: any) {
         console.log(data)
         if (data.errorMessage) {
           return {
@@ -70,7 +70,7 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
   render(data: DeleteGroupData): string {
     return `
       <form onsubmit="return false">
-        ${this.generateInputFormItem({
+        ${this.generateShortInput({
           id: GROUP_NAME_INPUT,
           componentLabel: "Enter group name to confirm deleting",
           inputType: "text",

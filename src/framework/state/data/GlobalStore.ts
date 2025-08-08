@@ -1,6 +1,6 @@
 import type { BaseDynamicComponent } from "../../components/BaseDynamicComponent.ts";
 
-let globalState: Record<string, string> = {};
+let globalState: Record<string, any> = {};
 
 let globalStateCreated: boolean = false;
 let globalStateSubscribers: Record<string, BaseDynamicComponent[]> = {};
@@ -12,7 +12,7 @@ export function getGlobalStateValue(fieldName: string): string {
   return globalState[fieldName];
 }
 
-export function setupGlobalState(fields: Record<string, string>) {
+export function setupGlobalState(fields: Record<string, any>) {
   if (globalStateCreated) {
     return;
     //throw new Error("Global state has already been initialized");
@@ -25,7 +25,7 @@ export function setupGlobalState(fields: Record<string, string>) {
   globalStateCreated = true;
 }
 
-export function updateGlobalStore(fieldsToUpdate: Record<string, string>) {
+export function updateGlobalStore(fieldsToUpdate: Record<string, any>) {
   let componentsToUpdate = new Set();
   Object.keys(fieldsToUpdate).forEach(function (fieldName: string) {
     if (!(fieldName in globalState)) {

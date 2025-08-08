@@ -28,7 +28,7 @@ const loadConfig = {
   requestThunkReducers: [
     {
       thunk: CREATE_GROUP_REQUEST_THUNK,
-      componentStoreReducer: function (data: any) {
+      componentReducer: function (data: any) {
         if (data.errorMessage) {
           return {
             errorMessage: data.errorMessage,
@@ -80,21 +80,21 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
               ? `
                 <form onsubmit="return false">
                 
-                 ${this.generateInputFormItem({
+                 ${this.generateShortInput({
                   id: GROUP_NAME_INPUT,
                   componentLabel: "Group Name",
                   inputType: "text",
                   value: createGroupData.name ?? ''
                 })}   
                  
-                ${this.generateInputFormItem({
+                ${this.generateShortInput({
                   id: GROUP_URL_INPUT,
                   componentLabel: "Group URL",
                   inputType: "text",
                   value: createGroupData.url ?? ''
                 })}   
                   
-                ${this.generateTextInputFormItem({
+                ${this.generateTextInput({
                   id: GROUP_DESCRIPTION_INPUT,
                   componentLabel: "Group Description",
                   inputType: "text",

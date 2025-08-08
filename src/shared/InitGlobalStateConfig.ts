@@ -5,6 +5,7 @@ let stateFields:Record<string, string> = {};
 export function setupStateFields(){
   stateFields =  {
     LOGGED_IN: "isLoggedIn",
+    GAME_LOCATIONS:"gameLocations",
   };
   setupGlobalState(stateFields);
 }
