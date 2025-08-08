@@ -57,13 +57,13 @@ const loadConfig = {
   requestThunkReducers: [
     {
       thunk: GROUP_EVENT_REQUEST_THUNK,
-      componentStoreReducer: function (data: any) {
+      componentReducer: function (data: any) {
         return data;
       },
     },
     {
       thunk: UPDATE_EVENT_REQUEST_THUNK,
-      componentStoreReducer: function (data:any) {
+      componentReducer: function (data:any) {
         if (data.errorMessage) {
           return {
             errorMessage: data.errorMessage,
@@ -80,7 +80,7 @@ const loadConfig = {
     },
     {
       thunk: DELETE_EVENT_REQUEST_THUNK,
-      componentStoreReducer: function (data:any) {
+      componentReducer: function (data:any) {
         if (data.errorMessage) {
           return {
             errorMessage: data.errorMessage,
@@ -158,42 +158,42 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
 
     <form>
     
-      ${this.generateInputFormItem({
+      ${this.generateShortInput({
         id: EVENT_NAME_INPUT,
         componentLabel: "Event name",
         inputType: "text",
         value: data.name
       })}
       
-      ${this.generateTextInputFormItem({
+      ${this.generateTextInput({
         id: EVENT_DESCRIPTION_INPUT,
         componentLabel: "Event description",
         inputType: "text",
         value: data.description
       })}
       
-       ${this.generateInputFormItem({
+       ${this.generateShortInput({
         id: EVENT_URL_INPUT,
         componentLabel: "Event URL",
         inputType: "text",
         value: data.url
       })}
        
-      ${this.generateInputFormItem({
+      ${this.generateShortInput({
         id: START_DATE_INPUT,
         componentLabel: "Start date",
         inputType: "text",
         value: getDateFromDateString(data.startTime)
       })}
       
-      ${this.generateInputFormItem({
+      ${this.generateShortInput({
         id: START_TIME_INPUT,
         componentLabel: "Start time",
         inputType: "text",
         value: getTimeFromDateString(data.startTime)
       })}
  
-      ${this.generateInputFormItem({
+      ${this.generateShortInput({
         id: END_TIME_INPUT,
         componentLabel: "End time",
         inputType: "text",
@@ -201,7 +201,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
       })}     
       <br>
   
-      ${this.generateInputFormItem({
+      ${this.generateShortInput({
         id: EVENT_LOCATION_INPUT,
         componentLabel: "Event location",
         inputType: "text",

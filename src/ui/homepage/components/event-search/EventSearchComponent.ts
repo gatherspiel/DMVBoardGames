@@ -38,13 +38,13 @@ const loadConfig = {
   requestThunkReducers: [
     {
       thunk: EVENT_PRELOAD_THUNK,
-      componentStoreReducer: function(data: any){
+      componentReducer: function(data: any){
         return data;
       }
     },
     {
       thunk: CITY_LIST_THUNK,
-      componentStoreReducer: updateCities,
+      componentReducer: updateCities,
     }
   ],
 };

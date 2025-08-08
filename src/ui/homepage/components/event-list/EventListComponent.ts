@@ -10,12 +10,12 @@ const loadConfig = {
   requestThunkReducers: [
     {
       thunk: EVENT_PRELOAD_THUNK,
-      componentStoreReducer: updateSearchResultGroupStore,
+      componentReducer: updateSearchResultGroupStore,
       reducerField: "groupData"
     },
     {
       thunk: EVENT_SEARCH_THUNK,
-      componentStoreReducer: updateSearchResultGroupStore,
+      componentReducer: updateSearchResultGroupStore,
       reducerField: "groupData",
     },
   ],
@@ -25,10 +25,7 @@ const template = `
 
   <link rel="preload" as="style" href="/styles/sharedComponentStyles.css" onload="this.rel='stylesheet'"/>
   <style>
-    .ui-section {
-      visibility: hidden;
-    }
-    
+
     .raised {
       display: inline-block;
     }

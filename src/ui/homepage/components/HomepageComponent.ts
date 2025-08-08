@@ -50,9 +50,7 @@ export class HomepageComponent extends BaseTemplateDynamicComponent {
   }
   render(data:any){
     return `
-     <div class="ui-separator"></div>
-      <div class="ui-section">
-    
+        <div class="ui-section">
         <create-group-component>
         </create-group-component>
         <nav>

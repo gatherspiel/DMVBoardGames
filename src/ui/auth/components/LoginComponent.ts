@@ -32,8 +32,10 @@ const template = `
     #login-component-container {
       padding-top: 0.25rem;
     }
-    .login-element {
+    .ui-input {
+      display: inline-block;
     }
+    
     @media screen and (width < 32em) {
       #login-component-container {
         text-align: center;
@@ -63,15 +65,15 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
       requestThunkReducers: [
         {
           thunk: LOGIN_THUNK,
-          componentStoreReducer: getLoginComponentStoreFromLoginResponse,
+          componentReducer: getLoginComponentStoreFromLoginResponse,
         },
         {
           thunk: LOGOUT_THUNK,
-          componentStoreReducer: getLoginComponentStoreFromLogoutResponse,
+          componentReducer: getLoginComponentStoreFromLogoutResponse,
         },
         {
           thunk: REGISTER_USER_THUNK,
-          componentStoreReducer: getLoginComponentStoreFromRegisterResponse,
+          componentReducer: getLoginComponentStoreFromRegisterResponse,
         },
       ],
     });
@@ -96,7 +98,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
      <div class="ui-section" id="login-component-container">
       <form id=${LOGIN_FORM_ID} ${this.createSubmitEvent(LOGIN_EVENT_CONFIG)}>
         <div class="ui-input">
-          ${this.generateInputFormItem({
+          ${this.generateShortInput({
             id: USERNAME_INPUT,
             componentLabel: "Email",
             inputType: "text",
@@ -105,7 +107,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
         </div>
         
         <div class="ui-input">
-          ${this.generateInputFormItem({
+          ${this.generateShortInput({
             id: PASSWORD_INPUT,
             componentLabel: "Password",
             inputType: "text",

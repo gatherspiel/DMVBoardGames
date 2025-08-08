@@ -34,8 +34,6 @@ export class PageComponent extends  AbstractPageComponent {
       }
     }
   }
-
-
 }
 
 

@@ -25,15 +25,15 @@ import {generateLoadingIndicator} from "./utils/StatusIndicators.ts";
 
 export abstract class BaseDynamicComponent extends HTMLElement {
 
-  eventHandlerData:EventHandlerData;
+  #eventHandlerData:EventHandlerData;
 
-  componentStoreName: string
+  readonly componentStoreName: string
   requestStoreReducer?: BaseThunk;
 
-  dependenciesLoaded: boolean = true;
-  componentLoadConfig: ComponentLoadConfig | undefined = undefined;
+  #dependenciesLoaded: boolean = true;
+  #componentLoadConfig: ComponentLoadConfig | undefined = undefined;
 
-  formSelector: FormSelector
+  #formSelector: FormSelector
   static instanceCount = 1;
 
   constructor(componentStoreName: string, loadConfig?: ComponentLoadConfig) {
@@ -42,10 +42,10 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     BaseDynamicComponent.instanceCount++;
     this.componentStoreName = `${componentStoreName}-${BaseDynamicComponent.instanceCount}`;
 
-    this.formSelector = new FormSelector();
+    this.#formSelector = new FormSelector();
     createComponentStore(this.componentStoreName, this, loadConfig?.defaultComponentState);
 
-    this.eventHandlerData = new EventHandlerData(`data-${this.componentStoreName}-element-id`);
+    this.#eventHandlerData = new EventHandlerData(`data-${this.componentStoreName}-element-id`);
 
     if (loadConfig) {
       const self = this;
@@ -68,7 +68,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
           fieldName: string,
         ) {
           subscribeComponentToGlobalField(self, fieldName);
-          self.componentLoadConfig = loadConfig;
+          self.#componentLoadConfig = loadConfig;
         });
       } else {
         initRequestStoresOnLoad(loadConfig);
@@ -87,7 +87,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
           }
           config.thunk.subscribeComponent(
             component.componentStoreName,
-            config.componentStoreReducer,
+            config.componentReducer,
             config.reducerField,
           );
         });
@@ -96,14 +96,14 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   updateWithStoreData(data: any) {
-    this.eventHandlerData.resetData();
+    this.#eventHandlerData.resetData();
     this.generateAndSaveHTML(data);
 
     if(this.shadowRoot){
-      this.formSelector.setShadowRoot(this.shadowRoot);
+      this.#formSelector.setShadowRoot(this.shadowRoot);
     }
 
-    this.eventHandlerData.attachEventHandlersToDom(this.shadowRoot);
+    this.#eventHandlerData.attachEventHandlersToDom(this.shadowRoot);
   }
 
   updateStore(data: any) {
@@ -111,32 +111,32 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   generateAndSaveHTML(data: any) {
-    if (!this.dependenciesLoaded) {
+    if (!this.#dependenciesLoaded) {
       this.innerHTML = generateLoadingIndicator();
     } else {
-      this.formSelector.clearFormSelectors();
+      this.#formSelector.clearFormSelectors();
       this.innerHTML = this.render(data);
     }
   }
 
-  generateInputFormItem(formConfig:FormInputConfig){
-    return this.formSelector.generateInputFormSelector(formConfig);
+  generateShortInput(formConfig:FormInputConfig){
+    return this.#formSelector.generateInputFormSelector(formConfig);
   }
 
-  generateTextInputFormItem(formConfig:FormInputConfig){
-    return this.formSelector.generateTextInputFormItem(formConfig);
+  generateTextInput(formConfig:FormInputConfig){
+    return this.#formSelector.generateTextInputFormItem(formConfig);
   }
 
   createOnChangeEvent(eventConfig: any) {
-    return this.eventHandlerData.createOnChangeEvent(eventConfig, this.formSelector, this.componentStoreName);
+    return this.#eventHandlerData.createOnChangeEvent(eventConfig, this.#formSelector, this.componentStoreName);
   }
 
   createSubmitEvent(eventConfig: any) {
-    return this.eventHandlerData.createSubmitEvent(eventConfig, this.formSelector, this.componentStoreName);
+    return this.#eventHandlerData.createSubmitEvent(eventConfig, this.#formSelector, this.componentStoreName);
   }
 
   createClickEvent(eventConfig: any, params?: any) {
-    return this.eventHandlerData.createClickEvent(eventConfig, this.formSelector, this.componentStoreName, params);
+    return this.#eventHandlerData.createClickEvent(eventConfig, this.#formSelector, this.componentStoreName, params);
   }
 
   disconnectedCallback(){
@@ -145,7 +145,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   updateFromGlobalState() {
 
-    const componentLoadConfig = this.componentLoadConfig;
+    const componentLoadConfig = this.#componentLoadConfig;
     if(!componentLoadConfig){
       throw new Error(`Component load config is not defined for component ${this.componentStoreName}`)
     }
@@ -189,7 +189,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     }
 
     if(loadStatus && loadStatus.dependenciesLoaded) {
-      this.dependenciesLoaded = true;
+      this.#dependenciesLoaded = true;
     }
   }
   abstract render(data: Record<any, DisplayItem> | any): string;

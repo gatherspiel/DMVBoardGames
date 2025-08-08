@@ -12,7 +12,7 @@ import type {BaseDynamicComponent} from "./BaseDynamicComponent.ts";
 export abstract class AbstractPageComponent extends HTMLElement {
 
   static #currentComponent: AbstractPageComponent;
-  routeMap:Record<string, (params:any)=>string>;
+  #routeMap:Record<string, (params:any)=>string>;
 
 
   constructor() {
@@ -26,7 +26,7 @@ export abstract class AbstractPageComponent extends HTMLElement {
     this.getCommonComponents().forEach(function(component){
       self.appendChild(component);
     })
-    this.routeMap = this.getRouteMap();
+    this.#routeMap = this.getRouteMap();
 
     PageState.activeComponent = getComponent(componentName);
 
@@ -52,10 +52,10 @@ export abstract class AbstractPageComponent extends HTMLElement {
   abstract getRouteMap():Record<string, (params:any)=>string>;
 
   static updateRoute(componentType:typeof BaseDynamicComponent, params?:Record<string, string>){
-    AbstractPageComponent.#currentComponent.update(componentType, params);
+    AbstractPageComponent.#currentComponent.#update(componentType, params);
   }
 
-  update(componentType:typeof BaseDynamicComponent,params?:Record<string, string>){
+  #update(componentType:typeof BaseDynamicComponent,params?:Record<string, string>){
     clearRequestStores();
     clearComponentStores();
     this.removeChild(PageState.activeComponent)
@@ -69,11 +69,11 @@ export abstract class AbstractPageComponent extends HTMLElement {
   }
 
   #getComponentAndUpdateUrl(componentType:any, params?:Record<string, string>): HTMLElement{
-    if(!(componentType.name in this.routeMap)){
+    if(!(componentType.name in this.#routeMap)){
       throw new Error(`No route defined for ${componentType.name}`);
     }
 
-    const url = this.routeMap[componentType.name](params);
+    const url = this.#routeMap[componentType.name](params);
     this.#updateUrlWithQuery(url,params);
 
     return new componentType();

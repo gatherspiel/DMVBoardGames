@@ -15,13 +15,13 @@ const loadConfig = {
   requestThunkReducers:[
     {
       thunk: LOGIN_THUNK,
-      componentStoreReducer: function(data:any){
+      componentReducer: function(data:any){
         return data;
       }
     },
     {
       thunk: LOGOUT_THUNK,
-      componentStoreReducer: function(data:any){
+      componentReducer: function(data:any){
         return data;
       }
     }
