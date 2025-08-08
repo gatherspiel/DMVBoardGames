@@ -6,12 +6,12 @@
     }
 
     .raised:hover {
-        transform:none;
+        transform: none;
         transition: none;
     }
 
     .raised:active {
-        transform:none;
+        transform: none;
         transition: none;
     }
 
@@ -27,7 +27,7 @@
 
     nav a,
     #jump-to a {
-        border:none;
+        border: none;
         background-color: none;
         color: white;
         font-weight: 400;
@@ -63,23 +63,26 @@
     #nav-filler {
         display: inline-block;
         background-color: var(--clr-lighter-blue);
-        flex-grow:1;
+        flex-grow: 1;
     }
 
     @media not screen and (width < 32em) {
         #logo-div {
             float: left;
         }
+
         .top-nav {
             display: flex;
             flex-wrap: wrap;
             padding-left: 0.5rem;
         }
+
         nav a + a {
             margin-left: 1px;
             border-color: white;
             border-width: 1px;
         }
+
     }
 
     @media screen and (width < 32em) {
@@ -87,18 +90,23 @@
             display: flex;
             justify-content: center;
         }
+
         .top-nav {
             display: grid;
             text-align: center;
         }
+
         nav a + a {
             border-color: white;
             border-width: 1px;
         }
+        .hideOnMobile {
+            display: none;
+        }
     }
 </style>
 
-<nav class="raised">
+<nav class="raised" id="navbar">
   <span class="shadow"></span>
   <span class="edge"></span>
   <span class="front">
@@ -108,15 +116,24 @@
     <div class="ui-section top-nav">
       <div class="top-nav">
         <a href="/index.html">Home
-        </a><a class="mid-element" href="/designers.html">Local designers
-        </a><a href="/print_and_play.html">Print and Play
-        </a><a href="https://gatherspiel.com/vision.html">Future plans
-        </a><a href="/useful_links.html">Useful Links
-        </a><a href="/feedback.html">Feedback</a>
-        <login-status-component></login-status-component>
+        </a><a class="hideOnMobile" href="/designers.html">Local designers
+        </a><a class="hideOnMobile" href="/print_and_play.html">Print and Play
+        </a><a class="hideOnMobile" href="https://gatherspiel.com/vision.html">Future plans
+        </a><a class="hideOnMobile" href="/useful_links.html">Useful Links
+        </a><a class="hideOnMobile" href="/feedback.html">Feedback</a>
+
+            <login-status-component></login-status-component>
+
+        </div>
       </div>
     <div id="nav-filler"></div>
     </div>
   </span>
 </nav>
 
+<script>
+  document.getElementById("navbar").addEventListener("click", function () {
+    console.log("Hi");
+    const classNames = document.getElementById("navbar").className;
+  })
+</script>

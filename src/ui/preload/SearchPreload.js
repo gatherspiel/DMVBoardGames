@@ -8,7 +8,7 @@ const IS_LOCAL = !window.location.href.includes(
 let API_ROOT = "http://localhost:7070"
 
 if(!IS_LOCAL){
-  API_ROOT = "https://api.dmvboardgames.com"
+  API_ROOT = "https://api.gatherspiel.com"
 }
 
 const start = Date.now();
