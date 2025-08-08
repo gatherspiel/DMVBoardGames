@@ -7,8 +7,7 @@ import {clearRequestStores} from "../state/data/RequestStore.ts";
 import {clearComponentStores} from "../state/data/ComponentStore.ts";
 import type {BaseDynamicComponent} from "./BaseDynamicComponent.ts";
 
-//@ts-ignore
-import {HomepageComponent} from "../../ui/homepage/components/HomepageComponent.ts";
+
 
 export abstract class AbstractPageComponent extends HTMLElement {
 

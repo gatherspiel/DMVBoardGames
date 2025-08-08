@@ -12,6 +12,7 @@ async function retrieveData(
   params: AuthRequest,
   backupResponse: DefaultApiAction,
 ): Promise<AuthResponse> {
+
   try {
     if (
       backupResponse.defaultFunctionPriority &&
@@ -53,15 +54,14 @@ async function retrieveData(
 
     if (data.ok) {
       const authTokenData = await data.json();
-      console.log(JSON.stringify(authTokenData));
 
       addLocalStorageData(AUTH_TOKEN_KEY, JSON.stringify(authTokenData))
       return new AuthResponse(true, authTokenData);
     }
-    const error = data.statusText;
+    const error = await data.json();
     if (backupResponse.defaultFunction) {
       return backupResponse.defaultFunction({
-        errorMessage: error,
+        errorMessage: error?.msg ?? data.statusText
       });
     } else {
       throw Error("Authentication error");

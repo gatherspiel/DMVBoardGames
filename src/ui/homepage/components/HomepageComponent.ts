@@ -54,7 +54,6 @@ export class HomepageComponent extends BaseTemplateDynamicComponent {
       <div class="ui-section">
     
         <create-group-component>
-        
         </create-group-component>
         <nav>
           <div id="nav-container">

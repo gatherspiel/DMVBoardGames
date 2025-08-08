@@ -13,7 +13,6 @@ import {
 import type { LoginComponentStore } from "../types/LoginComponentStore.ts";
 import {
   LOGIN_EVENT_CONFIG,
-  LOGOUT_EVENT_CONFIG,
   REGISTER_EVENT_CONFIG,
 } from "../LoginComponentEventHandlers.ts";
 import { LOGOUT_THUNK } from "../data/LogoutThunk.ts";
@@ -88,15 +87,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
       return this.generateLogin(data);
     } else {
       return `
-       <div class="ui-section" id="login-component-container">
-       <div class="login-element">${data.successMessage}</div>
-       ${generateButton({
-        type: "submit",
-        text: "Logout",
-        component: this,
-        eventHandlerConfig: LOGOUT_EVENT_CONFIG
-       })}
-      </div>
+    
        `;
     }
   }
@@ -145,7 +136,6 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
                     
           </div>
           ${this.hasRendered ? generateErrorMessage(data.errorMessage) : ''}
-          <div class="login-element success-message">${data.successMessage}</div>
         </form>
 
     </div>
