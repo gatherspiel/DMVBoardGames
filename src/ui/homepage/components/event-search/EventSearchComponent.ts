@@ -70,10 +70,6 @@ const template = `
     padding-bottom: 5px;
   }
   
-  #search-form label {
-    margin-right: 0.5rem;
-  }
-  
   #search-form select {
     border-color: var(--clr-light-blue);
     border-radius: 5px;
@@ -86,13 +82,11 @@ const template = `
     width:10rem;
   }
   
-
-    
- @media not screen and (width < 32em) {
-    #search-distance {
-      margin-left:1rem;
-    }
+  .searchDropdownLabel {
+    display: inline-block;
+    width: 13rem;
   }
+    
   
   @media screen and (width < 32em) {
     #search-form {
@@ -194,7 +188,7 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
 
   getDropdownHtml(dropdownConfig: DropdownConfig) {
     return ` 
-    <label>${dropdownConfig.label} </label>
+    <label class="searchDropdownLabel">${dropdownConfig.label} </label>
     <select
       id=${dropdownConfig.id}
       name=${dropdownConfig.name}

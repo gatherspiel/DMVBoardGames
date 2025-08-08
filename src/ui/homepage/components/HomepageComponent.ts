@@ -23,15 +23,23 @@ import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+
   `
 
-
+const loadConfig = {
+  defaultComponentState: {
+    hideEvents: false,
+    hideConventions: true,
+    hideRestaurants: true,
+    hideGameStores: true,
+  }
+}
 export class HomepageComponent extends BaseTemplateDynamicComponent {
 
   isFromBackButton: boolean | undefined;
 
   constructor(isFromBackButton?:boolean){
-    super("homepage-component");
+    super("homepage-component",loadConfig);
     this.isFromBackButton = isFromBackButton;
   }
   override getTemplateStyle(): string {
@@ -52,28 +60,33 @@ export class HomepageComponent extends BaseTemplateDynamicComponent {
           <div id="nav-container">
             <div>Click for more info about</div>
             
-    
+            ${data.hideEvents || data.showAllButtons ? generateButton({
+              text: "Events",
+              component: this,
+              eventHandlerConfig: HOMEPAGE_COMPONENT_NAV,
+              eventHandlerParams: {location:"#event-search"}
+            }): ``} 
               
-            ${generateButton({
+            ${data.hideConventions ? generateButton({
               text: "Conventions",
               component: this,
               eventHandlerConfig: HOMEPAGE_COMPONENT_NAV,
               eventHandlerParams: {location:"#convention-list"}
-            })}       
+            }): ``}       
          
-            ${generateButton({
+            ${data.hideGameStores ? generateButton({
               text: "Game Stores",
               component: this,
               eventHandlerConfig: HOMEPAGE_COMPONENT_NAV,
               eventHandlerParams: {location:"#game-store"}
-            })}  
+            }): ``}  
          
-            ${generateButton({
+            ${data.hideRestaurants ? generateButton({
               text: "Bars and Cafés",
               component: this,
               eventHandlerConfig: HOMEPAGE_COMPONENT_NAV,
               eventHandlerParams: {location:"#game-restaurant"}
-            })} 
+            }): ``} 
              
           </div>
         </nav>
@@ -108,7 +121,7 @@ export class HomepageComponent extends BaseTemplateDynamicComponent {
           <game-restaurant-list-component></game-restaurant-list-component>
         </div>` : ''}
     
-      ${data && !data.hideStores ? `
+      ${data && !data.hideGameStores ? `
         <div id="game-store" class="page-section">
           <game-store-list-component></game-store-list-component>
         </div>` : ''}

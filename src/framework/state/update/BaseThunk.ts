@@ -122,9 +122,9 @@ export class BaseThunk {
   }
 
   updateStore(response: any) {
-    if (this.dispatchers.length === 0) {
+    if (this.dispatchers.length === 0 && !this.globalStateReducer) {
       console.error(
-        "No dispatchers configured for API response " + this.thunkAction,
+        "No dispatchers or global state reducer configured for API response " + this.thunkAction,
       );
       throw new Error("");
     }

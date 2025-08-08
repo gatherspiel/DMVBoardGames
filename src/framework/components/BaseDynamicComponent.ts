@@ -43,7 +43,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     this.componentStoreName = `${componentStoreName}-${BaseDynamicComponent.instanceCount}`;
 
     this.formSelector = new FormSelector();
-    createComponentStore(this.componentStoreName, this);
+    createComponentStore(this.componentStoreName, this, loadConfig?.defaultComponentState);
 
     this.eventHandlerData = new EventHandlerData(`data-${this.componentStoreName}-element-id`);
 

@@ -5,8 +5,9 @@ let stores: Record<string, any> = {};
 export function createComponentStore(
   storeName: string,
   component: HTMLElement,
+  defaultData?:any
 ) {
-  createStore(storeName, stores);
+  createStore(storeName, stores, defaultData);
   subscribeComponentToStore(storeName, component);
 }
 

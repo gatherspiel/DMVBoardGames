@@ -29,6 +29,7 @@ export type ComponentLoadConfig = {
   onLoadRequestConfig?: RequestStoreItem[];
   requestThunkReducers?: RequestThunkReducerConfig[];
   globalStateLoadConfig?: GlobalStateLoadConfig;
+  defaultComponentState?:any
 };
 
 export const validComponentLoadConfigFields = [
@@ -38,4 +39,5 @@ export const validComponentLoadConfigFields = [
   "onLoadRequestConfig",
   "requestThunkReducers",
   "globalStateLoadConfig",
+  "defaultComponentState"
 ];

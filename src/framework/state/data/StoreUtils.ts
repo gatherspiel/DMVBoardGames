@@ -1,13 +1,18 @@
 import { BaseThunk } from "../update/BaseThunk.ts";
 import type { BaseDynamicComponent } from "../../components/BaseDynamicComponent.ts";
 
-export function createStore(storeName: string, stores: any) {
+export function createStore(storeName: string, stores: any,defaultData?:any) {
   if (!storeName) {
     throw new Error(`createStore must be called with a valid store name`);
   }
 
+  let storeData = {};
+  if(defaultData){
+    storeData = defaultData;
+  }
+
   stores[storeName] = {
-    data: {},
+    data: storeData,
     subscribers: [],
   };
 }
