@@ -73,7 +73,7 @@ const template = `
       h1 {
         margin: 0;    
       }
-      .group-description {
+      .group-description-text {
         padding: 0.5rem;
         margin-top: 1rem;
         font-size:1rem;

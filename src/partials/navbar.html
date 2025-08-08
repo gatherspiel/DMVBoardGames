@@ -6,12 +6,12 @@
     }
 
     .raised:hover {
-        transform:none;
+        transform: none;
         transition: none;
     }
 
     .raised:active {
-        transform:none;
+        transform: none;
         transition: none;
     }
 
@@ -27,7 +27,7 @@
 
     nav a,
     #jump-to a {
-        border:none;
+        border: none;
         background-color: none;
         color: white;
         font-weight: 400;
@@ -63,23 +63,30 @@
     #nav-filler {
         display: inline-block;
         background-color: var(--clr-lighter-blue);
-        flex-grow:1;
+        flex-grow: 1;
     }
 
     @media not screen and (width < 32em) {
         #logo-div {
             float: left;
         }
+
         .top-nav {
             display: flex;
             flex-wrap: wrap;
             padding-left: 0.5rem;
         }
+
         nav a + a {
             margin-left: 1px;
             border-color: white;
             border-width: 1px;
         }
+
+        .showOnMobile {
+            display:none;
+        }
+
     }
 
     @media screen and (width < 32em) {
@@ -87,18 +94,48 @@
             display: flex;
             justify-content: center;
         }
+
         .top-nav {
             display: grid;
             text-align: center;
         }
+
         nav a + a {
             border-color: white;
             border-width: 1px;
         }
+        .hideOnMobile {
+            display: none;
+        }
+        .showOnMobile {
+            width: 0;
+            height: 0;
+            margin-top:1em;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .triangle-down {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid black;
+        }
+
+
+        .triangle-up{
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid black;
+        }
+
     }
 </style>
 
-<nav class="raised">
+<nav class="raised" id="navbar">
   <span class="shadow"></span>
   <span class="edge"></span>
   <span class="front">
@@ -107,16 +144,49 @@
     </div>
     <div class="ui-section top-nav">
       <div class="top-nav">
-        <a href="/index.html">Home
-        </a><a class="mid-element" href="/designers.html">Local designers
-        </a><a href="/print_and_play.html">Print and Play
-        </a><a href="https://gatherspiel.com/vision.html">Future plans
-        </a><a href="/useful_links.html">Useful Links
-        </a><a href="/feedback.html">Feedback</a>
-        <login-status-component></login-status-component>
+
+        <div class="showOnMobile triangle-down">
+        </div>
+        <a class = "hideOnMobile" href="/index.html">Home
+        </a>
+
+
+        <a class="hideOnMobile" href="/designers.html">Local designers
+        </a><a class="hideOnMobile" href="/print_and_play.html">Print and Play
+        </a><a class="hideOnMobile" href="https://gatherspiel.com/vision.html">Future plans
+        </a><a class="hideOnMobile" href="/useful_links.html">Useful Links
+        </a><a class="hideOnMobile" href="/feedback.html">Feedback</a>
+
+        <div class="hideOnMobile">
+            <login-status-component></login-status-component>
+        </div>
+
       </div>
     <div id="nav-filler"></div>
     </div>
   </span>
 </nav>
 
+<script>
+  document.getElementById("navbar").addEventListener("click", function () {
+    console.log("Hi");
+    const elements = document.getElementsByClassName("hideOnMobile")
+
+    if(elements.length >0){
+      for(let i = elements.length-1; i>=0;i--){
+        elements.item(i).className ="isVisible";
+      }
+      document.getElementsByClassName("triangle-down").item(0).className = "triangle-up showOnMobile"
+
+    } else {
+      const elements = document.getElementsByClassName("isVisible")
+
+      for(let i = elements.length-1; i>=0;i--){
+        elements.item(i).className ="hideOnMobile";
+      }
+      document.getElementsByClassName("triangle-up").item(0).className = "triangle-down showOnMobile"
+    }
+
+
+  })
+</script>
