@@ -17,9 +17,7 @@
     "typescript": "~5.8.3",
     "vite": "7.0.5",
     "vite-plugin-handlebars": "^2.0.0",
-    "vite-plugin-minify": "^2.1.0"
-  },
-  "dependencies": {
+    "vite-plugin-minify": "^2.1.0",
     "vite-plugin-checker": "^0.9.3",
     "vite-plugin-inline-source": "^4.0.0"
   }
