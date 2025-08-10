@@ -2,13 +2,15 @@ import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
+import {GLOBAL_STATE_LOAD_CONFIG_KEY} from "../../../framework/components/types/ComponentLoadConfig.ts";
+import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../shared/Constants.ts";
 
 export const GAME_RESTAURANT_LIST_STORE = "gameRestaurantListStore";
 
 const loadConfig = {
-  globalStateLoadConfig: {
+  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
     globalFieldSubscriptions: ["gameLocations"],
-    defaultGlobalStateReducer: function(data:any){
+    defaultGlobalStateReducer: (data:any)=>{
       return data.gameLocations.gameRestaurants;
     }
   },
@@ -39,8 +41,8 @@ export class GameRestaurantListComponent extends BaseTemplateDynamicComponent {
         ${generateButton({
           text: `${gameRestaurant.name}`,
           component: this,
-          eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
-          eventHandlerParams: {url: gameRestaurant.url}
+          [EVENT_HANDLER_CONFIG_KEY]: REDIRECT_HANDLER_CONFIG,
+          [EVENT_HANDLER_PARAMS_KEY]: {url: gameRestaurant.url}
         })}
       </h3>
     <p>Location: ${gameRestaurant.location}</p>

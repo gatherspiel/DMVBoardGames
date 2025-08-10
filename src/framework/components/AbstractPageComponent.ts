@@ -23,7 +23,7 @@ export abstract class AbstractPageComponent extends HTMLElement {
 
     const self = this;
 
-    this.getCommonComponents().forEach(function(component){
+    this.getCommonComponents().forEach(component=>{
       self.appendChild(component);
     })
     this.#routeMap = this.getRouteMap();
@@ -83,9 +83,9 @@ export abstract class AbstractPageComponent extends HTMLElement {
     let updatedUrl = url;
     if(params){
       const paramData:string[] = [];
-      Object.keys(params).forEach((function(key){
+      Object.keys(params).forEach(key => {
         paramData.push(`${key}=${encodeURIComponent(params[key])}`)
-      }));
+      });
 
       if(paramData.length ===1){
         updatedUrl += `?${paramData.join("&")}`

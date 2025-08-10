@@ -3,11 +3,13 @@ import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
+import {REQUEST_THUNK_REDUCERS_KEY} from "../../../framework/components/types/ComponentLoadConfig.ts";
+import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../shared/Constants.ts";
 
 export const GAME_STORE_LIST_STORE = "gameStoreListStore";
 
 const loadConfig = {
-  requestThunkReducers: [
+  [REQUEST_THUNK_REDUCERS_KEY]: [
     {
       thunk: LOCATIONS_THUNK,
       componentReducer: (data: any) => {
@@ -48,8 +50,8 @@ export class GameStoreListComponent extends BaseTemplateDynamicComponent {
         ${generateButton({
           text: `${gameStore.name}`,
           component: this,
-          eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
-          eventHandlerParams: {url: gameStore.url}
+          [EVENT_HANDLER_CONFIG_KEY]: REDIRECT_HANDLER_CONFIG,
+          [EVENT_HANDLER_PARAMS_KEY]: {url: gameStore.url}
         })}
       </h3>
     <p>Location: ${gameStore.location}</p>

@@ -19,7 +19,7 @@ export function getDisplayName(name:string):string {
 
 export function getDisplayNameArray(names:string[]):string[] {
   const updatedNames:string[] = [];
-  names.forEach(function(name){
+  names.forEach(name=>{
     updatedNames.push(getDisplayName(name))
   })
   return updatedNames;

@@ -1,3 +1,4 @@
+import {SUCCESS_MESSAGE_KEY} from "../../../shared/Constants.ts";
 
 
 export function generateLoadingIndicator(){
@@ -20,6 +21,6 @@ export function generateErrorMessage(message: string | string[] | undefined){
 
 export function generateSuccessMessage(message: string | undefined) {
   return `
-    ${message ? `<p class="success-message">${message}</p>` : ''}
+    ${message ? `<p class="${SUCCESS_MESSAGE_KEY}">${message}</p>` : ''}
   }`
 }

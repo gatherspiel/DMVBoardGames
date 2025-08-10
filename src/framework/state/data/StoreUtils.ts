@@ -49,16 +49,16 @@ export function updateStore(
     );
   }
 
-  Object.keys(storeData[storeName].data).forEach(function (key) {
+  Object.keys(storeData[storeName].data).forEach((key) => {
     if (!(key in updatedData)) {
       updatedData[key] = storeData[storeName].data[key];
     }
   });
   storeData[storeName].data = updatedData;
 
-  storeData[storeName].subscribers.forEach(function (
+  storeData[storeName].subscribers.forEach( (
     component:  BaseDynamicComponent| BaseThunk,
-  ) {
+  ) =>{
 
     if(component instanceof BaseThunk){
       component.updateStore(storeData[storeName].data);

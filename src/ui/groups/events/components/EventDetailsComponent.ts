@@ -28,6 +28,18 @@ import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHan
 import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
 import {generateErrorMessage, generateSuccessMessage} from "../../../../framework/components/utils/StatusIndicators.ts";
+import {
+  COMPONENT_LABEL_KEY,
+  EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY,
+  IS_LOGGED_IN_KEY,
+  SUCCESS_MESSAGE_KEY
+} from "../../../../shared/Constants.ts";
+import {
+  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
+  GLOBAL_STATE_LOAD_CONFIG_KEY,
+  ON_LOAD_REQUEST_DATA_KEY,
+  ON_LOAD_STORE_CONFIG_KEY, REQUEST_THUNK_REDUCERS_KEY
+} from "../../../../framework/components/types/ComponentLoadConfig.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -48,56 +60,54 @@ const template = `
 
 
 const loadConfig = {
-  onLoadStoreConfig: {
+  [ON_LOAD_STORE_CONFIG_KEY]: {
     dataSource: GROUP_EVENT_REQUEST_THUNK,
   },
-  onLoadRequestData: {
+  [ON_LOAD_REQUEST_DATA_KEY]: {
     name: getUrlParameter(GROUP_NAME_PARAM),
   },
-  requestThunkReducers: [
+  [REQUEST_THUNK_REDUCERS_KEY]: [
     {
       thunk: GROUP_EVENT_REQUEST_THUNK,
-      componentReducer: function (data: any) {
-        return data;
-      },
+      componentReducer:  (data: any) => data
     },
     {
       thunk: UPDATE_EVENT_REQUEST_THUNK,
-      componentReducer: function (data:any) {
+      componentReducer: (data:any) => {
         if (data.errorMessage) {
           return {
             errorMessage: data.errorMessage,
-            successMessage: "",
+            [SUCCESS_MESSAGE_KEY]: "",
           };
         } else {
           return {
             isEditing: false,
             errorMessage: "",
-            successMessage: "Successfully updated event",
+            [SUCCESS_MESSAGE_KEY]: "Successfully updated event",
           };
         }
       }
     },
     {
       thunk: DELETE_EVENT_REQUEST_THUNK,
-      componentReducer: function (data:any) {
+      componentReducer:  (data:any) => {
         if (data.errorMessage) {
           return {
             errorMessage: data.errorMessage,
-            successMessage: "",
+            [SUCCESS_MESSAGE_KEY]: "",
           };
         } else {
           return {
             isEditing: false,
             errorMessage: "",
-            successMessage: "Successfully deleted event",
+            [SUCCESS_MESSAGE_KEY]: "Successfully deleted event",
           };
         }
       }
     }
   ],
-  globalStateLoadConfig: {
-    globalFieldSubscriptions: ["isLoggedIn"],
+  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
+    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
   },
 };
 
@@ -123,16 +133,16 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   }
 
   renderDeleteMode(data:EventDetailsData): string {
-    if (data.successMessage) {
+    if (data[SUCCESS_MESSAGE_KEY]) {
       return `
         <div class="ui-section">
-          ${generateSuccessMessage(data.successMessage)}
+          ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
           
           ${generateButton({
             text: "Back to group",
             component: this,
-            eventHandlerConfig: VIEW_GROUP_PAGE_HANDLER_CONFIG,
-            eventHandlerParams: {name:data.groupName}
+            [EVENT_HANDLER_CONFIG_KEY]: VIEW_GROUP_PAGE_HANDLER_CONFIG,
+            [EVENT_HANDLER_PARAMS_KEY]: {name:data.groupName}
           })}
         </div>
       `
@@ -142,13 +152,13 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
       ${generateButton({
         text: "Confirm delete",
         component: this,
-        eventHandlerConfig: CONFIRM_DELETE_EVENT_CONFIG,
+        [EVENT_HANDLER_CONFIG_KEY]: CONFIRM_DELETE_EVENT_CONFIG,
       })}
       
       ${generateButton({
         text: "Cancel",
         component: this,
-        eventHandlerConfig: CANCEL_DELETE_EVENT_CONFIG,
+        [EVENT_HANDLER_CONFIG_KEY]: CANCEL_DELETE_EVENT_CONFIG,
       })}
     `
   }
@@ -158,52 +168,52 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
 
     <form>
     
-      ${this.generateShortInput({
+      ${this.addShortInput({
         id: EVENT_NAME_INPUT,
-        componentLabel: "Event name",
+        [COMPONENT_LABEL_KEY]: "Event name",
         inputType: "text",
         value: data.name
       })}
       
-      ${this.generateTextInput({
+      ${this.addTextInput({
         id: EVENT_DESCRIPTION_INPUT,
-        componentLabel: "Event description",
+        [COMPONENT_LABEL_KEY]: "Event description",
         inputType: "text",
         value: data.description
       })}
       
-       ${this.generateShortInput({
+       ${this.addShortInput({
         id: EVENT_URL_INPUT,
-        componentLabel: "Event URL",
+        [COMPONENT_LABEL_KEY]: "Event URL",
         inputType: "text",
         value: data.url
       })}
        
-      ${this.generateShortInput({
+      ${this.addShortInput({
         id: START_DATE_INPUT,
-        componentLabel: "Start date",
+        [COMPONENT_LABEL_KEY]: "Start date",
         inputType: "text",
         value: getDateFromDateString(data.startTime)
       })}
       
-      ${this.generateShortInput({
+      ${this.addShortInput({
         id: START_TIME_INPUT,
-        componentLabel: "Start time",
+        [COMPONENT_LABEL_KEY]: "Start time",
         inputType: "text",
         value: getTimeFromDateString(data.startTime)
       })}
  
-      ${this.generateShortInput({
+      ${this.addShortInput({
         id: END_TIME_INPUT,
-        componentLabel: "End time",
+        [COMPONENT_LABEL_KEY]: "End time",
         inputType: "text",
         value: getTimeFromDateString(data.endTime)
       })}     
       <br>
   
-      ${this.generateShortInput({
+      ${this.addShortInput({
         id: EVENT_LOCATION_INPUT,
-        componentLabel: "Event location",
+        [COMPONENT_LABEL_KEY]: "Event location",
         inputType: "text",
         value: data.location
       })}     
@@ -214,14 +224,14 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
       class: "group-webpage-link",
       text: "Save event",
       component: this,
-      eventHandlerConfig: SAVE_EVENT_CONFIG,
+      [EVENT_HANDLER_CONFIG_KEY]: SAVE_EVENT_CONFIG,
     })}
     
     ${generateButton({
       class: "group-webpage-link",
       text: "Back to event",
       component: this,
-      eventHandlerConfig: CANCEL_EDIT_EVENT_DETAILS_CONFIG,
+      [EVENT_HANDLER_CONFIG_KEY]: CANCEL_EDIT_EVENT_DETAILS_CONFIG,
     })}  
    `
   }
@@ -237,8 +247,8 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         ${generateButton({
           text: "Event page",
           component: this,
-          eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
-          eventHandlerParams: {url: data.url}
+          [EVENT_HANDLER_CONFIG_KEY]: REDIRECT_HANDLER_CONFIG,
+          [EVENT_HANDLER_PARAMS_KEY]: {url: data.url}
         })}
              
         <p>Time: ${convertDayOfWeekForDisplay(data.day)}, ${convertDateTimeForDisplay(data.startTime)}</p>
@@ -248,22 +258,22 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         ${generateButtonForEditPermission({
           text: "Edit event",
           component: this,
-          eventHandlerConfig: EDIT_EVENT_DETAILS_CONFIG,
+          [EVENT_HANDLER_CONFIG_KEY]: EDIT_EVENT_DETAILS_CONFIG,
         })}
         
         ${generateButtonForEditPermission({
           text: "Delete event",
           component: this,
-          eventHandlerConfig: DELETE_EVENT_CONFIG,
+          [EVENT_HANDLER_CONFIG_KEY]: DELETE_EVENT_CONFIG,
         })}
   
-        <p class="success-message">${data.successMessage ? data.successMessage.trim(): ""}</p>
+        <p class="success-message">${data[SUCCESS_MESSAGE_KEY] ? data[SUCCESS_MESSAGE_KEY].trim(): ""}</p>
         
         ${generateButtonForEditPermission({
           text: "Back to group",
           component: this,
-          eventHandlerConfig: VIEW_GROUP_PAGE_HANDLER_CONFIG,
-          eventHandlerParams:{name: data.groupName}
+          [EVENT_HANDLER_CONFIG_KEY]: VIEW_GROUP_PAGE_HANDLER_CONFIG,
+          [EVENT_HANDLER_PARAMS_KEY]:{name: data.groupName}
         })}
 
       </div>

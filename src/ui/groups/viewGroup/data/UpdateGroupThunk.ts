@@ -16,7 +16,7 @@ function updateGroupRequestThunk(
 }
 
 const defaultFunctionConfig = {
-  defaultFunction: function () {
+  defaultFunction:  () => {
     return {};
   },
 };

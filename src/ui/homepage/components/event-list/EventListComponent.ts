@@ -5,9 +5,11 @@ import { BaseTemplateDynamicComponent } from "../../../../framework/components/B
 import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import {getDisplayNameArray} from "../../../../shared/DisplayNameConversion.ts";
+import {REQUEST_THUNK_REDUCERS_KEY} from "../../../../framework/components/types/ComponentLoadConfig.ts";
+import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../../shared/Constants.ts";
 
 const loadConfig = {
-  requestThunkReducers: [
+  [REQUEST_THUNK_REDUCERS_KEY]: [
     {
       thunk: EVENT_PRELOAD_THUNK,
       componentReducer: updateSearchResultGroupStore,
@@ -75,8 +77,8 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
           type: "submit",
           text: group.title,
           component: this,
-          eventHandlerConfig: VIEW_GROUP_PAGE_HANDLER_CONFIG,
-          eventHandlerParams: {name: group.title}
+          [EVENT_HANDLER_CONFIG_KEY]: VIEW_GROUP_PAGE_HANDLER_CONFIG,
+          [EVENT_HANDLER_PARAMS_KEY]: {name: group.title}
         })}
          
         

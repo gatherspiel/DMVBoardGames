@@ -8,7 +8,11 @@ import {
   initRequestStore,
   updateRequestStoreAndClearCache
 } from "../data/RequestStore.ts";
-import type {ComponentLoadConfig} from "../../components/types/ComponentLoadConfig.ts";
+import {
+  type ComponentLoadConfig,
+  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
+  GLOBAL_STATE_LOAD_CONFIG_KEY
+} from "../../components/types/ComponentLoadConfig.ts";
 import {updateComponentStore} from "../data/ComponentStore.ts";
 
 export type LoadStatus = {
@@ -46,7 +50,7 @@ export class BaseThunk {
 
       let globalStateReducer = componentLoadConfig.globalStateLoadConfig?.defaultGlobalStateReducer;
       if(!globalStateReducer){
-        globalStateReducer = function (updates: Record<string, string>) {
+        globalStateReducer = (updates: Record<string, string>) => {
           return updates
         }
       }
@@ -54,8 +58,8 @@ export class BaseThunk {
       status.dependenciesLoaded = true;
       let dataToUpdate: Record<string, string> = {};
 
-      componentLoadConfig.globalStateLoadConfig?.globalFieldSubscriptions?.forEach(
-        function (fieldName) {
+      componentLoadConfig[GLOBAL_STATE_LOAD_CONFIG_KEY]?.[GLOBAL_FIELD_SUBSCRIPTIONS_KEY]?.forEach(
+        (fieldName) => {
           dataToUpdate[fieldName] = getGlobalStateValue(fieldName);;
         },
       );
@@ -98,7 +102,7 @@ export class BaseThunk {
     let oldDispatcherIndex = -1;
 
     let i = 0;
-    this.dispatchers.forEach(function (dispatcher: BaseDispatcher) {
+    this.dispatchers.forEach((dispatcher: BaseDispatcher) => {
       const number = parseInt(dispatcher.storeField.split("-")[1]);
       const dispatcherName = dispatcher.storeField.split("-")[0];
 

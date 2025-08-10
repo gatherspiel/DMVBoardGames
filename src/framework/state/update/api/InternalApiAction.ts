@@ -66,11 +66,11 @@ export class InternalApiAction extends BaseThunkAction {
     return response;
   }
 
-  static #defaultApiErrorResponse = function (responseData: any) {
+  static #defaultApiErrorResponse = (responseData: any) => {
     throw new Error(JSON.stringify(responseData, null, 2));
   };
 
-  static #defaultApiSuccessResponse = function () {
+  static #defaultApiSuccessResponse =  () =>{
     return { status: 200 };
   };
 

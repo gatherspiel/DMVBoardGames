@@ -21,17 +21,16 @@ export class PageComponent extends  AbstractPageComponent {
 
   override getRouteMap(): Record<string, (params: any) => string> {
     return {
-      [GroupComponent.name]: function(){return "groups.html"},
-      [CreateGroupPageComponent.name]: function(){return "groups/create.html"},
-      [DeleteGroupPageComponent.name]: function(params:any){
-        return `groups/delete.html?name=${encodeURIComponent(params.name)}&groupId=${params.id}`
-      },
-      [CreateEventComponent.name]: function(params:any){
-        return `groups/delete.html?name=${encodeURIComponent(params.name)}&groupId=${params.id}`
-      },
-      [EventDetailsComponent.name]: function(params:any) {
-        return `/groups/event.html?id=${params.id}&groupId=${params.groupId}`
-      }
+      [GroupComponent.name]: () => "groups.html",
+      [CreateGroupPageComponent.name]: ()=>"groups/create.html",
+      [DeleteGroupPageComponent.name]: (params:any)=>
+        `groups/delete.html?name=${encodeURIComponent(params.name)}&groupId=${params.id}`
+      ,
+      [CreateEventComponent.name]: (params:any)=>
+        `groups/delete.html?name=${encodeURIComponent(params.name)}&groupId=${params.id}`
+      ,
+      [EventDetailsComponent.name]: (params:any)=>
+        `/groups/event.html?id=${params.id}&groupId=${params.groupId}`
     }
   }
 }

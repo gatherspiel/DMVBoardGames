@@ -17,7 +17,7 @@ export function generateApiThunk(config: ApiThunkConfig) {
   let defaultFunctionConfig = config.defaultFunctionConfig;
   if(!defaultFunctionConfig){
     defaultFunctionConfig = {
-      defaultFunction: function (response: any) {
+      defaultFunction: (response: any)  => {
         return {
           errorMessage: response.message,
         };
