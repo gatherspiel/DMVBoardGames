@@ -277,15 +277,19 @@ body {
 .main-container p {
   justify-content: center;
   display: flex;
+  padding-top: 0.75rem;
 }
 
 @media screen and (width < 32em) {
   .main {
     --s: 5rem;  /* size  */
+    --m: 0px;    /* margin */
 
   }
 
   .numberCircle {
+    z-index: -10;
+    position: fixed;
     height:3rem !important;
     width: 3rem !important;
     margin: 1rem !important;
@@ -293,5 +297,10 @@ body {
     background-color: #f3c981 !important;
   }
 
+  .main-container p {
+    padding-top:0rem;
+    font-size:1rem;
   }
+
+}
 

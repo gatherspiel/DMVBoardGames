@@ -1,14 +1,15 @@
 import type {BaseDynamicComponent} from "../../framework/components/BaseDynamicComponent.ts";
 import type {EventHandlerThunkConfig} from "../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
 import {hasUserEditPermissions} from "../../framework/state/data/ComponentStore.ts";
+import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../Constants.ts";
 
 export type ButtonConfig ={
   class?: string,
   type?:string,
   text:string,
   component: BaseDynamicComponent,
-  eventHandlerConfig: EventHandlerThunkConfig
-  eventHandlerParams?:Record<string, string>
+  [EVENT_HANDLER_CONFIG_KEY]: EventHandlerThunkConfig
+  [EVENT_HANDLER_PARAMS_KEY]?:Record<string, string>
 }
 
 export function generateButton(config:ButtonConfig){
@@ -18,7 +19,7 @@ export function generateButton(config:ButtonConfig){
       class="${buttonClasses}"
       name="action"
       value="${config.text}"
-      ${config.component.createClickEvent(config.eventHandlerConfig, config.eventHandlerParams)}
+      ${config.component.addClickEvent(config[EVENT_HANDLER_CONFIG_KEY], config[EVENT_HANDLER_PARAMS_KEY])}
       ${config.type ?? `type=${config.type}`}>
       
       <span class="shadow"></span>

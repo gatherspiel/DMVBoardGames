@@ -1,5 +1,11 @@
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import type { OpenCreateGroupPageState } from "../data/types/OpenCreateGroupPageState.ts";
+import {IS_LOGGED_IN_KEY} from "../../../../shared/Constants.ts";
+import {
+  DEFAULT_GLOBAL_STATE_REDUCER_KEY,
+  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
+  GLOBAL_STATE_LOAD_CONFIG_KEY
+} from "../../../../framework/components/types/ComponentLoadConfig.ts";
 
 const template = `
 
@@ -20,11 +26,11 @@ const template = `
 `;
 
 const loadConfig = {
-  globalStateLoadConfig: {
-    globalFieldSubscriptions: ["isLoggedIn"],
-    defaultGlobalStateReducer: function (updates: Record<string, string>) {
+  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
+    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
+    [DEFAULT_GLOBAL_STATE_REDUCER_KEY]:  (updates: Record<string, string>) => {
       return {
-        isVisible: updates["isLoggedIn"],
+        isVisible: updates[IS_LOGGED_IN_KEY],
       };
     },
   },

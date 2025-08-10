@@ -6,6 +6,7 @@ import {
 } from "../../../../framework/utils/EventDataUtils.ts";
 import {VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
+import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../../shared/Constants.ts";
 
 const template = `
 
@@ -63,8 +64,8 @@ export class GroupEventComponent extends BaseTemplateDynamicComponent {
             class: "group-webpage-link",
             text: "View event details",
             component: this,
-            eventHandlerConfig: VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG,
-            eventHandlerParams: {id:eventData.id,groupId:eventData.groupId}
+            [EVENT_HANDLER_CONFIG_KEY]: VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG,
+            [EVENT_HANDLER_PARAMS_KEY]: {id:eventData.id,groupId:eventData.groupId}
           })}
 
         </div>

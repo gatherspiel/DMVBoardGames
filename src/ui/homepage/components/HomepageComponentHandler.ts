@@ -4,7 +4,7 @@ import type {EventHandlerThunkConfig} from "../../../framework/state/update/even
 export const HOMEPAGE_COMPONENT_NAV: EventHandlerThunkConfig = {
 
   //@ts-ignore
-  eventHandler: function(event){
+  eventHandler: (event)=>{
 
 
     if(event.params.location === '#event-search'){

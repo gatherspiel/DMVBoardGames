@@ -7,34 +7,29 @@ import {DeleteGroupPageComponent} from "../../ui/groups/deleteGroup/DeleteGroupP
 import {CreateGroupPageComponent} from "../../ui/groups/createGroup/components/CreateGroupPageComponent.ts";
 
 export const VIEW_GROUP_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function(event){
-    AbstractPageComponent.updateRoute(GroupComponent, event.params);
-  }
+  eventHandler: event =>
+    AbstractPageComponent.updateRoute(GroupComponent, event.params)
 }
 
 export const VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function(event){
-    AbstractPageComponent.updateRoute(EventDetailsComponent, event.params);
-  }
+  eventHandler: event =>
+    AbstractPageComponent.updateRoute(EventDetailsComponent, event.params)
 }
 
 export const CREATE_EVENT_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function(event){
-    AbstractPageComponent.updateRoute(CreateEventComponent, event.params);
-  }
+  eventHandler: event =>
+    AbstractPageComponent.updateRoute(CreateEventComponent, event.params)
 }
 
 export const DELETE_GROUP_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function(event){
-    AbstractPageComponent.updateRoute(DeleteGroupPageComponent, event.params);
-  }
+  eventHandler: event =>
+    AbstractPageComponent.updateRoute(DeleteGroupPageComponent, event.params)
 }
 
 
 export const CREATE_GROUP_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function(event){
-    AbstractPageComponent.updateRoute(CreateGroupPageComponent, event.params);
-  }
+  eventHandler: event =>
+    AbstractPageComponent.updateRoute(CreateGroupPageComponent, event.params)
 }
 
 

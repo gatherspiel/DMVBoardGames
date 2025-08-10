@@ -39,6 +39,8 @@ export default defineConfig({
         event: resolve(__dirname, "src/groups/event.html"),
         create_event: resolve(__dirname, "src/groups/addEvent.html"),
         feedback: resolve(__dirname, "src/feedback.html"),
+        login: resolve(__dirname, "src/login.html"),
+
       },
       output:{
         chunkFileNames: (chunkInfo) => {

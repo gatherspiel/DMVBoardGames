@@ -7,6 +7,8 @@ import {addLocalStorageData, getLocalStorageDataIfPresent} from "../../../framew
 import { isAfterNow } from "../../../framework/utils/EventDataUtils.ts";
 import type { AuthReducerError } from "../types/AuthReducerError.ts";
 import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../../shared/Params.ts";
+import {GROUP_DESCRIPTION_TEXT} from "../../groups/Constants.ts";
+import {IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
 
 async function retrieveData(
   params: AuthRequest,
@@ -79,10 +81,10 @@ export function getLoginComponentStoreFromLoginResponse(
 ) {
   const email = response?.getData()?.user?.email;
   return {
-    isLoggedIn: response.isLoggedIn(),
+    [IS_LOGGED_IN_KEY]: response.isLoggedIn(),
     errorMessage: response.getErrorMessage(),
     email: email,
-    successMessage: response.isLoggedIn() ? `Welcome ${email}` : "",
+    [GROUP_DESCRIPTION_TEXT]: response.isLoggedIn() ? `Welcome ${email}` : "",
     hasAttemptedLogin: true
   };
 }
@@ -107,6 +109,6 @@ export const LOGIN_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
   authenticationErrorConfig,
 ).addGlobalStateReducer((loginState: any) => {
   return {
-    isLoggedIn: loginState.loggedIn,
+    [IS_LOGGED_IN_KEY]: loginState.loggedIn,
   };
 });

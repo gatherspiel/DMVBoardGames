@@ -19,15 +19,25 @@ import {PageState} from "../../../../framework/state/PageState.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import type {DropdownConfig} from "../../../../framework/components/types/DropdownConfig.ts";
 import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
+import {
+  ON_LOAD_REQUEST_CONFIG_KEY,
+  ON_LOAD_REQUEST_DATA_KEY,
+  ON_LOAD_STORE_CONFIG_KEY, REQUEST_THUNK_REDUCERS_KEY
+} from "../../../../framework/components/types/ComponentLoadConfig.ts";
+import {
+  DEFAULT_PARAMETER_DISPLAY_KEY,
+  DEFAULT_PARAMETER_KEY,
+  EVENT_HANDLER_CONFIG_KEY
+} from "../../../../shared/Constants.ts";
 const loadConfig = {
-  onLoadStoreConfig: {
+  [ON_LOAD_STORE_CONFIG_KEY]: {
     dataSource: EVENT_PRELOAD_THUNK,
   },
-  onLoadRequestData: {
+  [ON_LOAD_REQUEST_DATA_KEY]: {
     city: DEFAULT_SEARCH_PARAMETER,
     day: DEFAULT_SEARCH_PARAMETER,
   },
-  onLoadRequestConfig: [
+  [ON_LOAD_REQUEST_CONFIG_KEY]: [
     {
       dataSource: LOCATIONS_THUNK,
     },
@@ -35,12 +45,10 @@ const loadConfig = {
       dataSource: CITY_LIST_THUNK,
     },
   ],
-  requestThunkReducers: [
+  [REQUEST_THUNK_REDUCERS_KEY]: [
     {
       thunk: EVENT_PRELOAD_THUNK,
-      componentReducer: function(data: any){
-        return data;
-      }
+      componentReducer: (data: any)=> data
     },
     {
       thunk: CITY_LIST_THUNK,
@@ -139,9 +147,9 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
               name: "days",
               data: DAYS_IN_WEEK,
               selected: eventSearchStore.day,
-              defaultParameter:DEFAULT_SEARCH_PARAMETER,
-              defaultParameterDisplay: "Any day",
-              eventHandlerConfig: UPDATE_DAY_CONFIG
+              [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
+              [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
+              [EVENT_HANDLER_CONFIG_KEY]: UPDATE_DAY_CONFIG
             })}
             </div>
             <div>
@@ -151,9 +159,9 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
                 name: "cities",
                 data: eventSearchStore.cities ?? [{name:"Any location"}],
                 selected: eventSearchStore.location,
-                defaultParameter:DEFAULT_SEARCH_PARAMETER,
-                defaultParameterDisplay: "Any location",
-                eventHandlerConfig: UPDATE_CITY_CONFIG
+                [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
+                [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
+                [EVENT_HANDLER_CONFIG_KEY]: UPDATE_CITY_CONFIG
               })}
             </div>
             ${eventSearchStore.location ?
@@ -164,9 +172,9 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
                 name: "distance",
                 data: DISTANCE_OPTIONS,
                 selected: eventSearchStore.distance,
-                defaultParameter:"0 miles",
-                defaultParameterDisplay: "0 miles",
-                eventHandlerConfig: UPDATE_DISTANCE_CONFIG
+                [DEFAULT_PARAMETER_KEY]:"0 miles",
+                [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
+                [EVENT_HANDLER_CONFIG_KEY]: UPDATE_DISTANCE_CONFIG
                 
               })}</div>` :
                ``}
@@ -176,7 +184,7 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
                 text: "Search groups",
                 class: "search-button",
                 component: this,
-                eventHandlerConfig: SEARCH_EVENT_HANDLER_CONFIG,
+                [EVENT_HANDLER_CONFIG_KEY]: SEARCH_EVENT_HANDLER_CONFIG,
               })}
             </div>
           </div>
@@ -193,7 +201,7 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
       id=${dropdownConfig.id}
       name=${dropdownConfig.name}
       value=${dropdownConfig.data}
-      ${this.createOnChangeEvent(dropdownConfig.eventHandlerConfig)}
+      ${this.addOnChangeEvent(dropdownConfig[EVENT_HANDLER_CONFIG_KEY])}
     >
     ${dropdownConfig.data?.map(
       (item: any) =>

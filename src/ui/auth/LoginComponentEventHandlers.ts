@@ -10,9 +10,8 @@ import {LOGIN_THUNK} from "./data/LoginThunk.ts";
 import type {FormSelector} from "../../framework/FormSelector.ts";
 import type {EventValidationResult} from "../../framework/state/update/event/types/EventValidationResult.ts";
 
-const loginInputValidator= function(
-  formSelector: FormSelector
-  ): EventValidationResult {
+const loginInputValidator=
+  (formSelector: FormSelector): EventValidationResult  => {
 
   if(!formSelector.getValue(USERNAME_INPUT) || !formSelector.getValue(PASSWORD_INPUT)) {
     return {
@@ -21,8 +20,9 @@ const loginInputValidator= function(
   }
   return {};
 }
+
 export const LOGIN_EVENT_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function (params: EventHandlerData) {
+  eventHandler: params => {
     return {
       username: params.formSelector.getValue(USERNAME_INPUT),
       password: params.formSelector.getValue(PASSWORD_INPUT)
@@ -33,12 +33,12 @@ export const LOGIN_EVENT_CONFIG: EventHandlerThunkConfig = {
 };
 
 export const LOGOUT_EVENT_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function () {},
+  eventHandler:  ()=> {},
   apiRequestThunk: LOGOUT_THUNK
 };
 
 export const REGISTER_EVENT_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function (params: EventHandlerData) {
+  eventHandler:  (params: EventHandlerData) => {
     return {
       username: params.formSelector.getValue(USERNAME_INPUT),
       password: params.formSelector.getValue(PASSWORD_INPUT),

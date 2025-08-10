@@ -18,7 +18,7 @@ export function setupGlobalState(fields: Record<string, any>) {
     //throw new Error("Global state has already been initialized");
   }
 
-  Object.values(fields).forEach(function (fieldName: string) {
+  Object.values(fields).forEach( (fieldName: string)=> {
     globalState[fieldName] = "";
   });
 
@@ -27,7 +27,7 @@ export function setupGlobalState(fields: Record<string, any>) {
 
 export function updateGlobalStore(fieldsToUpdate: Record<string, any>) {
   let componentsToUpdate = new Set();
-  Object.keys(fieldsToUpdate).forEach(function (fieldName: string) {
+  Object.keys(fieldsToUpdate).forEach((fieldName: string)=> {
     if (!(fieldName in globalState)) {
       throw new Error(
         `Invalid field ${fieldName} for global store. Make sure field is configured as a field name using setupGlobalState`,
@@ -38,9 +38,9 @@ export function updateGlobalStore(fieldsToUpdate: Record<string, any>) {
       globalState[fieldName] !== fieldsToUpdate[fieldName] &&
       fieldName in globalStateSubscribers
     ) {
-      globalStateSubscribers[fieldName].forEach(function (
+      globalStateSubscribers[fieldName].forEach( (
         component: BaseDynamicComponent,
-      ) {
+      ) => {
         componentsToUpdate.add(component);
       });
     }
@@ -48,7 +48,7 @@ export function updateGlobalStore(fieldsToUpdate: Record<string, any>) {
     globalState[fieldName] = fieldsToUpdate[fieldName];
   });
 
-  componentsToUpdate.forEach(function (component: any) {
+  componentsToUpdate.forEach( (component: any) =>{
     component.updateFromGlobalState(structuredClone(globalState));
   });
 }
