@@ -284,7 +284,7 @@ body {
   .main {
     --s: 5rem;  /* size  */
     --m: 0px;    /* margin */
-
+    --f: calc(1.732 * var(--s) + 4 * var(--m)  - 1px);
   }
 
   .numberCircle {
