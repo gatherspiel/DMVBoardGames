@@ -286,6 +286,8 @@ body {
   }
 
   .numberCircle {
+    z-index: -10;
+    position: fixed;
     height:3rem !important;
     width: 3rem !important;
     margin: 1rem !important;

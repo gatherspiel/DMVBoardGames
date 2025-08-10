@@ -2,13 +2,19 @@ import type { Convention } from "../data/types/Convention.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
+import {
+  DEFAULT_GLOBAL_STATE_REDUCER_KEY,
+  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
+  GLOBAL_STATE_LOAD_CONFIG_KEY
+} from "../../../framework/components/types/ComponentLoadConfig.ts";
+import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../shared/Constants.ts";
 
 export const CONVENTION_LIST_STORE = "conventionListStore";
 
 const loadConfig = {
-  globalStateLoadConfig: {
-    globalFieldSubscriptions: ["gameLocations"],
-    defaultGlobalStateReducer: function(data:any){
+  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
+    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: ["gameLocations"],
+    [DEFAULT_GLOBAL_STATE_REDUCER_KEY]: (data:any) => {
       return data.gameLocations.conventions;
     }
   },
@@ -45,8 +51,8 @@ export class ConventionListComponent extends BaseTemplateDynamicComponent {
       ${generateButton({
         text: `${convention.name}`,
         component: this,
-        eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
-        eventHandlerParams: {url: convention.url}
+        [EVENT_HANDLER_CONFIG_KEY]: REDIRECT_HANDLER_CONFIG,
+        [EVENT_HANDLER_PARAMS_KEY]: {url: convention.url}
       })}
       </h3>
       <p>Days: ${convention.days.join(", ")}</p>

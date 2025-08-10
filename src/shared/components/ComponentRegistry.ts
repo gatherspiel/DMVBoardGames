@@ -1,6 +1,5 @@
 
 
-//This function is for dynamically creating components without having to manually import them from an HTML file
 export function getComponent(componentName: string): HTMLElement {
 
   const item = customElements.get(componentName);

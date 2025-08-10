@@ -4,8 +4,8 @@ export class PreloadApiAction extends BaseThunkAction{
 
   async retrieveData(): Promise<any>{
 
-    let promise = new Promise(function(resolve){
-      const id = setInterval(function(){
+    let promise = new Promise(resolve=>{
+      const id = setInterval(()=>{
 
         // @ts-ignore
         if(window.preloadData) {

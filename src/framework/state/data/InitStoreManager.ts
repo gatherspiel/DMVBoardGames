@@ -14,7 +14,7 @@ window.onload = () => {
   PageState.pageLoaded = true;
   // @ts-ignore
   window.contentLoaded = true;
-  Object.keys(loadFunctions).forEach(function (componentName: string) {
+  Object.keys(loadFunctions).forEach( (componentName: string) =>{
     loadFunctions[componentName]();
   });
 };

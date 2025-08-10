@@ -5,23 +5,27 @@ import {setupStateFields} from "../InitGlobalStateConfig.ts";
 import {BaseTemplateDynamicComponent} from "../../framework/components/BaseTemplateDynamicComponent.ts";
 import {LOGOUT_EVENT_CONFIG} from "../../ui/auth/LoginComponentEventHandlers.ts";
 import {LOGOUT_THUNK} from "../../ui/auth/data/LogoutThunk.ts";
+import {
+  ON_LOAD_STORE_CONFIG_KEY,
+  REQUEST_THUNK_REDUCERS_KEY
+} from "../../framework/components/types/ComponentLoadConfig.ts";
 setupStateFields();
 
 const loadConfig = {
-  onLoadStoreConfig: {
+  [ON_LOAD_STORE_CONFIG_KEY]: {
     dataSource: LOGIN_THUNK,
     disableCache: true,
   },
-  requestThunkReducers:[
+  [REQUEST_THUNK_REDUCERS_KEY]:[
     {
       thunk: LOGIN_THUNK,
-      componentReducer: function(data:any){
+      componentReducer: (data:any)=>{
         return data;
       }
     },
     {
       thunk: LOGOUT_THUNK,
-      componentReducer: function(data:any){
+      componentReducer: (data:any)=>{
         return data;
       }
     }
@@ -79,7 +83,7 @@ export class LoginStatusComponent extends BaseTemplateDynamicComponent {
     if(data.loggedIn){
       return `
         <span>Welcome ${data.data.user.email}</span>
-        <a ${this.createClickEvent(LOGOUT_EVENT_CONFIG)}>Sign out</a>
+        <a ${this.addClickEvent(LOGOUT_EVENT_CONFIG)}>Sign out</a>
       `
 
     }

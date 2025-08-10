@@ -6,23 +6,23 @@ import {
   START_DATE_INPUT, START_TIME_INPUT,
 } from "../Constants.ts";
 import {combineDateAndTime} from "../../../framework/utils/EventDataUtils.ts";
-import type {EventValidationResult} from "../../../framework/state/update/event/types/EventValidationResult.ts";
 import {validateEventFormData} from "./data/EventFormDataValidator.ts";
 import type {FormSelector} from "../../../framework/FormSelector.ts";
 import {getUrlParameter} from "../../../framework/utils/UrlParamUtils.ts";
 import {UPDATE_EVENT_REQUEST_THUNK} from "./data/UpdateEventThunk.ts";
 import {CREATE_EVENT_THUNK} from "./data/CreateEventThunk.ts";
 import {DELETE_EVENT_REQUEST_THUNK} from "./data/DeleteEventRequestThunk.ts";
+import {SUCCESS_MESSAGE_KEY} from "../../../shared/Constants.ts";
 
 export const CONFIRM_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function(params: any) {
+  eventHandler: (params: any) =>{
     return {
       id: params.componentStore.id,
       groupId: params.componentStore.groupId,
     }
   },
   apiRequestThunk: DELETE_EVENT_REQUEST_THUNK,
-  componentReducer: function (data: any) {
+  componentReducer: (data: any) =>{
     return {
       errorMessage: data.error,
     };
@@ -30,34 +30,34 @@ export const CONFIRM_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
 }
 
 export const EDIT_EVENT_DETAILS_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function() {
+  eventHandler: () =>{
     return {
       isEditing: true,
-      successMessage:''
+      [SUCCESS_MESSAGE_KEY]:''
     }
   }
 }
 
 export const DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function(){
+  eventHandler: () =>{
     return {
       isDeleting: true,
-      successMessage:''
+      [SUCCESS_MESSAGE_KEY]:''
     }
   }
 }
 
 export const CANCEL_DELETE_EVENT_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function(){
+  eventHandler: ()=>{
     return {
       isDeleting: false,
       errorMessage: '',
-      successMessage:''
+      [SUCCESS_MESSAGE_KEY]:''
     }
   }
 }
 
-const eventDataReducer = function (a: any) {
+const eventDataReducer = (a: any) => {
   return {
     name: a.name,
     description: a.description,
@@ -69,7 +69,7 @@ const eventDataReducer = function (a: any) {
   };
 }
 
-const eventDataHandler = function(params:any){
+const eventDataHandler = (params:any)=>{
   const startDate = params.formSelector.getValue(START_DATE_INPUT)
   const startTime = params.formSelector.getValue(START_TIME_INPUT)
   const endTime =  params.formSelector.getValue(END_TIME_INPUT)
@@ -90,7 +90,7 @@ export const CREATE_EVENT_CONFIG: EventHandlerThunkConfig = {
   eventHandler: eventDataHandler,
   apiRequestThunk: CREATE_EVENT_THUNK,
   componentReducer: eventDataReducer,
-  validator: function(a: FormSelector):EventValidationResult{
+  validator: (a: FormSelector) =>{
     let errorMessages = validateEventFormData(a);
     if(errorMessages.length >= 1){
       return  {errorMessage:errorMessages}
@@ -106,7 +106,7 @@ export const SAVE_EVENT_CONFIG: EventHandlerThunkConfig = {
 };
 
 export const CANCEL_EDIT_EVENT_DETAILS_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function() {
+  eventHandler: () => {
     return {
       isEditing: false,
       errorMessage: ''

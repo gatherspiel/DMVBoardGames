@@ -1,9 +1,9 @@
 import { createStore, subscribeToStore } from "./StoreUtils.js";
 import { addLoadFunction } from "./InitStoreManager.js";
 import type { BaseThunk } from "../update/BaseThunk.ts";
-import type {
-  ComponentLoadConfig,
-  RequestStoreItem,
+import {
+  type ComponentLoadConfig, ON_LOAD_STORE_CONFIG_KEY,
+  type RequestStoreItem,
 } from "../../components/types/ComponentLoadConfig.ts";
 import {createResponseCacheIfNotExists} from "./SessionStorageUtils.ts";
 
@@ -78,7 +78,7 @@ export function updateRequestStore(
     ...updateFunction(data),
   };
 
-  stores[storeName].subscribers.forEach(function (item: BaseThunk) {
+  stores[storeName].subscribers.forEach( (item: BaseThunk) => {
     const requestData = stores[storeName].data;
 
 
@@ -105,7 +105,7 @@ export function initRequestStore(config: ComponentLoadConfig) {
     return config.onLoadRequestData;
   }
 
-  const onLoadConfig = config.onLoadStoreConfig;
+  const onLoadConfig = config[ON_LOAD_STORE_CONFIG_KEY];
   if (!onLoadConfig) {
     return;
   }
@@ -126,9 +126,9 @@ export function initRequestStore(config: ComponentLoadConfig) {
   );
 
   if (config.onLoadRequestConfig) {
-    config.onLoadRequestConfig.forEach(function (
+    config.onLoadRequestConfig.forEach( (
       requestStoreItem: RequestStoreItem,
-    ) {
+    ) =>{
 
       const requestStoreId = requestStoreItem.dataSource.getRequestStoreId();
       if(requestStoreId){
@@ -142,7 +142,7 @@ export function initRequestStore(config: ComponentLoadConfig) {
 }
 
 export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
-  const onLoadConfig = config.onLoadStoreConfig;
+  const onLoadConfig = config[ON_LOAD_STORE_CONFIG_KEY];
   if (!onLoadConfig) {
     return;
   }
@@ -153,7 +153,7 @@ export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
   }
 
 
-  addLoadFunction(storeName, function () {
+  addLoadFunction(storeName, () =>{
     initRequestStore(config);
   });
 }
@@ -165,7 +165,7 @@ export function clearRequestStores(){
   })
   stores = {};
 
-  thunks.forEach(function(thunk:any){
+  thunks.forEach((thunk:any)=>{
     createRequestStore(thunk.requestStoreId ?? '', thunk)
   })
 }

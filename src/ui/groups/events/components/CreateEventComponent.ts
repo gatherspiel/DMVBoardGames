@@ -16,6 +16,18 @@ import {
   VIEW_GROUP_PAGE_HANDLER_CONFIG
 } from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateErrorMessage} from "../../../../framework/components/utils/StatusIndicators.ts";
+import {
+  COMPONENT_LABEL_KEY,
+  EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY,
+  IS_LOGGED_IN_KEY,
+  SUCCESS_MESSAGE_KEY
+} from "../../../../shared/Constants.ts";
+import {
+  DEFAULT_GLOBAL_STATE_REDUCER_KEY,
+  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
+  GLOBAL_STATE_LOAD_CONFIG_KEY,
+  REQUEST_THUNK_REDUCERS_KEY
+} from "../../../../framework/components/types/ComponentLoadConfig.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -35,28 +47,28 @@ const templateStyle = `
 `;
 
 const loadConfig = {
-  requestThunkReducers:[
+  [REQUEST_THUNK_REDUCERS_KEY]:[
     {
       thunk: CREATE_EVENT_THUNK,
-      componentReducer: function(data: any){
+      componentReducer: (data: any)=>{
         if(!data.errorMessage){
           return {
-            successMessage: "Successfully created event"
+            [SUCCESS_MESSAGE_KEY]: "Successfully created event"
           }
         }
         return data;
       }
     }
   ],
-  globalStateLoadConfig: {
-    globalFieldSubscriptions: ["isLoggedIn"],
-    defaultGlobalStateReducer: function (updates: Record<string, string>) {
+  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
+    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
+    [DEFAULT_GLOBAL_STATE_REDUCER_KEY]:  (updates: Record<string, string>) => {
       PageState.pageLoaded = true;
       return {
         name: "",
         description: "",
         url: "",
-        isVisible: updates["isLoggedIn"],
+        isVisible: updates[IS_LOGGED_IN_KEY],
       };
     },
   },
@@ -84,58 +96,58 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
     
     ${generateErrorMessage(data.errorMessage)}
     
-    ${data.successMessage ? `<p class="success-message">${data.successMessage}</p>`: ``}
+    ${data[SUCCESS_MESSAGE_KEY] ? `<p class="${SUCCESS_MESSAGE_KEY}">${data[SUCCESS_MESSAGE_KEY]}</p>`: ``}
     <form onsubmit="return false">
       
         <h1>Create board game event for group ${getUrlParameter("groupName")}</h1>
          <form>
     
-      ${this.generateShortInput({
+      ${this.addShortInput({
         id: EVENT_NAME_INPUT,
-        componentLabel: "Event name",
+        [COMPONENT_LABEL_KEY]: "Event name",
         inputType: "text",
         value: data.name
       })}
       
-      ${this.generateTextInput({
+      ${this.addTextInput({
         id: EVENT_DESCRIPTION_INPUT,
-        componentLabel: "Event description",
+        [COMPONENT_LABEL_KEY]: "Event description",
         inputType: "text",
         value: data.description
       })}
       
-       ${this.generateShortInput({
+       ${this.addShortInput({
         id: EVENT_URL_INPUT,
-        componentLabel: "Event URL",
+        [COMPONENT_LABEL_KEY]: "Event URL",
         inputType: "text",
         value: data.url
       })}
        
-      ${this.generateShortInput({
+      ${this.addShortInput({
         id: START_DATE_INPUT,
-        componentLabel: "Start date",
+        [COMPONENT_LABEL_KEY]: "Start date",
         inputType: "text",
         value: ""
       })}
       
-      ${this.generateShortInput({
+      ${this.addShortInput({
         id: START_TIME_INPUT,
-        componentLabel: "Start time",
+        [COMPONENT_LABEL_KEY]: "Start time",
         inputType: "text",
         value: ""
       })}
  
-      ${this.generateShortInput({
+      ${this.addShortInput({
         id: END_TIME_INPUT,
-        componentLabel: "End time",
+        [COMPONENT_LABEL_KEY]: "End time",
         inputType: "text",
         value: ""
       })}     
       <br>
   
-      ${this.generateShortInput({
+      ${this.addShortInput({
         id: EVENT_LOCATION_INPUT,
-        componentLabel: "Event location",
+        [COMPONENT_LABEL_KEY]: "Event location",
         inputType: "text",
         value: data.location ?? ""
       })}     
@@ -144,15 +156,15 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
     ${generateButton({
       text: "Create event",
       component: this,
-      eventHandlerConfig: CREATE_EVENT_CONFIG,
+      [EVENT_HANDLER_CONFIG_KEY]: CREATE_EVENT_CONFIG,
     })}
         
         
     ${generateButton({
       text: "Back to group",
       component: this,
-      eventHandlerConfig: VIEW_GROUP_PAGE_HANDLER_CONFIG,
-      eventHandlerParams: {"name":getUrlParameter("groupName")}
+      [EVENT_HANDLER_CONFIG_KEY]: VIEW_GROUP_PAGE_HANDLER_CONFIG,
+      [EVENT_HANDLER_PARAMS_KEY]: {"name":getUrlParameter("groupName")}
     })}
 
       

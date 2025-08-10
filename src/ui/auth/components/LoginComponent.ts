@@ -23,6 +23,11 @@ import {
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage} from "../../../framework/components/utils/StatusIndicators.ts";
+import {COMPONENT_LABEL_KEY, EVENT_HANDLER_CONFIG_KEY, IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
+import {
+  ON_LOAD_REQUEST_DATA_KEY,
+  ON_LOAD_STORE_CONFIG_KEY, REQUEST_THUNK_REDUCERS_KEY
+} from "../../../framework/components/types/ComponentLoadConfig.ts";
 
 
 const template = `
@@ -54,15 +59,15 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
   hasRendered: boolean;
   constructor() {
     super("loginComponentStore", {
-      onLoadStoreConfig: {
+      [ON_LOAD_STORE_CONFIG_KEY]: {
         dataSource: LOGIN_THUNK,
         disableCache: true,
       },
-      onLoadRequestData: {
+      [ON_LOAD_REQUEST_DATA_KEY]: {
         username: "",
         password: "",
       },
-      requestThunkReducers: [
+      [REQUEST_THUNK_REDUCERS_KEY]: [
         {
           thunk: LOGIN_THUNK,
           componentReducer: getLoginComponentStoreFromLoginResponse,
@@ -85,7 +90,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: LoginComponentStore) {
-    if (!data.isLoggedIn) {
+    if (!data[IS_LOGGED_IN_KEY]) {
       return this.generateLogin(data);
     } else {
       return `
@@ -96,20 +101,20 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
   generateLogin(data: LoginComponentStore) {
     const html = `
      <div class="ui-section" id="login-component-container">
-      <form id=${LOGIN_FORM_ID} ${this.createSubmitEvent(LOGIN_EVENT_CONFIG)}>
+      <form id=${LOGIN_FORM_ID} ${this.addSubmitEvent(LOGIN_EVENT_CONFIG)}>
         <div class="ui-input">
-          ${this.generateShortInput({
+          ${this.addShortInput({
             id: USERNAME_INPUT,
-            componentLabel: "Email",
+            [COMPONENT_LABEL_KEY]: "Email",
             inputType: "text",
             value: ""
           })}
         </div>
         
         <div class="ui-input">
-          ${this.generateShortInput({
+          ${this.addShortInput({
             id: PASSWORD_INPUT,
-            componentLabel: "Password",
+            [COMPONENT_LABEL_KEY]: "Password",
             inputType: "text",
             value: ""
           })}
@@ -124,7 +129,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
           type: "submit",
           text: "Login",
           component: this,
-          eventHandlerConfig: LOGIN_EVENT_CONFIG
+          [EVENT_HANDLER_CONFIG_KEY]: LOGIN_EVENT_CONFIG
         })}
         
         ${generateButton({
@@ -132,7 +137,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
           type: "submit",
           text: "Register",
           component: this,
-          eventHandlerConfig: REGISTER_EVENT_CONFIG
+          [EVENT_HANDLER_CONFIG_KEY]: REGISTER_EVENT_CONFIG
         })}
 
                     

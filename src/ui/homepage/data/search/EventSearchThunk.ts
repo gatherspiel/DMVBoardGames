@@ -33,7 +33,7 @@ function getEventsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
     let queryString = "?";
 
     let params: string[] = [];
-    Object.keys(paramMap).forEach(function (param) {
+    Object.keys(paramMap).forEach((param) => {
       params.push(param + "=" + paramMap[param].replace(" ", "%20"));
     });
     queryString += params.join("&");

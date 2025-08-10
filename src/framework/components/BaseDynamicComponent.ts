@@ -10,6 +10,10 @@ import {
 } from "../state/data/RequestStore.ts";
 import {
   type ComponentLoadConfig,
+  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
+  GLOBAL_STATE_LOAD_CONFIG_KEY,
+  ON_LOAD_STORE_CONFIG_KEY,
+  REQUEST_THUNK_REDUCERS_KEY,
   type RequestThunkReducerConfig,
   validComponentLoadConfigFields,
 } from "./types/ComponentLoadConfig.ts";
@@ -50,7 +54,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     if (loadConfig) {
       const self = this;
 
-      self.requestStoreReducer = loadConfig.onLoadStoreConfig?.dataSource;
+      self.requestStoreReducer = loadConfig[ON_LOAD_STORE_CONFIG_KEY]?.dataSource;
 
       Object.keys(loadConfig).forEach((configField: any) => {
         if (!validComponentLoadConfigFields.includes(configField)) {
@@ -61,12 +65,11 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         }
       });
 
-      const globalStateLoadConfig = loadConfig.globalStateLoadConfig;
+      const globalStateLoadConfig = loadConfig[GLOBAL_STATE_LOAD_CONFIG_KEY];
 
-      if (globalStateLoadConfig?.globalFieldSubscriptions) {
-        globalStateLoadConfig.globalFieldSubscriptions.forEach(function (
-          fieldName: string,
-        ) {
+      if (globalStateLoadConfig?.[GLOBAL_FIELD_SUBSCRIPTIONS_KEY]) {
+        globalStateLoadConfig[GLOBAL_FIELD_SUBSCRIPTIONS_KEY].forEach(
+          (fieldName: string) => {
           subscribeComponentToGlobalField(self, fieldName);
           self.#componentLoadConfig = loadConfig;
         });
@@ -74,12 +77,12 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         initRequestStoresOnLoad(loadConfig);
       }
 
-      if (loadConfig.requestThunkReducers) {
+      if (loadConfig[REQUEST_THUNK_REDUCERS_KEY]) {
         const component = this;
 
-        loadConfig.requestThunkReducers.forEach(function (
+        loadConfig[REQUEST_THUNK_REDUCERS_KEY].forEach((
           config: RequestThunkReducerConfig,
-        ) {
+        ) => {
           if (!config.thunk) {
             throw new Error(
               `Missing thunk field in ${self.componentStoreName} reducer configuration`,
@@ -107,7 +110,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   updateStore(data: any) {
-    updateComponentStore(this.componentStoreName, function(){return data})
+    updateComponentStore(this.componentStoreName, ()=>data)
   }
 
   generateAndSaveHTML(data: any) {
@@ -119,23 +122,23 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     }
   }
 
-  generateShortInput(formConfig:FormInputConfig){
+  addShortInput(formConfig:FormInputConfig){
     return this.#formSelector.generateInputFormSelector(formConfig);
   }
 
-  generateTextInput(formConfig:FormInputConfig){
+  addTextInput(formConfig:FormInputConfig){
     return this.#formSelector.generateTextInputFormItem(formConfig);
   }
 
-  createOnChangeEvent(eventConfig: any) {
+  addOnChangeEvent(eventConfig: any) {
     return this.#eventHandlerData.createOnChangeEvent(eventConfig, this.#formSelector, this.componentStoreName);
   }
 
-  createSubmitEvent(eventConfig: any) {
+  addSubmitEvent(eventConfig: any) {
     return this.#eventHandlerData.createSubmitEvent(eventConfig, this.#formSelector, this.componentStoreName);
   }
 
-  createClickEvent(eventConfig: any, params?: any) {
+  addClickEvent(eventConfig: any, params?: any) {
     return this.#eventHandlerData.createClickEvent(eventConfig, this.#formSelector, this.componentStoreName, params);
   }
 
@@ -167,16 +170,14 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     } else {
       let reducer = componentLoadConfig.globalStateLoadConfig?.defaultGlobalStateReducer;
       if(!reducer){
-        reducer = function (updates: Record<string, string>) {
-          return updates
-        }
+        reducer =  (updates: Record<string, string>) => updates
       }
 
       loadStatus.dependenciesLoaded = true;
       let dataToUpdate: Record<string, string> = {};
 
       componentLoadConfig.globalStateLoadConfig?.globalFieldSubscriptions?.forEach(
-        function (fieldName) {
+         (fieldName) => {
           const fieldValue = getGlobalStateValue(fieldName);
           dataToUpdate[fieldName] = fieldValue;
         },

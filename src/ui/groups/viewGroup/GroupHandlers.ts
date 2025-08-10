@@ -4,11 +4,10 @@ import {
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT
 } from "../Constants.ts";
-import type { UpdateGroupRequest } from "./data/types/UpdateGroupRequest.ts";
 import {UPDATE_GROUP_REQUEST_THUNK} from "./data/UpdateGroupThunk.ts";
 
 export const EDIT_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function () {
+  eventHandler:  () => {
     return {
       isEditing: true,
     };
@@ -17,7 +16,7 @@ export const EDIT_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
 
 export const CANCEL_GROUP_EDIT_HANDLER: EventHandlerThunkConfig = {
 
-  eventHandler: function () {
+  eventHandler:  () => {
     return {
       isEditing: false,
     };
@@ -25,7 +24,7 @@ export const CANCEL_GROUP_EDIT_HANDLER: EventHandlerThunkConfig = {
 };
 
 export const SAVE_GROUP_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function (params): UpdateGroupRequest {
+  eventHandler:  (params) => {
     return {
       id: params.componentStore.id,
       name: params.formSelector.getValue(GROUP_NAME_INPUT),
@@ -34,7 +33,7 @@ export const SAVE_GROUP_CONFIG: EventHandlerThunkConfig = {
     };
   },
   apiRequestThunk: UPDATE_GROUP_REQUEST_THUNK,
-  componentReducer: function (a: any) {
+  componentReducer:  (a: any) => {
     return {
       name: a.name,
       description: a.description,

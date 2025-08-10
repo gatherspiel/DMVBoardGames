@@ -20,6 +20,8 @@ import {OpenCreateGroupPageComponent} from "./OpenCreateGroupPageComponent.ts";
 import {HOMEPAGE_COMPONENT_NAV} from "./HomepageComponentHandler.ts";
 import {BaseTemplateDynamicComponent} from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {DEFAULT_COMPONENT_STATE_KEY} from "../../../framework/components/types/ComponentLoadConfig.ts";
+import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../shared/Constants.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -27,7 +29,7 @@ const template = `
   `
 
 const loadConfig = {
-  defaultComponentState: {
+  [DEFAULT_COMPONENT_STATE_KEY]: {
     hideEvents: false,
     hideConventions: true,
     hideRestaurants: true,
@@ -60,29 +62,29 @@ export class HomepageComponent extends BaseTemplateDynamicComponent {
             ${data.hideEvents || data.showAllButtons ? generateButton({
               text: "Events",
               component: this,
-              eventHandlerConfig: HOMEPAGE_COMPONENT_NAV,
-              eventHandlerParams: {location:"#event-search"}
+              [EVENT_HANDLER_CONFIG_KEY]: HOMEPAGE_COMPONENT_NAV,
+              [EVENT_HANDLER_PARAMS_KEY]: {location:"#event-search"}
             }): ``} 
               
             ${data.hideConventions ? generateButton({
               text: "Conventions",
               component: this,
-              eventHandlerConfig: HOMEPAGE_COMPONENT_NAV,
-              eventHandlerParams: {location:"#convention-list"}
+              [EVENT_HANDLER_CONFIG_KEY]: HOMEPAGE_COMPONENT_NAV,
+              [EVENT_HANDLER_PARAMS_KEY]: {location:"#convention-list"}
             }): ``}       
          
             ${data.hideGameStores ? generateButton({
               text: "Game Stores",
               component: this,
-              eventHandlerConfig: HOMEPAGE_COMPONENT_NAV,
-              eventHandlerParams: {location:"#game-store"}
+              [EVENT_HANDLER_CONFIG_KEY]: HOMEPAGE_COMPONENT_NAV,
+              [EVENT_HANDLER_PARAMS_KEY]: {location:"#game-store"}
             }): ``}  
          
             ${data.hideRestaurants ? generateButton({
               text: "Bars and Cafés",
               component: this,
-              eventHandlerConfig: HOMEPAGE_COMPONENT_NAV,
-              eventHandlerParams: {location:"#game-restaurant"}
+              [EVENT_HANDLER_CONFIG_KEY]: HOMEPAGE_COMPONENT_NAV,
+              [EVENT_HANDLER_PARAMS_KEY]: {location:"#game-restaurant"}
             }): ``} 
              
           </div>
@@ -132,3 +134,10 @@ export class HomepageComponent extends BaseTemplateDynamicComponent {
 if (!customElements.get("homepage-component")) {
   customElements.define("homepage-component", HomepageComponent);
 }
+
+/*
+TODO: Possible optimization idea that also simplifies the code.
+-Initialize the search UI with just html
+
+-Create a script.js file. It can contain utility fuctions to create events
+ */

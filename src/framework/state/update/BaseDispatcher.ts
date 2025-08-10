@@ -20,7 +20,7 @@ export class BaseDispatcher {
     if(storeUpdate){
       this.reducerUpdate = storeUpdate;
     } else {
-      this.reducerUpdate = function(data:any){
+      this.reducerUpdate = (data:any)=>{
         return data;
       }
     }

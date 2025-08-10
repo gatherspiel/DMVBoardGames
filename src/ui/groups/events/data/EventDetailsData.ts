@@ -1,4 +1,5 @@
 import type {UserPermissionData} from "../../../../shared/types/UserPermissionData.ts";
+import {SUCCESS_MESSAGE_KEY} from "../../../../shared/Constants.ts";
 
 export type EventDetailsData = {
   name: string;
@@ -13,5 +14,5 @@ export type EventDetailsData = {
   location: string;
   url: string;
   errorMessage?: string;
-  successMessage?: string;
+  [SUCCESS_MESSAGE_KEY]?: string;
 }

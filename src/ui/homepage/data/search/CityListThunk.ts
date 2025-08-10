@@ -12,16 +12,15 @@ function getCitiesQueryConfig(): ApiRequestConfig {
   };
 }
 
-const mockFunction = function () {
-  return MOCK_CITY_LIST;
-};
+const mockFunction =  () => MOCK_CITY_LIST;
+
 
 export const defaultFunctionConfig = {
   defaultFunction: mockFunction,
   defaultFunctionPriority: USE_MOCK,
 };
 
-export const updateCities = function (cities: Record<number, string>): any {
+export const updateCities =  (cities: Record<number, string>) => {
   const cityArray = Object.values(cities);
   cityArray.sort();
   cityArray.unshift(DEFAULT_SEARCH_PARAMETER);

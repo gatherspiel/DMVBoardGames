@@ -1,4 +1,5 @@
 import type {FormInputConfig} from "./components/types/FormInputConfig.ts";
+import {COMPONENT_LABEL_KEY} from "../shared/Constants.ts";
 
 export class FormSelector {
 
@@ -36,7 +37,7 @@ export class FormSelector {
 
     this.formSelectors.add(formConfig.id);
     return `
-      <label for=${formConfig.id}>${formConfig.componentLabel}</label>
+      <label for=${formConfig.id}>${formConfig[COMPONENT_LABEL_KEY]}</label>
       ${formConfig.lineBreakAfterLabel !== false? `<br>` : ''}
       <input
         ${formConfig.className ? `class="${formConfig.className}"` : ``}
@@ -57,7 +58,7 @@ export class FormSelector {
     this.formSelectors.add(formConfig.id);
 
     return `
-      <label for=${formConfig.id}>${formConfig.componentLabel}</label>
+      <label for=${formConfig.id}>${formConfig[COMPONENT_LABEL_KEY]}</label>
       ${formConfig.lineBreakAfterLabel !== false? `<br>` : ''}
       <textarea
         ${formConfig.className ? `class="${formConfig.className}"` : ``}

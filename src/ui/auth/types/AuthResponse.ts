@@ -1,4 +1,5 @@
 import type { LoginComponentStore } from "./LoginComponentStore.ts";
+import {IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
 
 export class AuthResponse {
   private readonly loggedIn: boolean;
@@ -33,7 +34,7 @@ export class AuthResponse {
 
 export function generateDefaultLoginComponentStore(): LoginComponentStore {
   return {
-    isLoggedIn: false,
+    [IS_LOGGED_IN_KEY]: false,
     errorMessage: "",
     email: "",
   };
