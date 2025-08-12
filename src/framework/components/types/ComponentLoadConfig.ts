@@ -18,7 +18,7 @@ export type RequestStoreItem = {
 
 export type RequestThunkReducerConfig = {
   thunk: BaseThunk
-  componentReducer: (a: any) => any;
+  componentReducer?: (a: any) => any;
   globalStoreReducer?: (a: any) => any;
   reducerField?: string;
 };

@@ -2,6 +2,12 @@ import { createStore, subscribeToStore, updateStore } from "./StoreUtils.js";
 
 let stores: Record<string, any> = {};
 
+let storesToSaveOnNav:string[] = [];
+
+export function saveStoreOnNav(storeName:string){
+  storesToSaveOnNav.push(storeName);
+}
+
 export function createComponentStore(
   storeName: string,
   component: HTMLElement,
@@ -56,5 +62,10 @@ export function hasUserEditPermissions(componentStoreName:string){
 }
 
 export function clearComponentStores(){
-  stores = {};
+
+  Object.keys(stores).forEach(storeName=>{
+    if(!storesToSaveOnNav.includes(storeName)){
+      delete stores[storeName]
+    }
+  })
 }

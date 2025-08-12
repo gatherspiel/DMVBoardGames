@@ -9,6 +9,7 @@ import {
   ON_LOAD_STORE_CONFIG_KEY,
   REQUEST_THUNK_REDUCERS_KEY
 } from "../../framework/components/types/ComponentLoadConfig.ts";
+import {saveStoreOnNav} from "../../framework/state/data/ComponentStore.ts";
 setupStateFields();
 
 const loadConfig = {
@@ -19,15 +20,9 @@ const loadConfig = {
   [REQUEST_THUNK_REDUCERS_KEY]:[
     {
       thunk: LOGIN_THUNK,
-      componentReducer: (data:any)=>{
-        return data;
-      }
     },
     {
       thunk: LOGOUT_THUNK,
-      componentReducer: (data:any)=>{
-        return data;
-      }
     }
   ],
 }
@@ -72,6 +67,7 @@ export class LoginStatusComponent extends BaseTemplateDynamicComponent {
 
   constructor() {
     super('login-status-component', loadConfig);
+    saveStoreOnNav(this.componentStoreName)
   }
 
   override getTemplateStyle(): string {
