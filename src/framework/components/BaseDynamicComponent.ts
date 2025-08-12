@@ -90,7 +90,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
           }
           config.thunk.subscribeComponent(
             component.componentStoreName,
-            config.componentReducer,
+            config?.componentReducer ?? function(data:any){
+              return data
+            },
             config.reducerField,
           );
         });
