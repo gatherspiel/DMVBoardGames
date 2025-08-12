@@ -12,11 +12,17 @@ if(!IS_LOCAL){
 }
 
 const start = Date.now();
+
+//@ts-ignore
+window.waitingForPreload = true;
 fetch(`${API_ROOT}/searchEvents`,{priority: 'high'}).then((response)=>{
   return response.json()
 }).then((response)=>{
   //@ts-ignore
   window.preloadData = response;
+
+  //@ts-ignore
+  window.waitingForPreload = false;
 })
 
 

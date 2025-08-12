@@ -4,56 +4,30 @@ import {
   SEARCH_FORM_ID
 } from "./Constants.ts";
 
-import {EVENT_PRELOAD_THUNK} from "../../data/search/EventSearchThunk.ts";
 import {
-  CITY_LIST_THUNK,
   updateCities,
 } from "../../data/search/CityListThunk.ts";
 import {
   SEARCH_EVENT_HANDLER_CONFIG, UPDATE_CITY_CONFIG, UPDATE_DAY_CONFIG, UPDATE_DISTANCE_CONFIG,
 } from "./EventSearchHandlers.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
-import {LOCATIONS_THUNK} from "../../data/search/LocationsThunk.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import type {DropdownConfig} from "../../../../framework/components/types/DropdownConfig.ts";
 import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
 import {
-  ON_LOAD_REQUEST_CONFIG_KEY,
-  ON_LOAD_REQUEST_DATA_KEY,
-  ON_LOAD_STORE_CONFIG_KEY, REQUEST_THUNK_REDUCERS_KEY
+  DEFAULT_GLOBAL_STATE_REDUCER_KEY,
+  GLOBAL_FIELD_SUBSCRIPTIONS_KEY, GLOBAL_STATE_LOAD_CONFIG_KEY,
 } from "../../../../framework/components/types/ComponentLoadConfig.ts";
 import {
   DEFAULT_PARAMETER_DISPLAY_KEY,
   DEFAULT_PARAMETER_KEY,
   EVENT_HANDLER_CONFIG_KEY
 } from "../../../../shared/Constants.ts";
-import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 const loadConfig = {
-  [ON_LOAD_STORE_CONFIG_KEY]: {
-    dataSource: EVENT_PRELOAD_THUNK,
-  },
-  [ON_LOAD_REQUEST_DATA_KEY]: {
-    city: DEFAULT_SEARCH_PARAMETER,
-    day: DEFAULT_SEARCH_PARAMETER,
-  },
-  [ON_LOAD_REQUEST_CONFIG_KEY]: [
-    {
-      dataSource: LOCATIONS_THUNK,
-    },
-    {
-      dataSource: CITY_LIST_THUNK,
-    },
-  ],
-  [REQUEST_THUNK_REDUCERS_KEY]: [
-    {
-      thunk: EVENT_PRELOAD_THUNK,
-      componentReducer: (data: any)=> data
-    },
-    {
-      thunk: CITY_LIST_THUNK,
-      componentReducer: updateCities,
-    }
-  ],
+  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
+    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: ["cityList"],
+    [DEFAULT_GLOBAL_STATE_REDUCER_KEY]: updateCities
+  }
 };
 
 const template = `
@@ -115,15 +89,10 @@ const template = `
 export class EventSearchComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("event-search-component-store", loadConfig);
-    console.log("Hi")
   }
 
   override getTemplateStyle(): string {
     return template;
-  }
-
-  connectedCallback(){
-    initRequestStore(loadConfig);
   }
 
   render(eventSearchStore: any) {

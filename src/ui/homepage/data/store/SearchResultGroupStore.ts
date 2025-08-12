@@ -1,6 +1,5 @@
 export function updateSearchResultGroupStore(groupResults: any) {
 
-  console.log(JSON.stringify(groupResults));
   var results:any = groupResults.searchResults.groupData;
   const updatedGroupStore: Record<string, any> = {};
 

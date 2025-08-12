@@ -9,7 +9,8 @@ export function setupStateFields(){
   stateFields =  {
     LOGGED_IN:  IS_LOGGED_IN_KEY,
     GAME_LOCATIONS:"gameLocations",
-    SEARCH_RESULTS: "searchResults"
+    SEARCH_RESULTS: "searchResults",
+    CITY_LIST: "cityList"
   };
   setupGlobalState(stateFields);
 }

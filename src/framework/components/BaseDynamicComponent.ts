@@ -6,10 +6,11 @@ import {
   updateComponentStore,
 } from "../state/data/ComponentStore.ts";
 import {
+  createRequestStoreWithData,
   initRequestStoresOnLoad,
 } from "../state/data/RequestStore.ts";
 import {
-  type ComponentLoadConfig,
+  type ComponentLoadConfig, type DataFieldConfig,
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
   ON_LOAD_STORE_CONFIG_KEY,
@@ -52,6 +53,42 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     this.#eventHandlerData = new EventHandlerData(`data-${this.componentStoreName}-element-id`);
 
     if (loadConfig) {
+
+      //TODO: Handle case where
+      if(loadConfig.dataFields){
+
+
+        loadConfig.dataFields.forEach((item:DataFieldConfig)=>{
+
+          let dataSource:BaseThunk = item.dataSource;
+
+          //@ts-ignore
+          if(window.waitingForPreload && item.preloadSource) {
+            dataSource = item.preloadSource;
+          }
+
+          if(!item.dataSource.globalStateReducer){
+            throw new Error(`Data source thunk for field ${item.fieldName} in 
+              component ${componentStoreName} must have a global state reducer`)
+          }
+
+          function getRequestData() {
+            return item.params
+          }
+
+
+          const requestStoreId = dataSource.getRequestStoreId()
+          if(!requestStoreId){
+            throw new Error("Missing request store id for data source thunk")
+          }
+
+          createRequestStoreWithData(
+            requestStoreId,
+            dataSource,
+            getRequestData
+          )
+        })
+      }
       const self = this;
 
       self.requestStoreReducer = loadConfig[ON_LOAD_STORE_CONFIG_KEY]?.dataSource;
@@ -101,6 +138,13 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   updateWithStoreData(data: any) {
+
+    if(this.#componentLoadConfig?.dataFields && this?.parentElement?.nodeName !== "PAGE-COMPONENT"){
+      console.log("Hi")
+    }
+    console.log(this?.parentElement?.nodeName)
+    console.log(this.#componentLoadConfig?.dataFields)
+
     this.#eventHandlerData.resetData();
     this.generateAndSaveHTML(data);
 
@@ -116,6 +160,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   generateAndSaveHTML(data: any) {
+
     if (!this.#dependenciesLoaded) {
       this.innerHTML = generateLoadingIndicator();
     } else {
