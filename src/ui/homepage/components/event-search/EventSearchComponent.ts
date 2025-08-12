@@ -15,7 +15,7 @@ import {
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {LOCATIONS_THUNK} from "../../data/search/LocationsThunk.ts";
 import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
-import {PageState} from "../../../../framework/state/PageState.ts";
+import {PageState} from "../../../../framework/spa/PageState.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import type {DropdownConfig} from "../../../../framework/components/types/DropdownConfig.ts";
 import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";

@@ -22,7 +22,7 @@ import {
 } from "../../../../framework/utils/EventDataUtils.ts";
 import {UPDATE_EVENT_REQUEST_THUNK} from "../data/UpdateEventThunk.ts";
 import {DELETE_EVENT_REQUEST_THUNK} from "../data/DeleteEventRequestThunk.ts";
-import {PageState} from "../../../../framework/state/PageState.ts";
+import {PageState} from "../../../../framework/spa/PageState.ts";
 import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";

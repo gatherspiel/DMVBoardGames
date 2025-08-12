@@ -164,7 +164,7 @@ body {
   background-color: #01118D;
 }
 
-.bg-image-container div {
+.bg-image-container > div {
   width: var(--s);
   margin: var(--m);
   height: calc(var(--s)*1.1547);
@@ -253,15 +253,6 @@ body {
   background:#007432;
 }
 
-.numberCircle {
-  z-index: -10;
-  position: fixed;
-  height:5rem!important;
-  width: 5rem!important;
-  margin: 5rem !important;
-  clip-path: circle(2rem) !important;
-  background-color: #f3c981 !important;
-}
 
 
 .bg-image-container::before {
@@ -270,14 +261,27 @@ body {
   float: left;
   height: 120%;
   shape-outside: repeating-linear-gradient(
-          #0000 0 calc(var(--f) - 3px),
-          #000  0 calc(var(--f)));
+          #00000000 0 calc(var(--f) - 3px),
+          black  0 calc(var(--f)));
 }
 
-.bg-image-container p {
-  justify-content: center;
-  display: flex;
-  padding-top: 0.75rem;
+
+
+@media not screen and (width < 32em) {
+  .numberCircle {
+    z-index: -10;
+    position: fixed;
+    height:5rem;
+    width: 5rem;
+    margin: 5rem;
+    clip-path: circle(2rem);
+    background-color: #f3c981;
+  }
+  .bg-image-container p {
+    justify-content: center;
+    display: flex;
+    padding-top: 0.75rem;
+  }
 }
 
 @media screen and (width < 32em) {
@@ -290,15 +294,14 @@ body {
   .numberCircle {
     z-index: -10;
     position: fixed;
-    height:3rem !important;
-    width: 3rem !important;
-    margin: 1rem !important;
-    clip-path: circle(1rem) !important;
-    background-color: #f3c981 !important;
+    height:3rem;
+    width: 3rem;
+    margin: 1rem;
+    clip-path: circle(1rem);
+    background-color: #f3c981;
   }
 
   .bg-image-container p {
-    padding-top:0rem;
     font-size:1rem;
   }
 
