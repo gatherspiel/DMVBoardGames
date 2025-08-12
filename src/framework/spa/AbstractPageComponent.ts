@@ -1,11 +1,11 @@
 
 import { getComponent } from "../../shared/components/ComponentRegistry.ts";
 import { setupStateFields} from "../../shared/InitGlobalStateConfig.ts";
-import {PageState} from "../state/PageState.ts";
+import {PageState} from "./PageState.ts";
 
 import {clearRequestStores} from "../state/data/RequestStore.ts";
 import {clearComponentStores} from "../state/data/ComponentStore.ts";
-import type {BaseDynamicComponent} from "./BaseDynamicComponent.ts";
+import type {BaseDynamicComponent} from "../components/BaseDynamicComponent.ts";
 
 
 

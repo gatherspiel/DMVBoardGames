@@ -20,7 +20,7 @@ import {
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 
 import { getGlobalStateValue } from "../../../../framework/state/data/GlobalStore.ts";
-import {PageState} from "../../../../framework/state/PageState.ts";
+import {PageState} from "../../../../framework/spa/PageState.ts";
 import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
 import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
