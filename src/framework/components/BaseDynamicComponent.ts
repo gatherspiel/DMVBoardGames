@@ -42,9 +42,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   constructor(componentStoreName: string, loadConfig?: ComponentLoadConfig) {
     super();
-
-    console.log(this.localName);
-
+    
     BaseDynamicComponent.instanceCount++;
     this.componentStoreName = `${componentStoreName}-${BaseDynamicComponent.instanceCount}`;
 
