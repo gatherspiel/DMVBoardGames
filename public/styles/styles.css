@@ -147,7 +147,7 @@ body {
   transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
 }
 
-.bg-image {
+#bg-image {
   z-index: -100;
   position: fixed;
   top: 0;
@@ -285,7 +285,7 @@ body {
 }
 
 @media screen and (width < 32em) {
-  .bg-image {
+  #bg-image {
     --s: 5rem;  /* size  */
     --m: 0px;    /* margin */
     --f: calc(1.732 * var(--s) + 4 * var(--m)  - 1px);

@@ -17,7 +17,7 @@
   </head>
   <body>
 
-  <div class="bg-image">
+  <div id="bg-image">
     <div class="bg-image-container">
       <div> <div class="numberCircle"> <p>10</p> </div></div>
       <div> <div class="numberCircle"> <p>6</p> </div></div>
@@ -116,5 +116,15 @@
       type="module"
       src="shared/components/LoginStatusComponent.ts"
     ></script>
+
+  <script>
+
+
+    //TODO: Remove this code after verifying that hex grid works in prod
+    let params = new URLSearchParams(document.location.search);
+    if(!params.get("showBackground"){
+      document.get
+    }
+  </script>
   </body>
 </html>
