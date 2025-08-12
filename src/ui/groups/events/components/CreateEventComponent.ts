@@ -10,7 +10,7 @@ import {
 } from "../../Constants.ts";
 import {CREATE_EVENT_CONFIG} from "../EventDetailsHandler.ts";
 import {CREATE_EVENT_THUNK} from "../data/CreateEventThunk.ts";
-import {PageState} from "../../../../framework/state/PageState.ts";
+import {PageState} from "../../../../framework/spa/PageState.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import {
   VIEW_GROUP_PAGE_HANDLER_CONFIG

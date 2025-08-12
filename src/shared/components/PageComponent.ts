@@ -1,4 +1,4 @@
-import {AbstractPageComponent} from "../../framework/components/AbstractPageComponent.ts";
+import {AbstractPageComponent} from "../../framework/spa/AbstractPageComponent.ts";
 import {GroupComponent} from "../../ui/groups/viewGroup/components/GroupComponent.ts";
 import {CreateGroupPageComponent} from "../../ui/groups/createGroup/components/CreateGroupPageComponent.ts";
 import {DeleteGroupPageComponent} from "../../ui/groups/deleteGroup/DeleteGroupPageComponent.ts";

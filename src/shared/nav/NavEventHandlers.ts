@@ -1,5 +1,5 @@
 import type {EventHandlerThunkConfig} from "../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
-import {AbstractPageComponent} from "../../framework/components/AbstractPageComponent.ts";
+import {AbstractPageComponent} from "../../framework/spa/AbstractPageComponent.ts";
 import {GroupComponent} from "../../ui/groups/viewGroup/components/GroupComponent.ts";
 import {EventDetailsComponent} from "../../ui/groups/events/components/EventDetailsComponent.ts";
 import {CreateEventComponent} from "../../ui/groups/events/components/CreateEventComponent.ts";
