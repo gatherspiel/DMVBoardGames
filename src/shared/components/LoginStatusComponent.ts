@@ -1,30 +1,20 @@
-import {LOGIN_THUNK} from "../../ui/auth/data/LoginThunk.ts";
 
 //@ts-ignore
 import {setupStateFields} from "../InitGlobalStateConfig.ts";
 import {BaseTemplateDynamicComponent} from "../../framework/components/BaseTemplateDynamicComponent.ts";
 import {LOGOUT_EVENT_CONFIG} from "../../ui/auth/LoginComponentEventHandlers.ts";
-import {LOGOUT_THUNK} from "../../ui/auth/data/LogoutThunk.ts";
 import {
-  ON_LOAD_STORE_CONFIG_KEY,
-  REQUEST_THUNK_REDUCERS_KEY
+  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
+  GLOBAL_STATE_LOAD_CONFIG_KEY,
 } from "../../framework/components/types/ComponentLoadConfig.ts";
 import {saveStoreOnNav} from "../../framework/state/data/ComponentStore.ts";
+import {IS_LOGGED_IN_KEY} from "../Constants.ts";
 setupStateFields();
 
 const loadConfig = {
-  [ON_LOAD_STORE_CONFIG_KEY]: {
-    dataSource: LOGIN_THUNK,
-    disableCache: true,
+  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
+    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
   },
-  [REQUEST_THUNK_REDUCERS_KEY]:[
-    {
-      thunk: LOGIN_THUNK,
-    },
-    {
-      thunk: LOGOUT_THUNK,
-    }
-  ],
 }
 
 const template = `
@@ -76,9 +66,10 @@ export class LoginStatusComponent extends BaseTemplateDynamicComponent {
 
   override render(data:any){
 
-    if(data.loggedIn){
+    console.log(JSON.stringify(data));
+    if(data.isLoggedIn){
       return `
-        <span>Welcome ${data.data.user.email}</span>
+        <span>Welcome ${data?.data?.user?.email}</span>
         <a ${this.addClickEvent(LOGOUT_EVENT_CONFIG)}>Sign out</a>
       `
 

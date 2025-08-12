@@ -1,26 +1,23 @@
 import type { GroupSearchResult } from "../../data/types/group/GroupSearchResult.ts";
-import {EVENT_PRELOAD_THUNK, EVENT_SEARCH_THUNK} from "../../data/search/EventSearchThunk.ts";
 import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import {getDisplayNameArray} from "../../../../shared/DisplayNameConversion.ts";
-import {REQUEST_THUNK_REDUCERS_KEY} from "../../../../framework/components/types/ComponentLoadConfig.ts";
+import {
+  DEFAULT_GLOBAL_STATE_REDUCER_KEY,
+  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
+  GLOBAL_STATE_LOAD_CONFIG_KEY,
+} from "../../../../framework/components/types/ComponentLoadConfig.ts";
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../../shared/Constants.ts";
+import {SEARCH_RESULTS} from "../../../../shared/InitGlobalStateConfig.ts";
+import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 
 const loadConfig = {
-  [REQUEST_THUNK_REDUCERS_KEY]: [
-    {
-      thunk: EVENT_PRELOAD_THUNK,
-      componentReducer: updateSearchResultGroupStore,
-      reducerField: "groupData"
-    },
-    {
-      thunk: EVENT_SEARCH_THUNK,
-      componentReducer: updateSearchResultGroupStore,
-      reducerField: "groupData",
-    },
-  ],
+  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
+    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]:[SEARCH_RESULTS],
+    [DEFAULT_GLOBAL_STATE_REDUCER_KEY]: updateSearchResultGroupStore
+  }
 };
 
 const template = `
@@ -65,6 +62,10 @@ const template = `
 export class EventListComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("searchResultGroupStore", loadConfig);
+  }
+
+  connectedCallback(){
+    initRequestStore(loadConfig);
   }
 
   private getItemHtml(groupId: string, group: GroupSearchResult) {

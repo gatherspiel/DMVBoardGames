@@ -4,6 +4,7 @@ import type { SearchParams } from "./model/SearchParams.ts";
 import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
 import type { ApiRequestConfig } from "../../../../framework/state/update/api/types/ApiRequestConfig.ts";
 import {generatePreloadThunk} from "../../../../framework/state/update/PreloadThunk.ts";
+import {SEARCH_RESULTS} from "../../../../shared/InitGlobalStateConfig.ts";
 
 const CITY_PARAM = "city";
 const DAY_PARAM = "day";
@@ -47,6 +48,13 @@ function getEventsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
 
 export const EVENT_SEARCH_THUNK = generateApiThunk({
   queryConfig: getEventsQueryConfig,
-});
+}).addGlobalStateReducer((state:any)=>{
+  return {[SEARCH_RESULTS]:state}
+})
 
-export const EVENT_PRELOAD_THUNK = generatePreloadThunk("preload_"+EVENT_SEARCH_THUNK.requestStoreId)
+export const EVENT_PRELOAD_THUNK =
+  generatePreloadThunk("preload_"+EVENT_SEARCH_THUNK.requestStoreId)
+    .addGlobalStateReducer((state:any)=>{
+      return {[SEARCH_RESULTS]:state}
+    })
+

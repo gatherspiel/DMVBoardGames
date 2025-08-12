@@ -4,7 +4,7 @@ import {
   SEARCH_FORM_ID
 } from "./Constants.ts";
 
-import {EVENT_PRELOAD_THUNK, EVENT_SEARCH_THUNK} from "../../data/search/EventSearchThunk.ts";
+import {EVENT_PRELOAD_THUNK} from "../../data/search/EventSearchThunk.ts";
 import {
   CITY_LIST_THUNK,
   updateCities,
@@ -14,8 +14,6 @@ import {
 } from "./EventSearchHandlers.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {LOCATIONS_THUNK} from "../../data/search/LocationsThunk.ts";
-import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
-import {PageState} from "../../../../framework/spa/PageState.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import type {DropdownConfig} from "../../../../framework/components/types/DropdownConfig.ts";
 import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
@@ -29,6 +27,7 @@ import {
   DEFAULT_PARAMETER_KEY,
   EVENT_HANDLER_CONFIG_KEY
 } from "../../../../shared/Constants.ts";
+import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 const loadConfig = {
   [ON_LOAD_STORE_CONFIG_KEY]: {
     dataSource: EVENT_PRELOAD_THUNK,
@@ -116,6 +115,7 @@ const template = `
 export class EventSearchComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("event-search-component-store", loadConfig);
+    console.log("Hi")
   }
 
   override getTemplateStyle(): string {
@@ -123,11 +123,7 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    if(PageState.pageLoaded){
-      //@ts-ignore
-      loadConfig.onLoadStoreConfig.dataSource = EVENT_SEARCH_THUNK
-      initRequestStore(loadConfig);
-    }
+    initRequestStore(loadConfig);
   }
 
   render(eventSearchStore: any) {
