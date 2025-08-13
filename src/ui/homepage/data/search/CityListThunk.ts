@@ -20,7 +20,7 @@ export const defaultFunctionConfig = {
   defaultFunctionPriority: USE_MOCK,
 };
 
-export const updateCities =  (cities: Record<number, string>) => {
+export const updateCities =  (cities: any) => {
   const cityArray = Object.values(cities);
   cityArray.sort();
   cityArray.unshift(DEFAULT_SEARCH_PARAMETER);
@@ -43,4 +43,6 @@ export const updateCities =  (cities: Record<number, string>) => {
 export const CITY_LIST_THUNK = generateApiThunk({
   queryConfig: getCitiesQueryConfig,
   defaultFunctionConfig: defaultFunctionConfig,
+}).addGlobalStateReducer((data:any)=> {
+  return {cityList: data}
 });

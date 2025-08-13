@@ -18,7 +18,7 @@
   <body>
 
   <div id="bg-image">
-    <div class="bg-image-container">
+    <div class="bg-image-container part-1">
       <div> <div class="numberCircle"> <p>10</p> </div></div>
       <div> <div class="numberCircle"> <p>6</p> </div></div>
       <div> <div class="numberCircle"> <p>4</p> </div></div>
@@ -55,6 +55,8 @@
       <div> <div class="numberCircle"> <p>12</p> </div></div>
       <div> <div class="numberCircle"> <p>9</p> </div></div>
       <div> <div class="numberCircle"> <p>9</p> </div></div>
+    </div>
+    <div class="bg-image-container part-2">
       <div> <div class="numberCircle"> <p>10</p> </div></div>
       <div> <div class="numberCircle"> <p>6</p> </div></div>
       <div> <div class="numberCircle"> <p>4</p> </div></div>
@@ -100,6 +102,7 @@
 
       <page-component
         componentName="homepage-component"
+        enablePreload="true"
       >
       </page-component>
     </div>
@@ -120,11 +123,7 @@
   <script>
 
 
-    //TODO: Remove this code after verifying that hex grid works in prod on iPhones.
-    let params = new URLSearchParams(document.location.search);
-    if(!params.get("showBackground")){
-      document.getElementById("bg-image").innerHTML = "";
-    }
+
   </script>
   </body>
 </html>
