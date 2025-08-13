@@ -144,8 +144,8 @@ const loadConfig = {
 };
 
 export class GroupComponent extends BaseTemplateDynamicComponent {
-  constructor() {
-    super(GROUP_COMPONENT_STORE, loadConfig);
+  constructor(enablePreload?:boolean) {
+    super(GROUP_COMPONENT_STORE, loadConfig, enablePreload);
   }
 
   connectedCallback(){

@@ -60,11 +60,10 @@ const loadConfig = {
 
 export class HomepageComponent extends BaseTemplateDynamicComponent {
 
-  isFromBackButton: boolean | undefined;
 
-  constructor(isFromBackButton?:boolean){
-    super("homepage-component",loadConfig);
-    this.isFromBackButton = isFromBackButton;
+
+  constructor(enablePreload?:boolean){
+    super("homepage-component",loadConfig, enablePreload);
   }
   override getTemplateStyle(): string {
     return template;
@@ -162,10 +161,3 @@ export class HomepageComponent extends BaseTemplateDynamicComponent {
 if (!customElements.get("homepage-component")) {
   customElements.define("homepage-component", HomepageComponent);
 }
-
-/*
-TODO: Possible optimization idea that also simplifies the code.
--Initialize the search UI with just html
-
--Create a script.js file. It can contain utility fuctions to create events
- */

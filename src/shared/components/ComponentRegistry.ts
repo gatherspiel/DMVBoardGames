@@ -1,10 +1,10 @@
 
 
-export function getComponent(componentName: string): HTMLElement {
+export function getComponent(componentName: string,enablePreload?:boolean): HTMLElement {
 
   const item = customElements.get(componentName);
   if(item){
-    return new item.prototype.constructor()
+    return new item.prototype.constructor(enablePreload)
   }
 
   throw Error(
