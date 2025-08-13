@@ -150,7 +150,6 @@
         <a class = "hideOnMobile" href="/index.html">Home
         </a>
 
-
         <a class="hideOnMobile" href="/designers.html">Local designers
         </a><a class="hideOnMobile" href="/print_and_play.html">Print and Play
         </a><a class="hideOnMobile" href="https://gatherspiel.com/vision.html">Future plans
@@ -179,14 +178,11 @@
 
     } else {
       const elements = document.getElementsByClassName("isVisible")
-
       for(let i = elements.length-1; i>=0;i--){
         elements.item(i).className ="hideOnMobile";
       }
       document.getElementsByClassName("triangle-up").item(0).className = "triangle-down showOnMobile"
     }
-
-
   })
 
 

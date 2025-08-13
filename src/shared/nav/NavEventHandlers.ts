@@ -8,6 +8,7 @@ import {CreateGroupPageComponent} from "../../ui/groups/createGroup/components/C
 
 export const VIEW_GROUP_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
   eventHandler: event =>
+    //@ts-ignore
     AbstractPageComponent.updateRoute(GroupComponent, event.params)
 }
 

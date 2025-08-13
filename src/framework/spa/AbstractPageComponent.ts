@@ -28,7 +28,7 @@ export abstract class AbstractPageComponent extends HTMLElement {
     })
     this.#routeMap = this.getRouteMap();
 
-    PageState.activeComponent = getComponent(componentName);
+    PageState.activeComponent = getComponent(componentName,true);
 
     this.appendChild(PageState.activeComponent);
 

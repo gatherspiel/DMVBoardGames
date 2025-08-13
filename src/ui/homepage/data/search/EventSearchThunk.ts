@@ -49,12 +49,13 @@ function getEventsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
 export const EVENT_SEARCH_THUNK = generateApiThunk({
   queryConfig: getEventsQueryConfig,
 }).addGlobalStateReducer((state:any)=>{
+  console.log("Done searching")
   return {[SEARCH_RESULTS]:state}
 })
 
 export const EVENT_PRELOAD_THUNK =
   generatePreloadThunk("preload_"+EVENT_SEARCH_THUNK.requestStoreId)
-    .addGlobalStateReducer((state:any)=>{
-      return {[SEARCH_RESULTS]:state}
-    })
+  .addGlobalStateReducer((state:any)=>{
+    return {[SEARCH_RESULTS]:state}
+  })
 

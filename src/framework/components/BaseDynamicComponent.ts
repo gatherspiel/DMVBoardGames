@@ -39,7 +39,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   #formSelector: FormSelector
   static instanceCount = 1;
 
-  constructor(componentStoreName: string, loadConfig?: ComponentLoadConfig) {
+  constructor(componentStoreName: string, loadConfig?: ComponentLoadConfig, enablePreload?:boolean) {
     super();
 
     BaseDynamicComponent.instanceCount++;
@@ -60,14 +60,9 @@ export abstract class BaseDynamicComponent extends HTMLElement {
             self.#dependenciesLoaded = false;
           }
 
-          let dataSource:BaseThunk = item.dataSource;
+          let dataSource:BaseThunk = (enablePreload && item.preloadSource) ? item.preloadSource : item.dataSource;
 
-          //@ts-ignore
-          if(window.waitingForPreload && item.preloadSource) {
-            dataSource = item.preloadSource;
-          }
-
-          let storeReducer = item.dataSource.globalStateReducer
+          let storeReducer = dataSource.globalStateReducer
           if(!storeReducer){
             storeReducer = (a:any)=> {
               return {
@@ -75,7 +70,8 @@ export abstract class BaseDynamicComponent extends HTMLElement {
               }
             }
           }
-          dataSource.addGlobalStateReducer(storeReducer)
+
+          dataSource = dataSource.addGlobalStateReducer(storeReducer)
 
           function getRequestData() {
             let params:Record<string, string> = {};
@@ -212,36 +208,34 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       throw new Error(`Component global state config is not defined for component ${this.componentStoreName}`);
     }
 
-      let reducer = componentLoadConfig.globalStateLoadConfig?.defaultGlobalStateReducer;
-      if(!reducer){
-        reducer =  (updates: Record<string, string>) => updates
+    let reducer = componentLoadConfig.globalStateLoadConfig?.defaultGlobalStateReducer;
+    if(!reducer){
+      reducer =  (updates: Record<string, string>) => updates
+    }
+
+    let dataLoaded = true;
+    this.#componentLoadConfig?.dataFields?.forEach((item:DataFieldConfig)=> {
+      if(!(item.fieldName in globalStateData)){
+        dataLoaded = false;
       }
+    });
 
-      let dataLoaded = true;
-      this.#componentLoadConfig?.dataFields?.forEach((item:DataFieldConfig)=> {
-        if(!(item.fieldName in globalStateData)){
-          dataLoaded = false;
-        }
-      });
+    if(dataLoaded){
+      this.#dependenciesLoaded = true;
+    }
 
-      if(dataLoaded){
-        this.#dependenciesLoaded = true;
-      }
+    let dataToUpdate: Record<string, string> = {};
 
-      let dataToUpdate: Record<string, string> = {};
-
-      componentLoadConfig.globalStateLoadConfig?.globalFieldSubscriptions?.forEach(
-         (fieldName) => {
-          dataToUpdate[fieldName] = globalStateData[fieldName];
-        },
-      );
-      updateComponentStore(
-        this.componentStoreName,
-        reducer,
-        dataToUpdate,
-      );
-
-
+    componentLoadConfig.globalStateLoadConfig?.globalFieldSubscriptions?.forEach(
+       (fieldName) => {
+        dataToUpdate[fieldName] = globalStateData[fieldName];
+      },
+    );
+    updateComponentStore(
+      this.componentStoreName,
+      reducer,
+      dataToUpdate,
+    );
   }
   abstract render(data: Record<any, DisplayItem> | any): string;
 }

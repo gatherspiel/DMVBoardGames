@@ -161,7 +161,6 @@ body {
 .bg-image-container {
   font-size: 0; /*disable white space between inline block element */
   opacity:0.1;
-  background-color: #01118D;
 }
 
 .bg-image-container > div {
@@ -253,6 +252,28 @@ body {
   background:#007432;
 }
 
+.part-1 {
+  z-index: -100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #01118D;
+}
+
+.part-1 > div {
+  margin-bottom: calc(var(--s)*0.576);
+}
+
+.part-2 {
+  z-index: -100;
+  position: fixed;
+  top: calc(var(--s)*0.86610);
+  left:calc(var(--s)/2);
+}
+
+.part-2 > div {
+  margin-bottom: calc(var(--s)*0.576);
+}
 
 
 .bg-image-container::before {
@@ -261,7 +282,7 @@ body {
   float: left;
   height: 120%;
   shape-outside: repeating-linear-gradient(
-          rgba(0,0,0,0) 0 calc(var(--f) - 0.5px),
+          rgba(0,0,0,0) 0 calc(var(--f) - 2px),
           rgba(0,0,0, 255)  0 calc(var(--f)));
 }
 
@@ -304,6 +325,5 @@ body {
   .bg-image-container p {
     font-size:1rem;
   }
-
 }
 
