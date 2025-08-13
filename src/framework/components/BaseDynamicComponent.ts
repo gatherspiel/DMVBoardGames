@@ -231,6 +231,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         dataToUpdate[fieldName] = globalStateData[fieldName];
       },
     );
+
     updateComponentStore(
       this.componentStoreName,
       reducer,
