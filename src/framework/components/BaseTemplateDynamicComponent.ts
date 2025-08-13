@@ -1,7 +1,7 @@
 import { BaseDynamicComponent } from "./BaseDynamicComponent.ts";
 
 export abstract class BaseTemplateDynamicComponent extends BaseDynamicComponent {
-  override generateAndSaveHTML(data: any) {
+  override generateAndSaveHTML(data: any, dependenciesLoaded:boolean) {
     if (this.shadowRoot === null) {
       this.attachShadow({ mode: "open" });
 
@@ -16,12 +16,21 @@ export abstract class BaseTemplateDynamicComponent extends BaseDynamicComponent 
     if (div === null) {
       throw new Error(`Did not find div when creating template component`);
     }
-    div.innerHTML = this.render(data);
+
+    if(this.showLoadingHtml && !dependenciesLoaded) {
+      div.innerHTML = this.showLoadingHtml();
+    }
+    else {
+      div.innerHTML = this.render(data);
+    }
+
   }
 
   /*
    - Returns CSS styles specific to the component. The string should be in the format <style> ${CSS styles} </style>
    */
   abstract getTemplateStyle(): string;
+
+  showLoadingHtml?():string
 
 }

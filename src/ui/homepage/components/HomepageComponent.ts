@@ -20,10 +20,7 @@ import {OpenCreateGroupPageComponent} from "./OpenCreateGroupPageComponent.ts";
 import {HOMEPAGE_COMPONENT_NAV} from "./HomepageComponentHandler.ts";
 import {BaseTemplateDynamicComponent} from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
-import {
-  DEFAULT_COMPONENT_STATE_KEY,
-  ON_LOAD_STORE_CONFIG_KEY
-} from "../../../framework/components/types/ComponentLoadConfig.ts";
+
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY, IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
 import {LOGIN_THUNK} from "../../auth/data/LoginThunk.ts";
 import {LOCATIONS_THUNK} from "../data/search/LocationsThunk.ts";
@@ -36,16 +33,6 @@ const template = `
 
  `
 const loadConfig = {
-  [ON_LOAD_STORE_CONFIG_KEY]: {
-    dataSource: LOGIN_THUNK,
-    disableCache: true,
-  },
-  [DEFAULT_COMPONENT_STATE_KEY]: {
-    hideEvents: false,
-    hideConventions: true,
-    hideRestaurants: true,
-    hideGameStores: true,
-  },
   dataFields:[
     {
       fieldName: IS_LOGGED_IN_KEY,
@@ -83,7 +70,12 @@ export class HomepageComponent extends BaseTemplateDynamicComponent {
     return template;
   }
   connectedCallback(){
-    this.updateStore({});
+    this.updateStore({
+      hideEvents: false,
+      hideConventions: true,
+      hideRestaurants: true,
+      hideGameStores: true
+    });
   }
   render(data:any){
 

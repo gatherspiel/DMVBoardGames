@@ -1,19 +1,11 @@
 import { BaseThunkAction } from "./BaseThunkAction.ts";
 import { BaseDispatcher } from "./BaseDispatcher.ts";
 
-import {getGlobalStateValue, updateGlobalStore} from "../data/GlobalStore.ts";
+import {updateGlobalStore} from "../data/GlobalStore.ts";
 import {
   createRequestStore,
-  hasRequestStore,
-  initRequestStore,
-  updateRequestStoreAndClearCache
 } from "../data/RequestStore.ts";
-import {
-  type ComponentLoadConfig,
-  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
-  GLOBAL_STATE_LOAD_CONFIG_KEY
-} from "../../components/types/ComponentLoadConfig.ts";
-import {updateComponentStore} from "../data/ComponentStore.ts";
+
 
 export type LoadStatus = {
   dependenciesLoaded?: boolean
@@ -36,43 +28,6 @@ export class BaseThunk {
     createRequestStore(this.requestStoreId, this)
   }
 
-  initRequestStoreData(componentLoadConfig:ComponentLoadConfig, componentStoreName: string): LoadStatus{
-
-    let status:LoadStatus = {}
-    if (this.requestStoreId) {
-      if (!hasRequestStore(this.requestStoreId)) {
-        initRequestStore(componentLoadConfig);
-      } else {
-        updateRequestStoreAndClearCache(this.requestStoreId, componentLoadConfig.onLoadRequestData);
-      }
-      status.dependenciesLoaded = true;
-    } else {
-
-      let globalStateReducer = componentLoadConfig.globalStateLoadConfig?.defaultGlobalStateReducer;
-      if(!globalStateReducer){
-        globalStateReducer = (updates: Record<string, string>) => {
-          return updates
-        }
-      }
-
-      status.dependenciesLoaded = true;
-      let dataToUpdate: Record<string, string> = {};
-
-      componentLoadConfig[GLOBAL_STATE_LOAD_CONFIG_KEY]?.[GLOBAL_FIELD_SUBSCRIPTIONS_KEY]?.forEach(
-        (fieldName) => {
-          dataToUpdate[fieldName] = getGlobalStateValue(fieldName);;
-        },
-      );
-
-      updateComponentStore(
-        componentStoreName,
-        globalStateReducer,
-        dataToUpdate,
-      );
-    }
-
-    return status;
-  }
 
   getRequestStoreId(){
     return this.requestStoreId;
@@ -83,7 +38,7 @@ export class BaseThunk {
   }
 
   addGlobalStateReducer(
-    reducer: (a: any) => Record<string, string>,
+    reducer: (a: any) => Record<string, any>,
   ): BaseThunk {
     this.globalStateReducer = reducer;
     return this;

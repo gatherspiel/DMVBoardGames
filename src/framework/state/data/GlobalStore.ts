@@ -6,6 +6,7 @@ let globalStateCreated: boolean = false;
 let globalStateSubscribers: Record<string, BaseDynamicComponent[]> = {};
 
 export function getGlobalStateValue(fieldName: string): string {
+
   if (!(fieldName in globalState)) {
     throw new Error(`Could not find ${fieldName} in global state`);
   }

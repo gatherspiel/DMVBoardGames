@@ -15,7 +15,6 @@ async function retrieveData(
   backupResponse: DefaultApiAction,
 ): Promise<AuthResponse> {
 
-  console.log("Logged in?")
   try {
     if (
       backupResponse.defaultFunctionPriority &&
@@ -27,7 +26,6 @@ async function retrieveData(
     const authData = await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY);
 
     if (authData && isAfterNow(authData.expires_at)) {
-      console.log("Logged in");
       return new AuthResponse(true, authData);
     }
 
@@ -111,6 +109,9 @@ export const LOGIN_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
   authenticationErrorConfig,
 ).addGlobalStateReducer((loginState: any) => {
   return {
-    [IS_LOGGED_IN_KEY]: loginState.loggedIn,
+    [IS_LOGGED_IN_KEY]:{
+      isLoggedIn: loginState.loggedIn,
+      username: loginState?.data?.user?.email ?? ''
+    }
   };
 });

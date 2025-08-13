@@ -32,10 +32,6 @@ export abstract class AbstractPageComponent extends HTMLElement {
 
     this.appendChild(PageState.activeComponent);
 
-
-    //TODO: Enforce that page is an instance of a top level page.
-    console.log(Object.getPrototypeOf(Object.getPrototypeOf(PageState.activeComponent)).constructor.name);
-
     AbstractPageComponent.#currentComponent = this;
     window.addEventListener("popstate", () => {
       self.removeChild(PageState.activeComponent);

@@ -11,7 +11,6 @@ import {
 } from "../../../../framework/components/types/ComponentLoadConfig.ts";
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../../shared/Constants.ts";
 import {SEARCH_RESULTS} from "../../../../shared/InitGlobalStateConfig.ts";
-import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
@@ -62,10 +61,6 @@ const template = `
 export class EventListComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super("searchResultGroupStore", loadConfig);
-  }
-
-  connectedCallback(){
-    initRequestStore(loadConfig);
   }
 
   private getItemHtml(groupId: string, group: GroupSearchResult) {

@@ -14,6 +14,9 @@ setupStateFields();
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
     [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
+    defaultGlobalStateReducer: (data:any)=>{
+      return data.isLoggedIn
+    }
   },
 }
 
@@ -65,15 +68,12 @@ export class LoginStatusComponent extends BaseTemplateDynamicComponent {
   }
 
   override render(data:any){
-
     if(data.isLoggedIn){
       return `
-        <span>Welcome ${data?.data?.user?.email}</span>
+        <span>Welcome ${data?.username}</span>
         <a ${this.addClickEvent(LOGOUT_EVENT_CONFIG)}>Sign out</a>
       `
-
     }
-
     return `<a href="/login.html">Sign in </a>`;
   }
 }

@@ -1,6 +1,5 @@
 import type { BaseThunk } from "../../state/update/BaseThunk.ts";
 
-export const ON_LOAD_STORE_CONFIG_KEY = "onLoadStoreConfig"
 export const ON_LOAD_REQUEST_DATA_KEY = "onLoadRequestData"
 export const ON_LOAD_INIT_STORE_KEY = "onLoadInitStore"
 export const ON_LOAD_REQUEST_CONFIG_KEY = "onLoadRequestConfig"
@@ -35,13 +34,11 @@ export type GlobalStateLoadConfig = {
 export type DataFieldConfig = {
   fieldName: string,
   dataSource: BaseThunk,
-  params?:Record<string, string>,
+  urlParams?:string[],
   preloadSource?: BaseThunk
 }
 
 export type ComponentLoadConfig = {
-  [ON_LOAD_STORE_CONFIG_KEY]?: RequestStoreItem;
-  [ON_LOAD_REQUEST_DATA_KEY]?: any;
   [ON_LOAD_INIT_STORE_KEY]?: () => any;
   [ON_LOAD_REQUEST_CONFIG_KEY]?: RequestStoreItem[];
   [REQUEST_THUNK_REDUCERS_KEY]?: RequestThunkReducerConfig[];
@@ -52,8 +49,6 @@ export type ComponentLoadConfig = {
 
 
 export const validComponentLoadConfigFields = [
-  ON_LOAD_STORE_CONFIG_KEY,
-  ON_LOAD_REQUEST_DATA_KEY,
   ON_LOAD_INIT_STORE_KEY,
   ON_LOAD_REQUEST_CONFIG_KEY,
   REQUEST_THUNK_REDUCERS_KEY,
