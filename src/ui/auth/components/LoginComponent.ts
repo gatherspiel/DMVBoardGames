@@ -25,8 +25,8 @@ import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage} from "../../../framework/components/utils/StatusIndicators.ts";
 import {COMPONENT_LABEL_KEY, EVENT_HANDLER_CONFIG_KEY, IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
 import {
-  ON_LOAD_REQUEST_DATA_KEY,
-  ON_LOAD_STORE_CONFIG_KEY, REQUEST_THUNK_REDUCERS_KEY
+  DATA_FIELDS,
+  REQUEST_THUNK_REDUCERS_KEY
 } from "../../../framework/components/types/ComponentLoadConfig.ts";
 
 
@@ -59,14 +59,6 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
   hasRendered: boolean;
   constructor() {
     super("loginComponentStore", {
-      [ON_LOAD_STORE_CONFIG_KEY]: {
-        dataSource: LOGIN_THUNK,
-        disableCache: true,
-      },
-      [ON_LOAD_REQUEST_DATA_KEY]: {
-        username: "",
-        password: "",
-      },
       [REQUEST_THUNK_REDUCERS_KEY]: [
         {
           thunk: LOGIN_THUNK,
@@ -81,6 +73,12 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
           componentReducer: getLoginComponentStoreFromRegisterResponse,
         },
       ],
+      [DATA_FIELDS]:[
+        {
+          fieldName: IS_LOGGED_IN_KEY,
+          dataSource: LOGIN_THUNK
+        }
+      ]
     });
     this.hasRendered = false;
   }

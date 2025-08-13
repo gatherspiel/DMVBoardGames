@@ -1,10 +1,5 @@
 import { createStore, subscribeToStore } from "./StoreUtils.js";
-import { addLoadFunction } from "./InitStoreManager.js";
 import type { BaseThunk } from "../update/BaseThunk.ts";
-import {
-  type ComponentLoadConfig, ON_LOAD_STORE_CONFIG_KEY,
-  type RequestStoreItem,
-} from "../../components/types/ComponentLoadConfig.ts";
 import {createResponseCacheIfNotExists} from "./SessionStorageUtils.ts";
 
 let stores: Record<string, RequestStoreData> = {};
@@ -98,64 +93,6 @@ export function createRequestStore(storeName:string, dataSource: BaseThunk){
     storeName,
     dataSource,
   );
-}
-
-export function initRequestStore(config: ComponentLoadConfig) {
-  function getRequestData() {
-    return config.onLoadRequestData;
-  }
-
-  const onLoadConfig = config[ON_LOAD_STORE_CONFIG_KEY];
-  if (!onLoadConfig) {
-    return;
-  }
-
-  const storeName =  onLoadConfig.dataSource.getRequestStoreId();
-  if(!storeName){
-    throw new Error("Store name not defined");
-  }
-
-  if (onLoadConfig.disableCache) {
-    requestsWithoutCache.add(storeName);
-  }
-
-  createRequestStoreWithData(
-    storeName,
-    onLoadConfig.dataSource,
-    getRequestData,
-  );
-
-  if (config.onLoadRequestConfig) {
-    config.onLoadRequestConfig.forEach( (
-      requestStoreItem: RequestStoreItem,
-    ) =>{
-
-      const requestStoreId = requestStoreItem.dataSource.getRequestStoreId();
-      if(requestStoreId){
-        createRequestStoreWithData(
-          requestStoreId,
-          requestStoreItem.dataSource,
-        );
-      }
-    });
-  }
-}
-
-export function initRequestStoresOnLoad(config: ComponentLoadConfig) {
-  const onLoadConfig = config[ON_LOAD_STORE_CONFIG_KEY];
-  if (!onLoadConfig) {
-    return;
-  }
-
-  const storeName = onLoadConfig.dataSource.getRequestStoreId();
-  if(!storeName){
-    throw new Error("Store name not defined");
-  }
-
-
-  addLoadFunction(storeName, () =>{
-    initRequestStore(config);
-  });
 }
 
 export function clearRequestStores(){

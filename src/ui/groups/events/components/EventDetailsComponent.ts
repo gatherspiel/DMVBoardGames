@@ -6,7 +6,6 @@ import {
   EVENT_URL_INPUT,
   GROUP_NAME_PARAM, START_DATE_INPUT, START_TIME_INPUT
 } from "../../Constants.ts";
-import {getUrlParameter} from "../../../../framework/utils/UrlParamUtils.ts";
 import {GROUP_EVENT_REQUEST_THUNK} from "../data/GroupEventRequestThunk.ts";
 import type {EventDetailsData} from "../data/EventDetailsData.ts";
 import {
@@ -22,8 +21,6 @@ import {
 } from "../../../../framework/utils/EventDataUtils.ts";
 import {UPDATE_EVENT_REQUEST_THUNK} from "../data/UpdateEventThunk.ts";
 import {DELETE_EVENT_REQUEST_THUNK} from "../data/DeleteEventRequestThunk.ts";
-import {PageState} from "../../../../framework/spa/PageState.ts";
-import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
@@ -35,11 +32,13 @@ import {
   SUCCESS_MESSAGE_KEY
 } from "../../../../shared/Constants.ts";
 import {
+  DATA_FIELDS,
+  DEFAULT_GLOBAL_STATE_REDUCER_KEY,
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
-  ON_LOAD_REQUEST_DATA_KEY,
-  ON_LOAD_STORE_CONFIG_KEY, REQUEST_THUNK_REDUCERS_KEY
+  REQUEST_THUNK_REDUCERS_KEY
 } from "../../../../framework/components/types/ComponentLoadConfig.ts";
+import {GROUP_EVENT} from "../../../../shared/InitGlobalStateConfig.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -60,17 +59,7 @@ const template = `
 
 
 const loadConfig = {
-  [ON_LOAD_STORE_CONFIG_KEY]: {
-    dataSource: GROUP_EVENT_REQUEST_THUNK,
-  },
-  [ON_LOAD_REQUEST_DATA_KEY]: {
-    name: getUrlParameter(GROUP_NAME_PARAM),
-  },
   [REQUEST_THUNK_REDUCERS_KEY]: [
-    {
-      thunk: GROUP_EVENT_REQUEST_THUNK,
-      componentReducer:  (data: any) => data
-    },
     {
       thunk: UPDATE_EVENT_REQUEST_THUNK,
       componentReducer: (data:any) => {
@@ -107,8 +96,21 @@ const loadConfig = {
     }
   ],
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
-    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
+    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY, GROUP_EVENT],
+    [DEFAULT_GLOBAL_STATE_REDUCER_KEY]: (data:any)=>{
+      if(!data.groupEvent){
+        return {}
+      }
+      return {...data.groupEvent, isLoggedIn: data.isLoggedIn}
+    }
   },
+  [DATA_FIELDS]: [
+    {
+      fieldName: GROUP_EVENT,
+      dataSource: GROUP_EVENT_REQUEST_THUNK,
+      urlParam: GROUP_NAME_PARAM
+    }
+  ]
 };
 
 export class EventDetailsComponent extends BaseTemplateDynamicComponent {
@@ -116,13 +118,13 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
     super("event-details-component", loadConfig);
   }
 
-  connectedCallback(){
-    if(PageState.pageLoaded) {
-      initRequestStore(loadConfig);
-    }
+
+  override showLoadingHtml():string {
+    return `<h1>Loading</h1>`;
   }
 
   render(data: EventDetailsData): string {
+    console.log("Rendering event details component")
     if(data.isEditing){
       return this.renderEditMode(data);
     }

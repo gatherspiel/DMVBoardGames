@@ -109,6 +109,9 @@ export const LOGIN_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
   authenticationErrorConfig,
 ).addGlobalStateReducer((loginState: any) => {
   return {
-    [IS_LOGGED_IN_KEY]: loginState.loggedIn,
+    [IS_LOGGED_IN_KEY]:{
+      isLoggedIn: loginState.loggedIn,
+      username: loginState?.data?.user?.email ?? ''
+    }
   };
 });

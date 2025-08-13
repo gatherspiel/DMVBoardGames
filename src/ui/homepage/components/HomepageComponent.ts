@@ -20,22 +20,44 @@ import {OpenCreateGroupPageComponent} from "./OpenCreateGroupPageComponent.ts";
 import {HOMEPAGE_COMPONENT_NAV} from "./HomepageComponentHandler.ts";
 import {BaseTemplateDynamicComponent} from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
-import {DEFAULT_COMPONENT_STATE_KEY} from "../../../framework/components/types/ComponentLoadConfig.ts";
-import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../shared/Constants.ts";
+
+import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY, IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
+import {LOGIN_THUNK} from "../../auth/data/LoginThunk.ts";
+import {LOCATIONS_THUNK} from "../data/search/LocationsThunk.ts";
+import {EVENT_PRELOAD_THUNK, EVENT_SEARCH_THUNK} from "../data/search/EventSearchThunk.ts";
+import {DEFAULT_SEARCH_PARAMETER} from "./event-search/Constants.ts";
+import {CITY_LIST_THUNK} from "../data/search/CityListThunk.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
-
-  `
+ `
 
 const loadConfig = {
-  [DEFAULT_COMPONENT_STATE_KEY]: {
-    hideEvents: false,
-    hideConventions: true,
-    hideRestaurants: true,
-    hideGameStores: true,
-  }
+  dataFields:[
+    {
+      fieldName: IS_LOGGED_IN_KEY,
+      dataSource: LOGIN_THUNK
+    },
+    {
+      fieldName: "gameLocations",
+      dataSource: LOCATIONS_THUNK
+    },
+    {
+      fieldName: "cityList",
+      dataSource: CITY_LIST_THUNK
+    },
+    {
+      fieldName: "searchResults",
+      dataSource: EVENT_SEARCH_THUNK,
+      preloadSource: EVENT_PRELOAD_THUNK,
+      params: {
+        city: DEFAULT_SEARCH_PARAMETER,
+        day: DEFAULT_SEARCH_PARAMETER
+      }
+    }
+  ]
 }
+
 export class HomepageComponent extends BaseTemplateDynamicComponent {
 
   isFromBackButton: boolean | undefined;
@@ -48,9 +70,15 @@ export class HomepageComponent extends BaseTemplateDynamicComponent {
     return template;
   }
   connectedCallback(){
-    this.updateStore({});
+    this.updateStore({
+      hideEvents: false,
+      hideConventions: true,
+      hideRestaurants: true,
+      hideGameStores: true
+    });
   }
   render(data:any){
+
     return `
         <div class="ui-section">
         <create-group-component>

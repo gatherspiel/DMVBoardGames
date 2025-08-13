@@ -1,9 +1,7 @@
-import { getUrlParameter } from "../../../../framework/utils/UrlParamUtils.ts";
 import {
   GROUP_COMPONENT_STORE,
   GROUP_DESCRIPTION_INPUT, GROUP_DESCRIPTION_TEXT,
   GROUP_NAME_INPUT,
-  GROUP_NAME_PARAM,
   GROUP_URL_INPUT,
 } from "../../Constants.js";
 import {GROUP_PRELOAD_THUNK, GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
@@ -19,9 +17,6 @@ import {
 } from "../GroupHandlers.ts";
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 
-import { getGlobalStateValue } from "../../../../framework/state/data/GlobalStore.ts";
-import {PageState} from "../../../../framework/spa/PageState.ts";
-import {initRequestStore} from "../../../../framework/state/data/RequestStore.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
 import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
 import {CREATE_EVENT_PAGE_HANDLER_CONFIG, DELETE_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
@@ -32,11 +27,13 @@ import {
   SUCCESS_MESSAGE_KEY
 } from "../../../../shared/Constants.ts";
 import {
+  DEFAULT_GLOBAL_STATE_REDUCER_KEY,
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
-  ON_LOAD_REQUEST_DATA_KEY,
-  ON_LOAD_STORE_CONFIG_KEY, REQUEST_THUNK_REDUCERS_KEY
+  REQUEST_THUNK_REDUCERS_KEY
 } from "../../../../framework/components/types/ComponentLoadConfig.ts";
+import {LOGIN_THUNK} from "../../../auth/data/LoginThunk.ts";
+import {GROUP_DATA} from "../../../../shared/InitGlobalStateConfig.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -101,31 +98,23 @@ const template = `
 `;
 
 const groupDataStoreReducer = (data:any)=>{
-  const isLoggedIn = getGlobalStateValue(IS_LOGGED_IN_KEY);
+
+  if(!data.groupData){
+    return {};
+  }
+
+  const groupData = data.groupData;
+  const isLoggedIn = data.isLoggedIn;
 
   if (!isLoggedIn) {
-    data.isEditing = false;
+    groupData.isEditing = false;
   }
-  data[SUCCESS_MESSAGE_KEY] = '';
-  return data;
+  groupData[SUCCESS_MESSAGE_KEY] = '';
+  return groupData;
 }
 
 const loadConfig = {
-  [ON_LOAD_STORE_CONFIG_KEY]: {
-    dataSource: GROUP_PRELOAD_THUNK,
-  },
-  [ON_LOAD_REQUEST_DATA_KEY]: {
-    name: getUrlParameter(GROUP_NAME_PARAM),
-  },
   [REQUEST_THUNK_REDUCERS_KEY]: [
-    {
-      thunk: GROUP_REQUEST_THUNK,
-      componentReducer: groupDataStoreReducer
-    },
-    {
-      thunk: GROUP_PRELOAD_THUNK,
-      componentReducer: groupDataStoreReducer
-    },
     {
       thunk: UPDATE_GROUP_REQUEST_THUNK,
       componentReducer:  () =>{
@@ -137,8 +126,21 @@ const loadConfig = {
     },
   ],
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
-    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
+    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]:[GROUP_DATA, IS_LOGGED_IN_KEY],
+    [DEFAULT_GLOBAL_STATE_REDUCER_KEY]: groupDataStoreReducer
   },
+  dataFields:[
+    {
+      fieldName:"groupData",
+      dataSource: GROUP_REQUEST_THUNK,
+      preloadSource: GROUP_PRELOAD_THUNK,
+      urlParams:["name"]
+    },
+    {
+      fieldName: IS_LOGGED_IN_KEY,
+      dataSource: LOGIN_THUNK
+    }
+  ]
 };
 
 export class GroupComponent extends BaseTemplateDynamicComponent {
@@ -147,12 +149,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    if(PageState.pageLoaded) {
-      //@ts-ignore
-      loadConfig.onLoadStoreConfig.dataSource = GROUP_REQUEST_THUNK
-      loadConfig.onLoadRequestData.name = getUrlParameter(GROUP_NAME_PARAM)
-      initRequestStore(loadConfig);
-    }
+    this.updateStore({});
   }
 
   getTemplateStyle(): string {
@@ -162,7 +159,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
   render(groupData: GroupPageData): string {
 
     if (!groupData.permissions) {
-      return `<h1>Failed to load group ${getUrlParameter(GROUP_NAME_PARAM)}</h1>`;
+      return `<h1>Loading</h1>`;
     }
 
     return `
