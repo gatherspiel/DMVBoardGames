@@ -25,6 +25,7 @@ import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage} from "../../../framework/components/utils/StatusIndicators.ts";
 import {COMPONENT_LABEL_KEY, EVENT_HANDLER_CONFIG_KEY, IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
 import {
+  DATA_FIELDS,
   REQUEST_THUNK_REDUCERS_KEY
 } from "../../../framework/components/types/ComponentLoadConfig.ts";
 
@@ -72,7 +73,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
           componentReducer: getLoginComponentStoreFromRegisterResponse,
         },
       ],
-      dataFields:[
+      [DATA_FIELDS]:[
         {
           fieldName: IS_LOGGED_IN_KEY,
           dataSource: LOGIN_THUNK

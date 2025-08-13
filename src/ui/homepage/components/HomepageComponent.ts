@@ -30,8 +30,8 @@ import {CITY_LIST_THUNK} from "../data/search/CityListThunk.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
-
  `
+
 const loadConfig = {
   dataFields:[
     {

@@ -18,7 +18,7 @@ import {
 } from "./types/ComponentLoadConfig.ts";
 import type {BaseThunk} from "../state/update/BaseThunk.ts";
 import {
-  getGlobalStateValue,
+  hasGlobalStateValue,
   subscribeComponentToGlobalField,
 } from "../state/data/GlobalStore.ts";
 import type {FormInputConfig} from "./types/FormInputConfig.ts";
@@ -46,7 +46,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     this.componentStoreName = `${componentStoreName}-${BaseDynamicComponent.instanceCount}`;
 
     this.#formSelector = new FormSelector();
-    createComponentStore(this.componentStoreName, this, loadConfig?.defaultComponentState);
+    createComponentStore(this.componentStoreName, this, {});
 
     this.#eventHandlerData = new EventHandlerData(`data-${this.componentStoreName}-element-id`);
 
@@ -56,7 +56,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         const self = this;
         loadConfig.dataFields.forEach((item:DataFieldConfig)=>{
 
-          if(!getGlobalStateValue(item.fieldName)){
+          if(!hasGlobalStateValue(item.fieldName)){
             self.#dependenciesLoaded = false;
           }
 
@@ -200,8 +200,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     clearSubscribers(this.componentStoreName);
   }
 
-  updateFromGlobalState() {
-
+  updateFromGlobalState(globalStateData:any) {
 
     const componentLoadConfig = this.#componentLoadConfig;
     if(!componentLoadConfig){
@@ -220,7 +219,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
       let dataLoaded = true;
       this.#componentLoadConfig?.dataFields?.forEach((item:DataFieldConfig)=> {
-        if(!getGlobalStateValue(item.fieldName)){
+        if(!(item.fieldName in globalStateData)){
           dataLoaded = false;
         }
       });
@@ -233,8 +232,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
       componentLoadConfig.globalStateLoadConfig?.globalFieldSubscriptions?.forEach(
          (fieldName) => {
-          const fieldValue = getGlobalStateValue(fieldName);
-          dataToUpdate[fieldName] = fieldValue;
+          dataToUpdate[fieldName] = globalStateData[fieldName];
         },
       );
       updateComponentStore(

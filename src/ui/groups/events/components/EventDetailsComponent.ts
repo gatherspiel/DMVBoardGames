@@ -32,6 +32,7 @@ import {
   SUCCESS_MESSAGE_KEY
 } from "../../../../shared/Constants.ts";
 import {
+  DATA_FIELDS,
   DEFAULT_GLOBAL_STATE_REDUCER_KEY,
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
@@ -103,7 +104,7 @@ const loadConfig = {
       return {...data.groupEvent, isLoggedIn: data.isLoggedIn}
     }
   },
-  dataFields: [
+  [DATA_FIELDS]: [
     {
       fieldName: GROUP_EVENT,
       dataSource: GROUP_EVENT_REQUEST_THUNK,
@@ -117,9 +118,6 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
     super("event-details-component", loadConfig);
   }
 
-  connectedCallback(){
-    this.updateStore({})
-  }
 
   override showLoadingHtml():string {
     return `<h1>Loading</h1>`;
