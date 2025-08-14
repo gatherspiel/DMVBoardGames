@@ -1,10 +1,6 @@
 export function getLocalStorageDataIfPresent(key: string): any {
   const data = window.localStorage.getItem(key);
-
-  if (!data) {
-    return null;
-  }
-  return JSON.parse(data);
+  return data ? JSON.parse(data): null;
 }
 
 export function addLocalStorageData(key:string, data:any){

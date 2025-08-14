@@ -14,16 +14,15 @@ let thunkCount = 0;
 
 export function generateApiThunk(config: ApiThunkConfig) {
 
-  let defaultFunctionConfig = config.defaultFunctionConfig;
-  if(!defaultFunctionConfig){
-    defaultFunctionConfig = {
+  let defaultFunctionConfig = config.defaultFunctionConfig
+  ?? {
       defaultFunction: (response: any)  => {
         return {
           errorMessage: response.message,
         };
       },
     };
-  }
+
   const getAction = new InternalApiAction(
     config.queryConfig,
     defaultFunctionConfig,

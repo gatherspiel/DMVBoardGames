@@ -1,9 +1,9 @@
 import type { GroupSearchResult } from "../../data/types/group/GroupSearchResult.ts";
-import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
+import { updateSearchResultGroupStore } from "../../data/store/SearchResultStoreReducer.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
-import {getDisplayNameArray} from "../../../../shared/DisplayNameConversion.ts";
+import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
 import {
   DEFAULT_GLOBAL_STATE_REDUCER_KEY,
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
@@ -91,7 +91,7 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
         })}
          </div>
    
-        <p class="event-group-location">${getDisplayNameArray(group.locations)?.join(", ") ?? ""}</p>              
+        <p class="event-group-location">${group.locations.map(name=>getDisplayName(name))?.join(", ") ?? ""}</p>              
         
       </div>
     `;
