@@ -293,15 +293,21 @@ body {
   }
 }
 
-#more-info-div {
+.homepage-default-action-div {
   display:flex;
   align-items: center;
   height: 3.5rem;
 }
 
-#more-info-div img {
+.homepage-default-action-div img {
   padding-top:20px;
   padding-right:0.5rem;
+}
+
+#open-create-group-div {
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--clr-lighter-blue);
+
 }
 
 @media screen and (width < 32em) {

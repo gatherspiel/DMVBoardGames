@@ -41,6 +41,10 @@ const template = `
     text-decoration: none;
   }
   
+  span {
+    font-weight: 400;
+  }
+  
   a:hover {
     background-color: var(--clr-darker-blue);
   }

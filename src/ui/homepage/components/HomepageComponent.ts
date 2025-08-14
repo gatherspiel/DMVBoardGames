@@ -71,13 +71,13 @@ export class HomepageComponent extends BaseDynamicComponent {
 
     return `
         <div class="ui-section">
-        <create-group-component>
-        </create-group-component>
+        <open-create-group-component>
+        </open-create-group-component>
         <nav>
           <div id="nav-container">
             <div>Click for more info about</div>
             
-            <div id = "more-info-div">
+            <div class = "homepage-default-action-div">
               <div class = "image-div">  
                 <img src="/assets/house.png">
               </div>
