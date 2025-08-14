@@ -39,9 +39,7 @@ const template = `
     border-top: 1px solid var(--clr-lighter-blue);
   }
   
-  .search-button {
-    margin-top:2rem;
-  }
+  
   #search-form {
     align-items: center;
     display: flex;
@@ -68,6 +66,19 @@ const template = `
     width: 13rem;
   }
     
+  #searchInputDiv {
+    align-items: center;
+    display:flex;
+    height:3.5rem;
+  }
+  
+  #searchInputDiv img {
+    padding-top:20px;
+  }
+  
+  .image-div {
+    padding-right:0.5rem;
+  }
   
   @media screen and (width < 32em) {
     #search-form {
@@ -82,6 +93,8 @@ const template = `
     button {
       justify-content: center;
     }
+    
+
   }
 </style>
 `;
@@ -144,13 +157,19 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
               })}</div>` :
                ``}
             
-            <div> 
-              ${generateButton({
-                text: "Search groups",
-                class: "search-button",
-                component: this,
-                [EVENT_HANDLER_CONFIG_KEY]: SEARCH_EVENT_HANDLER_CONFIG,
-              })}
+              <div id="searchInputDiv"> 
+                <div class = "image-div">  
+                  <img src="/assets/house.png">
+                </div>
+                
+                <div> 
+                 ${generateButton({
+                  text: "Search groups",
+                  class: "search-button",
+                  component: this,
+                  [EVENT_HANDLER_CONFIG_KEY]: SEARCH_EVENT_HANDLER_CONFIG,
+                })}
+                </div> 
             </div>
           </div>
         </form>

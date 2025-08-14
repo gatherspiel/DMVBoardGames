@@ -26,7 +26,9 @@ export class FormSelector {
     if(!this.shadowRoot){
       throw new Error('Shadow root not configured');
     }
-    return (this.shadowRoot.getElementById(formSelector) as HTMLTextAreaElement | HTMLInputElement)?.value ?? "";
+
+    return (this.shadowRoot.getElementById(formSelector) as HTMLTextAreaElement | HTMLInputElement)?.value.trim() ?? "";
+
   }
 
   generateInputFormSelector(formConfig:FormInputConfig){

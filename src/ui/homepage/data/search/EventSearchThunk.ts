@@ -49,7 +49,6 @@ function getEventsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
 export const EVENT_SEARCH_THUNK = generateApiThunk({
   queryConfig: getEventsQueryConfig,
 }).addGlobalStateReducer((state:any)=>{
-  console.log("Done searching")
   return {[SEARCH_RESULTS]:state}
 })
 

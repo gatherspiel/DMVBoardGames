@@ -1,9 +1,9 @@
 import type { GroupSearchResult } from "../../data/types/group/GroupSearchResult.ts";
-import { updateSearchResultGroupStore } from "../../data/store/SearchResultGroupStore.ts";
+import { updateSearchResultGroupStore } from "../../data/store/SearchResultStoreReducer.ts";
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
-import {getDisplayNameArray} from "../../../../shared/DisplayNameConversion.ts";
+import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
 import {
   DEFAULT_GLOBAL_STATE_REDUCER_KEY,
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
@@ -24,24 +24,15 @@ const template = `
   <link rel="preload" as="style" href="/styles/sharedComponentStyles.css" onload="this.rel='stylesheet'"/>
   <style>
 
-    .raised {
-      display: inline-block;
-    }
-    
     .event-group:not(:first-child){
       border-top: 1px solid var(--clr-lighter-blue);
     }
+    
     @media not screen and (width < 32em) {
     
-      .event-group p {
+      .event-group-location {
         display: inline-block;
         margin-left: 2rem;
-      }
-      .group-webpage-link {
-        margin-left: 2rem;
-      }
-      .group-page-links {
-        display: inline-block;
       }
     }  
     @media screen and (width < 32em) {
@@ -56,6 +47,24 @@ const template = `
         margin-top: 0.5rem;
       }
     }
+    
+    .event-group {
+      display: flex;
+      align-items: center;
+      height: 5rem;
+    }
+    
+    .image-div img {
+      padding-top:10px
+    }
+    
+    .image-div {
+      padding-right: 0.5rem;
+      max-width:3rem;
+    }
+    .image-div, .button-div {
+      display: flex;
+    }
   </style>
 `;
 export class EventListComponent extends BaseTemplateDynamicComponent {
@@ -67,8 +76,12 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
     let groupHtml = "";
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
-        <div class = "group-page-links">
         
+        <div class = "image-div">  
+          <img src="/assets/house.png">
+        </div>
+         
+         <div class = "button-div">
          ${generateButton({
           type: "submit",
           text: group.title,
@@ -76,10 +89,10 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
           [EVENT_HANDLER_CONFIG_KEY]: VIEW_GROUP_PAGE_HANDLER_CONFIG,
           [EVENT_HANDLER_PARAMS_KEY]: {name: group.title}
         })}
-         
+         </div>
+   
+        <p class="event-group-location">${group.locations.map(name=>getDisplayName(name))?.join(", ") ?? ""}</p>              
         
-        <p class="event-group-location">${getDisplayNameArray(group.locations)?.join(", ") ?? ""}</p>              
-        </div> 
       </div>
     `;
     return groupHtml;
@@ -93,17 +106,19 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
 
     const groups = data.groups;
     let html = `<div class="ui-section">`;
-    if (data && Object.values(groups).length > 0) {
-      Object.keys(groups).forEach((groupId) => {
-        const group = groups[groupId];
-        html += this.getItemHtml(groupId, group);
-      });
-    }
 
-    else  {
+    const groupHtml = Object.keys(groups).reduce((result:any, groupId:any)=>{
+      return result+this.getItemHtml(groupId, groups[groupId])
+    },'')
+
+    if(!groupHtml)  {
       html += `
       <p>No groups found.</p>
     `;
+    }
+
+    else {
+      html+=groupHtml;
     }
     return html + `</div>`;
   }

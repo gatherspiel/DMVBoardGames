@@ -6,8 +6,7 @@ export function updateSearchResultGroupStore(groupResults: any) {
   Object.keys(results).forEach((groupId)=>{
     const group = results[groupId];
 
-    const key = `group-${group.id}`;
-    updatedGroupStore[key] = {
+    updatedGroupStore[`group-${group.id}`] = {
       events: group["events"],
       locations: group.cities || group.locations,
       url: group.url,

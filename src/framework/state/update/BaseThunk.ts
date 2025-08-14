@@ -7,9 +7,7 @@ import {
 } from "../data/RequestStore.ts";
 
 
-export type LoadStatus = {
-  dependenciesLoaded?: boolean
-}
+
 export class BaseThunk {
   thunkAction: BaseThunkAction;
   dispatchers: BaseDispatcher[];

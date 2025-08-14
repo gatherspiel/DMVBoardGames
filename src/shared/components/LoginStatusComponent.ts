@@ -15,6 +15,12 @@ const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
     [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
     defaultGlobalStateReducer: (data:any)=>{
+
+      if(!data.isLoggedIn){
+        return {
+          isLoggedIn: false
+        };
+      }
       return data.isLoggedIn
     }
   },

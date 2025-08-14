@@ -1,7 +1,6 @@
 import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import { CREATE_GROUP_EVENT_CONFIG } from "../CreateGroupPageHandler.ts";
 import { CREATE_GROUP_REQUEST_THUNK } from "../data/CreateGroupRequestThunk.ts";
-import type { CreateGroupData } from "../data/types/CreateGroupData.ts";
 import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
@@ -81,7 +80,7 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
     this.updateStore({isVisible: true})
   }
 
-  render(createGroupData: CreateGroupData): string {
+  render(createGroupData: any): string {
 
     return `
       <div id="create-group-page-container">

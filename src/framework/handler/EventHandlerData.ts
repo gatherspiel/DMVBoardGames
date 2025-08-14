@@ -38,15 +38,14 @@ export class EventHandlerData {
     };
 
     if (shadowRoot) {
-      shadowRoot?.querySelectorAll(`[${elementIdTag}]`).forEach(function (
-        item: Element,
-      ) {
+      shadowRoot?.querySelectorAll(`[${elementIdTag}]`).forEach(
+        (item:any) => {
         addEventHandler(item);
       });
     } else {
-      document.querySelectorAll(`[${elementIdTag}]`).forEach(function (
+      document.querySelectorAll(`[${elementIdTag}]`).forEach( (
         item: Element,
-      ) {
+      ) => {
         addEventHandler(item);
       });
     }

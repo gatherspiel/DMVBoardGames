@@ -75,8 +75,6 @@ export function updateRequestStore(
 
   stores[storeName].subscribers.forEach( (item: BaseThunk) => {
     const requestData = stores[storeName].data;
-
-
     const cacheKey = requestsWithoutCache.has(storeName) ? '' : storeName;
 
     item.retrieveData(requestData, cacheKey).then((response: any) => {
