@@ -124,7 +124,6 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: EventDetailsData): string {
-    console.log("Rendering event details component")
     if(data.isEditing){
       return this.renderEditMode(data);
     }

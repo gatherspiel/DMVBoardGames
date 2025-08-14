@@ -24,7 +24,6 @@ import {
 import type {FormInputConfig} from "./types/FormInputConfig.ts";
 import  {FormSelector} from "../FormSelector.ts";
 import {EventHandlerData} from "../handler/EventHandlerData.ts";
-import {generateLoadingIndicator} from "./utils/StatusIndicators.ts";
 import {getUrlParameter} from "../utils/UrlParamUtils.ts";
 
 export abstract class BaseDynamicComponent extends HTMLElement {
@@ -161,15 +160,10 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     updateComponentStore(this.componentStoreName, ()=>data)
   }
 
+  // @ts-ignore
   generateAndSaveHTML(data: any, dependenciesLoaded:boolean) {
-
-
-    if (!dependenciesLoaded) {
-      this.innerHTML = generateLoadingIndicator();
-    } else {
-      this.#formSelector.clearFormSelectors();
-      this.innerHTML = this.render(data);
-    }
+    this.#formSelector.clearFormSelectors();
+    this.innerHTML = this.render(data);
   }
 
   addShortInput(formConfig:FormInputConfig){

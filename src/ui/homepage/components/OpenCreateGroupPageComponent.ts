@@ -35,7 +35,6 @@ export class OpenCreateGroupPageComponent extends BaseTemplateDynamicComponent {
 
 
   render(data: any){
-    console.log(data);
     if(!data[IS_LOGGED_IN_KEY]){
       return ''
     }
