@@ -59,9 +59,6 @@ const loadConfig = {
 }
 
 export class HomepageComponent extends BaseTemplateDynamicComponent {
-
-
-
   constructor(enablePreload?:boolean){
     super("homepage-component",loadConfig, enablePreload);
   }
