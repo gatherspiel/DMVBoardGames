@@ -213,6 +213,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     );
 
     this.updateWithCustomReducer(
+
       dataToUpdate,
       reducer
     );
