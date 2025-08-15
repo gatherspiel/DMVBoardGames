@@ -5,10 +5,10 @@ let globalState: Record<string, any> = {};
 let globalStateCreated: boolean = false;
 let globalStateSubscribers: Record<string, BaseDynamicComponent[]> = {};
 
-export function hasGlobalStateValue(fieldName: string): string {
+export function getGlobalStateValueIfPresent(fieldName: string): string | null{
 
   if (!(fieldName in globalState)) {
-    throw new Error(`Could not find ${fieldName} in global state`);
+    return null;
   }
   return globalState[fieldName];
 }
@@ -26,15 +26,6 @@ export function setupGlobalState(fields: Record<string, any>) {
 }
 
 export function updateGlobalStore(fieldsToUpdate: Record<string, any>) {
-
-  const err = new Error();
-
-  const caller = err?.stack?.split("\n")[1];
-
-  if(caller && !caller.startsWith("updateStore") && !caller.includes("framework/state/update/BaseThunk.ts")){
-    err.message = "Cannot directly update global store from this function "
-    throw err;
-  }
 
   let componentsToUpdate = new Set();
   Object.keys(fieldsToUpdate).forEach((fieldName: string)=> {
@@ -63,13 +54,13 @@ export function updateGlobalStore(fieldsToUpdate: Record<string, any>) {
   });
 }
 
-export function subscribeComponentToGlobalField(
+export function subscribeToGlobalField(
   component: BaseDynamicComponent,
   fieldName: string,
 ) {
   if (!(fieldName in globalState)) {
     throw new Error(
-      `Component id: ${component.componentStoreName} cannot subscribe to field ${fieldName}.
+      `Component id: ${component.componentId} cannot subscribe to field ${fieldName}.
        Make sure the field is configured as a field name using setupGlobalState`,
     );
   }
@@ -81,4 +72,14 @@ export function subscribeComponentToGlobalField(
       globalStateSubscribers[fieldName].push(component);
     }
   }
+
+  component.updateFromGlobalState(structuredClone(globalState))
+}
+
+export function clearGlobalStore(){
+  Object.keys(globalState).forEach(key=>{
+    globalState[key] = {};
+  });
+
+  globalStateSubscribers = {};
 }

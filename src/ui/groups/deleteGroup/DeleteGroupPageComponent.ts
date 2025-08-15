@@ -67,7 +67,7 @@ const loadConfig = {
 
 export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("delete-group-page-component", loadConfig);
+    super(loadConfig);
   }
 
   getTemplateStyle(): string {
@@ -75,7 +75,7 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    this.updateStore({isVisible: true, existingGroupName: getUrlParameter("name")})
+    this.updateWithCustomReducer({isVisible: true, existingGroupName: getUrlParameter("name")})
   }
 
   render(data: DeleteGroupData): string {

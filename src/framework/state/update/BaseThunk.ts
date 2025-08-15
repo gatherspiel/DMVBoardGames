@@ -2,14 +2,9 @@ import { BaseThunkAction } from "./BaseThunkAction.ts";
 import { BaseDispatcher } from "./BaseDispatcher.ts";
 
 import {updateGlobalStore} from "../data/GlobalStore.ts";
-import {
-  createRequestStore,
-} from "../data/RequestStore.ts";
 
+import type {BaseDynamicComponent} from "../../components/BaseDynamicComponent.ts";
 
-export type LoadStatus = {
-  dependenciesLoaded?: boolean
-}
 export class BaseThunk {
   thunkAction: BaseThunkAction;
   dispatchers: BaseDispatcher[];
@@ -25,7 +20,6 @@ export class BaseThunk {
 
   createRequestStore(storeId:string){
     this.requestStoreId = storeId;
-    createRequestStore(this.requestStoreId, this)
   }
 
 
@@ -33,8 +27,19 @@ export class BaseThunk {
     return this.requestStoreId;
   }
 
-  async retrieveData(params: any, cacheKey?: string) {
-    return await this.thunkAction.retrieveData(params, cacheKey);
+  retrieveData(params: any,updateFunction?: (a?: any) => any) {
+
+    let cacheKey = this.requestStoreId ?? '';
+
+    if(updateFunction) {
+      params = updateFunction(params)
+    }
+
+    var self = this;
+    this.thunkAction.retrieveData(params, cacheKey).then((response: any) => {
+      self.updateStore(response);
+    });
+
   }
 
   addGlobalStateReducer(
@@ -45,38 +50,28 @@ export class BaseThunk {
   }
 
   subscribeComponent(
-    componentStoreName: string,
+    component: BaseDynamicComponent,
     reducerFunction: (a: any) => any,
     field?: string,
   ) {
 
 
-    const newDispatcherName = componentStoreName.split("-")[0];
-    const newStateNumber = parseInt(componentStoreName.split("-")[1]);
-
     let oldDispatcherIndex = -1;
-
     let i = 0;
-    this.dispatchers.forEach((dispatcher: BaseDispatcher) => {
-      const number = parseInt(dispatcher.storeField.split("-")[1]);
-      const dispatcherName = dispatcher.storeField.split("-")[0];
 
-      if (number > newStateNumber && dispatcherName === newDispatcherName) {
-        throw new Error(
-          `Cannot subscribe ${dispatcherName} to an old component state`,
-        );
-      }
-      if (dispatcherName === newDispatcherName) {
+    this.dispatchers.forEach((dispatcher: BaseDispatcher) => {
+      if(dispatcher.getComponent() === component) {
         oldDispatcherIndex = i;
+      } else {
+        i++;
       }
-      i++;
     });
 
     if (oldDispatcherIndex !== -1) {
       this.dispatchers = this.dispatchers.splice(oldDispatcherIndex, 1);
     }
     this.dispatchers.push(
-      new BaseDispatcher(componentStoreName, reducerFunction, field),
+      new BaseDispatcher(component, reducerFunction, field),
     );
   }
 

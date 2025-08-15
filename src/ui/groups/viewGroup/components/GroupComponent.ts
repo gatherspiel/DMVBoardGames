@@ -1,5 +1,4 @@
 import {
-  GROUP_COMPONENT_STORE,
   GROUP_DESCRIPTION_INPUT, GROUP_DESCRIPTION_TEXT,
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
@@ -145,11 +144,11 @@ const loadConfig = {
 
 export class GroupComponent extends BaseTemplateDynamicComponent {
   constructor(enablePreload?:boolean) {
-    super(GROUP_COMPONENT_STORE, loadConfig, enablePreload);
+    super(loadConfig, enablePreload);
   }
 
   connectedCallback(){
-    this.updateStore({});
+    this.updateWithCustomReducer({});
   }
 
   getTemplateStyle(): string {

@@ -8,12 +8,7 @@ export class AuthResponse {
   constructor(loggedIn: boolean, data?: any, error?: string) {
     this.loggedIn = loggedIn;
     this.data = data;
-
-    if (error) {
-      this.error = error;
-    } else {
-      this.error = "";
-    }
+    this.error = error ?? "";
   }
 
   isLoggedIn(): boolean {
@@ -25,10 +20,9 @@ export class AuthResponse {
   }
 
   getErrorMessage(): string {
-    if (this.error || this.error.length > 0) {
-      return this.error.toString();
-    }
-    return "";
+    return (this.error || this.error.length > 0) ?
+      this.error.toString():
+      "";
   }
 }
 

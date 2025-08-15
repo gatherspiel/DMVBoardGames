@@ -1,6 +1,5 @@
 import type {BaseDynamicComponent} from "../../framework/components/BaseDynamicComponent.ts";
 import type {EventHandlerThunkConfig} from "../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
-import {hasUserEditPermissions} from "../../framework/state/data/ComponentStore.ts";
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../Constants.ts";
 
 export type ButtonConfig ={
@@ -33,10 +32,9 @@ export function generateButton(config:ButtonConfig){
 
 export function generateButtonForEditPermission(config:ButtonConfig){
 
-  const componentStoreName = config.component.componentStoreName;
-  const userCanEditPermission = hasUserEditPermissions(componentStoreName);
+  const userCanEditPermission = config.component.hasUserEditPermissions();
   if(userCanEditPermission === undefined){
-    throw new Error(`permissions.userCanEdit state not defined for component state ${componentStoreName}`);
+    throw new Error(`permissions.userCanEdit state not defined for component`);
   }
   if(!userCanEditPermission) {
     return '';

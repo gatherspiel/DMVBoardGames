@@ -1,21 +1,17 @@
 
-export function createResponseCacheIfNotExists(requestStoreName:string){
-  if(!sessionStorage.getItem(requestStoreName)){
-    createNewResponseCache(requestStoreName);
-  }
-}
-export function createNewResponseCache(requestStoreName:string){
+
+export function createSessionStoreCache(requestStoreName:string){
   sessionStorage.setItem(requestStoreName, JSON.stringify({}))
 }
 
 export function clearSessionStorage(){
   for(let i = 0; i< sessionStorage.length; i++){
     const key = sessionStorage.key(i) as string;
-    createNewResponseCache(key);
+    createSessionStoreCache(key);
   }
 }
 
-export function getRequestFromCache(requestStoreName:string, requestData: any){
+export function getItemFromSessionStorage(requestStoreName:string, requestData: any){
 
   const dataStr = sessionStorage.getItem(requestStoreName);
   if(!dataStr){
@@ -30,7 +26,7 @@ export function getRequestFromCache(requestStoreName:string, requestData: any){
   return null;
 }
 
-export function updateCache(requestStoreName: string, requestData:any, response:any){
+export function updateSessionStorage(requestStoreName: string, requestData:any, response:any){
 
   const dataStr = sessionStorage.getItem(requestStoreName);
   if(!dataStr){

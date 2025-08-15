@@ -11,7 +11,9 @@ export const SEARCH_EVENT_HANDLER_CONFIG: EventHandlerThunkConfig = {
     return searchParams;
   },
 
-  componentReducer: data => data,
+  componentReducer: data => {
+    return data
+  },
   apiRequestThunk: EVENT_SEARCH_THUNK
 };
 

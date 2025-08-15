@@ -7,7 +7,6 @@ import {
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
 } from "../../framework/components/types/ComponentLoadConfig.ts";
-import {saveStoreOnNav} from "../../framework/state/data/ComponentStore.ts";
 import {IS_LOGGED_IN_KEY} from "../Constants.ts";
 setupStateFields();
 
@@ -15,6 +14,12 @@ const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
     [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
     defaultGlobalStateReducer: (data:any)=>{
+
+      if(!data.isLoggedIn){
+        return {
+          isLoggedIn: false
+        };
+      }
       return data.isLoggedIn
     }
   },
@@ -33,6 +38,10 @@ const template = `
     margin-top: 0.5rem;
     padding: 0.5rem;
     text-decoration: none;
+  }
+  
+  span {
+    font-weight: 400;
   }
   
   a:hover {
@@ -59,8 +68,7 @@ const template = `
 export class LoginStatusComponent extends BaseTemplateDynamicComponent {
 
   constructor() {
-    super('login-status-component', loadConfig);
-    saveStoreOnNav(this.componentStoreName)
+    super(loadConfig);
   }
 
   override getTemplateStyle(): string {

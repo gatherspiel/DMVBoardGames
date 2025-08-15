@@ -9,8 +9,6 @@ import {
 } from "../../../framework/components/types/ComponentLoadConfig.ts";
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../shared/Constants.ts";
 
-export const CONVENTION_LIST_STORE = "conventionListStore";
-
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
     [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: ["gameLocations"],
@@ -41,10 +39,12 @@ const template = `
 
 export class ConventionListComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super(CONVENTION_LIST_STORE, loadConfig);
+    super(loadConfig);
   }
 
   getItemHtml(convention: Convention) {
+
+    console.log(Date.now())
     return `
     <div id = convention-${convention.id} class="conv-list-item">
      <h3>
@@ -65,8 +65,11 @@ export class ConventionListComponent extends BaseTemplateDynamicComponent {
     return template;
   }
   render(data: Record<any, Convention>) {
-    let html = `<div class="ui-section"><h1 class="hideOnMobile">Upcoming conventions</h1>
-        <h2 class="showOnMobile">Upcoming conventions</h2>`;
+    let html = `
+
+      <div class="ui-section"><h1 class="hideOnMobile">Upcoming conventions</h1>
+      <h2 class="showOnMobile">Upcoming conventions</h2>`;
+
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;

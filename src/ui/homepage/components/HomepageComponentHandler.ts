@@ -6,41 +6,12 @@ export const HOMEPAGE_COMPONENT_NAV: EventHandlerThunkConfig = {
   //@ts-ignore
   eventHandler: (event)=>{
 
-
-    if(event.params.location === '#event-search'){
-      return {
-        hideEvents: false,
-        hideConventions: true,
-        hideRestaurants: true,
-        hideGameStores: true
-      }
-    }
-
-    if(event.params.location === '#convention-list'){
-      return {
-        hideEvents: true,
-        hideConventions: false,
-        hideRestaurants: true,
-        hideGameStores: true
-      }
-    }
-
-    if(event.params.location === '#game-store'){
-      return {
-        hideEvents: true,
-        hideConventions: true,
-        hideRestaurants: true,
-        hideGameStores: false
-      }
-    }
-
-    if(event.params.location === '#game-restaurant'){
-      return {
-        hideEvents: true,
-        hideConventions: true,
-        hideRestaurants: false,
-        hideGameStores: true
-      }
+    console.log(Date.now())
+    return {
+      hideEvents: event.params.location !== '#event-search',
+      hideConventions: event.params.location !== '#convention-list',
+      hideRestaurants: event.params.location !== '#game-restaurant',
+      hideGameStores: event.params.location !== '#game-store'
     }
 
   },

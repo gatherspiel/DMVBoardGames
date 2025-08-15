@@ -18,7 +18,6 @@ import {EventSearchComponent} from "./event-search/EventSearchComponent.ts";
 import {OpenCreateGroupPageComponent} from "./OpenCreateGroupPageComponent.ts";
 
 import {HOMEPAGE_COMPONENT_NAV} from "./HomepageComponentHandler.ts";
-import {BaseTemplateDynamicComponent} from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY, IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
@@ -27,10 +26,7 @@ import {LOCATIONS_THUNK} from "../data/search/LocationsThunk.ts";
 import {EVENT_PRELOAD_THUNK, EVENT_SEARCH_THUNK} from "../data/search/EventSearchThunk.ts";
 import {DEFAULT_SEARCH_PARAMETER} from "./event-search/Constants.ts";
 import {CITY_LIST_THUNK} from "../data/search/CityListThunk.ts";
-
-const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
- `
+import {BaseDynamicComponent} from "../../../framework/components/BaseDynamicComponent.ts";
 
 const loadConfig = {
   dataFields:[
@@ -58,18 +54,13 @@ const loadConfig = {
   ]
 }
 
-export class HomepageComponent extends BaseTemplateDynamicComponent {
-
-
-
+export class HomepageComponent extends BaseDynamicComponent {
   constructor(enablePreload?:boolean){
-    super("homepage-component",loadConfig, enablePreload);
+    super(loadConfig, enablePreload);
   }
-  override getTemplateStyle(): string {
-    return template;
-  }
+
   connectedCallback(){
-    this.updateStore({
+    this.updateWithCustomReducer({
       hideEvents: false,
       hideConventions: true,
       hideRestaurants: true,
@@ -77,42 +68,49 @@ export class HomepageComponent extends BaseTemplateDynamicComponent {
     });
   }
   render(data:any){
-
     return `
         <div class="ui-section">
-        <create-group-component>
-        </create-group-component>
+        <open-create-group-component>
+        </open-create-group-component>
         <nav>
           <div id="nav-container">
             <div>Click for more info about</div>
             
-            ${data.hideEvents || data.showAllButtons ? generateButton({
-              text: "Events",
-              component: this,
-              [EVENT_HANDLER_CONFIG_KEY]: HOMEPAGE_COMPONENT_NAV,
-              [EVENT_HANDLER_PARAMS_KEY]: {location:"#event-search"}
-            }): ``} 
-              
-            ${data.hideConventions ? generateButton({
-              text: "Conventions",
-              component: this,
-              [EVENT_HANDLER_CONFIG_KEY]: HOMEPAGE_COMPONENT_NAV,
-              [EVENT_HANDLER_PARAMS_KEY]: {location:"#convention-list"}
-            }): ``}       
-         
-            ${data.hideGameStores ? generateButton({
-              text: "Game Stores",
-              component: this,
-              [EVENT_HANDLER_CONFIG_KEY]: HOMEPAGE_COMPONENT_NAV,
-              [EVENT_HANDLER_PARAMS_KEY]: {location:"#game-store"}
-            }): ``}  
-         
-            ${data.hideRestaurants ? generateButton({
-              text: "Bars and Cafés",
-              component: this,
-              [EVENT_HANDLER_CONFIG_KEY]: HOMEPAGE_COMPONENT_NAV,
-              [EVENT_HANDLER_PARAMS_KEY]: {location:"#game-restaurant"}
-            }): ``} 
+            <div class = "homepage-default-action-div">
+              <div class = "image-div">  
+                <img src="/assets/house.png">
+              </div>
+              <div>
+                ${data.hideEvents || data.showAllButtons ? generateButton({
+                  text: "Events",
+                  component: this,
+                  [EVENT_HANDLER_CONFIG_KEY]: HOMEPAGE_COMPONENT_NAV,
+                  [EVENT_HANDLER_PARAMS_KEY]: {location:"#event-search"}
+                }): ``} 
+                  
+                ${data.hideConventions ? generateButton({
+                  text: "Conventions",
+                  component: this,
+                  [EVENT_HANDLER_CONFIG_KEY]: HOMEPAGE_COMPONENT_NAV,
+                  [EVENT_HANDLER_PARAMS_KEY]: {location:"#convention-list"}
+                }): ``}       
+             
+                ${data.hideGameStores ? generateButton({
+                  text: "Game Stores",
+                  component: this,
+                  [EVENT_HANDLER_CONFIG_KEY]: HOMEPAGE_COMPONENT_NAV,
+                  [EVENT_HANDLER_PARAMS_KEY]: {location:"#game-store"}
+                }): ``}  
+             
+                ${data.hideRestaurants ? generateButton({
+                  text: "Bars and Cafés",
+                  component: this,
+                  [EVENT_HANDLER_CONFIG_KEY]: HOMEPAGE_COMPONENT_NAV,
+                  [EVENT_HANDLER_PARAMS_KEY]: {location:"#game-restaurant"}
+                }): ``} 
+              </div>
+            
+            </div>
              
           </div>
         </nav>
@@ -153,7 +151,6 @@ export class HomepageComponent extends BaseTemplateDynamicComponent {
         </div>` : ''}
       </div>
     </div>
-    
     `
   }
 }
