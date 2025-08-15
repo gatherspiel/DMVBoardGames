@@ -78,7 +78,7 @@ export function subscribeToGlobalField(
 
 export function clearGlobalStore(){
   Object.keys(globalState).forEach(key=>{
-    globalState[key] = {};
+    globalState[key] = null;
   });
 
   globalStateSubscribers = {};

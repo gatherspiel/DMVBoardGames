@@ -78,7 +78,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
   generateLogin(data: LoginComponentStore) {
     const html = `
      <div class="ui-section" id="login-component-container">
-      <form id=${LOGIN_FORM_ID} ${this.addSubmitEvent(LOGIN_EVENT_CONFIG)}>
+      <form id=${LOGIN_FORM_ID} ${this.createEvent(LOGIN_EVENT_CONFIG, "submit")}>
         <div class="ui-input">
           ${this.addShortInput({
             id: USERNAME_INPUT,

@@ -165,6 +165,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
 
   render(groupData: GroupPageData): string {
 
+    console.log("Render time for group component:"+Date.now())
     if (!groupData.permissions) {
       return `<h1>Loading</h1>`;
     }

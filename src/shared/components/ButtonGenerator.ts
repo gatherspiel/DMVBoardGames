@@ -18,7 +18,7 @@ export function generateButton(config:ButtonConfig){
       class="${buttonClasses}"
       name="action"
       value="${config.text}"
-      ${config.component.addClickEvent(config[EVENT_HANDLER_CONFIG_KEY], config[EVENT_HANDLER_PARAMS_KEY])}
+      ${config.component.createEvent(config[EVENT_HANDLER_CONFIG_KEY], "click",config[EVENT_HANDLER_PARAMS_KEY])}
       ${config.type ?? `type=${config.type}`}>
       
       <span class="shadow"></span>
