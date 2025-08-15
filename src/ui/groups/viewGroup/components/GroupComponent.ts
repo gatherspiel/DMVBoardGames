@@ -52,6 +52,11 @@ const template = `
       font-size: 1.5rem;
       color: var(--clr-dark-blue);
       background-color: #0AACFB;
+      
+      border: 10px solid pink;
+      border-image-source: url(assets/meepleThree.png);
+      border-image-slice: 10 10;
+      border-image-repeat: round;
     }
     
     .group-data-input {
@@ -74,7 +79,10 @@ const template = `
     }
     
     #group-events {
-      border-top: 1px solid var(--clr-lighter-blue);
+      border-bottom:  20px solid;
+      border-image-source: url(assets/Section_Border_Medium.png);
+      border-image-slice: 20 20;
+      border-image-repeat: round;
     }
     
     @media screen and (width < 32em) {
@@ -200,13 +208,11 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
 
        </div>
     
-       <div class="raised">
-        <span class="shadow"></span>
-        <span class="edge"></span>
-        <p class="${GROUP_DESCRIPTION_TEXT}">
-          ${groupData.description}
-        </p> 
-       </div>` 
+   
+        <div class="${GROUP_DESCRIPTION_TEXT}">
+          <p>${groupData.description}</p> 
+        </div>
+       ` 
          : `
        <h1>Editing group information</h1>
         

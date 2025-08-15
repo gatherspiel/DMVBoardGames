@@ -35,11 +35,8 @@ const template = `
 
   <style>
   
-  #event-search {
-    border-top: 1px solid var(--clr-lighter-blue);
-  }
-  
-  
+
+   
   #search-form {
     align-items: center;
     display: flex;

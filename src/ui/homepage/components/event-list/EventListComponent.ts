@@ -25,7 +25,10 @@ const template = `
   <style>
 
     .event-group:not(:first-child){
-      border-top: 1px solid var(--clr-lighter-blue);
+      border-top:  5px solid;
+      border-image-source: url(assets/Section_Border_Tiny.png);
+      border-image-slice: 5 5;
+      border-image-repeat: round;
     }
     
     @media not screen and (width < 32em) {
