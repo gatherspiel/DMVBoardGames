@@ -25,10 +25,7 @@ body {
 
 
 #page-info {
-  padding-top: 8px;
-}
-
-#page-info {
+  padding-top: 0.5rem;
   background-color: var(--clr-very-light-blue);
   border-radius: 10px;
   color: var(--clr-dark-blue);
@@ -63,16 +60,6 @@ body {
   font-weight: 600;
 }
 
-
-.ui-separator {
-  border-top: 1px solid var(--clr-lighter-blue);
-}
-
-.ui-section {
-  font-size: 1.25rem;
-  padding-top: 0;
-  padding-bottom: 0;
-}
 
 .raised:hover {
   transform:none;
@@ -277,15 +264,6 @@ body {
 
 
 @media not screen and (width < 32em) {
-  .numberCircle {
-    z-index: -10;
-    position: fixed;
-    height:5rem;
-    width: 5rem;
-    margin: 5rem;
-    clip-path: circle(2rem);
-    background-color: #f3c981;
-  }
   .bg-image-container p {
     justify-content: center;
     display: flex;
@@ -296,7 +274,6 @@ body {
 .homepage-default-action-div {
   display:flex;
   align-items: center;
-  height: 3.5rem;
 }
 
 .homepage-default-action-div img {
@@ -317,15 +294,6 @@ body {
     --f: calc(1.732 * var(--s) + 4 * var(--m)  - 1px);
   }
 
-  .numberCircle {
-    z-index: -10;
-    position: fixed;
-    height:3rem;
-    width: 3rem;
-    margin: 1rem;
-    clip-path: circle(1rem);
-    background-color: #f3c981;
-  }
 
   .bg-image-container p {
     font-size:1rem;

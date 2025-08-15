@@ -38,13 +38,11 @@ export class EventHandlerData {
     };
 
     if (shadowRoot) {
-      console.log(elementIdTag)
       shadowRoot?.querySelectorAll(`[${elementIdTag}]`).forEach(
         (item:any) => {
         addEventHandler(item);
       });
     } else {
-      console.log(elementIdTag)
 
       document.querySelectorAll(`[${elementIdTag}]`).forEach( (
         item: Element,
