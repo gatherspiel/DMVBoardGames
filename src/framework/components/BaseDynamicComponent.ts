@@ -194,8 +194,10 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
 
     let dataLoaded = true;
+
+
     this.#componentLoadConfig?.dataFields?.forEach((item:DataFieldConfig)=> {
-      if(!(item.fieldName in globalStateData)){
+      if(!(globalStateData[item.fieldName])){
         dataLoaded = false;
       }
     });
@@ -212,10 +214,13 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       },
     );
 
-    this.updateWithCustomReducer(
-      dataToUpdate,
-      reducer
-    );
+    if(this.#dependenciesLoaded){
+      this.updateWithCustomReducer(
+        dataToUpdate,
+        reducer
+      );
+    }
+
   }
   abstract render(data: Record<any, DisplayItem> | any): string;
 }
