@@ -1,6 +1,6 @@
 export function updateSearchResultGroupStore(groupResults: any) {
 
-  var results:any = groupResults.searchResults.groupData;
+  var results:any = groupResults?.searchResults?.groupData;
   const updatedGroupStore: Record<string, any> = {};
 
   if(!results){

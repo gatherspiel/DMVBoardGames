@@ -79,7 +79,7 @@ export class LoginStatusComponent extends BaseTemplateDynamicComponent {
     if(data.isLoggedIn){
       return `
         <span>Welcome ${data?.username}</span>
-        <a ${this.addClickEvent(LOGOUT_EVENT_CONFIG)}>Sign out</a>
+        <a ${this.createEvent(LOGOUT_EVENT_CONFIG, "click")}>Sign out</a>
       `
     }
     return `<a href="/login.html">Sign in </a>`;

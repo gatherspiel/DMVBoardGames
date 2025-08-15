@@ -16,12 +16,20 @@ import {
 } from "../state/data/GlobalStore.ts";
 import type {FormInputConfig} from "./types/FormInputConfig.ts";
 import  {FormSelector} from "../FormSelector.ts";
-import {EventHandlerData} from "../handler/EventHandlerData.ts";
 import {getUrlParameter} from "../utils/UrlParamUtils.ts";
+import type {EventHandlerThunkConfig} from "../state/update/event/types/EventHandlerThunkConfig.ts";
+import {BaseDispatcher} from "../state/update/BaseDispatcher.ts";
+import {EventHandlerAction} from "../state/update/event/EventHandlerAction.ts";
+import {EventThunk} from "../state/update/event/EventThunk.ts";
+import type {EventValidationResult} from "../state/update/event/types/EventValidationResult.ts";
+
+type EventConfig = {
+  eventType: string;
+  eventFunction: (e: Event) => any;
+};
 
 export abstract class BaseDynamicComponent extends HTMLElement {
 
-  #eventHandlerData:EventHandlerData;
 
   readonly componentId: string
 
@@ -33,9 +41,14 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   #componentState: any = {};
   static instanceCount = 1;
 
+  #eventHandlerConfig:Record<string, EventConfig>;
+  #eventTagIdCount = 0;
+  #elementIdTag:string;
+
   constructor(loadConfig: ComponentLoadConfig = {}, enablePreload?:boolean) {
     super();
 
+    this.#eventHandlerConfig = {};
     this.#componentLoadConfig = loadConfig;
 
     BaseDynamicComponent.instanceCount++;
@@ -43,7 +56,8 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     this.componentId = `${this.constructor.name}-${BaseDynamicComponent.instanceCount}`;
     this.#formSelector = new FormSelector();
 
-    this.#eventHandlerData = new EventHandlerData(`data-${this.componentId}-element-id`);
+    this.#elementIdTag = `data-${this.componentId}-element-id`;
+
 
     if(loadConfig.dataFields){
 
@@ -121,6 +135,35 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   }
 
+  resetData(){
+    this.#eventHandlerConfig = {};
+    this.#eventTagIdCount = 0;
+  }
+
+  attachEventHandlersToDom(shadowRoot?:any){
+    const eventHandlers = this.#eventHandlerConfig;
+    const elementIdTag = this.#elementIdTag;
+
+    const addEventHandler = function (item: Element) {
+      const id = item.getAttribute(elementIdTag) ?? "";
+      const eventConfig = eventHandlers[id];
+      item.addEventListener(eventConfig.eventType, eventConfig.eventFunction);
+    };
+
+    if (shadowRoot) {
+      shadowRoot?.querySelectorAll(`[${elementIdTag}]`).forEach(
+        (item:any) => {
+          addEventHandler(item);
+        });
+    } else {
+
+      document.querySelectorAll(`[${elementIdTag}]`).forEach( (
+        item: Element,
+      ) => {
+        addEventHandler(item);
+      });
+    }
+  }
 
   updateWithCustomReducer(data: any,
                           updateFunction = (data:any)=>data) {
@@ -136,14 +179,15 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     }
 
     this.#componentState = {...this.#componentState,...updatedData};
-    this.#eventHandlerData.resetData();
+    this.resetData();
     this.generateAndSaveHTML(this.#componentState, this.#dependenciesLoaded);
 
     if(this.shadowRoot){
       this.#formSelector.setShadowRoot(this.shadowRoot);
     }
-    this.#eventHandlerData.attachEventHandlersToDom(this.shadowRoot);
+    this.attachEventHandlersToDom(this.shadowRoot);
   }
+
 
   getComponentStore(){
     return this.#componentState;
@@ -167,16 +211,86 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     return this.#formSelector.generateTextInputFormItem(formConfig);
   }
 
-  addOnChangeEvent(eventConfig: any) {
-    return this.#eventHandlerData.createOnChangeEvent(eventConfig, this.#formSelector, this);
+
+  createEvent(eventConfig: any, eventType:string, params?:any){
+    const eventHandler = this.createHandler(
+      eventConfig,
+      this.#formSelector,
+      this,
+      params
+    );
+    let eventId = `${this.#elementIdTag}=${this.#eventTagIdCount}`;
+
+    this.#eventHandlerConfig[this.#eventTagIdCount] = {
+      eventType: eventType,
+      eventFunction: eventHandler,
+    };
+    this.#eventTagIdCount++;
+    return eventId;
   }
 
-  addSubmitEvent(eventConfig: any) {
-    return this.#eventHandlerData.createSubmitEvent(eventConfig, this.#formSelector, this);
-  }
+  createHandler(
+    eventConfig: EventHandlerThunkConfig,
+    formSelector: FormSelector,
+    component: BaseDynamicComponent,
+    params?: any
+  ) {
 
-  addClickEvent(eventConfig: any, params?: any) {
-    return this.#eventHandlerData.createClickEvent(eventConfig, this.#formSelector, this, params);
+
+    const dispatchers: BaseDispatcher[] = [];
+    let componentStoreUpdate = new BaseDispatcher(
+      component,
+      eventConfig.componentReducer,
+    );
+    dispatchers.push(componentStoreUpdate);
+
+    const apiRequestThunk = eventConfig.apiRequestThunk;
+    if(apiRequestThunk){
+      const storeUpdate = new BaseDispatcher(apiRequestThunk, (a: any): any => {
+        return a;
+      });
+      dispatchers.push(storeUpdate);
+    }
+
+    const request: EventHandlerAction = new EventHandlerAction(
+      eventConfig.eventHandler,
+      component,
+      formSelector,
+      params
+    );
+
+    const eventUpdater: EventThunk = new EventThunk(request, dispatchers);
+
+    const handler = function (e: Event) {
+
+      /**
+       * TODO for refactoring
+       *
+       * -Move EventHandlerAction.retrieveData logic here.
+       * -Update API thunk and component state directly.
+       * -Delete EventHandlerAction.ts
+       * -Delete EventThunk logic here and then try and delete EventThunk class.
+       * -Delete logic related to dispatchers
+       */
+      e.preventDefault();
+
+      const validatorFunction = eventConfig.validator;
+      if (validatorFunction) {
+        const validator = function (): EventValidationResult {
+          const componentData = component.getComponentStore();
+          return validatorFunction(formSelector, componentData);
+        };
+
+        eventUpdater.processEvent(e, validator).then((result: any) => {
+          if (result?.errorMessage) {
+            componentStoreUpdate.updateStore(result);
+          }
+        });
+      } else {
+        eventUpdater.processEvent(e);
+      }
+    };
+    return handler;
   }
 
   updateFromGlobalState(globalStateData:any) {

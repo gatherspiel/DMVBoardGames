@@ -7,9 +7,11 @@ import {DeleteGroupPageComponent} from "../../ui/groups/deleteGroup/DeleteGroupP
 import {CreateGroupPageComponent} from "../../ui/groups/createGroup/components/CreateGroupPageComponent.ts";
 
 export const VIEW_GROUP_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: event =>
+  eventHandler: event => {
+    console.log("Click time:" + Date.now());
     //@ts-ignore
     AbstractPageComponent.updateRoute(GroupComponent, event.params)
+  }
 }
 
 export const VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG: EventHandlerThunkConfig = {
