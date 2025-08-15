@@ -75,7 +75,7 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    this.updateStore({isVisible: true, existingGroupName: getUrlParameter("name")})
+    this.updateWithDefaultReducer({isVisible: true, existingGroupName: getUrlParameter("name")})
   }
 
   render(data: DeleteGroupData): string {

@@ -44,7 +44,7 @@ export class GroupEventComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback() {
-    this.updateStore({});
+    this.updateWithDefaultReducer({});
   }
 
   render(): string {

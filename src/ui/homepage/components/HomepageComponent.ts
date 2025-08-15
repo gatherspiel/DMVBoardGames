@@ -60,7 +60,7 @@ export class HomepageComponent extends BaseDynamicComponent {
   }
 
   connectedCallback(){
-    this.updateStore({
+    this.updateWithDefaultReducer({
       hideEvents: false,
       hideConventions: true,
       hideRestaurants: true,
@@ -68,7 +68,6 @@ export class HomepageComponent extends BaseDynamicComponent {
     });
   }
   render(data:any){
-
     return `
         <div class="ui-section">
         <open-create-group-component>

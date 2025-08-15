@@ -1,19 +1,19 @@
-import { getComponentStore } from "../../data/ComponentStore.ts";
 import type {FormSelector} from "../../../FormSelector.ts";
+import type {BaseDynamicComponent} from "../../../components/BaseDynamicComponent.ts";
 
 export class EventHandlerAction {
   #eventHandler: (a: any, componentStore?: any) => any;
-  #eventComponentStoreName?: string;
+  #component?: BaseDynamicComponent
   #formSelector?:FormSelector;
   #params: any;
   constructor(
     eventHandler: (a: any) => any,
-    componentStoreName?: string,
+    component?: BaseDynamicComponent,
     formSelector?:FormSelector,
     params?: any
   ) {
     this.#eventHandler = eventHandler;
-    this.#eventComponentStoreName = componentStoreName;
+    this.#component = component;
     this.#formSelector = formSelector;
     this.#params = params;
   }
@@ -21,10 +21,10 @@ export class EventHandlerAction {
   retrieveData(event: Event): any {
 
     const formSelector = this.#formSelector;
-    if (this.#eventComponentStoreName) {
+    if (this.#component) {
       return this.#eventHandler({
         event: event,
-        componentStore: getComponentStore(this.#eventComponentStoreName),
+        componentStore: this.#component.getComponentStore(),
         targetId: (event.target as HTMLElement).id,
         formSelector: formSelector,
         params: this.#params

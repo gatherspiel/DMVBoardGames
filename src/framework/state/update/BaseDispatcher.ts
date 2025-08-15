@@ -1,16 +1,16 @@
 /*
  Updates store after an API response is returned
  */
-import { updateComponentStore } from "../data/ComponentStore.ts";
-import { hasRequestStore, updateRequestStore } from "../data/RequestStore.ts";
+import { updateRequestStore } from "../data/RequestStore.ts";
+import type {BaseDynamicComponent} from "../../components/BaseDynamicComponent.ts";
 
 export class BaseDispatcher {
-  storeField: string;
+  storeField: string | BaseDynamicComponent;
   reducerUpdate: (a: any) => any;
   responseField?: string;
 
   constructor(
-    storeName: string,
+    storeName: string | BaseDynamicComponent,
     storeUpdate?: (a: any) => any,
     responseField?: string,
   ) {
@@ -26,24 +26,24 @@ export class BaseDispatcher {
     }
   }
 
+  getComponent(){
+    return this.storeField;
+  }
+
   updateStore(response: any) {
     const baseDispatcher: BaseDispatcher = this;
     const responseData = this.responseField
       ? response[this.responseField]
       : response;
 
-    if (hasRequestStore(baseDispatcher.storeField)) {
+    if ((typeof this.storeField )== "string") {
       updateRequestStore(
-        baseDispatcher.storeField,
+        baseDispatcher.storeField as string,
         baseDispatcher.reducerUpdate,
         responseData,
       );
     } else {
-      updateComponentStore(
-        baseDispatcher.storeField,
-        baseDispatcher.reducerUpdate,
-        responseData,
-      );
+      (this.storeField as BaseDynamicComponent).updateWithCustomReducer(baseDispatcher.reducerUpdate, responseData)
     }
   }
 }

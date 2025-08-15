@@ -149,7 +149,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    this.updateStore({});
+    this.updateWithDefaultReducer({});
   }
 
   getTemplateStyle(): string {

@@ -77,7 +77,7 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    this.updateStore({isVisible: true})
+    this.updateWithDefaultReducer({isVisible: true})
   }
 
   render(createGroupData: any): string {

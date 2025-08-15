@@ -7,7 +7,6 @@ import {
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
 } from "../../framework/components/types/ComponentLoadConfig.ts";
-import {saveStoreOnNav} from "../../framework/state/data/ComponentStore.ts";
 import {IS_LOGGED_IN_KEY} from "../Constants.ts";
 setupStateFields();
 
@@ -70,7 +69,6 @@ export class LoginStatusComponent extends BaseTemplateDynamicComponent {
 
   constructor() {
     super('login-status-component', loadConfig);
-    saveStoreOnNav(this.componentStoreName)
   }
 
   override getTemplateStyle(): string {
