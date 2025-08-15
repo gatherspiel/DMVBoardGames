@@ -68,7 +68,7 @@ const template = `
 export class LoginStatusComponent extends BaseTemplateDynamicComponent {
 
   constructor() {
-    super('login-status-component', loadConfig);
+    super(loadConfig);
   }
 
   override getTemplateStyle(): string {

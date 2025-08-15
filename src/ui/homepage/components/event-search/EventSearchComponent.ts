@@ -101,7 +101,7 @@ const template = `
 
 export class EventSearchComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("event-search-component-store", loadConfig);
+    super(loadConfig);
   }
 
   override getTemplateStyle(): string {

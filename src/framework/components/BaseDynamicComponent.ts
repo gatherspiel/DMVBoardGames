@@ -26,7 +26,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   #eventHandlerData:EventHandlerData;
 
-  readonly componentStoreName: string
+  readonly componentId: string
 
   #dependenciesLoaded: boolean = true;
   #componentLoadConfig: ComponentLoadConfig | undefined = undefined;
@@ -36,16 +36,16 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   #componentState: any = {};
   static instanceCount = 1;
 
-  constructor(componentStoreName: string, loadConfig?: ComponentLoadConfig, enablePreload?:boolean) {
+  constructor(loadConfig?: ComponentLoadConfig, enablePreload?:boolean) {
     super();
 
-    BaseDynamicComponent.instanceCount++;
-    this.componentStoreName = `${componentStoreName}-${BaseDynamicComponent.instanceCount}`;
 
+    BaseDynamicComponent.instanceCount++;
+
+    this.componentId = `${this.constructor.name}-${BaseDynamicComponent.instanceCount}`;
     this.#formSelector = new FormSelector();
 
-
-    this.#eventHandlerData = new EventHandlerData(`data-${this.componentStoreName}-element-id`);
+    this.#eventHandlerData = new EventHandlerData(`data-${this.componentId}-element-id`);
 
     if (loadConfig) {
       if(loadConfig.dataFields){
@@ -124,7 +124,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         ) => {
           if (!config.thunk) {
             throw new Error(
-              `Missing thunk field in ${self.componentStoreName} reducer configuration`,
+              `Missing thunk field in ${self.componentId} reducer configuration`,
             );
           }
           config.thunk.subscribeComponent(
@@ -212,12 +212,12 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
     const componentLoadConfig = this.#componentLoadConfig;
     if(!componentLoadConfig){
-      throw new Error(`Component load config is not defined for component ${this.componentStoreName}`)
+      throw new Error(`Component load config is not defined for component ${this.componentId}`)
     }
     const globalStateLoadConfig =
       componentLoadConfig.globalStateLoadConfig;
     if (!globalStateLoadConfig) {
-      throw new Error(`Component global state config is not defined for component ${this.componentStoreName}`);
+      throw new Error(`Component global state config is not defined for component ${this.componentId}`);
     }
 
     let reducer = componentLoadConfig.globalStateLoadConfig?.defaultGlobalStateReducer;

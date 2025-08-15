@@ -115,7 +115,7 @@ const loadConfig = {
 
 export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("event-details-component", loadConfig);
+    super(loadConfig);
   }
 
 

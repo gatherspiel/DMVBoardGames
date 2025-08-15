@@ -69,7 +69,7 @@ const template = `
 `;
 export class EventListComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("searchResultGroupStore", loadConfig);
+    super(loadConfig);
   }
 
   private getItemHtml(groupId: string, group: GroupSearchResult) {

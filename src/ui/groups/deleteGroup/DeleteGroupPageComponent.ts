@@ -67,7 +67,7 @@ const loadConfig = {
 
 export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("delete-group-page-component", loadConfig);
+    super(loadConfig);
   }
 
   getTemplateStyle(): string {

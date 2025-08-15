@@ -56,7 +56,7 @@ const loadConfig = {
 
 export class HomepageComponent extends BaseDynamicComponent {
   constructor(enablePreload?:boolean){
-    super("homepage-component",loadConfig, enablePreload);
+    super(loadConfig, enablePreload);
   }
 
   connectedCallback(){

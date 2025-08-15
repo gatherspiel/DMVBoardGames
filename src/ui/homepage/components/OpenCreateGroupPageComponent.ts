@@ -21,7 +21,7 @@ const loadConfig = {
 export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
 
   constructor() {
-    super('create-group-component', loadConfig);
+    super(loadConfig);
   }
 
   render(data: any){

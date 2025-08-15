@@ -69,7 +69,7 @@ export function subscribeComponentToGlobalField(
 ) {
   if (!(fieldName in globalState)) {
     throw new Error(
-      `Component id: ${component.componentStoreName} cannot subscribe to field ${fieldName}.
+      `Component id: ${component.componentId} cannot subscribe to field ${fieldName}.
        Make sure the field is configured as a field name using setupGlobalState`,
     );
   }
