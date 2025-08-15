@@ -82,7 +82,7 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
 
   connectedCallback(){
     if(PageState.pageLoaded) {
-      this.updateWithDefaultReducer({isVisible: true})
+      this.updateWithCustomReducer({isVisible: true})
     }
   }
 

@@ -60,7 +60,7 @@ export class HomepageComponent extends BaseDynamicComponent {
   }
 
   connectedCallback(){
-    this.updateWithDefaultReducer({
+    this.updateWithCustomReducer({
       hideEvents: false,
       hideConventions: true,
       hideRestaurants: true,

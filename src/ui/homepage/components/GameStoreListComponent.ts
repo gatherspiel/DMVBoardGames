@@ -1,20 +1,19 @@
 import type { GameStore } from "../data/types/GameStore.ts";
-import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
 import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
-import {REQUEST_THUNK_REDUCERS_KEY} from "../../../framework/components/types/ComponentLoadConfig.ts";
+import {
+  GLOBAL_STATE_LOAD_CONFIG_KEY,
+} from "../../../framework/components/types/ComponentLoadConfig.ts";
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../shared/Constants.ts";
 
 const loadConfig = {
-  [REQUEST_THUNK_REDUCERS_KEY]: [
-    {
-      thunk: LOCATIONS_THUNK,
-      componentReducer: (data: any) => {
-        return data.gameStores;
-      },
-    },
-  ],
+  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
+    globalFieldSubscriptions: ["gameLocations"],
+    defaultGlobalStateReducer: (data:any)=>{
+      return data.gameLocations.gameStores;
+    }
+  },
 };
 
 const template = `

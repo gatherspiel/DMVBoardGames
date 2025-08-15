@@ -2,9 +2,6 @@ import type { DisplayItem } from "../../ui/homepage/data/types/DisplayItem.ts";
 
 
 import {
-  createRequestStoreWithData,
-} from "../state/data/RequestStore.ts";
-import {
   type ComponentLoadConfig, type DataFieldConfig,
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
@@ -15,7 +12,7 @@ import {
 import type {BaseThunk} from "../state/update/BaseThunk.ts";
 import {
   getGlobalStateValueIfPresent,
-  subscribeComponentToGlobalField,
+  subscribeToGlobalField,
 } from "../state/data/GlobalStore.ts";
 import type {FormInputConfig} from "./types/FormInputConfig.ts";
 import  {FormSelector} from "../FormSelector.ts";
@@ -29,16 +26,17 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   readonly componentId: string
 
   #dependenciesLoaded: boolean = true;
-  #componentLoadConfig: ComponentLoadConfig | undefined = undefined;
+  #componentLoadConfig: ComponentLoadConfig;
 
   #formSelector: FormSelector
 
   #componentState: any = {};
   static instanceCount = 1;
 
-  constructor(loadConfig?: ComponentLoadConfig, enablePreload?:boolean) {
+  constructor(loadConfig: ComponentLoadConfig = {}, enablePreload?:boolean) {
     super();
 
+    this.#componentLoadConfig = loadConfig;
 
     BaseDynamicComponent.instanceCount++;
 
@@ -47,107 +45,85 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
     this.#eventHandlerData = new EventHandlerData(`data-${this.componentId}-element-id`);
 
-    if (loadConfig) {
-      if(loadConfig.dataFields){
+    if(loadConfig.dataFields){
 
-        const self = this;
-        loadConfig.dataFields.forEach((item:DataFieldConfig)=>{
-
-          if(!getGlobalStateValueIfPresent(item.fieldName)){
-            self.#dependenciesLoaded = false;
-          }
-
-          let dataSource:BaseThunk = (enablePreload && item.preloadSource) ? item.preloadSource : item.dataSource;
-
-          let storeReducer = dataSource.globalStateReducer
-          if(!storeReducer){
-            storeReducer = (a:any)=> {
-              return {
-                [item.fieldName]:a
-              }
-            }
-          }
-
-          dataSource = dataSource.addGlobalStateReducer(storeReducer)
-
-          function getRequestData() {
-            let params:Record<string, string> = {};
-
-            if(!item.urlParams){
-              return params;
-            }
-
-            item.urlParams.forEach(name=>{
-              params[name]=getUrlParameter(name);
-            })
-            return params
-          }
-
-          const requestStoreId = dataSource.getRequestStoreId()
-          if(!requestStoreId){
-            throw new Error("Missing request store id for data source thunk")
-          }
-
-          createRequestStoreWithData(
-            requestStoreId,
-            dataSource,
-            getRequestData
-          )
-        })
-      }
       const self = this;
+      loadConfig.dataFields.forEach((item:DataFieldConfig)=>{
 
-      Object.keys(loadConfig).forEach((configField: any) => {
-        if (!validComponentLoadConfigFields.includes(configField)) {
+        if(!getGlobalStateValueIfPresent(item.fieldName)){
+          self.#dependenciesLoaded = false;
+        }
+
+        let dataSource:BaseThunk = (enablePreload && item.preloadSource) ? item.preloadSource : item.dataSource;
+
+        let storeReducer = dataSource.globalStateReducer
+        if(!storeReducer){
+          storeReducer = (a:any)=> {
+            return {
+              [item.fieldName]:a
+            }
+          }
+        }
+
+        dataSource.addGlobalStateReducer(storeReducer)
+
+        let params:Record<string, string> = {};
+
+        if(item.urlParams){
+          item.urlParams.forEach(name=>{
+            params[name]=getUrlParameter(name);
+          })
+        }
+
+        dataSource.retrieveData(params);
+      })
+    }
+    const self = this;
+
+    Object.keys(loadConfig).forEach((configField: any) => {
+      if (!validComponentLoadConfigFields.includes(configField)) {
+        throw new Error(
+          `Invalid component load config field ${configField} for ${self.localName}. Valid fields are
+          ${validComponentLoadConfigFields}`,
+        );
+      }
+    });
+
+    const globalStateLoadConfig = loadConfig[GLOBAL_STATE_LOAD_CONFIG_KEY];
+
+    if (globalStateLoadConfig?.[GLOBAL_FIELD_SUBSCRIPTIONS_KEY]) {
+
+      globalStateLoadConfig[GLOBAL_FIELD_SUBSCRIPTIONS_KEY].forEach(
+        (fieldName: string) => {
+        subscribeToGlobalField(self, fieldName);
+      });
+    }
+
+    if (loadConfig[REQUEST_THUNK_REDUCERS_KEY]) {
+
+      loadConfig[REQUEST_THUNK_REDUCERS_KEY].forEach((
+        config: RequestThunkReducerConfig,
+      ) => {
+        if (!config.thunk) {
           throw new Error(
-            `Invalid component load config field ${configField} for ${self.localName}. Valid fields are
-            ${validComponentLoadConfigFields}`,
+            `Missing thunk field in ${self.componentId} reducer configuration`,
           );
         }
+        config.thunk.subscribeComponent(
+          this,
+          config?.componentReducer ?? function(data:any){
+            return data
+          },
+          config.reducerField,
+        );
       });
-
-      const globalStateLoadConfig = loadConfig[GLOBAL_STATE_LOAD_CONFIG_KEY];
-
-      if (globalStateLoadConfig?.[GLOBAL_FIELD_SUBSCRIPTIONS_KEY]) {
-        self.#componentLoadConfig = loadConfig;
-
-        globalStateLoadConfig[GLOBAL_FIELD_SUBSCRIPTIONS_KEY].forEach(
-          (fieldName: string) => {
-          subscribeComponentToGlobalField(self, fieldName);
-        });
-      }
-
-      if (loadConfig[REQUEST_THUNK_REDUCERS_KEY]) {
-
-        loadConfig[REQUEST_THUNK_REDUCERS_KEY].forEach((
-          config: RequestThunkReducerConfig,
-        ) => {
-          if (!config.thunk) {
-            throw new Error(
-              `Missing thunk field in ${self.componentId} reducer configuration`,
-            );
-          }
-          config.thunk.subscribeComponent(
-            this,
-            config?.componentReducer ?? function(data:any){
-              return data
-            },
-            config.reducerField,
-          );
-        });
-      }
     }
+
   }
 
-  updateWithDefaultReducer(data: any) {
-    this.updateWithCustomReducer(()=>data,data)
-  }
 
-  updateWithCustomReducer(updateFunction: (a: any) => any,
-                          data: any) {
-
-
-
+  updateWithCustomReducer(data: any,
+                          updateFunction = (data:any)=>data) {
     if (!data) {
       data = this.#componentState
     }
@@ -159,12 +135,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       );
     }
 
-    this.updateWithStoreData(updatedData)
-  }
-
-  updateWithStoreData(data: any) {
-
-    this.#componentState = {...this.#componentState,...data};
+    this.#componentState = {...this.#componentState,...updatedData};
     this.#eventHandlerData.resetData();
     this.generateAndSaveHTML(this.#componentState, this.#dependenciesLoaded);
 
@@ -210,20 +181,17 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   updateFromGlobalState(globalStateData:any) {
 
-    const componentLoadConfig = this.#componentLoadConfig;
-    if(!componentLoadConfig){
-      throw new Error(`Component load config is not defined for component ${this.componentId}`)
-    }
+
     const globalStateLoadConfig =
-      componentLoadConfig.globalStateLoadConfig;
+      this.#componentLoadConfig.globalStateLoadConfig;
     if (!globalStateLoadConfig) {
       throw new Error(`Component global state config is not defined for component ${this.componentId}`);
     }
 
-    let reducer = componentLoadConfig.globalStateLoadConfig?.defaultGlobalStateReducer;
-    if(!reducer){
-      reducer =  (updates: Record<string, string>) => updates
-    }
+    let reducer =
+      this.#componentLoadConfig.globalStateLoadConfig?.defaultGlobalStateReducer ??
+      ((updates: Record<string, string>) => updates)
+
 
     let dataLoaded = true;
     this.#componentLoadConfig?.dataFields?.forEach((item:DataFieldConfig)=> {
@@ -238,15 +206,15 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
     let dataToUpdate: Record<string, string> = {};
 
-    componentLoadConfig.globalStateLoadConfig?.globalFieldSubscriptions?.forEach(
+    this.#componentLoadConfig.globalStateLoadConfig?.globalFieldSubscriptions?.forEach(
        (fieldName) => {
         dataToUpdate[fieldName] = globalStateData[fieldName];
       },
     );
 
     this.updateWithCustomReducer(
-      reducer,
       dataToUpdate,
+      reducer
     );
   }
   abstract render(data: Record<any, DisplayItem> | any): string;

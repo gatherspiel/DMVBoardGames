@@ -2,12 +2,8 @@ import { BaseThunkAction } from "./BaseThunkAction.ts";
 import { BaseDispatcher } from "./BaseDispatcher.ts";
 
 import {updateGlobalStore} from "../data/GlobalStore.ts";
-import {
-  createRequestStore,
-} from "../data/RequestStore.ts";
+
 import type {BaseDynamicComponent} from "../../components/BaseDynamicComponent.ts";
-
-
 
 export class BaseThunk {
   thunkAction: BaseThunkAction;
@@ -24,7 +20,6 @@ export class BaseThunk {
 
   createRequestStore(storeId:string){
     this.requestStoreId = storeId;
-    createRequestStore(this.requestStoreId, this)
   }
 
 
@@ -32,8 +27,19 @@ export class BaseThunk {
     return this.requestStoreId;
   }
 
-  async retrieveData(params: any, cacheKey?: string) {
-    return await this.thunkAction.retrieveData(params, cacheKey);
+  retrieveData(params: any,updateFunction?: (a?: any) => any) {
+
+    let cacheKey = this.requestStoreId ?? '';
+
+    if(updateFunction) {
+      params = updateFunction(params)
+    }
+
+    var self = this;
+    this.thunkAction.retrieveData(params, cacheKey).then((response: any) => {
+      self.updateStore(response);
+    });
+
   }
 
   addGlobalStateReducer(

@@ -1,16 +1,16 @@
 /*
  Updates store after an API response is returned
  */
-import { updateRequestStore } from "../data/RequestStore.ts";
 import type {BaseDynamicComponent} from "../../components/BaseDynamicComponent.ts";
+import {BaseThunk} from "./BaseThunk.ts";
 
 export class BaseDispatcher {
-  storeField: string | BaseDynamicComponent;
+  storeField: BaseThunk | BaseDynamicComponent;
   reducerUpdate: (a: any) => any;
   responseField?: string;
 
   constructor(
-    storeName: string | BaseDynamicComponent,
+    storeName: BaseThunk | BaseDynamicComponent,
     storeUpdate?: (a: any) => any,
     responseField?: string,
   ) {
@@ -36,14 +36,13 @@ export class BaseDispatcher {
       ? response[this.responseField]
       : response;
 
-    if ((typeof this.storeField )== "string") {
-      updateRequestStore(
-        baseDispatcher.storeField as string,
-        baseDispatcher.reducerUpdate,
+    if (this.storeField instanceof BaseThunk) {
+      (this.storeField as BaseThunk).retrieveData(
         responseData,
-      );
+        baseDispatcher.reducerUpdate,
+      )
     } else {
-      (this.storeField as BaseDynamicComponent).updateWithCustomReducer(baseDispatcher.reducerUpdate, responseData)
+      (this.storeField as BaseDynamicComponent).updateWithCustomReducer(responseData,baseDispatcher.reducerUpdate)
     }
   }
 }

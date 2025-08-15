@@ -3,7 +3,6 @@ import { getComponent } from "../../shared/components/ComponentRegistry.ts";
 import { setupStateFields} from "../../shared/InitGlobalStateConfig.ts";
 import {PageState} from "./PageState.ts";
 
-import {clearRequestStores} from "../state/data/RequestStore.ts";
 import type {BaseDynamicComponent} from "../components/BaseDynamicComponent.ts";
 import {clearGlobalStore} from "../state/data/GlobalStore.ts";
 
@@ -55,7 +54,6 @@ export abstract class AbstractPageComponent extends HTMLElement {
   }
 
   #update(componentType:typeof BaseDynamicComponent,params?:Record<string, string>){
-    clearRequestStores();
     clearGlobalStore();
     this.removeChild(PageState.activeComponent)
 
