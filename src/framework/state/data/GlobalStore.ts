@@ -27,15 +27,6 @@ export function setupGlobalState(fields: Record<string, any>) {
 
 export function updateGlobalStore(fieldsToUpdate: Record<string, any>) {
 
-  const err = new Error();
-
-  const caller = err?.stack?.split("\n")[1];
-
-  if(caller && !caller.startsWith("updateStore") && !caller.includes("framework/state/update/BaseThunk.ts")){
-    err.message = "Cannot directly update global store from this function "
-    throw err;
-  }
-
   let componentsToUpdate = new Set();
   Object.keys(fieldsToUpdate).forEach((fieldName: string)=> {
     if (!(fieldName in globalState)) {
@@ -63,7 +54,7 @@ export function updateGlobalStore(fieldsToUpdate: Record<string, any>) {
   });
 }
 
-export function subscribeComponentToGlobalField(
+export function subscribeToGlobalField(
   component: BaseDynamicComponent,
   fieldName: string,
 ) {

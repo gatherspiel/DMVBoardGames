@@ -43,6 +43,8 @@ export class ConventionListComponent extends BaseTemplateDynamicComponent {
   }
 
   getItemHtml(convention: Convention) {
+
+    console.log(Date.now())
     return `
     <div id = convention-${convention.id} class="conv-list-item">
      <h3>

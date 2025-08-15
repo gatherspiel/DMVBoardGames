@@ -6,8 +6,7 @@ export const HOMEPAGE_COMPONENT_NAV: EventHandlerThunkConfig = {
   //@ts-ignore
   eventHandler: (event)=>{
 
-    console.log(`Updating with ${event.params.location}`);
-
+    console.log(Date.now())
     return {
       hideEvents: event.params.location !== '#event-search',
       hideConventions: event.params.location !== '#convention-list',

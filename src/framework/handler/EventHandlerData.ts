@@ -110,9 +110,9 @@ export class EventHandlerData {
       );
     dispatchers.push(componentStoreUpdate);
 
-    const requestStoreToUpdate = eventConfig.apiRequestThunk?.getRequestStoreId();
-    if(requestStoreToUpdate){
-      const storeUpdate = new BaseDispatcher(requestStoreToUpdate, (a: any): any => {
+    const apiRequestThunk = eventConfig.apiRequestThunk;
+    if(apiRequestThunk){
+      const storeUpdate = new BaseDispatcher(apiRequestThunk, (a: any): any => {
         return a;
       });
       dispatchers.push(storeUpdate);

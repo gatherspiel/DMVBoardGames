@@ -7,10 +7,9 @@ import {getAccessTokenIfPresent} from "../../../../ui/auth/AuthUtils.ts";
 import {AUTH_TOKEN_HEADER_KEY} from "../../../../ui/auth/Constants.ts";
 import {
   clearSessionStorage,
-  getRequestFromCache,
-  updateCache
+  getItemFromSessionStorage,
+  updateSessionStorage
 } from "../../data/SessionStorageUtils.ts";
-import {DISABLE_INTERNAL_REQUEST_CACHE} from "../../../../shared/Params.ts";
 export class InternalApiAction extends BaseThunkAction {
   readonly #defaultResponse: DefaultApiAction;
   readonly #getQueryConfig: (a: any) => ApiRequestConfig;
@@ -36,9 +35,9 @@ export class InternalApiAction extends BaseThunkAction {
     if(cacheKey && cacheKey.length > 0){
       requestKey = `${queryConfig.method ?? ''}_${queryConfig.url}_${JSON.stringify(queryConfig.body) ?? ''}`;
 
-      const cachedResponse = getRequestFromCache(cacheKey, requestKey);
+      const cachedResponse = getItemFromSessionStorage(cacheKey, requestKey);
 
-      if(cachedResponse && !DISABLE_INTERNAL_REQUEST_CACHE){
+      if(cachedResponse){
         return cachedResponse;
       }
     }
@@ -60,7 +59,7 @@ export class InternalApiAction extends BaseThunkAction {
       if(queryConfig.method && queryConfig.method !== ApiActionTypes.GET){
         clearSessionStorage();
       }
-      updateCache(cacheKey, requestKey, response)
+      updateSessionStorage(cacheKey, requestKey, response)
     }
 
     return response;

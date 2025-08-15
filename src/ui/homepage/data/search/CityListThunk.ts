@@ -24,7 +24,7 @@ export const updateCities =  (data:any) => {
 
   const cityArray = data.cityList
 
-  if(!cityArray || cityArray.length === 0){
+  if(!cityArray || cityArray.length === 0 || !cityArray.sort){
     return {};
   }
 

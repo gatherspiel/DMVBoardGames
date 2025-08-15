@@ -148,7 +148,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    this.updateWithDefaultReducer({});
+    this.updateWithCustomReducer({});
   }
 
   getTemplateStyle(): string {
