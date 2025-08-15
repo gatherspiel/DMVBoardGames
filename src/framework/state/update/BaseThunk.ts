@@ -4,6 +4,7 @@ import { BaseDispatcher } from "./BaseDispatcher.ts";
 import {updateGlobalStore} from "../data/GlobalStore.ts";
 
 import type {BaseDynamicComponent} from "../../components/BaseDynamicComponent.ts";
+import {createResponseCacheIfNotExists} from "../data/SessionStorageUtils.ts";
 
 export class BaseThunk {
   thunkAction: BaseThunkAction;
@@ -20,6 +21,7 @@ export class BaseThunk {
 
   createRequestStore(storeId:string){
     this.requestStoreId = storeId;
+    createResponseCacheIfNotExists(this.requestStoreId)
   }
 
 
