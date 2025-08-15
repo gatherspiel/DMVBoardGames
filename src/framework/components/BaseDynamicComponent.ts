@@ -335,6 +335,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       );
     }
 
+
   }
   abstract render(data: Record<any, DisplayItem> | any): string;
 }
