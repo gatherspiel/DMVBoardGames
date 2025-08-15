@@ -117,13 +117,13 @@ export class HomepageComponent extends BaseDynamicComponent {
       </div>
     
    
-      <div id="event-search" class="page-section"></div>
-    
+      <div class="section-separator-medium"></div>
+
       <div data-container="root">
-        <event-search-component id="eventList" class="page-section" isVisible=${!data.hideEvents}>
+        <event-search-component id="event-search-component" class="page-section" isVisible=${!data.hideEvents}>
         </event-search-component>
     
-        <div class="ui-separator"></div>
+        <div class="section-separator-medium"></div>
     
         ${data && !data.hideEvents ? `
         <div id="event-list" class="page-section">
