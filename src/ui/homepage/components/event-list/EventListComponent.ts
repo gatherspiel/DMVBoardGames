@@ -69,7 +69,7 @@ const template = `
 `;
 export class EventListComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("searchResultGroupStore", loadConfig);
+    super(loadConfig);
   }
 
   private getItemHtml(groupId: string, group: GroupSearchResult) {
@@ -106,6 +106,10 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
 
     const groups = data.groups;
     let html = `<div class="ui-section">`;
+
+    if(!groups){
+      return '';
+    }
 
     const groupHtml = Object.keys(groups).reduce((result:any, groupId:any)=>{
       return result+this.getItemHtml(groupId, groups[groupId])

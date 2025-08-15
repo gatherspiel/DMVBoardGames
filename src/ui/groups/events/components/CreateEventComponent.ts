@@ -76,13 +76,13 @@ const loadConfig = {
 
 export class CreateEventComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("create-event-component", loadConfig);
+    super(loadConfig);
 
   }
 
   connectedCallback(){
     if(PageState.pageLoaded) {
-      this.updateStore({isVisible: true})
+      this.updateWithDefaultReducer({isVisible: true})
     }
   }
 

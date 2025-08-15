@@ -23,6 +23,11 @@ export const defaultFunctionConfig = {
 export const updateCities =  (data:any) => {
 
   const cityArray = data.cityList
+
+  if(!cityArray || cityArray.length === 0){
+    return {};
+  }
+
   cityArray.sort();
   cityArray.unshift(DEFAULT_SEARCH_PARAMETER);
 

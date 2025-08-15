@@ -1,10 +1,6 @@
 import type { DisplayItem } from "../../ui/homepage/data/types/DisplayItem.ts";
 
-import {
-  clearSubscribers,
-  createComponentStore,
-  updateComponentStore,
-} from "../state/data/ComponentStore.ts";
+
 import {
   createRequestStoreWithData,
 } from "../state/data/RequestStore.ts";
@@ -18,7 +14,7 @@ import {
 } from "./types/ComponentLoadConfig.ts";
 import type {BaseThunk} from "../state/update/BaseThunk.ts";
 import {
-  hasGlobalStateValue,
+  getGlobalStateValueIfPresent,
   subscribeComponentToGlobalField,
 } from "../state/data/GlobalStore.ts";
 import type {FormInputConfig} from "./types/FormInputConfig.ts";
@@ -30,24 +26,26 @@ export abstract class BaseDynamicComponent extends HTMLElement {
 
   #eventHandlerData:EventHandlerData;
 
-  readonly componentStoreName: string
+  readonly componentId: string
 
   #dependenciesLoaded: boolean = true;
   #componentLoadConfig: ComponentLoadConfig | undefined = undefined;
 
   #formSelector: FormSelector
+
+  #componentState: any = {};
   static instanceCount = 1;
 
-  constructor(componentStoreName: string, loadConfig?: ComponentLoadConfig, enablePreload?:boolean) {
+  constructor(loadConfig?: ComponentLoadConfig, enablePreload?:boolean) {
     super();
 
+
     BaseDynamicComponent.instanceCount++;
-    this.componentStoreName = `${componentStoreName}-${BaseDynamicComponent.instanceCount}`;
 
+    this.componentId = `${this.constructor.name}-${BaseDynamicComponent.instanceCount}`;
     this.#formSelector = new FormSelector();
-    createComponentStore(this.componentStoreName, this, {});
 
-    this.#eventHandlerData = new EventHandlerData(`data-${this.componentStoreName}-element-id`);
+    this.#eventHandlerData = new EventHandlerData(`data-${this.componentId}-element-id`);
 
     if (loadConfig) {
       if(loadConfig.dataFields){
@@ -55,7 +53,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
         const self = this;
         loadConfig.dataFields.forEach((item:DataFieldConfig)=>{
 
-          if(!hasGlobalStateValue(item.fieldName)){
+          if(!getGlobalStateValueIfPresent(item.fieldName)){
             self.#dependenciesLoaded = false;
           }
 
@@ -111,26 +109,26 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       const globalStateLoadConfig = loadConfig[GLOBAL_STATE_LOAD_CONFIG_KEY];
 
       if (globalStateLoadConfig?.[GLOBAL_FIELD_SUBSCRIPTIONS_KEY]) {
+        self.#componentLoadConfig = loadConfig;
+
         globalStateLoadConfig[GLOBAL_FIELD_SUBSCRIPTIONS_KEY].forEach(
           (fieldName: string) => {
           subscribeComponentToGlobalField(self, fieldName);
-          self.#componentLoadConfig = loadConfig;
         });
       }
 
       if (loadConfig[REQUEST_THUNK_REDUCERS_KEY]) {
-        const component = this;
 
         loadConfig[REQUEST_THUNK_REDUCERS_KEY].forEach((
           config: RequestThunkReducerConfig,
         ) => {
           if (!config.thunk) {
             throw new Error(
-              `Missing thunk field in ${self.componentStoreName} reducer configuration`,
+              `Missing thunk field in ${self.componentId} reducer configuration`,
             );
           }
           config.thunk.subscribeComponent(
-            component.componentStoreName,
+            this,
             config?.componentReducer ?? function(data:any){
               return data
             },
@@ -141,14 +139,34 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     }
   }
 
+  updateWithDefaultReducer(data: any) {
+    this.updateWithCustomReducer(()=>data,data)
+  }
+
+  updateWithCustomReducer(updateFunction: (a: any) => any,
+                          data: any) {
+
+
+
+    if (!data) {
+      data = this.#componentState
+    }
+
+    const updatedData = updateFunction(data);
+    if (!updatedData) {
+      throw new Error(
+        `Update function for  must return a JSON object`,
+      );
+    }
+
+    this.updateWithStoreData(updatedData)
+  }
+
   updateWithStoreData(data: any) {
 
-    if(this.#componentLoadConfig?.dataFields && this?.parentElement?.nodeName !== "PAGE-COMPONENT"){
-      throw new Error("Only top level components should have data fields")
-    }
+    this.#componentState = {...this.#componentState,...data};
     this.#eventHandlerData.resetData();
-
-    this.generateAndSaveHTML(data, this.#dependenciesLoaded);
+    this.generateAndSaveHTML(this.#componentState, this.#dependenciesLoaded);
 
     if(this.shadowRoot){
       this.#formSelector.setShadowRoot(this.shadowRoot);
@@ -156,8 +174,12 @@ export abstract class BaseDynamicComponent extends HTMLElement {
     this.#eventHandlerData.attachEventHandlersToDom(this.shadowRoot);
   }
 
-  updateStore(data: any) {
-    updateComponentStore(this.componentStoreName, ()=>data)
+  getComponentStore(){
+    return this.#componentState;
+  }
+
+  hasUserEditPermissions(){
+    return this.#componentState?.permissions?.userCanEdit;
   }
 
   // @ts-ignore
@@ -175,31 +197,27 @@ export abstract class BaseDynamicComponent extends HTMLElement {
   }
 
   addOnChangeEvent(eventConfig: any) {
-    return this.#eventHandlerData.createOnChangeEvent(eventConfig, this.#formSelector, this.componentStoreName);
+    return this.#eventHandlerData.createOnChangeEvent(eventConfig, this.#formSelector, this);
   }
 
   addSubmitEvent(eventConfig: any) {
-    return this.#eventHandlerData.createSubmitEvent(eventConfig, this.#formSelector, this.componentStoreName);
+    return this.#eventHandlerData.createSubmitEvent(eventConfig, this.#formSelector, this);
   }
 
   addClickEvent(eventConfig: any, params?: any) {
-    return this.#eventHandlerData.createClickEvent(eventConfig, this.#formSelector, this.componentStoreName, params);
-  }
-
-  disconnectedCallback(){
-    clearSubscribers(this.componentStoreName);
+    return this.#eventHandlerData.createClickEvent(eventConfig, this.#formSelector, this, params);
   }
 
   updateFromGlobalState(globalStateData:any) {
 
     const componentLoadConfig = this.#componentLoadConfig;
     if(!componentLoadConfig){
-      throw new Error(`Component load config is not defined for component ${this.componentStoreName}`)
+      throw new Error(`Component load config is not defined for component ${this.componentId}`)
     }
     const globalStateLoadConfig =
       componentLoadConfig.globalStateLoadConfig;
     if (!globalStateLoadConfig) {
-      throw new Error(`Component global state config is not defined for component ${this.componentStoreName}`);
+      throw new Error(`Component global state config is not defined for component ${this.componentId}`);
     }
 
     let reducer = componentLoadConfig.globalStateLoadConfig?.defaultGlobalStateReducer;
@@ -226,8 +244,7 @@ export abstract class BaseDynamicComponent extends HTMLElement {
       },
     );
 
-    updateComponentStore(
-      this.componentStoreName,
+    this.updateWithCustomReducer(
       reducer,
       dataToUpdate,
     );

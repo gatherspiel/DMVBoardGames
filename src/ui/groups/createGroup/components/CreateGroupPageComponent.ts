@@ -69,7 +69,7 @@ const loadConfig = {
 
 export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("create-group-page-component", loadConfig);
+    super(loadConfig);
   }
 
   getTemplateStyle(): string {
@@ -77,7 +77,7 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    this.updateStore({isVisible: true})
+    this.updateWithDefaultReducer({isVisible: true})
   }
 
   render(createGroupData: any): string {

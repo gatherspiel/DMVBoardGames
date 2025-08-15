@@ -5,6 +5,7 @@ import {updateGlobalStore} from "../data/GlobalStore.ts";
 import {
   createRequestStore,
 } from "../data/RequestStore.ts";
+import type {BaseDynamicComponent} from "../../components/BaseDynamicComponent.ts";
 
 
 
@@ -43,38 +44,28 @@ export class BaseThunk {
   }
 
   subscribeComponent(
-    componentStoreName: string,
+    component: BaseDynamicComponent,
     reducerFunction: (a: any) => any,
     field?: string,
   ) {
 
 
-    const newDispatcherName = componentStoreName.split("-")[0];
-    const newStateNumber = parseInt(componentStoreName.split("-")[1]);
-
     let oldDispatcherIndex = -1;
-
     let i = 0;
-    this.dispatchers.forEach((dispatcher: BaseDispatcher) => {
-      const number = parseInt(dispatcher.storeField.split("-")[1]);
-      const dispatcherName = dispatcher.storeField.split("-")[0];
 
-      if (number > newStateNumber && dispatcherName === newDispatcherName) {
-        throw new Error(
-          `Cannot subscribe ${dispatcherName} to an old component state`,
-        );
-      }
-      if (dispatcherName === newDispatcherName) {
+    this.dispatchers.forEach((dispatcher: BaseDispatcher) => {
+      if(dispatcher.getComponent() === component) {
         oldDispatcherIndex = i;
+      } else {
+        i++;
       }
-      i++;
     });
 
     if (oldDispatcherIndex !== -1) {
       this.dispatchers = this.dispatchers.splice(oldDispatcherIndex, 1);
     }
     this.dispatchers.push(
-      new BaseDispatcher(componentStoreName, reducerFunction, field),
+      new BaseDispatcher(component, reducerFunction, field),
     );
   }
 

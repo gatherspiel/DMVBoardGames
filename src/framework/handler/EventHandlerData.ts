@@ -4,7 +4,7 @@ import {BaseDispatcher} from "../state/update/BaseDispatcher.ts";
 import {EventHandlerAction} from "../state/update/event/EventHandlerAction.ts";
 import {EventThunk} from "../state/update/event/EventThunk.ts";
 import type {EventValidationResult} from "../state/update/event/types/EventValidationResult.ts";
-import {getComponentStore} from "../state/data/ComponentStore.ts";
+import type {BaseDynamicComponent} from "../components/BaseDynamicComponent.ts";
 
 type EventConfig = {
   eventType: string;
@@ -51,31 +51,31 @@ export class EventHandlerData {
     }
   }
 
-  createOnChangeEvent(eventConfig: any, formSelector:FormSelector, componentStoreName:string) {
+  createOnChangeEvent(eventConfig: any, formSelector:FormSelector, component:BaseDynamicComponent) {
     const eventHandler = this.#createHandler(
       eventConfig,
       formSelector,
-      componentStoreName,
+      component,
     );
     return this.#saveEventHandler(eventHandler, "change");
   }
 
-  createSubmitEvent(eventConfig: any, formSelector:FormSelector, componentStoreName:string) {
+  createSubmitEvent(eventConfig: any, formSelector:FormSelector,component:BaseDynamicComponent) {
     let eventHandler;
     eventHandler = this.#createHandler(
       eventConfig,
       formSelector,
-      componentStoreName,
+      component,
     );
     return this.#saveEventHandler(eventHandler, "submit");
   }
 
-  createClickEvent(eventConfig: any, formSelector:FormSelector, componentStoreName:string, params?: any) {
+  createClickEvent(eventConfig: any, formSelector:FormSelector, component:BaseDynamicComponent, params?: any) {
     let eventHandler;
     eventHandler = this.#createHandler(
       eventConfig,
       formSelector,
-      componentStoreName,
+      component,
       params,
     );
     return this.#saveEventHandler(eventHandler, "click");
@@ -98,14 +98,14 @@ export class EventHandlerData {
   #createHandler(
     eventConfig: EventHandlerThunkConfig,
     formSelector: FormSelector,
-    componentStoreName: string,
+    component: BaseDynamicComponent,
     params?: any
   ) {
 
 
     const dispatchers: BaseDispatcher[] = [];
     let componentStoreUpdate = new BaseDispatcher(
-        componentStoreName,
+        component,
         eventConfig.componentReducer,
       );
     dispatchers.push(componentStoreUpdate);
@@ -120,7 +120,7 @@ export class EventHandlerData {
 
     const request: EventHandlerAction = new EventHandlerAction(
       eventConfig.eventHandler,
-      componentStoreName,
+      component,
       formSelector,
       params
     );
@@ -134,7 +134,7 @@ export class EventHandlerData {
       const validatorFunction = eventConfig.validator;
       if (validatorFunction) {
         const validator = function (): EventValidationResult {
-          const componentData = getComponentStore(componentStoreName);
+          const componentData = component.getComponentStore();
           return validatorFunction(formSelector, componentData);
         };
 

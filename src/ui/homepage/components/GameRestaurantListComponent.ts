@@ -5,7 +5,6 @@ import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandle
 import {GLOBAL_STATE_LOAD_CONFIG_KEY} from "../../../framework/components/types/ComponentLoadConfig.ts";
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../shared/Constants.ts";
 
-export const GAME_RESTAURANT_LIST_STORE = "gameRestaurantListStore";
 
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
@@ -27,7 +26,7 @@ const template = `
 `;
 export class GameRestaurantListComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super(GAME_RESTAURANT_LIST_STORE, loadConfig);
+    super(loadConfig);
   }
 
   override getTemplateStyle(): string {

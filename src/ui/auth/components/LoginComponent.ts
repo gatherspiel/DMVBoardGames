@@ -41,7 +41,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
 
   hasRendered: boolean;
   constructor() {
-    super("loginComponentStore", {
+    super({
       [REQUEST_THUNK_REDUCERS_KEY]: [
         {
           thunk: LOGIN_THUNK,

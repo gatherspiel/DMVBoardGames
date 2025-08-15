@@ -5,10 +5,10 @@ let globalState: Record<string, any> = {};
 let globalStateCreated: boolean = false;
 let globalStateSubscribers: Record<string, BaseDynamicComponent[]> = {};
 
-export function hasGlobalStateValue(fieldName: string): string {
+export function getGlobalStateValueIfPresent(fieldName: string): string | null{
 
   if (!(fieldName in globalState)) {
-    throw new Error(`Could not find ${fieldName} in global state`);
+    return null;
   }
   return globalState[fieldName];
 }
@@ -69,7 +69,7 @@ export function subscribeComponentToGlobalField(
 ) {
   if (!(fieldName in globalState)) {
     throw new Error(
-      `Component id: ${component.componentStoreName} cannot subscribe to field ${fieldName}.
+      `Component id: ${component.componentId} cannot subscribe to field ${fieldName}.
        Make sure the field is configured as a field name using setupGlobalState`,
     );
   }
@@ -81,4 +81,14 @@ export function subscribeComponentToGlobalField(
       globalStateSubscribers[fieldName].push(component);
     }
   }
+
+  component.updateFromGlobalState(structuredClone(globalState))
+}
+
+export function clearGlobalStore(){
+  Object.keys(globalState).forEach(key=>{
+    globalState[key] = {};
+  });
+
+  globalStateSubscribers = {};
 }

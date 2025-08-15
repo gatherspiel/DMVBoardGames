@@ -115,7 +115,7 @@ const loadConfig = {
 
 export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("event-details-component", loadConfig);
+    super(loadConfig);
   }
 
 
@@ -124,6 +124,10 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: EventDetailsData): string {
+
+    if(!data || !data.name){
+      return this.showLoadingHtml();
+    }
     if(data.isEditing){
       return this.renderEditMode(data);
     }

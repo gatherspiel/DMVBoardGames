@@ -39,12 +39,12 @@ const template = `
 
 export class GroupEventComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("event-component");
+    super();
     this.id = "";
   }
 
   connectedCallback() {
-    this.updateStore({});
+    this.updateWithDefaultReducer({});
   }
 
   render(): string {

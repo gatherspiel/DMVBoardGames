@@ -56,11 +56,11 @@ const loadConfig = {
 
 export class HomepageComponent extends BaseDynamicComponent {
   constructor(enablePreload?:boolean){
-    super("homepage-component",loadConfig, enablePreload);
+    super(loadConfig, enablePreload);
   }
 
   connectedCallback(){
-    this.updateStore({
+    this.updateWithDefaultReducer({
       hideEvents: false,
       hideConventions: true,
       hideRestaurants: true,
@@ -68,16 +68,15 @@ export class HomepageComponent extends BaseDynamicComponent {
     });
   }
   render(data:any){
-
     return `
         <div class="ui-section">
-        <create-group-component>
-        </create-group-component>
+        <open-create-group-component>
+        </open-create-group-component>
         <nav>
           <div id="nav-container">
             <div>Click for more info about</div>
             
-            <div id = "more-info-div">
+            <div class = "homepage-default-action-div">
               <div class = "image-div">  
                 <img src="/assets/house.png">
               </div>
