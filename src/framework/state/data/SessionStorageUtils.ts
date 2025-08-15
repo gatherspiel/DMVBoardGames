@@ -1,4 +1,9 @@
 
+export function createResponseCacheIfNotExists(requestStoreName:string){
+  if(!sessionStorage.getItem(requestStoreName)){
+    createSessionStoreCache(requestStoreName);
+  }
+}
 
 export function createSessionStoreCache(requestStoreName:string){
   sessionStorage.setItem(requestStoreName, JSON.stringify({}))
