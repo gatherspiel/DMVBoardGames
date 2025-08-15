@@ -42,6 +42,10 @@ export abstract class AbstractPageComponent extends HTMLElement {
         PageState.activeComponent = getComponent(prevState.component.localName)
         self.appendChild(PageState.activeComponent);
       }
+
+      else {
+        window.location.reload();
+      }
     });
   }
 

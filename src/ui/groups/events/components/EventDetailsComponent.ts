@@ -247,10 +247,10 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
     }
     return `
       <div class="ui-section">
-        <h1>${data.name}</h1>
+        <h1></h1>
            
         ${generateButton({
-          text: "Event page",
+          text: data.name,
           component: this,
           [EVENT_HANDLER_CONFIG_KEY]: REDIRECT_HANDLER_CONFIG,
           [EVENT_HANDLER_PARAMS_KEY]: {url: data.url}
