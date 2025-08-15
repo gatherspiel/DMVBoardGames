@@ -248,7 +248,6 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
     return `
       <div class="ui-section">
         <h1></h1>
-           
         ${generateButton({
           text: data.name,
           component: this,
