@@ -182,7 +182,7 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
       id=${dropdownConfig.id}
       name=${dropdownConfig.name}
       value=${dropdownConfig.data}
-      ${this.addOnChangeEvent(dropdownConfig[EVENT_HANDLER_CONFIG_KEY])}
+      ${this.createEvent(dropdownConfig[EVENT_HANDLER_CONFIG_KEY], "change")}
     >
     ${dropdownConfig.data?.map(
       (item: any) =>
