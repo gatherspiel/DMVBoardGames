@@ -4,3 +4,5 @@ dist/
 dist_groups/
 dist_main/
 node_modules/
+.yalc
+yalc.lock

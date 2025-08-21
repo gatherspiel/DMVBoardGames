@@ -4,6 +4,7 @@ import checker from "vite-plugin-checker";
 import { fileURLToPath } from "node:url";
 import inlineSource from "vite-plugin-inline-source";
 import handlebars from 'vite-plugin-handlebars';
+import { ViteMinifyPlugin } from 'vite-plugin-minify'
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -17,9 +18,9 @@ export default defineConfig({
     handlebars({
       partialDirectory: resolve(__dirname, 'src/partials'),
     }),
-    inlineSource()
+    inlineSource(),
+    ViteMinifyPlugin({}),
   ],
-
   root: "src/",
   publicDir: "../public",
   build: {
@@ -37,6 +38,8 @@ export default defineConfig({
         event: resolve(__dirname, "src/groups/event.html"),
         create_event: resolve(__dirname, "src/groups/addEvent.html"),
         feedback: resolve(__dirname, "src/feedback.html"),
+        login: resolve(__dirname, "src/login.html"),
+
       },
       output:{
         chunkFileNames: (chunkInfo) => {

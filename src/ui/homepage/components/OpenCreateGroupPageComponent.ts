@@ -1,43 +1,48 @@
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
-import {BaseTemplateDynamicComponent} from "../../../framework/components/BaseTemplateDynamicComponent.ts";
 import {CREATE_GROUP_PAGE_HANDLER_CONFIG} from "../../../shared/nav/NavEventHandlers.ts";
+import {EVENT_HANDLER_CONFIG_KEY, IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
+import {
+  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
+  GLOBAL_STATE_LOAD_CONFIG_KEY
+} from "@bponnaluri/places-js";
+import {BaseDynamicComponent} from "@bponnaluri/places-js";
 
-
-const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
-  `
 
 const loadConfig = {
-  globalStateLoadConfig: {
-    globalFieldSubscriptions: ["isLoggedIn"],
+  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
+    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
+    defaultGlobalStateReducer:(data:any)=>{
+      return {
+        [IS_LOGGED_IN_KEY]: data?.isLoggedIn?.isLoggedIn
+      }
+    }
   },
 }
-export class OpenCreateGroupPageComponent extends BaseTemplateDynamicComponent {
+export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
 
   constructor() {
-    super('create-group-component', loadConfig);
+    super(loadConfig);
   }
-
-  override getTemplateStyle(): string {
-    return template;
-  }
-
-
 
   render(data: any){
-    if(!data.isLoggedIn){
+    if(!data[IS_LOGGED_IN_KEY]){
       return ''
     }
     return `
+        <div id="open-create-group-div" class= "homepage-default-action-div">
+        <div class = "image-div">  
+          <img src="/assets/house.png">
+        </div>
         ${generateButton({
           text: "Create group",
           component: this,
-          eventHandlerConfig: CREATE_GROUP_PAGE_HANDLER_CONFIG,
+          [EVENT_HANDLER_CONFIG_KEY]: CREATE_GROUP_PAGE_HANDLER_CONFIG,
         })}
+        </div>
     `
   }
 }
 
-if (!customElements.get("create-group-component")) {
-  customElements.define("create-group-component", OpenCreateGroupPageComponent);
+if (!customElements.get("open-create-group-component")) {
+  customElements.define("open-create-group-component", OpenCreateGroupPageComponent);
 }

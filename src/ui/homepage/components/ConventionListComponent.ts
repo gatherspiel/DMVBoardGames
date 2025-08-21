@@ -1,20 +1,21 @@
 import type { Convention } from "../data/types/Convention.ts";
-import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
-import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
-import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
-
-export const CONVENTION_LIST_STORE = "conventionListStore";
+import {REDIRECT_HANDLER_CONFIG} from "@bponnaluri/places-js";
+import {
+  DEFAULT_GLOBAL_STATE_REDUCER_KEY,
+  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
+  GLOBAL_STATE_LOAD_CONFIG_KEY
+} from "@bponnaluri/places-js";
+import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../shared/Constants.ts";
 
 const loadConfig = {
-  requestThunkReducers: [
-    {
-      thunk: LOCATIONS_THUNK,
-      componentStoreReducer: (data: any) => {
-        return data.conventions;
-      },
-    },
-  ],
+  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
+    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: ["gameLocations"],
+    [DEFAULT_GLOBAL_STATE_REDUCER_KEY]: (data:any) => {
+      return data.gameLocations.conventions;
+    }
+  },
 };
 
 const template = `
@@ -38,18 +39,20 @@ const template = `
 
 export class ConventionListComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super(CONVENTION_LIST_STORE, loadConfig);
+    super(loadConfig);
   }
 
   getItemHtml(convention: Convention) {
+
+    console.log(Date.now())
     return `
     <div id = convention-${convention.id} class="conv-list-item">
      <h3>
       ${generateButton({
         text: `${convention.name}`,
         component: this,
-        eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
-        eventHandlerParams: {url: convention.url}
+        [EVENT_HANDLER_CONFIG_KEY]: REDIRECT_HANDLER_CONFIG,
+        [EVENT_HANDLER_PARAMS_KEY]: {url: convention.url}
       })}
       </h3>
       <p>Days: ${convention.days.join(", ")}</p>
@@ -62,8 +65,11 @@ export class ConventionListComponent extends BaseTemplateDynamicComponent {
     return template;
   }
   render(data: Record<any, Convention>) {
-    let html = `<div class="ui-section"><h1 class="hideOnMobile">Upcoming conventions</h1>
-        <h2 class="showOnMobile">Upcoming conventions</h2>`;
+    let html = `
+
+      <div class="ui-section"><h1 class="hideOnMobile">Upcoming conventions</h1>
+      <h2 class="showOnMobile">Upcoming conventions</h2>`;
+
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;

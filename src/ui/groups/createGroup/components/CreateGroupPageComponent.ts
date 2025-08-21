@@ -1,14 +1,25 @@
-import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import { CREATE_GROUP_EVENT_CONFIG } from "../CreateGroupPageHandler.ts";
 import { CREATE_GROUP_REQUEST_THUNK } from "../data/CreateGroupRequestThunk.ts";
-import type { CreateGroupData } from "../data/types/CreateGroupData.ts";
 import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
 } from "../../Constants.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
-import {generateErrorMessage} from "../../../../framework/components/utils/StatusIndicators.ts";
+import {generateErrorMessage} from "@bponnaluri/places-js";
+import {
+  COMPONENT_LABEL_KEY,
+  EVENT_HANDLER_CONFIG_KEY,
+  IS_LOGGED_IN_KEY,
+  SUCCESS_MESSAGE_KEY
+} from "../../../../shared/Constants.ts";
+import {
+  DEFAULT_GLOBAL_STATE_REDUCER_KEY,
+  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
+  GLOBAL_STATE_LOAD_CONFIG_KEY,
+  REQUEST_THUNK_REDUCERS_KEY
+} from "@bponnaluri/places-js";
+import {BaseTemplateDynamicComponent} from "@bponnaluri/places-js";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -25,32 +36,32 @@ const templateStyle = `
 `;
 
 const loadConfig = {
-  requestThunkReducers: [
+  [REQUEST_THUNK_REDUCERS_KEY]: [
     {
       thunk: CREATE_GROUP_REQUEST_THUNK,
-      componentStoreReducer: function (data: any) {
+      componentReducer:  (data: any) => {
         if (data.errorMessage) {
           return {
             errorMessage: data.errorMessage,
-            successMessage: "",
+            [SUCCESS_MESSAGE_KEY]: "",
           };
         } else {
           return {
             errorMessage: "",
-            successMessage: "Successfully created group",
+            [SUCCESS_MESSAGE_KEY]: "Successfully created group",
           };
         }
       },
     },
   ],
-  globalStateLoadConfig: {
-    globalFieldSubscriptions: ["isLoggedIn"],
-    defaultGlobalStateReducer: function (updates: Record<string, string>) {
+  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
+    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
+    [DEFAULT_GLOBAL_STATE_REDUCER_KEY]: (updates: Record<string, string>) => {
       return {
         name: "",
         description: "",
         url: "",
-        isVisible: updates["isLoggedIn"],
+        isVisible: updates[IS_LOGGED_IN_KEY],
       };
     },
   },
@@ -58,7 +69,7 @@ const loadConfig = {
 
 export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("create-group-page-component", loadConfig);
+    super(loadConfig);
   }
 
   getTemplateStyle(): string {
@@ -66,10 +77,10 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    this.updateStore({isVisible: true})
+    this.retrieveData({isVisible: true})
   }
 
-  render(createGroupData: CreateGroupData): string {
+  render(createGroupData: any): string {
 
     return `
       <div id="create-group-page-container">
@@ -80,23 +91,23 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
               ? `
                 <form onsubmit="return false">
                 
-                 ${this.generateInputFormItem({
+                 ${this.addShortInput({
                   id: GROUP_NAME_INPUT,
-                  componentLabel: "Group Name",
+                  [COMPONENT_LABEL_KEY]: "Group Name",
                   inputType: "text",
                   value: createGroupData.name ?? ''
                 })}   
                  
-                ${this.generateInputFormItem({
+                ${this.addShortInput({
                   id: GROUP_URL_INPUT,
-                  componentLabel: "Group URL",
+                  [COMPONENT_LABEL_KEY]: "Group URL",
                   inputType: "text",
                   value: createGroupData.url ?? ''
                 })}   
                   
-                ${this.generateTextInputFormItem({
+                ${this.addTextInput({
                   id: GROUP_DESCRIPTION_INPUT,
-                  componentLabel: "Group Description",
+                  [COMPONENT_LABEL_KEY]: "Group Description",
                   inputType: "text",
                   value: createGroupData.description ?? ''
                 })}   
@@ -106,12 +117,12 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
                  ${generateButton({
                   text: "Create group",
                   component: this,
-                  eventHandlerConfig: CREATE_GROUP_EVENT_CONFIG,
+                  [EVENT_HANDLER_CONFIG_KEY]: CREATE_GROUP_EVENT_CONFIG,
                 })}
              
                 </form>
                
-                <p class="success-message">${createGroupData?.successMessage?.trim() ?? ""}</p>
+                <p class="${SUCCESS_MESSAGE_KEY}">${createGroupData?.[SUCCESS_MESSAGE_KEY]?.trim() ?? ""}</p>
                 ${generateErrorMessage(createGroupData.errorMessage)}
               `
               : `<p>You must log in to create a group </p>`

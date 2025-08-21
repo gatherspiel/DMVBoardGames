@@ -1,8 +1,8 @@
 import { API_ROOT, USE_MOCK } from "../../../../shared/Params.ts";
 
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.ts";
-import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
-import type { ApiRequestConfig } from "../../../../framework/state/update/api/types/ApiRequestConfig.ts";
+import { generateApiThunk } from "@bponnaluri/places-js";
+import type { ApiRequestConfig } from "@bponnaluri/places-js";
 
 const MOCK_CITY_LIST = ["Arlington", "DC"];
 
@@ -12,23 +12,28 @@ function getCitiesQueryConfig(): ApiRequestConfig {
   };
 }
 
-const mockFunction = function () {
-  return MOCK_CITY_LIST;
-};
+const mockFunction =  () => MOCK_CITY_LIST;
+
 
 export const defaultFunctionConfig = {
   defaultFunction: mockFunction,
   defaultFunctionPriority: USE_MOCK,
 };
 
-export const updateCities = function (cities: Record<number, string>): any {
-  const cityArray = Object.values(cities);
+export const updateCities =  (data:any) => {
+
+  const cityArray = data.cityList
+
+  if(!cityArray || cityArray.length === 0 || !cityArray.sort){
+    return {};
+  }
+
   cityArray.sort();
   cityArray.unshift(DEFAULT_SEARCH_PARAMETER);
 
   let id = 0;
   let cityData: any[] = [];
-  cityArray.map((location) => {
+  cityArray.map((location:any) => {
     cityData.push({
       id: id,
       name: location,
@@ -44,4 +49,6 @@ export const updateCities = function (cities: Record<number, string>): any {
 export const CITY_LIST_THUNK = generateApiThunk({
   queryConfig: getCitiesQueryConfig,
   defaultFunctionConfig: defaultFunctionConfig,
+}).addGlobalStateReducer((data:any)=> {
+  return {cityList: data}
 });

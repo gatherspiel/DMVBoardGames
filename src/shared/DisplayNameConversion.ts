@@ -11,16 +11,5 @@ const DISPLAY_NAME_MAPPING:Record<string, string> = {
 
 
 export function getDisplayName(name:string):string {
-  if(name in DISPLAY_NAME_MAPPING){
-    return DISPLAY_NAME_MAPPING[name];
-  }
-  return name;
-}
-
-export function getDisplayNameArray(names:string[]):string[] {
-  const updatedNames:string[] = [];
-  names.forEach(function(name){
-    updatedNames.push(getDisplayName(name))
-  })
-  return updatedNames;
+  return DISPLAY_NAME_MAPPING[name] ?? name;
 }

@@ -3,7 +3,7 @@
 <head>
   <script inline-source src="ui/preload/GroupPreload.js"></script>
   <meta charset="UTF-8"/>
-  <style inline-source src="/styles/styles.css" type="text/css"></style>
+  <style inline-source src="../public/styles/styles.css" type="text/css"></style>
 
   <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,6 +15,7 @@
   {{>navbar}}
   <page-component
     componentName="group-page-component"
+    enablePreload="true"
   >
   </page-component>
 </div>

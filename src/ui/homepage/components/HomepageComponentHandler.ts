@@ -1,36 +1,17 @@
 //@ts-ignore
-import type {EventHandlerThunkConfig} from "../../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
+import type {EventHandlerThunkConfig} from "@bponnaluri/places-js";
 
 export const HOMEPAGE_COMPONENT_NAV: EventHandlerThunkConfig = {
 
   //@ts-ignore
-  eventHandler: function(event){
+  eventHandler: (event)=>{
 
-    if(event.params.location === '#convention-list'){
-      return {
-        hideEvents: true,
-        hideConventions: false,
-        hideRestaurants: true,
-        hideStores: true
-      }
-    }
-
-    if(event.params.location === '#game-store'){
-      return {
-        hideEvents: true,
-        hideConventions: true,
-        hideRestaurants: true,
-        hideStores: false
-      }
-    }
-
-    if(event.params.location === '#game-restaurant'){
-      return {
-        hideEvents: true,
-        hideConventions: true,
-        hideRestaurants: false,
-        hideStores: true
-      }
+    console.log(Date.now())
+    return {
+      hideEvents: event.params.location !== '#event-search',
+      hideConventions: event.params.location !== '#convention-list',
+      hideRestaurants: event.params.location !== '#game-restaurant',
+      hideGameStores: event.params.location !== '#game-store'
     }
 
   },

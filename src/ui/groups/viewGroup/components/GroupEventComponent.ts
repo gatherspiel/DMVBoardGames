@@ -1,11 +1,12 @@
-import { deserializeJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
-import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { deserializeJSONProp } from "@bponnaluri/places-js";
+import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 import {
   convertDateTimeForDisplay,
   convertLocationStringForDisplay
-} from "../../../../framework/utils/EventDataUtils.ts";
+} from "@bponnaluri/places-js";
 import {VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
+import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../../shared/Constants.ts";
 
 const template = `
 
@@ -30,7 +31,10 @@ const template = `
    }
    
    .event {
-      border-bottom: 1px solid var(--clr-lighter-blue);
+      border-bottom:  5px solid;
+      border-image-source: url(assets/Section_Border_Tiny.png);
+      border-image-slice: 5 5;
+      border-image-repeat: round;
    }
     
   </style>
@@ -38,12 +42,12 @@ const template = `
 
 export class GroupEventComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super("event-component");
+    super();
     this.id = "";
   }
 
   connectedCallback() {
-    this.updateStore({});
+    this.retrieveData({});
   }
 
   render(): string {
@@ -63,8 +67,8 @@ export class GroupEventComponent extends BaseTemplateDynamicComponent {
             class: "group-webpage-link",
             text: "View event details",
             component: this,
-            eventHandlerConfig: VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG,
-            eventHandlerParams: {id:eventData.id,groupId:eventData.groupId}
+            [EVENT_HANDLER_CONFIG_KEY]: VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG,
+            [EVENT_HANDLER_PARAMS_KEY]: {id:eventData.id,groupId:eventData.groupId}
           })}
 
         </div>

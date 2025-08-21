@@ -1,4 +1,4 @@
-import type { EventHandlerThunkConfig } from "../../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
+import type { EventHandlerThunkConfig } from "@bponnaluri/places-js";
 import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
@@ -7,7 +7,7 @@ import {
 import {CREATE_GROUP_REQUEST_THUNK} from "./data/CreateGroupRequestThunk.ts";
 
 export const CREATE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
-  eventHandler: function (params): any {
+  eventHandler:  (params) => {
     return {
       name: params.formSelector.getValue(GROUP_NAME_INPUT),
       description: params.formSelector.getValue(GROUP_DESCRIPTION_INPUT),
@@ -15,7 +15,5 @@ export const CREATE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
     };
   },
   apiRequestThunk: CREATE_GROUP_REQUEST_THUNK,
-  componentReducer: function (data: any) {
-    return data;
-  },
+  componentReducer:  (data: any) => data
 };

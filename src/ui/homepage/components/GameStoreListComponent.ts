@@ -1,20 +1,19 @@
 import type { GameStore } from "../data/types/GameStore.ts";
-import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
-import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
-import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
-
-export const GAME_STORE_LIST_STORE = "gameStoreListStore";
+import {REDIRECT_HANDLER_CONFIG} from "@bponnaluri/places-js";
+import {
+  GLOBAL_STATE_LOAD_CONFIG_KEY,
+} from "@bponnaluri/places-js";
+import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../shared/Constants.ts";
 
 const loadConfig = {
-  requestThunkReducers: [
-    {
-      thunk: LOCATIONS_THUNK,
-      componentStoreReducer: (data: any) => {
-        return data.gameStores;
-      },
-    },
-  ],
+  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
+    globalFieldSubscriptions: ["gameLocations"],
+    defaultGlobalStateReducer: (data:any)=>{
+      return data.gameLocations.gameStores;
+    }
+  },
 };
 
 const template = `
@@ -34,7 +33,7 @@ const template = `
 `;
 export class GameStoreListComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super(GAME_STORE_LIST_STORE, loadConfig);
+    super(loadConfig);
   }
 
   override getTemplateStyle(): string {
@@ -48,8 +47,8 @@ export class GameStoreListComponent extends BaseTemplateDynamicComponent {
         ${generateButton({
           text: `${gameStore.name}`,
           component: this,
-          eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
-          eventHandlerParams: {url: gameStore.url}
+          [EVENT_HANDLER_CONFIG_KEY]: REDIRECT_HANDLER_CONFIG,
+          [EVENT_HANDLER_PARAMS_KEY]: {url: gameStore.url}
         })}
       </h3>
     <p>Location: ${gameStore.location}</p>
@@ -59,7 +58,7 @@ export class GameStoreListComponent extends BaseTemplateDynamicComponent {
 
   render(data: Record<any, GameStore>) {
     let html = `<div class="ui-section"><h1 class="hideOnMobile">Game Stores</h1>
-    <h2>Game stores</h2>`;
+    <h2 class="showOnMobile">Game stores</h2>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;

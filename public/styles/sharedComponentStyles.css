@@ -1,3 +1,4 @@
+/* Styles that are shared with components */
 a, button {
   border-color: var(--clr-darker-blue);
   border-radius: 5px;
@@ -17,18 +18,13 @@ a:hover {
   background-color: var(--clr-darker-blue);
 }
 
-a {
-  border: 1px solid var(--clr-darker-blue);
-  text-decoration: none
-}
-
 .ui-section {
   color: var(--clr-dark-blue);
   font-size: 1.5rem;
   font-weight: 600;
-  padding-left: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  visibility: visible;
 }
 
 label {
@@ -40,10 +36,6 @@ p {
   color: var(--clr-dark-blue);
   font-size: 1.5rem;
   font-weight: 600;
-}
-
-.ui-input {
-  display: inline-block;
 }
 
 .success-message {
@@ -72,10 +64,6 @@ p {
   }
 }
 
-.ui-section {
-  visibility: visible !important;
-}
-
 
 .raised {
   position: relative;
@@ -85,7 +73,6 @@ p {
   padding: 0;
   cursor: pointer;
   outline-offset: 4px;
-  transition: filter 600ms;
 }
 
 .shadow {
@@ -98,7 +85,6 @@ p {
   background: hsl(0deg 0% 0% / 0.25);
   will-change: transform;
   transform: translateY(2px);
-  transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
 }
 
 .edge {
@@ -127,7 +113,6 @@ p {
   background: var(--clr-light-blue);
   will-change: transform;
   transform: translateY(-4px);
-  transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
 }
 
 
@@ -158,5 +143,3 @@ p {
 .activeHover:focus:not(:focus-visible) {
   outline: none;
 }
-
-

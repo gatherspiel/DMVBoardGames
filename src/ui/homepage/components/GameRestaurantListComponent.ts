@@ -1,20 +1,18 @@
 import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
-import { LOCATIONS_THUNK } from "../data/search/LocationsThunk.ts";
-import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
-import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
+import {REDIRECT_HANDLER_CONFIG} from "@bponnaluri/places-js";
+import {GLOBAL_STATE_LOAD_CONFIG_KEY} from "@bponnaluri/places-js";
+import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../shared/Constants.ts";
 
-export const GAME_RESTAURANT_LIST_STORE = "gameRestaurantListStore";
 
 const loadConfig = {
-  requestThunkReducers: [
-    {
-      thunk: LOCATIONS_THUNK,
-      componentStoreReducer: (data: any) => {
-        return data.gameRestaurants;
-      },
-    },
-  ],
+  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
+    globalFieldSubscriptions: ["gameLocations"],
+    defaultGlobalStateReducer: (data:any)=>{
+      return data.gameLocations.gameRestaurants;
+    }
+  },
 };
 
 const template = `
@@ -28,7 +26,7 @@ const template = `
 `;
 export class GameRestaurantListComponent extends BaseTemplateDynamicComponent {
   constructor() {
-    super(GAME_RESTAURANT_LIST_STORE, loadConfig);
+    super(loadConfig);
   }
 
   override getTemplateStyle(): string {
@@ -42,8 +40,8 @@ export class GameRestaurantListComponent extends BaseTemplateDynamicComponent {
         ${generateButton({
           text: `${gameRestaurant.name}`,
           component: this,
-          eventHandlerConfig: REDIRECT_HANDLER_CONFIG,
-          eventHandlerParams: {url: gameRestaurant.url}
+          [EVENT_HANDLER_CONFIG_KEY]: REDIRECT_HANDLER_CONFIG,
+          [EVENT_HANDLER_PARAMS_KEY]: {url: gameRestaurant.url}
         })}
       </h3>
     <p>Location: ${gameRestaurant.location}</p>
@@ -52,6 +50,7 @@ export class GameRestaurantListComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: Record<any, GameRestaurant>) {
+
     let html = `<div class ="ui-section">
     <h1 class="hideOnMobile">Board Game Bars and Cafés</h1>
     <h2 class="showOnMobile">Board Game Bars and Cafés</h2>

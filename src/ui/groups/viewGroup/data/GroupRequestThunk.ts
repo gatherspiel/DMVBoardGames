@@ -1,7 +1,8 @@
 import { API_ROOT } from "../../../../shared/Params.js";
-import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
-import type { ApiRequestConfig } from "../../../../framework/state/update/api/types/ApiRequestConfig.ts";
-import {generatePreloadThunk} from "../../../../framework/state/update/PreloadThunk.ts";
+import { generateApiThunk } from "@bponnaluri/places-js";
+import type { ApiRequestConfig } from "@bponnaluri/places-js";
+
+import {generatePreloadThunk} from "@bponnaluri/places-js";
 
 function getGroupRequestConfig(requestParams: any): ApiRequestConfig {
   return {

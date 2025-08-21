@@ -5,6 +5,7 @@ export const GROUP_COMPONENT_STORE = "group_component_store";
 export const GROUP_NAME_INPUT = "group-name-input";
 export const GROUP_URL_INPUT = "group-url-input";
 export const GROUP_DESCRIPTION_INPUT = "group-description-input";
+export const GROUP_DESCRIPTION_TEXT = "group-description-text"
 
 export const EVENT_NAME_INPUT = "event-name-input";
 export const EVENT_DESCRIPTION_INPUT = "event-description-input";

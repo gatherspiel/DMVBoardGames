@@ -1,39 +1,28 @@
-import {
-  LOGIN_THUNK,
-  getLoginComponentStoreFromLoginResponse,
-} from "../data/LoginThunk.ts";
+import {getLoginComponentStoreFromLoginResponse, LOGIN_THUNK,} from "../data/LoginThunk.ts";
 
-import { getLoginComponentStoreFromLogoutResponse } from "../data/LogoutThunk.ts";
+import {getLoginComponentStoreFromLogoutResponse, LOGOUT_THUNK} from "../data/LogoutThunk.ts";
 
-import {
-  LOGIN_FORM_ID,
-  PASSWORD_INPUT,
-  USERNAME_INPUT,
-} from "../Constants.js";
-import type { LoginComponentStore } from "../types/LoginComponentStore.ts";
-import {
-  LOGIN_EVENT_CONFIG,
-  LOGOUT_EVENT_CONFIG,
-  REGISTER_EVENT_CONFIG,
-} from "../LoginComponentEventHandlers.ts";
-import { LOGOUT_THUNK } from "../data/LogoutThunk.ts";
-import {
-  getLoginComponentStoreFromRegisterResponse,
-  REGISTER_USER_THUNK,
-} from "../data/RegisterUserThunk.ts";
-import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT,} from "../Constants.js";
+import type {LoginComponentStore} from "../types/LoginComponentStore.ts";
+import {LOGIN_EVENT_CONFIG, REGISTER_EVENT_CONFIG,} from "../LoginComponentEventHandlers.ts";
+import {getLoginComponentStoreFromRegisterResponse, REGISTER_USER_THUNK,} from "../data/RegisterUserThunk.ts";
+import {COMPONENT_LABEL_KEY, EVENT_HANDLER_CONFIG_KEY, IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
+import {BaseTemplateDynamicComponent, DATA_FIELDS, REQUEST_THUNK_REDUCERS_KEY} from "@bponnaluri/places-js";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
-import {generateErrorMessage} from "../../../framework/components/utils/StatusIndicators.ts";
+import {generateErrorMessage} from "@bponnaluri/places-js";
+
 
 const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+  <link rel="stylesheet" type="text/css"  href="/styles/sharedComponentStyles.css"/>
 
   <style>
     #login-component-container {
       padding-top: 0.25rem;
     }
-    .login-element {
+    .ui-input {
+      display: inline-block;
     }
+    
     @media screen and (width < 32em) {
       #login-component-container {
         text-align: center;
@@ -51,29 +40,27 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
 
   hasRendered: boolean;
   constructor() {
-    super("loginComponentStore", {
-      onLoadStoreConfig: {
-        dataSource: LOGIN_THUNK,
-        disableCache: true,
-      },
-      onLoadRequestData: {
-        username: "",
-        password: "",
-      },
-      requestThunkReducers: [
+    super({
+      [REQUEST_THUNK_REDUCERS_KEY]: [
         {
           thunk: LOGIN_THUNK,
-          componentStoreReducer: getLoginComponentStoreFromLoginResponse,
+          componentReducer: getLoginComponentStoreFromLoginResponse,
         },
         {
           thunk: LOGOUT_THUNK,
-          componentStoreReducer: getLoginComponentStoreFromLogoutResponse,
+          componentReducer: getLoginComponentStoreFromLogoutResponse,
         },
         {
           thunk: REGISTER_USER_THUNK,
-          componentStoreReducer: getLoginComponentStoreFromRegisterResponse,
+          componentReducer: getLoginComponentStoreFromRegisterResponse,
         },
       ],
+      [DATA_FIELDS]:[
+        {
+          fieldName: IS_LOGGED_IN_KEY,
+          dataSource: LOGIN_THUNK
+        }
+      ]
     });
     this.hasRendered = false;
   }
@@ -83,39 +70,27 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: LoginComponentStore) {
-    if (!data.isLoggedIn) {
-      return this.generateLogin(data);
-    } else {
-      return `
-       <div class="ui-section" id="login-component-container">
-       <div class="login-element">${data.successMessage}</div>
-       ${generateButton({
-        type: "submit",
-        text: "Logout",
-        component: this,
-        eventHandlerConfig: LOGOUT_EVENT_CONFIG
-       })}
-      </div>
-       `;
-    }
+    return data[IS_LOGGED_IN_KEY] ?
+        '' :
+        this.generateLogin(data)
   }
   generateLogin(data: LoginComponentStore) {
     const html = `
      <div class="ui-section" id="login-component-container">
-      <form id=${LOGIN_FORM_ID} ${this.createSubmitEvent(LOGIN_EVENT_CONFIG)}>
+      <form id=${LOGIN_FORM_ID} ${this.createEvent(LOGIN_EVENT_CONFIG, "submit")}>
         <div class="ui-input">
-          ${this.generateInputFormItem({
+          ${this.addShortInput({
             id: USERNAME_INPUT,
-            componentLabel: "Email",
+            [COMPONENT_LABEL_KEY]: "Email",
             inputType: "text",
             value: ""
           })}
         </div>
         
         <div class="ui-input">
-          ${this.generateInputFormItem({
+          ${this.addShortInput({
             id: PASSWORD_INPUT,
-            componentLabel: "Password",
+            [COMPONENT_LABEL_KEY]: "Password",
             inputType: "text",
             value: ""
           })}
@@ -130,7 +105,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
           type: "submit",
           text: "Login",
           component: this,
-          eventHandlerConfig: LOGIN_EVENT_CONFIG
+          [EVENT_HANDLER_CONFIG_KEY]: LOGIN_EVENT_CONFIG
         })}
         
         ${generateButton({
@@ -138,13 +113,12 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
           type: "submit",
           text: "Register",
           component: this,
-          eventHandlerConfig: REGISTER_EVENT_CONFIG
+          [EVENT_HANDLER_CONFIG_KEY]: REGISTER_EVENT_CONFIG
         })}
 
                     
           </div>
           ${this.hasRendered ? generateErrorMessage(data.errorMessage) : ''}
-          <div class="login-element success-message">${data.successMessage}</div>
         </form>
 
     </div>

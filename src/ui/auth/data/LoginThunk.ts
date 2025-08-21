@@ -1,17 +1,21 @@
-import type { DefaultApiAction } from "../../../framework/state/update/api/DefaultApiAction.ts";
-import { BaseThunk } from "../../../framework/state/update/BaseThunk.ts";
+
 import type { AuthRequest } from "../types/AuthRequest.ts";
 import { AuthResponse } from "../types/AuthResponse.ts";
-import { generateApiThunkWithExternalConfig } from "../../../framework/state/update/api/ApiThunkFactory.ts";
-import {addLocalStorageData, getLocalStorageDataIfPresent} from "../../../framework/utils/LocalStorageUtils.ts";
-import { isAfterNow } from "../../../framework/utils/EventDataUtils.ts";
+import {addLocalStorageData, getLocalStorageDataIfPresent} from "@bponnaluri/places-js";
+import { isAfterNow } from "@bponnaluri/places-js";
 import type { AuthReducerError } from "../types/AuthReducerError.ts";
 import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../../shared/Params.ts";
+import {GROUP_DESCRIPTION_TEXT} from "../../groups/Constants.ts";
+import {IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
+import {generateApiThunkWithExternalConfig} from "@bponnaluri/places-js";
+import type {DefaultApiAction} from "@bponnaluri/places-js";
+import {BaseThunk} from "@bponnaluri/places-js";
 
 async function retrieveData(
   params: AuthRequest,
   backupResponse: DefaultApiAction,
 ): Promise<AuthResponse> {
+
   try {
     if (
       backupResponse.defaultFunctionPriority &&
@@ -53,15 +57,14 @@ async function retrieveData(
 
     if (data.ok) {
       const authTokenData = await data.json();
-      console.log(JSON.stringify(authTokenData));
 
       addLocalStorageData(AUTH_TOKEN_KEY, JSON.stringify(authTokenData))
       return new AuthResponse(true, authTokenData);
     }
-    const error = data.statusText;
+    const error = await data.json();
     if (backupResponse.defaultFunction) {
       return backupResponse.defaultFunction({
-        errorMessage: error,
+        errorMessage: error?.msg ?? data.statusText
       });
     } else {
       throw Error("Authentication error");
@@ -79,10 +82,10 @@ export function getLoginComponentStoreFromLoginResponse(
 ) {
   const email = response?.getData()?.user?.email;
   return {
-    isLoggedIn: response.isLoggedIn(),
+    [IS_LOGGED_IN_KEY]: response.isLoggedIn(),
     errorMessage: response.getErrorMessage(),
     email: email,
-    successMessage: response.isLoggedIn() ? `Welcome ${email}` : "",
+    [GROUP_DESCRIPTION_TEXT]: response.isLoggedIn() ? `Welcome ${email}` : "",
     hasAttemptedLogin: true
   };
 }
@@ -107,6 +110,9 @@ export const LOGIN_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
   authenticationErrorConfig,
 ).addGlobalStateReducer((loginState: any) => {
   return {
-    isLoggedIn: loginState.loggedIn,
+    [IS_LOGGED_IN_KEY]:{
+      isLoggedIn: loginState.loggedIn,
+      username: loginState?.data?.user?.email ?? ''
+    }
   };
 });
