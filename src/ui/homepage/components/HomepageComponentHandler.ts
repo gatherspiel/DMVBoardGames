@@ -1,5 +1,5 @@
 //@ts-ignore
-import type {EventHandlerThunkConfig} from "../../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
+import type {EventHandlerThunkConfig} from "@bponnaluri/places-js";
 
 export const HOMEPAGE_COMPONENT_NAV: EventHandlerThunkConfig = {
 

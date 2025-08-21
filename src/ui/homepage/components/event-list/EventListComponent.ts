@@ -1,6 +1,6 @@
 import type { GroupSearchResult } from "../../data/types/group/GroupSearchResult.ts";
 import { updateSearchResultGroupStore } from "../../data/store/SearchResultStoreReducer.ts";
-import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
@@ -8,9 +8,9 @@ import {
   DEFAULT_GLOBAL_STATE_REDUCER_KEY,
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
-} from "../../../../framework/components/types/ComponentLoadConfig.ts";
+} from "@bponnaluri/places-js";
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../../shared/Constants.ts";
-import {SEARCH_RESULTS} from "../../../../shared/InitGlobalStateConfig.ts";
+import {SEARCH_RESULTS} from "../../../auth/Constants.ts";
 
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {

@@ -1,4 +1,4 @@
-import type {DropdownConfigItem} from "../../../../framework/components/types/DropdownConfig.ts";
+import type {DropdownConfigItem} from "@bponnaluri/places-js";
 
 export const DEFAULT_SEARCH_PARAMETER: string = "any";
 

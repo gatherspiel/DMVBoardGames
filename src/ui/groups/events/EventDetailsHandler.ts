@@ -1,14 +1,14 @@
-import type {EventHandlerThunkConfig} from "../../../framework/state/update/event/types/EventHandlerThunkConfig";
+import type {EventHandlerThunkConfig} from "@bponnaluri/places-js";
 import {
   END_TIME_INPUT,
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT, EVENT_URL_INPUT,
   START_DATE_INPUT, START_TIME_INPUT,
 } from "../Constants.ts";
-import {combineDateAndTime} from "../../../framework/utils/EventDataUtils.ts";
+import {combineDateAndTime} from "@bponnaluri/places-js";
 import {validateEventFormData} from "./data/EventFormDataValidator.ts";
-import type {FormSelector} from "../../../framework/FormSelector.ts";
-import {getUrlParameter} from "../../../framework/utils/UrlParamUtils.ts";
+import type {FormSelector} from "@bponnaluri/places-js";
+import {getUrlParameter} from "@bponnaluri/places-js";
 import {UPDATE_EVENT_REQUEST_THUNK} from "./data/UpdateEventThunk.ts";
 import {CREATE_EVENT_THUNK} from "./data/CreateEventThunk.ts";
 import {DELETE_EVENT_REQUEST_THUNK} from "./data/DeleteEventRequestThunk.ts";

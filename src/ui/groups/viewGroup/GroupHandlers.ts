@@ -1,4 +1,4 @@
-import type { EventHandlerThunkConfig } from "../../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
+import type { EventHandlerThunkConfig } from "@bponnaluri/places-js";
 import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,

@@ -6,11 +6,10 @@ import {LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT,} from "../Constants.js";
 import type {LoginComponentStore} from "../types/LoginComponentStore.ts";
 import {LOGIN_EVENT_CONFIG, REGISTER_EVENT_CONFIG,} from "../LoginComponentEventHandlers.ts";
 import {getLoginComponentStoreFromRegisterResponse, REGISTER_USER_THUNK,} from "../data/RegisterUserThunk.ts";
-import {BaseTemplateDynamicComponent} from "../../../framework/components/BaseTemplateDynamicComponent.ts";
-import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
-import {generateErrorMessage} from "../../../framework/components/utils/StatusIndicators.ts";
 import {COMPONENT_LABEL_KEY, EVENT_HANDLER_CONFIG_KEY, IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
-import {DATA_FIELDS, REQUEST_THUNK_REDUCERS_KEY} from "../../../framework/components/types/ComponentLoadConfig.ts";
+import {BaseTemplateDynamicComponent, DATA_FIELDS, REQUEST_THUNK_REDUCERS_KEY} from "@bponnaluri/places-js";
+import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {generateErrorMessage} from "@bponnaluri/places-js";
 
 
 const template = `

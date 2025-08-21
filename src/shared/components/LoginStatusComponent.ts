@@ -1,14 +1,13 @@
 
 //@ts-ignore
-import {setupStateFields} from "../InitGlobalStateConfig.ts";
-import {BaseTemplateDynamicComponent} from "../../framework/components/BaseTemplateDynamicComponent.ts";
 import {LOGOUT_EVENT_CONFIG} from "../../ui/auth/LoginComponentEventHandlers.ts";
-import {
-  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
-  GLOBAL_STATE_LOAD_CONFIG_KEY,
-} from "../../framework/components/types/ComponentLoadConfig.ts";
+
 import {IS_LOGGED_IN_KEY} from "../Constants.ts";
-setupStateFields();
+import {
+  BaseTemplateDynamicComponent,
+  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
+  GLOBAL_STATE_LOAD_CONFIG_KEY
+} from "@bponnaluri/places-js";
 
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {

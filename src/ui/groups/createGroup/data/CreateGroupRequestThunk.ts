@@ -1,9 +1,9 @@
-import type { ApiRequestConfig } from "../../../../framework/state/update/api/types/ApiRequestConfig.ts";
+import type { ApiRequestConfig } from "@bponnaluri/places-js";
 import { getAccessTokenIfPresent } from "../../../auth/AuthUtils.ts";
 import { AUTH_TOKEN_HEADER_KEY } from "../../../auth/Constants.ts";
-import { ApiActionTypes } from "../../../../framework/state/update/api/types/ApiActionTypes.ts";
+import { ApiActionTypes } from "@bponnaluri/places-js";
 import { API_ROOT } from "../../../../shared/Params.ts";
-import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
+import { generateApiThunk } from "@bponnaluri/places-js";
 
 function updateCreateGroupRequestThunk(requestParams: any): ApiRequestConfig {
   const requestBody = {

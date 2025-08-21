@@ -1,4 +1,3 @@
-import {AbstractPageComponent} from "../../framework/spa/AbstractPageComponent.ts";
 import {GroupComponent} from "../../ui/groups/viewGroup/components/GroupComponent.ts";
 import {CreateGroupPageComponent} from "../../ui/groups/createGroup/components/CreateGroupPageComponent.ts";
 import {DeleteGroupPageComponent} from "../../ui/groups/deleteGroup/DeleteGroupPageComponent.ts";
@@ -12,8 +11,9 @@ import {LoginComponent} from "../../ui/auth/components/LoginComponent.ts";
 
 //@ts-ignore
 import {LoginStatusComponent} from "./LoginStatusComponent.ts";
+import {AbstractPageComponent} from "@bponnaluri/places-js";
 
-export class PageComponent extends  AbstractPageComponent {
+export class PageComponent extends AbstractPageComponent {
 
   override getCommonComponents(): HTMLElement[] {
     return [];

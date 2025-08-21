@@ -16,9 +16,12 @@
     "prettier": "3.4.2",
     "typescript": "~5.8.3",
     "vite": "7.0.5",
-    "vite-plugin-handlebars": "^2.0.0",
-    "vite-plugin-minify": "^2.1.0",
     "vite-plugin-checker": "^0.9.3",
-    "vite-plugin-inline-source": "^4.0.0"
+    "vite-plugin-handlebars": "^2.0.0",
+    "vite-plugin-inline-source": "^4.0.0",
+    "vite-plugin-minify": "^2.1.0"
+  },
+  "dependencies": {
+    "@bponnaluri/places-js": "file:.yalc/@bponnaluri/places-js"
   }
 }

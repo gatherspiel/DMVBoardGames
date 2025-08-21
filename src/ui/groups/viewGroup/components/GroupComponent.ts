@@ -5,10 +5,10 @@ import {
 } from "../../Constants.js";
 import {GROUP_PRELOAD_THUNK, GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
 
-import { serializeJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
+import { serializeJSONProp } from "@bponnaluri/places-js";
 import type { GroupPageData } from "../data/types/GroupPageData.ts";
 import type { Event } from "../../../homepage/data/types/Event.ts";
-import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 import {
   CANCEL_GROUP_EDIT_HANDLER,
   EDIT_GROUP_EVENT_CONFIG,
@@ -16,7 +16,7 @@ import {
 } from "../GroupHandlers.ts";
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 
-import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
+import {REDIRECT_HANDLER_CONFIG} from "@bponnaluri/places-js";
 import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
 import {CREATE_EVENT_PAGE_HANDLER_CONFIG, DELETE_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {
@@ -30,10 +30,10 @@ import {
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
   REQUEST_THUNK_REDUCERS_KEY
-} from "../../../../framework/components/types/ComponentLoadConfig.ts";
+} from "@bponnaluri/places-js";
 import {LOGIN_THUNK} from "../../../auth/data/LoginThunk.ts";
-import {GROUP_DATA} from "../../../../shared/InitGlobalStateConfig.ts";
 
+const GROUP_DATA = "groupData"
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
 
@@ -156,7 +156,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    this.updateWithCustomReducer({});
+    this.retrieveData({});
   }
 
   getTemplateStyle(): string {

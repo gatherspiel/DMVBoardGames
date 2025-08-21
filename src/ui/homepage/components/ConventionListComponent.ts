@@ -1,12 +1,12 @@
 import type { Convention } from "../data/types/Convention.ts";
-import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
-import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
+import {REDIRECT_HANDLER_CONFIG} from "@bponnaluri/places-js";
 import {
   DEFAULT_GLOBAL_STATE_REDUCER_KEY,
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY
-} from "../../../framework/components/types/ComponentLoadConfig.ts";
+} from "@bponnaluri/places-js";
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../shared/Constants.ts";
 
 const loadConfig = {

@@ -1,11 +1,11 @@
-import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 import { GROUP_NAME_INPUT } from "../Constants.ts";
 import { DELETE_GROUP_EVENT_CONFIG } from "./DeleteGroupPageHandlers.ts";
 import type { DeleteGroupData } from "./types/DeleteGroupData.ts";
-import {getUrlParameter} from "../../../framework/utils/UrlParamUtils.ts";
+import {getUrlParameter} from "@bponnaluri/places-js";
 import {DELETE_GROUP_REQUEST_THUNK} from "./DeleteGroupRequestThunk.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
-import {generateErrorMessage} from "../../../framework/components/utils/StatusIndicators.ts";
+import {generateErrorMessage} from "@bponnaluri/places-js";
 import {
   COMPONENT_LABEL_KEY,
   EVENT_HANDLER_CONFIG_KEY,
@@ -17,7 +17,7 @@ import {
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
   REQUEST_THUNK_REDUCERS_KEY
-} from "../../../framework/components/types/ComponentLoadConfig.ts";
+} from "@bponnaluri/places-js";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -75,7 +75,7 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    this.updateWithCustomReducer({isVisible: true, existingGroupName: getUrlParameter("name")})
+    this.retrieveData({isVisible: true, existingGroupName: getUrlParameter("name")})
   }
 
   render(data: DeleteGroupData): string {

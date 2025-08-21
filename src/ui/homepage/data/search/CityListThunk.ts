@@ -1,8 +1,8 @@
 import { API_ROOT, USE_MOCK } from "../../../../shared/Params.ts";
 
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.ts";
-import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
-import type { ApiRequestConfig } from "../../../../framework/state/update/api/types/ApiRequestConfig.ts";
+import { generateApiThunk } from "@bponnaluri/places-js";
+import type { ApiRequestConfig } from "@bponnaluri/places-js";
 
 const MOCK_CITY_LIST = ["Arlington", "DC"];
 
