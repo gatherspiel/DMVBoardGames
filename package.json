@@ -24,6 +24,6 @@
 
   },
   "dependencies": {
-    "@bponnaluri/places-js": "@bponnaluri/places-js"
+    "@bponnaluri/places-js": "^0.0.23"
   }
 }
