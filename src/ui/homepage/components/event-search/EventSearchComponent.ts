@@ -117,7 +117,6 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
           day: self.componentState.day,
           distance: self.componentState.distance
         };
-        console.log("Hi");
         EVENT_SEARCH_THUNK.retrieveData(searchParams)
       }
     })
