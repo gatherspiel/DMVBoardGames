@@ -5,25 +5,28 @@ import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../Constants.t
 export type ButtonConfig ={
   class?: string,
   type?:string,
+  id?:string,
   text:string,
   component: BaseDynamicComponent,
-  [EVENT_HANDLER_CONFIG_KEY]: EventHandlerThunkConfig
+  [EVENT_HANDLER_CONFIG_KEY]?: EventHandlerThunkConfig
   [EVENT_HANDLER_PARAMS_KEY]?:Record<string, string>
 }
 
 export function generateButton(config:ButtonConfig){
   const buttonClasses = `raised activeHover${config.class ? ` ${config.class}` : ``}`;
+
+  const event = config[EVENT_HANDLER_CONFIG_KEY];
   return `
     <button 
       class="${buttonClasses}"
       name="action"
       value="${config.text}"
-      ${config.component.createEvent(config[EVENT_HANDLER_CONFIG_KEY], "click",config[EVENT_HANDLER_PARAMS_KEY])}
+      ${event ? config.component.createEvent(config[EVENT_HANDLER_CONFIG_KEY], "click",config[EVENT_HANDLER_PARAMS_KEY]) : ``}
       ${config.type ?? `type=${config.type}`}>
       
       <span class="shadow"></span>
        <span class="edge"></span>
-       <span class="front">
+       <span class="front" ${config.id ? `id="${config.id}"`: ``}>
           ${config.text} 
         </span>   
     </button>

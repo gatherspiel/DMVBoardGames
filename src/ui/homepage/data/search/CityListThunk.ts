@@ -50,6 +50,5 @@ export const CITY_LIST_THUNK = generateApiThunk({
   queryConfig: getCitiesQueryConfig,
   defaultFunctionConfig: defaultFunctionConfig,
 }).addGlobalStateReducer((data:any)=> {
-
   return {cityList: data}
 });

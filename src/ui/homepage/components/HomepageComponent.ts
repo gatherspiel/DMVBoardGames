@@ -17,10 +17,9 @@ import {EventSearchComponent} from "./event-search/EventSearchComponent.ts";
 // @ts-ignore
 import {OpenCreateGroupPageComponent} from "./OpenCreateGroupPageComponent.ts";
 
-import {HOMEPAGE_COMPONENT_NAV} from "./HomepageComponentHandler.ts";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 
-import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY, IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
+import {IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
 import {LOGIN_THUNK} from "../../auth/data/LoginThunk.ts";
 import {LOCATIONS_THUNK} from "../data/search/LocationsThunk.ts";
 import {EVENT_PRELOAD_THUNK, EVENT_SEARCH_THUNK} from "../data/search/EventSearchThunk.ts";
@@ -54,6 +53,10 @@ const loadConfig = {
     }
   ]
 }
+const CONVENTIONS_ID = "convention-list";
+const EVENT_SEARCH_ID ="event-search";
+const GAME_RESTAURANTS_ID="game-restaurants";
+const GAME_STORES_ID="game-stores";
 
 export class HomepageComponent extends BaseDynamicComponent {
   constructor(enablePreload?:boolean){
@@ -67,7 +70,21 @@ export class HomepageComponent extends BaseDynamicComponent {
       hideRestaurants: true,
       hideGameStores: true
     });
+    const self = this;
+    this.addEventListener("click", function(event:any){
+      event.preventDefault();
+      const targetId = event.originalTarget.id;
+
+      self.retrieveData({
+        hideEvents: targetId !== EVENT_SEARCH_ID,
+        hideConventions: targetId !== CONVENTIONS_ID,
+        hideRestaurants: targetId!== GAME_RESTAURANTS_ID,
+        hideGameStores: targetId !== GAME_STORES_ID
+      })
+
+    })
   }
+
   render(data:any){
     return `
         <div class="ui-section">
@@ -83,31 +100,28 @@ export class HomepageComponent extends BaseDynamicComponent {
               </div>
               <div>
                 ${data.hideEvents || data.showAllButtons ? generateButton({
-                  text: "Events",
                   component: this,
-                  [EVENT_HANDLER_CONFIG_KEY]: HOMEPAGE_COMPONENT_NAV,
-                  [EVENT_HANDLER_PARAMS_KEY]: {location:"#event-search"}
+                  id: EVENT_SEARCH_ID,
+                  text: "Events",
                 }): ``} 
                   
                 ${data.hideConventions ? generateButton({
-                  text: "Conventions",
                   component: this,
-                  [EVENT_HANDLER_CONFIG_KEY]: HOMEPAGE_COMPONENT_NAV,
-                  [EVENT_HANDLER_PARAMS_KEY]: {location:"#convention-list"}
+                  id: CONVENTIONS_ID,
+                  text: "Conventions",
                 }): ``}       
              
                 ${data.hideGameStores ? generateButton({
-                  text: "Game Stores",
                   component: this,
-                  [EVENT_HANDLER_CONFIG_KEY]: HOMEPAGE_COMPONENT_NAV,
-                  [EVENT_HANDLER_PARAMS_KEY]: {location:"#game-store"}
+                  id: GAME_STORES_ID,
+                  text: "Game Stores",
                 }): ``}  
              
                 ${data.hideRestaurants ? generateButton({
-                  text: "Bars and Cafés",
                   component: this,
-                  [EVENT_HANDLER_CONFIG_KEY]: HOMEPAGE_COMPONENT_NAV,
-                  [EVENT_HANDLER_PARAMS_KEY]: {location:"#game-restaurant"}
+                  id: GAME_RESTAURANTS_ID,
+                  text: "Bars and Cafés",
+
                 }): ``} 
               </div>
             

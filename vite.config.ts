@@ -21,7 +21,6 @@ export default defineConfig({
     inlineSource(),
     ViteMinifyPlugin({}),
   ],
-
   root: "src/",
   publicDir: "../public",
   build: {
