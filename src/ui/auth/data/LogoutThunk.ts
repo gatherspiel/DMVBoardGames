@@ -1,9 +1,9 @@
-import type { BaseThunk } from "../../../framework/state/update/BaseThunk.ts";
-import { generateApiThunkWithExternalConfig } from "../../../framework/state/update/api/ApiThunkFactory.ts";
+import type { BaseThunk } from "@bponnaluri/places-js";
+import { generateApiThunkWithExternalConfig } from "@bponnaluri/places-js";
 import type { LoginComponentStore } from "../types/LoginComponentStore.ts";
 import { AuthResponse } from "../types/AuthResponse.ts";
 import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../../shared/Params.ts";
-import {deleteLocalStoreData, getLocalStorageDataIfPresent} from "../../../framework/utils/LocalStorageUtils.ts";
+import {deleteLocalStoreData, getLocalStorageDataIfPresent} from "@bponnaluri/places-js";
 import {IS_LOGGED_IN_KEY, SUCCESS_MESSAGE_KEY} from "../../../shared/Constants.ts";
 
 async function retrieveData() {

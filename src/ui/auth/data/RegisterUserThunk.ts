@@ -1,7 +1,7 @@
-import type { BaseThunk } from "../../../framework/state/update/BaseThunk.ts";
-import { generateApiThunk } from "../../../framework/state/update/api/ApiThunkFactory.ts";
+import type { BaseThunk } from "@bponnaluri/places-js";
+import { generateApiThunk } from "@bponnaluri/places-js";
 import { API_ROOT } from "../../../shared/Params.ts";
-import type { ApiRequestConfig } from "../../../framework/state/update/api/types/ApiRequestConfig.ts";
+import type { ApiRequestConfig } from "@bponnaluri/places-js";
 import {IS_LOGGED_IN_KEY, SUCCESS_MESSAGE_KEY} from "../../../shared/Constants.ts";
 
 function registerUserConfig(params: any): ApiRequestConfig {

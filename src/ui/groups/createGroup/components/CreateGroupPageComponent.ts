@@ -1,4 +1,3 @@
-import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
 import { CREATE_GROUP_EVENT_CONFIG } from "../CreateGroupPageHandler.ts";
 import { CREATE_GROUP_REQUEST_THUNK } from "../data/CreateGroupRequestThunk.ts";
 import {
@@ -7,7 +6,7 @@ import {
   GROUP_URL_INPUT,
 } from "../../Constants.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
-import {generateErrorMessage} from "../../../../framework/components/utils/StatusIndicators.ts";
+import {generateErrorMessage} from "@bponnaluri/places-js";
 import {
   COMPONENT_LABEL_KEY,
   EVENT_HANDLER_CONFIG_KEY,
@@ -19,7 +18,8 @@ import {
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
   REQUEST_THUNK_REDUCERS_KEY
-} from "../../../../framework/components/types/ComponentLoadConfig.ts";
+} from "@bponnaluri/places-js";
+import {BaseTemplateDynamicComponent} from "@bponnaluri/places-js";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -77,7 +77,7 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    this.updateWithCustomReducer({isVisible: true})
+    this.retrieveData({isVisible: true})
   }
 
   render(createGroupData: any): string {

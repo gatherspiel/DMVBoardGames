@@ -2,13 +2,13 @@ import {
   PASSWORD_INPUT,
   USERNAME_INPUT,
 } from "./Constants.js";
-import type { EventHandlerThunkConfig } from "../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
-import type { EventHandlerData } from "../../framework/state/update/event/types/EventHandlerData.ts";
+import type { EventHandlerThunkConfig } from "@bponnaluri/places-js";
+import type { EventHandlerData } from "@bponnaluri/places-js";
 import {REGISTER_USER_THUNK} from "./data/RegisterUserThunk.ts";
 import {LOGOUT_THUNK} from "./data/LogoutThunk.ts";
 import {LOGIN_THUNK} from "./data/LoginThunk.ts";
-import type {FormSelector} from "../../framework/FormSelector.ts";
-import type {EventValidationResult} from "../../framework/state/update/event/types/EventValidationResult.ts";
+import type {FormSelector} from "@bponnaluri/places-js";
+import type {EventValidationResult} from "@bponnaluri/places-js";
 
 const loginInputValidator=
   (formSelector: FormSelector): EventValidationResult  => {

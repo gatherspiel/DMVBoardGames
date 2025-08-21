@@ -1,10 +1,10 @@
 import { API_ROOT } from "../../../../shared/Params.ts";
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.ts";
 import type { SearchParams } from "./model/SearchParams.ts";
-import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
-import type { ApiRequestConfig } from "../../../../framework/state/update/api/types/ApiRequestConfig.ts";
-import {generatePreloadThunk} from "../../../../framework/state/update/PreloadThunk.ts";
-import {SEARCH_RESULTS} from "../../../../shared/InitGlobalStateConfig.ts";
+import { generateApiThunk } from "@bponnaluri/places-js";
+import type { ApiRequestConfig } from "@bponnaluri/places-js";
+import {generatePreloadThunk} from "@bponnaluri/places-js";
+import {SEARCH_RESULTS} from "../../../auth/Constants.ts";
 
 const CITY_PARAM = "city";
 const DAY_PARAM = "day";

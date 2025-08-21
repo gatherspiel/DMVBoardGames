@@ -4,8 +4,8 @@ import {EVENT_HANDLER_CONFIG_KEY, IS_LOGGED_IN_KEY} from "../../../shared/Consta
 import {
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY
-} from "../../../framework/components/types/ComponentLoadConfig.ts";
-import {BaseDynamicComponent} from "../../../framework/components/BaseDynamicComponent.ts";
+} from "@bponnaluri/places-js";
+import {BaseDynamicComponent} from "@bponnaluri/places-js";
 
 
 const loadConfig = {
@@ -13,7 +13,7 @@ const loadConfig = {
     [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
     defaultGlobalStateReducer:(data:any)=>{
       return {
-        [IS_LOGGED_IN_KEY]: data.isLoggedIn.isLoggedIn
+        [IS_LOGGED_IN_KEY]: data?.isLoggedIn?.isLoggedIn
       }
     }
   },

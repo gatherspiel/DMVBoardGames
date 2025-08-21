@@ -1,8 +1,8 @@
 import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
-import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
-import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
-import {GLOBAL_STATE_LOAD_CONFIG_KEY} from "../../../framework/components/types/ComponentLoadConfig.ts";
+import {REDIRECT_HANDLER_CONFIG} from "@bponnaluri/places-js";
+import {GLOBAL_STATE_LOAD_CONFIG_KEY} from "@bponnaluri/places-js";
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../shared/Constants.ts";
 
 

@@ -10,14 +10,14 @@ import {
 import {
   SEARCH_EVENT_HANDLER_CONFIG, UPDATE_CITY_CONFIG, UPDATE_DAY_CONFIG, UPDATE_DISTANCE_CONFIG,
 } from "./EventSearchHandlers.ts";
-import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
-import type {DropdownConfig} from "../../../../framework/components/types/DropdownConfig.ts";
+import type {DropdownConfig} from "@bponnaluri/places-js";
 import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
 import {
   DEFAULT_GLOBAL_STATE_REDUCER_KEY,
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY, GLOBAL_STATE_LOAD_CONFIG_KEY,
-} from "../../../../framework/components/types/ComponentLoadConfig.ts";
+} from "@bponnaluri/places-js";
 import {
   DEFAULT_PARAMETER_DISPLAY_KEY,
   DEFAULT_PARAMETER_KEY,

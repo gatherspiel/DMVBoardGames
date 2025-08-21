@@ -1,5 +1,5 @@
-import type {BaseDynamicComponent} from "../../framework/components/BaseDynamicComponent.ts";
-import type {EventHandlerThunkConfig} from "../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
+import type {BaseDynamicComponent} from "@bponnaluri/places-js";
+import type {EventHandlerThunkConfig} from "@bponnaluri/places-js";
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../Constants.ts";
 
 export type ButtonConfig ={

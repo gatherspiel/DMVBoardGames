@@ -1,4 +1,4 @@
-import {BaseTemplateDynamicComponent} from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {BaseTemplateDynamicComponent} from "@bponnaluri/places-js";
 import {
   END_TIME_INPUT,
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
@@ -18,13 +18,13 @@ import {
   convertDateTimeForDisplay,
   convertDayOfWeekForDisplay,
   convertLocationStringForDisplay, getDateFromDateString, getTimeFromDateString
-} from "../../../../framework/utils/EventDataUtils.ts";
+} from "@bponnaluri/places-js";
 import {UPDATE_EVENT_REQUEST_THUNK} from "../data/UpdateEventThunk.ts";
 import {DELETE_EVENT_REQUEST_THUNK} from "../data/DeleteEventRequestThunk.ts";
 import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
-import {REDIRECT_HANDLER_CONFIG} from "../../../../framework/handler/RedirectHandler.ts";
-import {generateErrorMessage, generateSuccessMessage} from "../../../../framework/components/utils/StatusIndicators.ts";
+import {REDIRECT_HANDLER_CONFIG} from "@bponnaluri/places-js";
+import {generateErrorMessage, generateSuccessMessage} from "@bponnaluri/places-js";
 import {
   COMPONENT_LABEL_KEY,
   EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY,
@@ -37,8 +37,7 @@ import {
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
   REQUEST_THUNK_REDUCERS_KEY
-} from "../../../../framework/components/types/ComponentLoadConfig.ts";
-import {GROUP_EVENT} from "../../../../shared/InitGlobalStateConfig.ts";
+} from "@bponnaluri/places-js";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -57,7 +56,7 @@ const template = `
   </style>
 `;
 
-
+const GROUP_EVENT = "groupEvent"
 const loadConfig = {
   [REQUEST_THUNK_REDUCERS_KEY]: [
     {

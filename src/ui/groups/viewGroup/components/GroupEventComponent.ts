@@ -1,9 +1,9 @@
-import { deserializeJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
-import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
+import { deserializeJSONProp } from "@bponnaluri/places-js";
+import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 import {
   convertDateTimeForDisplay,
   convertLocationStringForDisplay
-} from "../../../../framework/utils/EventDataUtils.ts";
+} from "@bponnaluri/places-js";
 import {VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../../shared/Constants.ts";
@@ -47,7 +47,7 @@ export class GroupEventComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback() {
-    this.updateWithCustomReducer({});
+    this.retrieveData({});
   }
 
   render(): string {

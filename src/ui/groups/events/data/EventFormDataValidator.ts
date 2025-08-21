@@ -1,4 +1,4 @@
-import type {FormSelector} from "../../../../framework/FormSelector.ts";
+import type {FormSelector} from "@bponnaluri/places-js";
 import {
   END_TIME_INPUT,
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
@@ -7,7 +7,7 @@ import {
   START_DATE_INPUT,
   START_TIME_INPUT
 } from "../../Constants.ts";
-import {combineDateAndTime, validateAddress, validateDateFormat} from "../../../../framework/utils/EventDataUtils.ts";
+import {combineDateAndTime, validateAddress, validateDateFormat} from "@bponnaluri/places-js";
 
 export function validateEventFormData(formSelector:FormSelector): string[] {
   const errorMessages = [];

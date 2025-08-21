@@ -1,5 +1,5 @@
-import {BaseTemplateDynamicComponent} from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
-import {getUrlParameter} from "../../../../framework/utils/UrlParamUtils.ts";
+import {BaseTemplateDynamicComponent} from "@bponnaluri/places-js";
+import {getUrlParameter} from "@bponnaluri/places-js";
 import {
   END_TIME_INPUT,
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
@@ -10,12 +10,12 @@ import {
 } from "../../Constants.ts";
 import {CREATE_EVENT_CONFIG} from "../EventDetailsHandler.ts";
 import {CREATE_EVENT_THUNK} from "../data/CreateEventThunk.ts";
-import {PageState} from "../../../../framework/spa/PageState.ts";
+import {PageState} from "@bponnaluri/places-js";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import {
   VIEW_GROUP_PAGE_HANDLER_CONFIG
 } from "../../../../shared/nav/NavEventHandlers.ts";
-import {generateErrorMessage} from "../../../../framework/components/utils/StatusIndicators.ts";
+import {generateErrorMessage} from "@bponnaluri/places-js";
 import {
   COMPONENT_LABEL_KEY,
   EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY,
@@ -27,7 +27,7 @@ import {
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
   REQUEST_THUNK_REDUCERS_KEY
-} from "../../../../framework/components/types/ComponentLoadConfig.ts";
+} from "@bponnaluri/places-js";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -82,7 +82,7 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
 
   connectedCallback(){
     if(PageState.pageLoaded) {
-      this.updateWithCustomReducer({isVisible: true})
+      this.retrieveData({isVisible: true})
     }
   }
 

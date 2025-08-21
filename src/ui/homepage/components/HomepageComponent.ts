@@ -26,7 +26,8 @@ import {LOCATIONS_THUNK} from "../data/search/LocationsThunk.ts";
 import {EVENT_PRELOAD_THUNK, EVENT_SEARCH_THUNK} from "../data/search/EventSearchThunk.ts";
 import {DEFAULT_SEARCH_PARAMETER} from "./event-search/Constants.ts";
 import {CITY_LIST_THUNK} from "../data/search/CityListThunk.ts";
-import {BaseDynamicComponent} from "../../../framework/components/BaseDynamicComponent.ts";
+
+import {BaseDynamicComponent} from "@bponnaluri/places-js";
 
 const loadConfig = {
   dataFields:[
@@ -60,7 +61,7 @@ export class HomepageComponent extends BaseDynamicComponent {
   }
 
   connectedCallback(){
-    this.updateWithCustomReducer({
+    this.retrieveData({
       hideEvents: false,
       hideConventions: true,
       hideRestaurants: true,

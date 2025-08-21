@@ -1,5 +1,5 @@
 import { API_ROOT } from "../../../../shared/Params.ts";
-import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
+import {generateApiThunk} from "@bponnaluri/places-js";
 
 function getLocationsQueryConfig() {
   return {

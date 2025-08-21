@@ -1,14 +1,15 @@
-import type { DefaultApiAction } from "../../../framework/state/update/api/DefaultApiAction.ts";
-import { BaseThunk } from "../../../framework/state/update/BaseThunk.ts";
+
 import type { AuthRequest } from "../types/AuthRequest.ts";
 import { AuthResponse } from "../types/AuthResponse.ts";
-import { generateApiThunkWithExternalConfig } from "../../../framework/state/update/api/ApiThunkFactory.ts";
-import {addLocalStorageData, getLocalStorageDataIfPresent} from "../../../framework/utils/LocalStorageUtils.ts";
-import { isAfterNow } from "../../../framework/utils/EventDataUtils.ts";
+import {addLocalStorageData, getLocalStorageDataIfPresent} from "@bponnaluri/places-js";
+import { isAfterNow } from "@bponnaluri/places-js";
 import type { AuthReducerError } from "../types/AuthReducerError.ts";
 import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../../shared/Params.ts";
 import {GROUP_DESCRIPTION_TEXT} from "../../groups/Constants.ts";
 import {IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
+import {generateApiThunkWithExternalConfig} from "@bponnaluri/places-js";
+import type {DefaultApiAction} from "@bponnaluri/places-js";
+import {BaseThunk} from "@bponnaluri/places-js";
 
 async function retrieveData(
   params: AuthRequest,

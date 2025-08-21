@@ -1,8 +1,8 @@
-import type { EventHandlerThunkConfig } from "../../../framework/state/update/event/types/EventHandlerThunkConfig.ts";
+import type { EventHandlerThunkConfig } from "@bponnaluri/places-js";
 import { GROUP_NAME_INPUT } from "../Constants.ts";
 import type { DeleteGroupData } from "./types/DeleteGroupData.ts";
-import { getUrlParameter } from "../../../framework/utils/UrlParamUtils.ts";
-import type {FormSelector} from "../../../framework/FormSelector.ts";
+import { getUrlParameter } from "@bponnaluri/places-js";
+import type {FormSelector} from "@bponnaluri/places-js";
 import {DELETE_GROUP_REQUEST_THUNK} from "./DeleteGroupRequestThunk.ts";
 
 export const DELETE_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
