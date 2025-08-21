@@ -19,9 +19,7 @@
     "vite-plugin-checker": "^0.9.3",
     "vite-plugin-handlebars": "^2.0.0",
     "vite-plugin-inline-source": "^4.0.0",
-    "vite-plugin-minify": "^2.1.0",
-    "@bponnaluri/places-js": "file:.yalc/@bponnaluri/places-js"
-
+    "vite-plugin-minify": "^2.1.0"
   },
   "dependencies": {
     "@bponnaluri/places-js": "^0.0.23"
