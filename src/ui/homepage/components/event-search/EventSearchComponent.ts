@@ -7,9 +7,7 @@ import {
 import {
   updateCities,
 } from "../../data/search/CityListThunk.ts";
-import {
-  SEARCH_EVENT_HANDLER_CONFIG, UPDATE_CITY_CONFIG, UPDATE_DAY_CONFIG, UPDATE_DISTANCE_CONFIG,
-} from "./EventSearchHandlers.ts";
+
 import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import type {DropdownConfig} from "@bponnaluri/places-js";
@@ -21,8 +19,8 @@ import {
 import {
   DEFAULT_PARAMETER_DISPLAY_KEY,
   DEFAULT_PARAMETER_KEY,
-  EVENT_HANDLER_CONFIG_KEY
 } from "../../../../shared/Constants.ts";
+import {EVENT_SEARCH_THUNK} from "../../data/search/EventSearchThunk.ts";
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
     [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: ["cityList"],
@@ -35,8 +33,6 @@ const template = `
 
   <style>
   
-
-   
   #search-form {
     align-items: center;
     display: flex;
@@ -96,13 +92,55 @@ const template = `
 </style>
 `;
 
+const SEARCH_BUTTON_ID:string = "search-button-id";
+const SEARCH_DISTANCE_ID:string = "search-distance-id";
+const SEARCH_DAYS_ID:string = "search-days-id";
+
 export class EventSearchComponent extends BaseTemplateDynamicComponent {
+
   constructor() {
     super(loadConfig);
   }
 
   override getTemplateStyle(): string {
     return template;
+  }
+
+  connectedCallback(){
+    const self = this;
+    this.addEventListener("click", function(event: any){
+      event.preventDefault();
+
+      if(event.originalTarget.id === SEARCH_BUTTON_ID) {
+        const searchParams:any = {
+          location: self.componentState.location,
+          day: self.componentState.day,
+          distance: self.componentState.distance
+        };
+        EVENT_SEARCH_THUNK.retrieveData(searchParams)
+      }
+    })
+  }
+
+  override attachEventHandlersToDom(shadowRoot?: any) {
+    const self = this;
+
+    shadowRoot?.getElementById(SEARCH_FORM_ID)?.addEventListener("change", function(event:any){
+      const eventTarget = event.originalTarget.id;
+      if(eventTarget === SEARCH_DAYS_ID){
+        self.retrieveData({
+          day: (event.originalTarget as HTMLInputElement).value,
+        })
+      } else if(eventTarget === SEARCH_CITY_ID){
+        self.retrieveData({
+          location: (event.originalTarget  as HTMLInputElement).value,
+        })
+      } else if(eventTarget === SEARCH_DISTANCE_ID) {
+        self.retrieveData({
+          distance: (event.originalTarget as HTMLInputElement).value
+        })
+      }
+    })
   }
 
   render(eventSearchStore: any) {
@@ -118,13 +156,12 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
              <div>
               ${this.getDropdownHtml({
               label:"Select event day:",
-              id: 'search-days',
+              id: SEARCH_DAYS_ID,
               name: "days",
               data: DAYS_IN_WEEK,
               selected: eventSearchStore.day,
               [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
               [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
-              [EVENT_HANDLER_CONFIG_KEY]: UPDATE_DAY_CONFIG
             })}
             </div>
             <div>
@@ -136,21 +173,18 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
                 selected: eventSearchStore.location,
                 [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
                 [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
-                [EVENT_HANDLER_CONFIG_KEY]: UPDATE_CITY_CONFIG
               })}
             </div>
             ${eventSearchStore.location ?
               `<div>
               ${this.getDropdownHtml({
                 label:"Select distance:",
-                id: "search-distance",
+                id: SEARCH_DISTANCE_ID,
                 name: "distance",
                 data: DISTANCE_OPTIONS,
                 selected: eventSearchStore.distance,
                 [DEFAULT_PARAMETER_KEY]:"0 miles",
                 [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
-                [EVENT_HANDLER_CONFIG_KEY]: UPDATE_DISTANCE_CONFIG
-                
               })}</div>` :
                ``}
             
@@ -164,7 +198,7 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
                   text: "Search groups",
                   class: "search-button",
                   component: this,
-                  [EVENT_HANDLER_CONFIG_KEY]: SEARCH_EVENT_HANDLER_CONFIG,
+                  id: SEARCH_BUTTON_ID
                 })}
                 </div> 
             </div>
@@ -182,7 +216,6 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
       id=${dropdownConfig.id}
       name=${dropdownConfig.name}
       value=${dropdownConfig.data}
-      ${this.createEvent(dropdownConfig[EVENT_HANDLER_CONFIG_KEY], "change")}
     >
     ${dropdownConfig.data?.map(
       (item: any) =>
@@ -196,6 +229,8 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
     )}
     </select>`;
   }
+
+
 }
 
 if (!customElements.get("event-search-component")) {
