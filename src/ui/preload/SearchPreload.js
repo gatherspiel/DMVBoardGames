@@ -5,7 +5,7 @@ const IS_LOCAL = !window.location.href.includes(
   "https://dmvboardgames.com/",
 );
 
-let API_ROOT = "https://gatherspiel-api-6mued.kinsta.app"
+let API_ROOT = "http://localhost:7070"
 
 if(!IS_LOCAL){
   API_ROOT = "https://api.gatherspiel.com"

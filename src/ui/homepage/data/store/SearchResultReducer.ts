@@ -1,7 +1,7 @@
-export function updateSearchResultGroupStore(groupResults: any) {
+export function searchResultReducer(searchResults: any) {
 
-  var results:any = groupResults?.searchResults?.groupData;
-  const updatedGroupStore: Record<string, any> = {};
+  var results:any = searchResults?.groupData;
+  const updatedResults: Record<string, any> = {};
 
   if(!results){
     return {};
@@ -9,7 +9,7 @@ export function updateSearchResultGroupStore(groupResults: any) {
   Object.keys(results).forEach((groupId)=>{
     const group = results[groupId];
 
-    updatedGroupStore[`group-${group.id}`] = {
+    updatedResults[`group-${group.id}`] = {
       events: group["events"],
       locations: group.cities || group.locations,
       url: group.url,
@@ -18,7 +18,5 @@ export function updateSearchResultGroupStore(groupResults: any) {
       isHidden: false,
     };
   });
-  return {
-    groups: updatedGroupStore,
-  };
+  return updatedResults
 }

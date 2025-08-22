@@ -1,16 +1,14 @@
 import { API_ROOT } from "../../../../shared/Params.ts";
-import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constants.ts";
+import { DEFAULT_SEARCH_PARAMETER } from "../../components/group-search/Constants.ts";
 import type { SearchParams } from "./model/SearchParams.ts";
-import { generateApiThunk } from "@bponnaluri/places-js";
+import {generateApiThunk} from "@bponnaluri/places-js";
 import type { ApiRequestConfig } from "@bponnaluri/places-js";
-import {generatePreloadThunk} from "@bponnaluri/places-js";
-import {SEARCH_RESULTS} from "../../../auth/Constants.ts";
 
 const CITY_PARAM = "city";
 const DAY_PARAM = "day";
 const DISTANCE_PARAM="distance";
 
-function getEventsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
+function getGroupsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
   let url = API_ROOT + "/searchEvents";
 
   const paramMap: any = {};
@@ -46,15 +44,8 @@ function getEventsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
 }
 
 
-export const EVENT_SEARCH_THUNK = generateApiThunk({
-  queryConfig: getEventsQueryConfig,
-}).addGlobalStateReducer((state:any)=>{
-  return {[SEARCH_RESULTS]:state}
+export const GROUP_SEARCH_THUNK = generateApiThunk({
+  queryConfig: getGroupsQueryConfig,
 })
 
-export const EVENT_PRELOAD_THUNK =
-  generatePreloadThunk("preload_"+EVENT_SEARCH_THUNK.requestStoreId)
-  .addGlobalStateReducer((state:any)=>{
-    return {[SEARCH_RESULTS]:state}
-  })
-
+GROUP_SEARCH_THUNK.enablePreload();

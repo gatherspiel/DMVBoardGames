@@ -6,13 +6,7 @@ import {
 } from "../Constants.ts";
 import {UPDATE_GROUP_REQUEST_THUNK} from "./data/UpdateGroupThunk.ts";
 
-export const EDIT_GROUP_EVENT_CONFIG: EventHandlerThunkConfig = {
-  eventHandler:  () => {
-    return {
-      isEditing: true,
-    };
-  },
-};
+
 
 export const CANCEL_GROUP_EDIT_HANDLER: EventHandlerThunkConfig = {
 

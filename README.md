@@ -23,14 +23,16 @@ Also, follow the guidelines below:
   
 ### Running in dev mode
 - npm run dev
-  
+
+-If you want to test local changes to the places-js package. publish the package locally using yalc. Then
+run yalc add @bponnaluri/places-js 
 ### Creating a preview
 - npm run build
 - npm run preview
 
 ### How to run locally with API and database.
 - Follow the same setup steps as the previous seciton
-- See the following instructions for runing the API and database: https://github.com/Create-Third-Places/development
+- See the following instructions for running the API and database: https://github.com/Create-Third-Places/development
 
 
 

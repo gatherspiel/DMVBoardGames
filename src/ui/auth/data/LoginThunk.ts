@@ -14,7 +14,7 @@ import {BaseThunk} from "@bponnaluri/places-js";
 async function retrieveData(
   params: AuthRequest,
   backupResponse: DefaultApiAction,
-): Promise<AuthResponse> {
+): Promise<any> {
 
   try {
     if (
@@ -27,10 +27,14 @@ async function retrieveData(
     const authData = await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY);
 
     if (authData && isAfterNow(authData.expires_at)) {
-      return new AuthResponse(true, authData);
+
+      return {
+        loggedIn: true,
+        username: authData?.user?.email ?? ''
+      }
     }
 
-    if(!params.username && !params.password){
+    if(!params?.username && !params?.password){
       return backupResponse.defaultFunction({});
     }
 
@@ -59,6 +63,7 @@ async function retrieveData(
       const authTokenData = await data.json();
 
       addLocalStorageData(AUTH_TOKEN_KEY, JSON.stringify(authTokenData))
+
       return new AuthResponse(true, authTokenData);
     }
     const error = await data.json();
@@ -70,6 +75,7 @@ async function retrieveData(
       throw Error("Authentication error");
     }
   } catch (e: any) {
+    console.log(e.message)
     console.trace();
     return backupResponse.defaultFunction({
       errorMessage: e.message,
@@ -108,11 +114,4 @@ export const authenticationErrorConfig = {
 export const LOGIN_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
   retrieveData,
   authenticationErrorConfig,
-).addGlobalStateReducer((loginState: any) => {
-  return {
-    [IS_LOGGED_IN_KEY]:{
-      isLoggedIn: loginState.loggedIn,
-      username: loginState?.data?.user?.email ?? ''
-    }
-  };
-});
+)
