@@ -5,13 +5,12 @@ import {
 } from "../../Constants.js";
 import {GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
 
-import { serializeJSONProp } from "@bponnaluri/places-js";
+import {AbstractPageComponent, serializeJSONProp} from "@bponnaluri/places-js";
 import type { GroupPageData } from "../data/types/GroupPageData.ts";
 import type { Event } from "../../../homepage/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 import {
   CANCEL_GROUP_EDIT_HANDLER,
-  EDIT_GROUP_EVENT_CONFIG,
   SAVE_GROUP_CONFIG,
 } from "../GroupHandlers.ts";
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
@@ -21,16 +20,17 @@ import {
   generateButtonForEditPermission,
   generateLinkButton
 } from "../../../../shared/components/ButtonGenerator.ts";
-import {CREATE_EVENT_PAGE_HANDLER_CONFIG, DELETE_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {
   COMPONENT_LABEL_KEY,
-  EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY,
+  EVENT_HANDLER_CONFIG_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../../../shared/Constants.ts";
 import {
   GLOBAL_STATE_LOAD_CONFIG_KEY,
   REQUEST_THUNK_REDUCERS_KEY
 } from "@bponnaluri/places-js";
+import {CreateEventComponent} from "../../events/components/CreateEventComponent.ts";
+import {DeleteGroupPageComponent} from "../../deleteGroup/DeleteGroupPageComponent.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -137,9 +137,13 @@ const loadConfig = {
 
 };
 
+const EDIT_GROUP_BUTTON_ID = "edit-group-button";
+const ADD_EVENT_BUTTON_ID = "add-event";
+const DELETE_GROUP_BUTTON_ID = "delete-group"
+
 export class GroupComponent extends BaseTemplateDynamicComponent {
-  constructor(enablePreload?:boolean) {
-    super(loadConfig, enablePreload);
+  constructor() {
+    super(loadConfig);
   }
 
 
@@ -148,6 +152,34 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
   }
 
 
+  connectedCallback() {
+    var self = this;
+    this.addEventListener("click", function(event:any){
+      event.preventDefault();
+
+      const targetId = event.originalTarget.id;
+      if(targetId === EDIT_GROUP_BUTTON_ID) {
+        self.retrieveData({
+          isEditing: true,
+        })
+      }
+      if(targetId === ADD_EVENT_BUTTON_ID){
+        console.log(self.componentState)
+        const params = {
+          id: self.componentState.id,
+          name:self.componentState.name,
+        }
+        AbstractPageComponent.updateRoute(CreateEventComponent, params)
+      }
+      if(targetId === DELETE_GROUP_BUTTON_ID){
+        const params = {
+          id: self.componentState.id,
+          name:self.componentState.name,
+        }
+        AbstractPageComponent.updateRoute(DeleteGroupPageComponent,params)
+      }
+    })
+  }
 
   render(groupData: GroupPageData): string {
     console.log("Hi")
@@ -171,23 +203,21 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
        </h1>
 
        ${generateButtonForEditPermission({
-           text: "Edit group info",
-           component: this,
-           [EVENT_HANDLER_CONFIG_KEY]: EDIT_GROUP_EVENT_CONFIG,
+         component: this,
+         id:EDIT_GROUP_BUTTON_ID,
+         text: "Edit group info",
        })}
        
        ${generateButtonForEditPermission({
+           component: this, 
+           id: ADD_EVENT_BUTTON_ID,
            text: "Add event",
-           component: this,
-           [EVENT_HANDLER_CONFIG_KEY]: CREATE_EVENT_PAGE_HANDLER_CONFIG,
-           [EVENT_HANDLER_PARAMS_KEY]:{name:groupData.name, id: groupData.id}
          })}
        
        ${generateButtonForEditPermission({
-           text: "Delete group",
            component: this,
-           [EVENT_HANDLER_CONFIG_KEY]: DELETE_GROUP_PAGE_HANDLER_CONFIG,
-           [EVENT_HANDLER_PARAMS_KEY]:{name:groupData.name, id: groupData.id}
+           id: DELETE_GROUP_BUTTON_ID,
+           text: "Delete group",
          })}
 
        </div>
