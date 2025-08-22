@@ -1,17 +1,19 @@
 import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
 import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
-import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
-import {REDIRECT_HANDLER_CONFIG} from "@bponnaluri/places-js";
+import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 import {GLOBAL_STATE_LOAD_CONFIG_KEY} from "@bponnaluri/places-js";
-import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../shared/Constants.ts";
+import {LOCATIONS_THUNK} from "../data/search/LocationsThunk.ts";
 
 
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
-    globalFieldSubscriptions: ["gameLocations"],
-    defaultGlobalStateReducer: (data:any)=>{
-      return data.gameLocations.gameRestaurants;
-    }
+    dataThunks:[{
+      componentReducer: (data:any)=>{
+        return data.gameRestaurants;
+      },
+      dataThunk: LOCATIONS_THUNK,
+      fieldName: "gameRestaurants"
+    }]
   },
 };
 
@@ -37,11 +39,9 @@ export class GameRestaurantListComponent extends BaseTemplateDynamicComponent {
     return `
     <div id = convention-${gameRestaurant.id} class="game-restaurant-list-item">
      <h3>
-        ${generateButton({
-          text: `${gameRestaurant.name}`,
-          component: this,
-          [EVENT_HANDLER_CONFIG_KEY]: REDIRECT_HANDLER_CONFIG,
-          [EVENT_HANDLER_PARAMS_KEY]: {url: gameRestaurant.url}
+        ${generateLinkButton({
+          text: gameRestaurant.name,
+          url: gameRestaurant.url
         })}
       </h3>
     <p>Location: ${gameRestaurant.location}</p>
@@ -49,13 +49,13 @@ export class GameRestaurantListComponent extends BaseTemplateDynamicComponent {
   `;
   }
 
-  render(data: Record<any, GameRestaurant>) {
+  render(data: any) {
 
     let html = `<div class ="ui-section">
     <h1 class="hideOnMobile">Board Game Bars and Cafés</h1>
     <h2 class="showOnMobile">Board Game Bars and Cafés</h2>
     `;
-    Object.values(data).forEach((item) => {
+    Object.values(data.gameRestaurants).forEach((item:any) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
     });

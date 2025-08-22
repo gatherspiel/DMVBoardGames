@@ -2,7 +2,12 @@ import type {BaseDynamicComponent} from "@bponnaluri/places-js";
 import type {EventHandlerThunkConfig} from "@bponnaluri/places-js";
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../Constants.ts";
 
-export type ButtonConfig ={
+export type LinkButtonConfig = {
+  text: string
+  url: string
+}
+
+export type ButtonConfig = {
   class?: string,
   type?:string,
   id?:string,
@@ -10,6 +15,18 @@ export type ButtonConfig ={
   component: BaseDynamicComponent,
   [EVENT_HANDLER_CONFIG_KEY]?: EventHandlerThunkConfig
   [EVENT_HANDLER_PARAMS_KEY]?:Record<string, string>
+}
+
+export function generateLinkButton(config:LinkButtonConfig){
+  return `
+    <div class="raised">
+      <span class="shadow"></span>
+       <span class="edge"></span>
+       <span class="front">
+          <a onclick="event.stopPropagation()" href=${config.url}>${config.text} </a>
+       </span>   
+    </div>
+  `
 }
 
 export function generateButton(config:ButtonConfig){

@@ -23,7 +23,6 @@ import {IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
 import {LOGIN_THUNK} from "../../auth/data/LoginThunk.ts";
 import {EVENT_PRELOAD_THUNK, EVENT_SEARCH_THUNK} from "../data/search/EventSearchThunk.ts";
 import {DEFAULT_SEARCH_PARAMETER} from "./event-search/Constants.ts";
-import {CITY_LIST_THUNK} from "../data/search/CityListThunk.ts";
 
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 
@@ -32,10 +31,6 @@ const loadConfig = {
     {
       fieldName: IS_LOGGED_IN_KEY,
       dataSource: LOGIN_THUNK
-    },
-    {
-      fieldName: "cityList",
-      dataSource: CITY_LIST_THUNK
     },
     {
       fieldName: "searchResults",
@@ -53,6 +48,7 @@ const EVENT_SEARCH_ID ="event-search";
 const GAME_RESTAURANTS_ID="game-restaurants";
 const GAME_STORES_ID="game-stores";
 
+const COMPONENTS_WITH_EVENTS:string[] = ['event-search-component']
 export class HomepageComponent extends BaseDynamicComponent {
   constructor(enablePreload?:boolean){
     super(loadConfig, enablePreload);
@@ -68,11 +64,16 @@ export class HomepageComponent extends BaseDynamicComponent {
     const self = this;
 
     this.addEventListener("click", function (event: any) {
+
+      console.log(Date.now())
       event.preventDefault();
       const targetId = event.originalTarget.id;
-      if (event.target.id === 'event-search-component') {
+
+      const targetComponentId = event.srcElement.id || event.srcElement.localName;
+      if (COMPONENTS_WITH_EVENTS.includes(targetComponentId) && event.srcElement instanceof BaseDynamicComponent)  {
         event.target.handleClickEvents(event);
-      } else {
+      }
+      else {
         if ([CONVENTIONS_ID, EVENT_SEARCH_ID, GAME_RESTAURANTS_ID, GAME_STORES_ID].includes(targetId)) {
           self.retrieveData({
             hideEvents: targetId !== EVENT_SEARCH_ID,
