@@ -19,19 +19,8 @@ import {OpenCreateGroupPageComponent} from "./OpenCreateGroupPageComponent.ts";
 
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 
-import {IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
-import {LOGIN_THUNK} from "../../auth/data/LoginThunk.ts";
-
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 
-const loadConfig = {
-  dataFields:[
-    {
-      fieldName: IS_LOGGED_IN_KEY,
-      dataSource: LOGIN_THUNK
-    },
-  ]
-}
 const CONVENTIONS_ID = "convention-list";
 const EVENT_SEARCH_ID ="group-search";
 const GAME_RESTAURANTS_ID="game-restaurants";
@@ -39,8 +28,8 @@ const GAME_STORES_ID="game-stores";
 
 const COMPONENTS_WITH_EVENTS:string[] = ['group-search-component','group-list-component']
 export class HomepageComponent extends BaseDynamicComponent {
-  constructor(enablePreload?:boolean){
-    super(loadConfig, enablePreload);
+  constructor(){
+    super();
   }
 
   connectedCallback() {
@@ -54,7 +43,6 @@ export class HomepageComponent extends BaseDynamicComponent {
 
     this.addEventListener("click", function (event: any) {
 
-      console.log(Date.now())
       event.preventDefault();
       const targetId = event.originalTarget.id;
 

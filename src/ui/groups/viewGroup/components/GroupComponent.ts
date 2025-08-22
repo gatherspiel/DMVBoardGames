@@ -3,7 +3,7 @@ import {
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
 } from "../../Constants.js";
-import {GROUP_PRELOAD_THUNK, GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
+import {GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
 
 import { serializeJSONProp } from "@bponnaluri/places-js";
 import type { GroupPageData } from "../data/types/GroupPageData.ts";
@@ -16,34 +16,27 @@ import {
 } from "../GroupHandlers.ts";
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 
-import {REDIRECT_HANDLER_CONFIG} from "@bponnaluri/places-js";
-import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
+import {
+  generateButton,
+  generateButtonForEditPermission,
+  generateLinkButton
+} from "../../../../shared/components/ButtonGenerator.ts";
 import {CREATE_EVENT_PAGE_HANDLER_CONFIG, DELETE_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {
   COMPONENT_LABEL_KEY,
   EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY,
-  IS_LOGGED_IN_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../../../shared/Constants.ts";
 import {
-  DEFAULT_GLOBAL_STATE_REDUCER_KEY,
-  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
   REQUEST_THUNK_REDUCERS_KEY
 } from "@bponnaluri/places-js";
-import {LOGIN_THUNK} from "../../../auth/data/LoginThunk.ts";
 
-const GROUP_DATA = "groupData"
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
 
   <style>
- 
-    a {
-      margin-left:1rem;
-      margin-right:1rem;
-    }
-    
+     
     .${GROUP_DESCRIPTION_TEXT} {
       display: block;
       position: relative;
@@ -78,11 +71,24 @@ const template = `
       width: 800px;
     }
     
+    button {
+      margin-top:0.5rem;
+    }
+
+    .group-webpage-link {
+      display: inline-block;
+    }
     #group-events {
       border-bottom:  20px solid;
       border-image-source: url(assets/Section_Border_Medium.png);
       border-image-slice: 20 20;
       border-image-repeat: round;
+    }
+    
+    @media not screen and (width < 32em) {
+      .${GROUP_DESCRIPTION_TEXT} {
+        margin-top: 1rem;
+      }
     }
     
     @media screen and (width < 32em) {
@@ -99,55 +105,36 @@ const template = `
       }
     }
     
-        
+     
   </style>
   <div></div>
 `;
 
-const groupDataStoreReducer = (data:any)=>{
 
-  if(!data.groupData){
-    return {};
-  }
-
-  const groupData = data.groupData;
-  const isLoggedIn = data.isLoggedIn;
-
-  if (!isLoggedIn) {
-    groupData.isEditing = false;
-  }
-  groupData[SUCCESS_MESSAGE_KEY] = '';
-  return groupData;
+const groupDataReducer = (groupData:any)=>{
+  return {...groupData, SUCCESS_MESSAGE_KEY:''}
 }
 
 const loadConfig = {
   [REQUEST_THUNK_REDUCERS_KEY]: [
     {
-      thunk: UPDATE_GROUP_REQUEST_THUNK,
       componentReducer:  () =>{
         return {
           isEditing: false,
           [SUCCESS_MESSAGE_KEY]: 'Group update successful'
         };
       },
+      thunk: UPDATE_GROUP_REQUEST_THUNK,
     },
   ],
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
-    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]:[GROUP_DATA, IS_LOGGED_IN_KEY],
-    [DEFAULT_GLOBAL_STATE_REDUCER_KEY]: groupDataStoreReducer
-  },
-  dataFields:[
-    {
-      fieldName:"groupData",
-      dataSource: GROUP_REQUEST_THUNK,
-      preloadSource: GROUP_PRELOAD_THUNK,
+    dataThunks:[{
+      dataThunk:GROUP_REQUEST_THUNK,
+      componentReducer:groupDataReducer,
       urlParams:["name"]
-    },
-    {
-      fieldName: IS_LOGGED_IN_KEY,
-      dataSource: LOGIN_THUNK
-    }
-  ]
+    }]
+  },
+
 };
 
 export class GroupComponent extends BaseTemplateDynamicComponent {
@@ -155,17 +142,15 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
     super(loadConfig, enablePreload);
   }
 
-  connectedCallback(){
-    this.retrieveData({});
-  }
 
   getTemplateStyle(): string {
     return template;
   }
 
-  render(groupData: GroupPageData): string {
 
-    console.log("Render time for group component:"+Date.now())
+
+  render(groupData: GroupPageData): string {
+    console.log("Hi")
     if (!groupData.permissions) {
       return `<h1>Loading</h1>`;
     }
@@ -178,12 +163,10 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
        !groupData.isEditing
          ? `<div class="group-title">
        <h1>
-         ${generateButton({
+         ${generateLinkButton({
            class: "group-webpage-link",
            text: groupData.name,
-           component: this,
-           [EVENT_HANDLER_CONFIG_KEY]: REDIRECT_HANDLER_CONFIG,
-           [EVENT_HANDLER_PARAMS_KEY]: {url: groupData.url}
+           url:groupData.url
          })}
        </h1>
 

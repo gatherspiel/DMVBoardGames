@@ -21,7 +21,6 @@ fetch(`${API_ROOT}/searchEvents`,{priority: 'high'}).then((response)=>{
   //@ts-ignore
   window.preloadData = response;
 
-  console.log(response);
   //@ts-ignore
   window.waitingForPreload = false;
 })

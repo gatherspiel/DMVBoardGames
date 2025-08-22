@@ -1,7 +1,7 @@
 import { API_ROOT } from "../../../../shared/Params.ts";
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/group-search/Constants.ts";
 import type { SearchParams } from "./model/SearchParams.ts";
-import { generateApiThunk } from "@bponnaluri/places-js";
+import {generateApiThunk} from "@bponnaluri/places-js";
 import type { ApiRequestConfig } from "@bponnaluri/places-js";
 
 const CITY_PARAM = "city";

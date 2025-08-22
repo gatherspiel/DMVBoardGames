@@ -115,7 +115,7 @@ export class GroupListComponent extends BaseTemplateDynamicComponent {
 
   handleClickEvents(event:any){
     const groupName = event.originalTarget.textContent;
-    console.log(groupName)
+    console.log(groupName);
     //@ts-ignore
     AbstractPageComponent.updateRoute(GroupComponent,{name:groupName})
   }

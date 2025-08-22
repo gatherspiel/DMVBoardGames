@@ -2,6 +2,7 @@ import type {BaseDynamicComponent, EventHandlerThunkConfig} from "@bponnaluri/pl
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../Constants.ts";
 
 export type LinkButtonConfig = {
+  class?:string
   text: string
   url: string
 }
@@ -18,7 +19,7 @@ export type ButtonConfig = {
 
 export function generateLinkButton(config:LinkButtonConfig){
   return `
-    <div class="raised">
+    <div class="raised ${config.class ?? ''}">
       <span class="shadow"></span>
        <span class="edge"></span>
        <span class="front">
