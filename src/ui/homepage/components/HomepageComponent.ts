@@ -21,8 +21,6 @@ import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 
 import {IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
 import {LOGIN_THUNK} from "../../auth/data/LoginThunk.ts";
-import {EVENT_PRELOAD_THUNK, EVENT_SEARCH_THUNK} from "../data/search/EventSearchThunk.ts";
-import {DEFAULT_SEARCH_PARAMETER} from "./event-search/Constants.ts";
 
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 
@@ -32,15 +30,7 @@ const loadConfig = {
       fieldName: IS_LOGGED_IN_KEY,
       dataSource: LOGIN_THUNK
     },
-    {
-      fieldName: "searchResults",
-      dataSource: EVENT_SEARCH_THUNK,
-      preloadSource: EVENT_PRELOAD_THUNK,
-      params: {
-        city: DEFAULT_SEARCH_PARAMETER,
-        day: DEFAULT_SEARCH_PARAMETER
-      }
-    }
+
   ]
 }
 const CONVENTIONS_ID = "convention-list";

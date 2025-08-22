@@ -12,7 +12,6 @@ const loadConfig = {
         return data.gameRestaurants;
       },
       dataThunk: LOCATIONS_THUNK,
-      fieldName: "gameRestaurants"
     }]
   },
 };
@@ -55,7 +54,7 @@ export class GameRestaurantListComponent extends BaseTemplateDynamicComponent {
     <h1 class="hideOnMobile">Board Game Bars and Cafés</h1>
     <h2 class="showOnMobile">Board Game Bars and Cafés</h2>
     `;
-    Object.values(data.gameRestaurants).forEach((item:any) => {
+    Object.values(data).forEach((item:any) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
     });

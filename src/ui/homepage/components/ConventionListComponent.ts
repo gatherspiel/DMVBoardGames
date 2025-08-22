@@ -13,7 +13,6 @@ const loadConfig = {
         return data.conventions;
       },
       dataThunk: LOCATIONS_THUNK,
-      fieldName: "conventions"
     }]
   },
 };
@@ -66,7 +65,7 @@ export class ConventionListComponent extends BaseTemplateDynamicComponent {
       <div class="ui-section"><h1 class="hideOnMobile">Upcoming conventions</h1>
       <h2 class="showOnMobile">Upcoming conventions</h2>`;
 
-    Object.values(data.conventions).forEach((item:any) => {
+    Object.values(data).forEach((item:any) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
     });

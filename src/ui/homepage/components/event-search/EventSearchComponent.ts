@@ -110,13 +110,15 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
   }
 
   handleClickEvents(event:any){
+    console.log("Hi")
     if(event.originalTarget.id === SEARCH_BUTTON_ID) {
       const searchParams:any = {
         location: this.componentState.location,
         day: this.componentState.day,
         distance: this.componentState.distance
       };
-      EVENT_SEARCH_THUNK.retrieveData(searchParams)
+      console.log("Retrieving data")
+      EVENT_SEARCH_THUNK.getData(searchParams)
     }
   }
 

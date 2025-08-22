@@ -3,8 +3,6 @@ import { DEFAULT_SEARCH_PARAMETER } from "../../components/event-search/Constant
 import type { SearchParams } from "./model/SearchParams.ts";
 import { generateApiThunk } from "@bponnaluri/places-js";
 import type { ApiRequestConfig } from "@bponnaluri/places-js";
-import {generatePreloadThunk} from "@bponnaluri/places-js";
-import {SEARCH_RESULTS} from "../../../auth/Constants.ts";
 
 const CITY_PARAM = "city";
 const DAY_PARAM = "day";
@@ -48,13 +46,6 @@ function getEventsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
 
 export const EVENT_SEARCH_THUNK = generateApiThunk({
   queryConfig: getEventsQueryConfig,
-}).addGlobalStateReducer((state:any)=>{
-  return {[SEARCH_RESULTS]:state}
 })
 
-export const EVENT_PRELOAD_THUNK =
-  generatePreloadThunk("preload_"+EVENT_SEARCH_THUNK.requestStoreId)
-  .addGlobalStateReducer((state:any)=>{
-    return {[SEARCH_RESULTS]:state}
-  })
-
+EVENT_SEARCH_THUNK.enablePreload();

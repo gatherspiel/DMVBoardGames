@@ -1,23 +1,29 @@
 import type { GroupSearchResult } from "../../data/types/group/GroupSearchResult.ts";
-import { updateSearchResultGroupStore } from "../../data/store/SearchResultStoreReducer.ts";
 import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
 import {
-  DEFAULT_GLOBAL_STATE_REDUCER_KEY,
-  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
 } from "@bponnaluri/places-js";
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../../shared/Constants.ts";
-import {SEARCH_RESULTS} from "../../../auth/Constants.ts";
+import {EVENT_SEARCH_THUNK} from "../../data/search/EventSearchThunk.ts";
+import {DEFAULT_SEARCH_PARAMETER} from "../event-search/Constants.ts";
+import {searchResultReducer} from "../../data/store/SearchResultStoreReducer.ts";
 
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
-    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]:[SEARCH_RESULTS],
-    [DEFAULT_GLOBAL_STATE_REDUCER_KEY]: updateSearchResultGroupStore
-  }
+    dataThunks:[{
+      componentReducer: searchResultReducer,
+      dataThunk: EVENT_SEARCH_THUNK,
+      params: {
+        city: DEFAULT_SEARCH_PARAMETER,
+        day: DEFAULT_SEARCH_PARAMETER
+      }
+    }]
+  },
 };
+
 
 const template = `
 
@@ -105,9 +111,10 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
-  render(data: any): string {
+  render(groups: any): string {
 
-    const groups = data.groups;
+    console.log(groups);
+
     let html = `<div class="ui-section">`;
 
     if(!groups){
