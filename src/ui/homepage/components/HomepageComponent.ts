@@ -63,7 +63,7 @@ export class HomepageComponent extends BaseDynamicComponent {
     super(loadConfig, enablePreload);
   }
 
-  connectedCallback(){
+  connectedCallback() {
     this.retrieveData({
       hideEvents: false,
       hideConventions: true,
@@ -71,17 +71,21 @@ export class HomepageComponent extends BaseDynamicComponent {
       hideGameStores: true
     });
     const self = this;
-    this.addEventListener("click", function(event:any){
+
+    this.addEventListener("click", function (event: any) {
       event.preventDefault();
       const targetId = event.originalTarget.id;
-
-      if([CONVENTIONS_ID,EVENT_SEARCH_ID,GAME_RESTAURANTS_ID,GAME_STORES_ID].includes(targetId)){
-        self.retrieveData({
-          hideEvents: targetId !== EVENT_SEARCH_ID,
-          hideConventions: targetId !== CONVENTIONS_ID,
-          hideRestaurants: targetId!== GAME_RESTAURANTS_ID,
-          hideGameStores: targetId !== GAME_STORES_ID
-        })
+      if (event.target.id === 'event-search-component') {
+        event.target.handleClickEvents(event);
+      } else {
+        if ([CONVENTIONS_ID, EVENT_SEARCH_ID, GAME_RESTAURANTS_ID, GAME_STORES_ID].includes(targetId)) {
+          self.retrieveData({
+            hideEvents: targetId !== EVENT_SEARCH_ID,
+            hideConventions: targetId !== CONVENTIONS_ID,
+            hideRestaurants: targetId !== GAME_RESTAURANTS_ID,
+            hideGameStores: targetId !== GAME_STORES_ID
+          })
+        }
       }
     })
   }

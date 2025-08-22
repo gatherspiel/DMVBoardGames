@@ -22,6 +22,6 @@
     "vite-plugin-minify": "^2.1.0"
   },
   "dependencies": {
-    "@bponnaluri/places-js": "^0.0.23"
+    "@bponnaluri/places-js": "file:.yalc/@bponnaluri/places-js"
   }
 }
