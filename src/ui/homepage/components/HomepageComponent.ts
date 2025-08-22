@@ -21,7 +21,6 @@ import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 
 import {IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
 import {LOGIN_THUNK} from "../../auth/data/LoginThunk.ts";
-import {LOCATIONS_THUNK} from "../data/search/LocationsThunk.ts";
 import {EVENT_PRELOAD_THUNK, EVENT_SEARCH_THUNK} from "../data/search/EventSearchThunk.ts";
 import {DEFAULT_SEARCH_PARAMETER} from "./event-search/Constants.ts";
 import {CITY_LIST_THUNK} from "../data/search/CityListThunk.ts";
@@ -33,10 +32,6 @@ const loadConfig = {
     {
       fieldName: IS_LOGGED_IN_KEY,
       dataSource: LOGIN_THUNK
-    },
-    {
-      fieldName: "gameLocations",
-      dataSource: LOCATIONS_THUNK
     },
     {
       fieldName: "cityList",
