@@ -1,8 +1,5 @@
 export function searchResultReducer(searchResults: any) {
 
-  console.log("Search results");
-  console.log(searchResults);
-
   var results:any = searchResults?.groupData;
   const updatedResults: Record<string, any> = {};
 

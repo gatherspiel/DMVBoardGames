@@ -1,21 +1,25 @@
 import type { GroupSearchResult } from "../../data/types/group/GroupSearchResult.ts";
-import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
-import {VIEW_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
+import {AbstractPageComponent, BaseTemplateDynamicComponent} from "@bponnaluri/places-js";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
 import {
   GLOBAL_STATE_LOAD_CONFIG_KEY,
 } from "@bponnaluri/places-js";
-import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../../shared/Constants.ts";
-import {EVENT_SEARCH_THUNK} from "../../data/search/EventSearchThunk.ts";
-import {DEFAULT_SEARCH_PARAMETER} from "../event-search/Constants.ts";
-import {searchResultReducer} from "../../data/store/SearchResultStoreReducer.ts";
+import {GROUP_SEARCH_THUNK} from "../../data/search/GroupSearchThunk.ts";
+import {DEFAULT_SEARCH_PARAMETER} from "../group-search/Constants.ts";
+import {searchResultReducer} from "../../data/store/SearchResultReducer.ts";
+import {GroupComponent} from "../../../groups/viewGroup/components/GroupComponent.ts";
 
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
     dataThunks:[{
       componentReducer: searchResultReducer,
-      dataThunk: EVENT_SEARCH_THUNK,
+      dataThunk: GROUP_SEARCH_THUNK,
+      /*When updating component state, values for top level keys that do not have corresponding key value pairs
+       in the reducer remain. As a result, a key must be specified to ensure that component state is updated
+       to only contain groups from the search results.
+       */
+      fieldName: "searchResults",
       params: {
         city: DEFAULT_SEARCH_PARAMETER,
         day: DEFAULT_SEARCH_PARAMETER
@@ -76,7 +80,7 @@ const template = `
     }
   </style>
 `;
-export class EventListComponent extends BaseTemplateDynamicComponent {
+export class GroupListComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(loadConfig);
   }
@@ -90,13 +94,11 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
           <img src="/assets/house.png">
         </div>
          
-         <div class = "button-div">
-         ${generateButton({
-          type: "submit",
+        <div class = "button-div">
+        ${generateButton({
+          id: "group-button-"+groupId,
           text: group.title,
-          component: this,
-          [EVENT_HANDLER_CONFIG_KEY]: VIEW_GROUP_PAGE_HANDLER_CONFIG,
-          [EVENT_HANDLER_PARAMS_KEY]: {name: group.title}
+          type: "submit"
         })}
          </div>
    
@@ -111,18 +113,17 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
-  render(groups: any): string {
+  handleClickEvents(event:any){
+    const groupName = event.originalTarget.textContent;
+    console.log(groupName)
+    //@ts-ignore
+    AbstractPageComponent.updateRoute(GroupComponent,{name:groupName})
+  }
 
-    console.log(groups);
-
+  render(data: any): string {
     let html = `<div class="ui-section">`;
-
-    if(!groups){
-      return '';
-    }
-
-    const groupHtml = Object.keys(groups).reduce((result:any, groupId:any)=>{
-      return result+this.getItemHtml(groupId, groups[groupId])
+    const groupHtml = Object.keys(data.searchResults).reduce((result:any, groupId:any)=>{
+      return result+this.getItemHtml(groupId, data.searchResults[groupId])
     },'')
 
     if(!groupHtml)  {
@@ -138,6 +139,6 @@ export class EventListComponent extends BaseTemplateDynamicComponent {
   }
 }
 
-if (!customElements.get("event-list-component")) {
-  customElements.define("event-list-component", EventListComponent);
+if (!customElements.get("group-list-component")) {
+  customElements.define("group-list-component", GroupListComponent);
 }

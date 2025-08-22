@@ -11,9 +11,9 @@ import {ConventionListComponent} from "./ConventionListComponent.ts";
 // @ts-ignore
 import {GroupEventComponent} from "../../groups/viewGroup/components/GroupEventComponent.ts";
 // @ts-ignore
-import {EventListComponent} from "./event-list/EventListComponent.ts";
+import {GroupListComponent} from "./group-list/GroupListComponent.ts";
 // @ts-ignore
-import {EventSearchComponent} from "./event-search/EventSearchComponent.ts";
+import {GroupSearchComponent} from "./group-search/GroupSearchComponent.ts";
 // @ts-ignore
 import {OpenCreateGroupPageComponent} from "./OpenCreateGroupPageComponent.ts";
 
@@ -30,15 +30,14 @@ const loadConfig = {
       fieldName: IS_LOGGED_IN_KEY,
       dataSource: LOGIN_THUNK
     },
-
   ]
 }
 const CONVENTIONS_ID = "convention-list";
-const EVENT_SEARCH_ID ="event-search";
+const EVENT_SEARCH_ID ="group-search";
 const GAME_RESTAURANTS_ID="game-restaurants";
 const GAME_STORES_ID="game-stores";
 
-const COMPONENTS_WITH_EVENTS:string[] = ['event-search-component']
+const COMPONENTS_WITH_EVENTS:string[] = ['group-search-component','group-list-component']
 export class HomepageComponent extends BaseDynamicComponent {
   constructor(enablePreload?:boolean){
     super(loadConfig, enablePreload);
@@ -126,14 +125,14 @@ export class HomepageComponent extends BaseDynamicComponent {
       <div class="section-separator-medium"></div>
 
       <div data-container="root">
-        <event-search-component id="event-search-component" class="page-section" isVisible=${!data.hideEvents}>
-        </event-search-component>
+        <group-search-component id="group-search-component" class="page-section" isVisible=${!data.hideEvents}>
+        </group-search-component>
     
         <div class="section-separator-medium"></div>
     
         ${data && !data.hideEvents ? `
-        <div id="event-list" class="page-section">
-          <event-list-component></event-list-component>
+        <div id="group-list" class="page-section">
+          <group-list-component></group-list-component>
         </div> `: ''}
     
 

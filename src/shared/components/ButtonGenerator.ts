@@ -1,5 +1,4 @@
-import type {BaseDynamicComponent} from "@bponnaluri/places-js";
-import type {EventHandlerThunkConfig} from "@bponnaluri/places-js";
+import type {BaseDynamicComponent, EventHandlerThunkConfig} from "@bponnaluri/places-js";
 import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../Constants.ts";
 
 export type LinkButtonConfig = {
@@ -9,10 +8,10 @@ export type LinkButtonConfig = {
 
 export type ButtonConfig = {
   class?: string,
-  type?:string,
+  component?:BaseDynamicComponent,
   id?:string,
   text:string,
-  component: BaseDynamicComponent,
+  type?:string,
   [EVENT_HANDLER_CONFIG_KEY]?: EventHandlerThunkConfig
   [EVENT_HANDLER_PARAMS_KEY]?:Record<string, string>
 }
@@ -38,21 +37,19 @@ export function generateButton(config:ButtonConfig){
       class="${buttonClasses}"
       name="action"
       value="${config.text}"
-      ${event ? config.component.createEvent(config[EVENT_HANDLER_CONFIG_KEY], "click",config[EVENT_HANDLER_PARAMS_KEY]) : ``}
+      ${event && config.component ? config.component.createEvent(config[EVENT_HANDLER_CONFIG_KEY], "click",config[EVENT_HANDLER_PARAMS_KEY]) : ``}
       ${config.type ?? `type=${config.type}`}>
       
       <span class="shadow"></span>
        <span class="edge"></span>
-       <span class="front" ${config.id ? `id="${config.id}"`: ``}>
-          ${config.text} 
-        </span>   
+       <span class="front" ${config.id ? `id="${config.id}"`: ``}>${config.text}</span>   
     </button>
   `
 }
 
 export function generateButtonForEditPermission(config:ButtonConfig){
 
-  const userCanEditPermission = config.component.hasUserEditPermissions();
+  const userCanEditPermission = config.component?.hasUserEditPermissions();
   if(userCanEditPermission === undefined){
     throw new Error(`permissions.userCanEdit state not defined for component`);
   }

@@ -20,7 +20,7 @@ import {
   DEFAULT_PARAMETER_DISPLAY_KEY,
   DEFAULT_PARAMETER_KEY,
 } from "../../../../shared/Constants.ts";
-import {EVENT_SEARCH_THUNK} from "../../data/search/EventSearchThunk.ts";
+import {GROUP_SEARCH_THUNK} from "../../data/search/GroupSearchThunk.ts";
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
     dataThunks: [{
@@ -99,7 +99,7 @@ const SEARCH_BUTTON_ID:string = "search-button-id";
 const SEARCH_DISTANCE_ID:string = "search-distance-id";
 const SEARCH_DAYS_ID:string = "search-days-id";
 
-export class EventSearchComponent extends BaseTemplateDynamicComponent {
+export class GroupSearchComponent extends BaseTemplateDynamicComponent {
 
   constructor() {
     super(loadConfig);
@@ -110,15 +110,13 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
   }
 
   handleClickEvents(event:any){
-    console.log("Hi")
     if(event.originalTarget.id === SEARCH_BUTTON_ID) {
       const searchParams:any = {
         location: this.componentState.location,
         day: this.componentState.day,
         distance: this.componentState.distance
       };
-      console.log("Retrieving data")
-      EVENT_SEARCH_THUNK.getData(searchParams)
+      GROUP_SEARCH_THUNK.getData(searchParams)
     }
   }
 
@@ -234,6 +232,6 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
 
 }
 
-if (!customElements.get("event-search-component")) {
-  customElements.define("event-search-component", EventSearchComponent);
+if (!customElements.get("group-search-component")) {
+  customElements.define("group-search-component", GroupSearchComponent);
 }
