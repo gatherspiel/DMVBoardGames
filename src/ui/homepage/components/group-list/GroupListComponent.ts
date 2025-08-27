@@ -86,7 +86,7 @@ export class GroupListComponent extends BaseTemplateDynamicComponent {
   }
 
   private getItemHtml(groupId: string, group: GroupSearchResult) {
-    let groupHtml = "";
+    let groupHtml: string;
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
         
@@ -115,7 +115,6 @@ export class GroupListComponent extends BaseTemplateDynamicComponent {
 
   handleClickEvents(event:any){
     const groupName = event.originalTarget.textContent;
-    console.log(groupName);
     //@ts-ignore
     AbstractPageComponent.updateRoute(GroupComponent,{name:groupName})
   }

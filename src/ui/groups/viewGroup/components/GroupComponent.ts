@@ -9,10 +9,6 @@ import {AbstractPageComponent, serializeJSONProp} from "@bponnaluri/places-js";
 import type { GroupPageData } from "../data/types/GroupPageData.ts";
 import type { Event } from "../../../homepage/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
-import {
-  CANCEL_GROUP_EDIT_HANDLER,
-  SAVE_GROUP_CONFIG,
-} from "../GroupHandlers.ts";
 import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 
 import {
@@ -22,7 +18,6 @@ import {
 } from "../../../../shared/components/ButtonGenerator.ts";
 import {
   COMPONENT_LABEL_KEY,
-  EVENT_HANDLER_CONFIG_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../../../shared/Constants.ts";
 import {
@@ -103,9 +98,7 @@ const template = `
       p {
         font-size:1rem;
       }
-    }
-    
-     
+    }    
   </style>
   <div></div>
 `;
@@ -119,6 +112,7 @@ const loadConfig = {
   [REQUEST_THUNK_REDUCERS_KEY]: [
     {
       componentReducer:  () =>{
+        console.log("Hi");
         return {
           isEditing: false,
           [SUCCESS_MESSAGE_KEY]: 'Group update successful'
@@ -137,15 +131,16 @@ const loadConfig = {
 
 };
 
-const EDIT_GROUP_BUTTON_ID = "edit-group-button";
 const ADD_EVENT_BUTTON_ID = "add-event";
+const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
+const EDIT_GROUP_BUTTON_ID = "edit-group-button";
 const DELETE_GROUP_BUTTON_ID = "delete-group"
+const SAVE_UPDATES_BUTTON_ID = "save-updates";
 
 export class GroupComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(loadConfig);
   }
-
 
   getTemplateStyle(): string {
     return template;
@@ -157,32 +152,50 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
     this.addEventListener("click", function(event:any){
       event.preventDefault();
 
-      const targetId = event.originalTarget.id;
-      if(targetId === EDIT_GROUP_BUTTON_ID) {
-        self.retrieveData({
-          isEditing: true,
-        })
-      }
-      if(targetId === ADD_EVENT_BUTTON_ID){
-        console.log(self.componentState)
-        const params = {
-          id: self.componentState.id,
-          name:self.componentState.name,
+      try {
+        const targetId = event.originalTarget?.id;
+        if(targetId === EDIT_GROUP_BUTTON_ID) {
+          self.retrieveData({
+            isEditing: true,
+          })
         }
-        AbstractPageComponent.updateRoute(CreateEventComponent, params)
-      }
-      if(targetId === DELETE_GROUP_BUTTON_ID){
-        const params = {
-          id: self.componentState.id,
-          name:self.componentState.name,
+        if(targetId === ADD_EVENT_BUTTON_ID){
+          const params = {
+            id: self.componentState.id,
+            name:self.componentState.name,
+          }
+          AbstractPageComponent.updateRoute(CreateEventComponent, params)
         }
-        AbstractPageComponent.updateRoute(DeleteGroupPageComponent,params)
+        if(targetId === DELETE_GROUP_BUTTON_ID){
+          const params = {
+            id: self.componentState.id,
+            name:self.componentState.name,
+          }
+          AbstractPageComponent.updateRoute(DeleteGroupPageComponent,params)
+        }
+        if(targetId === CANCEL_UPDATES_BUTTON_ID) {
+          self.retrieveData({
+            isEditing: false
+          })
+        }
+        if(targetId === SAVE_UPDATES_BUTTON_ID){
+          UPDATE_GROUP_REQUEST_THUNK.getData({
+            id: self.componentState.id,
+            name: self.getFormValue(GROUP_NAME_INPUT),
+            description: self.getFormValue(GROUP_DESCRIPTION_INPUT),
+            url: self.getFormValue(GROUP_URL_INPUT)
+          })
+        }
+      } catch(e:any){
+        if(e.message !== `Permission denied to access property "id"`){
+          throw e;
+        }
       }
+
     })
   }
 
   render(groupData: GroupPageData): string {
-    console.log("Hi")
     if (!groupData.permissions) {
       return `<h1>Loading</h1>`;
     }
@@ -231,21 +244,20 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
        <h1>Editing group information</h1>
         
        <form>
-       
          ${this.addShortInput({
            id: GROUP_NAME_INPUT,
            [COMPONENT_LABEL_KEY]: "Group name",
            inputType: "text",
            value: groupData.name
          })} 
-         
+         <br>
          ${this.addShortInput({
            id: GROUP_URL_INPUT,
            [COMPONENT_LABEL_KEY]: "Group url",
            inputType: "text",
            value: groupData.url
          })} 
-         
+         <br>
          ${this.addTextInput({
            id: GROUP_DESCRIPTION_INPUT,
            [COMPONENT_LABEL_KEY]: "Group description",
@@ -254,19 +266,16 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
          })}   
 
          ${generateButton({
+           id: SAVE_UPDATES_BUTTON_ID,
            text: "Save updates",
            type: "submit",
-           component: this,
-           [EVENT_HANDLER_CONFIG_KEY]: SAVE_GROUP_CONFIG,
          })}
          
          ${generateButton({
+           id: CANCEL_UPDATES_BUTTON_ID,
            text: "Cancel updates",
            type: "submit",
-           component: this,
-           [EVENT_HANDLER_CONFIG_KEY]: CANCEL_GROUP_EDIT_HANDLER,
-         })}
-         
+         })}    
         </form> 
       `
      }
