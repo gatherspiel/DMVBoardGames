@@ -1,15 +1,21 @@
 import {getLoginComponentStoreFromLoginResponse, LOGIN_THUNK,} from "../data/LoginThunk.ts";
 
-import {getLoginComponentStoreFromLogoutResponse, LOGOUT_THUNK} from "../data/LogoutThunk.ts";
-
+import {LOGOUT_THUNK} from "../data/LogoutThunk.ts";
 import {LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT,} from "../Constants.js";
+
 import type {LoginComponentStore} from "../types/LoginComponentStore.ts";
-import {LOGIN_EVENT_CONFIG, REGISTER_EVENT_CONFIG,} from "../LoginComponentEventHandlers.ts";
-import {getLoginComponentStoreFromRegisterResponse, REGISTER_USER_THUNK,} from "../data/RegisterUserThunk.ts";
-import {COMPONENT_LABEL_KEY, EVENT_HANDLER_CONFIG_KEY, IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
-import {BaseTemplateDynamicComponent, DATA_FIELDS, REQUEST_THUNK_REDUCERS_KEY} from "@bponnaluri/places-js";
+import {
+  COMPONENT_LABEL_KEY,
+  IS_LOGGED_IN_KEY,
+  SUCCESS_MESSAGE_KEY
+} from "../../../shared/Constants.ts";
+import {
+  BaseTemplateDynamicComponent,
+  GLOBAL_STATE_LOAD_CONFIG_KEY, InternalApiAction,
+} from "@bponnaluri/places-js";
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage} from "@bponnaluri/places-js";
+import {API_ROOT} from "../../../shared/Params.ts";
 
 
 const template = `
@@ -36,35 +42,100 @@ const template = `
 
 `;
 
+const LOGIN_BUTTON_ID = "login-button";
+const REGISTER_BUTTON_ID = "register-button";
+const LOGOUT_BUTTON_ID = "logout-button";
+
 export class LoginComponent extends BaseTemplateDynamicComponent {
 
   hasRendered: boolean;
+
   constructor() {
     super({
-      [REQUEST_THUNK_REDUCERS_KEY]: [
-        {
-          thunk: LOGIN_THUNK,
+      [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
+        dataThunks: [{
           componentReducer: getLoginComponentStoreFromLoginResponse,
-        },
-        {
-          thunk: LOGOUT_THUNK,
-          componentReducer: getLoginComponentStoreFromLogoutResponse,
-        },
-        {
-          thunk: REGISTER_USER_THUNK,
-          componentReducer: getLoginComponentStoreFromRegisterResponse,
-        },
-      ],
-      [DATA_FIELDS]:[
-        {
-          fieldName: IS_LOGGED_IN_KEY,
-          dataSource: LOGIN_THUNK
-        }
-      ]
+          dataThunk: LOGIN_THUNK,
+        }],
+      }
     });
     this.hasRendered = false;
   }
 
+  retrieveAndValidateFormInputs() {
+
+    const username = this.getFormValue(USERNAME_INPUT);
+    const password = this.getFormValue(PASSWORD_INPUT);
+    if (!username || !password) {
+      return {
+        errorMessage: "Enter a valid username and password"
+      }
+    }
+    return {
+      username: username,
+      password: password
+    };
+  }
+
+  connectedCallback(){
+
+    const self = this;
+    this.addEventListener("click",(event:any)=>{
+
+      event.preventDefault();
+
+      try {
+        const targetId = event.originalTarget?.id;
+        if (targetId === LOGIN_BUTTON_ID){
+
+          const formInputs = self.retrieveAndValidateFormInputs()
+          if(formInputs.errorMessage){
+            self.retrieveData(formInputs)
+          } else {
+            LOGIN_THUNK.getData({
+              username: self.getFormValue(USERNAME_INPUT),
+              password: self.getFormValue(PASSWORD_INPUT)
+            })
+          }
+        }
+
+        if (targetId === REGISTER_BUTTON_ID) {
+          const formInputs = self.retrieveAndValidateFormInputs()
+          if(formInputs.errorMessage){
+            self.retrieveData(formInputs)
+          } else {
+
+            InternalApiAction.getResponseData({
+              body: JSON.stringify(formInputs),
+              method: "POST",
+              url: API_ROOT + `/users/register`,
+            }).then((response:any)=>{
+
+              console.log(response)
+              if(response.errorMessage){
+                self.retrieveData({
+                  "errorMessage":response.errorMessage
+                })
+              } else {
+                self.retrieveData({
+                  [SUCCESS_MESSAGE_KEY]: "Successfully registered user"
+                })
+              }
+            })
+          }
+        }
+
+        if (targetId === LOGOUT_BUTTON_ID) {
+          LOGOUT_THUNK.getData({}, LOGIN_THUNK)
+        }
+      }catch(e:any){
+        if(e.message !== `Permission denied to access property "id"`){
+          throw e;
+        }
+      }
+
+    })
+  }
   override getTemplateStyle(): string {
     return template;
   }
@@ -75,9 +146,10 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
         this.generateLogin(data)
   }
   generateLogin(data: LoginComponentStore) {
+
     const html = `
      <div class="ui-section" id="login-component-container">
-      <form id=${LOGIN_FORM_ID} ${this.createEvent(LOGIN_EVENT_CONFIG, "submit")}>
+      <form id=${LOGIN_FORM_ID}>
         <div class="ui-input">
           ${this.addShortInput({
             id: USERNAME_INPUT,
@@ -102,18 +174,16 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
         
         ${generateButton({
           class: "login-element",
-          type: "submit",
+          id: LOGIN_BUTTON_ID,
           text: "Login",
-          component: this,
-          [EVENT_HANDLER_CONFIG_KEY]: LOGIN_EVENT_CONFIG
+          type: "submit",
         })}
         
         ${generateButton({
           class: "login-element",
+          id: LOGIN_BUTTON_ID,
           type: "submit",
           text: "Register",
-          component: this,
-          [EVENT_HANDLER_CONFIG_KEY]: REGISTER_EVENT_CONFIG
         })}
 
                     

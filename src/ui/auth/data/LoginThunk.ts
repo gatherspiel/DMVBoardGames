@@ -25,9 +25,7 @@ async function retrieveData(
     }
 
     const authData = await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY);
-
     if (authData && isAfterNow(authData.expires_at)) {
-
       return {
         loggedIn: true,
         username: authData?.user?.email ?? ''
@@ -38,18 +36,14 @@ async function retrieveData(
       return backupResponse.defaultFunction({});
     }
 
-
     const url = `${SUPABASE_CLIENT_URL}/auth/v1/token?grant_type=password`
-
     const headers = {
       apiKey: SUPABASE_CLIENT_KEY,
     }
-
     const body = {
       email:params.username,
       password: params.password
     }
-
 
     const data:Response = await fetch(
       url, {
@@ -62,7 +56,6 @@ async function retrieveData(
     if (data.ok) {
 
       clearSessionStorage();
-
       const authTokenData = await data.json();
       addLocalStorageData(AUTH_TOKEN_KEY, JSON.stringify(authTokenData))
 
@@ -86,14 +79,14 @@ async function retrieveData(
 }
 
 export function getLoginComponentStoreFromLoginResponse(
-  response: AuthResponse,
+  response: any,
 ) {
-  const email = response?.getData()?.user?.email;
+
   return {
-    [IS_LOGGED_IN_KEY]: response.isLoggedIn(),
-    errorMessage: response.getErrorMessage(),
-    email: email,
-    [GROUP_DESCRIPTION_TEXT]: response.isLoggedIn() ? `Welcome ${email}` : "",
+    [IS_LOGGED_IN_KEY]: response.loggedIn,
+    errorMessage: response.error,
+    email: response.username,
+    [GROUP_DESCRIPTION_TEXT]: response.loggedIn? `Welcome ${response.username}` : "",
     hasAttemptedLogin: true
   };
 }
