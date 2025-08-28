@@ -26,7 +26,7 @@ const EVENT_SEARCH_ID ="group-search";
 const GAME_RESTAURANTS_ID="game-restaurants";
 const GAME_STORES_ID="game-stores";
 
-const COMPONENTS_WITH_EVENTS:string[] = ['group-search-component','group-list-component']
+const COMPONENTS_WITH_EVENTS:string[] = ['group-search-component','group-list-component','open-create-group-component']
 export class HomepageComponent extends BaseDynamicComponent {
   constructor(){
     super();
@@ -42,8 +42,9 @@ export class HomepageComponent extends BaseDynamicComponent {
     const self = this;
 
     this.addEventListener("click", function (event: any) {
-
       event.preventDefault();
+
+
       const targetId = event.originalTarget.id;
 
       const targetComponentId = event.srcElement.id || event.srcElement.localName;

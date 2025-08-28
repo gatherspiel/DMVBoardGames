@@ -6,7 +6,7 @@ import {
 import {GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
 
 import {AbstractPageComponent, ApiActionTypes, serializeJSONProp} from "@bponnaluri/places-js";
-import type { GroupPageData } from "../data/types/GroupPageData.ts";
+import type { GroupComponentData } from "../data/types/GroupComponentData.ts";
 import type { Event } from "../../../homepage/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 
@@ -193,7 +193,7 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
     })
   }
 
-  render(groupData: GroupPageData): string {
+  render(groupData: GroupComponentData): string {
     if (!groupData.permissions) {
       return `<h1>Loading</h1>`;
     }
