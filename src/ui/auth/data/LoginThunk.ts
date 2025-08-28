@@ -1,7 +1,7 @@
 
 import type { AuthRequest } from "../types/AuthRequest.ts";
 import { AuthResponse } from "../types/AuthResponse.ts";
-import {addLocalStorageData, getLocalStorageDataIfPresent} from "@bponnaluri/places-js";
+import {addLocalStorageData, clearSessionStorage, getLocalStorageDataIfPresent} from "@bponnaluri/places-js";
 import { isAfterNow } from "@bponnaluri/places-js";
 import type { AuthReducerError } from "../types/AuthReducerError.ts";
 import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../../shared/Params.ts";
@@ -60,8 +60,10 @@ async function retrieveData(
     )
 
     if (data.ok) {
-      const authTokenData = await data.json();
 
+      clearSessionStorage();
+
+      const authTokenData = await data.json();
       addLocalStorageData(AUTH_TOKEN_KEY, JSON.stringify(authTokenData))
 
       return new AuthResponse(true, authTokenData);

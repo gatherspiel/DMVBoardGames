@@ -5,11 +5,10 @@ import {
 } from "../../Constants.js";
 import {GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
 
-import {AbstractPageComponent, serializeJSONProp} from "@bponnaluri/places-js";
+import {AbstractPageComponent, ApiActionTypes, serializeJSONProp} from "@bponnaluri/places-js";
 import type { GroupPageData } from "../data/types/GroupPageData.ts";
 import type { Event } from "../../../homepage/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
-import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 
 import {
   generateButton,
@@ -22,10 +21,11 @@ import {
 } from "../../../../shared/Constants.ts";
 import {
   GLOBAL_STATE_LOAD_CONFIG_KEY,
-  REQUEST_THUNK_REDUCERS_KEY
 } from "@bponnaluri/places-js";
 import {CreateEventComponent} from "../../events/components/CreateEventComponent.ts";
 import {DeleteGroupPageComponent} from "../../deleteGroup/DeleteGroupPageComponent.ts";
+import {InternalApiAction} from "@bponnaluri/places-js";
+import {API_ROOT} from "../../../../shared/Params.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -105,22 +105,10 @@ const template = `
 
 
 const groupDataReducer = (groupData:any)=>{
-  return {...groupData, SUCCESS_MESSAGE_KEY:''}
+  return {...groupData, [SUCCESS_MESSAGE_KEY]:''}
 }
 
 const loadConfig = {
-  [REQUEST_THUNK_REDUCERS_KEY]: [
-    {
-      componentReducer:  () =>{
-        console.log("Hi");
-        return {
-          isEditing: false,
-          [SUCCESS_MESSAGE_KEY]: 'Group update successful'
-        };
-      },
-      thunk: UPDATE_GROUP_REQUEST_THUNK,
-    },
-  ],
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
     dataThunks:[{
       dataThunk:GROUP_REQUEST_THUNK,
@@ -145,7 +133,6 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
   getTemplateStyle(): string {
     return template;
   }
-
 
   connectedCallback() {
     var self = this;
@@ -179,11 +166,23 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
           })
         }
         if(targetId === SAVE_UPDATES_BUTTON_ID){
-          UPDATE_GROUP_REQUEST_THUNK.getData({
+          const params = {
             id: self.componentState.id,
             name: self.getFormValue(GROUP_NAME_INPUT),
             description: self.getFormValue(GROUP_DESCRIPTION_INPUT),
             url: self.getFormValue(GROUP_URL_INPUT)
+          }
+
+          InternalApiAction.getResponseData({
+            body: JSON.stringify(params),
+            method: ApiActionTypes.PUT,
+            url: API_ROOT + `/groups/?name=${encodeURIComponent(params.name)}`,
+          }).then(()=>{
+
+            self.retrieveData({
+              isEditing: false,
+              [SUCCESS_MESSAGE_KEY]: 'Group update successful'
+            });
           })
         }
       } catch(e:any){
@@ -191,7 +190,6 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
           throw e;
         }
       }
-
     })
   }
 
