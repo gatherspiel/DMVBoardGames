@@ -8,7 +8,7 @@ import {
 import {GROUP_SEARCH_THUNK} from "../../data/search/GroupSearchThunk.ts";
 import {DEFAULT_SEARCH_PARAMETER} from "../group-search/Constants.ts";
 import {searchResultReducer} from "../../data/store/SearchResultReducer.ts";
-import {GroupComponent} from "../../../groups/viewGroup/components/GroupComponent.ts";
+import {GroupPageComponent} from "../../../groups/viewGroup/components/GroupPageComponent.ts";
 
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
@@ -116,7 +116,7 @@ export class GroupListComponent extends BaseTemplateDynamicComponent {
   handleClickEvents(event:any){
     const groupName = event.originalTarget.textContent;
     //@ts-ignore
-    AbstractPageComponent.updateRoute(GroupComponent,{name:groupName})
+    AbstractPageComponent.updateRoute(GroupPageComponent,{name:groupName})
   }
 
   render(data: any): string {

@@ -123,7 +123,7 @@ export class GroupSearchComponent extends BaseTemplateDynamicComponent {
   override attachEventHandlersToDom(shadowRoot?: any) {
     const self = this;
 
-    shadowRoot?.getElementById(SEARCH_FORM_ID)?.addEventListener("change", function(event:any){
+    shadowRoot?.getElementById(SEARCH_FORM_ID)?.addEventListener("change", (event:any)=>{
       const eventTarget = event.originalTarget.id;
       if(eventTarget === SEARCH_DAYS_ID){
         self.retrieveData({

@@ -125,7 +125,7 @@ const EDIT_GROUP_BUTTON_ID = "edit-group-button";
 const DELETE_GROUP_BUTTON_ID = "delete-group"
 const SAVE_UPDATES_BUTTON_ID = "save-updates";
 
-export class GroupComponent extends BaseTemplateDynamicComponent {
+export class GroupPageComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(loadConfig);
   }
@@ -197,7 +197,6 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
     if (!groupData.permissions) {
       return `<h1>Loading</h1>`;
     }
-
     return `
 
      <div class="ui-section">
@@ -304,5 +303,5 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
 }
 
 if (!customElements.get("group-page-component")) {
-  customElements.define("group-page-component", GroupComponent);
+  customElements.define("group-page-component", GroupPageComponent);
 }
