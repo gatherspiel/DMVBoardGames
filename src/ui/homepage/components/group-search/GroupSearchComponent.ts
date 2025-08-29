@@ -5,6 +5,7 @@ import {
 } from "./Constants.ts";
 
 import {
+  CITY_LIST_THUNK,
   updateCities,
 } from "../../data/search/CityListThunk.ts";
 
@@ -13,18 +14,20 @@ import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import type {DropdownConfig} from "@bponnaluri/places-js";
 import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
 import {
-  DEFAULT_GLOBAL_STATE_REDUCER_KEY,
-  GLOBAL_FIELD_SUBSCRIPTIONS_KEY, GLOBAL_STATE_LOAD_CONFIG_KEY,
+   GLOBAL_STATE_LOAD_CONFIG_KEY,
 } from "@bponnaluri/places-js";
 import {
   DEFAULT_PARAMETER_DISPLAY_KEY,
   DEFAULT_PARAMETER_KEY,
 } from "../../../../shared/Constants.ts";
-import {EVENT_SEARCH_THUNK} from "../../data/search/EventSearchThunk.ts";
+import {GROUP_SEARCH_THUNK} from "../../data/search/GroupSearchThunk.ts";
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
-    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: ["cityList"],
-    [DEFAULT_GLOBAL_STATE_REDUCER_KEY]: updateCities
+    dataThunks: [{
+      componentReducer: updateCities,
+      dataThunk:CITY_LIST_THUNK,
+      fieldName: "cityList"
+    }]
   }
 };
 
@@ -96,7 +99,7 @@ const SEARCH_BUTTON_ID:string = "search-button-id";
 const SEARCH_DISTANCE_ID:string = "search-distance-id";
 const SEARCH_DAYS_ID:string = "search-days-id";
 
-export class EventSearchComponent extends BaseTemplateDynamicComponent {
+export class GroupSearchComponent extends BaseTemplateDynamicComponent {
 
   constructor() {
     super(loadConfig);
@@ -106,26 +109,21 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
-  connectedCallback(){
-    const self = this;
-    this.addEventListener("click", function(event: any){
-      event.preventDefault();
-
-      if(event.originalTarget.id === SEARCH_BUTTON_ID) {
-        const searchParams:any = {
-          location: self.componentState.location,
-          day: self.componentState.day,
-          distance: self.componentState.distance
-        };
-        EVENT_SEARCH_THUNK.retrieveData(searchParams)
-      }
-    })
+  handleClickEvents(event:any){
+    if(event.originalTarget.id === SEARCH_BUTTON_ID) {
+      const searchParams:any = {
+        location: this.componentState.location,
+        day: this.componentState.day,
+        distance: this.componentState.distance
+      };
+      GROUP_SEARCH_THUNK.getData(searchParams)
+    }
   }
 
   override attachEventHandlersToDom(shadowRoot?: any) {
     const self = this;
 
-    shadowRoot?.getElementById(SEARCH_FORM_ID)?.addEventListener("change", function(event:any){
+    shadowRoot?.getElementById(SEARCH_FORM_ID)?.addEventListener("change", (event:any)=>{
       const eventTarget = event.originalTarget.id;
       if(eventTarget === SEARCH_DAYS_ID){
         self.retrieveData({
@@ -169,7 +167,7 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
                 label:"Select event city:",
                 id: SEARCH_CITY_ID,
                 name: "cities",
-                data: eventSearchStore.cities ?? [{name:"Any location"}],
+                data: eventSearchStore.cityList ?? [{name:"Any location"}],
                 selected: eventSearchStore.location,
                 [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
                 [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
@@ -210,6 +208,7 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
   }
 
   getDropdownHtml(dropdownConfig: DropdownConfig) {
+
     return ` 
     <label class="searchDropdownLabel">${dropdownConfig.label} </label>
     <select
@@ -233,6 +232,6 @@ export class EventSearchComponent extends BaseTemplateDynamicComponent {
 
 }
 
-if (!customElements.get("event-search-component")) {
-  customElements.define("event-search-component", EventSearchComponent);
+if (!customElements.get("group-search-component")) {
+  customElements.define("group-search-component", GroupSearchComponent);
 }

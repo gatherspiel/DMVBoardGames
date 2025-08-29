@@ -1,4 +1,7 @@
-import {BaseTemplateDynamicComponent} from "@bponnaluri/places-js";
+import {
+  AbstractPageComponent, ApiActionTypes,
+  BaseTemplateDynamicComponent, InternalApiAction,
+} from "@bponnaluri/places-js";
 import {getUrlParameter} from "@bponnaluri/places-js";
 import {
   END_TIME_INPUT,
@@ -8,17 +11,11 @@ import {
   START_DATE_INPUT,
   START_TIME_INPUT
 } from "../../Constants.ts";
-import {CREATE_EVENT_CONFIG} from "../EventDetailsHandler.ts";
-import {CREATE_EVENT_THUNK} from "../data/CreateEventThunk.ts";
 import {PageState} from "@bponnaluri/places-js";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
-import {
-  VIEW_GROUP_PAGE_HANDLER_CONFIG
-} from "../../../../shared/nav/NavEventHandlers.ts";
 import {generateErrorMessage} from "@bponnaluri/places-js";
 import {
   COMPONENT_LABEL_KEY,
-  EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY,
   IS_LOGGED_IN_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../../../shared/Constants.ts";
@@ -26,8 +23,10 @@ import {
   DEFAULT_GLOBAL_STATE_REDUCER_KEY,
   GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
-  REQUEST_THUNK_REDUCERS_KEY
 } from "@bponnaluri/places-js";
+import {GroupPageComponent} from "../../viewGroup/components/GroupPageComponent.ts";
+import {getEventDetailsFromForm, validateEventFormData} from "../EventDetailsHandler.ts";
+import {API_ROOT} from "../../../../shared/Params.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -47,19 +46,6 @@ const templateStyle = `
 `;
 
 const loadConfig = {
-  [REQUEST_THUNK_REDUCERS_KEY]:[
-    {
-      thunk: CREATE_EVENT_THUNK,
-      componentReducer: (data: any)=>{
-        if(!data.errorMessage){
-          return {
-            [SUCCESS_MESSAGE_KEY]: "Successfully created event"
-          }
-        }
-        return data;
-      }
-    }
-  ],
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
     [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
     [DEFAULT_GLOBAL_STATE_REDUCER_KEY]:  (updates: Record<string, string>) => {
@@ -74,10 +60,13 @@ const loadConfig = {
   },
 };
 
+const CREATE_EVENT_BUTTON_ID = "create-event-button";
+const BACK_TO_GROUP_ID = "back-to-group";
+
 export class CreateEventComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(loadConfig);
-
+    console.log("Created element")
   }
 
   connectedCallback(){
@@ -86,12 +75,55 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
     }
   }
 
+  override attachEventHandlersToDom(shadowRoot?: any) {
+    const self = this;
+    shadowRoot?.addEventListener("click",(event:any)=>{
+      try {
+        if(event.originalTarget.id === BACK_TO_GROUP_ID) {
+          AbstractPageComponent.updateRoute(
+            GroupPageComponent,
+            {"name":getUrlParameter("name")}
+          )
+        }
+
+        if(event.originalTarget.id === CREATE_EVENT_BUTTON_ID){
+          const validationErrors:any = validateEventFormData(self);
+
+          if(validationErrors.errorMessage.length !==0){
+            self.retrieveData(validationErrors);
+          } else {
+            const eventDetails = getEventDetailsFromForm(self)
+            InternalApiAction.getResponseData({
+              body: JSON.stringify(eventDetails),
+              method: ApiActionTypes.POST,
+              url: API_ROOT + `/groups/${eventDetails.groupId}/events/`,
+            }).then((response:any)=>{
+              if(!response.errorMessage){
+                console.log("Created event")
+                self.retrieveData({
+                  [SUCCESS_MESSAGE_KEY]: "Successfully created event"
+                });
+              }else {
+                self.retrieveData(response)
+              }
+            })
+          }
+        }
+      } catch(e:any){
+        if(e.message !== `Permission denied to access property "id"`){
+          throw e;
+        }
+      }
+    })
+  }
+
   getTemplateStyle(): string {
     return templateStyle;
   }
 
   render(data: any): string {
-
+    console.log("Rendering")
+    console.log(data);
     return `
     
     ${generateErrorMessage(data.errorMessage)}
@@ -99,7 +131,7 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
     ${data[SUCCESS_MESSAGE_KEY] ? `<p class="${SUCCESS_MESSAGE_KEY}">${data[SUCCESS_MESSAGE_KEY]}</p>`: ``}
     <form onsubmit="return false">
       
-        <h1>Create board game event for group ${getUrlParameter("groupName")}</h1>
+        <h1>Create board game event for group ${getUrlParameter("name")}</h1>
          <form>
     
       ${this.addShortInput({
@@ -108,6 +140,7 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
         inputType: "text",
         value: data.name
       })}
+      <br>
       
       ${this.addTextInput({
         id: EVENT_DESCRIPTION_INPUT,
@@ -115,13 +148,15 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
         inputType: "text",
         value: data.description
       })}
+      <br>
       
-       ${this.addShortInput({
+      ${this.addShortInput({
         id: EVENT_URL_INPUT,
         [COMPONENT_LABEL_KEY]: "Event URL",
         inputType: "text",
         value: data.url
       })}
+      <br>
        
       ${this.addShortInput({
         id: START_DATE_INPUT,
@@ -129,6 +164,7 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
         inputType: "text",
         value: ""
       })}
+      <br>
       
       ${this.addShortInput({
         id: START_TIME_INPUT,
@@ -136,6 +172,7 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
         inputType: "text",
         value: ""
       })}
+      <br>
  
       ${this.addShortInput({
         id: END_TIME_INPUT,
@@ -150,24 +187,23 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
         [COMPONENT_LABEL_KEY]: "Event location",
         inputType: "text",
         value: data.location ?? ""
-      })}     
+      })}    
+      <br> 
     </form>
     
+    <br>
     ${generateButton({
+      component: this,
+      id: CREATE_EVENT_BUTTON_ID,
       text: "Create event",
-      component: this,
-      [EVENT_HANDLER_CONFIG_KEY]: CREATE_EVENT_CONFIG,
     })}
         
         
     ${generateButton({
-      text: "Back to group",
       component: this,
-      [EVENT_HANDLER_CONFIG_KEY]: VIEW_GROUP_PAGE_HANDLER_CONFIG,
-      [EVENT_HANDLER_PARAMS_KEY]: {"name":getUrlParameter("groupName")}
+      id: BACK_TO_GROUP_ID,
+      text: "Back to group",
     })}
-
-      
     `;
   }
 }
