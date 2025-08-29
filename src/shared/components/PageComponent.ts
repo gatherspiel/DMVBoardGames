@@ -27,7 +27,7 @@ export class PageComponent extends AbstractPageComponent {
         `groups/delete.html?name=${encodeURIComponent(params.name)}&groupId=${params.id}`
       ,
       [CreateEventComponent.name]: (params:any)=>
-        `groups/delete.html?name=${encodeURIComponent(params.name)}&groupId=${params.id}`
+        `groups/addEvent.html?name=${encodeURIComponent(params.name)}&groupId=${params.id}`
       ,
       [EventDetailsComponent.name]: (params:any)=>
         `/groups/event.html?id=${params.id}&groupId=${params.groupId}`

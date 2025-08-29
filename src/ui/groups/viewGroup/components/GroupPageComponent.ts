@@ -151,6 +151,7 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
             id: self.componentState.id,
             name:self.componentState.name,
           }
+          console.log("Adding event");
           AbstractPageComponent.updateRoute(CreateEventComponent, params)
         }
         if(targetId === DELETE_GROUP_BUTTON_ID){
