@@ -10,9 +10,6 @@ import {
   IS_LOGGED_IN_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../../../shared/Constants.ts";
-import {
-  GLOBAL_STATE_LOAD_CONFIG_KEY,
-} from "@bponnaluri/places-js";
 import {BaseTemplateDynamicComponent} from "@bponnaluri/places-js";
 import {LOGIN_THUNK} from "../../../auth/data/LoginThunk.ts";
 import {API_ROOT} from "../../../../shared/Params.ts";
@@ -31,10 +28,7 @@ const templateStyle = `
   </style>
 `;
 
-const loadConfig = {
-
-  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
-    dataThunks:[{
+const loadConfig = [{
       componentReducer:(data:any)=>{
         return {
           name: "",
@@ -44,10 +38,7 @@ const loadConfig = {
         }
       },
       dataThunk:LOGIN_THUNK
-    }]
-
-  },
-};
+    }];
 
 const CREATE_GROUP_BUTTON_ID = "create-group-button-id";
 
@@ -81,12 +72,12 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
             url: API_ROOT + `/groups/`,
           }).then((data:any)=>{
             if (data.errorMessage) {
-              self.retrieveData({
+              self.updateData({
                 errorMessage: data.errorMessage,
                 [SUCCESS_MESSAGE_KEY]: "",
               });
             } else {
-              self.retrieveData({
+              self.updateData({
                 errorMessage: "",
                 [SUCCESS_MESSAGE_KEY]: "Successfully created group",
               });
