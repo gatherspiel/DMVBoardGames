@@ -83,7 +83,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
     return `<h1>Loading</h1>`;
   }
 
-  override attachEventHandlersToDom(shadowRoot?: any) {
+  override attachEventsToShadowRoot(shadowRoot?: any) {
     const self = this;
 
     shadowRoot?.addEventListener("click",(event:any)=>{
