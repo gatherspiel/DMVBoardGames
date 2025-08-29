@@ -89,25 +89,23 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
         if(event.originalTarget.id === CREATE_EVENT_BUTTON_ID){
           const validationErrors:any = validateEventFormData(self);
 
-          console.log(validationErrors.errorMessage)
           if(validationErrors.errorMessage.length !==0){
             self.retrieveData(validationErrors);
           } else {
-            console.log("Adding event")
             const eventDetails = getEventDetailsFromForm(self)
             InternalApiAction.getResponseData({
               body: JSON.stringify(eventDetails),
               method: ApiActionTypes.POST,
               url: API_ROOT + `/groups/${eventDetails.groupId}/events/`,
             }).then((response:any)=>{
-              console.log(response)
               if(!response.errorMessage){
                 console.log("Created event")
                 self.retrieveData({
                   [SUCCESS_MESSAGE_KEY]: "Successfully created event"
                 });
+              }else {
+                self.retrieveData(response)
               }
-              self.retrieveData(response)
             })
           }
         }

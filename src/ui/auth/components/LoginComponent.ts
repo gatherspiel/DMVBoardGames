@@ -25,6 +25,11 @@ const template = `
     #login-component-container {
       padding-top: 0.25rem;
     }
+    
+    #component-buttons {
+      padding-top:0.5rem;
+    }
+    
     .ui-input {
       display: inline-block;
     }
