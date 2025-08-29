@@ -66,7 +66,6 @@ const BACK_TO_GROUP_ID = "back-to-group";
 export class CreateEventComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(loadConfig);
-    console.log("Created element")
   }
 
   connectedCallback(){
@@ -75,7 +74,7 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
     }
   }
 
-  override attachEventHandlersToDom(shadowRoot?: any) {
+  override attachEventsToShadowRoot(shadowRoot?: any) {
     const self = this;
     shadowRoot?.addEventListener("click",(event:any)=>{
       try {
@@ -99,7 +98,6 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
               url: API_ROOT + `/groups/${eventDetails.groupId}/events/`,
             }).then((response:any)=>{
               if(!response.errorMessage){
-                console.log("Created event")
                 self.retrieveData({
                   [SUCCESS_MESSAGE_KEY]: "Successfully created event"
                 });
@@ -122,88 +120,85 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: any): string {
-    console.log("Rendering")
-    console.log(data);
-    return `
-    
-    ${generateErrorMessage(data.errorMessage)}
-    
-    ${data[SUCCESS_MESSAGE_KEY] ? `<p class="${SUCCESS_MESSAGE_KEY}">${data[SUCCESS_MESSAGE_KEY]}</p>`: ``}
-    <form onsubmit="return false">
+    return `   
+      ${generateErrorMessage(data.errorMessage)}
       
-        <h1>Create board game event for group ${getUrlParameter("name")}</h1>
-         <form>
-    
-      ${this.addShortInput({
-        id: EVENT_NAME_INPUT,
-        [COMPONENT_LABEL_KEY]: "Event name",
-        inputType: "text",
-        value: data.name
-      })}
-      <br>
-      
-      ${this.addTextInput({
-        id: EVENT_DESCRIPTION_INPUT,
-        [COMPONENT_LABEL_KEY]: "Event description",
-        inputType: "text",
-        value: data.description
-      })}
-      <br>
-      
-      ${this.addShortInput({
-        id: EVENT_URL_INPUT,
-        [COMPONENT_LABEL_KEY]: "Event URL",
-        inputType: "text",
-        value: data.url
-      })}
-      <br>
-       
-      ${this.addShortInput({
-        id: START_DATE_INPUT,
-        [COMPONENT_LABEL_KEY]: "Start date",
-        inputType: "text",
-        value: ""
-      })}
-      <br>
-      
-      ${this.addShortInput({
-        id: START_TIME_INPUT,
-        [COMPONENT_LABEL_KEY]: "Start time",
-        inputType: "text",
-        value: ""
-      })}
-      <br>
- 
-      ${this.addShortInput({
-        id: END_TIME_INPUT,
-        [COMPONENT_LABEL_KEY]: "End time",
-        inputType: "text",
-        value: ""
-      })}     
-      <br>
-  
-      ${this.addShortInput({
-        id: EVENT_LOCATION_INPUT,
-        [COMPONENT_LABEL_KEY]: "Event location",
-        inputType: "text",
-        value: data.location ?? ""
-      })}    
-      <br> 
-    </form>
-    
-    <br>
-    ${generateButton({
-      component: this,
-      id: CREATE_EVENT_BUTTON_ID,
-      text: "Create event",
-    })}
+      ${data[SUCCESS_MESSAGE_KEY] ? `<p class="${SUCCESS_MESSAGE_KEY}">${data[SUCCESS_MESSAGE_KEY]}</p>`: ``}
+      <form onsubmit="return false">
         
+          <h1>Create board game event for group ${getUrlParameter("name")}</h1>
+           <form>
+      
+        ${this.addShortInput({
+          id: EVENT_NAME_INPUT,
+          [COMPONENT_LABEL_KEY]: "Event name",
+          inputType: "text",
+          value: data.name
+        })}
+        <br>
         
-    ${generateButton({
-      component: this,
-      id: BACK_TO_GROUP_ID,
-      text: "Back to group",
-    })}
+        ${this.addTextInput({
+          id: EVENT_DESCRIPTION_INPUT,
+          [COMPONENT_LABEL_KEY]: "Event description",
+          inputType: "text",
+          value: data.description
+        })}
+        <br>
+        
+        ${this.addShortInput({
+          id: EVENT_URL_INPUT,
+          [COMPONENT_LABEL_KEY]: "Event URL",
+          inputType: "text",
+          value: data.url
+        })}
+        <br>
+         
+        ${this.addShortInput({
+          id: START_DATE_INPUT,
+          [COMPONENT_LABEL_KEY]: "Start date",
+          inputType: "text",
+          value: ""
+        })}
+        <br>
+        
+        ${this.addShortInput({
+          id: START_TIME_INPUT,
+          [COMPONENT_LABEL_KEY]: "Start time",
+          inputType: "text",
+          value: ""
+        })}
+        <br>
+   
+        ${this.addShortInput({
+          id: END_TIME_INPUT,
+          [COMPONENT_LABEL_KEY]: "End time",
+          inputType: "text",
+          value: ""
+        })}     
+        <br>
+    
+        ${this.addShortInput({
+          id: EVENT_LOCATION_INPUT,
+          [COMPONENT_LABEL_KEY]: "Event location",
+          inputType: "text",
+          value: data.location ?? ""
+        })}    
+        <br> 
+      </form>
+      
+      <br>
+      ${generateButton({
+        component: this,
+        id: CREATE_EVENT_BUTTON_ID,
+        text: "Create event",
+      })}
+          
+          
+      ${generateButton({
+        component: this,
+        id: BACK_TO_GROUP_ID,
+        text: "Back to group",
+      })}
     `;
   }
 }
