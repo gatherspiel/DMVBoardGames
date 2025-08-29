@@ -10,7 +10,7 @@ function getData(){
   let params = new URLSearchParams(document.location.search);
   let name = params.get("name") ?? "";
 
-  const AUTH_TOKEN_KEY = IS_LOCAL ? "sb-localhost-auth-token" : "sb-karqyskuudnvfxohwkok-auth-token";
+  const AUTH_TOKEN_KEY = "access_token";
   const authToken = window.localStorage.getItem(AUTH_TOKEN_KEY);
 
   let headers = IS_LOCAL ? {} : {'apikey': AUTH_KEY};

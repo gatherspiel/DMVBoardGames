@@ -3,47 +3,35 @@ import {
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
 } from "../../Constants.js";
-import {GROUP_PRELOAD_THUNK, GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
+import {GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
 
-import { serializeJSONProp } from "@bponnaluri/places-js";
-import type { GroupPageData } from "../data/types/GroupPageData.ts";
+import {AbstractPageComponent, ApiActionTypes, serializeJSONProp} from "@bponnaluri/places-js";
+import type { GroupComponentData } from "../data/types/GroupComponentData.ts";
 import type { Event } from "../../../homepage/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
-import {
-  CANCEL_GROUP_EDIT_HANDLER,
-  EDIT_GROUP_EVENT_CONFIG,
-  SAVE_GROUP_CONFIG,
-} from "../GroupHandlers.ts";
-import { UPDATE_GROUP_REQUEST_THUNK } from "../data/UpdateGroupThunk.ts";
 
-import {REDIRECT_HANDLER_CONFIG} from "@bponnaluri/places-js";
-import {generateButton, generateButtonForEditPermission} from "../../../../shared/components/ButtonGenerator.ts";
-import {CREATE_EVENT_PAGE_HANDLER_CONFIG, DELETE_GROUP_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
+import {
+  generateButton,
+  generateButtonForEditPermission,
+  generateLinkButton
+} from "../../../../shared/components/ButtonGenerator.ts";
 import {
   COMPONENT_LABEL_KEY,
-  EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY,
-  IS_LOGGED_IN_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../../../shared/Constants.ts";
 import {
-  DEFAULT_GLOBAL_STATE_REDUCER_KEY,
-  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
-  REQUEST_THUNK_REDUCERS_KEY
 } from "@bponnaluri/places-js";
-import {LOGIN_THUNK} from "../../../auth/data/LoginThunk.ts";
+import {CreateEventComponent} from "../../events/components/CreateEventComponent.ts";
+import {DeleteGroupPageComponent} from "../../deleteGroup/DeleteGroupPageComponent.ts";
+import {InternalApiAction} from "@bponnaluri/places-js";
+import {API_ROOT} from "../../../../shared/Params.ts";
 
-const GROUP_DATA = "groupData"
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
 
   <style>
- 
-    a {
-      margin-left:1rem;
-      margin-right:1rem;
-    }
-    
+     
     .${GROUP_DESCRIPTION_TEXT} {
       display: block;
       position: relative;
@@ -77,12 +65,25 @@ const template = `
       height: 500px;
       width: 800px;
     }
-    
+
+    button {
+      margin-top:0.5rem;
+    }
+
+    .group-webpage-link {
+      display: inline-block;
+    }
     #group-events {
       border-bottom:  20px solid;
       border-image-source: url(assets/Section_Border_Medium.png);
       border-image-slice: 20 20;
       border-image-repeat: round;
+    }
+    
+    @media not screen and (width < 32em) {
+      .${GROUP_DESCRIPTION_TEXT} {
+        margin-top: 1rem;
+      }
     }
     
     @media screen and (width < 32em) {
@@ -97,79 +98,106 @@ const template = `
       p {
         font-size:1rem;
       }
-    }
-    
-        
+    }    
   </style>
   <div></div>
 `;
 
-const groupDataStoreReducer = (data:any)=>{
 
-  if(!data.groupData){
-    return {};
-  }
-
-  const groupData = data.groupData;
-  const isLoggedIn = data.isLoggedIn;
-
-  if (!isLoggedIn) {
-    groupData.isEditing = false;
-  }
-  groupData[SUCCESS_MESSAGE_KEY] = '';
-  return groupData;
+const groupDataReducer = (groupData:any)=>{
+  return {...groupData, [SUCCESS_MESSAGE_KEY]:''}
 }
 
 const loadConfig = {
-  [REQUEST_THUNK_REDUCERS_KEY]: [
-    {
-      thunk: UPDATE_GROUP_REQUEST_THUNK,
-      componentReducer:  () =>{
-        return {
-          isEditing: false,
-          [SUCCESS_MESSAGE_KEY]: 'Group update successful'
-        };
-      },
-    },
-  ],
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
-    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]:[GROUP_DATA, IS_LOGGED_IN_KEY],
-    [DEFAULT_GLOBAL_STATE_REDUCER_KEY]: groupDataStoreReducer
-  },
-  dataFields:[
-    {
-      fieldName:"groupData",
-      dataSource: GROUP_REQUEST_THUNK,
-      preloadSource: GROUP_PRELOAD_THUNK,
+    dataThunks:[{
+      dataThunk:GROUP_REQUEST_THUNK,
+      componentReducer:groupDataReducer,
       urlParams:["name"]
-    },
-    {
-      fieldName: IS_LOGGED_IN_KEY,
-      dataSource: LOGIN_THUNK
-    }
-  ]
+    }]
+  },
+
 };
 
-export class GroupComponent extends BaseTemplateDynamicComponent {
-  constructor(enablePreload?:boolean) {
-    super(loadConfig, enablePreload);
-  }
+const ADD_EVENT_BUTTON_ID = "add-event";
+const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
+const EDIT_GROUP_BUTTON_ID = "edit-group-button";
+const DELETE_GROUP_BUTTON_ID = "delete-group"
+const SAVE_UPDATES_BUTTON_ID = "save-updates";
 
-  connectedCallback(){
-    this.retrieveData({});
+export class GroupPageComponent extends BaseTemplateDynamicComponent {
+  constructor() {
+    super(loadConfig);
   }
 
   getTemplateStyle(): string {
     return template;
   }
 
-  render(groupData: GroupPageData): string {
+  connectedCallback() {
+    var self = this;
+    this.addEventListener("click", function(event:any){
+      event.preventDefault();
 
-    console.log("Render time for group component:"+Date.now())
+      try {
+        const targetId = event.originalTarget?.id;
+        if(targetId === EDIT_GROUP_BUTTON_ID) {
+          self.retrieveData({
+            isEditing: true,
+          })
+        }
+        if(targetId === ADD_EVENT_BUTTON_ID){
+          const params = {
+            id: self.componentState.id,
+            name:self.componentState.name,
+          }
+          console.log("Adding event");
+          AbstractPageComponent.updateRoute(CreateEventComponent, params)
+        }
+        if(targetId === DELETE_GROUP_BUTTON_ID){
+          const params = {
+            id: self.componentState.id,
+            name:self.componentState.name,
+          }
+          AbstractPageComponent.updateRoute(DeleteGroupPageComponent,params)
+        }
+        if(targetId === CANCEL_UPDATES_BUTTON_ID) {
+          self.retrieveData({
+            isEditing: false
+          })
+        }
+        if(targetId === SAVE_UPDATES_BUTTON_ID){
+          const params = {
+            id: self.componentState.id,
+            name: self.getFormValue(GROUP_NAME_INPUT),
+            description: self.getFormValue(GROUP_DESCRIPTION_INPUT),
+            url: self.getFormValue(GROUP_URL_INPUT)
+          }
+
+          InternalApiAction.getResponseData({
+            body: JSON.stringify(params),
+            method: ApiActionTypes.PUT,
+            url: API_ROOT + `/groups/?name=${encodeURIComponent(params.name)}`,
+          }).then(()=>{
+
+            self.retrieveData({
+              isEditing: false,
+              [SUCCESS_MESSAGE_KEY]: 'Group update successful'
+            });
+          })
+        }
+      } catch(e:any){
+        if(e.message !== `Permission denied to access property "id"`){
+          throw e;
+        }
+      }
+    })
+  }
+
+  render(groupData: GroupComponentData): string {
     if (!groupData.permissions) {
       return `<h1>Loading</h1>`;
     }
-
     return `
 
      <div class="ui-section">
@@ -178,33 +206,29 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
        !groupData.isEditing
          ? `<div class="group-title">
        <h1>
-         ${generateButton({
+         ${generateLinkButton({
            class: "group-webpage-link",
            text: groupData.name,
-           component: this,
-           [EVENT_HANDLER_CONFIG_KEY]: REDIRECT_HANDLER_CONFIG,
-           [EVENT_HANDLER_PARAMS_KEY]: {url: groupData.url}
+           url:groupData.url
          })}
        </h1>
 
        ${generateButtonForEditPermission({
-           text: "Edit group info",
-           component: this,
-           [EVENT_HANDLER_CONFIG_KEY]: EDIT_GROUP_EVENT_CONFIG,
+         component: this,
+         id:EDIT_GROUP_BUTTON_ID,
+         text: "Edit group info",
        })}
        
        ${generateButtonForEditPermission({
+           component: this, 
+           id: ADD_EVENT_BUTTON_ID,
            text: "Add event",
-           component: this,
-           [EVENT_HANDLER_CONFIG_KEY]: CREATE_EVENT_PAGE_HANDLER_CONFIG,
-           [EVENT_HANDLER_PARAMS_KEY]:{name:groupData.name, id: groupData.id}
          })}
        
        ${generateButtonForEditPermission({
-           text: "Delete group",
            component: this,
-           [EVENT_HANDLER_CONFIG_KEY]: DELETE_GROUP_PAGE_HANDLER_CONFIG,
-           [EVENT_HANDLER_PARAMS_KEY]:{name:groupData.name, id: groupData.id}
+           id: DELETE_GROUP_BUTTON_ID,
+           text: "Delete group",
          })}
 
        </div>
@@ -218,21 +242,20 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
        <h1>Editing group information</h1>
         
        <form>
-       
          ${this.addShortInput({
            id: GROUP_NAME_INPUT,
            [COMPONENT_LABEL_KEY]: "Group name",
            inputType: "text",
            value: groupData.name
          })} 
-         
+         <br>
          ${this.addShortInput({
            id: GROUP_URL_INPUT,
            [COMPONENT_LABEL_KEY]: "Group url",
            inputType: "text",
            value: groupData.url
          })} 
-         
+         <br>
          ${this.addTextInput({
            id: GROUP_DESCRIPTION_INPUT,
            [COMPONENT_LABEL_KEY]: "Group description",
@@ -241,19 +264,16 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
          })}   
 
          ${generateButton({
+           id: SAVE_UPDATES_BUTTON_ID,
            text: "Save updates",
            type: "submit",
-           component: this,
-           [EVENT_HANDLER_CONFIG_KEY]: SAVE_GROUP_CONFIG,
          })}
          
          ${generateButton({
+           id: CANCEL_UPDATES_BUTTON_ID,
            text: "Cancel updates",
            type: "submit",
-           component: this,
-           [EVENT_HANDLER_CONFIG_KEY]: CANCEL_GROUP_EDIT_HANDLER,
-         })}
-         
+         })}    
         </form> 
       `
      }
@@ -284,5 +304,5 @@ export class GroupComponent extends BaseTemplateDynamicComponent {
 }
 
 if (!customElements.get("group-page-component")) {
-  customElements.define("group-page-component", GroupComponent);
+  customElements.define("group-page-component", GroupPageComponent);
 }

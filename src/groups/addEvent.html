@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <title>Add new event</title>
 
-  <link rel="stylesheet" href="/styles/styles.css">
+
+  <style inline-source src="../public/styles/styles.css" ></style>
+  <style inline-source src="../public/styles/sharedComponentStyles.css" ></style>
 
 
   <script
@@ -13,9 +15,12 @@
   ></script>
 </head>
 <body>
+<div id="container">
+  {{>navbar}}
   <page-component
     componentName="create-event-component"
   >
   </page-component>
+</div>
 </body>
 </html>

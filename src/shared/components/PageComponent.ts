@@ -1,4 +1,4 @@
-import {GroupComponent} from "../../ui/groups/viewGroup/components/GroupComponent.ts";
+import {GroupPageComponent} from "../../ui/groups/viewGroup/components/GroupPageComponent.ts";
 import {CreateGroupPageComponent} from "../../ui/groups/createGroup/components/CreateGroupPageComponent.ts";
 import {DeleteGroupPageComponent} from "../../ui/groups/deleteGroup/DeleteGroupPageComponent.ts";
 import {CreateEventComponent} from "../../ui/groups/events/components/CreateEventComponent.ts";
@@ -21,13 +21,13 @@ export class PageComponent extends AbstractPageComponent {
 
   override getRouteMap(): Record<string, (params: any) => string> {
     return {
-      [GroupComponent.name]: () => "groups.html",
+      [GroupPageComponent.name]: () => "groups.html",
       [CreateGroupPageComponent.name]: ()=>"groups/create.html",
       [DeleteGroupPageComponent.name]: (params:any)=>
         `groups/delete.html?name=${encodeURIComponent(params.name)}&groupId=${params.id}`
       ,
       [CreateEventComponent.name]: (params:any)=>
-        `groups/delete.html?name=${encodeURIComponent(params.name)}&groupId=${params.id}`
+        `groups/addEvent.html?name=${encodeURIComponent(params.name)}&groupId=${params.id}`
       ,
       [EventDetailsComponent.name]: (params:any)=>
         `/groups/event.html?id=${params.id}&groupId=${params.groupId}`

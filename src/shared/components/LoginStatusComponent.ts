@@ -1,26 +1,15 @@
-
-//@ts-ignore
-import {LOGOUT_EVENT_CONFIG} from "../../ui/auth/LoginComponentEventHandlers.ts";
-
-import {IS_LOGGED_IN_KEY} from "../Constants.ts";
 import {
   BaseTemplateDynamicComponent,
-  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY
 } from "@bponnaluri/places-js";
+import {LOGIN_THUNK} from "../../ui/auth/data/LoginThunk.ts";
+import {LOGOUT_THUNK} from "../../ui/auth/data/LogoutThunk.ts";
 
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
-    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
-    defaultGlobalStateReducer: (data:any)=>{
-
-      if(!data.isLoggedIn){
-        return {
-          isLoggedIn: false
-        };
-      }
-      return data.isLoggedIn
-    }
+    dataThunks:[{
+      dataThunk: LOGIN_THUNK
+    }]
   },
 }
 
@@ -62,8 +51,9 @@ const template = `
   }
 
   </style>
-
 `
+
+const SIGN_OUT_LINK_ID = "signout-link"
 export class LoginStatusComponent extends BaseTemplateDynamicComponent {
 
   constructor() {
@@ -74,11 +64,18 @@ export class LoginStatusComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
+  override attachEventHandlersToDom(shadowRoot?: any){
+    shadowRoot?.getElementById(SIGN_OUT_LINK_ID)?.addEventListener("click",()=>{
+      LOGOUT_THUNK.getData({}, LOGIN_THUNK)
+    });
+  }
+
   override render(data:any){
-    if(data.isLoggedIn){
+
+    if(data.loggedIn){
       return `
         <span>Welcome ${data?.username}</span>
-        <a ${this.createEvent(LOGOUT_EVENT_CONFIG, "click")}>Sign out</a>
+        <a id="${SIGN_OUT_LINK_ID}">Sign out</a>
       `
     }
     return `<a href="/login.html">Sign in </a>`;
