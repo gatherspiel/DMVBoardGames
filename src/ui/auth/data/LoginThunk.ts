@@ -59,7 +59,7 @@ async function retrieveData(
       const authTokenData = await data.json();
       addLocalStorageData(AUTH_TOKEN_KEY, JSON.stringify(authTokenData))
 
-      return new AuthResponse(true, {...authTokenData,username:authData?.user?.email});
+      return new AuthResponse(true, {...authTokenData,username:authData?.username});
     }
     const error = await data.json();
     if (backupResponse.defaultFunction) {

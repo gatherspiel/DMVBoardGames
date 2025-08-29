@@ -67,7 +67,6 @@ export class LoginStatusComponent extends BaseTemplateDynamicComponent {
   }
 
   override render(data:any){
-
     if(data.loggedIn){
       return `
         <span>Welcome ${data?.username}</span>
