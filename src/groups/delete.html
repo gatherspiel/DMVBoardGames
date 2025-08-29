@@ -5,22 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GroupSearchResult Information</title>
 
-  <link rel="stylesheet" href="/styles/styles.css">
+  <style inline-source src="../public/styles/styles.css" ></style>
+  <style inline-source src="../public/styles/sharedComponentStyles.css" ></style>
+
   <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
-
-  <script
-    type="module"
-    src="../shared/InitGlobalStateConfig.ts"
-  ></script>
-
 
   <title>Delete group?</title>
 </head>
 <body>
-{{>navbar}}
-<h2>Are you sure you want to delete this group?</h2>
-  <delete-group-page-component>
+  <div id="container">
+    {{>navbar}}
+    <page-component
+      componentName="delete-group-page-component"
+    >
+    </page-component>
+  </div>
 
-  </delete-group-page-component>
 </body>
 </html>

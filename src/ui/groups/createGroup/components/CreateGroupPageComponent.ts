@@ -1,25 +1,21 @@
-import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
-import { CREATE_GROUP_EVENT_CONFIG } from "../CreateGroupPageHandler.ts";
-import { CREATE_GROUP_REQUEST_THUNK } from "../data/CreateGroupRequestThunk.ts";
 import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
 } from "../../Constants.ts";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
-import {generateErrorMessage} from "../../../../framework/components/utils/StatusIndicators.ts";
+import {ApiActionTypes, generateErrorMessage, InternalApiAction} from "@bponnaluri/places-js";
 import {
   COMPONENT_LABEL_KEY,
-  EVENT_HANDLER_CONFIG_KEY,
   IS_LOGGED_IN_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../../../shared/Constants.ts";
 import {
-  DEFAULT_GLOBAL_STATE_REDUCER_KEY,
-  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY,
-  REQUEST_THUNK_REDUCERS_KEY
-} from "../../../../framework/components/types/ComponentLoadConfig.ts";
+} from "@bponnaluri/places-js";
+import {BaseTemplateDynamicComponent} from "@bponnaluri/places-js";
+import {LOGIN_THUNK} from "../../../auth/data/LoginThunk.ts";
+import {API_ROOT} from "../../../../shared/Params.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -36,36 +32,24 @@ const templateStyle = `
 `;
 
 const loadConfig = {
-  [REQUEST_THUNK_REDUCERS_KEY]: [
-    {
-      thunk: CREATE_GROUP_REQUEST_THUNK,
-      componentReducer:  (data: any) => {
-        if (data.errorMessage) {
-          return {
-            errorMessage: data.errorMessage,
-            [SUCCESS_MESSAGE_KEY]: "",
-          };
-        } else {
-          return {
-            errorMessage: "",
-            [SUCCESS_MESSAGE_KEY]: "Successfully created group",
-          };
+
+  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
+    dataThunks:[{
+      componentReducer:(data:any)=>{
+        return {
+          name: "",
+          description: "",
+          url: "",
+          [IS_LOGGED_IN_KEY]: data.loggedIn
         }
       },
-    },
-  ],
-  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
-    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
-    [DEFAULT_GLOBAL_STATE_REDUCER_KEY]: (updates: Record<string, string>) => {
-      return {
-        name: "",
-        description: "",
-        url: "",
-        isVisible: updates[IS_LOGGED_IN_KEY],
-      };
-    },
+      dataThunk:LOGIN_THUNK
+    }]
+
   },
 };
+
+const CREATE_GROUP_BUTTON_ID = "create-group-button-id";
 
 export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
   constructor() {
@@ -77,7 +61,44 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    this.updateWithCustomReducer({isVisible: true})
+
+    const self = this;
+    this.addEventListener("click", (event:any)=>{
+      event.preventDefault();
+
+      try {
+        if(event.originalTarget.id === CREATE_GROUP_BUTTON_ID) {
+          const params = {
+            id: self.componentState.id,
+            name: self.getFormValue(GROUP_NAME_INPUT),
+            description: self.getFormValue(GROUP_DESCRIPTION_INPUT),
+            url: self.getFormValue(GROUP_URL_INPUT)
+          }
+
+          InternalApiAction.getResponseData({
+            body: JSON.stringify(params),
+            method: ApiActionTypes.POST,
+            url: API_ROOT + `/groups/`,
+          }).then((data:any)=>{
+            if (data.errorMessage) {
+              self.retrieveData({
+                errorMessage: data.errorMessage,
+                [SUCCESS_MESSAGE_KEY]: "",
+              });
+            } else {
+              self.retrieveData({
+                errorMessage: "",
+                [SUCCESS_MESSAGE_KEY]: "Successfully created group",
+              });
+            }
+          })
+        }
+      } catch(e:any){
+        if(e.message !== `Permission denied to access property "id"`){
+          throw e;
+        }
+      }
+    });
   }
 
   render(createGroupData: any): string {
@@ -87,7 +108,7 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
         <h1>Create board game group</h1>
         
           ${
-            createGroupData.isVisible
+            createGroupData.isLoggedIn
               ? `
                 <form onsubmit="return false">
                 
@@ -97,27 +118,28 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
                   inputType: "text",
                   value: createGroupData.name ?? ''
                 })}   
-                 
+                <br>
+                
                 ${this.addShortInput({
                   id: GROUP_URL_INPUT,
                   [COMPONENT_LABEL_KEY]: "Group URL",
                   inputType: "text",
                   value: createGroupData.url ?? ''
                 })}   
-                  
+                <br>
+                
                 ${this.addTextInput({
                   id: GROUP_DESCRIPTION_INPUT,
                   [COMPONENT_LABEL_KEY]: "Group Description",
                   inputType: "text",
                   value: createGroupData.description ?? ''
                 })}   
-    
                 <br>
                 
                  ${generateButton({
-                  text: "Create group",
                   component: this,
-                  [EVENT_HANDLER_CONFIG_KEY]: CREATE_GROUP_EVENT_CONFIG,
+                  id: CREATE_GROUP_BUTTON_ID,
+                  text: "Create group"
                 })}
              
                 </form>

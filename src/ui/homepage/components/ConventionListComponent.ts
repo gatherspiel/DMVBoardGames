@@ -1,20 +1,19 @@
 import type { Convention } from "../data/types/Convention.ts";
-import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
-import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
-import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
+import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
+import { generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 import {
-  DEFAULT_GLOBAL_STATE_REDUCER_KEY,
-  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
   GLOBAL_STATE_LOAD_CONFIG_KEY
-} from "../../../framework/components/types/ComponentLoadConfig.ts";
-import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../shared/Constants.ts";
+} from "@bponnaluri/places-js";
+import {LOCATIONS_THUNK} from "../data/search/LocationsThunk.ts";
 
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
-    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: ["gameLocations"],
-    [DEFAULT_GLOBAL_STATE_REDUCER_KEY]: (data:any) => {
-      return data.gameLocations.conventions;
-    }
+    dataThunks:[{
+      componentReducer: (data:any)=>{
+        return data.conventions;
+      },
+      dataThunk: LOCATIONS_THUNK,
+    }]
   },
 };
 
@@ -43,16 +42,12 @@ export class ConventionListComponent extends BaseTemplateDynamicComponent {
   }
 
   getItemHtml(convention: Convention) {
-
-    console.log(Date.now())
     return `
     <div id = convention-${convention.id} class="conv-list-item">
      <h3>
-      ${generateButton({
-        text: `${convention.name}`,
-        component: this,
-        [EVENT_HANDLER_CONFIG_KEY]: REDIRECT_HANDLER_CONFIG,
-        [EVENT_HANDLER_PARAMS_KEY]: {url: convention.url}
+      ${generateLinkButton({
+        text: convention.name,
+        url: convention.url
       })}
       </h3>
       <p>Days: ${convention.days.join(", ")}</p>
@@ -64,13 +59,13 @@ export class ConventionListComponent extends BaseTemplateDynamicComponent {
   override getTemplateStyle(): string {
     return template;
   }
-  render(data: Record<any, Convention>) {
+  render(data: any) {
     let html = `
 
       <div class="ui-section"><h1 class="hideOnMobile">Upcoming conventions</h1>
       <h2 class="showOnMobile">Upcoming conventions</h2>`;
 
-    Object.values(data).forEach((item) => {
+    Object.values(data).forEach((item:any) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
     });

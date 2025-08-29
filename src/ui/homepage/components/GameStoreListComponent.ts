@@ -1,26 +1,24 @@
-import type { GameStore } from "../data/types/GameStore.ts";
-import { BaseTemplateDynamicComponent } from "../../../framework/components/BaseTemplateDynamicComponent.ts";
-import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
-import {REDIRECT_HANDLER_CONFIG} from "../../../framework/handler/RedirectHandler.ts";
+import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
+import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 import {
   GLOBAL_STATE_LOAD_CONFIG_KEY,
-} from "../../../framework/components/types/ComponentLoadConfig.ts";
-import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../shared/Constants.ts";
+} from "@bponnaluri/places-js";
+import {LOCATIONS_THUNK} from "../data/search/LocationsThunk.ts";
 
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
-    globalFieldSubscriptions: ["gameLocations"],
-    defaultGlobalStateReducer: (data:any)=>{
-      return data.gameLocations.gameStores;
-    }
+    dataThunks:[{
+      componentReducer: (data:any)=>{
+        return data.gameStores;
+      },
+      dataThunk: LOCATIONS_THUNK,
+    }]
   },
 };
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
-
-
-<style>
+  <style>
 
   .game-store-list-item p {
     display: inline;
@@ -29,7 +27,7 @@ const template = `
     .game-store-list-item > * {
     display: inline-block;
   }
-</style>
+  </style>
 `;
 export class GameStoreListComponent extends BaseTemplateDynamicComponent {
   constructor() {
@@ -40,15 +38,13 @@ export class GameStoreListComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
-  getItemHtml(gameStore: GameStore) {
+  getItemHtml(gameStore: any) {
     return `
     <div id = convention-${gameStore.id} class="game-store-list-item">
      <h3>
-        ${generateButton({
-          text: `${gameStore.name}`,
-          component: this,
-          [EVENT_HANDLER_CONFIG_KEY]: REDIRECT_HANDLER_CONFIG,
-          [EVENT_HANDLER_PARAMS_KEY]: {url: gameStore.url}
+        ${generateLinkButton({
+          text: gameStore.name,
+          url: gameStore.url
         })}
       </h3>
     <p>Location: ${gameStore.location}</p>
@@ -56,9 +52,9 @@ export class GameStoreListComponent extends BaseTemplateDynamicComponent {
   `;
   }
 
-  render(data: Record<any, GameStore>) {
+  render(data: any) {
     let html = `<div class="ui-section"><h1 class="hideOnMobile">Game Stores</h1>
-    <h2>Game stores</h2>`;
+    <h2 class="showOnMobile">Game stores</h2>`;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;

@@ -1,12 +1,11 @@
-import { deserializeJSONProp } from "../../../../framework/components/utils/ComponentUtils.ts";
-import { BaseTemplateDynamicComponent } from "../../../../framework/components/BaseTemplateDynamicComponent.ts";
+import {AbstractPageComponent, BaseTemplateComponent, deserializeJSONProp} from "@bponnaluri/places-js";
 import {
   convertDateTimeForDisplay,
   convertLocationStringForDisplay
-} from "../../../../framework/utils/EventDataUtils.ts";
-import {VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG} from "../../../../shared/nav/NavEventHandlers.ts";
+} from "@bponnaluri/places-js";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
-import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../../../../shared/Constants.ts";
+import {EventDetailsComponent} from "../../events/components/EventDetailsComponent.ts";
+
 
 const template = `
 
@@ -40,35 +39,45 @@ const template = `
   </style>
 `;
 
-export class GroupEventComponent extends BaseTemplateDynamicComponent {
+const VIEW_EVENT_DETAILS_BUTTON_ID = "view-event-details-button";
+export class GroupEventComponent extends BaseTemplateComponent {
+
+  //Rerenders are not dependent on this data changing after the component is created.
+  #eventData:any;
+
   constructor() {
     super();
     this.id = "";
+    this.#eventData = deserializeJSONProp(this, "data");
   }
 
-  connectedCallback() {
-    this.updateWithCustomReducer({});
-  }
+ override attachEventHandlersToDom(shadowRoot?: any) {
+    const self = this;
+    shadowRoot?.getElementById(VIEW_EVENT_DETAILS_BUTTON_ID).addEventListener("click", ()=>{
+      AbstractPageComponent.updateRoute(
+        EventDetailsComponent,
+        {
+          id:self.#eventData.id,
+          groupId:self.#eventData.groupId
+        })
+   })
+ }
 
   render(): string {
     this.id = this.getAttribute("key") ?? "";
-    const eventData = deserializeJSONProp(this, "data");
-
     return `
       <div id=${this.id} class="event">
       
         <div class="ui-section">
-          <h3>${eventData.name}</h3>
-          <p class = "event-time">${convertDateTimeForDisplay(eventData.startTime)}</p>
-          <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
+          <h3>${this.#eventData.name}</h3>
+          <p class = "event-time">${convertDateTimeForDisplay(this.#eventData.startTime)}</p>
+          <p class = "event-location">Location: ${convertLocationStringForDisplay(this.#eventData.location)}</p>
           </br>  
           
            ${generateButton({
             class: "group-webpage-link",
+            id: VIEW_EVENT_DETAILS_BUTTON_ID,
             text: "View event details",
-            component: this,
-            [EVENT_HANDLER_CONFIG_KEY]: VIEW_GROUP_EVENT_PAGE_HANDLER_CONFIG,
-            [EVENT_HANDLER_PARAMS_KEY]: {id:eventData.id,groupId:eventData.groupId}
           })}
 
         </div>

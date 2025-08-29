@@ -2,7 +2,7 @@ import type { DisplayItem } from "../../../../homepage/data/types/DisplayItem.ts
 import type { Event } from "../../../../homepage/data/types/Event.ts";
 import type {UserPermissionData} from "../../../../../shared/types/UserPermissionData.ts";
 
-export interface GroupPageData extends DisplayItem {
+export interface GroupComponentData extends DisplayItem {
   id: string;
   name: string;
   description: string;

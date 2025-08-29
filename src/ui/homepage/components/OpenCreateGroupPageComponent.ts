@@ -1,28 +1,44 @@
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
-import {CREATE_GROUP_PAGE_HANDLER_CONFIG} from "../../../shared/nav/NavEventHandlers.ts";
-import {EVENT_HANDLER_CONFIG_KEY, IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
+import {IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
 import {
-  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
+  AbstractPageComponent,
   GLOBAL_STATE_LOAD_CONFIG_KEY
-} from "../../../framework/components/types/ComponentLoadConfig.ts";
-import {BaseDynamicComponent} from "../../../framework/components/BaseDynamicComponent.ts";
+} from "@bponnaluri/places-js";
+import {BaseDynamicComponent} from "@bponnaluri/places-js";
+import {LOGIN_THUNK} from "../../auth/data/LoginThunk.ts";
+import {CreateGroupPageComponent} from "../../groups/createGroup/components/CreateGroupPageComponent.ts";
 
 
 const loadConfig = {
   [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
-    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
-    defaultGlobalStateReducer:(data:any)=>{
-      return {
-        [IS_LOGGED_IN_KEY]: data.isLoggedIn.isLoggedIn
-      }
-    }
+    dataThunks:[{
+      componentReducer:(data:any)=>{
+        return {
+          [IS_LOGGED_IN_KEY]: data?.loggedIn
+        }
+      },
+      dataThunk:LOGIN_THUNK
+    }]
   },
 }
+
+const CREATE_GROUP_BUTTON_ID = "open-create-group-page-button-id"
 export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
 
   constructor() {
     super(loadConfig);
   }
+
+  connectedCallback(){
+    this.addEventListener("click", (event:any)=>{
+      event.preventDefault();
+      if(event.originalTarget.id === CREATE_GROUP_BUTTON_ID){
+        AbstractPageComponent.updateRoute(CreateGroupPageComponent, event.params)
+      }
+      event.stopPropagation();
+    });
+  }
+
 
   render(data: any){
     if(!data[IS_LOGGED_IN_KEY]){
@@ -34,9 +50,9 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
           <img src="/assets/house.png">
         </div>
         ${generateButton({
-          text: "Create group",
           component: this,
-          [EVENT_HANDLER_CONFIG_KEY]: CREATE_GROUP_PAGE_HANDLER_CONFIG,
+          id: CREATE_GROUP_BUTTON_ID,
+          text: "Create group",
         })}
         </div>
     `

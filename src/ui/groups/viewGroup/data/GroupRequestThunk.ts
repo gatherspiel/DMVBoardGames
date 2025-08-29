@@ -1,7 +1,6 @@
 import { API_ROOT } from "../../../../shared/Params.js";
-import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
-import type { ApiRequestConfig } from "../../../../framework/state/update/api/types/ApiRequestConfig.ts";
-import {generatePreloadThunk} from "../../../../framework/state/update/PreloadThunk.ts";
+import { generateApiThunk } from "@bponnaluri/places-js";
+import type { ApiRequestConfig } from "@bponnaluri/places-js";
 
 function getGroupRequestConfig(requestParams: any): ApiRequestConfig {
   return {
@@ -13,5 +12,7 @@ export const GROUP_REQUEST_THUNK = generateApiThunk({
   queryConfig: getGroupRequestConfig,
 });
 
-export const GROUP_PRELOAD_THUNK = generatePreloadThunk("preload_"+GROUP_REQUEST_THUNK.requestStoreId)
+//@ts-ignore
+GROUP_REQUEST_THUNK.enablePreload();
+
 

@@ -1,7 +1,7 @@
 import { API_ROOT } from "../../../../shared/Params.js";
-import { generateApiThunk } from "../../../../framework/state/update/api/ApiThunkFactory.ts";
-import type { ApiRequestConfig } from "../../../../framework/state/update/api/types/ApiRequestConfig.ts";
-import {getUrlParameter} from "../../../../framework/utils/UrlParamUtils.ts";
+import { generateApiThunk } from "@bponnaluri/places-js";
+import type { ApiRequestConfig } from "@bponnaluri/places-js";
+import {getUrlParameter} from "@bponnaluri/places-js";
 
 function getEventRequestConfig(): ApiRequestConfig {
   return {
