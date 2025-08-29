@@ -65,7 +65,7 @@ const template = `
       height: 500px;
       width: 800px;
     }
-    
+
     button {
       margin-top:0.5rem;
     }

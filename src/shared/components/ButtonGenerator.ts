@@ -1,5 +1,4 @@
-import type {BaseDynamicComponent, EventHandlerThunkConfig} from "@bponnaluri/places-js";
-import {EVENT_HANDLER_CONFIG_KEY, EVENT_HANDLER_PARAMS_KEY} from "../Constants.ts";
+import type {BaseDynamicComponent} from "@bponnaluri/places-js";
 
 export type LinkButtonConfig = {
   class?:string
@@ -13,8 +12,6 @@ export type ButtonConfig = {
   id?:string,
   text:string,
   type?:string,
-  [EVENT_HANDLER_CONFIG_KEY]?: EventHandlerThunkConfig
-  [EVENT_HANDLER_PARAMS_KEY]?:Record<string, string>
 }
 
 export function generateLinkButton(config:LinkButtonConfig){
@@ -32,13 +29,11 @@ export function generateLinkButton(config:LinkButtonConfig){
 export function generateButton(config:ButtonConfig){
   const buttonClasses = `raised activeHover${config.class ? ` ${config.class}` : ``}`;
 
-  const event = config[EVENT_HANDLER_CONFIG_KEY];
   return `
     <button 
       class="${buttonClasses}"
       name="action"
       value="${config.text}"
-      ${event && config.component ? config.component.createEvent(config[EVENT_HANDLER_CONFIG_KEY], "click",config[EVENT_HANDLER_PARAMS_KEY]) : ``}
       ${config.type ?? `type=${config.type}`}>
       
       <span class="shadow"></span>
