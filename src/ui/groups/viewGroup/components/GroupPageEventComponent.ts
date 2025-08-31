@@ -1,6 +1,10 @@
-import {AbstractPageComponent, BaseTemplateComponent, deserializeJSONProp} from "@bponnaluri/places-js";
 import {
-  convertDateTimeForDisplay,
+  AbstractPageComponent,
+  BaseTemplateComponent,
+  deserializeJSONProp,
+  getDateFromDateString
+} from "@bponnaluri/places-js";
+import {
   convertLocationStringForDisplay
 } from "@bponnaluri/places-js";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
@@ -40,7 +44,7 @@ const template = `
 `;
 
 const VIEW_EVENT_DETAILS_BUTTON_ID = "view-event-details-button";
-export class GroupEventComponent extends BaseTemplateComponent {
+export class GroupPageEventComponent extends BaseTemplateComponent {
 
   //Rerenders are not dependent on this data changing after the component is created.
   #eventData:any;
@@ -70,7 +74,7 @@ export class GroupEventComponent extends BaseTemplateComponent {
       
         <div class="ui-section">
           <h3>${this.#eventData.name}</h3>
-          <p class = "event-time">${convertDateTimeForDisplay(this.#eventData.startTime)}</p>
+          <p class = "event-time">${getDateFromDateString(this.#eventData.startTime)}</p>
           <p class = "event-location">Location: ${convertLocationStringForDisplay(this.#eventData.location)}</p>
           </br>  
           
@@ -92,5 +96,5 @@ export class GroupEventComponent extends BaseTemplateComponent {
 }
 
 if (!customElements.get("group-page-event-component")) {
-  customElements.define("group-page-event-component", GroupEventComponent);
+  customElements.define("group-page-event-component", GroupPageEventComponent);
 }

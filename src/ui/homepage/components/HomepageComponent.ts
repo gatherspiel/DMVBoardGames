@@ -9,7 +9,7 @@ import {GameStoreListComponent} from "./GameStoreListComponent.ts";
 // @ts-ignore
 import {ConventionListComponent} from "./ConventionListComponent.ts";
 // @ts-ignore
-import {GroupEventComponent} from "../../groups/viewGroup/components/GroupEventComponent.ts";
+import {GroupPageEventComponent} from "../../groups/viewGroup/components/GroupPageEventComponent.ts";
 // @ts-ignore
 import {GroupListComponent} from "./group-list/GroupListComponent.ts";
 // @ts-ignore
@@ -33,7 +33,7 @@ export class HomepageComponent extends BaseDynamicComponent {
   }
 
   connectedCallback() {
-    this.retrieveData({
+    this.updateData({
       hideEvents: false,
       hideConventions: true,
       hideRestaurants: true,
@@ -53,7 +53,7 @@ export class HomepageComponent extends BaseDynamicComponent {
       }
       else {
         if ([CONVENTIONS_ID, EVENT_SEARCH_ID, GAME_RESTAURANTS_ID, GAME_STORES_ID].includes(targetId)) {
-          self.retrieveData({
+          self.updateData({
             hideEvents: targetId !== EVENT_SEARCH_ID,
             hideConventions: targetId !== CONVENTIONS_ID,
             hideRestaurants: targetId !== GAME_RESTAURANTS_ID,
@@ -79,25 +79,21 @@ export class HomepageComponent extends BaseDynamicComponent {
               </div>
               <div>
                 ${data.hideEvents || data.showAllButtons ? generateButton({
-                  component: this,
                   id: EVENT_SEARCH_ID,
                   text: "Events",
                 }): ``} 
                   
                 ${data.hideConventions ? generateButton({
-                  component: this,
                   id: CONVENTIONS_ID,
                   text: "Conventions",
                 }): ``}       
              
                 ${data.hideGameStores ? generateButton({
-                  component: this,
                   id: GAME_STORES_ID,
                   text: "Game Stores",
                 }): ``}  
              
                 ${data.hideRestaurants ? generateButton({
-                  component: this,
                   id: GAME_RESTAURANTS_ID,
                   text: "Bars and Cafés",
 
