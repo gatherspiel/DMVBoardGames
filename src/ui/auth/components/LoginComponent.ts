@@ -5,7 +5,6 @@ import {LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT,} from "../Constants.js";
 
 import type {LoginComponentStore} from "../types/LoginComponentStore.ts";
 import {
-  COMPONENT_LABEL_KEY,
   IS_LOGGED_IN_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../../shared/Constants.ts";
@@ -64,10 +63,10 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
     this.hasRendered = false;
   }
 
-  retrieveAndValidateFormInputs() {
+  retrieveAndValidateFormInputs(shadowRoot:ShadowRoot) {
 
-    const username = this.getFormValue(USERNAME_INPUT);
-    const password = this.getFormValue(PASSWORD_INPUT);
+    const username = (shadowRoot.getElementById(USERNAME_INPUT) as HTMLInputElement)?.value;
+    const password = (shadowRoot.getElementById(PASSWORD_INPUT) as HTMLInputElement)?.value;
     if (!username || !password) {
       return {
         errorMessage: "Enter a valid username and password"
@@ -79,10 +78,10 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
     };
   }
 
-  connectedCallback(){
+  override attachEventsToShadowRoot(shadowRoot:ShadowRoot){
 
     const self = this;
-    this.addEventListener("click",(event:any)=>{
+    shadowRoot?.addEventListener("click",(event:any)=>{
 
       event.preventDefault();
 
@@ -90,19 +89,20 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
         const targetId = event.originalTarget?.id;
         if (targetId === LOGIN_BUTTON_ID){
 
-          const formInputs = self.retrieveAndValidateFormInputs()
+          const formInputs = self.retrieveAndValidateFormInputs(shadowRoot)
+
           if(formInputs.errorMessage){
             self.updateData(formInputs)
           } else {
+            console.log(formInputs)
             LOGIN_THUNK.getData({
-              username: self.getFormValue(USERNAME_INPUT),
-              password: self.getFormValue(PASSWORD_INPUT)
+              formInputs
             })
           }
         }
 
         if (targetId === REGISTER_BUTTON_ID) {
-          const formInputs = self.retrieveAndValidateFormInputs()
+          const formInputs = self.retrieveAndValidateFormInputs(shadowRoot)
           if(formInputs.errorMessage){
             self.updateData(formInputs)
           } else {
@@ -113,7 +113,6 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
               url: API_ROOT + `/users/register`,
             }).then((response:any)=>{
 
-              console.log(response)
               if(response.errorMessage){
                 self.updateData({
                   "errorMessage":response.errorMessage
@@ -153,24 +152,20 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
      <div class="ui-section" id="login-component-container">
       <form id=${LOGIN_FORM_ID}>
         <div class="ui-input">
-          ${this.addShortInput({
-            id: USERNAME_INPUT,
-            [COMPONENT_LABEL_KEY]: "Email",
-            inputType: "text",
-            value: ""
-          })}
-        </div>
-        
-        <div class="ui-input">
-          ${this.addShortInput({
-            id: PASSWORD_INPUT,
-            [COMPONENT_LABEL_KEY]: "Password",
-            inputType: "text",
-            value: ""
-          })}
-        </div>
-        
-        <br>
+        <label>Email</label>
+        <input        
+          id=${USERNAME_INPUT}
+        />
+       </input>    
+       <br>
+       
+        <label>Password</label>
+        <input        
+          id=${PASSWORD_INPUT}
+        />
+       </input>    
+       <br>            
+  
 
         <div id="component-buttons">
         

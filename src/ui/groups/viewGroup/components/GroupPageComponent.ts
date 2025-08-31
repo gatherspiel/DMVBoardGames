@@ -6,7 +6,6 @@ import {
 import {GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
 
 import {AbstractPageComponent, ApiActionTypes, serializeJSONProp} from "@bponnaluri/places-js";
-import type { GroupComponentData } from "../data/types/GroupComponentData.ts";
 import type { Event } from "../../../homepage/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 
@@ -16,7 +15,6 @@ import {
   generateLinkButton
 } from "../../../../shared/components/ButtonGenerator.ts";
 import {
-  COMPONENT_LABEL_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../../../shared/Constants.ts";
 import {CreateEventComponent} from "../../events/components/CreateEventComponent.ts";
@@ -126,9 +124,9 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
-  connectedCallback() {
+  override attachEventsToShadowRoot(shadowRoot:ShadowRoot) {
     var self = this;
-    this.addEventListener("click", function(event:any){
+    shadowRoot?.addEventListener("click", function(event:any){
       event.preventDefault();
 
       try {
@@ -160,9 +158,9 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
         if(targetId === SAVE_UPDATES_BUTTON_ID){
           const params = {
             id: self.componentState.id,
-            name: self.getFormValue(GROUP_NAME_INPUT),
-            description: self.getFormValue(GROUP_DESCRIPTION_INPUT),
-            url: self.getFormValue(GROUP_URL_INPUT)
+            name: (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLTextAreaElement)?.value,
+            description: (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value,
+            url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value
           }
 
           InternalApiAction.getResponseData({
@@ -171,7 +169,7 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
             url: API_ROOT + `/groups/?name=${encodeURIComponent(params.name)}`,
           }).then(()=>{
 
-            self.updateData({
+            self.updateData({...params,
               isEditing: false,
               [SUCCESS_MESSAGE_KEY]: 'Group update successful'
             });
@@ -185,7 +183,7 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
     })
   }
 
-  render(groupData: GroupComponentData): string {
+  render(groupData: any): string {
     if (!groupData.permissions) {
       return `<h1>Loading</h1>`;
     }
@@ -230,30 +228,32 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
         </div>
        ` 
          : `
-       <h1>Editing group information</h1>
+      <h1>Editing group information</h1>
         
-       <form>
-         ${this.addShortInput({
-           id: GROUP_NAME_INPUT,
-           [COMPONENT_LABEL_KEY]: "Group name",
-           inputType: "text",
-           value: groupData.name
-         })} 
-         <br>
-         ${this.addShortInput({
-           id: GROUP_URL_INPUT,
-           [COMPONENT_LABEL_KEY]: "Group url",
-           inputType: "text",
-           value: groupData.url
-         })} 
-         <br>
-         ${this.addTextInput({
-           id: GROUP_DESCRIPTION_INPUT,
-           [COMPONENT_LABEL_KEY]: "Group description",
-           inputType: "text",
-           value: groupData.description
-         })}   
+      <form>
+        <label>Group name</label>
+        <input
+          id=${GROUP_NAME_INPUT}
+          value="${groupData.name}"
+          />
+        <br>
+          
+        <label>Group description</label>
+        <br>
 
+        <textarea
+          id=${GROUP_DESCRIPTION_INPUT}
+          />${groupData.description}
+        </textarea>        
+        <br>
+ 
+        <label>Group url</label>
+        <input
+          id=${GROUP_URL_INPUT}
+          value=${groupData.url}
+          />
+        <br>       
+         
          ${generateButton({
            id: SAVE_UPDATES_BUTTON_ID,
            text: "Save updates",

@@ -1,5 +1,3 @@
-
-import type { AuthRequest } from "../types/AuthRequest.ts";
 import { AuthResponse } from "../types/AuthResponse.ts";
 import {addLocalStorageData, clearSessionStorage, getLocalStorageDataIfPresent} from "@bponnaluri/places-js";
 import { isAfterNow } from "@bponnaluri/places-js";
@@ -12,10 +10,11 @@ import type {DefaultApiAction} from "@bponnaluri/places-js";
 import {BaseThunk} from "@bponnaluri/places-js";
 
 async function retrieveData(
-  params: AuthRequest,
+  data: any,
   backupResponse: DefaultApiAction,
 ): Promise<any> {
 
+  const params = data.formInputs;
   try {
     if (
       backupResponse.defaultFunctionPriority &&
@@ -53,6 +52,8 @@ async function retrieveData(
       }
     )
 
+    console.log("Login data:"+JSON.stringify(data));
+
     if (data.ok) {
 
       clearSessionStorage();
@@ -81,6 +82,7 @@ async function retrieveData(
 export function getLoginComponentStoreFromLoginResponse(
   response: any,
 ) {
+  console.log(response)
   return {
     [IS_LOGGED_IN_KEY]: response.loggedIn,
     errorMessage: response.error,
