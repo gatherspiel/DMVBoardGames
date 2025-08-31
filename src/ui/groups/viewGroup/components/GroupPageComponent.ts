@@ -6,22 +6,16 @@ import {
 import {GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
 
 import {AbstractPageComponent, ApiActionTypes, serializeJSONProp} from "@bponnaluri/places-js";
-import type { GroupComponentData } from "../data/types/GroupComponentData.ts";
 import type { Event } from "../../../homepage/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 
 import {
   generateButton,
-  generateButtonForEditPermission,
   generateLinkButton
 } from "../../../../shared/components/ButtonGenerator.ts";
 import {
-  COMPONENT_LABEL_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../../../shared/Constants.ts";
-import {
-  GLOBAL_STATE_LOAD_CONFIG_KEY,
-} from "@bponnaluri/places-js";
 import {CreateEventComponent} from "../../events/components/CreateEventComponent.ts";
 import {DeleteGroupPageComponent} from "../../deleteGroup/DeleteGroupPageComponent.ts";
 import {InternalApiAction} from "@bponnaluri/places-js";
@@ -108,16 +102,11 @@ const groupDataReducer = (groupData:any)=>{
   return {...groupData, [SUCCESS_MESSAGE_KEY]:''}
 }
 
-const loadConfig = {
-  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
-    dataThunks:[{
+const loadConfig = [{
       dataThunk:GROUP_REQUEST_THUNK,
       componentReducer:groupDataReducer,
       urlParams:["name"]
     }]
-  },
-
-};
 
 const ADD_EVENT_BUTTON_ID = "add-event";
 const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
@@ -134,15 +123,15 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
-  connectedCallback() {
+  override attachEventsToShadowRoot(shadowRoot:ShadowRoot) {
     var self = this;
-    this.addEventListener("click", function(event:any){
+    shadowRoot?.addEventListener("click", function(event:any){
       event.preventDefault();
 
       try {
         const targetId = event.originalTarget?.id;
         if(targetId === EDIT_GROUP_BUTTON_ID) {
-          self.retrieveData({
+          self.updateData({
             isEditing: true,
           })
         }
@@ -151,7 +140,6 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
             id: self.componentState.id,
             name:self.componentState.name,
           }
-          console.log("Adding event");
           AbstractPageComponent.updateRoute(CreateEventComponent, params)
         }
         if(targetId === DELETE_GROUP_BUTTON_ID){
@@ -162,16 +150,16 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
           AbstractPageComponent.updateRoute(DeleteGroupPageComponent,params)
         }
         if(targetId === CANCEL_UPDATES_BUTTON_ID) {
-          self.retrieveData({
+          self.updateData({
             isEditing: false
           })
         }
         if(targetId === SAVE_UPDATES_BUTTON_ID){
           const params = {
             id: self.componentState.id,
-            name: self.getFormValue(GROUP_NAME_INPUT),
-            description: self.getFormValue(GROUP_DESCRIPTION_INPUT),
-            url: self.getFormValue(GROUP_URL_INPUT)
+            name: (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLTextAreaElement)?.value,
+            description: (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value,
+            url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value
           }
 
           InternalApiAction.getResponseData({
@@ -180,7 +168,7 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
             url: API_ROOT + `/groups/?name=${encodeURIComponent(params.name)}`,
           }).then(()=>{
 
-            self.retrieveData({
+            self.updateData({...params,
               isEditing: false,
               [SUCCESS_MESSAGE_KEY]: 'Group update successful'
             });
@@ -194,92 +182,104 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
     })
   }
 
-  render(groupData: GroupComponentData): string {
+  renderEditMode(groupData:any):string {
+    return`
+    
+    <h1>Editing group information</h1>
+
+    <form>
+      <label>Group name</label>
+      <br>
+      <input
+      id=${GROUP_NAME_INPUT}
+      value="${groupData.name}"
+        />
+      <br>
+        <label>Group description</label>
+      <br>
+  
+      <textarea
+        id=${GROUP_DESCRIPTION_INPUT}
+      />${groupData.description}
+      </textarea>        
+      <br>
+  
+      <label>Group url</label>
+      <br>
+      <input
+      id=${GROUP_URL_INPUT}
+      value=${groupData.url}
+      />
+      <br>
+  
+      ${generateButton({
+        id: SAVE_UPDATES_BUTTON_ID,
+        text: "Save updates",
+        type: "submit",
+      })}
+  
+      ${generateButton({
+        id: CANCEL_UPDATES_BUTTON_ID,
+        text: "Cancel updates",
+        type: "submit",
+      })}
+    </form>`
+  }
+
+  renderGroupEditUI(groupData:any):string {
+    return `
+
+    ${groupData[SUCCESS_MESSAGE_KEY] ? `<h2>Group update successful</h2>` : ``}
+    <div class="group-title">
+      <h1>
+        ${generateLinkButton({
+          class: "group-webpage-link",
+          text: groupData.name,
+          url:groupData.url
+        })}
+      </h1>
+    
+
+      ${generateButton({
+        id:EDIT_GROUP_BUTTON_ID,
+        text: "Edit group info",
+      })}
+    
+      ${generateButton({
+        id: ADD_EVENT_BUTTON_ID,
+        text: "Add event",
+      })}
+    
+      ${generateButton({
+        id: DELETE_GROUP_BUTTON_ID,
+        text: "Delete group",
+      })}
+    </div>`
+  }
+
+  render(groupData: any): string {
     if (!groupData.permissions) {
       return `<h1>Loading</h1>`;
     }
     return `
-
      <div class="ui-section">
-     ${groupData[SUCCESS_MESSAGE_KEY] ? `<h2>Group update successful</h2>` : ``}
-     ${
-       !groupData.isEditing
-         ? `<div class="group-title">
-       <h1>
-         ${generateLinkButton({
-           class: "group-webpage-link",
-           text: groupData.name,
-           url:groupData.url
-         })}
+     ${!groupData.isEditing ? `
+        <h1>
+          ${generateLinkButton({
+            class: "group-webpage-link",
+            text: groupData.name,
+            url:groupData.url
+          })}
        </h1>
-
-       ${generateButtonForEditPermission({
-         component: this,
-         id:EDIT_GROUP_BUTTON_ID,
-         text: "Edit group info",
-       })}
-       
-       ${generateButtonForEditPermission({
-           component: this, 
-           id: ADD_EVENT_BUTTON_ID,
-           text: "Add event",
-         })}
-       
-       ${generateButtonForEditPermission({
-           component: this,
-           id: DELETE_GROUP_BUTTON_ID,
-           text: "Delete group",
-         })}
-
-       </div>
-    
-   
+        ${groupData.permissions.userCanEdit ? this.renderGroupEditUI(groupData) : ''}
         <div class="${GROUP_DESCRIPTION_TEXT}">
-          <p>${groupData.description}</p> 
-        </div>
-       ` 
-         : `
-       <h1>Editing group information</h1>
-        
-       <form>
-         ${this.addShortInput({
-           id: GROUP_NAME_INPUT,
-           [COMPONENT_LABEL_KEY]: "Group name",
-           inputType: "text",
-           value: groupData.name
-         })} 
-         <br>
-         ${this.addShortInput({
-           id: GROUP_URL_INPUT,
-           [COMPONENT_LABEL_KEY]: "Group url",
-           inputType: "text",
-           value: groupData.url
-         })} 
-         <br>
-         ${this.addTextInput({
-           id: GROUP_DESCRIPTION_INPUT,
-           [COMPONENT_LABEL_KEY]: "Group description",
-           inputType: "text",
-           value: groupData.description
-         })}   
-
-         ${generateButton({
-           id: SAVE_UPDATES_BUTTON_ID,
-           text: "Save updates",
-           type: "submit",
-         })}
-         
-         ${generateButton({
-           id: CANCEL_UPDATES_BUTTON_ID,
-           text: "Cancel updates",
-           type: "submit",
-         })}    
-        </form> 
-      `
+        <p>${groupData.description}</p> 
+        </div>` 
+        : this.renderEditMode(groupData)
      }
-    <h1 class="hideOnMobile">Upcoming events</h1>
-      <div id="group-events">
-      ${
+     <h1 class="hideOnMobile">Upcoming events</h1>
+     <div id="group-events">
+     ${
         groupData.eventData.length === 0
           ? `<p id="no-event">Click on group link above for event information</p>`
           : `${groupData.eventData
@@ -289,12 +289,10 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
                 key = ${groupData.id + "event-" + event.id}
                 data =${serializeJSONProp({groupId: groupData.id,...event})}
               >
- 
               </group-page-event-component>
 
             `;
-              })
-              .join(" ")}
+              }).join(" ")}
           <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
           `
       }

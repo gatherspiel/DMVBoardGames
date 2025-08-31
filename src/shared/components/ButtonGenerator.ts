@@ -1,4 +1,3 @@
-import type {BaseDynamicComponent} from "@bponnaluri/places-js";
 
 export type LinkButtonConfig = {
   class?:string
@@ -8,7 +7,6 @@ export type LinkButtonConfig = {
 
 export type ButtonConfig = {
   class?: string,
-  component?:BaseDynamicComponent,
   id?:string,
   text:string,
   type?:string,
@@ -43,15 +41,3 @@ export function generateButton(config:ButtonConfig){
   `
 }
 
-export function generateButtonForEditPermission(config:ButtonConfig){
-
-  const userCanEditPermission = config.component?.hasUserEditPermissions();
-  if(userCanEditPermission === undefined){
-    throw new Error(`permissions.userCanEdit state not defined for component`);
-  }
-  if(!userCanEditPermission) {
-    return '';
-  }
-
-  return generateButton(config);
-}
