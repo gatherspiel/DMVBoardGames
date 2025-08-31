@@ -2,16 +2,16 @@ import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
-} from "../../Constants.ts";
-import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
+} from "./Constants.ts";
+import {generateButton} from "../../shared/components/ButtonGenerator.ts";
 import {ApiActionTypes, generateErrorMessage, InternalApiAction} from "@bponnaluri/places-js";
 import {
   IS_LOGGED_IN_KEY,
   SUCCESS_MESSAGE_KEY
-} from "../../../../shared/Constants.ts";
+} from "../../shared/Constants.ts";
 import {BaseTemplateDynamicComponent} from "@bponnaluri/places-js";
-import {LOGIN_THUNK} from "../../../auth/data/LoginThunk.ts";
-import { API_ROOT } from "../../../../shared/Params.ts";
+import {LOGIN_THUNK} from "../auth/data/LoginThunk.ts";
+import { API_ROOT } from "../../shared/Params.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>

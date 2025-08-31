@@ -1,12 +1,12 @@
-import type { GroupSearchResult } from "../../data/types/group/GroupSearchResult.ts";
+import type { GroupSearchResult } from "../data/types/group/GroupSearchResult.ts";
 import {AbstractPageComponent, BaseTemplateDynamicComponent} from "@bponnaluri/places-js";
-import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
-import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
+import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {getDisplayName} from "../../../shared/DisplayNameConversion.ts";
 
-import {GROUP_SEARCH_THUNK} from "../../data/search/GroupSearchThunk.ts";
-import {DEFAULT_SEARCH_PARAMETER} from "../group-search/Constants.ts";
-import {searchResultReducer} from "../../data/store/SearchResultReducer.ts";
-import {GroupPageComponent} from "../../../groups/viewGroup/components/GroupPageComponent.ts";
+import {GROUP_SEARCH_THUNK} from "../data/search/GroupSearchThunk.ts";
+import {DEFAULT_SEARCH_PARAMETER} from "./group-search/Constants.ts";
+import {searchResultReducer} from "../data/store/SearchResultReducer.ts";
+import {GroupPageComponent} from "../../groups/viewGroup/GroupPageComponent.ts";
 
 const loadConfig = [{
       componentReducer: searchResultReducer,
@@ -90,13 +90,13 @@ export class GroupListComponent extends BaseTemplateDynamicComponent {
          
         <div class = "button-div">
         ${generateButton({
-          id: "group-button-"+groupId,
-          text: group.title,
-          type: "submit"
-        })}
+      id: "group-button-" + groupId,
+      text: group.title,
+      type: "submit"
+    })}
          </div>
    
-        <p class="event-group-location">${group.locations.map(name=>getDisplayName(name))?.join(", ") ?? ""}</p>              
+        <p class="event-group-location">${group.locations.map(name => getDisplayName(name))?.join(", ") ?? ""}</p>              
         
       </div>
     `;

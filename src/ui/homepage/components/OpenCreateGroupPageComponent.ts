@@ -5,7 +5,7 @@ import {
 } from "@bponnaluri/places-js";
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {LOGIN_THUNK} from "../../auth/data/LoginThunk.ts";
-import {CreateGroupPageComponent} from "../../groups/createGroup/components/CreateGroupPageComponent.ts";
+import {CreateGroupPageComponent} from "../../groups/CreateGroupPageComponent.ts";
 
 
 const loadConfig = [{

@@ -8,12 +8,12 @@ import {
   EVENT_NAME_INPUT,
   EVENT_URL_INPUT,
   START_DATE_INPUT, START_TIME_INPUT
-} from "../../Constants.ts";
-import {GROUP_EVENT_REQUEST_THUNK} from "../data/GroupEventRequestThunk.ts";
+} from "../Constants.ts";
+import {GROUP_EVENT_REQUEST_THUNK} from "./GroupEventRequestThunk.ts";
 import {
   getEventDetailsFromForm,
   validateEventFormData
-} from "../EventDetailsHandler.ts";
+} from "./EventDetailsHandler.ts";
 import {
   convertDateTimeForDisplay,
   convertDayOfWeekForDisplay,
@@ -22,14 +22,14 @@ import {
 import {
   generateButton,
   generateLinkButton
-} from "../../../../shared/components/ButtonGenerator.ts";
+} from "../../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage, generateSuccessMessage} from "@bponnaluri/places-js";
 import {
   SUCCESS_MESSAGE_KEY
-} from "../../../../shared/Constants.ts";
+} from "../../../shared/Constants.ts";
 
-import {GroupPageComponent} from "../../viewGroup/components/GroupPageComponent.ts";
-import {API_ROOT} from "../../../../shared/Params.ts";
+import {GroupPageComponent} from "../viewGroup/GroupPageComponent.ts";
+import {API_ROOT} from "../../../shared/Params.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>

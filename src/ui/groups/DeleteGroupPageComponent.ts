@@ -1,14 +1,14 @@
 import {ApiActionTypes, BaseTemplateDynamicComponent, InternalApiAction} from "@bponnaluri/places-js";
-import { GROUP_NAME_INPUT } from "../Constants.ts";
+import { GROUP_NAME_INPUT } from "./Constants.ts";
 import {getUrlParameter} from "@bponnaluri/places-js";
-import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {generateButton} from "../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage} from "@bponnaluri/places-js";
 import {
   SUCCESS_MESSAGE_KEY
-} from "../../../shared/Constants.ts";
+} from "../../shared/Constants.ts";
 
-import {API_ROOT} from "../../../shared/Params.ts";
-import {LOGIN_THUNK} from "../../auth/data/LoginThunk.ts";
+import {API_ROOT} from "../../shared/Params.ts";
+import {LOGIN_THUNK} from "../auth/data/LoginThunk.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>

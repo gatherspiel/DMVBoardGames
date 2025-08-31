@@ -2,24 +2,24 @@ import {
   GROUP_DESCRIPTION_INPUT, GROUP_DESCRIPTION_TEXT,
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
-} from "../../Constants.js";
-import {GROUP_REQUEST_THUNK} from "../data/GroupRequestThunk.ts";
+} from "../Constants.js";
+import {GROUP_REQUEST_THUNK} from "./GroupRequestThunk.ts";
 
 import {AbstractPageComponent, ApiActionTypes, serializeJSONProp} from "@bponnaluri/places-js";
-import type { Event } from "../../../homepage/data/types/Event.ts";
+import type { Event } from "../../homepage/data/types/Event.ts";
 import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
 
 import {
   generateButton,
   generateLinkButton
-} from "../../../../shared/components/ButtonGenerator.ts";
+} from "../../../shared/components/ButtonGenerator.ts";
 import {
   SUCCESS_MESSAGE_KEY
-} from "../../../../shared/Constants.ts";
-import {CreateEventComponent} from "../../events/components/CreateEventComponent.ts";
-import {DeleteGroupPageComponent} from "../../deleteGroup/DeleteGroupPageComponent.ts";
+} from "../../../shared/Constants.ts";
+import {CreateEventComponent} from "../events/CreateEventComponent.ts";
+import {DeleteGroupPageComponent} from "../DeleteGroupPageComponent.ts";
 import {InternalApiAction} from "@bponnaluri/places-js";
-import {API_ROOT} from "../../../../shared/Params.ts";
+import {API_ROOT} from "../../../shared/Params.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>

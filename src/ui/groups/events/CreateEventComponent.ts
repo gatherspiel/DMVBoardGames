@@ -9,17 +9,17 @@ import {
   EVENT_NAME_INPUT,
   EVENT_URL_INPUT,
   START_DATE_INPUT, START_TIME_INPUT,
-} from "../../Constants.ts";
-import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
+} from "../Constants.ts";
+import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage} from "@bponnaluri/places-js";
 import {
   SUCCESS_MESSAGE_KEY
-} from "../../../../shared/Constants.ts";
+} from "../../../shared/Constants.ts";
 
-import {GroupPageComponent} from "../../viewGroup/components/GroupPageComponent.ts";
-import {LOGIN_THUNK} from "../../../auth/data/LoginThunk.ts";
-import {getEventDetailsFromForm, validateEventFormData} from "../EventDetailsHandler.ts";
-import { API_ROOT } from "../../../../shared/Params.ts";
+import {GroupPageComponent} from "../viewGroup/GroupPageComponent.ts";
+import {LOGIN_THUNK} from "../../auth/data/LoginThunk.ts";
+import {getEventDetailsFromForm, validateEventFormData} from "./EventDetailsHandler.ts";
+import { API_ROOT } from "../../../shared/Params.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>

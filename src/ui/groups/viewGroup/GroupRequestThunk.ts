@@ -1,4 +1,4 @@
-import { API_ROOT } from "../../../../shared/Params.js";
+import { API_ROOT } from "../../../shared/Params.js";
 import { generateApiThunk } from "@bponnaluri/places-js";
 import type { ApiRequestConfig } from "@bponnaluri/places-js";
 
