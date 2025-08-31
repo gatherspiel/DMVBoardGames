@@ -8,34 +8,29 @@ import {
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT,
   EVENT_URL_INPUT,
-  START_DATE_INPUT,
-  START_TIME_INPUT
+  START_DATE_INPUT, START_TIME_INPUT,
 } from "../../Constants.ts";
-import {PageState} from "@bponnaluri/places-js";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage} from "@bponnaluri/places-js";
 import {
-  COMPONENT_LABEL_KEY,
-  IS_LOGGED_IN_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../../../shared/Constants.ts";
-import {
-  DEFAULT_GLOBAL_STATE_REDUCER_KEY,
-  GLOBAL_FIELD_SUBSCRIPTIONS_KEY,
-  GLOBAL_STATE_LOAD_CONFIG_KEY,
-} from "@bponnaluri/places-js";
+
 import {GroupPageComponent} from "../../viewGroup/components/GroupPageComponent.ts";
+import {LOGIN_THUNK} from "../../../auth/data/LoginThunk.ts";
 import {getEventDetailsFromForm, validateEventFormData} from "../EventDetailsHandler.ts";
-import {API_ROOT} from "../../../../shared/Params.ts";
+import { API_ROOT } from "../../../../shared/Params.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
 
   <style>
     #${EVENT_NAME_INPUT} {
+      display:inline-block;
       width: 50rem;
     }
     #${EVENT_DESCRIPTION_INPUT} {
+     display:inline-block;
       width: 50rem;
       height: 10rem;
     }
@@ -45,20 +40,17 @@ const templateStyle = `
   </style>
 `;
 
-const loadConfig = {
-  [GLOBAL_STATE_LOAD_CONFIG_KEY]: {
-    [GLOBAL_FIELD_SUBSCRIPTIONS_KEY]: [IS_LOGGED_IN_KEY],
-    [DEFAULT_GLOBAL_STATE_REDUCER_KEY]:  (updates: Record<string, string>) => {
-      PageState.pageLoaded = true;
-      return {
-        name: "",
-        description: "",
-        url: "",
-        isVisible: updates[IS_LOGGED_IN_KEY],
-      };
-    },
-  },
-};
+const loadConfig =  [{
+      componentReducer:(data:any)=>{
+        return {
+          name: "",
+          description: "",
+          url: "",
+          isVisible: data["loggedIn"],
+        };
+      },
+      dataThunk: LOGIN_THUNK
+    }];
 
 const CREATE_EVENT_BUTTON_ID = "create-event-button";
 const BACK_TO_GROUP_ID = "back-to-group";
@@ -66,53 +58,57 @@ const BACK_TO_GROUP_ID = "back-to-group";
 export class CreateEventComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(loadConfig);
-    console.log("Created element")
   }
 
-  connectedCallback(){
-    if(PageState.pageLoaded) {
-      this.retrieveData({isVisible: true})
-    }
-  }
 
-  override attachEventHandlersToDom(shadowRoot?: any) {
+  override attachEventsToShadowRoot(shadowRoot: ShadowRoot) {
+
     const self = this;
-    shadowRoot?.addEventListener("click",(event:any)=>{
-      try {
-        if(event.originalTarget.id === BACK_TO_GROUP_ID) {
-          AbstractPageComponent.updateRoute(
-            GroupPageComponent,
-            {"name":getUrlParameter("name")}
-          )
-        }
+    shadowRoot?.getElementById(BACK_TO_GROUP_ID)?.addEventListener("click",(event:any)=> {
+      if (event.originalTarget.id === BACK_TO_GROUP_ID) {
+        AbstractPageComponent.updateRoute(
+          GroupPageComponent,
+          {"name": getUrlParameter("name")}
+        )
+      }
+    });
 
-        if(event.originalTarget.id === CREATE_EVENT_BUTTON_ID){
-          const validationErrors:any = validateEventFormData(self);
+    shadowRoot?.getElementById('create-event-form')?.addEventListener('submit',(event:any)=>{
+      event.preventDefault();
 
-          if(validationErrors.errorMessage.length !==0){
-            self.retrieveData(validationErrors);
-          } else {
-            const eventDetails = getEventDetailsFromForm(self)
-            InternalApiAction.getResponseData({
-              body: JSON.stringify(eventDetails),
-              method: ApiActionTypes.POST,
-              url: API_ROOT + `/groups/${eventDetails.groupId}/events/`,
-            }).then((response:any)=>{
-              if(!response.errorMessage){
-                console.log("Created event")
-                self.retrieveData({
-                  [SUCCESS_MESSAGE_KEY]: "Successfully created event"
-                });
-              }else {
-                self.retrieveData(response)
-              }
-            })
+      const data = event.target.elements;
+
+      const formData = {
+        id: self.componentState.id,
+        [EVENT_NAME_INPUT]: data[0].value,
+        [EVENT_DESCRIPTION_INPUT]: data[1].value,
+        [EVENT_URL_INPUT]: data[2].value,
+        [START_DATE_INPUT]: data[3].value,
+        [START_TIME_INPUT]: data[4].value,
+        [END_TIME_INPUT]: data[5].value,
+        [EVENT_LOCATION_INPUT]: data[6].value
+      }
+
+      const validationErrors:any = validateEventFormData(formData);
+      if(validationErrors.errorMessage.length !==0){
+        const updates = {...validationErrors,...formData}
+        self.updateData(updates);
+      } else {
+        const eventDetails = getEventDetailsFromForm(formData)
+        InternalApiAction.getResponseData({
+          body: JSON.stringify(eventDetails),
+          method: ApiActionTypes.POST,
+          url: API_ROOT + `groups/${eventDetails.groupId}/events/`,
+        }).then((response:any)=>{
+          if(!response.errorMessage){
+            self.updateData({
+              [SUCCESS_MESSAGE_KEY]: "Successfully created event"
+            });
+          }else {
+            const updates = {...response,...formData}
+            self.updateData(updates)
           }
-        }
-      } catch(e:any){
-        if(e.message !== `Permission denied to access property "id"`){
-          throw e;
-        }
+        })
       }
     })
   }
@@ -122,88 +118,84 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: any): string {
-    console.log("Rendering")
     console.log(data);
-    return `
-    
-    ${generateErrorMessage(data.errorMessage)}
-    
-    ${data[SUCCESS_MESSAGE_KEY] ? `<p class="${SUCCESS_MESSAGE_KEY}">${data[SUCCESS_MESSAGE_KEY]}</p>`: ``}
-    <form onsubmit="return false">
+    return `   
+      ${generateErrorMessage(data.errorMessage)}
       
+      ${data[SUCCESS_MESSAGE_KEY] ? `<p class="${SUCCESS_MESSAGE_KEY}">${data[SUCCESS_MESSAGE_KEY]}</p>`: ``}
+      <form id="create-event-form">
+        
         <h1>Create board game event for group ${getUrlParameter("name")}</h1>
-         <form>
-    
-      ${this.addShortInput({
-        id: EVENT_NAME_INPUT,
-        [COMPONENT_LABEL_KEY]: "Event name",
-        inputType: "text",
-        value: data.name
-      })}
-      <br>
-      
-      ${this.addTextInput({
-        id: EVENT_DESCRIPTION_INPUT,
-        [COMPONENT_LABEL_KEY]: "Event description",
-        inputType: "text",
-        value: data.description
-      })}
-      <br>
-      
-      ${this.addShortInput({
-        id: EVENT_URL_INPUT,
-        [COMPONENT_LABEL_KEY]: "Event URL",
-        inputType: "text",
-        value: data.url
-      })}
-      <br>
-       
-      ${this.addShortInput({
-        id: START_DATE_INPUT,
-        [COMPONENT_LABEL_KEY]: "Start date",
-        inputType: "text",
-        value: ""
-      })}
-      <br>
-      
-      ${this.addShortInput({
-        id: START_TIME_INPUT,
-        [COMPONENT_LABEL_KEY]: "Start time",
-        inputType: "text",
-        value: ""
-      })}
-      <br>
- 
-      ${this.addShortInput({
-        id: END_TIME_INPUT,
-        [COMPONENT_LABEL_KEY]: "End time",
-        inputType: "text",
-        value: ""
-      })}     
-      <br>
+         
+        <label>Event name</label>
+        <input
+          id=${EVENT_NAME_INPUT}
+           name=${EVENT_NAME_INPUT}
+           value="${data.name}"
+         />
+        </input>
+        <br>
   
-      ${this.addShortInput({
-        id: EVENT_LOCATION_INPUT,
-        [COMPONENT_LABEL_KEY]: "Event location",
-        inputType: "text",
-        value: data.location ?? ""
-      })}    
-      <br> 
-    </form>
-    
-    <br>
-    ${generateButton({
-      component: this,
-      id: CREATE_EVENT_BUTTON_ID,
-      text: "Create event",
-    })}
+        <label>Event description</label>
+        <br>
+        <textarea
+          id=${EVENT_DESCRIPTION_INPUT}
+          name=${EVENT_DESCRIPTION_INPUT}
+        />
+        ${data.description ?? ""}
+        </textarea>
+        <br>
+         
+        <label>Event URL</label>
+        <input
+          name=${EVENT_URL_INPUT}
+          value="${data.url ?? ""}"
+        />
+        </input>
+        <br>
         
+        <label>Start date</label>
+        <input
+          name=${START_DATE_INPUT}
+        />
+        </input>
+        <br>
         
-    ${generateButton({
-      component: this,
-      id: BACK_TO_GROUP_ID,
-      text: "Back to group",
-    })}
+        <label>Start time</label>
+        <input
+          name=${START_TIME_INPUT}
+        />
+        </input>
+        <br>
+        
+        <label>End time</label>
+        <input
+          name=${END_TIME_INPUT}
+        />
+        </input>
+        <br>        
+        
+        <label>Event location</label>
+        <input
+          name=${EVENT_LOCATION_INPUT}
+          value="${data.location ?? ""}"
+        />
+        </input>
+        <br>   
+      
+      
+      <br>
+      ${generateButton({
+        id: CREATE_EVENT_BUTTON_ID,
+        text: "Create event",
+        type: "Submit"
+      })}
+            
+      ${generateButton({
+        id: BACK_TO_GROUP_ID,
+        text: "Back to group",
+      })}
+      </form>
     `;
   }
 }
