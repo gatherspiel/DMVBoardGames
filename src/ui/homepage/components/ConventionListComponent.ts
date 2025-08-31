@@ -54,6 +54,7 @@ export class ConventionListComponent extends BaseTemplateDynamicComponent {
   override getTemplateStyle(): string {
     return template;
   }
+
   render(data: any) {
     let html = `
 

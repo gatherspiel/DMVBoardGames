@@ -27,12 +27,8 @@ export function getEventDetailsFromForm(formData:Record<string,string>){
   };
 }
 
-
 export function validateEventFormData(formData:Record<string,string>) {
   const errorMessages = [];
-
-  console.log(formData)
-  console.log(formData[EVENT_NAME_INPUT])
 
   if(!formData[EVENT_NAME_INPUT]){
     errorMessages.push("Event name must be defined");

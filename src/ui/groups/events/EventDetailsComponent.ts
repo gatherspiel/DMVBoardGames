@@ -46,7 +46,6 @@ const template = `
       width: 50rem;
     }
     
-        
     .raised {
       display: inline-block;
     }
@@ -70,7 +69,6 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   constructor() {
     super(loadConfig);
   }
-
 
   override showLoadingHtml():string {
     return `<h1>Loading</h1>`;

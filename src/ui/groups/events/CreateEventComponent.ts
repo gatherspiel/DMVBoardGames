@@ -60,7 +60,6 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
     super(loadConfig);
   }
 
-
   override attachEventsToShadowRoot(shadowRoot: ShadowRoot) {
 
     const self = this;
@@ -118,7 +117,6 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: any): string {
-    console.log(data);
     return `   
       ${generateErrorMessage(data.errorMessage)}
       
