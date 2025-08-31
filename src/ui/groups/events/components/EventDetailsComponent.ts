@@ -21,7 +21,6 @@ import {
 } from "@bponnaluri/places-js";
 import {
   generateButton,
-  generateButtonForEditPermission,
   generateLinkButton
 } from "../../../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage, generateSuccessMessage} from "@bponnaluri/places-js";
@@ -203,7 +202,6 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
           ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
           
           ${generateButton({
-            component: this,
             id: BACK_TO_GROUP_BUTTON_ID,
             text: "Back to group"
           })}
@@ -213,13 +211,11 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
     return `
       <h1>Are you sure you want to delete ${data.name} on ${convertDateTimeForDisplay(data.startTime)}</h1>
       ${generateButton({
-        component: this,
         id: CONFIRM_DELETE_BUTTON_ID,
         text: "Confirm delete"
       })}
       
       ${generateButton({
-        component: this,
         id: CANCEL_DELETE_BUTTON_ID, 
         text: "Cancel"
     })}
@@ -319,25 +315,23 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         <p>Location: ${convertLocationStringForDisplay(data.location)}</p>
         <p>${data.description}</p>
            
-        ${generateButtonForEditPermission({
-          component: this,
-          id: EDIT_EVENT_BUTTON_ID, 
-          text: "Edit event",
-        })}
-        
-        ${generateButtonForEditPermission({
-          component: this,
-          id: DELETE_EVENT_BUTTON_ID,
-          text: "Delete event",
-        })}
-  
-        <p class="success-message">${data[SUCCESS_MESSAGE_KEY] ? data[SUCCESS_MESSAGE_KEY].trim(): ""}</p>
-        
-        ${generateButtonForEditPermission({
-          component: this,
-          id: BACK_TO_GROUP_BUTTON_ID,
-          text: "Back to group",
-        })}
+        ${data?.permissions?.userCanEdit ? `
+          ${generateButton({
+            id: EDIT_EVENT_BUTTON_ID, 
+            text: "Edit event",
+          })}
+          
+          ${generateButton({
+            id: DELETE_EVENT_BUTTON_ID,
+            text: "Delete event",
+          })}
+    
+          <p class="success-message">${data[SUCCESS_MESSAGE_KEY] ? data[SUCCESS_MESSAGE_KEY].trim(): ""}</p>
+          
+          ${generateButton({
+            id: BACK_TO_GROUP_BUTTON_ID,
+            text: "Back to group",
+          })}` : ''}
 
       </div>
     `;

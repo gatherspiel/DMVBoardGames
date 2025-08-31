@@ -1,4 +1,4 @@
-import {getLoginComponentStoreFromLoginResponse, LOGIN_THUNK,} from "../data/LoginThunk.ts";
+import {LOGIN_THUNK,} from "../data/LoginThunk.ts";
 
 import {LOGOUT_THUNK} from "../data/LogoutThunk.ts";
 import {LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT,} from "../Constants.js";
@@ -16,6 +16,7 @@ import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage} from "@bponnaluri/places-js";
 import {API_ROOT} from "../../../shared/Params.ts";
 
+//TODO: Refactor CSS to use fix widths on labels in the future instead of having a hardcoded margin on the email label.
 
 const template = `
   <link rel="stylesheet" type="text/css"  href="/styles/sharedComponentStyles.css"/>
@@ -31,6 +32,11 @@ const template = `
     
     .ui-input {
       display: inline-block;
+    }
+    
+    #email {
+      display: inline-block;
+      margin-right:2.85rem;
     }
     
     @media screen and (width < 32em) {
@@ -56,10 +62,8 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
 
   constructor() {
     super([{
-          componentReducer: getLoginComponentStoreFromLoginResponse,
-          dataThunk: LOGIN_THUNK,
-        }]
-      );
+      dataThunk: LOGIN_THUNK,
+    }]);
     this.hasRendered = false;
   }
 
@@ -94,7 +98,6 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
           if(formInputs.errorMessage){
             self.updateData(formInputs)
           } else {
-            console.log(formInputs)
             LOGIN_THUNK.getData({
               formInputs
             })
@@ -152,7 +155,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
      <div class="ui-section" id="login-component-container">
       <form id=${LOGIN_FORM_ID}>
         <div class="ui-input">
-        <label>Email</label>
+        <label id="email">Email</label>
         <input        
           id=${USERNAME_INPUT}
         />
@@ -164,6 +167,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
           id=${PASSWORD_INPUT}
         />
        </input>    
+       </div>
        <br>            
   
 

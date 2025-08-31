@@ -28,15 +28,10 @@ async function retrieveData() {
     deleteLocalStoreData(AUTH_TOKEN_KEY)
     return new AuthResponse(false);
   } else {
-    return defaultResponse.defaultFunction("Failed to logout:"+JSON.stringify(data));
+    return new AuthResponse(true, {},"Failed to logout:"+JSON.stringify(data));
   }
 }
 
-const defaultResponse = {
-  defaultFunction: (error: string) => {
-    return new AuthResponse(true, {}, error);
-  }
-};
 
 export function getLoginComponentStoreFromLogoutResponse(): LoginComponentStore {
   return {
@@ -48,5 +43,4 @@ export function getLoginComponentStoreFromLogoutResponse(): LoginComponentStore 
 
 export const LOGOUT_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
   retrieveData,
-  defaultResponse,
 )

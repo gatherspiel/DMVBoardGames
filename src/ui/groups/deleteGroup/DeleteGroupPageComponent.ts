@@ -91,7 +91,6 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
       <br>
 
          ${generateButton({
-          component: this,
           id: CONFIRM_DELETE_BUTTON_ID,
           text: "Confirm delete"
         })}

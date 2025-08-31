@@ -1,10 +1,9 @@
-import { API_ROOT, USE_MOCK } from "../../../../shared/Params.ts";
+import { API_ROOT } from "../../../../shared/Params.ts";
 
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/group-search/Constants.ts";
 import { generateApiThunk } from "@bponnaluri/places-js";
 import type { ApiRequestConfig } from "@bponnaluri/places-js";
 
-const MOCK_CITY_LIST = ["Arlington", "DC"];
 
 function getCitiesQueryConfig(): ApiRequestConfig {
   return {
@@ -12,13 +11,6 @@ function getCitiesQueryConfig(): ApiRequestConfig {
   };
 }
 
-const mockFunction =  () => MOCK_CITY_LIST;
-
-
-export const defaultFunctionConfig = {
-  defaultFunction: mockFunction,
-  defaultFunctionPriority: USE_MOCK,
-};
 
 export const updateCities =  (cityArray:any) => {
 
@@ -41,5 +33,4 @@ export const updateCities =  (cityArray:any) => {
 
 export const CITY_LIST_THUNK = generateApiThunk({
   queryConfig: getCitiesQueryConfig,
-  defaultFunctionConfig: defaultFunctionConfig,
 })

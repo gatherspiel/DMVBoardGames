@@ -186,14 +186,12 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
       
       <br>
       ${generateButton({
-        component: this,
         id: CREATE_EVENT_BUTTON_ID,
         text: "Create event",
         type: "Submit"
       })}
             
       ${generateButton({
-        component: this,
         id: BACK_TO_GROUP_ID,
         text: "Back to group",
       })}

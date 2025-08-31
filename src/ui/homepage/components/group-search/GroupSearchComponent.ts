@@ -189,7 +189,6 @@ export class GroupSearchComponent extends BaseTemplateDynamicComponent {
                  ${generateButton({
                   text: "Search groups",
                   class: "search-button",
-                  component: this,
                   id: SEARCH_BUTTON_ID
                 })}
                 </div> 

@@ -79,25 +79,21 @@ export class HomepageComponent extends BaseDynamicComponent {
               </div>
               <div>
                 ${data.hideEvents || data.showAllButtons ? generateButton({
-                  component: this,
                   id: EVENT_SEARCH_ID,
                   text: "Events",
                 }): ``} 
                   
                 ${data.hideConventions ? generateButton({
-                  component: this,
                   id: CONVENTIONS_ID,
                   text: "Conventions",
                 }): ``}       
              
                 ${data.hideGameStores ? generateButton({
-                  component: this,
                   id: GAME_STORES_ID,
                   text: "Game Stores",
                 }): ``}  
              
                 ${data.hideRestaurants ? generateButton({
-                  component: this,
                   id: GAME_RESTAURANTS_ID,
                   text: "Bars and Cafés",
 

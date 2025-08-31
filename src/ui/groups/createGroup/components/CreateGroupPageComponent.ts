@@ -119,14 +119,11 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
                   <textarea
                     id=${GROUP_DESCRIPTION_INPUT}
                     name=${GROUP_DESCRIPTION_INPUT}
-                    />
-                  ${createGroupData.description}
-                  </textarea>
+                    />${createGroupData.description}</textarea>
                   <br>
           
      
                  ${generateButton({
-                  component: this,
                   id: CREATE_GROUP_BUTTON_ID,
                   type:"submit",
                   text: "Create group"

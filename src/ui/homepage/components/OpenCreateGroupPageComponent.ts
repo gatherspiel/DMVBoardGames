@@ -46,7 +46,6 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
           <img src="/assets/house.png">
         </div>
         ${generateButton({
-          component: this,
           id: CREATE_GROUP_BUTTON_ID,
           text: "Create group",
         })}

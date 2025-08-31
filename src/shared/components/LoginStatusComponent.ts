@@ -66,10 +66,10 @@ export class LoginStatusComponent extends BaseTemplateDynamicComponent {
     });
   }
 
-  override render(data:any){
-    if(data.loggedIn){
+  override render(authData:any){
+    if(authData.loggedIn){
       return `
-        <span>Welcome ${data?.username}</span>
+        <span>Welcome ${authData.data.user.email}</span>
         <a id="${SIGN_OUT_LINK_ID}">Sign out</a>
       `
     }
