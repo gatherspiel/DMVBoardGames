@@ -1,5 +1,4 @@
 import {
-  type BaseDynamicComponent,
   validateAddress,
   validateDateFormat
 } from "@bponnaluri/places-js";
@@ -12,45 +11,48 @@ import {
 import {combineDateAndTime} from "@bponnaluri/places-js";
 import {getUrlParameter} from "@bponnaluri/places-js";
 
-export function getEventDetailsFromForm(component:BaseDynamicComponent){
-  const startDate = component.getFormValue(START_DATE_INPUT)
-  const startTime =  component.getFormValue(START_TIME_INPUT)
-  const endTime =   component.getFormValue(END_TIME_INPUT)
+export function getEventDetailsFromForm(formData:Record<string,string>){
+  const startDate = formData[START_DATE_INPUT]
+  const startTime =  formData[START_TIME_INPUT]
+  const endTime =   formData[END_TIME_INPUT]
   return  {
-    id: component.getComponentStore().id,
+    id:formData.id,
     groupId: getUrlParameter("groupId"),
-    name: component.getFormValue(EVENT_NAME_INPUT),
-    description: component.getFormValue(EVENT_DESCRIPTION_INPUT),
-    url: component.getFormValue(EVENT_URL_INPUT),
+    name: formData[EVENT_NAME_INPUT],
+    description: formData[EVENT_DESCRIPTION_INPUT],
+    url: formData[EVENT_URL_INPUT],
     startTime: combineDateAndTime(startDate, startTime),
     endTime: combineDateAndTime(startDate, endTime),
-    location: component.getFormValue(EVENT_LOCATION_INPUT),
+    location: formData[EVENT_LOCATION_INPUT],
   };
 }
 
 
-export function validateEventFormData(component:BaseDynamicComponent) {
+export function validateEventFormData(formData:Record<string,string>) {
   const errorMessages = [];
 
-  if(!component.getFormValue(EVENT_NAME_INPUT)){
+  console.log(formData)
+  console.log(formData[EVENT_NAME_INPUT])
+
+  if(!formData[EVENT_NAME_INPUT]){
     errorMessages.push("Event name must be defined");
   }
 
-  if(!component.getFormValue(EVENT_DESCRIPTION_INPUT)){
+  if(!formData[EVENT_DESCRIPTION_INPUT]){
     errorMessages.push("Event description must be defined");
   }
 
-  if(!component.getFormValue(EVENT_URL_INPUT)){
+  if(!formData[EVENT_URL_INPUT]){
     errorMessages.push("Event url must be defined");
   } else {
-    if(!component.getFormValue(EVENT_URL_INPUT).toLowerCase().startsWith("http")){
-      errorMessages.push(`Invalid event url ${component.getFormValue(EVENT_URL_INPUT)}`)
+    if(!formData[EVENT_URL_INPUT].toLowerCase().startsWith("http")){
+      errorMessages.push(`Invalid event url ${formData[EVENT_URL_INPUT]}`)
     }
   }
 
-  const startDate = component.getFormValue(START_DATE_INPUT);
-  const startTime = component.getFormValue(START_TIME_INPUT);
-  const endTime = component.getFormValue(END_TIME_INPUT);
+  const startDate = formData[START_DATE_INPUT];
+  const startTime = formData[START_TIME_INPUT];
+  const endTime = formData[END_TIME_INPUT];
 
   if(!startDate){
     errorMessages.push("Start date must be defined");
@@ -73,11 +75,11 @@ export function validateEventFormData(component:BaseDynamicComponent) {
     }
   }
 
-  if(!component.getFormValue(EVENT_LOCATION_INPUT)){
+  if(!formData[EVENT_LOCATION_INPUT]){
     errorMessages.push("Event location must be defined");
   } else {
     try {
-      validateAddress(component.getFormValue(EVENT_LOCATION_INPUT));
+      validateAddress(formData[EVENT_LOCATION_INPUT]);
     } catch(e: any){
       errorMessages.push(e.message);
     }

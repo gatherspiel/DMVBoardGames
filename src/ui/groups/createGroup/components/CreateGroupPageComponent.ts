@@ -57,7 +57,6 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
     shadowRoot?.getElementById('create-group-form')?.addEventListener('submit',(event:any)=>{
        event.preventDefault();
 
-
        const data = event.target.elements;
 
        const params = {
@@ -73,17 +72,12 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
         url: API_ROOT + `/groups/`,
       }).then((data:any)=>{
 
-        console.log(data)
-        console.log(Object.keys(data))
         if (data.errorMessage) {
-          console.log("error")
-          console.log(data.errorMessage)
           self.updateData({
             errorMessage: data.errorMessage,
             [SUCCESS_MESSAGE_KEY]: "",
           });
         } else {
-          console.log("No error")
           self.updateData({
             errorMessage: "",
             [SUCCESS_MESSAGE_KEY]: "Successfully created group",
@@ -130,7 +124,7 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
                   </textarea>
                   <br>
           
-      
+     
                  ${generateButton({
                   component: this,
                   id: CREATE_GROUP_BUTTON_ID,

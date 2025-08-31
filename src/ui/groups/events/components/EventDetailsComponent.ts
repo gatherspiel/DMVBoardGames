@@ -17,7 +17,7 @@ import {
 import {
   convertDateTimeForDisplay,
   convertDayOfWeekForDisplay,
-  convertLocationStringForDisplay, getDateFromDateString, getTimeFromDateString
+  convertLocationStringForDisplay, getDateFromDateString
 } from "@bponnaluri/places-js";
 import {
   generateButton,
@@ -26,7 +26,6 @@ import {
 } from "../../../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage, generateSuccessMessage} from "@bponnaluri/places-js";
 import {
-  COMPONENT_LABEL_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../../../shared/Constants.ts";
 
@@ -136,12 +135,24 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
         }
 
         if(event.originalTarget.id === SAVE_EVENT_BUTTON_ID){
-          const validationErrors:any = validateEventFormData(self);
+
+          const formElements = shadowRoot?.getElementById('event-details-form').elements;
+          const formData = {
+            id: self.componentState.id,
+            [EVENT_NAME_INPUT]: formElements[0].value,
+            [EVENT_DESCRIPTION_INPUT]: formElements[1].value,
+            [EVENT_URL_INPUT]: formElements[2].value,
+            [START_DATE_INPUT]: formElements[3].value,
+            [START_TIME_INPUT]: formElements[4].value,
+            [END_TIME_INPUT]: formElements[5].value,
+            [EVENT_LOCATION_INPUT]: formElements[6].value
+          }
+          const validationErrors:any = validateEventFormData(formData);
 
           if(validationErrors.errorMessage.length !==0){
             self.updateData(validationErrors);
           } else {
-            const eventDetails = getEventDetailsFromForm(self)
+            const eventDetails = getEventDetailsFromForm(formData)
             InternalApiAction.getResponseData({
               body: JSON.stringify(eventDetails),
               method: ApiActionTypes.PUT,
@@ -218,58 +229,62 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
   renderEditMode(data:any): string {
     return `<h1>Editing: ${data.name}</h1>
 
-    <form>
-    
-      ${this.addShortInput({
-        id: EVENT_NAME_INPUT,
-        [COMPONENT_LABEL_KEY]: "Event name",
-        inputType: "text",
-        value: data.name
-      })}
-      <br>
-      ${this.addTextInput({
-        id: EVENT_DESCRIPTION_INPUT,
-        [COMPONENT_LABEL_KEY]: "Event description",
-        inputType: "text",
-        value: data.description
-      })}
-      <br>
-       ${this.addShortInput({
-        id: EVENT_URL_INPUT,
-        [COMPONENT_LABEL_KEY]: "Event URL",
-        inputType: "text",
-        value: data.url
-      })}
-       <br>
-      ${this.addShortInput({
-        id: START_DATE_INPUT,
-        [COMPONENT_LABEL_KEY]: "Start date",
-        inputType: "text",
-        value: getDateFromDateString(data.startTime)
-      })}
-      <br>
-      ${this.addShortInput({
-        id: START_TIME_INPUT,
-        [COMPONENT_LABEL_KEY]: "Start time",
-        inputType: "text",
-        value: getTimeFromDateString(data.startTime)
-      })}
-      <br>
-      ${this.addShortInput({
-        id: END_TIME_INPUT,
-        [COMPONENT_LABEL_KEY]: "End time",
-        inputType: "text",
-        value: getTimeFromDateString(data.endTime)
-      })}     
-      <br>
+    <form id="event-details-form" onsubmit="return false">
+     <label>Event name</label>
+        <input
+          id=${EVENT_NAME_INPUT}
+          name=${EVENT_NAME_INPUT}
+          value="${data.name}"
+         />
+        </input>
+        <br>
   
-      ${this.addShortInput({
-        id: EVENT_LOCATION_INPUT,
-        [COMPONENT_LABEL_KEY]: "Event location",
-        inputType: "text",
-        value: data.location
-      })}     
-    </form>
+        <label>Event description</label>
+        <textarea
+          id=${EVENT_DESCRIPTION_INPUT}
+          name=${EVENT_DESCRIPTION_INPUT}
+        />
+        ${data.description ?? ""}
+        </textarea>
+        <br>
+         
+        <label>Event URL</label>
+        <input
+          name=${EVENT_URL_INPUT}
+          value="${data.url ?? ""}"
+        />
+        </input>
+        <br>
+        
+        <label>Start date</label>
+        <input
+          name=${START_DATE_INPUT}
+        />
+        </input>
+        <br>
+        
+        <label>Start time</label>
+        <input
+          name=${START_TIME_INPUT}
+        />
+        </input>
+        <br>
+        
+        <label>End time</label>
+        <input
+          name=${END_TIME_INPUT}
+        />
+        </input>
+        <br>        
+        
+        <label>Event location</label>
+        <input
+          id=${EVENT_LOCATION_INPUT}
+          name=${EVENT_LOCATION_INPUT}
+          value="${data.location ?? ""}"
+        />
+        </input>
+        <br>     
     ${generateErrorMessage(data.errorMessage)}
 
     ${generateButton({
@@ -280,13 +295,15 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
     
     ${generateButton({
       class: "group-webpage-link",
-      text: "Back to event"
+      text: "Back to event",
+      type: "submit"
     })}  
+    </form>
+
    `
   }
 
   renderViewMode(data:any): string {
-    console.log(data);
     if(data.errorMessage){
       return `${generateErrorMessage(data.errorMessage)}`
     }
@@ -298,7 +315,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
           url: data.url
         })}
              
-        <p>Time: ${convertDayOfWeekForDisplay(data.day)}, ${convertDateTimeForDisplay(data.startTime)}</p>
+        <p>Time: ${convertDayOfWeekForDisplay(data.day)}, ${getDateFromDateString(data.startTime)}</p>
         <p>Location: ${convertLocationStringForDisplay(data.location)}</p>
         <p>${data.description}</p>
            
