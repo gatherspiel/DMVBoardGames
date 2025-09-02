@@ -26,6 +26,8 @@ function getData(){
   }).then((response)=>{
     return response.json();
   }).then((response)=>{
+    console.log("Loaded data");
+    console.log(response)
     //@ts-ignore
     window.preloadData = response;
   })
