@@ -1,6 +1,6 @@
 import {
   AbstractPageComponent, ApiActionTypes,
-  BaseTemplateDynamicComponent, InternalApiAction,
+  BaseDynamicComponent, ApiLoadAction,
 } from "@bponnaluri/places-js";
 import {
   END_TIME_INPUT,
@@ -8,12 +8,12 @@ import {
   EVENT_NAME_INPUT,
   EVENT_URL_INPUT,
   START_DATE_INPUT, START_TIME_INPUT
-} from "../../Constants.ts";
-import {GROUP_EVENT_REQUEST_THUNK} from "../data/GroupEventRequestThunk.ts";
+} from "../Constants.ts";
+import {GROUP_EVENT_REQUEST_STORE} from "./GroupEventRequestStore.ts";
 import {
   getEventDetailsFromForm,
   validateEventFormData
-} from "../EventDetailsHandler.ts";
+} from "./EventDetailsHandler.ts";
 import {
   convertDateTimeForDisplay,
   convertDayOfWeekForDisplay,
@@ -22,14 +22,14 @@ import {
 import {
   generateButton,
   generateLinkButton
-} from "../../../../shared/components/ButtonGenerator.ts";
+} from "../../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage, generateSuccessMessage} from "@bponnaluri/places-js";
 import {
   SUCCESS_MESSAGE_KEY
-} from "../../../../shared/Constants.ts";
+} from "../../../shared/Constants.ts";
 
-import {GroupPageComponent} from "../../viewGroup/components/GroupPageComponent.ts";
-import {API_ROOT} from "../../../../shared/Params.ts";
+import {GroupPageComponent} from "../viewGroup/GroupPageComponent.ts";
+import {API_ROOT} from "../../../shared/Params.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -46,7 +46,6 @@ const template = `
       width: 50rem;
     }
     
-        
     .raised {
       display: inline-block;
     }
@@ -55,7 +54,7 @@ const template = `
 `;
 
 const loadConfig =  [{
-      dataThunk: GROUP_EVENT_REQUEST_THUNK
+      dataStore: GROUP_EVENT_REQUEST_STORE
     }]
 
 
@@ -66,11 +65,10 @@ const DELETE_EVENT_BUTTON_ID = "delete-event-button";
 const EDIT_EVENT_BUTTON_ID = "edit-event-button";
 const SAVE_EVENT_BUTTON_ID = "save-event-button";
 
-export class EventDetailsComponent extends BaseTemplateDynamicComponent {
+export class EventDetailsComponent extends BaseDynamicComponent {
   constructor() {
     super(loadConfig);
   }
-
 
   override showLoadingHtml():string {
     return `<h1>Loading</h1>`;
@@ -107,7 +105,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
             groupId: self.componentState.groupId
           }
 
-          InternalApiAction.getResponseData({
+          ApiLoadAction.getResponseData({
             method: ApiActionTypes.DELETE,
             url: `${API_ROOT}/groups/${params.groupId}/events/${encodeURIComponent(params.id)}/`,
           }).then((response:any)=>{
@@ -152,7 +150,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
             self.updateData(validationErrors);
           } else {
             const eventDetails = getEventDetailsFromForm(formData)
-            InternalApiAction.getResponseData({
+            ApiLoadAction.getResponseData({
               body: JSON.stringify(eventDetails),
               method: ApiActionTypes.PUT,
               url: API_ROOT + `/groups/${eventDetails.groupId}/events/?id=${encodeURIComponent(eventDetails.id)}`,
@@ -183,6 +181,7 @@ export class EventDetailsComponent extends BaseTemplateDynamicComponent {
 
   render(data: any): string {
 
+    console.log("Rendering")
     if(!data || !data.name){
       return this.showLoadingHtml();
     }

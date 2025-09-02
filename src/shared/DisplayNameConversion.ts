@@ -1,4 +1,3 @@
-
 const DISPLAY_NAME_MAPPING:Record<string, string> = {
   "Washington": "DC",
   "0":"0 miles",
@@ -8,7 +7,6 @@ const DISPLAY_NAME_MAPPING:Record<string, string> = {
   "30": "30 miles",
   "50": "50 miles"
 }
-
 
 export function getDisplayName(name:string):string {
   return DISPLAY_NAME_MAPPING[name] ?? name;

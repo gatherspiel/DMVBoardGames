@@ -5,11 +5,11 @@ import {
 } from "./Constants.ts";
 
 import {
-  CITY_LIST_THUNK,
+  CITY_LIST_STORE,
   updateCities,
-} from "../../data/search/CityListThunk.ts";
+} from "../../data/search/CityListStore.ts";
 
-import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
+import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import type {DropdownConfig} from "@bponnaluri/places-js";
 import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
@@ -18,12 +18,7 @@ import {
   DEFAULT_PARAMETER_DISPLAY_KEY,
   DEFAULT_PARAMETER_KEY,
 } from "../../../../shared/Constants.ts";
-import {GROUP_SEARCH_THUNK} from "../../data/search/GroupSearchThunk.ts";
-const loadConfig = [{
-      componentReducer: updateCities,
-      dataThunk:CITY_LIST_THUNK,
-      fieldName: "cityList"
-    }];
+import {GROUP_SEARCH_STORE} from "../../data/search/GroupSearchStore.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -93,7 +88,14 @@ const SEARCH_BUTTON_ID:string = "search-button-id";
 const SEARCH_DISTANCE_ID:string = "search-distance-id";
 const SEARCH_DAYS_ID:string = "search-days-id";
 
-export class GroupSearchComponent extends BaseTemplateDynamicComponent {
+const loadConfig = [{
+  componentReducer: updateCities,
+  dataStore:CITY_LIST_STORE,
+  fieldName: "cityList"
+}];
+
+
+export class GroupSearchComponent extends BaseDynamicComponent {
 
   constructor() {
     super(loadConfig);
@@ -103,21 +105,13 @@ export class GroupSearchComponent extends BaseTemplateDynamicComponent {
     return template;
   }
 
-  handleClickEvents(event:any){
-    if(event.originalTarget.id === SEARCH_BUTTON_ID) {
-      const searchParams:any = {
-        location: this.componentState.location,
-        day: this.componentState.day,
-        distance: this.componentState.distance
-      };
-      GROUP_SEARCH_THUNK.getData(searchParams)
-    }
-  }
-
   override attachEventHandlersToDom(shadowRoot?: any) {
+
     const self = this;
 
-    shadowRoot?.getElementById(SEARCH_FORM_ID)?.addEventListener("change", (event:any)=>{
+    const searchForm = shadowRoot?.getElementById(SEARCH_FORM_ID)
+
+    searchForm.addEventListener("change", (event:any)=>{
       const eventTarget = event.originalTarget.id;
       if(eventTarget === SEARCH_DAYS_ID){
         self.updateData({
@@ -132,6 +126,15 @@ export class GroupSearchComponent extends BaseTemplateDynamicComponent {
           distance: (event.originalTarget as HTMLInputElement).value
         })
       }
+    })
+
+    shadowRoot?.getElementById(SEARCH_BUTTON_ID).addEventListener("click", ()=>{
+      const searchParams:any = {
+        location: this.componentState.location,
+        day: this.componentState.day,
+        distance: this.componentState.distance
+      };
+      GROUP_SEARCH_STORE.getData(searchParams)
     })
   }
 
@@ -187,9 +190,9 @@ export class GroupSearchComponent extends BaseTemplateDynamicComponent {
                 
                 <div> 
                  ${generateButton({
+                  id: SEARCH_BUTTON_ID,
                   text: "Search groups",
-                  class: "search-button",
-                  id: SEARCH_BUTTON_ID
+                  type: "Submit",
                 })}
                 </div> 
             </div>

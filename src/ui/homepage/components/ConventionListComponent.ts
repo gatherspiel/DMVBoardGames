@@ -1,14 +1,14 @@
 import type { Convention } from "../data/types/Convention.ts";
-import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
+import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import { generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 
-import {LOCATIONS_THUNK} from "../data/search/LocationsThunk.ts";
+import {LOCATIONS_STORE} from "../data/search/LocationsStore.ts";
 
 const loadConfig = [{
       componentReducer: (data:any)=>{
         return data.conventions;
       },
-      dataThunk: LOCATIONS_THUNK,
+      dataStore: LOCATIONS_STORE,
     }]
 
 
@@ -31,7 +31,7 @@ const template = `
 
 </style>`;
 
-export class ConventionListComponent extends BaseTemplateDynamicComponent {
+export class ConventionListComponent extends BaseDynamicComponent {
   constructor() {
     super(loadConfig);
   }
@@ -54,6 +54,7 @@ export class ConventionListComponent extends BaseTemplateDynamicComponent {
   override getTemplateStyle(): string {
     return template;
   }
+
   render(data: any) {
     let html = `
 

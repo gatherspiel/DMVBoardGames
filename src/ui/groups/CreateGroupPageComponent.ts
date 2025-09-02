@@ -2,16 +2,16 @@ import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
-} from "../../Constants.ts";
-import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
-import {ApiActionTypes, generateErrorMessage, InternalApiAction} from "@bponnaluri/places-js";
+} from "./Constants.ts";
+import {generateButton} from "../../shared/components/ButtonGenerator.ts";
+import {ApiActionTypes, generateErrorMessage, ApiLoadAction} from "@bponnaluri/places-js";
 import {
   IS_LOGGED_IN_KEY,
   SUCCESS_MESSAGE_KEY
-} from "../../../../shared/Constants.ts";
-import {BaseTemplateDynamicComponent} from "@bponnaluri/places-js";
-import {LOGIN_THUNK} from "../../../auth/data/LoginThunk.ts";
-import { API_ROOT } from "../../../../shared/Params.ts";
+} from "../../shared/Constants.ts";
+import {BaseDynamicComponent} from "@bponnaluri/places-js";
+import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
+import { API_ROOT } from "../../shared/Params.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -37,12 +37,12 @@ const loadConfig = [{
           [IS_LOGGED_IN_KEY]: data.loggedIn
         }
       },
-      dataThunk:LOGIN_THUNK
+      dataStore:LOGIN_STORE
     }];
 
 const CREATE_GROUP_BUTTON_ID = "create-group-button-id";
 
-export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
+export class CreateGroupPageComponent extends BaseDynamicComponent {
   constructor() {
     super(loadConfig);
   }
@@ -66,7 +66,7 @@ export class CreateGroupPageComponent extends BaseTemplateDynamicComponent {
          url: data[2].value
        }
 
-      InternalApiAction.getResponseData({
+      ApiLoadAction.getResponseData({
         body: JSON.stringify(params),
         method: ApiActionTypes.POST,
         url: API_ROOT + `/groups/`,

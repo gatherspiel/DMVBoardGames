@@ -9,9 +9,9 @@ import {GameStoreListComponent} from "./GameStoreListComponent.ts";
 // @ts-ignore
 import {ConventionListComponent} from "./ConventionListComponent.ts";
 // @ts-ignore
-import {GroupPageEventComponent} from "../../groups/viewGroup/components/GroupPageEventComponent.ts";
+import {GroupPageEventComponent} from "../../groups/viewGroup/GroupPageEventComponent.ts";
 // @ts-ignore
-import {GroupListComponent} from "./group-list/GroupListComponent.ts";
+import {GroupListComponent} from "./GroupListComponent.ts";
 // @ts-ignore
 import {GroupSearchComponent} from "./group-search/GroupSearchComponent.ts";
 // @ts-ignore
@@ -26,7 +26,6 @@ const EVENT_SEARCH_ID ="group-search";
 const GAME_RESTAURANTS_ID="game-restaurants";
 const GAME_STORES_ID="game-stores";
 
-const COMPONENTS_WITH_EVENTS:string[] = ['group-search-component','group-list-component','open-create-group-component']
 export class HomepageComponent extends BaseDynamicComponent {
   constructor(){
     super();
@@ -44,24 +43,26 @@ export class HomepageComponent extends BaseDynamicComponent {
     this.addEventListener("click", function (event: any) {
       event.preventDefault();
 
-
       const targetId = event.originalTarget.id;
+      if ([CONVENTIONS_ID, EVENT_SEARCH_ID, GAME_RESTAURANTS_ID, GAME_STORES_ID].includes(targetId)) {
+        self.updateData({
+          hideEvents: targetId !== EVENT_SEARCH_ID,
+          hideConventions: targetId !== CONVENTIONS_ID,
+          hideRestaurants: targetId !== GAME_RESTAURANTS_ID,
+          hideGameStores: targetId !== GAME_STORES_ID
+        })
+      }
 
-      const targetComponentId = event.srcElement.id || event.srcElement.localName;
-      if (COMPONENTS_WITH_EVENTS.includes(targetComponentId) && event.srcElement instanceof BaseDynamicComponent)  {
-        event.target.handleClickEvents(event);
-      }
-      else {
-        if ([CONVENTIONS_ID, EVENT_SEARCH_ID, GAME_RESTAURANTS_ID, GAME_STORES_ID].includes(targetId)) {
-          self.updateData({
-            hideEvents: targetId !== EVENT_SEARCH_ID,
-            hideConventions: targetId !== CONVENTIONS_ID,
-            hideRestaurants: targetId !== GAME_RESTAURANTS_ID,
-            hideGameStores: targetId !== GAME_STORES_ID
-          })
-        }
-      }
     })
+  }
+
+  override getTemplateStyle():string{
+    return `
+      <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/styles.css"/>
+
+      <style></style>
+    `
   }
 
   render(data:any){

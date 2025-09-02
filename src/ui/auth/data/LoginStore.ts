@@ -3,8 +3,8 @@ import {addLocalStorageData, clearSessionStorage, getLocalStorageDataIfPresent} 
 import { isAfterNow } from "@bponnaluri/places-js";
 import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../../shared/Params.ts";
 
-import {generateApiThunkWithExternalConfig} from "@bponnaluri/places-js";
-import {BaseThunk} from "@bponnaluri/places-js";
+import {generateDataStoreWithExternalConfig} from "@bponnaluri/places-js";
+import {DataStore} from "@bponnaluri/places-js";
 
 async function retrieveData(
   data: any
@@ -65,6 +65,6 @@ async function retrieveData(
 }
 
 
-export const LOGIN_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
+export const LOGIN_STORE: DataStore = generateDataStoreWithExternalConfig(
   retrieveData,
 )
