@@ -11,21 +11,10 @@
     <link rel="preconnect" href="localhost:7070" />
     <link rel="preconnect" href="api.gatherspiel.com" />
 
-
-    <link rel="icon" type="image/ico" href="/assets/favicon.ico"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>DMV Board Games</title>
-  </head>
-  <body>
-
-
-
-  <div id="container">
-      {{>navbar}}
-
-      <homepage-component>
-      </homepage-component>
-    </div>
+    <script
+      type="module"
+      src="ui/homepage/components/GroupListComponent.ts"
+    ></script>
 
     <script
       defer
@@ -34,13 +23,19 @@
       src="ui/homepage/components/HomepageComponent.ts"
     ></script>
 
-  <script
-    defer
-    fetchpriority="low"
-    type="module"
-    src="ui/homepage/components/GroupListComponent.ts"
-  ></script>
+    <link rel="icon" type="image/ico" href="/assets/favicon.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>DMV Board Games</title>
+  </head>
+  <body>
 
+  <div id="container">
+      {{>navbar}}
+
+      <homepage-component>
+      </homepage-component>
+    </div>
+  
     <script
       defer
       fetchpriority="low"
