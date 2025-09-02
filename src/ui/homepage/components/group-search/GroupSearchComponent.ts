@@ -128,7 +128,8 @@ export class GroupSearchComponent extends BaseDynamicComponent {
       }
     })
 
-    shadowRoot?.getElementById(SEARCH_BUTTON_ID)?.addEventListener("click", ()=>{
+    shadowRoot?.getElementById(SEARCH_BUTTON_ID)?.addEventListener("click", (event:any)=>{
+      event.preventDefault();
       const searchParams:any = {
         location: this.componentState.location,
         day: this.componentState.day,
