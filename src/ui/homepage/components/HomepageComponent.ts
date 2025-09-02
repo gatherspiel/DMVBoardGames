@@ -44,7 +44,7 @@ export class HomepageComponent extends BaseDynamicComponent {
     this.addEventListener("click", function (event: any) {
       event.preventDefault();
 
-
+      alert("Click");
       const targetId = event.originalTarget.id;
 
       const targetComponentId = event.srcElement.id || event.srcElement.localName;
@@ -52,6 +52,7 @@ export class HomepageComponent extends BaseDynamicComponent {
         event.target.handleClickEvents(event);
       }
       else {
+        alert("Clicked on button")
         if ([CONVENTIONS_ID, EVENT_SEARCH_ID, GAME_RESTAURANTS_ID, GAME_STORES_ID].includes(targetId)) {
           self.updateData({
             hideEvents: targetId !== EVENT_SEARCH_ID,
