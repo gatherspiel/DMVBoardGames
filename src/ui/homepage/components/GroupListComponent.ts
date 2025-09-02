@@ -92,10 +92,10 @@ export class GroupListComponent extends BaseDynamicComponent {
          
         <div class = "button-div">
         ${generateButton({
-      id: "group-button-" + groupId,
-      text: group.title,
-      type: "submit"
-    })}
+          id: "group-button-" + groupId,
+          text: group.title,
+          type: "submit"
+        })}
          </div>
    
         <p class="event-group-location">${group.locations.map(name => getDisplayName(name))?.join(", ") ?? ""}</p>              
