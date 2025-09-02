@@ -12,7 +12,6 @@ export const API_ROOT: string =
     : import.meta.env.VITE_LOCAL_API_ROOT;
 
 console.log("Api root:"+API_ROOT);
-export const USE_MOCK: boolean = import.meta.env.VITE_USE_API_MOCK === "true";
 
 export const SUPABASE_CLIENT_URL =
   IS_PRODUCTION || IS_TEST

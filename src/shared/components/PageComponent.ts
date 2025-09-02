@@ -1,13 +1,13 @@
-import {GroupPageComponent} from "../../ui/groups/viewGroup/components/GroupPageComponent.ts";
-import {CreateGroupPageComponent} from "../../ui/groups/createGroup/components/CreateGroupPageComponent.ts";
-import {DeleteGroupPageComponent} from "../../ui/groups/deleteGroup/DeleteGroupPageComponent.ts";
-import {CreateEventComponent} from "../../ui/groups/events/components/CreateEventComponent.ts";
-import {EventDetailsComponent} from "../../ui/groups/events/components/EventDetailsComponent.ts";
+import {GroupPageComponent} from "../../ui/groups/viewGroup/GroupPageComponent.ts";
+import {CreateGroupPageComponent} from "../../ui/groups/CreateGroupPageComponent.ts";
+import {DeleteGroupPageComponent} from "../../ui/groups/DeleteGroupPageComponent.ts";
+import {CreateEventComponent} from "../../ui/groups/events/CreateEventComponent.ts";
+import {EventDetailsComponent} from "../../ui/groups/events/EventDetailsComponent.ts";
 
 //@ts-ignore
 import {HomepageComponent} from "../../ui/homepage/components/HomepageComponent.ts";
 //@ts-ignore
-import {LoginComponent} from "../../ui/auth/components/LoginComponent.ts";
+import {LoginComponent} from "../../ui/auth/LoginComponent.ts";
 
 //@ts-ignore
 import {LoginStatusComponent} from "./LoginStatusComponent.ts";

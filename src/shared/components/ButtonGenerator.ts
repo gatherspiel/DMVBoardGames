@@ -32,7 +32,7 @@ export function generateButton(config:ButtonConfig){
       class="${buttonClasses}"
       name="action"
       value="${config.text}"
-      ${config.type ?? `type=${config.type}`}>
+      ${config.type ? `type=${config.type}` : ``}>
       
       <span class="shadow"></span>
        <span class="edge"></span>
