@@ -1,6 +1,6 @@
 import type { GroupSearchResult } from "../data/types/group/GroupSearchResult.ts";
 import {AbstractPageComponent, BaseDynamicComponent} from "@bponnaluri/places-js";
-import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 import {getDisplayName} from "../../../shared/DisplayNameConversion.ts";
 
 import {GROUP_SEARCH_STORE} from "../data/search/GroupSearchStore.ts";
@@ -91,10 +91,9 @@ export class GroupListComponent extends BaseDynamicComponent {
         </div>
          
         <div class = "button-div">
-        ${generateButton({
-          id: "group-button-" + groupId,
+        ${generateLinkButton({
           text: group.title,
-          type: "submit"
+          url: `groups.html?name=${encodeURIComponent(group.title)}`
         })}
          </div>
    
