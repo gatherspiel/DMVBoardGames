@@ -31,20 +31,17 @@ export class HomepageComponent extends BaseDynamicComponent {
     super();
   }
 
-  connectedCallback() {
-    this.updateData({
-      hideEvents: false,
-      hideConventions: true,
-      hideRestaurants: true,
-      hideGameStores: true
-    });
+  override attachEventHandlersToDom(shadowRoot?:any){
+
     const self = this;
 
-    this.addEventListener("click", function (event: any) {
+    shadowRoot?.addEventListener("click",(event:any)=>{
       event.preventDefault();
 
       console.log(event);
+      console.log(event.target);
       console.log(event.originalTarget);
+
       const targetId = event.originalTarget.id;
       console.log("Target id:"+targetId);
       if ([CONVENTIONS_ID, EVENT_SEARCH_ID, GAME_RESTAURANTS_ID, GAME_STORES_ID].includes(targetId)) {
@@ -56,8 +53,17 @@ export class HomepageComponent extends BaseDynamicComponent {
           hideGameStores: targetId !== GAME_STORES_ID
         })
       }
-
     })
+
+  }
+
+  connectedCallback() {
+    this.updateData({
+      hideEvents: false,
+      hideConventions: true,
+      hideRestaurants: true,
+      hideGameStores: true
+    });
   }
 
   override getTemplateStyle():string{
