@@ -23,17 +23,15 @@
   <div id="container">
       {{>navbar}}
 
-      <page-component
-        componentName="homepage-component"
-      >
-      </page-component>
+      <homepage-component>
+      </homepage-component>
     </div>
 
     <script
       defer
       fetchpriority="low"
       type="module"
-      src="shared/components/PageComponent.ts"
+      src="ui/homepage/components/HomepageComponent.ts"
     ></script>
     <script
       defer
