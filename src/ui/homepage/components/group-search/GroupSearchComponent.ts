@@ -111,7 +111,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
 
     const searchForm = shadowRoot?.getElementById(SEARCH_FORM_ID)
 
-    searchForm.addEventListener("change", (event:any)=>{
+    searchForm?.addEventListener("change", (event:any)=>{
       const eventTarget = event.originalTarget.id;
       if(eventTarget === SEARCH_DAYS_ID){
         self.updateData({
@@ -128,7 +128,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
       }
     })
 
-    shadowRoot?.getElementById(SEARCH_BUTTON_ID).addEventListener("click", ()=>{
+    shadowRoot?.getElementById(SEARCH_BUTTON_ID)?.addEventListener("click", ()=>{
       const searchParams:any = {
         location: this.componentState.location,
         day: this.componentState.day,
