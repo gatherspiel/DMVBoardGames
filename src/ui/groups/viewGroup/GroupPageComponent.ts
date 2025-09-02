@@ -128,7 +128,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
       event.preventDefault();
 
       try {
-        const targetId = event.originalTarget?.id;
+        const targetId = event.target?.id;
         if(targetId === EDIT_GROUP_BUTTON_ID) {
           self.updateData({
             isEditing: true,

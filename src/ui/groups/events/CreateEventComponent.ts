@@ -63,7 +63,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
 
     const self = this;
     shadowRoot?.getElementById(BACK_TO_GROUP_ID)?.addEventListener("click",(event:any)=> {
-      if (event.originalTarget.id === BACK_TO_GROUP_ID) {
+      if (event.target.id === BACK_TO_GROUP_ID) {
         AbstractPageComponent.updateRoute(
           GroupPageComponent,
           {"name": (new URLSearchParams(document.location.search)).get("name") ?? ""}

@@ -79,19 +79,19 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
     shadowRoot?.addEventListener("click",(event:any)=>{
       try {
-        if(event.originalTarget.id === BACK_TO_GROUP_BUTTON_ID) {
+        if(event.target.id === BACK_TO_GROUP_BUTTON_ID) {
           AbstractPageComponent.updateRoute(
             GroupPageComponent,
             {"name":self.componentState.groupName}
           )
         }
-        if(event.originalTarget.id === DELETE_EVENT_BUTTON_ID) {
+        if(event.target.id === DELETE_EVENT_BUTTON_ID) {
           self.updateData({
             isDeleting: true,
             [SUCCESS_MESSAGE_KEY]:''
           })
         }
-        if(event.originalTarget.id === CANCEL_DELETE_BUTTON_ID){
+        if(event.target.id === CANCEL_DELETE_BUTTON_ID){
           self.updateData({
             errorMessage: '',
             isDeleting: false,
@@ -99,7 +99,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           })
         }
 
-        if(event.originalTarget.id === CONFIRM_DELETE_BUTTON_ID){
+        if(event.target.id === CONFIRM_DELETE_BUTTON_ID){
           const params = {
             id: self.componentState.id,
             groupId: self.componentState.groupId
@@ -124,14 +124,14 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           })
         }
 
-        if(event.originalTarget.id === EDIT_EVENT_BUTTON_ID){
+        if(event.target.id === EDIT_EVENT_BUTTON_ID){
           self.updateData({
             isEditing: true,
             [SUCCESS_MESSAGE_KEY]:''
           })
         }
 
-        if(event.originalTarget.id === SAVE_EVENT_BUTTON_ID){
+        if(event.target.id === SAVE_EVENT_BUTTON_ID){
 
           const formElements = shadowRoot?.getElementById('event-details-form').elements;
           const formData = {

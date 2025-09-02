@@ -47,5 +47,3 @@ function getGroupsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
 export const GROUP_SEARCH_STORE = generateDataStore({
   queryConfig: getGroupsQueryConfig,
 })
-
-GROUP_SEARCH_STORE.enablePreload();

@@ -107,28 +107,29 @@ export class GroupSearchComponent extends BaseDynamicComponent {
 
   override attachEventHandlersToDom(shadowRoot?: any) {
 
+    console.log("Configuring event handlers for group search");
     const self = this;
-
     const searchForm = shadowRoot?.getElementById(SEARCH_FORM_ID)
 
-    searchForm.addEventListener("change", (event:any)=>{
-      const eventTarget = event.originalTarget.id;
+    searchForm?.addEventListener("change", (event:any)=>{
+      const eventTarget = event.target.id;
       if(eventTarget === SEARCH_DAYS_ID){
         self.updateData({
-          day: (event.originalTarget as HTMLInputElement).value,
+          day: (event.target as HTMLInputElement).value,
         })
       } else if(eventTarget === SEARCH_CITY_ID){
         self.updateData({
-          location: (event.originalTarget  as HTMLInputElement).value,
+          location: (event.target  as HTMLInputElement).value,
         })
       } else if(eventTarget === SEARCH_DISTANCE_ID) {
         self.updateData({
-          distance: (event.originalTarget as HTMLInputElement).value
+          distance: (event.target as HTMLInputElement).value
         })
       }
     })
 
-    shadowRoot?.getElementById(SEARCH_BUTTON_ID).addEventListener("click", ()=>{
+    shadowRoot?.getElementById(SEARCH_BUTTON_ID)?.addEventListener("click", (event:any)=>{
+      event.preventDefault();
       const searchParams:any = {
         location: this.componentState.location,
         day: this.componentState.day,
@@ -140,6 +141,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
 
   render(eventSearchStore: any) {
 
+    console.log("Rendering event search component")
     if(!this.getAttribute("isVisible") || this.getAttribute("isVisible")=== "false"){
       return ''
     }

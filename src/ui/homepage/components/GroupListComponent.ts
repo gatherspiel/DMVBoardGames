@@ -1,6 +1,6 @@
 import type { GroupSearchResult } from "../data/types/group/GroupSearchResult.ts";
 import {AbstractPageComponent, BaseDynamicComponent} from "@bponnaluri/places-js";
-import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 import {getDisplayName} from "../../../shared/DisplayNameConversion.ts";
 
 import {GROUP_SEARCH_STORE} from "../data/search/GroupSearchStore.ts";
@@ -91,11 +91,10 @@ export class GroupListComponent extends BaseDynamicComponent {
         </div>
          
         <div class = "button-div">
-        ${generateButton({
-      id: "group-button-" + groupId,
-      text: group.title,
-      type: "submit"
-    })}
+        ${generateLinkButton({
+          text: group.title,
+          url: `groups.html?name=${encodeURIComponent(group.title)}`
+        })}
          </div>
    
         <p class="event-group-location">${group.locations.map(name => getDisplayName(name))?.join(", ") ?? ""}</p>              
@@ -112,7 +111,7 @@ export class GroupListComponent extends BaseDynamicComponent {
   override attachEventHandlersToDom(shadowRoot?:any){
 
     shadowRoot?.addEventListener("click",(event:any)=>{
-      const groupName = event.originalTarget.textContent;
+      const groupName = event.target.textContent;
       //@ts-ignore
       AbstractPageComponent.updateRoute(GroupPageComponent,{name:groupName})
     })
@@ -120,6 +119,7 @@ export class GroupListComponent extends BaseDynamicComponent {
   }
 
   render(data: any): string {
+    console.log("Rendering group list component")
     let html = `<div class="ui-section">`;
     const groupHtml = Object.keys(data.searchResults).reduce((result:any, groupId:any)=>{
       return result+this.getItemHtml(groupId, data.searchResults[groupId])
@@ -138,6 +138,7 @@ export class GroupListComponent extends BaseDynamicComponent {
   }
 }
 
+console.log("Defining group list component")
 if (!customElements.get("group-list-component")) {
   customElements.define("group-list-component", GroupListComponent);
 }
