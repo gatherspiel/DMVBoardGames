@@ -120,6 +120,7 @@ export class GroupListComponent extends BaseDynamicComponent {
   }
 
   render(data: any): string {
+    console.log("Rendering group list component")
     let html = `<div class="ui-section">`;
     const groupHtml = Object.keys(data.searchResults).reduce((result:any, groupId:any)=>{
       return result+this.getItemHtml(groupId, data.searchResults[groupId])
@@ -138,6 +139,7 @@ export class GroupListComponent extends BaseDynamicComponent {
   }
 }
 
+console.log("Defining group list component")
 if (!customElements.get("group-list-component")) {
   customElements.define("group-list-component", GroupListComponent);
 }

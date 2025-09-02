@@ -107,8 +107,8 @@ export class GroupSearchComponent extends BaseDynamicComponent {
 
   override attachEventHandlersToDom(shadowRoot?: any) {
 
+    console.log("Configuring event handlers for group search");
     const self = this;
-
     const searchForm = shadowRoot?.getElementById(SEARCH_FORM_ID)
 
     searchForm?.addEventListener("change", (event:any)=>{
@@ -141,6 +141,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
 
   render(eventSearchStore: any) {
 
+    console.log("Rendering event search component")
     if(!this.getAttribute("isVisible") || this.getAttribute("isVisible")=== "false"){
       return ''
     }
