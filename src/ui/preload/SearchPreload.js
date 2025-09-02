@@ -1,6 +1,3 @@
-
-
-
 const IS_LOCAL = !window.location.href.includes(
   "https://dmvboardgames.com/",
 );
