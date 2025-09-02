@@ -71,6 +71,7 @@ export class HomepageComponent extends BaseDynamicComponent {
 
   render(data:any){
     console.log("Rendering homepage component");
+    console.log(data);
     return `
         <div class="ui-section">
         <open-create-group-component>
