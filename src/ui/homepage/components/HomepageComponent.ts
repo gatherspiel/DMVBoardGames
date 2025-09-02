@@ -44,7 +44,10 @@ export class HomepageComponent extends BaseDynamicComponent {
       event.preventDefault();
 
       const targetId = event.originalTarget.id;
+
+      console.log("Target id:"+targetId);
       if ([CONVENTIONS_ID, EVENT_SEARCH_ID, GAME_RESTAURANTS_ID, GAME_STORES_ID].includes(targetId)) {
+        console.log("Should update");
         self.updateData({
           hideEvents: targetId !== EVENT_SEARCH_ID,
           hideConventions: targetId !== CONVENTIONS_ID,
@@ -66,6 +69,7 @@ export class HomepageComponent extends BaseDynamicComponent {
   }
 
   render(data:any){
+    console.log("Rendering homepage component");
     return `
         <div class="ui-section">
         <open-create-group-component>
