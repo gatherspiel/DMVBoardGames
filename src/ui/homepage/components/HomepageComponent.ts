@@ -35,13 +35,10 @@ export class HomepageComponent extends BaseDynamicComponent {
 
     const self = this;
 
-    shadowRoot?.addEventListener("click",(event:any)=>{
+    shadowRoot?.getElementById('show-info-ui')?.addEventListener("click",(event:any)=>{
       event.preventDefault();
 
-      console.log(event);
-      console.log(event.target);
-      console.log(event.originalTarget);
-
+      console.log("Processing homepage component click")
       const targetId = event.originalTarget.id;
       console.log("Target id:"+targetId);
       if ([CONVENTIONS_ID, EVENT_SEARCH_ID, GAME_RESTAURANTS_ID, GAME_STORES_ID].includes(targetId)) {
@@ -89,7 +86,7 @@ export class HomepageComponent extends BaseDynamicComponent {
               <div class = "image-div">  
                 <img src="/assets/house.png">
               </div>
-              <div>
+              <div id="show-info-ui">
                 ${data.hideEvents || data.showAllButtons ? generateButton({
                   id: EVENT_SEARCH_ID,
                   text: "Events",
