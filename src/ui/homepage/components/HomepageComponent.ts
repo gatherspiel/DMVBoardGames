@@ -43,9 +43,9 @@ export class HomepageComponent extends BaseDynamicComponent {
     this.addEventListener("click", function (event: any) {
       event.preventDefault();
 
-      const targetId = event.originalTarget.id;
       console.log(event);
       console.log(event.originalTarget);
+      const targetId = event.originalTarget.id;
       console.log("Target id:"+targetId);
       if ([CONVENTIONS_ID, EVENT_SEARCH_ID, GAME_RESTAURANTS_ID, GAME_STORES_ID].includes(targetId)) {
         console.log("Should update");
