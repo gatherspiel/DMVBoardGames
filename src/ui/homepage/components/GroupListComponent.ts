@@ -62,7 +62,7 @@ const template = `
     .event-group {
       display: flex;
       align-items: center;
-      height: 5rem;
+      height: 4rem;
     }
     
     .image-div img {
