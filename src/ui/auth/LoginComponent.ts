@@ -90,7 +90,7 @@ export class LoginComponent extends BaseDynamicComponent {
       event.preventDefault();
 
       try {
-        const targetId = event.originalTarget?.id;
+        const targetId = event.target?.id;
         if (targetId === LOGIN_BUTTON_ID){
 
           const formInputs = self.retrieveAndValidateFormInputs(shadowRoot)

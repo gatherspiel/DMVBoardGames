@@ -44,7 +44,7 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
   connectedCallback(){
     this.addEventListener("click", (event:any)=>{
       event.preventDefault();
-      if(event.originalTarget.id === CREATE_GROUP_BUTTON_ID){
+      if(event.target.id === CREATE_GROUP_BUTTON_ID){
         AbstractPageComponent.updateRoute(CreateGroupPageComponent, event.params)
       }
       event.stopPropagation();

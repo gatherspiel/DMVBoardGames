@@ -112,18 +112,18 @@ export class GroupSearchComponent extends BaseDynamicComponent {
     const searchForm = shadowRoot?.getElementById(SEARCH_FORM_ID)
 
     searchForm?.addEventListener("change", (event:any)=>{
-      const eventTarget = event.originalTarget.id;
+      const eventTarget = event.target.id;
       if(eventTarget === SEARCH_DAYS_ID){
         self.updateData({
-          day: (event.originalTarget as HTMLInputElement).value,
+          day: (event.target as HTMLInputElement).value,
         })
       } else if(eventTarget === SEARCH_CITY_ID){
         self.updateData({
-          location: (event.originalTarget  as HTMLInputElement).value,
+          location: (event.target  as HTMLInputElement).value,
         })
       } else if(eventTarget === SEARCH_DISTANCE_ID) {
         self.updateData({
-          distance: (event.originalTarget as HTMLInputElement).value
+          distance: (event.target as HTMLInputElement).value
         })
       }
     })
