@@ -1,6 +1,5 @@
-import {ApiActionTypes, BaseTemplateDynamicComponent, InternalApiAction} from "@bponnaluri/places-js";
+import {ApiActionTypes, BaseDynamicComponent, ApiLoadAction} from "@bponnaluri/places-js";
 import { GROUP_NAME_INPUT } from "./Constants.ts";
-import {getUrlParameter} from "@bponnaluri/places-js";
 import {generateButton} from "../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage} from "@bponnaluri/places-js";
 import {
@@ -8,7 +7,7 @@ import {
 } from "../../shared/Constants.ts";
 
 import {API_ROOT} from "../../shared/Params.ts";
-import {LOGIN_THUNK} from "../auth/data/LoginThunk.ts";
+import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -24,13 +23,13 @@ const template = `
 `;
 
 const loadConfig = [{
-      dataThunk: LOGIN_THUNK
+      dataStore: LOGIN_STORE
     }];
 
 
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 
-export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
+export class DeleteGroupPageComponent extends BaseDynamicComponent {
   constructor() {
     super(loadConfig);
   }
@@ -40,7 +39,9 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
   }
 
   connectedCallback(){
-    this.updateData({isVisible: true, existingGroupName: getUrlParameter("name")})
+    this.updateData({
+      isVisible: true,
+      existingGroupName: (new URLSearchParams(document.location.search)).get("name") ?? ""})
   }
 
   override attachEventHandlersToDom(shadowRoot?: any) {
@@ -55,13 +56,13 @@ export class DeleteGroupPageComponent extends BaseTemplateDynamicComponent {
         });
       } else {
 
-        const id = getUrlParameter("groupId");
+        const id = (new URLSearchParams(document.location.search)).get("groupId") ?? "";
         const params = {
           method: ApiActionTypes.DELETE,
           url: `${API_ROOT}/groups/?name=${encodeURIComponent(groupName)}&id=${id}`
         };
 
-        InternalApiAction.getResponseData(params).then((response:any)=>{
+        ApiLoadAction.getResponseData(params).then((response:any)=>{
           if (response.errorMessage) {
             self.updateData({
               errorMessage: response.errorMessage,

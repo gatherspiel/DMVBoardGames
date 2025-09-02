@@ -3,11 +3,11 @@ import {
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
 } from "../Constants.js";
-import {GROUP_REQUEST_THUNK} from "./GroupRequestThunk.ts";
+import {GROUP_REQUEST_STORE} from "./GroupRequestStore.ts";
 
-import {AbstractPageComponent, ApiActionTypes, serializeJSONProp} from "@bponnaluri/places-js";
+import {AbstractPageComponent, ApiActionTypes, ApiLoadAction, serializeJSONProp} from "@bponnaluri/places-js";
 import type { Event } from "../../homepage/data/types/Event.ts";
-import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
+import { BaseDynamicComponent } from "@bponnaluri/places-js";
 
 import {
   generateButton,
@@ -18,7 +18,6 @@ import {
 } from "../../../shared/Constants.ts";
 import {CreateEventComponent} from "../events/CreateEventComponent.ts";
 import {DeleteGroupPageComponent} from "../DeleteGroupPageComponent.ts";
-import {InternalApiAction} from "@bponnaluri/places-js";
 import {API_ROOT} from "../../../shared/Params.ts";
 
 const template = `
@@ -103,7 +102,7 @@ const groupDataReducer = (groupData:any)=>{
 }
 
 const loadConfig = [{
-      dataThunk:GROUP_REQUEST_THUNK,
+      dataStore:GROUP_REQUEST_STORE,
       componentReducer:groupDataReducer,
       urlParams:["name"]
     }]
@@ -114,7 +113,7 @@ const EDIT_GROUP_BUTTON_ID = "edit-group-button";
 const DELETE_GROUP_BUTTON_ID = "delete-group"
 const SAVE_UPDATES_BUTTON_ID = "save-updates";
 
-export class GroupPageComponent extends BaseTemplateDynamicComponent {
+export class GroupPageComponent extends BaseDynamicComponent {
   constructor() {
     super(loadConfig);
   }
@@ -162,7 +161,7 @@ export class GroupPageComponent extends BaseTemplateDynamicComponent {
             url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value
           }
 
-          InternalApiAction.getResponseData({
+          ApiLoadAction.getResponseData({
             body: JSON.stringify(params),
             method: ApiActionTypes.PUT,
             url: API_ROOT + `/groups/?name=${encodeURIComponent(params.name)}`,

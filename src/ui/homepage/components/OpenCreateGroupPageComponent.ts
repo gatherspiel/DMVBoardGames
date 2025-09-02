@@ -4,7 +4,7 @@ import {
   AbstractPageComponent,
 } from "@bponnaluri/places-js";
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
-import {LOGIN_THUNK} from "../../auth/data/LoginThunk.ts";
+import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
 import {CreateGroupPageComponent} from "../../groups/CreateGroupPageComponent.ts";
 
 
@@ -14,7 +14,7 @@ const loadConfig = [{
           [IS_LOGGED_IN_KEY]: data?.loggedIn
         }
       },
-      dataThunk:LOGIN_THUNK
+      dataStore:LOGIN_STORE
     }]
 
 
@@ -23,6 +23,22 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
 
   constructor() {
     super(loadConfig);
+  }
+
+  override getTemplateStyle():string{
+    return `  
+      <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/styles.css"/>
+      <style>
+      
+      #open-create-group-div {
+        border-bottom:  5px solid;
+        border-image-source: url(assets/Section_Border_Tiny.png);
+        border-image-slice: 5 5;
+        border-image-repeat: round;
+      }
+            
+      </style>`
   }
 
   connectedCallback(){

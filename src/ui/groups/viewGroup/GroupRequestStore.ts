@@ -1,5 +1,5 @@
 import { API_ROOT } from "../../../shared/Params.js";
-import { generateApiThunk } from "@bponnaluri/places-js";
+import { generateDataStore } from "@bponnaluri/places-js";
 import type { ApiRequestConfig } from "@bponnaluri/places-js";
 
 function getGroupRequestConfig(requestParams: any): ApiRequestConfig {
@@ -8,11 +8,11 @@ function getGroupRequestConfig(requestParams: any): ApiRequestConfig {
   };
 }
 
-export const GROUP_REQUEST_THUNK = generateApiThunk({
+export const GROUP_REQUEST_STORE = generateDataStore({
   queryConfig: getGroupRequestConfig,
 });
 
 //@ts-ignore
-GROUP_REQUEST_THUNK.enablePreload();
+GROUP_REQUEST_STORE.enablePreload();
 
 

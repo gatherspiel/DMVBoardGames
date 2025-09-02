@@ -1,7 +1,7 @@
 import { API_ROOT } from "../../../../shared/Params.ts";
 
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/group-search/Constants.ts";
-import { generateApiThunk } from "@bponnaluri/places-js";
+import { generateDataStore } from "@bponnaluri/places-js";
 import type { ApiRequestConfig } from "@bponnaluri/places-js";
 
 
@@ -31,6 +31,6 @@ export const updateCities =  (cityArray:any) => {
 
 };
 
-export const CITY_LIST_THUNK = generateApiThunk({
+export const CITY_LIST_STORE = generateDataStore({
   queryConfig: getCitiesQueryConfig,
 })
