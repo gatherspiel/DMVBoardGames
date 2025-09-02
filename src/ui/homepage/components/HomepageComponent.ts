@@ -10,8 +10,7 @@ import {GameStoreListComponent} from "./GameStoreListComponent.ts";
 import {ConventionListComponent} from "./ConventionListComponent.ts";
 // @ts-ignore
 import {GroupPageEventComponent} from "../../groups/viewGroup/GroupPageEventComponent.ts";
-// @ts-ignore
-import {GroupListComponent} from "./GroupListComponent.ts";
+
 // @ts-ignore
 import {GroupSearchComponent} from "./group-search/GroupSearchComponent.ts";
 // @ts-ignore
