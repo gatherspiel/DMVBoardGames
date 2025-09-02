@@ -112,7 +112,7 @@ export class GroupListComponent extends BaseDynamicComponent {
   override attachEventHandlersToDom(shadowRoot?:any){
 
     shadowRoot?.addEventListener("click",(event:any)=>{
-      const groupName = event.originalTarget.textContent;
+      const groupName = event.target.textContent;
       //@ts-ignore
       AbstractPageComponent.updateRoute(GroupPageComponent,{name:groupName})
     })
