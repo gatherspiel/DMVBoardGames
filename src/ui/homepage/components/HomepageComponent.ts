@@ -10,8 +10,7 @@ import {GameStoreListComponent} from "./GameStoreListComponent.ts";
 import {ConventionListComponent} from "./ConventionListComponent.ts";
 // @ts-ignore
 import {GroupPageEventComponent} from "../../groups/viewGroup/GroupPageEventComponent.ts";
-// @ts-ignore
-import {GroupListComponent} from "./GroupListComponent.ts";
+
 // @ts-ignore
 import {GroupSearchComponent} from "./group-search/GroupSearchComponent.ts";
 // @ts-ignore
@@ -31,19 +30,14 @@ export class HomepageComponent extends BaseDynamicComponent {
     super();
   }
 
-  connectedCallback() {
-    this.updateData({
-      hideEvents: false,
-      hideConventions: true,
-      hideRestaurants: true,
-      hideGameStores: true
-    });
+  override attachEventHandlersToDom(shadowRoot?:any){
+
     const self = this;
 
-    this.addEventListener("click", function (event: any) {
+    shadowRoot?.getElementById('show-info-ui')?.addEventListener("click",(event:any)=>{
       event.preventDefault();
 
-      const targetId = event.originalTarget.id;
+      const targetId = event.target.id;
       if ([CONVENTIONS_ID, EVENT_SEARCH_ID, GAME_RESTAURANTS_ID, GAME_STORES_ID].includes(targetId)) {
         self.updateData({
           hideEvents: targetId !== EVENT_SEARCH_ID,
@@ -52,8 +46,17 @@ export class HomepageComponent extends BaseDynamicComponent {
           hideGameStores: targetId !== GAME_STORES_ID
         })
       }
-
     })
+
+  }
+
+  connectedCallback() {
+    this.updateData({
+      hideEvents: false,
+      hideConventions: true,
+      hideRestaurants: true,
+      hideGameStores: true
+    });
   }
 
   override getTemplateStyle():string{
@@ -66,6 +69,7 @@ export class HomepageComponent extends BaseDynamicComponent {
   }
 
   render(data:any){
+    console.log("Rendering homepage component");
     return `
         <div class="ui-section">
         <open-create-group-component>
@@ -78,7 +82,7 @@ export class HomepageComponent extends BaseDynamicComponent {
               <div class = "image-div">  
                 <img src="/assets/house.png">
               </div>
-              <div>
+              <div id="show-info-ui">
                 ${data.hideEvents || data.showAllButtons ? generateButton({
                   id: EVENT_SEARCH_ID,
                   text: "Events",

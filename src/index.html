@@ -2,8 +2,6 @@
 <html lang="en">
   <head>
 
-    <script async inline-source src="ui/preload/SearchPreload.js">  </script>
-
     <meta charset="UTF-8"/>
     <style inline-source src="../public/styles/styles.css" ></style>
     <style inline-source src="../public/styles/sharedComponentStyles.css" ></style>
@@ -11,6 +9,17 @@
     <link rel="preconnect" href="localhost:7070" />
     <link rel="preconnect" href="api.gatherspiel.com" />
 
+    <script
+      type="module"
+      src="ui/homepage/components/GroupListComponent.ts"
+    ></script>
+
+    <script
+      defer
+      fetchpriority="low"
+      type="module"
+      src="ui/homepage/components/HomepageComponent.ts"
+    ></script>
 
     <link rel="icon" type="image/ico" href="/assets/favicon.ico"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -18,23 +27,13 @@
   </head>
   <body>
 
-
-
   <div id="container">
       {{>navbar}}
 
-      <page-component
-        componentName="homepage-component"
-      >
-      </page-component>
+      <homepage-component>
+      </homepage-component>
     </div>
 
-    <script
-      defer
-      fetchpriority="low"
-      type="module"
-      src="shared/components/PageComponent.ts"
-    ></script>
     <script
       defer
       fetchpriority="low"
@@ -42,10 +41,6 @@
       src="shared/components/LoginStatusComponent.ts"
     ></script>
 
-  <script>
 
-
-
-  </script>
   </body>
 </html>
