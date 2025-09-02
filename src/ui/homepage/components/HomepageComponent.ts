@@ -38,11 +38,8 @@ export class HomepageComponent extends BaseDynamicComponent {
     shadowRoot?.getElementById('show-info-ui')?.addEventListener("click",(event:any)=>{
       event.preventDefault();
 
-      console.log("Processing homepage component click")
-      const targetId = event.originalTarget.id;
-      console.log("Target id:"+targetId);
+      const targetId = event.target.id;
       if ([CONVENTIONS_ID, EVENT_SEARCH_ID, GAME_RESTAURANTS_ID, GAME_STORES_ID].includes(targetId)) {
-        console.log("Should update");
         self.updateData({
           hideEvents: targetId !== EVENT_SEARCH_ID,
           hideConventions: targetId !== CONVENTIONS_ID,
