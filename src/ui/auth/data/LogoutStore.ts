@@ -1,10 +1,8 @@
-import type { BaseThunk } from "@bponnaluri/places-js";
-import { generateApiThunkWithExternalConfig } from "@bponnaluri/places-js";
-import type { LoginComponentStore } from "../types/LoginComponentStore.ts";
+import type {DataStore} from "@bponnaluri/places-js";
+import { generateDataStoreWithExternalConfig } from "@bponnaluri/places-js";
 import { AuthResponse } from "../types/AuthResponse.ts";
 import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../../shared/Params.ts";
 import {deleteLocalStoreData, getLocalStorageDataIfPresent} from "@bponnaluri/places-js";
-import {IS_LOGGED_IN_KEY, SUCCESS_MESSAGE_KEY} from "../../../shared/Constants.ts";
 
 async function retrieveData() {
 
@@ -33,14 +31,8 @@ async function retrieveData() {
 }
 
 
-export function getLoginComponentStoreFromLogoutResponse(): LoginComponentStore {
-  return {
-    [IS_LOGGED_IN_KEY]: false,
-    [SUCCESS_MESSAGE_KEY]: ''
-  };
-}
 
 
-export const LOGOUT_THUNK: BaseThunk = generateApiThunkWithExternalConfig(
+export const LOGOUT_STORE: DataStore = generateDataStoreWithExternalConfig(
   retrieveData,
 )

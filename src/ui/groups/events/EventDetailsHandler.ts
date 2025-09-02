@@ -9,7 +9,6 @@ import {
   START_DATE_INPUT, START_TIME_INPUT,
 } from "../Constants.ts";
 import {combineDateAndTime} from "@bponnaluri/places-js";
-import {getUrlParameter} from "@bponnaluri/places-js";
 
 export function getEventDetailsFromForm(formData:Record<string,string>){
   const startDate = formData[START_DATE_INPUT]
@@ -17,7 +16,7 @@ export function getEventDetailsFromForm(formData:Record<string,string>){
   const endTime =   formData[END_TIME_INPUT]
   return  {
     id:formData.id,
-    groupId: getUrlParameter("groupId"),
+    groupId:(new URLSearchParams(document.location.search)).get("groupId") ?? "",
     name: formData[EVENT_NAME_INPUT],
     description: formData[EVENT_DESCRIPTION_INPUT],
     url: formData[EVENT_URL_INPUT],
@@ -27,12 +26,8 @@ export function getEventDetailsFromForm(formData:Record<string,string>){
   };
 }
 
-
 export function validateEventFormData(formData:Record<string,string>) {
   const errorMessages = [];
-
-  console.log(formData)
-  console.log(formData[EVENT_NAME_INPUT])
 
   if(!formData[EVENT_NAME_INPUT]){
     errorMessages.push("Event name must be defined");

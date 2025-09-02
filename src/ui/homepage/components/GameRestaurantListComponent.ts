@@ -1,14 +1,14 @@
 import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
-import { BaseTemplateDynamicComponent } from "@bponnaluri/places-js";
+import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
-import {LOCATIONS_THUNK} from "../data/search/LocationsThunk.ts";
+import {LOCATIONS_STORE} from "../data/search/LocationsStore.ts";
 
 
 const loadConfig = [{
       componentReducer: (data:any)=>{
         return data.gameRestaurants;
       },
-      dataThunk: LOCATIONS_THUNK,
+      dataStore: LOCATIONS_STORE,
     }]
 
 
@@ -21,7 +21,7 @@ const template = `
     }
   </style>
 `;
-export class GameRestaurantListComponent extends BaseTemplateDynamicComponent {
+export class GameRestaurantListComponent extends BaseDynamicComponent {
   constructor() {
     super(loadConfig);
   }

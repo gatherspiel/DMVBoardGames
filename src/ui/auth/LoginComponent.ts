@@ -1,20 +1,20 @@
-import {LOGIN_THUNK,} from "../data/LoginThunk.ts";
+import {LOGIN_STORE,} from "./data/LoginStore.ts";
 
-import {LOGOUT_THUNK} from "../data/LogoutThunk.ts";
-import {LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT,} from "../Constants.js";
+import {LOGOUT_STORE} from "./data/LogoutStore.ts";
+import {LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT,} from "./Constants.js";
 
-import type {LoginComponentStore} from "../types/LoginComponentStore.ts";
+import type {LoginComponentStore} from "./types/LoginComponentStore.ts";
 import {
   IS_LOGGED_IN_KEY,
   SUCCESS_MESSAGE_KEY
-} from "../../../shared/Constants.ts";
+} from "../../shared/Constants.ts";
 import {
-  BaseTemplateDynamicComponent,
-  InternalApiAction,
+  BaseDynamicComponent,
+  ApiLoadAction,
 } from "@bponnaluri/places-js";
-import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {generateButton} from "../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage} from "@bponnaluri/places-js";
-import {API_ROOT} from "../../../shared/Params.ts";
+import {API_ROOT} from "../../shared/Params.ts";
 
 //TODO: Refactor CSS to use fix widths on labels in the future instead of having a hardcoded margin on the email label.
 
@@ -56,13 +56,13 @@ const LOGIN_BUTTON_ID = "login-button";
 const REGISTER_BUTTON_ID = "register-button";
 const LOGOUT_BUTTON_ID = "logout-button";
 
-export class LoginComponent extends BaseTemplateDynamicComponent {
+export class LoginComponent extends BaseDynamicComponent {
 
   hasRendered: boolean;
 
   constructor() {
     super([{
-      dataThunk: LOGIN_THUNK,
+      dataStore: LOGIN_STORE,
     }]);
     this.hasRendered = false;
   }
@@ -98,7 +98,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
           if(formInputs.errorMessage){
             self.updateData(formInputs)
           } else {
-            LOGIN_THUNK.getData({
+            LOGIN_STORE.getData({
               formInputs
             })
           }
@@ -110,7 +110,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
             self.updateData(formInputs)
           } else {
 
-            InternalApiAction.getResponseData({
+            ApiLoadAction.getResponseData({
               body: JSON.stringify(formInputs),
               method: "POST",
               url: API_ROOT + `/users/register`,
@@ -130,7 +130,7 @@ export class LoginComponent extends BaseTemplateDynamicComponent {
         }
 
         if (targetId === LOGOUT_BUTTON_ID) {
-          LOGOUT_THUNK.getData({}, LOGIN_THUNK)
+          LOGOUT_STORE.getData({}, LOGIN_STORE)
         }
       }catch(e:any){
         if(e.message !== `Permission denied to access property "id"`){

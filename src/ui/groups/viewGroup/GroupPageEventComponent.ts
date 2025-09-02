@@ -7,8 +7,8 @@ import {
 import {
   convertLocationStringForDisplay
 } from "@bponnaluri/places-js";
-import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
-import {EventDetailsComponent} from "../../events/components/EventDetailsComponent.ts";
+import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {EventDetailsComponent} from "../events/EventDetailsComponent.ts";
 
 
 const template = `

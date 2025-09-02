@@ -1,25 +1,24 @@
 import {
   AbstractPageComponent, ApiActionTypes,
-  BaseTemplateDynamicComponent, InternalApiAction,
+  BaseDynamicComponent, ApiLoadAction,
 } from "@bponnaluri/places-js";
-import {getUrlParameter} from "@bponnaluri/places-js";
 import {
   END_TIME_INPUT,
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT,
   EVENT_URL_INPUT,
   START_DATE_INPUT, START_TIME_INPUT,
-} from "../../Constants.ts";
-import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
+} from "../Constants.ts";
+import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage} from "@bponnaluri/places-js";
 import {
   SUCCESS_MESSAGE_KEY
-} from "../../../../shared/Constants.ts";
+} from "../../../shared/Constants.ts";
 
-import {GroupPageComponent} from "../../viewGroup/components/GroupPageComponent.ts";
-import {LOGIN_THUNK} from "../../../auth/data/LoginThunk.ts";
-import {getEventDetailsFromForm, validateEventFormData} from "../EventDetailsHandler.ts";
-import { API_ROOT } from "../../../../shared/Params.ts";
+import {GroupPageComponent} from "../viewGroup/GroupPageComponent.ts";
+import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
+import {getEventDetailsFromForm, validateEventFormData} from "./EventDetailsHandler.ts";
+import { API_ROOT } from "../../../shared/Params.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -49,17 +48,16 @@ const loadConfig =  [{
           isVisible: data["loggedIn"],
         };
       },
-      dataThunk: LOGIN_THUNK
+      dataStore: LOGIN_STORE
     }];
 
 const CREATE_EVENT_BUTTON_ID = "create-event-button";
 const BACK_TO_GROUP_ID = "back-to-group";
 
-export class CreateEventComponent extends BaseTemplateDynamicComponent {
+export class CreateEventComponent extends BaseDynamicComponent {
   constructor() {
     super(loadConfig);
   }
-
 
   override attachEventsToShadowRoot(shadowRoot: ShadowRoot) {
 
@@ -68,7 +66,7 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
       if (event.originalTarget.id === BACK_TO_GROUP_ID) {
         AbstractPageComponent.updateRoute(
           GroupPageComponent,
-          {"name": getUrlParameter("name")}
+          {"name": (new URLSearchParams(document.location.search)).get("name") ?? ""}
         )
       }
     });
@@ -95,7 +93,7 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
         self.updateData(updates);
       } else {
         const eventDetails = getEventDetailsFromForm(formData)
-        InternalApiAction.getResponseData({
+        ApiLoadAction.getResponseData({
           body: JSON.stringify(eventDetails),
           method: ApiActionTypes.POST,
           url: API_ROOT + `groups/${eventDetails.groupId}/events/`,
@@ -118,14 +116,13 @@ export class CreateEventComponent extends BaseTemplateDynamicComponent {
   }
 
   render(data: any): string {
-    console.log(data);
     return `   
       ${generateErrorMessage(data.errorMessage)}
       
       ${data[SUCCESS_MESSAGE_KEY] ? `<p class="${SUCCESS_MESSAGE_KEY}">${data[SUCCESS_MESSAGE_KEY]}</p>`: ``}
       <form id="create-event-form">
         
-        <h1>Create board game event for group ${getUrlParameter("name")}</h1>
+        <h1>Create board game event for group ${(new URLSearchParams(document.location.search)).get("name") ?? ""}</h1>
          
         <label>Event name</label>
         <input

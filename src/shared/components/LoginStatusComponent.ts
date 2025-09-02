@@ -1,11 +1,11 @@
 import {
-  BaseTemplateDynamicComponent,
+  BaseDynamicComponent,
 } from "@bponnaluri/places-js";
-import {LOGIN_THUNK} from "../../ui/auth/data/LoginThunk.ts";
-import {LOGOUT_THUNK} from "../../ui/auth/data/LogoutThunk.ts";
+import {LOGIN_STORE} from "../../ui/auth/data/LoginStore.ts";
+import {LOGOUT_STORE} from "../../ui/auth/data/LogoutStore.ts";
 
 const loadConfig = [{
-      dataThunk: LOGIN_THUNK
+      dataStore: LOGIN_STORE
     }]
 
 
@@ -50,7 +50,7 @@ const template = `
 `
 
 const SIGN_OUT_LINK_ID = "signout-link"
-export class LoginStatusComponent extends BaseTemplateDynamicComponent {
+export class LoginStatusComponent extends BaseDynamicComponent {
 
   constructor() {
     super(loadConfig);
@@ -62,7 +62,7 @@ export class LoginStatusComponent extends BaseTemplateDynamicComponent {
 
   override attachEventHandlersToDom(shadowRoot?: any){
     shadowRoot?.getElementById(SIGN_OUT_LINK_ID)?.addEventListener("click",()=>{
-      LOGOUT_THUNK.getData({}, LOGIN_THUNK)
+      LOGOUT_STORE.getData({}, LOGIN_STORE)
     });
   }
 

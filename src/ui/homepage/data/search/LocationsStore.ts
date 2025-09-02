@@ -1,5 +1,5 @@
 import { API_ROOT } from "../../../../shared/Params.ts";
-import {generateApiThunk} from "@bponnaluri/places-js";
+import {generateDataStore} from "@bponnaluri/places-js";
 
 function getLocationsQueryConfig() {
   return {
@@ -8,6 +8,6 @@ function getLocationsQueryConfig() {
 }
 
 
-export const LOCATIONS_THUNK = generateApiThunk({
+export const LOCATIONS_STORE = generateDataStore({
   queryConfig: getLocationsQueryConfig,
 })
