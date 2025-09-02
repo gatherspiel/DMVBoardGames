@@ -80,6 +80,8 @@ export class DeleteGroupPageComponent extends BaseDynamicComponent {
   }
 
   render(data: any): string {
+
+    console.log("Hi");
     return `
       <form onsubmit="return false">
       

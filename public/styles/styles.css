@@ -274,15 +274,6 @@ body {
   }
 }
 
-.homepage-default-action-div {
-  display:flex;
-  align-items: center;
-}
-
-.homepage-default-action-div img {
-  padding-top:20px;
-  padding-right:0.5rem;
-}
 
 
 @media screen and (width < 32em) {
@@ -307,10 +298,4 @@ body {
   }
 }
 
-.section-separator-medium {
-  border-bottom:  20px solid;
-  border-image-source: url(assets/Section_Border_Medium.png);
-  border-image-slice: 20 20;
-  border-image-repeat: round;
-}
 

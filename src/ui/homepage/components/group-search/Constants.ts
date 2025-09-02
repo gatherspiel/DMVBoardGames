@@ -13,7 +13,6 @@ export const DAYS_IN_WEEK: DropdownConfigItem[] = [
   {index:7, name:"Saturday"}
 ];
 
-
 export const DISTANCE_OPTIONS: DropdownConfigItem[] = [
   {index:0, name:"0"},
   {index:1,name: "5"},

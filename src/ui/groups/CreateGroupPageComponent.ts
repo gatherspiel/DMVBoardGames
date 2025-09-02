@@ -94,7 +94,7 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
         <h1>Create board game group</h1>
         
           ${
-            createGroupData.isLoggedIn
+            createGroupData.loggedIn
               ? `
                 <form id="create-group-form">
                 

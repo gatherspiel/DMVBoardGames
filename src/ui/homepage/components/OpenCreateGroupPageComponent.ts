@@ -1,11 +1,8 @@
-import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 import {IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
-import {
-  AbstractPageComponent,
-} from "@bponnaluri/places-js";
+
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
-import {CreateGroupPageComponent} from "../../groups/CreateGroupPageComponent.ts";
 
 
 const loadConfig = [{
@@ -18,7 +15,6 @@ const loadConfig = [{
     }]
 
 
-const CREATE_GROUP_BUTTON_ID = "open-create-group-page-button-id"
 export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
 
   constructor() {
@@ -28,7 +24,6 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
   override getTemplateStyle():string{
     return `  
       <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
-      <link rel="stylesheet" type="text/css" href="/styles/styles.css"/>
       <style>
       
       #open-create-group-div {
@@ -37,18 +32,23 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
         border-image-slice: 5 5;
         border-image-repeat: round;
       }
+      
+      
+        .homepage-default-action-div {
+          display:flex;
+          align-items: center;
+        }
+        
+        .homepage-default-action-div img {
+          padding-top:20px;
+          padding-right:0.5rem;
+        }
+      .raised {
+        display: inline-block;
+        line-height: 1;
+      }
             
       </style>`
-  }
-
-  connectedCallback(){
-    this.addEventListener("click", (event:any)=>{
-      event.preventDefault();
-      if(event.target.id === CREATE_GROUP_BUTTON_ID){
-        AbstractPageComponent.updateRoute(CreateGroupPageComponent, event.params)
-      }
-      event.stopPropagation();
-    });
   }
 
 
@@ -58,12 +58,9 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
     }
     return `
         <div id="open-create-group-div" class= "homepage-default-action-div">
-        <div class = "image-div">  
-          <img src="/assets/house.png">
-        </div>
-        ${generateButton({
-          id: CREATE_GROUP_BUTTON_ID,
+        ${generateLinkButton({
           text: "Create group",
+          url:`groups/create.html`
         })}
         </div>
     `

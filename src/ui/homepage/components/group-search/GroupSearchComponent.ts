@@ -107,7 +107,6 @@ export class GroupSearchComponent extends BaseDynamicComponent {
 
   override attachEventHandlersToDom(shadowRoot?: any) {
 
-    console.log("Configuring event handlers for group search");
     const self = this;
     const searchForm = shadowRoot?.getElementById(SEARCH_FORM_ID)
 
@@ -141,7 +140,6 @@ export class GroupSearchComponent extends BaseDynamicComponent {
 
   render(eventSearchStore: any) {
 
-    console.log("Rendering event search component")
     if(!this.getAttribute("isVisible") || this.getAttribute("isVisible")=== "false"){
       return ''
     }
@@ -186,10 +184,8 @@ export class GroupSearchComponent extends BaseDynamicComponent {
                ``}
             
               <div id="searchInputDiv"> 
-                <div class = "image-div">  
-                  <img src="/assets/house.png">
-                </div>
-                
+     
+             
                 <div> 
                  ${generateButton({
                   id: SEARCH_BUTTON_ID,

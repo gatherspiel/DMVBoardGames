@@ -5,7 +5,7 @@ import {
 } from "../Constants.js";
 import {GROUP_REQUEST_STORE} from "./GroupRequestStore.ts";
 
-import {AbstractPageComponent, ApiActionTypes, ApiLoadAction, serializeJSONProp} from "@bponnaluri/places-js";
+import {ApiActionTypes, ApiLoadAction, serializeJSONProp} from "@bponnaluri/places-js";
 import type { Event } from "../../homepage/data/types/Event.ts";
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 
@@ -16,8 +16,6 @@ import {
 import {
   SUCCESS_MESSAGE_KEY
 } from "../../../shared/Constants.ts";
-import {CreateEventComponent} from "../events/CreateEventComponent.ts";
-import {DeleteGroupPageComponent} from "../DeleteGroupPageComponent.ts";
 import {API_ROOT} from "../../../shared/Params.ts";
 
 const template = `
@@ -66,6 +64,11 @@ const template = `
     .group-webpage-link {
       display: inline-block;
     }
+    
+    .raised {
+      display: inline-block;
+      line-height: 1;
+    }
     #group-events {
       border-bottom:  20px solid;
       border-image-source: url(assets/Section_Border_Medium.png);
@@ -107,10 +110,8 @@ const loadConfig = [{
       urlParams:["name"]
     }]
 
-const ADD_EVENT_BUTTON_ID = "add-event";
 const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
 const EDIT_GROUP_BUTTON_ID = "edit-group-button";
-const DELETE_GROUP_BUTTON_ID = "delete-group"
 const SAVE_UPDATES_BUTTON_ID = "save-updates";
 
 export class GroupPageComponent extends BaseDynamicComponent {
@@ -134,20 +135,8 @@ export class GroupPageComponent extends BaseDynamicComponent {
             isEditing: true,
           })
         }
-        if(targetId === ADD_EVENT_BUTTON_ID){
-          const params = {
-            id: self.componentState.id,
-            name:self.componentState.name,
-          }
-          AbstractPageComponent.updateRoute(CreateEventComponent, params)
-        }
-        if(targetId === DELETE_GROUP_BUTTON_ID){
-          const params = {
-            id: self.componentState.id,
-            name:self.componentState.name,
-          }
-          AbstractPageComponent.updateRoute(DeleteGroupPageComponent,params)
-        }
+
+
         if(targetId === CANCEL_UPDATES_BUTTON_ID) {
           self.updateData({
             isEditing: false
@@ -226,32 +215,27 @@ export class GroupPageComponent extends BaseDynamicComponent {
   }
 
   renderGroupEditUI(groupData:any):string {
+
+    console.log(groupData.name);
     return `
 
     ${groupData[SUCCESS_MESSAGE_KEY] ? `<h2>Group update successful</h2>` : ``}
     <div class="group-title">
-      <h1>
-        ${generateLinkButton({
-          class: "group-webpage-link",
-          text: groupData.name,
-          url:groupData.url
-        })}
-      </h1>
-    
 
+ 
       ${generateButton({
         id:EDIT_GROUP_BUTTON_ID,
         text: "Edit group info",
       })}
     
-      ${generateButton({
-        id: ADD_EVENT_BUTTON_ID,
+      ${generateLinkButton({
         text: "Add event",
+        url: `groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}`
       })}
     
-      ${generateButton({
-        id: DELETE_GROUP_BUTTON_ID,
+      ${generateLinkButton({
         text: "Delete group",
+        url: `groups/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}`
       })}
     </div>`
   }

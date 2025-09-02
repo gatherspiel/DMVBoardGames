@@ -145,6 +145,7 @@ export class LoginComponent extends BaseDynamicComponent {
   }
 
   render(data: LoginComponentStore) {
+    console.log(data)
     return data[IS_LOGGED_IN_KEY] ?
         '' :
         this.generateLogin(data)

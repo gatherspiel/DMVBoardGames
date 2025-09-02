@@ -1,12 +1,11 @@
 import type { GroupSearchResult } from "../data/types/group/GroupSearchResult.ts";
-import {AbstractPageComponent, BaseDynamicComponent} from "@bponnaluri/places-js";
+import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 import {getDisplayName} from "../../../shared/DisplayNameConversion.ts";
 
 import {GROUP_SEARCH_STORE} from "../data/search/GroupSearchStore.ts";
 import {DEFAULT_SEARCH_PARAMETER} from "./group-search/Constants.ts";
 import {searchResultReducer} from "../data/store/SearchResultReducer.ts";
-import {GroupPageComponent} from "../../groups/viewGroup/GroupPageComponent.ts";
 
 const loadConfig = [{
       componentReducer: searchResultReducer,
@@ -37,6 +36,9 @@ const template = `
       border-image-repeat: round;
     }
     
+    .raised {
+      line-height: 1;
+    }
     @media not screen and (width < 32em) {
     
       .event-group-location {
@@ -86,9 +88,7 @@ export class GroupListComponent extends BaseDynamicComponent {
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
         
-        <div class = "image-div">  
-          <img src="/assets/house.png">
-        </div>
+
          
         <div class = "button-div">
         ${generateLinkButton({
@@ -108,15 +108,6 @@ export class GroupListComponent extends BaseDynamicComponent {
     return template;
   }
 
-  override attachEventHandlersToDom(shadowRoot?:any){
-
-    shadowRoot?.addEventListener("click",(event:any)=>{
-      const groupName = event.target.textContent;
-      //@ts-ignore
-      AbstractPageComponent.updateRoute(GroupPageComponent,{name:groupName})
-    })
-
-  }
 
   render(data: any): string {
     console.log("Rendering group list component")

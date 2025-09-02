@@ -10,16 +10,20 @@
 
   <script
     type="module"
-    src="../shared/components/PageComponent.ts"
+    src="../ui/groups/CreateGroupPageComponent.ts"
+  ></script>
+  <script
+    defer
+    fetchpriority="low"
+    type="module"
+    src="../shared/components/LoginStatusComponent.ts"
   ></script>
 </head>
 <body>
 <div id="container">
   {{>navbar}}
-  <page-component
-    componentName="create-group-page-component"
-  >
-  </page-component>
+  <create-group-page-component>
+  </create-group-page-component>
 </div>
 </body>
 </html>

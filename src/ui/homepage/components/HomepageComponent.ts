@@ -62,14 +62,37 @@ export class HomepageComponent extends BaseDynamicComponent {
   override getTemplateStyle():string{
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
-      <link rel="stylesheet" type="text/css" href="/styles/styles.css"/>
 
-      <style></style>
+      <style>
+        .section-separator-medium {
+          border-bottom:  20px solid;
+          border-image-source: url(assets/Section_Border_Medium.png);
+          border-image-slice: 20 20;
+          border-image-repeat: round;
+        }
+        
+        .homepage-default-action-div {
+          display:flex;
+          align-items: center;
+        }
+        
+        .homepage-default-action-div img {
+          padding-top:20px;
+          padding-right:0.5rem;
+        }
+        
+        @media screen and (width < 32em) {
+          .raised {
+            margin-top:0.5rem;
+          }
+        
+        }
+      
+    </style>
     `
   }
 
   render(data:any){
-    console.log("Rendering homepage component");
     return `
         <div class="ui-section">
         <open-create-group-component>
@@ -79,9 +102,7 @@ export class HomepageComponent extends BaseDynamicComponent {
             <div>Click for more info about</div>
             
             <div class = "homepage-default-action-div">
-              <div class = "image-div">  
-                <img src="/assets/house.png">
-              </div>
+ 
               <div id="show-info-ui">
                 ${data.hideEvents || data.showAllButtons ? generateButton({
                   id: EVENT_SEARCH_ID,

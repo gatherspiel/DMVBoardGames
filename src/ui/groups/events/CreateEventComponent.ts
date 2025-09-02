@@ -1,5 +1,5 @@
 import {
-  AbstractPageComponent, ApiActionTypes,
+  ApiActionTypes,
   BaseDynamicComponent, ApiLoadAction,
 } from "@bponnaluri/places-js";
 import {
@@ -9,13 +9,12 @@ import {
   EVENT_URL_INPUT,
   START_DATE_INPUT, START_TIME_INPUT,
 } from "../Constants.ts";
-import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
+import {generateButton, generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 import {generateErrorMessage} from "@bponnaluri/places-js";
 import {
   SUCCESS_MESSAGE_KEY
 } from "../../../shared/Constants.ts";
 
-import {GroupPageComponent} from "../viewGroup/GroupPageComponent.ts";
 import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
 import {getEventDetailsFromForm, validateEventFormData} from "./EventDetailsHandler.ts";
 import { API_ROOT } from "../../../shared/Params.ts";
@@ -36,6 +35,11 @@ const templateStyle = `
     #${EVENT_LOCATION_INPUT} {
       width: 50rem;
     }
+    
+    .raised {
+       display:inline-block;
+       line-height:1
+    }
   </style>
 `;
 
@@ -52,7 +56,6 @@ const loadConfig =  [{
     }];
 
 const CREATE_EVENT_BUTTON_ID = "create-event-button";
-const BACK_TO_GROUP_ID = "back-to-group";
 
 export class CreateEventComponent extends BaseDynamicComponent {
   constructor() {
@@ -62,14 +65,6 @@ export class CreateEventComponent extends BaseDynamicComponent {
   override attachEventsToShadowRoot(shadowRoot: ShadowRoot) {
 
     const self = this;
-    shadowRoot?.getElementById(BACK_TO_GROUP_ID)?.addEventListener("click",(event:any)=> {
-      if (event.target.id === BACK_TO_GROUP_ID) {
-        AbstractPageComponent.updateRoute(
-          GroupPageComponent,
-          {"name": (new URLSearchParams(document.location.search)).get("name") ?? ""}
-        )
-      }
-    });
 
     shadowRoot?.getElementById('create-event-form')?.addEventListener('submit',(event:any)=>{
       event.preventDefault();
@@ -116,6 +111,8 @@ export class CreateEventComponent extends BaseDynamicComponent {
   }
 
   render(data: any): string {
+
+    const groupName = (new URLSearchParams(document.location.search)).get("name") ?? ''
     return `   
       ${generateErrorMessage(data.errorMessage)}
       
@@ -188,10 +185,10 @@ export class CreateEventComponent extends BaseDynamicComponent {
         type: "Submit"
       })}
             
-      ${generateButton({
-        id: BACK_TO_GROUP_ID,
+      ${generateLinkButton({
         text: "Back to group",
-      })}
+        url: `${window.location.origin}/groups.html?name=${encodeURIComponent(groupName)}`
+    })}
       </form>
     `;
   }

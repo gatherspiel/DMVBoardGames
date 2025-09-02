@@ -7,22 +7,18 @@
   <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GroupSearchResult Information</title>
-
+  <script
+    defer
+    fetchpriority="low"
+    type="module"
+    src="ui/groups/viewGroup/GroupPageComponent.ts"
+  ></script>
 </head>
 <body>
 <div id="container">
   {{>navbar}}
-  <page-component
-    componentName="group-page-component"
-  >
-  </page-component>
+  <group-page-component>
+  </group-page-component>
 </div>
-
-<script
-  defer
-  fetchpriority="low"
-  type="module"
-  src="shared/components/PageComponent.ts"
-></script>
 </body>
 </html>

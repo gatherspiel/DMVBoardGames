@@ -8,19 +8,19 @@
   <style inline-source src="../public/styles/styles.css" ></style>
   <style inline-source src="../public/styles/sharedComponentStyles.css" ></style>
 
-
   <script
+    defer
+    fetchpriority="low"
     type="module"
-    src="../shared/components/PageComponent.ts"
+    src="../ui/groups/events/CreateEventComponent.ts"
   ></script>
+
 </head>
 <body>
 <div id="container">
   {{>navbar}}
-  <page-component
-    componentName="create-event-component"
-  >
-  </page-component>
+  <create-event-component>
+  </create-event-component>
 </div>
 </body>
 </html>

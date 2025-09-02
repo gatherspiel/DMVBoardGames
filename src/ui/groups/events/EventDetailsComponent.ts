@@ -1,5 +1,5 @@
 import {
-  AbstractPageComponent, ApiActionTypes,
+  ApiActionTypes,
   BaseDynamicComponent, ApiLoadAction,
 } from "@bponnaluri/places-js";
 import {
@@ -28,7 +28,6 @@ import {
   SUCCESS_MESSAGE_KEY
 } from "../../../shared/Constants.ts";
 
-import {GroupPageComponent} from "../viewGroup/GroupPageComponent.ts";
 import {API_ROOT} from "../../../shared/Params.ts";
 
 const template = `
@@ -46,8 +45,10 @@ const template = `
       width: 50rem;
     }
     
+
     .raised {
       display: inline-block;
+      line-height: 1;
     }
     
   </style>
@@ -61,6 +62,7 @@ const loadConfig =  [{
 const BACK_TO_GROUP_BUTTON_ID = "back-to-group-button";
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 const CANCEL_DELETE_BUTTON_ID = "cancel-delete-button";
+const CANCEL_EDIT_BUTTON_ID = "cancel-edit-button";
 const DELETE_EVENT_BUTTON_ID = "delete-event-button";
 const EDIT_EVENT_BUTTON_ID = "edit-event-button";
 const SAVE_EVENT_BUTTON_ID = "save-event-button";
@@ -79,12 +81,11 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
     shadowRoot?.addEventListener("click",(event:any)=>{
       try {
-        if(event.target.id === BACK_TO_GROUP_BUTTON_ID) {
-          AbstractPageComponent.updateRoute(
-            GroupPageComponent,
-            {"name":self.componentState.groupName}
-          )
+        if(event.target.id === CANCEL_EDIT_BUTTON_ID) {
+          self.updateData({isEditing: false,
+            [SUCCESS_MESSAGE_KEY]:''})
         }
+
         if(event.target.id === DELETE_EVENT_BUTTON_ID) {
           self.updateData({
             isDeleting: true,
@@ -181,7 +182,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
   render(data: any): string {
 
-    console.log("Rendering")
     if(!data || !data.name){
       return this.showLoadingHtml();
     }
@@ -289,7 +289,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     })}
     
     ${generateButton({
-      class: "group-webpage-link",
+      id: CANCEL_EDIT_BUTTON_ID,
       text: "Back to event",
       type: "submit"
     })}  
