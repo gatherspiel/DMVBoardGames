@@ -1,10 +1,14 @@
 import { AuthResponse } from "../types/AuthResponse.ts";
-import {addLocalStorageData, clearSessionStorage, getLocalStorageDataIfPresent} from "@bponnaluri/places-js";
-import { isAfterNow } from "@bponnaluri/places-js";
+import {
+  addLocalStorageData,
+  clearSessionStorage,
+  CustomLoadAction,
+  getLocalStorageDataIfPresent
+} from "@bponnaluri/places-js";
 import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../../shared/Params.ts";
 
-import {generateDataStoreWithExternalConfig} from "@bponnaluri/places-js";
 import {DataStore} from "@bponnaluri/places-js";
+import {isAfterNow} from "../../../shared/DateUtils.ts";
 
 async function retrieveData(
   data: any
@@ -64,7 +68,5 @@ async function retrieveData(
   }
 }
 
+export const LOGIN_STORE: DataStore = new DataStore(new CustomLoadAction(retrieveData));
 
-export const LOGIN_STORE: DataStore = generateDataStoreWithExternalConfig(
-  retrieveData,
-)

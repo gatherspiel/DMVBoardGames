@@ -4,7 +4,8 @@ import {
   GROUP_URL_INPUT,
 } from "./Constants.ts";
 import {generateButton} from "../../shared/components/ButtonGenerator.ts";
-import {ApiActionTypes, generateErrorMessage, ApiLoadAction} from "@bponnaluri/places-js";
+import {ApiActionTypes, ApiLoadAction} from "@bponnaluri/places-js";
+import {generateErrorMessage} from "../../shared/components/StatusIndicators.ts";
 import {
   IS_LOGGED_IN_KEY,
   SUCCESS_MESSAGE_KEY
@@ -60,7 +61,7 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
        const data = event.target.elements;
 
        const params = {
-         id: self.componentState.id,
+         id: self.componentStore.id,
          name: data[0].value,
          description: data[1].value,
          url: data[2].value
@@ -94,7 +95,7 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
         <h1>Create board game group</h1>
         
           ${
-            createGroupData.isLoggedIn
+            createGroupData.loggedIn
               ? `
                 <form id="create-group-form">
                 
@@ -112,7 +113,7 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
                   ${createGroupData.url}
                   </input>
                   
-             
+            
                   <br>
                   <label>Group description</label>
                   <br>
@@ -142,9 +143,4 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
   }
 }
 
-if (!customElements.get("create-group-page-component")) {
-  customElements.define(
-    "create-group-page-component",
-    CreateGroupPageComponent,
-  );
-}
+

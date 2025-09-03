@@ -1,8 +1,6 @@
-import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 import {LOCATIONS_STORE} from "../data/search/LocationsStore.ts";
-
 
 const loadConfig = [{
       componentReducer: (data:any)=>{
@@ -19,6 +17,26 @@ const template = `
     .game-restaurant-list-item > * {
       display: inline-block;
     }
+    
+    
+    .game-restaurant-list-item {
+      border-bottom:  5px solid;
+      border-image-source: url(assets/Section_Border_Tiny.png);
+      border-image-slice: 5 5;
+      border-image-repeat: round;
+    }
+    
+    .section-separator-small {
+      border-bottom:  5px solid;
+      border-image-source: url(assets/Section_Border_Tiny.png);
+      border-image-slice: 5 5;
+      border-image-repeat: round;
+      padding-bottom: 0.5rem;
+    }
+    
+    p {
+      font-size: 1rem;
+    }
   </style>
 `;
 export class GameRestaurantListComponent extends BaseDynamicComponent {
@@ -30,7 +48,7 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
     return template;
   }
 
-  getItemHtml(gameRestaurant: GameRestaurant) {
+  getItemHtml(gameRestaurant: any) {
     return `
     <div id = convention-${gameRestaurant.id} class="game-restaurant-list-item">
      <h3>
@@ -46,9 +64,11 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
 
   render(data: any) {
 
-    let html = `<div class ="ui-section">
+    let html = `<div class="game-restaurants">
     <h1 class="hideOnMobile">Board Game Bars and Cafés</h1>
     <h2 class="showOnMobile">Board Game Bars and Cafés</h2>
+    <div class="section-separator-small"></div>
+
     `;
     Object.values(data).forEach((item:any) => {
       const itemHtml = this.getItemHtml(item);
@@ -56,11 +76,4 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
     });
     return html + `</div>`;
   }
-}
-
-if (!customElements.get("game-restaurant-list-component")) {
-  customElements.define(
-    "game-restaurant-list-component",
-    GameRestaurantListComponent,
-  );
 }
