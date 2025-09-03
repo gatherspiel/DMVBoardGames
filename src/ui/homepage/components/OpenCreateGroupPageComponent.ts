@@ -6,14 +6,13 @@ import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
 
 
 const loadConfig = [{
-      componentReducer:(data:any)=>{
-        return {
-          [IS_LOGGED_IN_KEY]: data?.loggedIn
-        }
-      },
-      dataStore:LOGIN_STORE
-    }]
-
+  componentReducer:(data:any)=>{
+    return {
+      [IS_LOGGED_IN_KEY]: data?.loggedIn
+    }
+  },
+  dataStore:LOGIN_STORE
+}]
 
 export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
 
@@ -65,8 +64,4 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
         </div>
     `
   }
-}
-
-if (!customElements.get("open-create-group-component")) {
-  customElements.define("open-create-group-component", OpenCreateGroupPageComponent);
 }

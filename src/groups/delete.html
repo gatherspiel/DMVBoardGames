@@ -12,16 +12,11 @@
 
   <title>Delete group?</title>
 
-  <script
-    type="module"
-    src="../ui/groups/DeleteGroupPageComponent.ts"
-  ></script>
-  <script
-    defer
-    fetchpriority="low"
-    type="module"
-    src="../shared/components/LoginStatusComponent.ts"
-  ></script>
+  <script type="module">
+    import {DeleteGroupPageComponent} from "../ui/groups/DeleteGroupPageComponent.js";
+    customElements.define('delete-group-page-component',DeleteGroupPageComponent)
+  </script>
+
 </head>
 <body>
   <div id="container">

@@ -81,7 +81,6 @@ export class DeleteGroupPageComponent extends BaseDynamicComponent {
 
   render(data: any): string {
 
-    console.log("Hi");
     return `
       <form onsubmit="return false">
       
@@ -105,9 +104,4 @@ export class DeleteGroupPageComponent extends BaseDynamicComponent {
   }
 }
 
-if (!customElements.get("delete-group-page-component")) {
-  customElements.define(
-    "delete-group-page-component",
-    DeleteGroupPageComponent,
-  );
-}
+

@@ -142,9 +142,4 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
   }
 }
 
-if (!customElements.get("create-group-page-component")) {
-  customElements.define(
-    "create-group-page-component",
-    CreateGroupPageComponent,
-  );
-}
+

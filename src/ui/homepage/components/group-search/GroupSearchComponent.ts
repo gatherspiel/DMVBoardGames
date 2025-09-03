@@ -1,7 +1,5 @@
 import {
-  DAYS_IN_WEEK,
-  DEFAULT_SEARCH_PARAMETER, DISTANCE_OPTIONS, SEARCH_CITY_ID,
-  SEARCH_FORM_ID
+  DEFAULT_SEARCH_PARAMETER,
 } from "./Constants.ts";
 
 import {
@@ -9,15 +7,10 @@ import {
   updateCities,
 } from "../../data/search/CityListStore.ts";
 
-import { BaseDynamicComponent } from "@bponnaluri/places-js";
+import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
-import type {DropdownConfig} from "@bponnaluri/places-js";
 import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
 
-import {
-  DEFAULT_PARAMETER_DISPLAY_KEY,
-  DEFAULT_PARAMETER_KEY,
-} from "../../../../shared/Constants.ts";
 import {GROUP_SEARCH_STORE} from "../../data/search/GroupSearchStore.ts";
 
 const template = `
@@ -84,9 +77,33 @@ const template = `
 </style>
 `;
 
+const DEFAULT_PARAMETER_KEY = "defaultParameter";
+const DEFAULT_PARAMETER_DISPLAY_KEY = "defaultParameterDisplay";
 const SEARCH_BUTTON_ID:string = "search-button-id";
 const SEARCH_DISTANCE_ID:string = "search-distance-id";
 const SEARCH_DAYS_ID:string = "search-days-id";
+const SEARCH_CITY_ID: string = "search-cities";
+const SEARCH_FORM_ID: string = "search-form";
+
+const DAYS_IN_WEEK = [
+  {index:0, name:DEFAULT_SEARCH_PARAMETER},
+  {index:1,name: "Sunday"},
+  {index:2, name:"Monday"},
+  {index:3, name:"Tuesday"},
+  {index:4, name:"Wednesday"},
+  {index:5, name:"Thursday"},
+  {index:6, name:"Friday"},
+  {index:7, name:"Saturday"}
+];
+
+const DISTANCE_OPTIONS= [
+  {index:0, name:"0"},
+  {index:1,name: "5"},
+  {index:2, name:"10"},
+  {index:3, name:"15"},
+  {index:4, name:"30"},
+  {index:5, name:"50"},
+];
 
 const loadConfig = [{
   componentReducer: updateCities,
@@ -201,7 +218,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
 
   }
 
-  getDropdownHtml(dropdownConfig: DropdownConfig) {
+  getDropdownHtml(dropdownConfig: any) {
 
     return ` 
     <label class="searchDropdownLabel">${dropdownConfig.label} </label>
@@ -224,8 +241,4 @@ export class GroupSearchComponent extends BaseDynamicComponent {
   }
 
 
-}
-
-if (!customElements.get("group-search-component")) {
-  customElements.define("group-search-component", GroupSearchComponent);
 }

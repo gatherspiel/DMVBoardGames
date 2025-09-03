@@ -2,23 +2,30 @@
   These imports are to load the Web Components that will be displayed.
  */
 
-// @ts-ignore
-import {GameRestaurantListComponent} from "./GameRestaurantListComponent.ts";
-// @ts-ignore
-import {GameStoreListComponent} from "./GameStoreListComponent.ts";
-// @ts-ignore
-import {ConventionListComponent} from "./ConventionListComponent.ts";
-// @ts-ignore
-import {GroupPageEventComponent} from "../../groups/viewGroup/GroupPageEventComponent.ts";
-
-// @ts-ignore
-import {GroupSearchComponent} from "./group-search/GroupSearchComponent.ts";
-// @ts-ignore
-import {OpenCreateGroupPageComponent} from "./OpenCreateGroupPageComponent.ts";
-
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
+
+
+import {LoginStatusComponent} from "../../../shared/components/LoginStatusComponent.js";
+import {GroupListComponent} from "./GroupListComponent.ts";
+import {GameStoreListComponent} from "./GameStoreListComponent.js";
+import {GameRestaurantListComponent} from "./GameRestaurantListComponent.js";
+import {ConventionListComponent} from "./ConventionListComponent.js";
+import {GroupSearchComponent} from "./group-search/GroupSearchComponent.js";
+import {OpenCreateGroupPageComponent} from "./OpenCreateGroupPageComponent.js";
+
+customElements.define("open-create-group-component", OpenCreateGroupPageComponent);
+customElements.define("login-status-component",LoginStatusComponent)
+customElements.define("group-list-component", GroupListComponent);
+customElements.define("game-store-list-component", GameStoreListComponent);
+customElements.define("convention-list-component", ConventionListComponent);
+customElements.define(
+  "game-restaurant-list-component",
+  GameRestaurantListComponent,
+);
+customElements.define("group-search-component", GroupSearchComponent);
+
 
 const CONVENTIONS_ID = "convention-list";
 const EVENT_SEARCH_ID ="group-search";
@@ -91,6 +98,8 @@ export class HomepageComponent extends BaseDynamicComponent {
     </style>
     `
   }
+
+
 
   render(data:any){
     return `
@@ -171,6 +180,3 @@ export class HomepageComponent extends BaseDynamicComponent {
   }
 }
 
-if (!customElements.get("homepage-component")) {
-  customElements.define("homepage-component", HomepageComponent);
-}

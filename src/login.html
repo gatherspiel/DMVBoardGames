@@ -15,8 +15,14 @@
     defer
     fetchpriority="low"
     type="module"
-    src="ui/auth/LoginComponent.ts"
-  ></script>
+  >
+    import {LoginStatusComponent} from "./shared/components/LoginStatusComponent.js";
+    import {LoginComponent} from "./ui/auth/LoginComponent.js";
+
+    customElements.define("login-status-component", LoginStatusComponent);
+    customElements.define("login-component", LoginComponent);
+
+  </script>
 </head>
 <body>
 

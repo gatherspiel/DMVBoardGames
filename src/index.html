@@ -9,17 +9,11 @@
     <link rel="preconnect" href="localhost:7070" />
     <link rel="preconnect" href="api.gatherspiel.com" />
 
-    <script
-      type="module"
-      src="ui/homepage/components/GroupListComponent.ts"
-    ></script>
-
-    <script
-      defer
-      fetchpriority="low"
-      type="module"
-      src="ui/homepage/components/HomepageComponent.ts"
-    ></script>
+    <script type="module">
+      console.log(Date.now())
+      import {HomepageComponent} from "./ui/homepage/components/HomepageComponent.js";
+      customElements.define("homepage-component", HomepageComponent);
+    </script>
 
     <link rel="icon" type="image/ico" href="/assets/favicon.ico"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -27,19 +21,12 @@
   </head>
   <body>
 
-  <div id="container">
+    <div id="container">
       {{>navbar}}
 
       <homepage-component>
       </homepage-component>
     </div>
-
-    <script
-      defer
-      fetchpriority="low"
-      type="module"
-      src="shared/components/LoginStatusComponent.ts"
-    ></script>
 
 
   </body>

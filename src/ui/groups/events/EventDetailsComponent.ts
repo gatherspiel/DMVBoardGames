@@ -30,6 +30,9 @@ import {
 
 import {API_ROOT} from "../../../shared/Params.ts";
 
+import {LoginStatusComponent} from "../../../shared/components/LoginStatusComponent.ts";
+customElements.define("login-status-component", LoginStatusComponent);
+
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
   <style>   
@@ -59,7 +62,6 @@ const loadConfig =  [{
     }]
 
 
-const BACK_TO_GROUP_BUTTON_ID = "back-to-group-button";
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 const CANCEL_DELETE_BUTTON_ID = "cancel-delete-button";
 const CANCEL_EDIT_BUTTON_ID = "cancel-edit-button";
@@ -200,9 +202,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         <div class="ui-section">
           ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
           
-          ${generateButton({
-            id: BACK_TO_GROUP_BUTTON_ID,
-            text: "Back to group"
+          ${generateLinkButton({
+            text: "Back to group",
+            url: `${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}`
           })}
         </div>
       `
@@ -327,10 +329,12 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     
           <p class="success-message">${data[SUCCESS_MESSAGE_KEY] ? data[SUCCESS_MESSAGE_KEY].trim(): ""}</p>
           
-          ${generateButton({
-            id: BACK_TO_GROUP_BUTTON_ID,
+          ${generateLinkButton({
             text: "Back to group",
-          })}` : ''}
+            url: `${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}`
+          })}
+          
+         ` : ''}
 
       </div>
     `;
@@ -339,8 +343,4 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   getTemplateStyle(): string {
     return template;
   }
-}
-
-if (!customElements.get("event-details-component")) {
-  customElements.define("event-details-component", EventDetailsComponent);
 }

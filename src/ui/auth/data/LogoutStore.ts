@@ -7,7 +7,6 @@ import {deleteLocalStoreData, getLocalStorageDataIfPresent} from "@bponnaluri/pl
 async function retrieveData() {
 
   const url = `${SUPABASE_CLIENT_URL}/auth/v1/logout?scope=global`
-
   const authData = await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY);
 
   const headers = {

@@ -14,31 +14,7 @@ const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
   <style>
  
-    p {
-      word-wrap: break-word;
-      display: inline-block;
-      white-space: normal;
-
-      font-size: 1rem;
-      font-weight:600;
-        
-      max-width: 65ch;
-      margin-top: 0.5rem;
-    }
-    
-   .event-time, .event-location {
-      font-size: 1.25rem;
-      font-weight: 600;
-   }
-   
-  .event {
-      border-bottom:  5px solid;
-      border-image-source: url(assets/Section_Border_Tiny.png);
-      border-image-slice: 5 5;
-      border-image-repeat: round;
-      padding-bottom: 0.5rem;
-  }
-   
+  
   .raised {
     display: inline-block;
   }
@@ -85,5 +61,4 @@ export class GroupPageEventComponent extends BaseTemplateComponent {
 }
 
 if (!customElements.get("group-page-event-component")) {
-  customElements.define("group-page-event-component", GroupPageEventComponent);
 }

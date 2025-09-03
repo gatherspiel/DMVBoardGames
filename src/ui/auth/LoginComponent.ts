@@ -1,9 +1,7 @@
 import {LOGIN_STORE,} from "./data/LoginStore.ts";
-
 import {LOGOUT_STORE} from "./data/LogoutStore.ts";
 import {LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT,} from "./Constants.js";
 
-import type {LoginComponentStore} from "./types/LoginComponentStore.ts";
 import {
   IS_LOGGED_IN_KEY,
   SUCCESS_MESSAGE_KEY
@@ -58,13 +56,13 @@ const LOGOUT_BUTTON_ID = "logout-button";
 
 export class LoginComponent extends BaseDynamicComponent {
 
-  hasRendered: boolean;
+  loginAttempted: boolean;
 
   constructor() {
     super([{
       dataStore: LOGIN_STORE,
     }]);
-    this.hasRendered = false;
+    this.loginAttempted = false;
   }
 
   retrieveAndValidateFormInputs(shadowRoot:ShadowRoot) {
@@ -93,6 +91,7 @@ export class LoginComponent extends BaseDynamicComponent {
         const targetId = event.target?.id;
         if (targetId === LOGIN_BUTTON_ID){
 
+          self.loginAttempted = true;
           const formInputs = self.retrieveAndValidateFormInputs(shadowRoot)
 
           if(formInputs.errorMessage){
@@ -144,13 +143,12 @@ export class LoginComponent extends BaseDynamicComponent {
     return template;
   }
 
-  render(data: LoginComponentStore) {
-    console.log(data)
+  render(data: any) {
     return data[IS_LOGGED_IN_KEY] ?
         '' :
         this.generateLogin(data)
   }
-  generateLogin(data: LoginComponentStore) {
+  generateLogin(data: any) {
 
     const html = `
      <div class="ui-section" id="login-component-container">
@@ -190,16 +188,11 @@ export class LoginComponent extends BaseDynamicComponent {
 
                     
           </div>
-          ${this.hasRendered ? generateErrorMessage(data.errorMessage) : ''}
+          ${this.loginAttempted ? generateErrorMessage(data.errorMessage) : ''}
         </form>
 
     </div>
     `;
-    this.hasRendered = true;
     return html;
   }
-}
-
-if (!customElements.get("login-component")) {
-  customElements.define("login-component", LoginComponent);
 }

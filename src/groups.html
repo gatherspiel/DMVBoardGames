@@ -11,8 +11,16 @@
     defer
     fetchpriority="low"
     type="module"
-    src="ui/groups/viewGroup/GroupPageComponent.ts"
-  ></script>
+  >
+    import {GroupPageComponent} from "./ui/groups/viewGroup/GroupPageComponent.js";
+    import {GroupPageEventComponent} from "./ui/groups/viewGroup/GroupPageEventComponent.js";
+    import {LoginStatusComponent} from "./shared/components/LoginStatusComponent.js";
+
+    customElements.define("group-page-component", GroupPageComponent);
+    customElements.define("group-page-event-component", GroupPageEventComponent);
+    customElements.define("login-status-component", LoginStatusComponent);
+
+  </script>
 </head>
 <body>
 <div id="container">

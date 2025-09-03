@@ -77,6 +77,3 @@ export class LoginStatusComponent extends BaseDynamicComponent {
   }
 }
 
-if (!customElements.get("login-status-component")) {
-  customElements.define("login-status-component", LoginStatusComponent);
-}

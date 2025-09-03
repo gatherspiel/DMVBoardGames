@@ -1,31 +1,50 @@
-import type { GroupSearchResult } from "../data/types/group/GroupSearchResult.ts";
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 import {getDisplayName} from "../../../shared/DisplayNameConversion.ts";
 
 import {GROUP_SEARCH_STORE} from "../data/search/GroupSearchStore.ts";
 import {DEFAULT_SEARCH_PARAMETER} from "./group-search/Constants.ts";
-import {searchResultReducer} from "../data/store/SearchResultReducer.ts";
 
 const loadConfig = [{
-      componentReducer: searchResultReducer,
-      dataStore: GROUP_SEARCH_STORE,
-      /*When updating component state, values for top level keys that do not have corresponding key value pairs
-       in the reducer remain. As a result, a key must be specified to ensure that component state is updated
-       to only contain groups from the search results.
-       */
-      fieldName: "searchResults",
-      params: {
-        city: DEFAULT_SEARCH_PARAMETER,
-        day: DEFAULT_SEARCH_PARAMETER
-      }
-    }]
+  componentReducer: (searchResults: any)=> {
+
+    var results:any = searchResults?.groupData;
+    const updatedResults: Record<string, any> = {};
+
+    if(!results){
+      return {};
+    }
+
+    Object.keys(results).forEach((groupId)=>{
+      const group = results[groupId];
+
+      updatedResults[`group-${group.id}`] = {
+        events: group["events"],
+        locations: group.cities || group.locations,
+        url: group.url,
+        title: group.name,
+        summary: group.summary,
+        isHidden: false,
+      };
+    });
+    return updatedResults
+  },
+  dataStore: GROUP_SEARCH_STORE,
+  /*When updating component state, values for top level keys that do not have corresponding key value pairs
+   in the reducer remain. As a result, a key must be specified to ensure that component state is updated
+   to only contain groups from the search results.
+   */
+  fieldName: "searchResults",
+  params: {
+    city: DEFAULT_SEARCH_PARAMETER,
+    day: DEFAULT_SEARCH_PARAMETER
+  }
+}]
 
 
 const template = `
 
   <link rel="preload" as="style" href="/styles/sharedComponentStyles.css" onload="this.rel='stylesheet'"/>
-  <link rel="stylesheet" type="text/css" href="/styles/styles.css"/>
 
   <style>
 
@@ -83,7 +102,7 @@ export class GroupListComponent extends BaseDynamicComponent {
     super(loadConfig);
   }
 
-  private getItemHtml(groupId: string, group: GroupSearchResult) {
+  private getItemHtml(groupId: string, group: any) {
     let groupHtml: string;
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
@@ -97,7 +116,7 @@ export class GroupListComponent extends BaseDynamicComponent {
         })}
          </div>
    
-        <p class="event-group-location">${group.locations.map(name => getDisplayName(name))?.join(", ") ?? ""}</p>              
+        <p class="event-group-location">${group.locations.map((name:string) => getDisplayName(name))?.join(", ") ?? ""}</p>              
         
       </div>
     `;
@@ -108,9 +127,7 @@ export class GroupListComponent extends BaseDynamicComponent {
     return template;
   }
 
-
   render(data: any): string {
-    console.log("Rendering group list component")
     let html = `<div class="ui-section">`;
     const groupHtml = Object.keys(data.searchResults).reduce((result:any, groupId:any)=>{
       return result+this.getItemHtml(groupId, data.searchResults[groupId])
@@ -127,9 +144,4 @@ export class GroupListComponent extends BaseDynamicComponent {
     }
     return html + `</div>`;
   }
-}
-
-console.log("Defining group list component")
-if (!customElements.get("group-list-component")) {
-  customElements.define("group-list-component", GroupListComponent);
 }

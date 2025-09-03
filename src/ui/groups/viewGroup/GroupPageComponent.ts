@@ -5,8 +5,13 @@ import {
 } from "../Constants.js";
 import {GROUP_REQUEST_STORE} from "./GroupRequestStore.ts";
 
-import {ApiActionTypes, ApiLoadAction, serializeJSONProp} from "@bponnaluri/places-js";
-import type { Event } from "../../homepage/data/types/Event.ts";
+import {
+  ApiActionTypes,
+  ApiLoadAction,
+  convertLocationStringForDisplay,
+  getDateFromDateString,
+} from "@bponnaluri/places-js";
+
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 
 import {
@@ -75,6 +80,31 @@ const template = `
       border-image-slice: 20 20;
       border-image-repeat: round;
     }
+    
+    .event p {
+      word-wrap: break-word;
+      display: inline-block;
+      white-space: normal;
+
+      font-size: 1rem;
+      font-weight:600;
+        
+      max-width: 65ch;
+      margin-top: 0.5rem;
+    }
+    
+   .event-time, .event-location {
+      font-size: 1.25rem;
+      font-weight: 600;
+   }
+   
+  .event {
+      border-bottom:  5px solid;
+      border-image-source: url(assets/Section_Border_Tiny.png);
+      border-image-slice: 5 5;
+      border-image-repeat: round;
+      padding-bottom: 0.5rem;
+  }
     
     @media not screen and (width < 32em) {
       .${GROUP_DESCRIPTION_TEXT} {
@@ -216,7 +246,6 @@ export class GroupPageComponent extends BaseDynamicComponent {
 
   renderGroupEditUI(groupData:any):string {
 
-    console.log(groupData.name);
     return `
 
     ${groupData[SUCCESS_MESSAGE_KEY] ? `<h2>Group update successful</h2>` : ``}
@@ -240,10 +269,31 @@ export class GroupPageComponent extends BaseDynamicComponent {
     </div>`
   }
 
+  renderEventData(eventData:any, key:string){
+    return `
+      <div id=${key} class="event">
+      
+        <div>
+          <h3>${eventData.name}</h3>
+          <p class = "event-time">${getDateFromDateString(eventData.startTime)}</p>
+          <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
+          </br>  
+           ${generateLinkButton({
+            text: "View event details",
+            url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(eventData.groupId)}`
+          })}
+        </div>
+          
+      </div>
+    `;
+  }
   render(groupData: any): string {
     if (!groupData.permissions) {
       return `<h1>Loading</h1>`;
     }
+
+    const self = this;
+
     return `
      <div class="ui-section">
      ${!groupData.isEditing ? `
@@ -266,15 +316,8 @@ export class GroupPageComponent extends BaseDynamicComponent {
         groupData.eventData.length === 0
           ? `<p id="no-event">Click on group link above for event information</p>`
           : `${groupData.eventData
-              .map((event: Event) => {
-                return `
-              <group-page-event-component
-                key = ${groupData.id + "event-" + event.id}
-                data =${serializeJSONProp({groupId: groupData.id,...event})}
-              >
-              </group-page-event-component>
-
-            `;
+              .map((event: any) => {
+                return  self.renderEventData({groupId: groupData.id,...event},groupData.id + "event-" + event.id)
               }).join(" ")}
           <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
           `
@@ -282,8 +325,4 @@ export class GroupPageComponent extends BaseDynamicComponent {
       </div>
     `;
   }
-}
-
-if (!customElements.get("group-page-component")) {
-  customElements.define("group-page-component", GroupPageComponent);
 }

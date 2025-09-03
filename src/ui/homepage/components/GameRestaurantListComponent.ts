@@ -1,8 +1,6 @@
-import type { GameRestaurant } from "../data/types/GameRestaurant.ts";
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 import {LOCATIONS_STORE} from "../data/search/LocationsStore.ts";
-
 
 const loadConfig = [{
       componentReducer: (data:any)=>{
@@ -30,7 +28,7 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
     return template;
   }
 
-  getItemHtml(gameRestaurant: GameRestaurant) {
+  getItemHtml(gameRestaurant: any) {
     return `
     <div id = convention-${gameRestaurant.id} class="game-restaurant-list-item">
      <h3>
@@ -56,11 +54,4 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
     });
     return html + `</div>`;
   }
-}
-
-if (!customElements.get("game-restaurant-list-component")) {
-  customElements.define(
-    "game-restaurant-list-component",
-    GameRestaurantListComponent,
-  );
 }

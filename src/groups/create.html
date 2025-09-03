@@ -10,14 +10,11 @@
 
   <script
     type="module"
-    src="../ui/groups/CreateGroupPageComponent.ts"
-  ></script>
-  <script
-    defer
-    fetchpriority="low"
-    type="module"
-    src="../shared/components/LoginStatusComponent.ts"
-  ></script>
+  >
+    import {CreateGroupPageComponent} from "../ui/groups/CreateGroupPageComponent.js";
+    customElements.define('create-group-page-component',CreateGroupPageComponent)
+  </script>
+
 </head>
 <body>
 <div id="container">

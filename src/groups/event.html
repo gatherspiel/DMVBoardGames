@@ -13,8 +13,10 @@
 
   <script
     type="module"
-    src="../ui/groups/events/EventDetailsComponent.ts"
-  ></script>
+  >
+    import {EventDetailsComponent} from "../ui/groups/events/EventDetailsComponent.js";
+    customElements.define("event-details-component", EventDetailsComponent);
+  </script>
 
 </head>
 <body>

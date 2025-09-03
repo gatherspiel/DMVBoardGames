@@ -4,7 +4,6 @@ import { DEFAULT_SEARCH_PARAMETER } from "../../components/group-search/Constant
 import { generateDataStore } from "@bponnaluri/places-js";
 import type { ApiRequestConfig } from "@bponnaluri/places-js";
 
-
 function getCitiesQueryConfig(): ApiRequestConfig {
   return {
     url: API_ROOT + "/listCities?area=dmv",

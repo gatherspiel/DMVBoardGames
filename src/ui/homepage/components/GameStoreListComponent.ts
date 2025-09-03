@@ -56,7 +56,3 @@ export class GameStoreListComponent extends BaseDynamicComponent {
     return html + "</div>";
   }
 }
-
-if (!customElements.get("game-store-list-component")) {
-  customElements.define("game-store-list-component", GameStoreListComponent);
-}
