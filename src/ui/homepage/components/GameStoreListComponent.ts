@@ -14,13 +14,22 @@ const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
   <style>
 
-  .game-store-list-item p {
-    display: inline;
+
+  .section-separator-small {
+    border-bottom:  5px solid;
+    border-image-source: url(assets/Section_Border_Tiny.png);
+    border-image-slice: 5 5;
+    border-image-repeat: round;
+    padding-bottom: 0.5rem;
   }
   
-    .game-store-list-item > * {
+  .game-store-list-item * {
     display: inline-block;
   }
+  
+  p {
+      font-size: 1rem;
+    }
   </style>
 `;
 export class GameStoreListComponent extends BaseDynamicComponent {
@@ -34,7 +43,7 @@ export class GameStoreListComponent extends BaseDynamicComponent {
 
   getItemHtml(gameStore: any) {
     return `
-    <div id = convention-${gameStore.id} class="game-store-list-item">
+    <div id = convention-${gameStore.id} class="game-store-list-item section-separator-small">
      <h3>
         ${generateLinkButton({
           text: gameStore.name,
@@ -48,15 +57,13 @@ export class GameStoreListComponent extends BaseDynamicComponent {
 
   render(data: any) {
     let html = `<div class="ui-section"><h1 class="hideOnMobile">Game Stores</h1>
-    <h2 class="showOnMobile">Game stores</h2>`;
+    <h2 class="showOnMobile">Game stores</h2>
+    <div class="section-separator-small"></div>
+    `;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
     });
     return html + "</div>";
   }
-}
-
-if (!customElements.get("game-store-list-component")) {
-  customElements.define("game-store-list-component", GameStoreListComponent);
 }

@@ -13,6 +13,8 @@ export type ButtonConfig = {
 }
 
 export function generateLinkButton(config:LinkButtonConfig){
+
+
   return `
     <div class="raised ${config.class ?? ''}">
       <span class="shadow"></span>

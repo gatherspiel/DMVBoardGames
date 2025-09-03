@@ -40,16 +40,6 @@ export default defineConfig({
         feedback: resolve(__dirname, "src/feedback.html"),
         login: resolve(__dirname, "src/login.html"),
 
-      },
-      output:{
-        chunkFileNames: (chunkInfo) => {
-          // Filenames you want to keep unhashed
-          const noHashFiles = ["PageComponent", "content"];
-          if (noHashFiles.includes(chunkInfo.name)) {
-            return "[name].js"; // Keep file unhashed
-          }
-          return "assets/[name]-[hash].js"; // Hash other entry files
-        },
       }
     },
   },

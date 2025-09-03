@@ -1,15 +1,14 @@
-import type { Convention } from "../data/types/Convention.ts";
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import { generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 
 import {LOCATIONS_STORE} from "../data/search/LocationsStore.ts";
 
 const loadConfig = [{
-      componentReducer: (data:any)=>{
-        return data.conventions;
-      },
-      dataStore: LOCATIONS_STORE,
-    }]
+  componentReducer: (data:any)=>{
+    return data.conventions;
+  },
+  dataStore: LOCATIONS_STORE,
+}]
 
 
 const template = `
@@ -36,7 +35,7 @@ export class ConventionListComponent extends BaseDynamicComponent {
     super(loadConfig);
   }
 
-  getItemHtml(convention: Convention) {
+  getItemHtml(convention: any) {
     return `
     <div id = convention-${convention.id} class="conv-list-item">
      <h3>
@@ -67,8 +66,4 @@ export class ConventionListComponent extends BaseDynamicComponent {
     });
     return html + "</div>";
   }
-}
-
-if (!customElements.get("convention-list-component")) {
-  customElements.define("convention-list-component", ConventionListComponent);
 }

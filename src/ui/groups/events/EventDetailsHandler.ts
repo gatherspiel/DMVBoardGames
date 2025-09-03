@@ -1,14 +1,11 @@
-import {
-  validateAddress,
-  validateDateFormat
-} from "@bponnaluri/places-js";
+
 import {
   END_TIME_INPUT,
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT, EVENT_URL_INPUT,
   START_DATE_INPUT, START_TIME_INPUT,
 } from "../Constants.ts";
-import {combineDateAndTime} from "@bponnaluri/places-js";
+import {combineDateAndTime, validateAddress, validateDateFormat} from "../../../shared/DateUtils.ts";
 
 export function getEventDetailsFromForm(formData:Record<string,string>){
   const startDate = formData[START_DATE_INPUT]
