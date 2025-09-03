@@ -2,26 +2,27 @@ import {
   GROUP_DESCRIPTION_INPUT, GROUP_DESCRIPTION_TEXT,
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
-} from "../Constants.js";
-import {GROUP_REQUEST_STORE} from "./GroupRequestStore.ts";
+} from "./Constants.js";
 
 import {
   ApiActionTypes,
-  ApiLoadAction,
-  convertLocationStringForDisplay,
-  getDateFromDateString,
+  ApiLoadAction, DataStore,
 } from "@bponnaluri/places-js";
 
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 
+import {convertLocationStringForDisplay,getDateFromDateString} from "../../shared/DateUtils.ts";
 import {
   generateButton,
   generateLinkButton
-} from "../../../shared/components/ButtonGenerator.ts";
+} from "../../shared/components/ButtonGenerator.ts";
 import {
   SUCCESS_MESSAGE_KEY
-} from "../../../shared/Constants.ts";
-import {API_ROOT} from "../../../shared/Params.ts";
+} from "../../shared/Constants.ts";
+import {API_ROOT} from "../../shared/Params.ts";
+
+import {LoginStatusComponent} from "../../shared/components/LoginStatusComponent.ts";
+customElements.define("login-status-component", LoginStatusComponent);
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -135,10 +136,15 @@ const groupDataReducer = (groupData:any)=>{
 }
 
 const loadConfig = [{
-      dataStore:GROUP_REQUEST_STORE,
-      componentReducer:groupDataReducer,
-      urlParams:["name"]
-    }]
+  componentReducer:groupDataReducer,
+  dataStore:new DataStore(new ApiLoadAction(
+    (requestParams: any) =>  {
+      return {
+        url: API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`,
+      };
+    })),
+  urlParams:["name"]
+}]
 
 const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
 const EDIT_GROUP_BUTTON_ID = "edit-group-button";
@@ -154,7 +160,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
   }
 
   override attachEventsToShadowRoot(shadowRoot:ShadowRoot) {
-    var self = this;
+    const self = this;
     shadowRoot?.addEventListener("click", function(event:any){
       event.preventDefault();
 
@@ -174,7 +180,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
         }
         if(targetId === SAVE_UPDATES_BUTTON_ID){
           const params = {
-            id: self.componentState.id,
+            id: self.componentStore.id,
             name: (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLTextAreaElement)?.value,
             description: (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value,
             url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value
@@ -209,11 +215,11 @@ export class GroupPageComponent extends BaseDynamicComponent {
       <label>Group name</label>
       <br>
       <input
-      id=${GROUP_NAME_INPUT}
-      value="${groupData.name}"
+        id=${GROUP_NAME_INPUT}
+        value="${groupData.name}"
         />
       <br>
-        <label>Group description</label>
+      <label>Group description</label>
       <br>
   
       <textarea
@@ -225,8 +231,8 @@ export class GroupPageComponent extends BaseDynamicComponent {
       <label>Group url</label>
       <br>
       <input
-      id=${GROUP_URL_INPUT}
-      value=${groupData.url}
+        id=${GROUP_URL_INPUT}
+        value=${groupData.url}
       />
       <br>
   
@@ -239,7 +245,6 @@ export class GroupPageComponent extends BaseDynamicComponent {
       ${generateButton({
         id: CANCEL_UPDATES_BUTTON_ID,
         text: "Cancel updates",
-        type: "submit",
       })}
     </form>`
   }
@@ -248,31 +253,29 @@ export class GroupPageComponent extends BaseDynamicComponent {
 
     return `
 
-    ${groupData[SUCCESS_MESSAGE_KEY] ? `<h2>Group update successful</h2>` : ``}
-    <div class="group-title">
-
- 
-      ${generateButton({
-        id:EDIT_GROUP_BUTTON_ID,
-        text: "Edit group info",
-      })}
-    
-      ${generateLinkButton({
-        text: "Add event",
-        url: `groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}`
-      })}
-    
-      ${generateLinkButton({
-        text: "Delete group",
-        url: `groups/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}`
-      })}
-    </div>`
+      ${groupData[SUCCESS_MESSAGE_KEY] ? `<h2>Group update successful</h2>` : ``}
+      <div class="group-title">
+      
+        ${generateButton({
+          id:EDIT_GROUP_BUTTON_ID,
+          text: "Edit group info",
+        })}
+      
+        ${generateLinkButton({
+          text: "Add event",
+          url: `groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}`
+        })}
+      
+        ${generateLinkButton({
+          text: "Delete group",
+          url: `groups/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}`
+        })}
+      </div>`
   }
 
   renderEventData(eventData:any, key:string){
     return `
       <div id=${key} class="event">
-      
         <div>
           <h3>${eventData.name}</h3>
           <p class = "event-time">${getDateFromDateString(eventData.startTime)}</p>
@@ -282,11 +285,11 @@ export class GroupPageComponent extends BaseDynamicComponent {
             text: "View event details",
             url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(eventData.groupId)}`
           })}
-        </div>
-          
+        </div>     
       </div>
     `;
   }
+
   render(groupData: any): string {
     if (!groupData.permissions) {
       return `<h1>Loading</h1>`;

@@ -55,16 +55,18 @@ const template = `
       border-image-repeat: round;
     }
     
-    .raised {
-      line-height: 1;
-    }
     @media not screen and (width < 32em) {
     
       .event-group-location {
         display: inline-block;
         margin-left: 2rem;
       }
+      
+      .raised {
+        display: inline-block;
+      }
     }  
+    
     @media screen and (width < 32em) {
       a {
         margin-top: 1rem;
@@ -73,26 +75,21 @@ const template = `
       .event-group-location {
         display: none; 
       }
+      
       .ui-section .event-group:not(:first-child) {
         margin-top: 0.5rem;
       }
+      
+      .raised {
+        margin-top: 0.5rem;
+        margin-left:2rem;
+        margin-right:2rem;
+      }
     }
     
-    .event-group {
-      display: flex;
-      align-items: center;
-      height: 4rem;
-    }
+ 
     
-    .image-div img {
-      padding-top:10px
-    }
-    
-    .image-div {
-      padding-right: 0.5rem;
-      max-width:3rem;
-    }
-    .image-div, .button-div {
+    .button-div {
       display: flex;
     }
   </style>
@@ -106,15 +103,11 @@ export class GroupListComponent extends BaseDynamicComponent {
     let groupHtml: string;
     groupHtml = `
       <div id=${groupId} class=${"event-group"}>
-        
 
-         
-        <div class = "button-div">
         ${generateLinkButton({
           text: group.title,
           url: `groups.html?name=${encodeURIComponent(group.title)}`
         })}
-         </div>
    
         <p class="event-group-location">${group.locations.map((name:string) => getDisplayName(name))?.join(", ") ?? ""}</p>              
         

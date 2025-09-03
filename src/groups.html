@@ -3,22 +3,17 @@
 <head>
   <meta charset="UTF-8"/>
   <style inline-source src="../public/styles/styles.css" type="text/css"></style>
+  <style inline-source src="../public/styles/sharedComponentStyles.css" type="text/css"></style>
 
   <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GroupSearchResult Information</title>
   <script
-    defer
-    fetchpriority="low"
     type="module"
   >
-    import {GroupPageComponent} from "./ui/groups/viewGroup/GroupPageComponent.js";
-    import {GroupPageEventComponent} from "./ui/groups/viewGroup/GroupPageEventComponent.js";
-    import {LoginStatusComponent} from "./shared/components/LoginStatusComponent.js";
+    import {GroupPageComponent} from "./ui/groups/GroupPageComponent.ts";
 
     customElements.define("group-page-component", GroupPageComponent);
-    customElements.define("group-page-event-component", GroupPageEventComponent);
-    customElements.define("login-status-component", LoginStatusComponent);
 
   </script>
 </head>

@@ -25,43 +25,25 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
       <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
       <style>
       
-      #open-create-group-div {
-        border-bottom:  5px solid;
-        border-image-source: url(assets/Section_Border_Tiny.png);
-        border-image-slice: 5 5;
-        border-image-repeat: round;
-      }
-      
-      
-        .homepage-default-action-div {
-          display:flex;
-          align-items: center;
+ 
+        .raised {
+          margin-left: 2rem;
+          margin-right:2rem;
+          line-height: 1;
         }
-        
-        .homepage-default-action-div img {
-          padding-top:20px;
-          padding-right:0.5rem;
-        }
-      .raised {
-        display: inline-block;
-        line-height: 1;
-      }
-            
+          
       </style>`
   }
-
 
   render(data: any){
     if(!data[IS_LOGGED_IN_KEY]){
       return ''
     }
     return `
-        <div id="open-create-group-div" class= "homepage-default-action-div">
         ${generateLinkButton({
           text: "Create group",
           url:`groups/create.html`
         })}
-        </div>
     `
   }
 }

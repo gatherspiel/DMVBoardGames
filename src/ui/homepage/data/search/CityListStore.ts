@@ -1,8 +1,7 @@
 import { API_ROOT } from "../../../../shared/Params.ts";
 
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/group-search/Constants.ts";
-import { generateDataStore } from "@bponnaluri/places-js";
-import type { ApiRequestConfig } from "@bponnaluri/places-js";
+import {ApiLoadAction, type ApiRequestConfig, DataStore} from "@bponnaluri/places-js";
 
 function getCitiesQueryConfig(): ApiRequestConfig {
   return {
@@ -30,6 +29,4 @@ export const updateCities =  (cityArray:any) => {
 
 };
 
-export const CITY_LIST_STORE = generateDataStore({
-  queryConfig: getCitiesQueryConfig,
-})
+export const CITY_LIST_STORE = new DataStore(new ApiLoadAction(getCitiesQueryConfig))

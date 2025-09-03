@@ -10,13 +10,13 @@ import {
   START_DATE_INPUT, START_TIME_INPUT,
 } from "../Constants.ts";
 import {generateButton, generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
-import {generateErrorMessage} from "@bponnaluri/places-js";
 import {
   SUCCESS_MESSAGE_KEY
 } from "../../../shared/Constants.ts";
 
 import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
 import {getEventDetailsFromForm, validateEventFormData} from "./EventDetailsHandler.ts";
+import {generateErrorMessage} from "../../../shared/components/StatusIndicators.ts";
 import { API_ROOT } from "../../../shared/Params.ts";
 
 const templateStyle = `
@@ -38,7 +38,6 @@ const templateStyle = `
     
     .raised {
        display:inline-block;
-       line-height:1
     }
   </style>
 `;
@@ -72,7 +71,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
       const data = event.target.elements;
 
       const formData = {
-        id: self.componentState.id,
+        id: self.componentStore.id,
         [EVENT_NAME_INPUT]: data[0].value,
         [EVENT_DESCRIPTION_INPUT]: data[1].value,
         [EVENT_URL_INPUT]: data[2].value,

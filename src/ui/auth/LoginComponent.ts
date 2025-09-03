@@ -1,7 +1,6 @@
 import {LOGIN_STORE,} from "./data/LoginStore.ts";
 import {LOGOUT_STORE} from "./data/LogoutStore.ts";
 import {LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT,} from "./Constants.js";
-
 import {
   IS_LOGGED_IN_KEY,
   SUCCESS_MESSAGE_KEY
@@ -10,8 +9,8 @@ import {
   BaseDynamicComponent,
   ApiLoadAction,
 } from "@bponnaluri/places-js";
+import {generateErrorMessage} from "../../shared/components/StatusIndicators.ts";
 import {generateButton} from "../../shared/components/ButtonGenerator.ts";
-import {generateErrorMessage} from "@bponnaluri/places-js";
 import {API_ROOT} from "../../shared/Params.ts";
 
 //TODO: Refactor CSS to use fix widths on labels in the future instead of having a hardcoded margin on the email label.
@@ -97,7 +96,7 @@ export class LoginComponent extends BaseDynamicComponent {
           if(formInputs.errorMessage){
             self.updateData(formInputs)
           } else {
-            LOGIN_STORE.getData({
+            LOGIN_STORE.fetchData({
               formInputs
             })
           }
@@ -129,7 +128,7 @@ export class LoginComponent extends BaseDynamicComponent {
         }
 
         if (targetId === LOGOUT_BUTTON_ID) {
-          LOGOUT_STORE.getData({}, LOGIN_STORE)
+          LOGOUT_STORE.fetchData({}, LOGIN_STORE)
         }
       }catch(e:any){
         if(e.message !== `Permission denied to access property "id"`){

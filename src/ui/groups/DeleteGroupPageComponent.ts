@@ -1,7 +1,7 @@
 import {ApiActionTypes, BaseDynamicComponent, ApiLoadAction} from "@bponnaluri/places-js";
 import { GROUP_NAME_INPUT } from "./Constants.ts";
 import {generateButton} from "../../shared/components/ButtonGenerator.ts";
-import {generateErrorMessage} from "@bponnaluri/places-js";
+import {generateErrorMessage} from "../../shared/components/StatusIndicators.ts";
 import {
   SUCCESS_MESSAGE_KEY
 } from "../../shared/Constants.ts";
@@ -49,7 +49,7 @@ export class DeleteGroupPageComponent extends BaseDynamicComponent {
     shadowRoot?.getElementById(CONFIRM_DELETE_BUTTON_ID).addEventListener("click",()=>{
       const groupName:any = (shadowRoot.getElementById(GROUP_NAME_INPUT) as HTMLInputElement)?.value.trim();
 
-      if(groupName !== this.componentState.existingGroupName){
+      if(groupName !== this.componentStore.existingGroupName){
         self.updateData({
           name:groupName,
           errorMessage: "Group name not entered correctly",

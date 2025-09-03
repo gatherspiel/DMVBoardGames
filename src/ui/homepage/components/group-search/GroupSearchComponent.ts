@@ -13,17 +13,23 @@ import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
 
 import {GROUP_SEARCH_STORE} from "../../data/search/GroupSearchStore.ts";
 
+const DEFAULT_PARAMETER_KEY = "defaultParameter";
+const DEFAULT_PARAMETER_DISPLAY_KEY = "defaultParameterDisplay";
+const SEARCH_BUTTON_ID:string = "search-button-id";
+const SEARCH_DISTANCE_ID:string = "search-distance-id";
+const SEARCH_DAYS_ID:string = "search-days-id";
+const SEARCH_CITY_ID: string = "search-cities";
+const SEARCH_FORM_ID: string = "search-form";
+
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
 
   <style>
   
   #search-form {
-    align-items: center;
     display: flex;
     flex-wrap: wrap;
     gap: 4rem;
-    justify-content: left;
     padding-bottom: 5px;
   }
   
@@ -45,45 +51,23 @@ const template = `
   }
     
   #searchInputDiv {
-    align-items: center;
-    display:flex;
-    height:3.5rem;
+    padding-top: 0.5rem;
   }
   
-  #searchInputDiv img {
-    padding-top:20px;
+  @media not screen and (width < 32em) {
+    select {
+      margin-right: 1rem;
+    }
   }
-  
-  .image-div {
-    padding-right:0.5rem;
-  }
-  
+    
   @media screen and (width < 32em) {
     #search-form {
       gap: 2rem;
-    }
-    
-    .search-input-wrapper {
-      align-items: center;
-      justify-content: center;
-    }
-    
-    button {
-      justify-content: center;
-    }
-    
-
+    } 
   }
 </style>
 `;
 
-const DEFAULT_PARAMETER_KEY = "defaultParameter";
-const DEFAULT_PARAMETER_DISPLAY_KEY = "defaultParameterDisplay";
-const SEARCH_BUTTON_ID:string = "search-button-id";
-const SEARCH_DISTANCE_ID:string = "search-distance-id";
-const SEARCH_DAYS_ID:string = "search-days-id";
-const SEARCH_CITY_ID: string = "search-cities";
-const SEARCH_FORM_ID: string = "search-form";
 
 const DAYS_IN_WEEK = [
   {index:0, name:DEFAULT_SEARCH_PARAMETER},
@@ -147,11 +131,11 @@ export class GroupSearchComponent extends BaseDynamicComponent {
     shadowRoot?.getElementById(SEARCH_BUTTON_ID)?.addEventListener("click", (event:any)=>{
       event.preventDefault();
       const searchParams:any = {
-        location: this.componentState.location,
-        day: this.componentState.day,
-        distance: this.componentState.distance
+        location: this.componentStore.location,
+        day: this.componentStore.day,
+        distance: this.componentStore.distance
       };
-      GROUP_SEARCH_STORE.getData(searchParams)
+      GROUP_SEARCH_STORE.fetchData(searchParams)
     })
   }
 
@@ -162,58 +146,50 @@ export class GroupSearchComponent extends BaseDynamicComponent {
     }
     return `
    
-      <div id="event-search" class="ui-section">
-        <form id=${SEARCH_FORM_ID}>
-          <div id='search-input-wrapper'>
-             <div>
-              ${this.getDropdownHtml({
-              label:"Select event day:",
-              id: SEARCH_DAYS_ID,
-              name: "days",
-              data: DAYS_IN_WEEK,
-              selected: eventSearchStore.day,
-              [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
-              [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
-            })}
-            </div>
-            <div>
-              ${this.getDropdownHtml({
-                label:"Select event city:",
-                id: SEARCH_CITY_ID,
-                name: "cities",
-                data: eventSearchStore.cityList ?? [{name:"Any location"}],
-                selected: eventSearchStore.location,
-                [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
-                [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
-              })}
-            </div>
-            ${eventSearchStore.location ?
-              `<div>
-              ${this.getDropdownHtml({
-                label:"Select distance:",
-                id: SEARCH_DISTANCE_ID,
-                name: "distance",
-                data: DISTANCE_OPTIONS,
-                selected: eventSearchStore.distance,
-                [DEFAULT_PARAMETER_KEY]:"0 miles",
-                [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
-              })}</div>` :
-               ``}
+      <form id=${SEARCH_FORM_ID}>
+        <div>
+            ${this.getDropdownHtml({
+            label:"Select event day:",
+            id: SEARCH_DAYS_ID,
+            name: "days",
+            data: DAYS_IN_WEEK,
+            selected: eventSearchStore.day,
+            [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
+            [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
+          })}
             
-              <div id="searchInputDiv"> 
-     
-             
-                <div> 
-                 ${generateButton({
-                  id: SEARCH_BUTTON_ID,
-                  text: "Search groups",
-                  type: "Submit",
-                })}
-                </div> 
-            </div>
-          </div>
-        </form>
+          ${this.getDropdownHtml({
+            label:"Select event city:",
+            id: SEARCH_CITY_ID,
+            name: "cities",
+            data: eventSearchStore.cityList ?? [{name:"Any location"}],
+            selected: eventSearchStore.location,
+            [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
+            [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
+          })}
+          
+          ${eventSearchStore.location ?
+            `
+            ${this.getDropdownHtml({
+              label:"Select distance:",
+              id: SEARCH_DISTANCE_ID,
+              name: "distance",
+              data: DISTANCE_OPTIONS,
+              selected: eventSearchStore.distance,
+              [DEFAULT_PARAMETER_KEY]:"0 miles",
+              [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
+            })}` :
+             ``}
+          
+          <div id="searchInputDiv"> 
+             ${generateButton({
+              id: SEARCH_BUTTON_ID,
+              text: "Search groups",
+              type: "Submit",
+            })}
+        </div>
       </div>
+    </form>
   `;
 
   }

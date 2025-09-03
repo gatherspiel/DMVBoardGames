@@ -1,6 +1,6 @@
 import {
   ApiActionTypes,
-  BaseDynamicComponent, ApiLoadAction,
+  BaseDynamicComponent, ApiLoadAction
 } from "@bponnaluri/places-js";
 import {
   END_TIME_INPUT,
@@ -14,16 +14,14 @@ import {
   getEventDetailsFromForm,
   validateEventFormData
 } from "./EventDetailsHandler.ts";
-import {
-  convertDateTimeForDisplay,
-  convertDayOfWeekForDisplay,
-  convertLocationStringForDisplay, getDateFromDateString
-} from "@bponnaluri/places-js";
+
+import {generateErrorMessage} from "../../../shared/components/StatusIndicators.ts";
+import {getDateFromDateString} from "../../../shared/DateUtils.ts";
+import {convertLocationStringForDisplay} from "../../../shared/DateUtils.ts";
 import {
   generateButton,
   generateLinkButton
 } from "../../../shared/components/ButtonGenerator.ts";
-import {generateErrorMessage, generateSuccessMessage} from "@bponnaluri/places-js";
 import {
   SUCCESS_MESSAGE_KEY
 } from "../../../shared/Constants.ts";
@@ -31,6 +29,8 @@ import {
 import {API_ROOT} from "../../../shared/Params.ts";
 
 import {LoginStatusComponent} from "../../../shared/components/LoginStatusComponent.ts";
+import {generateSuccessMessage} from "../../../shared/components/StatusIndicators.ts";
+import {convertDateTimeForDisplay, convertDayOfWeekForDisplay} from "../../../shared/DateUtils.ts";
 customElements.define("login-status-component", LoginStatusComponent);
 
 const template = `
@@ -74,10 +74,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     super(loadConfig);
   }
 
-  override showLoadingHtml():string {
-    return `<h1>Loading</h1>`;
-  }
-
   override attachEventsToShadowRoot(shadowRoot?: any) {
     const self = this;
 
@@ -104,8 +100,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
         if(event.target.id === CONFIRM_DELETE_BUTTON_ID){
           const params = {
-            id: self.componentState.id,
-            groupId: self.componentState.groupId
+            id: self.componentStore.id,
+            groupId: self.componentStore.groupId
           }
 
           ApiLoadAction.getResponseData({
@@ -138,7 +134,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
           const formElements = shadowRoot?.getElementById('event-details-form').elements;
           const formData = {
-            id: self.componentState.id,
+            id: self.componentStore.id,
             [EVENT_NAME_INPUT]: formElements[0].value,
             [EVENT_DESCRIPTION_INPUT]: formElements[1].value,
             [EVENT_URL_INPUT]: formElements[2].value,
@@ -185,7 +181,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   render(data: any): string {
 
     if(!data || !data.name){
-      return this.showLoadingHtml();
+      return `<h1>Loading</h1>`;
     }
     if(data.isEditing){
       return this.renderEditMode(data);
@@ -327,7 +323,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             text: "Delete event",
           })}
     
-          <p class="success-message">${data[SUCCESS_MESSAGE_KEY] ? data[SUCCESS_MESSAGE_KEY].trim(): ""}</p>
+          ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
           
           ${generateLinkButton({
             text: "Back to group",

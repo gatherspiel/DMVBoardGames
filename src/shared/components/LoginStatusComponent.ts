@@ -14,13 +14,9 @@ const template = `
   <style>
   
   a {
-    border-color: var(--clr-darker-blue);
-    border-width: 1px;
     color: white;
     font-size: 1.5rem;
     font-weight: 400;
-    margin-top: 0.5rem;
-    padding: 0.5rem;
     text-decoration: none;
   }
   
@@ -33,7 +29,7 @@ const template = `
   }
   
   div {
-    padding-top:0.25rem;
+    padding-top:0.5rem;
     font-size: 1.5rem;
     color:var(--clr-darker-blue)
   }
@@ -44,6 +40,13 @@ const template = `
   
   button:active {
     background-color: var(--clr-darker-blue) !important;
+  }
+  
+      
+  @media not screen and (width < 32em) {
+    div {
+      padding-left:1rem;
+    }
   }
 
   </style>
@@ -62,7 +65,7 @@ export class LoginStatusComponent extends BaseDynamicComponent {
 
   override attachEventHandlersToDom(shadowRoot?: any){
     shadowRoot?.getElementById(SIGN_OUT_LINK_ID)?.addEventListener("click",()=>{
-      LOGOUT_STORE.getData({}, LOGIN_STORE)
+      LOGOUT_STORE.fetchData({}, LOGIN_STORE)
     });
   }
 

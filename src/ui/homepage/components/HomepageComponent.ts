@@ -78,21 +78,31 @@ export class HomepageComponent extends BaseDynamicComponent {
           border-image-repeat: round;
         }
         
-        .homepage-default-action-div {
-          display:flex;
-          align-items: center;
+        .section-separator-small {
+          border-bottom:  5px solid;
+          border-image-source: url(assets/Section_Border_Tiny.png);
+          border-image-slice: 5 5;
+          border-image-repeat: round;
+          padding-bottom: 0.5rem;
+        }
+       
+        #show-info-ui {
+          padding-bottom: 0.5rem;
         }
         
-        .homepage-default-action-div img {
-          padding-top:20px;
-          padding-right:0.5rem;
+        #nav-container {
+          padding-bottom: 0.25rem;
         }
         
-        @media screen and (width < 32em) {
+        #show-more-info {
+         font-size: 1.5rem;
+         font-weight: 600;       
+       }
+
+       @media screen and (width < 32em) {
           .raised {
             margin-top:0.5rem;
           }
-        
         }
       
     </style>
@@ -100,60 +110,53 @@ export class HomepageComponent extends BaseDynamicComponent {
   }
 
 
-
   render(data:any){
     return `
-        <div class="ui-section">
-        <open-create-group-component>
-        </open-create-group-component>
-        <nav>
-          <div id="nav-container">
-            <div>Click for more info about</div>
-            
-            <div class = "homepage-default-action-div">
- 
-              <div id="show-info-ui">
-                ${data.hideEvents || data.showAllButtons ? generateButton({
-                  id: EVENT_SEARCH_ID,
-                  text: "Events",
-                }): ``} 
-                  
-                ${data.hideConventions ? generateButton({
-                  id: CONVENTIONS_ID,
-                  text: "Conventions",
-                }): ``}       
-             
-                ${data.hideGameStores ? generateButton({
-                  id: GAME_STORES_ID,
-                  text: "Game Stores",
-                }): ``}  
-             
-                ${data.hideRestaurants ? generateButton({
-                  id: GAME_RESTAURANTS_ID,
-                  text: "Bars and Cafés",
+      <open-create-group-component class = "ui-section">
+      </open-create-group-component>     
+      
+      <div class="section-separator-small"></div>
 
-                }): ``} 
-              </div>
-            
-            </div>
-             
-          </div>
-        </nav>
+      <div class = "ui-section">
+        <span id="show-more-info">Click for more info about:</span>
       </div>
-    
-   
+      
+      <div class = "ui-section">
+        <div id="show-info-ui">
+          ${data.hideEvents || data.showAllButtons ? generateButton({
+            id: EVENT_SEARCH_ID,
+            text: "Events",
+          }): ``} 
+            
+          ${data.hideConventions ? generateButton({
+            id: CONVENTIONS_ID,
+            text: "Conventions",
+          }): ``}       
+       
+          ${data.hideGameStores ? generateButton({
+            id: GAME_STORES_ID,
+            text: "Game Stores",
+          }): ``}  
+       
+          ${data.hideRestaurants ? generateButton({
+            id: GAME_RESTAURANTS_ID,
+            text: "Bars and Cafés",
+          }): ``} 
+        </div>
+      </div>
+
+      <div class="section-separator-medium"></div>
+      
+      <group-search-component class = "ui-section" id="group-search-component" isVisible=${!data.hideEvents}>
+      </group-search-component>
+      
       <div class="section-separator-medium"></div>
 
-      <div data-container="root">
-        <group-search-component id="group-search-component" class="page-section" isVisible=${!data.hideEvents}>
-        </group-search-component>
-    
-        <div class="section-separator-medium"></div>
-    
-        ${data && !data.hideEvents ? `
-        <div id="group-list" class="page-section">
-          <group-list-component></group-list-component>
-        </div> `: ''}
+      ${data && !data.hideEvents ? `
+          <group-list-component class="ui-section"></group-list-component>
+        `: ''}
+      <div class = "ui-section">
+      
     
 
         ${data && !data.hideConventions ? `
@@ -163,19 +166,19 @@ export class HomepageComponent extends BaseDynamicComponent {
           </convention-list-component>
         </div>
         ` : ''}
-    
- 
-      ${data && !data.hideRestaurants ?`
-        <div id="game-restaurant-list" class="page-section">
-          <game-restaurant-list-component></game-restaurant-list-component>
-        </div>` : ''}
-    
-      ${data && !data.hideGameStores ? `
-        <div id="game-store" class="page-section">
-          <game-store-list-component></game-store-list-component>
-        </div>` : ''}
+      
+   
+        ${data && !data.hideRestaurants ?`
+          <div id="game-restaurant-list" class="page-section">
+            <game-restaurant-list-component></game-restaurant-list-component>
+          </div>` : ''}
+      
+        ${data && !data.hideGameStores ? `
+          <div id="game-store" class="page-section">
+            <game-store-list-component></game-store-list-component>
+          </div>` : ''}
+        </div>
       </div>
-    </div>
     `
   }
 }
