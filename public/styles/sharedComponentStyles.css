@@ -9,21 +9,8 @@ a, button {
   text-decoration: none;
 }
 
-.ui-separator {
-  border-top: 1px solid var(--clr-lighter-blue);
-}
-
 a:hover {
   background-color: var(--clr-darker-blue);
-}
-
-.ui-section {
-  color: var(--clr-dark-blue);
-  font-size: 1.5rem;
-  font-weight: 600;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  visibility: visible;
 }
 
 label {
@@ -44,34 +31,16 @@ p {
   color: darkred;
 }
 
-@media not screen and (width < 32em) {
-  .showOnMobile {
-    display:none
-  }
-}
-
-@media screen and (width < 32em) {
-  .ui-section {
-    text-align: center;
-    justify-items: center;
-  }
-  .hideOnMobile {
-    display:none;
-  }
-  .showOnMobile {
-    display:initial;
-  }
-}
-
 
 .raised {
-  position: relative;
-  -webkit-tap-highlight-color: transparent;
   background: transparent;
   border: none;
-  padding: 0;
   cursor: pointer;
+  line-height:1;
   outline-offset: 4px;
+  padding: 0;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .shadow {
@@ -141,4 +110,22 @@ p {
 
 .activeHover:focus:not(:focus-visible) {
   outline: none;
+}
+
+@media not screen and (width < 32em) {
+  .showOnMobile {
+    display:none
+  }
+}
+
+@media screen and (width < 32em) {
+  .ui-section {
+    text-align: center;
+  }
+  .hideOnMobile {
+    display:none;
+  }
+  .showOnMobile {
+    display:initial;
+  }
 }

@@ -25,11 +25,22 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
       <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
       <style>
       
- 
         .raised {
-          margin-left: 2rem;
-          margin-right:2rem;
           line-height: 1;
+        }
+        
+       
+        @media not screen and (width < 32em) {
+         .raised {
+            display: inline-block;
+          }
+        }
+        
+        @media screen and (width < 32em) {
+         .raised {
+            margin-left: 2rem;
+            margin-right:2rem;
+          }
         }
           
       </style>`

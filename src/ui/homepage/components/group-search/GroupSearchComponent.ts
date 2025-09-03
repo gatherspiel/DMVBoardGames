@@ -141,12 +141,10 @@ export class GroupSearchComponent extends BaseDynamicComponent {
 
   render(eventSearchStore: any) {
 
-    if(!this.getAttribute("isVisible") || this.getAttribute("isVisible")=== "false"){
-      return ''
-    }
     return `
    
       <form id=${SEARCH_FORM_ID}>
+        <div>
         <div>
             ${this.getDropdownHtml({
             label:"Select event day:",
@@ -157,7 +155,8 @@ export class GroupSearchComponent extends BaseDynamicComponent {
             [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
             [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
           })}
-            
+        </div>  
+        <div>  
           ${this.getDropdownHtml({
             label:"Select event city:",
             id: SEARCH_CITY_ID,
@@ -167,20 +166,22 @@ export class GroupSearchComponent extends BaseDynamicComponent {
             [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
             [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
           })}
+        </div>  
+        <div>
+          ${eventSearchStore.location ?`
+          ${this.getDropdownHtml({
+                label:"Select distance:",
+                id: SEARCH_DISTANCE_ID,
+                name: "distance",
+                data: DISTANCE_OPTIONS,
+                selected: eventSearchStore.distance,
+                [DEFAULT_PARAMETER_KEY]:"0 miles",
+                [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
+              })}` :
+        ``}       
+        </div>
           
-          ${eventSearchStore.location ?
-            `
-            ${this.getDropdownHtml({
-              label:"Select distance:",
-              id: SEARCH_DISTANCE_ID,
-              name: "distance",
-              data: DISTANCE_OPTIONS,
-              selected: eventSearchStore.distance,
-              [DEFAULT_PARAMETER_KEY]:"0 miles",
-              [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
-            })}` :
-             ``}
-          
+         
           <div id="searchInputDiv"> 
              ${generateButton({
               id: SEARCH_BUTTON_ID,

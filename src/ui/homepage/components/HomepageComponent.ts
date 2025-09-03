@@ -145,36 +145,34 @@ export class HomepageComponent extends BaseDynamicComponent {
         </div>
       </div>
 
-      <div class="section-separator-medium"></div>
       
-      <group-search-component class = "ui-section" id="group-search-component" isVisible=${!data.hideEvents}>
-      </group-search-component>
-      
-      <div class="section-separator-medium"></div>
-
       ${data && !data.hideEvents ? `
+          <div class="section-separator-medium"></div>
+          <group-search-component class = "ui-section" id="group-search-component">
+          </group-search-component>
+          <div class="section-separator-medium"></div>
           <group-list-component class="ui-section"></group-list-component>
         `: ''}
       <div class = "ui-section">
       
-    
-
         ${data && !data.hideConventions ? `
-        <div id="convention-list" class="page-section">
-          <convention-list-component data-test="testing">
-            <p></p>
-          </convention-list-component>
-        </div>
+          <div class="section-separator-small"></div>
+          <div id="convention-list">
+            <convention-list-component>
+              <p></p>
+            </convention-list-component>
+          </div>
         ` : ''}
       
-   
+  
         ${data && !data.hideRestaurants ?`
-          <div id="game-restaurant-list" class="page-section">
+          <div id="game-restaurant-list">
             <game-restaurant-list-component></game-restaurant-list-component>
           </div>` : ''}
       
         ${data && !data.hideGameStores ? `
-          <div id="game-store" class="page-section">
+          <div class="section-separator-small"></div>
+          <div id="game-store">
             <game-store-list-component></game-store-list-component>
           </div>` : ''}
         </div>

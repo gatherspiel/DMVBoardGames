@@ -40,15 +40,19 @@ const template = `
     #${EVENT_NAME_INPUT} {
       width: 50rem;
     }
+    
     #${EVENT_DESCRIPTION_INPUT} {
       width: 50rem;
       height: 10rem;
     }
+    
     #${EVENT_LOCATION_INPUT} {
       width: 50rem;
     }
     
-
+    .back-to-group-button {
+      margin-top: 0.5rem;
+    }
     .raised {
       display: inline-block;
       line-height: 1;
@@ -58,8 +62,8 @@ const template = `
 `;
 
 const loadConfig =  [{
-      dataStore: GROUP_EVENT_REQUEST_STORE
-    }]
+    dataStore: GROUP_EVENT_REQUEST_STORE
+  }]
 
 
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
@@ -326,6 +330,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
           
           ${generateLinkButton({
+            class: "back-to-group-button",
             text: "Back to group",
             url: `${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}`
           })}

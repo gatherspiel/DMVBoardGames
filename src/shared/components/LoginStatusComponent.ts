@@ -72,8 +72,11 @@ export class LoginStatusComponent extends BaseDynamicComponent {
   override render(authData:any){
     if(authData.loggedIn){
       return `
-        <span>Welcome ${authData.data.user.email}</span>
-        <a id="${SIGN_OUT_LINK_ID}">Sign out</a>
+        <div>
+          <span>Welcome ${authData.data.user.email}</span>
+          <a id="${SIGN_OUT_LINK_ID}">Sign out</a>   
+        </div>
+
       `
     }
     return `<a href="/login.html">Sign in </a>`;

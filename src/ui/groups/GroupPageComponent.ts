@@ -62,11 +62,11 @@ const template = `
       height: 500px;
       width: 800px;
     }
-
+  
     button {
       margin-top:0.5rem;
     }
-
+  
     .group-webpage-link {
       display: inline-block;
     }
@@ -75,7 +75,8 @@ const template = `
       display: inline-block;
       line-height: 1;
     }
-    #group-events {
+    
+    .section-separator-medium {
       border-bottom:  20px solid;
       border-image-source: url(assets/Section_Border_Medium.png);
       border-image-slice: 20 20;
@@ -84,28 +85,31 @@ const template = `
     
     .event p {
       word-wrap: break-word;
-      display: inline-block;
       white-space: normal;
-
+  
       font-size: 1rem;
       font-weight:600;
         
       max-width: 65ch;
       margin-top: 0.5rem;
     }
-    
+  
    .event-time, .event-location {
       font-size: 1.25rem;
       font-weight: 600;
    }
    
-  .event {
-      border-bottom:  5px solid;
-      border-image-source: url(assets/Section_Border_Tiny.png);
-      border-image-slice: 5 5;
-      border-image-repeat: round;
-      padding-bottom: 0.5rem;
-  }
+   .event {
+        border-bottom:  5px solid;
+        border-image-source: url(assets/Section_Border_Tiny.png);
+        border-image-slice: 5 5;
+        border-image-repeat: round;
+        padding-bottom: 0.5rem;
+    }
+    
+    .add-event-button {
+      margin-top:0.5rem;
+    }
     
     @media not screen and (width < 32em) {
       .${GROUP_DESCRIPTION_TEXT} {
@@ -114,16 +118,22 @@ const template = `
     }
     
     @media screen and (width < 32em) {
-      h1 {
-        margin: 0;    
-      }
       .${GROUP_DESCRIPTION_TEXT} {
         padding: 0.5rem;
         margin-top: 1rem;
         font-size:1rem;
       }
+      .delete-button {
+        margin-top: 0.5rem;
+      }
+ 
       p {
         font-size:1rem;
+      }
+      
+      .raised {
+        margin-left:2rem;
+        margin-right:2rem;
       }
     }    
   </style>
@@ -262,11 +272,13 @@ export class GroupPageComponent extends BaseDynamicComponent {
         })}
       
         ${generateLinkButton({
+          class: "add-event-button",
           text: "Add event",
           url: `groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}`
         })}
       
         ${generateLinkButton({
+          class: "delete-button",
           text: "Delete group",
           url: `groups/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}`
         })}
@@ -276,16 +288,13 @@ export class GroupPageComponent extends BaseDynamicComponent {
   renderEventData(eventData:any, key:string){
     return `
       <div id=${key} class="event">
-        <div>
-          <h3>${eventData.name}</h3>
+          <h2>${eventData.name}</h2>
           <p class = "event-time">${getDateFromDateString(eventData.startTime)}</p>
           <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
-          </br>  
            ${generateLinkButton({
             text: "View event details",
             url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(eventData.groupId)}`
           })}
-        </div>     
       </div>
     `;
   }
@@ -298,7 +307,6 @@ export class GroupPageComponent extends BaseDynamicComponent {
     const self = this;
 
     return `
-     <div class="ui-section">
      ${!groupData.isEditing ? `
         <h1>
           ${generateLinkButton({
@@ -314,7 +322,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
         : this.renderEditMode(groupData)
      }
      <h1 class="hideOnMobile">Upcoming events</h1>
-     <div id="group-events">
+     <div class="section-separator-medium"></div>
      ${
         groupData.eventData.length === 0
           ? `<p id="no-event">Click on group link above for event information</p>`
@@ -325,7 +333,6 @@ export class GroupPageComponent extends BaseDynamicComponent {
           <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
           `
       }
-      </div>
     `;
   }
 }
