@@ -14,16 +14,10 @@ const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
 
   <style>
-    .game-restaurant-list-item > * {
+ 
+    
+    h3 {
       display: inline-block;
-    }
-    
-    
-    .game-restaurant-list-item {
-      border-bottom:  5px solid;
-      border-image-source: url(assets/Section_Border_Tiny.png);
-      border-image-slice: 5 5;
-      border-image-repeat: round;
     }
     
     .section-separator-small {
@@ -31,9 +25,8 @@ const template = `
       border-image-source: url(assets/Section_Border_Tiny.png);
       border-image-slice: 5 5;
       border-image-repeat: round;
-      padding-bottom: 0.5rem;
     }
-    
+        
     p {
       font-size: 1rem;
     }
@@ -50,7 +43,7 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
 
   getItemHtml(gameRestaurant: any) {
     return `
-    <div id = convention-${gameRestaurant.id} class="game-restaurant-list-item">
+    <div id = convention-${gameRestaurant.id} class="section-separator-small ">
      <h3>
         ${generateLinkButton({
           text: gameRestaurant.name,

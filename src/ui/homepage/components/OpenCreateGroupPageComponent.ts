@@ -55,6 +55,8 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
           text: "Create group",
           url:`groups/create.html`
         })}
+        <div class="section-separator-small"></div>
+
     `
   }
 }

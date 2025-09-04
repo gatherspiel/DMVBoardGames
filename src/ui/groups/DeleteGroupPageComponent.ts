@@ -56,10 +56,10 @@ export class DeleteGroupPageComponent extends BaseDynamicComponent {
         });
       } else {
 
-        const id = (new URLSearchParams(document.location.search)).get("groupId") ?? "";
+        const id = (new URLSearchParams(document.location.search)).get("id") ?? "";
         const params = {
           method: ApiActionTypes.DELETE,
-          url: `${API_ROOT}/groups/?name=${encodeURIComponent(groupName)}&id=${id}`
+          url: `${API_ROOT}/groups/?id=${id}`
         };
 
         ApiLoadAction.getResponseData(params).then((response:any)=>{
