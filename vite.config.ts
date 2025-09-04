@@ -34,12 +34,12 @@ export default defineConfig({
         designers: resolve(__dirname, "src/designers.html"),
         print_and_play: resolve(__dirname, "src/print_and_play.html"),
         useful_links: resolve(__dirname, "src/useful_links.html"),
+        feedback: resolve(__dirname, "src/feedback.html"),
+        login: resolve(__dirname, "src/login.html"),
         create_groups: resolve(__dirname, "src/groups/create.html"),
         event: resolve(__dirname, "src/groups/event.html"),
         create_event: resolve(__dirname, "src/groups/addEvent.html"),
-        feedback: resolve(__dirname, "src/feedback.html"),
-        login: resolve(__dirname, "src/login.html"),
-
+        delete_group: resolve(__dirname, "src/groups/delete.html")
       }
     },
   },
