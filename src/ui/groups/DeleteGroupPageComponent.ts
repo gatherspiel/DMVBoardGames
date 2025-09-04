@@ -9,6 +9,9 @@ import {
 import {API_ROOT} from "../../shared/Params.ts";
 import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
 
+import {LoginStatusComponent} from "../../shared/components/LoginStatusComponent.ts";
+customElements.define("login-status-component",LoginStatusComponent)
+
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
 

@@ -46,8 +46,8 @@ async function retrieveData(
     if (data.ok) {
       clearSessionStorage();
       const authTokenData = await data.json();
-      addLocalStorageData(AUTH_TOKEN_KEY, JSON.stringify(authTokenData))
-      return new AuthResponse(true, {...authTokenData,username:authData?.username});
+      addLocalStorageData(AUTH_TOKEN_KEY, JSON.stringify(authTokenData));debugger;
+      window.location.assign(window.location.origin)
     }
 
     const error = await data.json();
