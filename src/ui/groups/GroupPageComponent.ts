@@ -316,9 +316,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
           })}
        </h1>
         ${groupData.permissions.userCanEdit ? this.renderGroupEditUI(groupData) : ''}
-        <div class="${GROUP_DESCRIPTION_TEXT}">
-        <p>${groupData.description}</p> 
-        </div>` 
+        <p class="${GROUP_DESCRIPTION_TEXT}">${groupData.description}</p> `
         : this.renderEditMode(groupData)
      }
      <h1 class="hideOnMobile">Upcoming events</h1>
