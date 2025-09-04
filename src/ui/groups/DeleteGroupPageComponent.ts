@@ -1,7 +1,7 @@
 import {ApiActionTypes, BaseDynamicComponent, ApiLoadAction} from "@bponnaluri/places-js";
 import { GROUP_NAME_INPUT } from "./Constants.ts";
 import {generateButton} from "../../shared/components/ButtonGenerator.ts";
-import {generateErrorMessage} from "@bponnaluri/places-js";
+import {generateErrorMessage} from "../../shared/components/StatusIndicators.ts";
 import {
   SUCCESS_MESSAGE_KEY
 } from "../../shared/Constants.ts";
@@ -49,17 +49,17 @@ export class DeleteGroupPageComponent extends BaseDynamicComponent {
     shadowRoot?.getElementById(CONFIRM_DELETE_BUTTON_ID).addEventListener("click",()=>{
       const groupName:any = (shadowRoot.getElementById(GROUP_NAME_INPUT) as HTMLInputElement)?.value.trim();
 
-      if(groupName !== this.componentState.existingGroupName){
+      if(groupName !== this.componentStore.existingGroupName){
         self.updateData({
           name:groupName,
           errorMessage: "Group name not entered correctly",
         });
       } else {
 
-        const id = (new URLSearchParams(document.location.search)).get("groupId") ?? "";
+        const id = (new URLSearchParams(document.location.search)).get("id") ?? "";
         const params = {
           method: ApiActionTypes.DELETE,
-          url: `${API_ROOT}/groups/?name=${encodeURIComponent(groupName)}&id=${id}`
+          url: `${API_ROOT}/groups/?id=${id}`
         };
 
         ApiLoadAction.getResponseData(params).then((response:any)=>{
@@ -80,6 +80,7 @@ export class DeleteGroupPageComponent extends BaseDynamicComponent {
   }
 
   render(data: any): string {
+
     return `
       <form onsubmit="return false">
       
@@ -103,9 +104,4 @@ export class DeleteGroupPageComponent extends BaseDynamicComponent {
   }
 }
 
-if (!customElements.get("delete-group-page-component")) {
-  customElements.define(
-    "delete-group-page-component",
-    DeleteGroupPageComponent,
-  );
-}
+

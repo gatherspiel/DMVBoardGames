@@ -1,5 +1,5 @@
 import { API_ROOT } from "../../../../shared/Params.ts";
-import {generateDataStore} from "@bponnaluri/places-js";
+import {ApiLoadAction, DataStore} from "@bponnaluri/places-js";
 
 function getLocationsQueryConfig() {
   return {
@@ -7,7 +7,4 @@ function getLocationsQueryConfig() {
   };
 }
 
-
-export const LOCATIONS_STORE = generateDataStore({
-  queryConfig: getLocationsQueryConfig,
-})
+export const LOCATIONS_STORE = new DataStore(new ApiLoadAction(getLocationsQueryConfig));

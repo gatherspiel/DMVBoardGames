@@ -1,9 +1,6 @@
 import {LOGIN_STORE,} from "./data/LoginStore.ts";
-
 import {LOGOUT_STORE} from "./data/LogoutStore.ts";
 import {LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT,} from "./Constants.js";
-
-import type {LoginComponentStore} from "./types/LoginComponentStore.ts";
 import {
   IS_LOGGED_IN_KEY,
   SUCCESS_MESSAGE_KEY
@@ -12,8 +9,8 @@ import {
   BaseDynamicComponent,
   ApiLoadAction,
 } from "@bponnaluri/places-js";
+import {generateErrorMessage} from "../../shared/components/StatusIndicators.ts";
 import {generateButton} from "../../shared/components/ButtonGenerator.ts";
-import {generateErrorMessage} from "@bponnaluri/places-js";
 import {API_ROOT} from "../../shared/Params.ts";
 
 //TODO: Refactor CSS to use fix widths on labels in the future instead of having a hardcoded margin on the email label.
@@ -58,13 +55,19 @@ const LOGOUT_BUTTON_ID = "logout-button";
 
 export class LoginComponent extends BaseDynamicComponent {
 
-  hasRendered: boolean;
+  loginAttempted: boolean;
 
   constructor() {
     super([{
+      componentReducer:(loginState:any)=>{
+        if(loginState.loggedIn){
+          window.location.assign(window.location.origin);
+        }
+        return loginState;
+      },
       dataStore: LOGIN_STORE,
     }]);
-    this.hasRendered = false;
+    this.loginAttempted = false;
   }
 
   retrieveAndValidateFormInputs(shadowRoot:ShadowRoot) {
@@ -93,12 +96,13 @@ export class LoginComponent extends BaseDynamicComponent {
         const targetId = event.target?.id;
         if (targetId === LOGIN_BUTTON_ID){
 
+          self.loginAttempted = true;
           const formInputs = self.retrieveAndValidateFormInputs(shadowRoot)
 
           if(formInputs.errorMessage){
             self.updateData(formInputs)
           } else {
-            LOGIN_STORE.getData({
+            LOGIN_STORE.fetchData({
               formInputs
             })
           }
@@ -130,7 +134,7 @@ export class LoginComponent extends BaseDynamicComponent {
         }
 
         if (targetId === LOGOUT_BUTTON_ID) {
-          LOGOUT_STORE.getData({}, LOGIN_STORE)
+          LOGOUT_STORE.fetchData({}, LOGIN_STORE)
         }
       }catch(e:any){
         if(e.message !== `Permission denied to access property "id"`){
@@ -144,12 +148,12 @@ export class LoginComponent extends BaseDynamicComponent {
     return template;
   }
 
-  render(data: LoginComponentStore) {
+  render(data: any) {
     return data[IS_LOGGED_IN_KEY] ?
         '' :
         this.generateLogin(data)
   }
-  generateLogin(data: LoginComponentStore) {
+  generateLogin(data: any) {
 
     const html = `
      <div class="ui-section" id="login-component-container">
@@ -189,16 +193,11 @@ export class LoginComponent extends BaseDynamicComponent {
 
                     
           </div>
-          ${this.hasRendered ? generateErrorMessage(data.errorMessage) : ''}
+          ${this.loginAttempted ? generateErrorMessage(data.errorMessage) : ''}
         </form>
 
     </div>
     `;
-    this.hasRendered = true;
     return html;
   }
-}
-
-if (!customElements.get("login-component")) {
-  customElements.define("login-component", LoginComponent);
 }

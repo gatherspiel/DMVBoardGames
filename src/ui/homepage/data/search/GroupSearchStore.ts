@@ -1,14 +1,15 @@
 import { API_ROOT } from "../../../../shared/Params.ts";
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/group-search/Constants.ts";
-import type { SearchParams } from "./model/SearchParams.ts";
-import {generateDataStore} from "@bponnaluri/places-js";
+import {ApiLoadAction, DataStore} from "@bponnaluri/places-js";
 import type { ApiRequestConfig } from "@bponnaluri/places-js";
 
 const CITY_PARAM = "city";
 const DAY_PARAM = "day";
 const DISTANCE_PARAM="distance";
 
-function getGroupsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
+function getGroupsQueryConfig(searchParams: any): ApiRequestConfig {
+  console.log("Starting to load search results at:"+Date.now());
+
   let url = API_ROOT + "/searchEvents";
 
   const paramMap: any = {};
@@ -43,7 +44,4 @@ function getGroupsQueryConfig(searchParams: SearchParams): ApiRequestConfig {
   };
 }
 
-
-export const GROUP_SEARCH_STORE = generateDataStore({
-  queryConfig: getGroupsQueryConfig,
-})
+export const GROUP_SEARCH_STORE = new DataStore(new ApiLoadAction(getGroupsQueryConfig));

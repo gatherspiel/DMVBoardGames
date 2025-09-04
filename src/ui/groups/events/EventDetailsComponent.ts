@@ -1,6 +1,6 @@
 import {
-  AbstractPageComponent, ApiActionTypes,
-  BaseDynamicComponent, ApiLoadAction,
+  ApiActionTypes,
+  BaseDynamicComponent, ApiLoadAction
 } from "@bponnaluri/places-js";
 import {
   END_TIME_INPUT,
@@ -14,22 +14,24 @@ import {
   getEventDetailsFromForm,
   validateEventFormData
 } from "./EventDetailsHandler.ts";
-import {
-  convertDateTimeForDisplay,
-  convertDayOfWeekForDisplay,
-  convertLocationStringForDisplay, getDateFromDateString
-} from "@bponnaluri/places-js";
+
+import {generateErrorMessage} from "../../../shared/components/StatusIndicators.ts";
+import {getDateFromDateString} from "../../../shared/DateUtils.ts";
+import {convertLocationStringForDisplay} from "../../../shared/DateUtils.ts";
 import {
   generateButton,
   generateLinkButton
 } from "../../../shared/components/ButtonGenerator.ts";
-import {generateErrorMessage, generateSuccessMessage} from "@bponnaluri/places-js";
 import {
   SUCCESS_MESSAGE_KEY
 } from "../../../shared/Constants.ts";
 
-import {GroupPageComponent} from "../viewGroup/GroupPageComponent.ts";
 import {API_ROOT} from "../../../shared/Params.ts";
+
+import {LoginStatusComponent} from "../../../shared/components/LoginStatusComponent.ts";
+import {generateSuccessMessage} from "../../../shared/components/StatusIndicators.ts";
+import {convertDateTimeForDisplay, convertDayOfWeekForDisplay} from "../../../shared/DateUtils.ts";
+customElements.define("login-status-component", LoginStatusComponent);
 
 const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
@@ -38,29 +40,35 @@ const template = `
     #${EVENT_NAME_INPUT} {
       width: 50rem;
     }
+    
     #${EVENT_DESCRIPTION_INPUT} {
       width: 50rem;
       height: 10rem;
     }
+    
     #${EVENT_LOCATION_INPUT} {
       width: 50rem;
     }
     
+    .back-to-group-button {
+      margin-top: 0.5rem;
+    }
     .raised {
       display: inline-block;
+      line-height: 1;
     }
     
   </style>
 `;
 
 const loadConfig =  [{
-      dataStore: GROUP_EVENT_REQUEST_STORE
-    }]
+    dataStore: GROUP_EVENT_REQUEST_STORE
+  }]
 
 
-const BACK_TO_GROUP_BUTTON_ID = "back-to-group-button";
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 const CANCEL_DELETE_BUTTON_ID = "cancel-delete-button";
+const CANCEL_EDIT_BUTTON_ID = "cancel-edit-button";
 const DELETE_EVENT_BUTTON_ID = "delete-event-button";
 const EDIT_EVENT_BUTTON_ID = "edit-event-button";
 const SAVE_EVENT_BUTTON_ID = "save-event-button";
@@ -70,21 +78,16 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     super(loadConfig);
   }
 
-  override showLoadingHtml():string {
-    return `<h1>Loading</h1>`;
-  }
-
   override attachEventsToShadowRoot(shadowRoot?: any) {
     const self = this;
 
     shadowRoot?.addEventListener("click",(event:any)=>{
       try {
-        if(event.target.id === BACK_TO_GROUP_BUTTON_ID) {
-          AbstractPageComponent.updateRoute(
-            GroupPageComponent,
-            {"name":self.componentState.groupName}
-          )
+        if(event.target.id === CANCEL_EDIT_BUTTON_ID) {
+          self.updateData({isEditing: false,
+            [SUCCESS_MESSAGE_KEY]:''})
         }
+
         if(event.target.id === DELETE_EVENT_BUTTON_ID) {
           self.updateData({
             isDeleting: true,
@@ -101,8 +104,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
         if(event.target.id === CONFIRM_DELETE_BUTTON_ID){
           const params = {
-            id: self.componentState.id,
-            groupId: self.componentState.groupId
+            id: self.componentStore.id,
+            groupId: self.componentStore.groupId
           }
 
           ApiLoadAction.getResponseData({
@@ -135,7 +138,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
           const formElements = shadowRoot?.getElementById('event-details-form').elements;
           const formData = {
-            id: self.componentState.id,
+            id: self.componentStore.id,
             [EVENT_NAME_INPUT]: formElements[0].value,
             [EVENT_DESCRIPTION_INPUT]: formElements[1].value,
             [EVENT_URL_INPUT]: formElements[2].value,
@@ -181,9 +184,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
   render(data: any): string {
 
-    console.log("Rendering")
     if(!data || !data.name){
-      return this.showLoadingHtml();
+      return `<h1>Loading</h1>`;
     }
     if(data.isEditing){
       return this.renderEditMode(data);
@@ -200,9 +202,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         <div class="ui-section">
           ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
           
-          ${generateButton({
-            id: BACK_TO_GROUP_BUTTON_ID,
-            text: "Back to group"
+          ${generateLinkButton({
+            text: "Back to group",
+            url: `${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}`
           })}
         </div>
       `
@@ -289,7 +291,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     })}
     
     ${generateButton({
-      class: "group-webpage-link",
+      id: CANCEL_EDIT_BUTTON_ID,
       text: "Back to event",
       type: "submit"
     })}  
@@ -325,12 +327,15 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             text: "Delete event",
           })}
     
-          <p class="success-message">${data[SUCCESS_MESSAGE_KEY] ? data[SUCCESS_MESSAGE_KEY].trim(): ""}</p>
+          ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
           
-          ${generateButton({
-            id: BACK_TO_GROUP_BUTTON_ID,
+          ${generateLinkButton({
+            class: "back-to-group-button",
             text: "Back to group",
-          })}` : ''}
+            url: `${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}`
+          })}
+          
+         ` : ''}
 
       </div>
     `;
@@ -339,8 +344,4 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   getTemplateStyle(): string {
     return template;
   }
-}
-
-if (!customElements.get("event-details-component")) {
-  customElements.define("event-details-component", EventDetailsComponent);
 }

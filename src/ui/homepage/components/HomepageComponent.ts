@@ -2,23 +2,30 @@
   These imports are to load the Web Components that will be displayed.
  */
 
-// @ts-ignore
-import {GameRestaurantListComponent} from "./GameRestaurantListComponent.ts";
-// @ts-ignore
-import {GameStoreListComponent} from "./GameStoreListComponent.ts";
-// @ts-ignore
-import {ConventionListComponent} from "./ConventionListComponent.ts";
-// @ts-ignore
-import {GroupPageEventComponent} from "../../groups/viewGroup/GroupPageEventComponent.ts";
-
-// @ts-ignore
-import {GroupSearchComponent} from "./group-search/GroupSearchComponent.ts";
-// @ts-ignore
-import {OpenCreateGroupPageComponent} from "./OpenCreateGroupPageComponent.ts";
-
 import {generateButton} from "../../../shared/components/ButtonGenerator.ts";
 
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
+
+
+import {LoginStatusComponent} from "../../../shared/components/LoginStatusComponent.js";
+import {GroupListComponent} from "./GroupListComponent.ts";
+import {GameStoreListComponent} from "./GameStoreListComponent.js";
+import {GameRestaurantListComponent} from "./GameRestaurantListComponent.js";
+import {ConventionListComponent} from "./ConventionListComponent.js";
+import {GroupSearchComponent} from "./group-search/GroupSearchComponent.js";
+import {OpenCreateGroupPageComponent} from "./OpenCreateGroupPageComponent.js";
+
+customElements.define("open-create-group-component", OpenCreateGroupPageComponent);
+customElements.define("login-status-component",LoginStatusComponent)
+customElements.define("group-list-component", GroupListComponent);
+customElements.define("game-store-list-component", GameStoreListComponent);
+customElements.define("convention-list-component", ConventionListComponent);
+customElements.define(
+  "game-restaurant-list-component",
+  GameRestaurantListComponent,
+);
+customElements.define("group-search-component", GroupSearchComponent);
+
 
 const CONVENTIONS_ID = "convention-list";
 const EVENT_SEARCH_ID ="group-search";
@@ -62,95 +69,97 @@ export class HomepageComponent extends BaseDynamicComponent {
   override getTemplateStyle():string{
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
-      <link rel="stylesheet" type="text/css" href="/styles/styles.css"/>
 
-      <style></style>
+      <style>
+        
+       
+        #show-info-ui {
+          padding-bottom: 0.5rem;
+        }
+        
+    
+        #show-more-info {
+         font-size: 1.5rem;
+         font-weight: 600;       
+       }
+       
+       .section-separator-medium {
+          border-bottom:  20px solid;
+          border-image-source: url(assets/Section_Border_Medium.png);
+          border-image-slice: 20 20;
+          border-image-repeat: round;
+        }
+
+       @media screen and (width < 32em) {
+          .raised {
+            margin-top:0.5rem;
+          }
+        }
+      
+    </style>
     `
   }
+
 
   render(data:any){
-    console.log("Rendering homepage component");
-    console.log(data);
     return `
-        <div class="ui-section">
-        <open-create-group-component>
-        </open-create-group-component>
-        <nav>
-          <div id="nav-container">
-            <div>Click for more info about</div>
-            
-            <div class = "homepage-default-action-div">
-              <div class = "image-div">  
-                <img src="/assets/house.png">
-              </div>
-              <div id="show-info-ui">
-                ${data.hideEvents || data.showAllButtons ? generateButton({
-                  id: EVENT_SEARCH_ID,
-                  text: "Events",
-                }): ``} 
-                  
-                ${data.hideConventions ? generateButton({
-                  id: CONVENTIONS_ID,
-                  text: "Conventions",
-                }): ``}       
-             
-                ${data.hideGameStores ? generateButton({
-                  id: GAME_STORES_ID,
-                  text: "Game Stores",
-                }): ``}  
-             
-                ${data.hideRestaurants ? generateButton({
-                  id: GAME_RESTAURANTS_ID,
-                  text: "Bars and Cafés",
+      <open-create-group-component class = "ui-section">
+      </open-create-group-component>     
+      
 
-                }): ``} 
-              </div>
+        <div class = "ui-section" id="show-info-ui">
+          <span id="show-more-info">Click for more info about:</span>
+
+          <div>
+          ${data.hideEvents || data.showAllButtons ? generateButton({
+            id: EVENT_SEARCH_ID,
+            text: "Events",
+          }): ``} 
             
-            </div>
-             
+          ${data.hideConventions ? generateButton({
+            id: CONVENTIONS_ID,
+            text: "Conventions",
+          }): ``}       
+       
+          ${data.hideGameStores ? generateButton({
+            id: GAME_STORES_ID,
+            text: "Game Stores",
+          }): ``}  
+       
+          ${data.hideRestaurants ? generateButton({
+            id: GAME_RESTAURANTS_ID,
+            text: "Bars and Cafés",
+          }): ``} 
           </div>
-        </nav>
-      </div>
-    
-   
-      <div class="section-separator-medium"></div>
-
-      <div data-container="root">
-        <group-search-component id="group-search-component" class="page-section" isVisible=${!data.hideEvents}>
-        </group-search-component>
-    
-        <div class="section-separator-medium"></div>
-    
-        ${data && !data.hideEvents ? `
-        <div id="group-list" class="page-section">
-          <group-list-component></group-list-component>
-        </div> `: ''}
-    
-
-        ${data && !data.hideConventions ? `
-        <div id="convention-list" class="page-section">
-          <convention-list-component data-test="testing">
-            <p></p>
-          </convention-list-component>
         </div>
+
+      
+      ${data && !data.hideEvents ? `
+          <div class="section-separator-medium"></div>
+          <group-search-component class = "ui-section" id="group-search-component">
+          </group-search-component>
+          <div class="section-separator-medium"></div>
+          <group-list-component class="ui-section"></group-list-component>
+        `: ''}
+      <div class = "ui-section">
+      
+        ${data && !data.hideConventions ? `
+          <convention-list-component>
+          </convention-list-component>
         ` : ''}
-    
- 
-      ${data && !data.hideRestaurants ?`
-        <div id="game-restaurant-list" class="page-section">
-          <game-restaurant-list-component></game-restaurant-list-component>
-        </div>` : ''}
-    
-      ${data && !data.hideGameStores ? `
-        <div id="game-store" class="page-section">
+      
+  
+        ${data && !data.hideRestaurants ?`
+            <game-restaurant-list-component></game-restaurant-list-component>
+          ` : ''}
+      
+        ${data && !data.hideGameStores ? `
+          <div class="section-separator-small"></div>
           <game-store-list-component></game-store-list-component>
-        </div>` : ''}
+          ` : ''}
+        </div>
       </div>
-    </div>
     `
   }
 }
 
-if (!customElements.get("homepage-component")) {
-  customElements.define("homepage-component", HomepageComponent);
-}
