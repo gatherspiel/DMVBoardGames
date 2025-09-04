@@ -14,17 +14,17 @@ const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
   <style>
 
-
+  
+  .game-store-list-item * {
+    display: inline-block;
+  }
+  
   .section-separator-small {
     border-bottom:  5px solid;
     border-image-source: url(assets/Section_Border_Tiny.png);
     border-image-slice: 5 5;
     border-image-repeat: round;
     padding-bottom: 0.5rem;
-  }
-  
-  .game-store-list-item * {
-    display: inline-block;
   }
   
   p {

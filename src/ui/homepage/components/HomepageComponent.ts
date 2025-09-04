@@ -71,33 +71,24 @@ export class HomepageComponent extends BaseDynamicComponent {
       <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
 
       <style>
-        .section-separator-medium {
-          border-bottom:  20px solid;
-          border-image-source: url(assets/Section_Border_Medium.png);
-          border-image-slice: 20 20;
-          border-image-repeat: round;
-        }
         
-        .section-separator-small {
-          border-bottom:  5px solid;
-          border-image-source: url(assets/Section_Border_Tiny.png);
-          border-image-slice: 5 5;
-          border-image-repeat: round;
-          padding-bottom: 0.5rem;
-        }
        
         #show-info-ui {
           padding-bottom: 0.5rem;
         }
         
-        #nav-container {
-          padding-bottom: 0.25rem;
-        }
-        
+    
         #show-more-info {
          font-size: 1.5rem;
          font-weight: 600;       
        }
+       
+       .section-separator-medium {
+          border-bottom:  20px solid;
+          border-image-source: url(assets/Section_Border_Medium.png);
+          border-image-slice: 20 20;
+          border-image-repeat: round;
+        }
 
        @media screen and (width < 32em) {
           .raised {
@@ -115,14 +106,11 @@ export class HomepageComponent extends BaseDynamicComponent {
       <open-create-group-component class = "ui-section">
       </open-create-group-component>     
       
-      <div class="section-separator-small"></div>
 
-      <div class = "ui-section">
-        <span id="show-more-info">Click for more info about:</span>
-      </div>
-      
-      <div class = "ui-section">
-        <div id="show-info-ui">
+        <div class = "ui-section" id="show-info-ui">
+          <span id="show-more-info">Click for more info about:</span>
+
+          <div>
           ${data.hideEvents || data.showAllButtons ? generateButton({
             id: EVENT_SEARCH_ID,
             text: "Events",
@@ -142,8 +130,8 @@ export class HomepageComponent extends BaseDynamicComponent {
             id: GAME_RESTAURANTS_ID,
             text: "Bars and Cafés",
           }): ``} 
+          </div>
         </div>
-      </div>
 
       
       ${data && !data.hideEvents ? `
@@ -156,25 +144,19 @@ export class HomepageComponent extends BaseDynamicComponent {
       <div class = "ui-section">
       
         ${data && !data.hideConventions ? `
-          <div class="section-separator-small"></div>
-          <div id="convention-list">
-            <convention-list-component>
-              <p></p>
-            </convention-list-component>
-          </div>
+          <convention-list-component>
+          </convention-list-component>
         ` : ''}
       
   
         ${data && !data.hideRestaurants ?`
-          <div id="game-restaurant-list">
             <game-restaurant-list-component></game-restaurant-list-component>
-          </div>` : ''}
+          ` : ''}
       
         ${data && !data.hideGameStores ? `
           <div class="section-separator-small"></div>
-          <div id="game-store">
-            <game-store-list-component></game-store-list-component>
-          </div>` : ''}
+          <game-store-list-component></game-store-list-component>
+          ` : ''}
         </div>
       </div>
     `
