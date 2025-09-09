@@ -95,7 +95,6 @@ const loadConfig = [{
   fieldName: "cityList"
 }];
 
-
 export class GroupSearchComponent extends BaseDynamicComponent {
 
   constructor() {
