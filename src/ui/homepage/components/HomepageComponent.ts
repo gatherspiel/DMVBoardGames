@@ -51,7 +51,6 @@ export class HomepageComponent extends BaseTemplateComponent {
       <div class="section-separator-medium"></div>
       <group-list-component class="ui-section"></group-list-component>
       
-      </div>
     `
   }
 }

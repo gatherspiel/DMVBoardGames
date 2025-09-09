@@ -139,7 +139,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
     })
   }
 
-  render(eventSearchStore: any) {
+  render(store: any) {
 
     return `
    
@@ -151,7 +151,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
               id: SEARCH_DAYS_ID,
               name: "days",
               data: DAYS_IN_WEEK,
-              selected: eventSearchStore.day,
+              selected: store.day,
               [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
               [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
             })}
@@ -161,20 +161,20 @@ export class GroupSearchComponent extends BaseDynamicComponent {
               label:"Select event city:",
               id: SEARCH_CITY_ID,
               name: "cities",
-              data: eventSearchStore.cityList ?? [{name:"Any location"}],
-              selected: eventSearchStore.location,
+              data: store.cityList ?? [{name:"Any location"}],
+              selected: store.location,
               [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
               [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
             })}
           </div>  
           <div>
-            ${eventSearchStore.location ?`
+            ${store.location && store.location !== DEFAULT_SEARCH_PARAMETER ?`
             ${this.getDropdownHtml({
                   label:"Select distance:",
                   id: SEARCH_DISTANCE_ID,
                   name: "distance",
                   data: DISTANCE_OPTIONS,
-                  selected: eventSearchStore.distance,
+                  selected: store.distance,
                   [DEFAULT_PARAMETER_KEY]:"0 miles",
                   [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
                 })}` :
