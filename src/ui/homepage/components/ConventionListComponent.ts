@@ -3,6 +3,9 @@ import { generateLinkButton} from "../../../shared/components/ButtonGenerator.ts
 
 import {LOCATIONS_STORE} from "../data/search/LocationsStore.ts";
 
+import {ListingNavComponent} from "../../../shared/components/ListingNavComponent.ts";
+customElements.define("listing-nav-component", ListingNavComponent);
+
 const loadConfig = [{
   componentReducer: (data:any)=>{
     return data.conventions;
@@ -55,7 +58,14 @@ export class ConventionListComponent extends BaseDynamicComponent {
   }
 
   render(data: any) {
+    console.log(Object.values(data).length)
     let html = `
+      <listing-nav-component
+        class="ui-section"
+        id="show-info-ui"
+        currentPage="conventions.html?${Math.random()}"
+      >
+      </listing-nav-component>
 
       <div class="ui-section"><h1 class="hideOnMobile">Upcoming conventions</h1>
       <h2 class="showOnMobile">Upcoming conventions</h2>`;
@@ -64,6 +74,11 @@ export class ConventionListComponent extends BaseDynamicComponent {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
     });
+
+    if(Object.values(data).length === 0) {
+      html+=`<p>No conventions found</p>`;
+    }
+
     return html + "</div>";
   }
 }

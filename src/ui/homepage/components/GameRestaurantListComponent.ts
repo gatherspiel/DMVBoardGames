@@ -2,6 +2,9 @@ import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 import {LOCATIONS_STORE} from "../data/search/LocationsStore.ts";
 
+
+import {ListingNavComponent} from "../../../shared/components/ListingNavComponent.ts";
+customElements.define("listing-nav-component", ListingNavComponent);
 const loadConfig = [{
       componentReducer: (data:any)=>{
         return data.gameRestaurants;
@@ -57,16 +60,24 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
 
   render(data: any) {
 
-    let html = `<div class="game-restaurants">
-    <h1 class="hideOnMobile">Board Game Bars and Cafés</h1>
-    <h2 class="showOnMobile">Board Game Bars and Cafés</h2>
-    <div class="section-separator-small"></div>
+    let html = `
+      <listing-nav-component
+        class="ui-section"
+        id="show-info-ui"
+        currentPage="gameRestaurants.html"
+      >
+      </listing-nav-component>
+      <div class="game-restaurants">
+      <h1 class="hideOnMobile">Board Game Bars and Cafés</h1>
+      <h2 class="showOnMobile">Board Game Bars and Cafés</h2>
+      <div class="section-separator-small"></div>
 
     `;
     Object.values(data).forEach((item:any) => {
       const itemHtml = this.getItemHtml(item);
       html += itemHtml;
     });
+
     return html + `</div>`;
   }
 }
