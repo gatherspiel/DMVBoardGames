@@ -13,7 +13,6 @@ Also, follow the guidelines below:
 - UI elements that are dynamic or will be used multiple times should be implemented as [Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components).
 - For new files, TypeScript should be used.
 
-
 ## Development
 
 
@@ -34,14 +33,6 @@ run yalc add @bponnaluri/places-js
 - Follow the same setup steps as the previous seciton
 - See the following instructions for running the API and database: https://github.com/Create-Third-Places/development
 
-
-
 ## Testing
 
 - To test with the production API, set the DEPLOY_ENV variable to prod
-
-
-
-
-
-

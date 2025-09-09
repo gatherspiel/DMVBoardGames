@@ -2,6 +2,9 @@ import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 import {LOCATIONS_STORE} from "../data/search/LocationsStore.ts";
 
+import {ListingNavComponent} from "../../../shared/components/ListingNavComponent.ts";
+customElements.define("listing-nav-component", ListingNavComponent);
+
 const loadConfig = [{
       componentReducer: (data:any)=>{
         return data.gameStores;
@@ -43,6 +46,7 @@ export class GameStoreListComponent extends BaseDynamicComponent {
 
   getItemHtml(gameStore: any) {
     return `
+
     <div id = convention-${gameStore.id} class="game-store-list-item section-separator-small">
      <h3>
         ${generateLinkButton({
@@ -56,9 +60,20 @@ export class GameStoreListComponent extends BaseDynamicComponent {
   }
 
   render(data: any) {
-    let html = `<div class="ui-section"><h1 class="hideOnMobile">Game Stores</h1>
-    <h2 class="showOnMobile">Game stores</h2>
-    <div class="section-separator-small"></div>
+
+    let html = `
+
+      <listing-nav-component
+        class="ui-section"
+        id="show-info-ui"
+        currentPage="gameStores.html"
+      >
+      
+      </listing-nav-component>
+      <div class="ui-section">
+      <h1 class="hideOnMobile">Game Stores</h1>
+      <h2 class="showOnMobile">Game stores</h2>
+      <div class="section-separator-small"></div>
     `;
     Object.values(data).forEach((item) => {
       const itemHtml = this.getItemHtml(item);
