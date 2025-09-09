@@ -30,6 +30,9 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, "src/index.html"),
+        conventions: resolve(__dirname, "src/conventions.html"),
+        gameStores: resolve(__dirname, "src/gameStores.html"),
+        gameRestaurants: resolve(__dirname, "src/gameRestaurants.html"),
         groups: resolve(__dirname, "src/groups.html"),
         designers: resolve(__dirname, "src/designers.html"),
         print_and_play: resolve(__dirname, "src/print_and_play.html"),

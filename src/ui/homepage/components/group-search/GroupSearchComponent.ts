@@ -145,50 +145,49 @@ export class GroupSearchComponent extends BaseDynamicComponent {
    
       <form id=${SEARCH_FORM_ID}>
         <div>
-        <div>
-            ${this.getDropdownHtml({
-            label:"Select event day:",
-            id: SEARCH_DAYS_ID,
-            name: "days",
-            data: DAYS_IN_WEEK,
-            selected: eventSearchStore.day,
-            [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
-            [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
-          })}
-        </div>  
-        <div>  
-          ${this.getDropdownHtml({
-            label:"Select event city:",
-            id: SEARCH_CITY_ID,
-            name: "cities",
-            data: eventSearchStore.cityList ?? [{name:"Any location"}],
-            selected: eventSearchStore.location,
-            [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
-            [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
-          })}
-        </div>  
-        <div>
-          ${eventSearchStore.location ?`
-          ${this.getDropdownHtml({
-                label:"Select distance:",
-                id: SEARCH_DISTANCE_ID,
-                name: "distance",
-                data: DISTANCE_OPTIONS,
-                selected: eventSearchStore.distance,
-                [DEFAULT_PARAMETER_KEY]:"0 miles",
-                [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
-              })}` :
-        ``}       
-        </div>
-          
-         
-          <div id="searchInputDiv"> 
-             ${generateButton({
-              id: SEARCH_BUTTON_ID,
-              text: "Search groups",
-              type: "Submit",
+          <div>
+              ${this.getDropdownHtml({
+              label:"Select event day:",
+              id: SEARCH_DAYS_ID,
+              name: "days",
+              data: DAYS_IN_WEEK,
+              selected: eventSearchStore.day,
+              [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
+              [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
             })}
-        </div>
+          </div>  
+          <div>  
+            ${this.getDropdownHtml({
+              label:"Select event city:",
+              id: SEARCH_CITY_ID,
+              name: "cities",
+              data: eventSearchStore.cityList ?? [{name:"Any location"}],
+              selected: eventSearchStore.location,
+              [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
+              [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
+            })}
+          </div>  
+          <div>
+            ${eventSearchStore.location ?`
+            ${this.getDropdownHtml({
+                  label:"Select distance:",
+                  id: SEARCH_DISTANCE_ID,
+                  name: "distance",
+                  data: DISTANCE_OPTIONS,
+                  selected: eventSearchStore.distance,
+                  [DEFAULT_PARAMETER_KEY]:"0 miles",
+                  [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
+                })}` :
+          ``}       
+          </div>
+            
+          <div id="searchInputDiv"> 
+               ${generateButton({
+                id: SEARCH_BUTTON_ID,
+                text: "Search groups",
+                type: "Submit",
+              })}
+          </div>
       </div>
     </form>
   `;

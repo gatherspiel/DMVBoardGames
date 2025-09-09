@@ -100,11 +100,11 @@ const template = `
    }
    
    .event {
-        border-bottom:  5px solid;
-        border-image-source: url(assets/Section_Border_Tiny.png);
-        border-image-slice: 5 5;
-        border-image-repeat: round;
-        padding-bottom: 0.5rem;
+      border-bottom:  5px solid;
+      border-image-source: url(assets/Section_Border_Tiny.png);
+      border-image-slice: 5 5;
+      border-image-repeat: round;
+      padding-bottom: 0.5rem;
     }
     
     .add-event-button {
@@ -127,10 +127,7 @@ const template = `
         margin-top: 0.5rem;
       }
  
-      p {
-        font-size:1rem;
-      }
-      
+
       .raised {
         margin-left:2rem;
         margin-right:2rem;

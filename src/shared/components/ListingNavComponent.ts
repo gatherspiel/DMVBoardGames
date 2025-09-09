@@ -1,0 +1,67 @@
+import {BaseTemplateComponent} from "@bponnaluri/places-js";
+import {generateLinkButton} from "./ButtonGenerator.ts";
+
+const CONVENTIONS_LIST_URL="conventions.html";
+const EVENT_LIST_URL="index.html";
+const GAME_RESTAURANTS_LIST_URL="gameRestaurants.html";
+const GAME_STORE_LIST_URL="gameStores.html";
+
+export class ListingNavComponent extends BaseTemplateComponent {
+
+  constructor() {
+    super();
+  }
+
+  override getTemplateStyle(): string {
+    return `
+      <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+      <style>
+      
+       #show-info-ui {
+          padding-bottom: 0.5rem;
+        }
+        #show-more-info {
+         font-size: 1.5rem;
+         font-weight: 600;       
+        }
+        .raised {
+          display: inline-block;
+        }
+        
+        @media screen and (width < 32em) {
+          .raised {
+            margin-top:0.5rem;
+          }
+        }
+      </style>
+    `;
+  }
+
+  override render(): string {
+    return `
+      <span id="show-more-info">Click for more info about:</span>
+      <div>
+        ${this.getAttribute("currentPage") != CONVENTIONS_LIST_URL ? generateLinkButton({
+          text: "Conventions",
+          url: CONVENTIONS_LIST_URL
+        }): ``} 
+        
+        ${this.getAttribute("currentPage") != GAME_RESTAURANTS_LIST_URL ? generateLinkButton({
+          text: "Game Restaurants",
+          url: GAME_RESTAURANTS_LIST_URL
+        }): ``}
+
+        ${this.getAttribute("currentPage") != GAME_STORE_LIST_URL ? generateLinkButton({
+          text: "Game Stores",
+          url: GAME_STORE_LIST_URL
+        }): ``}
+
+        ${this.getAttribute("currentPage") != EVENT_LIST_URL ? generateLinkButton({
+          text: "Groups",
+          url: EVENT_LIST_URL
+        }): ``}          
+          
+        
+      </div>`
+  }
+}
