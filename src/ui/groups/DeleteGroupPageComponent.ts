@@ -10,7 +10,7 @@ import {API_ROOT} from "../../shared/Params.ts";
 import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
 
 const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
 
   <style>
     #delete-group-error-message {

@@ -20,7 +20,7 @@ import {generateErrorMessage} from "../../../shared/components/StatusIndicators.
 import { API_ROOT } from "../../../shared/Params.ts";
 
 const templateStyle = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
 
   <style>
     #${EVENT_NAME_INPUT} {

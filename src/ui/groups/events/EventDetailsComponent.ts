@@ -34,7 +34,7 @@ import {convertDateTimeForDisplay, convertDayOfWeekForDisplay} from "../../../sh
 customElements.define("login-status-component", LoginStatusComponent);
 
 const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
   <style>   
   
     #${EVENT_NAME_INPUT} {
