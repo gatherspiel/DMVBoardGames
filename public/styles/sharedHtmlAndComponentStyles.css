@@ -107,6 +107,20 @@ p {
   transition: transform 34ms;
 }
 
+.section-separator-medium {
+  border-bottom:  20px solid;
+  border-image-source: url(/assets/Section_Border_Medium.png);
+  border-image-slice: 20 20;
+  border-image-repeat: round;
+}
+
+.section-separator-small {
+  border-top:  5px solid;
+  border-image-source: url(/assets/Section_Border_Tiny.png);
+  border-image-slice: 5 5;
+  border-image-repeat: round;
+}
+
 .activeHover:focus:not(:focus-visible) {
   outline: none;
 }

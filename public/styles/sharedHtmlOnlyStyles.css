@@ -19,6 +19,8 @@ body {
 }
 
 #container {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
   max-width: 65rem;
   margin-inline: auto;
 }
@@ -43,7 +45,6 @@ body {
 .page-section h3 {
   color: var(--clr-dark-blue);
   font-size: 1.5rem;
-  margin: 0.5rem 0 0 3rem;
 }
 
 .page-section p {
@@ -83,7 +84,56 @@ body {
   margin-bottom: calc(var(--m) - var(--s)*0.2885);
   align-items: center;
   justify-content: center;
+}
 
+.front {
+  display: block;
+  position: relative;
+  padding: 0.5rem;
+  border-radius: 12px;
+  font-size: 1.5rem;
+  color: white;
+  background: var(--clr-light-blue);
+  will-change: transform;
+  transform: translateY(-4px);
+}
+
+.edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: linear-gradient(
+          to left,
+          var(--clr-darker-blue) 0%,
+          var(--clr-light-blue) 8%,
+          var(--clr-dark-blue) 92%,
+          var(--clr-darker-blue) 100%
+  );
+}
+.shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: hsl(0deg 0% 0% / 0.25);
+  will-change: transform;
+  transform: translateY(2px);
+}
+
+.raised {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  line-height:1;
+  outline-offset: 4px;
+  padding: 0;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .bg-image-container div:nth-child(18n -1) {

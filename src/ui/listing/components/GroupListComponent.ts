@@ -44,16 +44,11 @@ const loadConfig = [{
 
 const template = `
 
-  <link rel="preload" as="style" href="/styles/sharedComponentStyles.css" onload="this.rel='stylesheet'"/>
+  <link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
 
   <style>
 
-    .event-group:not(:first-child){
-      border-top:  5px solid;
-      border-image-source: url(assets/Section_Border_Tiny.png);
-      border-image-slice: 5 5;
-      border-image-repeat: round;
-    }
+
     
     @media not screen and (width < 32em) {
     
@@ -86,9 +81,7 @@ const template = `
         margin-right:2rem;
       }
     }
-    
- 
-    
+
     .button-div {
       display: flex;
     }
@@ -102,7 +95,7 @@ export class GroupListComponent extends BaseDynamicComponent {
   private getItemHtml(groupId: string, group: any) {
     let groupHtml: string;
     groupHtml = `
-      <div id=${groupId} class=${"event-group"}>
+      <div id=${groupId} >
 
         ${generateLinkButton({
           text: group.title,
@@ -122,7 +115,12 @@ export class GroupListComponent extends BaseDynamicComponent {
 
   render(data: any): string {
     let html = `<div class="ui-section">`;
+    let i = 0;
     const groupHtml = Object.keys(data.searchResults).reduce((result:any, groupId:any)=>{
+      i++;
+      if(i > 1) {
+        return result+`<div class="section-separator-small"></div> ${this.getItemHtml(groupId, data.searchResults[groupId])}`
+      }
       return result+this.getItemHtml(groupId, data.searchResults[groupId])
     },'')
 

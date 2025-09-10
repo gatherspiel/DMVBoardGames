@@ -3,14 +3,14 @@
 <head>
 
   <meta charset="UTF-8"/>
-  <style inline-source src="../public/styles/styles.css" ></style>
-  <style inline-source src="../public/styles/sharedComponentStyles.css" ></style>
+  <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
+  <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
 
   <link rel="preconnect" href="localhost:7070" />
   <link rel="preconnect" href="api.gatherspiel.com" />
 
   <script type="module">
-    import {ConventionListComponent} from "./ui/homepage/components/ConventionListComponent.js";
+    import {ConventionListComponent} from "./ui/listing/components/ConventionListComponent.js";
     customElements.define("convention-list-component",ConventionListComponent)
   </script>
 

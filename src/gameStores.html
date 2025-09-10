@@ -3,14 +3,14 @@
 <head>
 
   <meta charset="UTF-8"/>
-  <style inline-source src="../public/styles/styles.css" ></style>
-  <style inline-source src="../public/styles/sharedComponentStyles.css" ></style>
+  <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
+  <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
 
   <link rel="preconnect" href="localhost:7070" />
   <link rel="preconnect" href="api.gatherspiel.com" />
 
   <script type="module">
-    import {GameStoreListComponent} from "./ui/homepage/components/GameStoreListComponent.js";
+    import {GameStoreListComponent} from "./ui/listing/components/GameStoreListComponent.js";
     customElements.define("game-store-list-component",GameStoreListComponent)
   </script>
 
