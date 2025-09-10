@@ -14,7 +14,7 @@ const loadConfig = [{
 
 
 const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
 
   <style>
  
@@ -22,14 +22,7 @@ const template = `
     h3 {
       display: inline-block;
     }
-    
-    .section-separator-small {
-      border-bottom:  5px solid;
-      border-image-source: url(assets/Section_Border_Tiny.png);
-      border-image-slice: 5 5;
-      border-image-repeat: round;
-    }
-        
+            
     p {
       font-size: 1rem;
     }
@@ -46,7 +39,7 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
 
   getItemHtml(gameRestaurant: any) {
     return `
-    <div id = convention-${gameRestaurant.id} class="section-separator-small ">
+    <div>
      <h3>
         ${generateLinkButton({
           text: gameRestaurant.name,
@@ -54,6 +47,7 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
         })}
       </h3>
     <p>Location: ${gameRestaurant.location}</p>
+    <div class="section-separator-small"></div>
     </div>
   `;
   }
@@ -70,7 +64,7 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
       <div class="game-restaurants">
       <h1 class="hideOnMobile">Board Game Bars and Cafés</h1>
       <h2 class="showOnMobile">Board Game Bars and Cafés</h2>
-      <div class="section-separator-small"></div>
+      <div class="section-separator-medium"></div>
 
     `;
     Object.values(data).forEach((item:any) => {

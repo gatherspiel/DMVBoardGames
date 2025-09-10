@@ -22,7 +22,7 @@ const SEARCH_CITY_ID: string = "search-cities";
 const SEARCH_FORM_ID: string = "search-form";
 
 const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
 
   <style>
   

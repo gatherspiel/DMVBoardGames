@@ -22,7 +22,7 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
 
   override getTemplateStyle():string{
     return `  
-      <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
       
         .raised {

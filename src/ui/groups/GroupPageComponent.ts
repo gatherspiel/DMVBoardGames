@@ -25,7 +25,7 @@ import {LoginStatusComponent} from "../../shared/components/LoginStatusComponent
 customElements.define("login-status-component", LoginStatusComponent);
 
 const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
 
   <style>
      
@@ -76,13 +76,9 @@ const template = `
       line-height: 1;
     }
     
-    .section-separator-medium {
-      border-bottom:  20px solid;
-      border-image-source: url(assets/Section_Border_Medium.png);
-      border-image-slice: 20 20;
-      border-image-repeat: round;
+    .event {
+      padding-bottom: 0.5rem;
     }
-    
     .event p {
       word-wrap: break-word;
       white-space: normal;
@@ -98,14 +94,6 @@ const template = `
       font-size: 1.25rem;
       font-weight: 600;
    }
-   
-   .event {
-      border-bottom:  5px solid;
-      border-image-source: url(assets/Section_Border_Tiny.png);
-      border-image-slice: 5 5;
-      border-image-repeat: round;
-      padding-bottom: 0.5rem;
-    }
     
     .add-event-button {
       margin-top:0.5rem;
@@ -178,7 +166,6 @@ export class GroupPageComponent extends BaseDynamicComponent {
             isEditing: true,
           })
         }
-
 
         if(targetId === CANCEL_UPDATES_BUTTON_ID) {
           self.updateData({
@@ -293,6 +280,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
             url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(eventData.groupId)}`
           })}
       </div>
+      <div class="section-separator-small"></div>
     `;
   }
 

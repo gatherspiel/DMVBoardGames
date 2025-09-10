@@ -16,7 +16,7 @@ import {API_ROOT} from "../../shared/Params.ts";
 //TODO: Refactor CSS to use fix widths on labels in the future instead of having a hardcoded margin on the email label.
 
 const template = `
-  <link rel="stylesheet" type="text/css"  href="/styles/sharedComponentStyles.css"/>
+  <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
 
   <style>
     #login-component-container {

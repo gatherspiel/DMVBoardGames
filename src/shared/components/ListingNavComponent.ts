@@ -14,7 +14,7 @@ export class ListingNavComponent extends BaseTemplateComponent {
 
   override getTemplateStyle(): string {
     return `
-      <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
       
        #show-info-ui {
@@ -40,7 +40,7 @@ export class ListingNavComponent extends BaseTemplateComponent {
   override render(): string {
     return `
       <span id="show-more-info">Click for more info about:</span>
-      <div>
+      <div id ="show-info-ui">
         ${this.getAttribute("currentPage") != CONVENTIONS_LIST_URL ? generateLinkButton({
           text: "Conventions",
           url: CONVENTIONS_LIST_URL
@@ -61,7 +61,6 @@ export class ListingNavComponent extends BaseTemplateComponent {
           url: EVENT_LIST_URL
         }): ``}          
           
-        
-      </div>`
+      </div >`
   }
 }
