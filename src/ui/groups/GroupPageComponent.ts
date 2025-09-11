@@ -11,7 +11,11 @@ import {
 
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 
-import {convertLocationStringForDisplay,getDateFromDateString} from "../../shared/DateUtils.ts";
+import {
+  convert24HourTimeForDisplay,
+  convertLocationStringForDisplay,
+  getDateFromDateString
+} from "../../shared/DateUtils.ts";
 import {
   generateButton,
   generateLinkButton
@@ -269,7 +273,26 @@ export class GroupPageComponent extends BaseDynamicComponent {
       </div>`
   }
 
-  renderEventData(eventData:any, key:string){
+  renderWeeklyEventData(eventData:any, key:string){
+
+    const dayString = eventData.day.charAt(0)+eventData.day.substring(1).toLowerCase() + "s";
+    return `
+      <div id=${key} class="event">
+        <h2>${eventData.name}</h2>
+        <p class = "event-time">
+          ${dayString} from ${convert24HourTimeForDisplay(eventData.startTime[0],eventData.startTime[1])} to 
+          ${convert24HourTimeForDisplay(eventData.endTime[0],eventData.endTime[1])} </p>
+        <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
+        ${generateLinkButton({
+          text: "View event details",
+          url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(eventData.groupId)}`
+        })}
+      </div>
+      <div class="section-separator-small"></div>
+    `;
+  }
+
+  renderOneTimeEventData(eventData:any, key:string){
     return `
       <div id=${key} class="event">
           <h2>${eventData.name}</h2>
@@ -304,16 +327,33 @@ export class GroupPageComponent extends BaseDynamicComponent {
         <p class="${GROUP_DESCRIPTION_TEXT}">${groupData.description}</p> `
         : this.renderEditMode(groupData)
      }
-     <h1 class="hideOnMobile">Upcoming events</h1>
-     <div class="section-separator-medium"></div>
-     ${
-        groupData.eventData.length === 0
-          ? `<p id="no-event">Click on group link above for event information</p>`
-          : `${groupData.eventData
+
+     ${groupData.oneTimeEventData.length === 0 && groupData.weeklyEventData.length === 0 ?
+      `<p id="no-event">Click on group link above for event information</p>`:
+      `<h1 class="hideOnMobile">Upcoming events</h1>`}
+      ${
+        groupData.weeklyEventData.length === 0
+          ? ``
+          : `  
+              <div class="section-separator-medium"></div>
+              ${groupData.weeklyEventData
               .map((event: any) => {
-                return  self.renderEventData({groupId: groupData.id,...event},groupData.id + "event-" + event.id)
+                return self.renderWeeklyEventData({groupId: groupData.id, ...event}, groupData.id + "event-" + event.id)
               }).join(" ")}
-          <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
+            `
+      }
+ 
+     ${
+        groupData.oneTimeEventData.length === 0
+          ? ``
+          : `  
+              <h2>Other events</h2> 
+              <div class="section-separator-medium"></div>
+              ${groupData.oneTimeEventData
+                .map((event: any) => {
+                  return self.renderOneTimeEventData({groupId: groupData.id,...event},groupData.id + "event-" + event.id)
+                }).join(" ")}
+              <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
           `
       }
     `;

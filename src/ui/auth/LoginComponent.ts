@@ -61,7 +61,7 @@ export class LoginComponent extends BaseDynamicComponent {
     super([{
       componentReducer:(loginState:any)=>{
         if(loginState.loggedIn){
-          window.location.assign(window.location.origin);
+          //window.location.assign(window.location.origin);
         }
         return loginState;
       },
@@ -114,8 +114,15 @@ export class LoginComponent extends BaseDynamicComponent {
             self.updateData(formInputs)
           } else {
 
+            console.log("Registering user")
+
+            const requestData = {
+              email: formInputs.username,
+              password: formInputs.password
+            }
+
             ApiLoadAction.getResponseData({
-              body: JSON.stringify(formInputs),
+              body: JSON.stringify(requestData),
               method: "POST",
               url: API_ROOT + `/users/register`,
             }).then((response:any)=>{
@@ -186,7 +193,7 @@ export class LoginComponent extends BaseDynamicComponent {
         
         ${generateButton({
           class: "login-element",
-          id: LOGIN_BUTTON_ID,
+          id: REGISTER_BUTTON_ID,
           type: "submit",
           text: "Register",
         })}

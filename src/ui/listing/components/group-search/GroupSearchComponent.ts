@@ -139,7 +139,6 @@ export class GroupSearchComponent extends BaseDynamicComponent {
   }
 
   render(store: any) {
-
     return `
    
       <form id=${SEARCH_FORM_ID}>

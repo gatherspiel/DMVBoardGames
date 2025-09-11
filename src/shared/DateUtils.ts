@@ -21,20 +21,6 @@ export function getDateFromDateString(date: string) {
   return `${dateObj.getFullYear()}-${dateObj.getMonth()}-${dateObj.getDate()}`
 }
 
-export function getTimeFromDateString(date: string) {
-  const dateObj = new Date(Date.parse(date));
-
-  let displayMinutes = ""+dateObj.getMinutes();
-  if(dateObj.getMinutes() < 10){
-    displayMinutes = `0${displayMinutes}`;
-  }
-
-  let hours = dateObj.getHours();
-  if(dateObj.getHours()>12) {
-    hours = hours -12;
-  }
-  return `${hours}:${displayMinutes}${dateObj.getHours()>=12 ?'PM':' AM'}`
-}
 
 export function combineDateAndTime(date: string, time: string){
   const dateSplit = date.split("-");
@@ -66,6 +52,22 @@ export function convertDateTimeForDisplay(date: string){
     `${displayHours}:${displayMinutes}${dateObj.getHours()>=12 ?'PM':' AM'}`
   return dateStr;
 }
+
+export function convert24HourTimeForDisplay(hours:number, minutes: number){
+
+  let displayHours = hours;
+  if(hours>12) {
+    displayHours = displayHours - 12;
+  }
+
+  let displayMinutes = ""+minutes
+  if(minutes < 10){
+    displayMinutes = `0${displayMinutes}`;
+  }
+
+  return `${displayHours}:${displayMinutes}${hours>=12 ?'PM':' AM'}`
+}
+
 
 export function convertTimeTo24Hours(time:string){
   const timeSplit = time.split(" ")[0].split(":");
