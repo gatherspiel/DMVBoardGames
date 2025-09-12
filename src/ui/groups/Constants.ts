@@ -9,5 +9,6 @@ export const EVENT_URL_INPUT = "url";
 export const START_DATE_INPUT = "start-date-input";
 export const START_TIME_INPUT = "start-time-input";
 export const END_TIME_INPUT = "end-time-input";
+export const DAY_OF_WEEK_INPUT:string = "day-of-week"
 
 export const EVENT_LOCATION_INPUT = "location";

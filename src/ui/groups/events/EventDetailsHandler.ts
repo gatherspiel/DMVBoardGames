@@ -1,5 +1,6 @@
 
 import {
+  DAY_OF_WEEK_INPUT,
   END_TIME_INPUT,
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT, EVENT_URL_INPUT,
@@ -22,6 +23,8 @@ export function getEventDetailsFromForm(formData:Record<string,string>){
     endDate: startDate,
     endTime: endTime,
     location: formData[EVENT_LOCATION_INPUT],
+    isRecurring: formData["isRecurring"],
+    day: formData[DAY_OF_WEEK_INPUT]
   };
 }
 
@@ -48,7 +51,7 @@ export function validateEventFormData(formData:Record<string,string>) {
   const startTime = formData[START_TIME_INPUT];
   const endTime = formData[END_TIME_INPUT];
 
-  if(!startDate){
+  if(!startDate && !formData["isRecurring"]){
     errorMessages.push("Start date must be defined");
   }
 

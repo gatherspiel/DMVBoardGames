@@ -272,7 +272,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
       </div>`
   }
 
-  renderWeeklyEventData(eventData:any, groupId:any,key:string){
+  renderWeeklyEventData(eventData:any, groupId:any, key:string){
 
     const dayString = convertDayOfWeekForDisplay(eventData.day);
     return `
@@ -291,7 +291,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
     `;
   }
 
-  renderOneTimeEventData(eventData:any, key:string){
+  renderOneTimeEventData(eventData:any, groupId:any, key:string){
 
     const startDate = `${eventData.startDate[0]}-${eventData.startDate[1]}-${eventData.startDate[2]}`
     return `
@@ -301,7 +301,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
           <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
            ${generateLinkButton({
             text: "View event details",
-            url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(eventData.groupId)}`
+            url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
           })}
       </div>
       <div class="section-separator-small"></div>
@@ -351,7 +351,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
               <div class="section-separator-medium"></div>
               ${groupData.oneTimeEventData
                 .map((event: any) => {
-                  return self.renderOneTimeEventData({groupId: groupData.id,...event},groupData.id + "event-" + event.id)
+                  return self.renderOneTimeEventData(event,groupData.id,groupData.id + "event-" + event.id)
                 }).join(" ")}
               <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
           `
