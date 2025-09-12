@@ -61,7 +61,7 @@ export class LoginComponent extends BaseDynamicComponent {
     super([{
       componentReducer:(loginState:any)=>{
         if(loginState.loggedIn){
-          //window.location.assign(window.location.origin);
+          window.location.assign(window.location.origin);
         }
         return loginState;
       },

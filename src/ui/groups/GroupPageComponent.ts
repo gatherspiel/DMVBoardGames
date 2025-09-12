@@ -12,7 +12,7 @@ import {
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 
 import {
-  convert24HourTimeForDisplay,
+  convert24HourTimeForDisplay, convertDayOfWeekForDisplay,
   convertLocationStringForDisplay,
   getDateFromDateString
 } from "../../shared/DateUtils.ts";
@@ -275,13 +275,13 @@ export class GroupPageComponent extends BaseDynamicComponent {
 
   renderWeeklyEventData(eventData:any, key:string){
 
-    const dayString = eventData.day.charAt(0)+eventData.day.substring(1).toLowerCase() + "s";
+    const dayString = convertDayOfWeekForDisplay(eventData.day);
     return `
       <div id=${key} class="event">
         <h2>${eventData.name}</h2>
         <p class = "event-time">
-          ${dayString} from ${convert24HourTimeForDisplay(eventData.startTime[0],eventData.startTime[1])} to 
-          ${convert24HourTimeForDisplay(eventData.endTime[0],eventData.endTime[1])} </p>
+          ${dayString} from ${convert24HourTimeForDisplay(eventData.startTime)} to 
+          ${convert24HourTimeForDisplay(eventData.endTime)} </p>
         <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
         ${generateLinkButton({
           text: "View event details",

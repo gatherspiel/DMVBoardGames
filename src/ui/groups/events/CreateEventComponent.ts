@@ -87,6 +87,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
         self.updateData(updates);
       } else {
         const eventDetails = getEventDetailsFromForm(formData)
+        console.log("Saving event");
         ApiLoadAction.getResponseData({
           body: JSON.stringify(eventDetails),
           method: ApiActionTypes.POST,

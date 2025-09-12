@@ -16,7 +16,7 @@ import {
 } from "./EventDetailsHandler.ts";
 
 import {generateErrorMessage} from "../../../shared/components/StatusIndicators.ts";
-import {getDateFromDateString} from "../../../shared/DateUtils.ts";
+import {convert24HourTimeForDisplay, getDateFromDateString} from "../../../shared/DateUtils.ts";
 import {convertLocationStringForDisplay} from "../../../shared/DateUtils.ts";
 import {
   generateButton,
@@ -301,6 +301,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   }
 
   renderViewMode(data:any): string {
+
+    const dayString = convertDayOfWeekForDisplay(data.day);
     if(data.errorMessage){
       return `${generateErrorMessage(data.errorMessage)}`
     }
@@ -311,8 +313,13 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           text: data.name, 
           url: data.url
         })}
-             
-        <p>Time: ${convertDayOfWeekForDisplay(data.day)}, ${getDateFromDateString(data.startTime)}</p>
+         
+        ${data.isRecurring ? 
+          `<p>${dayString}s from ${convert24HourTimeForDisplay(data.startTime)} to 
+              ${convert24HourTimeForDisplay(data.endTime)} </p>` :
+          `<p>Time: ${convertDayOfWeekForDisplay(data.day)}, ${getDateFromDateString(data.startTime)}</p>`
+        }
+        
         <p>Location: ${convertLocationStringForDisplay(data.location)}</p>
         <p>${data.description}</p>
            

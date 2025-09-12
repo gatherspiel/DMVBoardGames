@@ -53,7 +53,11 @@ export function convertDateTimeForDisplay(date: string){
   return dateStr;
 }
 
-export function convert24HourTimeForDisplay(hours:number, minutes: number){
+export function convert24HourTimeForDisplay(timeString:string){
+
+  const timeSplit = timeString.split(":");
+  const hours = parseInt(timeSplit[0]);
+  const minutes = parseInt(timeSplit[1]);
 
   let displayHours = hours;
   if(hours>12) {
@@ -67,7 +71,6 @@ export function convert24HourTimeForDisplay(hours:number, minutes: number){
 
   return `${displayHours}:${displayMinutes}${hours>=12 ?'PM':' AM'}`
 }
-
 
 export function convertTimeTo24Hours(time:string){
   const timeSplit = time.split(" ")[0].split(":");
