@@ -3,6 +3,7 @@ import {
   BaseDynamicComponent, ApiLoadAction
 } from "@bponnaluri/places-js";
 import {
+  DAY_OF_WEEK_INPUT,
   END_TIME_INPUT,
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT,
@@ -147,12 +148,20 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             [EVENT_NAME_INPUT]: formElements[0].value,
             [EVENT_DESCRIPTION_INPUT]: formElements[1].value,
             [EVENT_URL_INPUT]: formElements[2].value,
-            [START_DATE_INPUT]: formElements[3].value,
             [START_TIME_INPUT]: convertTimeTo24Hours(formElements[4].value),
             [END_TIME_INPUT]: convertTimeTo24Hours(formElements[5].value),
             [EVENT_LOCATION_INPUT]: formElements[6].value,
             isRecurring: self.componentStore.isRecurring
           }
+
+          if(self.componentStore.isRecurring){
+            // @ts-ignore
+            formData[DAY_OF_WEEK_INPUT] = formElements[3].value;
+          } else {
+            // @ts-ignore
+            formData[START_DATE_INPUT] = formElements[3].value;
+          }
+
           const validationErrors:any = validateEventFormData(formData);
 
           if(validationErrors.errorMessage.length !==0){
@@ -169,6 +178,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
                   name: formData[EVENT_NAME_INPUT],
                   description: formData[EVENT_DESCRIPTION_INPUT],
                   url: formData[EVENT_URL_INPUT],
+                  //@ts-ignore
                   startDate: formData[START_DATE_INPUT],
                   startTime: formData[START_TIME_INPUT],
                   endTime: formData[END_TIME_INPUT],
@@ -266,12 +276,21 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         </input>
         <br>
         
-        <label>Start date</label>
-        <input
-          name=${START_DATE_INPUT}
-        />
-        </input>
-        <br>
+          ${data.isRecurring ?
+          `
+              <label>Day of week</label>
+              <input
+                name=${DAY_OF_WEEK_INPUT}
+              />
+              <br>
+             `
+          :
+        `
+          <label>Start date</label>
+          <input
+            name=${START_DATE_INPUT}
+          />
+          <br>`}
         
         <label>Start time</label>
         <input

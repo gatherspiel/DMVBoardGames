@@ -63,6 +63,7 @@ export function validateEventFormData(formData:Record<string,string>) {
     errorMessages.push("End time must be defined");
   }
 
+  console.log(startDate)
   if(startDate && startTime && endTime) {
     try {
       validateDateFormat(startDate)
