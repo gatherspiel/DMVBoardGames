@@ -18,6 +18,7 @@ import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
 import {getEventDetailsFromForm, validateEventFormData} from "./EventDetailsHandler.ts";
 import {generateErrorMessage} from "../../../shared/components/StatusIndicators.ts";
 import { API_ROOT } from "../../../shared/Params.ts";
+import {convertTimeTo24Hours} from "../../../shared/DateUtils.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
@@ -76,8 +77,8 @@ export class CreateEventComponent extends BaseDynamicComponent {
         [EVENT_DESCRIPTION_INPUT]: data[1].value,
         [EVENT_URL_INPUT]: data[2].value,
         [START_DATE_INPUT]: data[3].value,
-        [START_TIME_INPUT]: data[4].value,
-        [END_TIME_INPUT]: data[5].value,
+        [START_TIME_INPUT]: convertTimeTo24Hours(data[4].value),
+        [END_TIME_INPUT]: convertTimeTo24Hours(data[5].value),
         [EVENT_LOCATION_INPUT]: data[6].value
       }
 
@@ -91,7 +92,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
         ApiLoadAction.getResponseData({
           body: JSON.stringify(eventDetails),
           method: ApiActionTypes.POST,
-          url: API_ROOT + `groups/${eventDetails.groupId}/events/`,
+          url: API_ROOT + `/groups/${eventDetails.groupId}/events/`,
         }).then((response:any)=>{
           if(!response.errorMessage){
             self.updateData({

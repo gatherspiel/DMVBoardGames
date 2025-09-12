@@ -17,8 +17,10 @@ export function getEventDetailsFromForm(formData:Record<string,string>){
     name: formData[EVENT_NAME_INPUT],
     description: formData[EVENT_DESCRIPTION_INPUT],
     url: formData[EVENT_URL_INPUT],
-    startTime: combineDateAndTime(startDate, startTime),
-    endTime: combineDateAndTime(startDate, endTime),
+    startDate: startDate,
+    startTime: startTime,
+    endDate: startDate,
+    endTime: endTime,
     location: formData[EVENT_LOCATION_INPUT],
   };
 }

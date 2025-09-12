@@ -14,7 +14,6 @@ import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import {
   convert24HourTimeForDisplay, convertDayOfWeekForDisplay,
   convertLocationStringForDisplay,
-  getDateFromDateString
 } from "../../shared/DateUtils.ts";
 import {
   generateButton,
@@ -262,7 +261,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
         ${generateLinkButton({
           class: "add-event-button",
           text: "Add event",
-          url: `groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}`
+          url: `groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}`
         })}
       
         ${generateLinkButton({
@@ -273,19 +272,19 @@ export class GroupPageComponent extends BaseDynamicComponent {
       </div>`
   }
 
-  renderWeeklyEventData(eventData:any, key:string){
+  renderWeeklyEventData(eventData:any, groupId:any,key:string){
 
     const dayString = convertDayOfWeekForDisplay(eventData.day);
     return `
       <div id=${key} class="event">
         <h2>${eventData.name}</h2>
         <p class = "event-time">
-          ${dayString} from ${convert24HourTimeForDisplay(eventData.startTime)} to 
+          ${dayString}s from ${convert24HourTimeForDisplay(eventData.startTime)} to 
           ${convert24HourTimeForDisplay(eventData.endTime)} </p>
         <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
         ${generateLinkButton({
           text: "View event details",
-          url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(eventData.groupId)}`
+          url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
         })}
       </div>
       <div class="section-separator-small"></div>
@@ -293,10 +292,12 @@ export class GroupPageComponent extends BaseDynamicComponent {
   }
 
   renderOneTimeEventData(eventData:any, key:string){
+
+    const startDate = `${eventData.startDate[0]}-${eventData.startDate[1]}-${eventData.startDate[2]}`
     return `
       <div id=${key} class="event">
           <h2>${eventData.name}</h2>
-          <p class = "event-time">${getDateFromDateString(eventData.startTime)}</p>
+          <p class = "event-time">${startDate} ${convert24HourTimeForDisplay(eventData.startTime)}</p>
           <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
            ${generateLinkButton({
             text: "View event details",
@@ -313,7 +314,6 @@ export class GroupPageComponent extends BaseDynamicComponent {
     }
 
     const self = this;
-
     return `
      ${!groupData.isEditing ? `
         <h1>
@@ -338,7 +338,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
               <div class="section-separator-medium"></div>
               ${groupData.weeklyEventData
               .map((event: any) => {
-                return self.renderWeeklyEventData({groupId: groupData.id, ...event}, groupData.id + "event-" + event.id)
+                return self.renderWeeklyEventData(event,groupData.id, groupData.id + "event-" + event.id)
               }).join(" ")}
             `
       }
