@@ -3,6 +3,7 @@ import {
   BaseDynamicComponent, ApiLoadAction
 } from "@bponnaluri/places-js";
 import {
+  DAY_OF_WEEK_INPUT,
   END_TIME_INPUT,
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT,
@@ -16,7 +17,7 @@ import {
 } from "./EventDetailsHandler.ts";
 
 import {generateErrorMessage} from "../../../shared/components/StatusIndicators.ts";
-import {getDateFromDateString} from "../../../shared/DateUtils.ts";
+import {convert24HourTimeForDisplay, convertTimeTo24Hours} from "../../../shared/DateUtils.ts";
 import {convertLocationStringForDisplay} from "../../../shared/DateUtils.ts";
 import {
   generateButton,
@@ -62,9 +63,14 @@ const template = `
 `;
 
 const loadConfig =  [{
-    dataStore: GROUP_EVENT_REQUEST_STORE
+    dataStore: GROUP_EVENT_REQUEST_STORE,
+    componentReducer: (data:any)=>{
+      if(data.startDate){
+        data.startDate = data.startDate.join("-")
+      }
+      return data
+    }
   }]
-
 
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 const CANCEL_DELETE_BUTTON_ID = "cancel-delete-button";
@@ -142,11 +148,20 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             [EVENT_NAME_INPUT]: formElements[0].value,
             [EVENT_DESCRIPTION_INPUT]: formElements[1].value,
             [EVENT_URL_INPUT]: formElements[2].value,
-            [START_DATE_INPUT]: formElements[3].value,
-            [START_TIME_INPUT]: formElements[4].value,
-            [END_TIME_INPUT]: formElements[5].value,
-            [EVENT_LOCATION_INPUT]: formElements[6].value
+            [START_TIME_INPUT]: convertTimeTo24Hours(formElements[4].value),
+            [END_TIME_INPUT]: convertTimeTo24Hours(formElements[5].value),
+            [EVENT_LOCATION_INPUT]: formElements[6].value,
+            isRecurring: self.componentStore.isRecurring
           }
+
+          if(self.componentStore.isRecurring){
+            // @ts-ignore
+            formData[DAY_OF_WEEK_INPUT] = formElements[3].value;
+          } else {
+            // @ts-ignore
+            formData[START_DATE_INPUT] = formElements[3].value;
+          }
+
           const validationErrors:any = validateEventFormData(formData);
 
           if(validationErrors.errorMessage.length !==0){
@@ -160,6 +175,14 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             }).then((response:any)=>{
               if(!response.errorMessage){
                 self.updateData({
+                  name: formData[EVENT_NAME_INPUT],
+                  description: formData[EVENT_DESCRIPTION_INPUT],
+                  url: formData[EVENT_URL_INPUT],
+                  //@ts-ignore
+                  startDate: formData[START_DATE_INPUT],
+                  startTime: formData[START_TIME_INPUT],
+                  endTime: formData[END_TIME_INPUT],
+                  eventLocation: formData[EVENT_LOCATION_INPUT],
                   isEditing: false,
                   errorMessage: "",
                   [SUCCESS_MESSAGE_KEY]: "Successfully updated event",
@@ -253,12 +276,21 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         </input>
         <br>
         
-        <label>Start date</label>
-        <input
-          name=${START_DATE_INPUT}
-        />
-        </input>
-        <br>
+          ${data.isRecurring ?
+          `
+              <label>Day of week</label>
+              <input
+                name=${DAY_OF_WEEK_INPUT}
+              />
+              <br>
+             `
+          :
+        `
+          <label>Start date</label>
+          <input
+            name=${START_DATE_INPUT}
+          />
+          <br>`}
         
         <label>Start time</label>
         <input
@@ -301,6 +333,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   }
 
   renderViewMode(data:any): string {
+
     if(data.errorMessage){
       return `${generateErrorMessage(data.errorMessage)}`
     }
@@ -311,8 +344,13 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           text: data.name, 
           url: data.url
         })}
-             
-        <p>Time: ${convertDayOfWeekForDisplay(data.day)}, ${getDateFromDateString(data.startTime)}</p>
+         
+        ${data.isRecurring ? 
+          `<p>${convertDayOfWeekForDisplay(data.day)}s from ${convert24HourTimeForDisplay(data.startTime)} to 
+              ${convert24HourTimeForDisplay(data.endTime)} </p>` :
+          `<p>Time: ${data.startDate}, ${convert24HourTimeForDisplay(data.startTime)}</p>`
+        }
+        
         <p>Location: ${convertLocationStringForDisplay(data.location)}</p>
         <p>${data.description}</p>
            
