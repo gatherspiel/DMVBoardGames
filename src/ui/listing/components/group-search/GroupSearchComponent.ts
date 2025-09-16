@@ -140,7 +140,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
   render(store: any) {
     return `
   
-      <form id=${SEARCH_FORM_ID}>
+      <form id=${SEARCH_FORM_ID} onsubmit="return false">
         <div>
           <div>
               ${this.getDropdownHtml({
@@ -182,7 +182,6 @@ export class GroupSearchComponent extends BaseDynamicComponent {
                ${generateButton({
                 id: SEARCH_BUTTON_ID,
                 text: "Search groups",
-                type: "Submit",
               })}
           </div>
       </div>
