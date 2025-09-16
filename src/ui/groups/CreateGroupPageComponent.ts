@@ -89,7 +89,6 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
   }
 
   render(createGroupData: any): string {
-
     return `
       <div id="create-group-page-container">
         <h1>Create board game group</h1>

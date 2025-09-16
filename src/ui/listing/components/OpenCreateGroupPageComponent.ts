@@ -24,12 +24,9 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
     return `  
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
-      
         .raised {
           line-height: 1;
         }
-        
-       
         @media not screen and (width < 32em) {
          .raised {
             display: inline-block;
@@ -41,8 +38,7 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
             margin-left: 2rem;
             margin-right:2rem;
           }
-        }
-          
+        }      
       </style>`
   }
 
@@ -56,7 +52,6 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
           url:`groups/create.html`
         })}
         <div class="section-separator-small"></div>
-
     `
   }
 }
