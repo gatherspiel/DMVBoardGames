@@ -17,8 +17,8 @@ import {
 } from "./EventDetailsHandler.ts";
 
 import {generateErrorMessage} from "../../../shared/components/StatusIndicators.ts";
-import {convert24HourTimeForDisplay, convertTimeTo24Hours} from "../../../shared/DateUtils.ts";
-import {convertLocationStringForDisplay} from "../../../shared/DateUtils.ts";
+import {convert24HourTimeForDisplay, convertTimeTo24Hours} from "../../../shared/EventDataUtils.ts";
+import {convertLocationStringForDisplay} from "../../../shared/EventDataUtils.ts";
 import {
   generateButton,
   generateLinkButton
@@ -31,7 +31,8 @@ import {API_ROOT} from "../../../shared/Params.ts";
 
 import {LoginStatusComponent} from "../../../shared/components/LoginStatusComponent.ts";
 import {generateSuccessMessage} from "../../../shared/components/StatusIndicators.ts";
-import {convertDateTimeForDisplay, convertDayOfWeekForDisplay} from "../../../shared/DateUtils.ts";
+import {convertDateTimeForDisplay} from "../../../shared/EventDataUtils.ts";
+import {convertDayOfWeekForDisplay} from "../../../shared/DisplayNameConversion.ts";
 customElements.define("login-status-component", LoginStatusComponent);
 
 const template = `
@@ -84,7 +85,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     super(loadConfig);
   }
 
-  override attachEventsToShadowRoot(shadowRoot?: any) {
+  override attachHandlersToShadowRoot(shadowRoot?: any) {
     const self = this;
 
     shadowRoot?.addEventListener("click",(event:any)=>{
@@ -142,24 +143,25 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
         if(event.target.id === SAVE_EVENT_BUTTON_ID){
 
-          const formElements = shadowRoot?.getElementById('event-details-form').elements;
+          const data = (shadowRoot.getElementById('event-details-form') as HTMLFormElement)?.elements;
+
           const formData = {
             id: self.componentStore.id,
-            [EVENT_NAME_INPUT]: formElements[0].value,
-            [EVENT_DESCRIPTION_INPUT]: formElements[1].value,
-            [EVENT_URL_INPUT]: formElements[2].value,
-            [START_TIME_INPUT]: convertTimeTo24Hours(formElements[4].value),
-            [END_TIME_INPUT]: convertTimeTo24Hours(formElements[5].value),
-            [EVENT_LOCATION_INPUT]: formElements[6].value,
+            [EVENT_NAME_INPUT]: (data.namedItem(EVENT_NAME_INPUT) as HTMLInputElement)?.value,
+            [EVENT_DESCRIPTION_INPUT]: (data.namedItem(EVENT_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
+            [EVENT_URL_INPUT]: (data.namedItem(EVENT_URL_INPUT) as HTMLInputElement)?.value,
+            [START_TIME_INPUT]: convertTimeTo24Hours((data.namedItem(START_TIME_INPUT) as HTMLInputElement)?.value),
+            [END_TIME_INPUT]: convertTimeTo24Hours((data.namedItem(END_TIME_INPUT) as HTMLInputElement)?.value),
+            [EVENT_LOCATION_INPUT]: (data.namedItem(EVENT_LOCATION_INPUT) as HTMLInputElement)?.value,
             isRecurring: self.componentStore.isRecurring
           }
 
           if(self.componentStore.isRecurring){
             // @ts-ignore
-            formData[DAY_OF_WEEK_INPUT] = formElements[3].value;
+            formData[DAY_OF_WEEK_INPUT] = (data.namedItem(DAY_OF_WEEK_INPUT) as HTMLInputElement)?.value;
           } else {
             // @ts-ignore
-            formData[START_DATE_INPUT] = formElements[3].value;
+            formData[START_DATE_INPUT] = (data.namedItem(START_DATE_INPUT) as HTMLInputElement)?.value;
           }
 
           const validationErrors:any = validateEventFormData(formData);

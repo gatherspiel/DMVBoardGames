@@ -42,4 +42,3 @@ export function generateButton(config:ButtonConfig){
     </button>
   `
 }
-
