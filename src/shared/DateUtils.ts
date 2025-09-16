@@ -74,6 +74,7 @@ export function convert24HourTimeForDisplay(timeString:string){
 
 export function convertTimeTo24Hours(time:string){
 
+
   if(time.endsWith("AM")){
     time = time.split("AM")[0];
   }
@@ -85,7 +86,7 @@ export function convertTimeTo24Hours(time:string){
 
   if(!time.split(" ")[1]){
     if(timeSplit[1].includes("PM")){
-      timeSplit[1]=timeSplit[1].substring(0,1);
+      timeSplit[1]=timeSplit[1].substring(0,2);
       if(timeSplit[0] !== '12' && parseInt(timeSplit[0]) <12){
         timeSplit[0] = "" + (parseInt(timeSplit[0])+12)
 
@@ -100,6 +101,8 @@ export function convertTimeTo24Hours(time:string){
   if(timeSplit[1].length === 1){
     timeSplit[1]=`0${timeSplit[1]}`;
   }
+
+  console.log(`${timeSplit[0]}:${timeSplit[1]}`)
 
   return `${timeSplit[0]}:${timeSplit[1]}`
 }
