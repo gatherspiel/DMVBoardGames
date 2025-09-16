@@ -63,10 +63,12 @@ export class LoginStatusComponent extends BaseDynamicComponent {
     return template;
   }
 
-  override attachEventHandlersToDom(shadowRoot?: any){
-    shadowRoot?.getElementById(SIGN_OUT_LINK_ID)?.addEventListener("click",()=>{
-      LOGOUT_STORE.fetchData({}, LOGIN_STORE)
-    });
+  override attachHandlersToShadowRoot(shadowRoot?: any){
+    shadowRoot.addEventListener("click",(event:any)=>{
+      if(event.target.id === SIGN_OUT_LINK_ID) {
+        LOGOUT_STORE.fetchData({}, LOGIN_STORE)
+      }
+    })
   }
 
   override render(authData:any){

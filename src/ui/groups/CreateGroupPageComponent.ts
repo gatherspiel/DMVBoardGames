@@ -52,7 +52,7 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
     return templateStyle;
   }
 
-  override attachEventsToShadowRoot(shadowRoot:ShadowRoot){
+  override attachHandlersToShadowRoot(shadowRoot:ShadowRoot){
 
     var self = this;
     shadowRoot?.getElementById('create-group-form')?.addEventListener('submit',(event:any)=>{
@@ -89,7 +89,6 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
   }
 
   render(createGroupData: any): string {
-
     return `
       <div id="create-group-page-container">
         <h1>Create board game group</h1>

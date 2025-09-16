@@ -44,37 +44,40 @@ export class DeleteGroupPageComponent extends BaseDynamicComponent {
       existingGroupName: (new URLSearchParams(document.location.search)).get("name") ?? ""})
   }
 
-  override attachEventHandlersToDom(shadowRoot?: any) {
+  override attachHandlersToShadowRoot(shadowRoot?: any) {
     const self = this;
-    shadowRoot?.getElementById(CONFIRM_DELETE_BUTTON_ID).addEventListener("click",()=>{
-      const groupName:any = (shadowRoot.getElementById(GROUP_NAME_INPUT) as HTMLInputElement)?.value.trim();
+    shadowRoot?.addEventListener("click",(event:any)=>{
 
-      if(groupName !== this.componentStore.existingGroupName){
-        self.updateData({
-          name:groupName,
-          errorMessage: "Group name not entered correctly",
-        });
-      } else {
+      if(event.target.id === CONFIRM_DELETE_BUTTON_ID) {
+        const groupName: any = (shadowRoot.getElementById(GROUP_NAME_INPUT) as HTMLInputElement)?.value.trim();
 
-        const id = (new URLSearchParams(document.location.search)).get("id") ?? "";
-        const params = {
-          method: ApiActionTypes.DELETE,
-          url: `${API_ROOT}/groups/?id=${id}`
-        };
+        if (groupName !== this.componentStore.existingGroupName) {
+          self.updateData({
+            name: groupName,
+            errorMessage: "Group name not entered correctly",
+          });
+        } else {
 
-        ApiLoadAction.getResponseData(params).then((response:any)=>{
-          if (response.errorMessage) {
-            self.updateData({
-              errorMessage: response.errorMessage,
-              [SUCCESS_MESSAGE_KEY]: "",
-            });
-          } else {
-            self.updateData({
-              errorMessage: "",
-              [SUCCESS_MESSAGE_KEY]: "Successfully deleted group",
-            });
-          }
-        })
+          const id = (new URLSearchParams(document.location.search)).get("id") ?? "";
+          const params = {
+            method: ApiActionTypes.DELETE,
+            url: `${API_ROOT}/groups/?id=${id}`
+          };
+
+          ApiLoadAction.getResponseData(params).then((response: any) => {
+            if (response.errorMessage) {
+              self.updateData({
+                errorMessage: response.errorMessage,
+                [SUCCESS_MESSAGE_KEY]: "",
+              });
+            } else {
+              self.updateData({
+                errorMessage: "",
+                [SUCCESS_MESSAGE_KEY]: "Successfully deleted group",
+              });
+            }
+          })
+        }
       }
     })
   }

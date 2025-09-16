@@ -19,7 +19,6 @@ async function retrieveData() {
       headers:headers
     }
   )
-
   if (data.ok) {
     deleteLocalStoreData(AUTH_TOKEN_KEY)
     return new AuthResponse(false);
@@ -28,8 +27,4 @@ async function retrieveData() {
   }
 }
 
-
-
-
 export const LOGOUT_STORE: DataStore = new DataStore(new CustomLoadAction(retrieveData));
-

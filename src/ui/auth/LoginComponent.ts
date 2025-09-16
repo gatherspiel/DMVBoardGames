@@ -44,9 +44,7 @@ const template = `
         font-size:1rem;
       }
     }
-
   </style>
-
 `;
 
 const LOGIN_BUTTON_ID = "login-button";
@@ -85,7 +83,7 @@ export class LoginComponent extends BaseDynamicComponent {
     };
   }
 
-  override attachEventsToShadowRoot(shadowRoot:ShadowRoot){
+  override attachHandlersToShadowRoot(shadowRoot:ShadowRoot){
 
     const self = this;
     shadowRoot?.addEventListener("click",(event:any)=>{

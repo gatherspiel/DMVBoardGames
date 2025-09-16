@@ -10,7 +10,6 @@ import {
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
 import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
-
 import {GROUP_SEARCH_STORE} from "../../data/search/GroupSearchStore.ts";
 
 const DEFAULT_PARAMETER_KEY = "defaultParameter";
@@ -25,47 +24,47 @@ const template = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
 
   <style>
-  
-  #search-form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4rem;
-    padding-bottom: 5px;
-  }
-  
-  #search-form select {
-    border-color: var(--clr-light-blue);
-    border-radius: 5px;
-    color: var(--clr-light-blue);
-    cursor: pointer;
-    padding: 0.25rem;
-  }
-  
-  select {
-    width:10rem;
-  }
-  
-  .searchDropdownLabel {
-    display: inline-block;
-    width: 13rem;
-  }
-    
-  #searchInputDiv {
-    padding-top: 0.5rem;
-  }
-  
-  @media not screen and (width < 32em) {
-    select {
-      margin-right: 1rem;
-    }
-  }
-    
-  @media screen and (width < 32em) {
+ 
     #search-form {
-      gap: 2rem;
-    } 
-  }
-</style>
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4rem;
+      padding-bottom: 5px;
+    }
+    
+    #search-form select {
+      border-color: var(--clr-light-blue);
+      border-radius: 5px;
+      color: var(--clr-light-blue);
+      cursor: pointer;
+      padding: 0.25rem;
+    }
+    
+    select {
+      width:10rem;
+    }
+    
+    .searchDropdownLabel {
+      display: inline-block;
+      width: 13rem;
+    }
+      
+    #searchInputDiv {
+      padding-top: 0.5rem;
+    }
+    
+    @media not screen and (width < 32em) {
+      select {
+        margin-right: 1rem;
+      }
+    }
+      
+    @media screen and (width < 32em) {
+      #search-form {
+        gap: 2rem;
+      } 
+    }
+  </style>
 `;
 
 
@@ -105,12 +104,10 @@ export class GroupSearchComponent extends BaseDynamicComponent {
     return template;
   }
 
-  override attachEventHandlersToDom(shadowRoot?: any) {
+  override attachHandlersToShadowRoot(shadowRoot?: any) {
 
     const self = this;
-    const searchForm = shadowRoot?.getElementById(SEARCH_FORM_ID)
-
-    searchForm?.addEventListener("change", (event:any)=>{
+    shadowRoot.addEventListener("change",(event:any)=>{
       const eventTarget = event.target.id;
       if(eventTarget === SEARCH_DAYS_ID){
         self.updateData({
@@ -125,22 +122,24 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           distance: (event.target as HTMLInputElement).value
         })
       }
-    })
+    });
 
-    shadowRoot?.getElementById(SEARCH_BUTTON_ID)?.addEventListener("click", (event:any)=>{
-      event.preventDefault();
-      const searchParams:any = {
-        location: this.componentStore.location,
-        day: this.componentStore.day,
-        distance: this.componentStore.distance
-      };
-      GROUP_SEARCH_STORE.fetchData(searchParams)
-    })
+    shadowRoot.addEventListener("click",(event:any)=>{
+      if(event.target.id === SEARCH_BUTTON_ID){
+        event.preventDefault();
+        const searchParams:any = {
+          location: this.componentStore.location,
+          day: this.componentStore.day,
+          distance: this.componentStore.distance
+        };
+        GROUP_SEARCH_STORE.fetchData(searchParams)
+      }
+    });
   }
 
   render(store: any) {
     return `
-   
+  
       <form id=${SEARCH_FORM_ID}>
         <div>
           <div>
