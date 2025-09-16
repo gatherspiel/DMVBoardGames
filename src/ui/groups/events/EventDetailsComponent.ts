@@ -17,8 +17,8 @@ import {
 } from "./EventDetailsHandler.ts";
 
 import {generateErrorMessage} from "../../../shared/components/StatusIndicators.ts";
-import {convert24HourTimeForDisplay, convertTimeTo24Hours} from "../../../shared/DateUtils.ts";
-import {convertLocationStringForDisplay} from "../../../shared/DateUtils.ts";
+import {convert24HourTimeForDisplay, convertTimeTo24Hours} from "../../../shared/EventDataUtils.ts";
+import {convertLocationStringForDisplay} from "../../../shared/EventDataUtils.ts";
 import {
   generateButton,
   generateLinkButton
@@ -31,7 +31,8 @@ import {API_ROOT} from "../../../shared/Params.ts";
 
 import {LoginStatusComponent} from "../../../shared/components/LoginStatusComponent.ts";
 import {generateSuccessMessage} from "../../../shared/components/StatusIndicators.ts";
-import {convertDateTimeForDisplay, convertDayOfWeekForDisplay} from "../../../shared/DateUtils.ts";
+import {convertDateTimeForDisplay} from "../../../shared/EventDataUtils.ts";
+import {convertDayOfWeekForDisplay} from "../../../shared/DisplayNameConversion.ts";
 customElements.define("login-status-component", LoginStatusComponent);
 
 const template = `

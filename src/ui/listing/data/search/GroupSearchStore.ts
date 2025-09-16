@@ -3,10 +3,6 @@ import { DEFAULT_SEARCH_PARAMETER } from "../../components/group-search/Constant
 import {ApiLoadAction, DataStore} from "@bponnaluri/places-js";
 import type { ApiRequestConfig } from "@bponnaluri/places-js";
 
-const CITY_PARAM = "city";
-const DAY_PARAM = "day";
-const DISTANCE_PARAM="distance";
-
 function getGroupsQueryConfig(searchParams: any): ApiRequestConfig {
   console.log("Starting to load search results at:"+Date.now());
 
@@ -15,17 +11,17 @@ function getGroupsQueryConfig(searchParams: any): ApiRequestConfig {
   const paramMap: any = {};
 
   if (searchParams.day && searchParams.day !== DEFAULT_SEARCH_PARAMETER) {
-    paramMap[DAY_PARAM] = searchParams.day;
+    paramMap["day"] = searchParams.day;
   }
   if (
     searchParams.location &&
     searchParams.location !== DEFAULT_SEARCH_PARAMETER &&
     searchParams.location !== undefined
   ) {
-    paramMap[CITY_PARAM] = searchParams.location;
+    paramMap["city"] = searchParams.location;
 
     if(searchParams.distance){
-      paramMap[DISTANCE_PARAM] = searchParams.distance;
+      paramMap["distance"] = searchParams.distance;
     }
   }
 

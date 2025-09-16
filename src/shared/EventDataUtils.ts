@@ -1,25 +1,6 @@
 const months = ['January', 'February','March', 'April','May', 'June','July','August','September','October','November','December'];
 const validStates = ['DC', 'MD', 'VA'];
-/**
- * Returns true if the timestamp is after the current moment, and returns false otherwise.
- * @param timestamp timestamp in seconds
- */
-export function isAfterNow(timestamp: number): boolean {
-  return timestamp * 1000 > new Date().getTime();
-}
 
-export function convertDayOfWeekForDisplay(day:string){
-  return `${day.substring(0,1).toUpperCase()}${day.substring(1).toLowerCase()}`
-}
-
-/**
- * Returns date in YYYY-MM-DD format.
- * @param date
- */
-export function getDateFromDateString(date: string) {
-  const dateObj = new Date(Date.parse(date));
-  return `${dateObj.getFullYear()}-${dateObj.getMonth()}-${dateObj.getDate()}`
-}
 
 
 export function combineDateAndTime(date: string, time: string){
@@ -74,7 +55,6 @@ export function convert24HourTimeForDisplay(timeString:string){
 
 export function convertTimeTo24Hours(time:string){
 
-
   if(time.endsWith("AM")){
     time = time.split("AM")[0];
   }
@@ -101,9 +81,6 @@ export function convertTimeTo24Hours(time:string){
   if(timeSplit[1].length === 1){
     timeSplit[1]=`0${timeSplit[1]}`;
   }
-
-  console.log(`${timeSplit[0]}:${timeSplit[1]}`)
-
   return `${timeSplit[0]}:${timeSplit[1]}`
 }
 

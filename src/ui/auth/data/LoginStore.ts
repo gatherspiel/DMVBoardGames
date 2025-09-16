@@ -8,7 +8,6 @@ import {
 import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../../shared/Params.ts";
 
 import {DataStore} from "@bponnaluri/places-js";
-import {isAfterNow} from "../../../shared/DateUtils.ts";
 
 async function retrieveData(
   data: any
@@ -18,7 +17,7 @@ async function retrieveData(
   try {
 
     const authData = await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY);
-    if (authData && isAfterNow(authData.expires_at)) {
+    if (authData && authData.expires_at * 1000 > new Date().getTime()) {
       return new AuthResponse(
         true,
         authData
@@ -41,7 +40,6 @@ async function retrieveData(
         body:JSON.stringify(body)
       }
     )
-
 
     if (data.ok) {
       clearSessionStorage();
@@ -69,4 +67,3 @@ async function retrieveData(
 }
 
 export const LOGIN_STORE: DataStore = new DataStore(new CustomLoadAction(retrieveData));
-

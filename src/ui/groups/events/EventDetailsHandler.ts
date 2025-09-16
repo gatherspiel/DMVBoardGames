@@ -6,7 +6,7 @@ import {
   EVENT_NAME_INPUT, EVENT_URL_INPUT,
   START_DATE_INPUT, START_TIME_INPUT,
 } from "../Constants.ts";
-import {combineDateAndTime, validateAddress, validateDateFormat} from "../../../shared/DateUtils.ts";
+import {combineDateAndTime, validateAddress, validateDateFormat} from "../../../shared/EventDataUtils.ts";
 
 export function getEventDetailsFromForm(formData:Record<string,string>){
   const startDate = formData[START_DATE_INPUT]

@@ -18,7 +18,7 @@ import {
 
 import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
 import {generateErrorMessage} from "../../../shared/components/StatusIndicators.ts";
-import {convertTimeTo24Hours} from "../../../shared/DateUtils.ts";
+import {convertTimeTo24Hours} from "../../../shared/EventDataUtils.ts";
 import {getEventDetailsFromForm, validateEventFormData} from "./EventDetailsHandler.ts";
 import {API_ROOT} from "../../../shared/Params.ts";
 

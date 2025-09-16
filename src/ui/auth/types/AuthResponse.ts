@@ -1,4 +1,3 @@
-
 export class AuthResponse {
   private readonly loggedIn: boolean;
   private readonly data: any;
@@ -23,4 +22,3 @@ export class AuthResponse {
       "";
   }
 }
-

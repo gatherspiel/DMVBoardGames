@@ -44,9 +44,7 @@ const template = `
         font-size:1rem;
       }
     }
-
   </style>
-
 `;
 
 const LOGIN_BUTTON_ID = "login-button";

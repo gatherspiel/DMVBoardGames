@@ -12,9 +12,9 @@ import {
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 
 import {
-  convert24HourTimeForDisplay, convertDayOfWeekForDisplay,
+  convert24HourTimeForDisplay,
   convertLocationStringForDisplay,
-} from "../../shared/DateUtils.ts";
+} from "../../shared/EventDataUtils.ts";
 import {
   generateButton,
   generateLinkButton
@@ -25,6 +25,7 @@ import {
 import {API_ROOT} from "../../shared/Params.ts";
 
 import {LoginStatusComponent} from "../../shared/components/LoginStatusComponent.ts";
+import {convertDayOfWeekForDisplay} from "../../shared/DisplayNameConversion.ts";
 customElements.define("login-status-component", LoginStatusComponent);
 
 const template = `
