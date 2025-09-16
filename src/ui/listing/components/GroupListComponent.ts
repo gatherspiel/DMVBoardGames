@@ -93,6 +93,8 @@ export class GroupListComponent extends BaseDynamicComponent {
   }
 
   private getItemHtml(groupId: string, group: any) {
+
+    const groupLocationStr = group.locations.map((name:string) => getDisplayName(name))?.join(", ");
     let groupHtml: string;
     groupHtml = `
       <div id=${groupId} >
@@ -102,7 +104,7 @@ export class GroupListComponent extends BaseDynamicComponent {
           url: `groups.html?name=${encodeURIComponent(group.title)}`
         })}
    
-        <p class="event-group-location">${group.locations.map((name:string) => getDisplayName(name))?.join(", ") ?? ""}</p>              
+        <p class="event-group-location">${groupLocationStr && groupLocationStr != "" ? groupLocationStr : "DMV Area"}</p>              
         
       </div>
     `;
