@@ -1,6 +1,7 @@
 import {
   ApiActionTypes,
-  BaseDynamicComponent, ApiLoadAction,
+  ApiLoadAction,
+  BaseDynamicComponent,
 } from "@bponnaluri/places-js";
 import {
   DAY_OF_WEEK_INPUT,
@@ -16,10 +17,10 @@ import {
 } from "../../../shared/Constants.ts";
 
 import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
-import {getEventDetailsFromForm, validateEventFormData} from "./EventDetailsHandler.ts";
 import {generateErrorMessage} from "../../../shared/components/StatusIndicators.ts";
-import { API_ROOT } from "../../../shared/Params.ts";
 import {convertTimeTo24Hours} from "../../../shared/DateUtils.ts";
+import {getEventDetailsFromForm, validateEventFormData} from "./EventDetailsHandler.ts";
+import {API_ROOT} from "../../../shared/Params.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
@@ -64,66 +65,70 @@ export class CreateEventComponent extends BaseDynamicComponent {
     super(loadConfig);
   }
 
-  override attachEventHandlersToDom(shadowRoot: ShadowRoot) {
+  override attachHandlersToShadowRoot(shadowRoot: ShadowRoot) {
 
     const self = this;
 
-    const checkbox = shadowRoot?.getElementById(RECURRING_EVENT_INPUT)
-    checkbox?.addEventListener("click",(event:any)=>{
-      event.preventDefault();
-      self.updateData({
-        isRecurring: (shadowRoot?.getElementById(RECURRING_EVENT_INPUT) as HTMLInputElement)?.checked
-      })
-    })
-
-    shadowRoot?.getElementById('create-event-form')?.addEventListener('submit',(event:any)=>{
-      event.preventDefault();
-
-      const data = event.target.elements;
-
-      const formData = {
-        id: self.componentStore.id,
-        [EVENT_NAME_INPUT]: data[1].value,
-        [EVENT_DESCRIPTION_INPUT]: data[2].value,
-        [EVENT_URL_INPUT]: data[3].value,
-        [START_TIME_INPUT]: convertTimeTo24Hours(data[5].value ?? ""),
-        [END_TIME_INPUT]: convertTimeTo24Hours(data[6].value ?? ""),
-        [EVENT_LOCATION_INPUT]: data[7].value,
-        isRecurring: self.componentStore.isRecurring,
-      }
-
-
-      if(self.componentStore.isRecurring){
-        // @ts-ignore
-        formData[DAY_OF_WEEK_INPUT] = data[4].value;
-      } else {
-        // @ts-ignore
-        formData[START_DATE_INPUT] = data[4].value;
-      }
-
-      const validationErrors:any = validateEventFormData(formData);
-      if(validationErrors.errorMessage.length !==0){
-        const updates = {...validationErrors,...formData}
-        self.updateData(updates);
-      } else {
-        const eventDetails = getEventDetailsFromForm(formData)
-        console.log("Saving event");
-        ApiLoadAction.getResponseData({
-          body: JSON.stringify(eventDetails),
-          method: ApiActionTypes.POST,
-          url: API_ROOT + `/groups/${eventDetails.groupId}/events/`,
-        }).then((response:any)=>{
-          if(!response.errorMessage){
-            self.updateData({
-              [SUCCESS_MESSAGE_KEY]: "Successfully created event"
-            });
-          }else {
-            const updates = {...response,...formData}
-            self.updateData(updates)
-          }
+    shadowRoot.addEventListener("click",(event:any)=>{
+      const targetId = event.target.id;
+      if(targetId === RECURRING_EVENT_INPUT){
+        self.updateData({
+          isRecurring: (shadowRoot?.getElementById(RECURRING_EVENT_INPUT) as HTMLInputElement)?.checked
         })
       }
+
+      if(targetId === 'create-event-button'){
+
+        const data = (shadowRoot.getElementById('create-event-form') as HTMLFormElement)?.elements;
+        const formData = {
+          id: self.componentStore.id,
+          [EVENT_NAME_INPUT]: (data.namedItem(EVENT_NAME_INPUT) as HTMLInputElement)?.value,
+          [EVENT_DESCRIPTION_INPUT]: (data.namedItem(EVENT_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
+          [EVENT_URL_INPUT]: (data.namedItem(EVENT_URL_INPUT) as HTMLInputElement)?.value,
+          [START_TIME_INPUT]: convertTimeTo24Hours((data.namedItem(START_TIME_INPUT) as HTMLInputElement)?.value ?? ""),
+          [END_TIME_INPUT]: convertTimeTo24Hours((data.namedItem(END_TIME_INPUT) as HTMLInputElement)?.value ?? ""),
+          [EVENT_LOCATION_INPUT]: (data.namedItem(EVENT_LOCATION_INPUT) as HTMLInputElement)?.value,
+          isRecurring: self.componentStore.isRecurring,
+        }
+
+        if(self.componentStore.isRecurring){
+          // @ts-ignore
+          formData[DAY_OF_WEEK_INPUT] = (data.namedItem(DAY_OF_WEEK_INPUT) as HTMLInputElement).value;
+        } else {
+          // @ts-ignore
+          formData[START_DATE_INPUT] = (data.namedItem(START_DATE_INPUT) as HTMLInputElement).value;
+        }
+
+
+        const validationErrors:any = validateEventFormData(formData);
+        if(validationErrors.errorMessage.length !==0){
+          const updates = {...validationErrors,...formData}
+          self.updateData(updates);
+        } else {
+          const eventDetails = getEventDetailsFromForm(formData)
+          ApiLoadAction.getResponseData({
+            body: JSON.stringify(eventDetails),
+            method: ApiActionTypes.POST,
+            url: API_ROOT + `/groups/${eventDetails.groupId}/events/`,
+          }).then((response:any)=>{
+            if(!response.errorMessage){
+              self.updateData({
+                [SUCCESS_MESSAGE_KEY]: "Successfully created event"
+              });
+            }else {
+              const updates = {...response,...formData}
+              self.updateData(updates)
+            }
+          })
+        }
+      }
     })
+
+    /*
+    shadowRoot?.getElementById('create-event-form')?.addEventListener('submit',(event:any)=>{
+
+    })
+     */
   }
 
   getTemplateStyle(): string {

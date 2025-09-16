@@ -157,7 +157,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
     return template;
   }
 
-  override attachEventsToShadowRoot(shadowRoot:ShadowRoot) {
+  override attachHandlersToShadowRoot(shadowRoot:ShadowRoot) {
     const self = this;
     shadowRoot?.addEventListener("click", function(event:any){
       event.preventDefault();

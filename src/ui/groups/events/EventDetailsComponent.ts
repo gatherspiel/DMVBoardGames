@@ -84,7 +84,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     super(loadConfig);
   }
 
-  override attachEventsToShadowRoot(shadowRoot?: any) {
+  override attachHandlersToShadowRoot(shadowRoot?: any) {
     const self = this;
 
     shadowRoot?.addEventListener("click",(event:any)=>{

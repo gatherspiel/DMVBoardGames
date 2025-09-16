@@ -52,7 +52,7 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
     return templateStyle;
   }
 
-  override attachEventsToShadowRoot(shadowRoot:ShadowRoot){
+  override attachHandlersToShadowRoot(shadowRoot:ShadowRoot){
 
     var self = this;
     shadowRoot?.getElementById('create-group-form')?.addEventListener('submit',(event:any)=>{

@@ -10,7 +10,7 @@ const DISTANCE_PARAM="distance";
 function getGroupsQueryConfig(searchParams: any): ApiRequestConfig {
   console.log("Starting to load search results at:"+Date.now());
 
-  let url = API_ROOT + "/searchEvents";
+  let url = API_ROOT + "/searchGroups";
 
   const paramMap: any = {};
 
