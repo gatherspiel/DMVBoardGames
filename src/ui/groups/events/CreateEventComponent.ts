@@ -21,6 +21,7 @@ import {generateErrorMessage} from "../../../shared/components/StatusIndicators.
 import {convertTimeTo24Hours} from "../../../shared/EventDataUtils.ts";
 import {getEventDetailsFromForm, validateEventFormData} from "./EventDetailsHandler.ts";
 import {API_ROOT} from "../../../shared/Params.ts";
+import {getDayOfWeekSelectHtml} from "../../../shared/components/SelectGenerator.ts";
 
 const templateStyle = `
   <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
@@ -93,7 +94,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
 
         if(self.componentStore.isRecurring){
           // @ts-ignore
-          formData[DAY_OF_WEEK_INPUT] = (data.namedItem(DAY_OF_WEEK_INPUT) as HTMLInputElement).value;
+          formData[DAY_OF_WEEK_INPUT] = (data.namedItem(DAY_OF_WEEK_INPUT) as HTMLSelectElement).value;
         } else {
           // @ts-ignore
           formData[START_DATE_INPUT] = (data.namedItem(START_DATE_INPUT) as HTMLInputElement).value;
@@ -182,9 +183,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
         ${data.isRecurring ? 
          `
           <label>Day of week</label>
-          <input
-            name=${DAY_OF_WEEK_INPUT}
-          />
+          ${getDayOfWeekSelectHtml(data.day)}
           <br>
          ` 
         :
@@ -221,7 +220,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
       })}
             
       ${generateLinkButton({
-        text: "Back to group",
+        text: "Back to group information",
         url: `${window.location.origin}/groups.html?name=${encodeURIComponent(groupName)}`
     })}
       </form>

@@ -33,6 +33,7 @@ import {LoginStatusComponent} from "../../../shared/components/LoginStatusCompon
 import {generateSuccessMessage} from "../../../shared/components/StatusIndicators.ts";
 import {convertDateTimeForDisplay} from "../../../shared/EventDataUtils.ts";
 import {convertDayOfWeekForDisplay} from "../../../shared/DisplayNameConversion.ts";
+import {getDayOfWeekSelectHtml} from "../../../shared/components/SelectGenerator.ts";
 customElements.define("login-status-component", LoginStatusComponent);
 
 const template = `
@@ -156,9 +157,10 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             isRecurring: self.componentStore.isRecurring
           }
 
+          console.log(data.namedItem(DAY_OF_WEEK_INPUT) as HTMLSelectElement)
           if(self.componentStore.isRecurring){
             // @ts-ignore
-            formData[DAY_OF_WEEK_INPUT] = (data.namedItem(DAY_OF_WEEK_INPUT) as HTMLInputElement)?.value;
+            formData[DAY_OF_WEEK_INPUT] = (data.namedItem(DAY_OF_WEEK_INPUT) as HTMLSelectElement)?.value;
           } else {
             // @ts-ignore
             formData[START_DATE_INPUT] = (data.namedItem(START_DATE_INPUT) as HTMLInputElement)?.value;
@@ -180,6 +182,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
                   name: formData[EVENT_NAME_INPUT],
                   description: formData[EVENT_DESCRIPTION_INPUT],
                   url: formData[EVENT_URL_INPUT],
+                  //@ts-ignore
+                  day: formData[DAY_OF_WEEK_INPUT],
                   //@ts-ignore
                   startDate: formData[START_DATE_INPUT],
                   startTime: formData[START_TIME_INPUT],
@@ -228,7 +232,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
           
           ${generateLinkButton({
-            text: "Back to group",
+            text: "Back to group information",
             url: `${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}`
           })}
         </div>
@@ -248,7 +252,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     `
   }
 
+
   renderEditMode(data:any): string {
+
     return `<h1>Editing: ${data.name}</h1>
 
     <form id="event-details-form" onsubmit="return false">
@@ -265,9 +271,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         <textarea
           id=${EVENT_DESCRIPTION_INPUT}
           name=${EVENT_DESCRIPTION_INPUT}
-        />
-        ${data.description ?? ""}
-        </textarea>
+        />${data.description ?? ""}</textarea>
         <br>
          
         <label>Event URL</label>
@@ -280,23 +284,23 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         
           ${data.isRecurring ?
           `
-              <label>Day of week</label>
-              <input
-                name=${DAY_OF_WEEK_INPUT}
-              />
-              <br>
-             `
+            <label>Day of week</label>
+            ${getDayOfWeekSelectHtml(data.day)}
+            <br>
+           `
           :
         `
           <label>Start date</label>
           <input
             name=${START_DATE_INPUT}
+            value=${data.startDate}
           />
           <br>`}
         
         <label>Start time</label>
         <input
           name=${START_TIME_INPUT}
+          value=${convert24HourTimeForDisplay(data.startTime)}
         />
         </input>
         <br>
@@ -304,6 +308,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         <label>End time</label>
         <input
           name=${END_TIME_INPUT}
+          value=${convert24HourTimeForDisplay(data.endTime)}
         />
         </input>
         <br>        
@@ -326,7 +331,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     
     ${generateButton({
       id: CANCEL_EDIT_BUTTON_ID,
-      text: "Back to event",
+      text: "Back to group information",
       type: "submit"
     })}  
     </form>
@@ -371,7 +376,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           
           ${generateLinkButton({
             class: "back-to-group-button",
-            text: "Back to group",
+            text: "Back to group information",
             url: `${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}`
           })}
           

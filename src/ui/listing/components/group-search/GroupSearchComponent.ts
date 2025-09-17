@@ -32,13 +32,6 @@ const template = `
       padding-bottom: 5px;
     }
     
-    #search-form select {
-      border-color: var(--clr-light-blue);
-      border-radius: 5px;
-      color: var(--clr-light-blue);
-      cursor: pointer;
-      padding: 0.25rem;
-    }
     
     select {
       width:10rem;
@@ -66,7 +59,6 @@ const template = `
     }
   </style>
 `;
-
 
 const DAYS_IN_WEEK = [
   {index:0, name:DEFAULT_SEARCH_PARAMETER},
@@ -143,19 +135,19 @@ export class GroupSearchComponent extends BaseDynamicComponent {
       <form id=${SEARCH_FORM_ID} onsubmit="return false">
         <div>
           <div>
+            <label class="searchDropdownLabel">Select event city: </label>
               ${this.getDropdownHtml({
-              label:"Select event day:",
-              id: SEARCH_DAYS_ID,
-              name: "days",
-              data: DAYS_IN_WEEK,
-              selected: store.day,
-              [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
-              [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
-            })}
+                id: SEARCH_DAYS_ID,
+                name: "days",
+                data: DAYS_IN_WEEK,
+                selected: store.day,
+                [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
+                [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
+              })}
           </div>  
-          <div>  
+          <div>
+            <label class="searchDropdownLabel">Select event city: </label>
             ${this.getDropdownHtml({
-              label:"Select event city:",
               id: SEARCH_CITY_ID,
               name: "cities",
               data: store.cityList ?? [{name:"Any location"}],
@@ -166,15 +158,16 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           </div>  
           <div>
             ${store.location && store.location !== DEFAULT_SEARCH_PARAMETER ?`
+            <label class="searchDropdownLabel">Select distance: </label>
+
             ${this.getDropdownHtml({
-                  label:"Select distance:",
-                  id: SEARCH_DISTANCE_ID,
-                  name: "distance",
-                  data: DISTANCE_OPTIONS,
-                  selected: store.distance,
-                  [DEFAULT_PARAMETER_KEY]:"0 miles",
-                  [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
-                })}` :
+                id: SEARCH_DISTANCE_ID,
+                name: "distance",
+                data: DISTANCE_OPTIONS,
+                selected: store.distance,
+                [DEFAULT_PARAMETER_KEY]:"0 miles",
+                [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
+              })}` :
           ``}       
           </div>
             
@@ -193,23 +186,18 @@ export class GroupSearchComponent extends BaseDynamicComponent {
   getDropdownHtml(dropdownConfig: any) {
 
     return ` 
-    <label class="searchDropdownLabel">${dropdownConfig.label} </label>
-    <select
-      id=${dropdownConfig.id}
-      name=${dropdownConfig.name}
-      value=${dropdownConfig.data}
-    >
-    ${dropdownConfig.data?.map(
-      (item: any) =>
-        `<option key=${item.index} value="${item.name}" ${item.name === dropdownConfig.selected ? "selected" : ""}>
-          ${
-          item.name === DEFAULT_SEARCH_PARAMETER
-            ? dropdownConfig.defaultParameterDisplay
-            : getDisplayName(item.name)
-        }
-        </option>`,
-    )}
-    </select>`;
+      <select class="form-select" id=${dropdownConfig.id}>
+        ${dropdownConfig.data?.map(
+          (item: any) =>
+            `<option value="${item.name}" ${item.name === dropdownConfig.selected ? "selected" : ""}>
+              ${
+              item.name === DEFAULT_SEARCH_PARAMETER
+                ? dropdownConfig.defaultParameterDisplay
+                : getDisplayName(item.name)
+            }
+            </option>`,
+        )}
+      </select>`;
   }
 
 
