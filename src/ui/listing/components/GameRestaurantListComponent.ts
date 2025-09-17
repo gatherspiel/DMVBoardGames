@@ -31,17 +31,17 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
 
   getItemHtml(gameRestaurant: any) {
     return `
-    <div>
-     <h3>
-        ${generateLinkButton({
-          text: gameRestaurant.name,
-          url: gameRestaurant.url
-        })}
-      </h3>
-    <p>Location: ${gameRestaurant.location}</p>
-    <div class="section-separator-small"></div>
-    </div>
-  `;
+      <div>
+        <h3>
+          ${generateLinkButton({
+            text: gameRestaurant.name,
+            url: gameRestaurant.url
+          })}
+        </h3>
+        <p>Location: ${gameRestaurant.location}</p>
+        <div class="section-separator-small"></div>
+      </div>
+    `;
   }
 
   render(data: any) {
@@ -54,14 +54,13 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
       >
       </listing-nav-component>
       <div class="game-restaurants">
-      <h1 class="hideOnMobile">Board Game Bars and Cafés</h1>
-      <h2 class="showOnMobile">Board Game Bars and Cafés</h2>
+      <h1 class="hide-mobile">Board Game Bars and Cafés</h1>
+      <h2 class="show-mobile">Board Game Bars and Cafés</h2>
       <div class="section-separator-medium"></div>
 
     `;
     Object.values(data).forEach((item:any) => {
-      const itemHtml = this.getItemHtml(item);
-      html += itemHtml;
+      html += this.getItemHtml(item);
     });
 
     return html + `</div>`;

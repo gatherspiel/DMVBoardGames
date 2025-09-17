@@ -60,7 +60,8 @@ export class CreateEventComponent extends BaseDynamicComponent {
         .raised {
            display:inline-block;
         }
-      </style>`;
+      </style>
+    `;
   }
 
   override attachHandlersToShadowRoot(shadowRoot: ShadowRoot) {
@@ -97,7 +98,6 @@ export class CreateEventComponent extends BaseDynamicComponent {
           formData[START_DATE_INPUT] = (data.namedItem(START_DATE_INPUT) as HTMLInputElement).value;
         }
 
-
         const validationErrors:any = validateEventFormData(formData);
         if(validationErrors.errorMessage.length !==0){
           const updates = {...validationErrors,...formData}
@@ -122,7 +122,6 @@ export class CreateEventComponent extends BaseDynamicComponent {
       }
     })
   }
-
 
   render(data: any): string {
 
@@ -200,17 +199,16 @@ export class CreateEventComponent extends BaseDynamicComponent {
           value="${data.location ?? ""}"
         />
         <br>   
-      <br>
-      ${generateButton({
-        id: CREATE_EVENT_BUTTON_ID,
-        text: "Create event",
-        type: "Submit"
-      })}
-            
-      ${generateLinkButton({
-        text: "Back to group information",
-        url: `${window.location.origin}/groups.html?name=${encodeURIComponent(groupName)}`
-    })}
+        ${generateButton({
+          id: CREATE_EVENT_BUTTON_ID,
+          text: "Create event",
+          type: "Submit"
+        })}
+              
+        ${generateLinkButton({
+          text: "Back to group information",
+          url: `${window.location.origin}/groups.html?name=${encodeURIComponent(groupName)}`
+        })}
       </form>
     `;
   }

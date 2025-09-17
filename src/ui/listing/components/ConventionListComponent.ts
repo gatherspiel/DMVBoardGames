@@ -35,7 +35,7 @@ export class ConventionListComponent extends BaseDynamicComponent {
 
   getItemHtml(convention: any) {
     return `
-    <div id = convention-${convention.id} class="conv-list-item">
+    <div class="conv-list-item">
      <h3>
       ${generateLinkButton({
       text: convention.name,
@@ -49,7 +49,6 @@ export class ConventionListComponent extends BaseDynamicComponent {
   }
 
   render(data: any) {
-    console.log(Object.values(data).length)
     let html = `
       <listing-nav-component
         class="ui-section"
@@ -58,12 +57,11 @@ export class ConventionListComponent extends BaseDynamicComponent {
       >
       </listing-nav-component>
 
-      <div class="ui-section"><h1 class="hideOnMobile">Upcoming conventions</h1>
-      <h2 class="showOnMobile">Upcoming conventions</h2>`;
+      <div class="ui-section"><h1 class="hide-mobile">Upcoming conventions</h1>
+      <h2 class="show-mobile">Upcoming conventions</h2>`;
 
     Object.values(data).forEach((item:any) => {
-      const itemHtml = this.getItemHtml(item);
-      html += itemHtml;
+      html += this.getItemHtml(item);
     });
 
     if(Object.values(data).length === 0) {

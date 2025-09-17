@@ -50,21 +50,18 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
 
   override attachHandlersToShadowRoot(shadowRoot:ShadowRoot){
 
-    var self = this;
+    const self = this;
     shadowRoot?.getElementById('create-group-form')?.addEventListener('submit',(event:any)=>{
       event.preventDefault();
 
       const data = event.target.elements;
-
-      const params = {
-        id: self.componentStore.id,
-        name: (data.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
-        description: (data.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
-        url: (data.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value
-      }
-
       ApiLoadAction.getResponseData({
-        body: JSON.stringify(params),
+        body: JSON.stringify({
+          id: self.componentStore.id,
+          name: (data.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
+          description: (data.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
+          url: (data.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value
+        }),
         method: ApiActionTypes.POST,
         url: API_ROOT + `/groups/`,
       }).then((data:any)=>{

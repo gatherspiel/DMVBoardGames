@@ -79,8 +79,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           display: inline-block;
           line-height: 1;
         }    
-      </style>    
-    
+      </style>     
     `;
   }
 
@@ -93,7 +92,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           self.updateData({isEditing: false,
             [SUCCESS_MESSAGE_KEY]:''})
         }
-
         if(event.target.id === DELETE_EVENT_BUTTON_ID) {
           self.updateData({
             isDeleting: true,
@@ -107,13 +105,11 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             [SUCCESS_MESSAGE_KEY]:''
           })
         }
-
         if(event.target.id === CONFIRM_DELETE_BUTTON_ID){
           const params = {
             id: self.componentStore.id,
             groupId: self.componentStore.groupId
           }
-
           ApiLoadAction.getResponseData({
             method: ApiActionTypes.DELETE,
             url: `${API_ROOT}/groups/${params.groupId}/events/${encodeURIComponent(params.id)}/`,
@@ -250,28 +246,28 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     `
   }
 
-
   renderEditMode(data:any): string {
 
-    return `<h1>Editing: ${data.name}</h1>
-
-    <form id="event-details-form" onsubmit="return false">
-     <label>Event name</label>
+    return `
+      <h1>Editing: ${data.name}</h1>
+  
+      <form id="event-details-form" onsubmit="return false">
+        <label>Event name</label>
         <input
           id=${EVENT_NAME_INPUT}
           name=${EVENT_NAME_INPUT}
           value="${data.name}"
-         />
+        />
         </input>
         <br>
-  
+    
         <label>Event description</label>
         <textarea
           id=${EVENT_DESCRIPTION_INPUT}
           name=${EVENT_DESCRIPTION_INPUT}
         />${data.description ?? ""}</textarea>
         <br>
-         
+           
         <label>Event URL</label>
         <input
           name=${EVENT_URL_INPUT}
@@ -279,22 +275,22 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         />
         </input>
         <br>
-        
-          ${data.isRecurring ?
+          
+        ${data.isRecurring ?
           `
             <label>Day of week</label>
             ${getDayOfWeekSelectHtml(data.day)}
             <br>
-           `
-          :
-        `
-          <label>Start date</label>
-          <input
-            name=${START_DATE_INPUT}
-            value=${data.startDate}
-          />
-          <br>`}
-        
+          ` :
+          `
+            <label>Start date</label>
+            <input
+              name=${START_DATE_INPUT}
+              value=${data.startDate}
+            />
+            <br>`
+        }
+          
         <label>Start time</label>
         <input
           name=${START_TIME_INPUT}
@@ -302,7 +298,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         />
         </input>
         <br>
-        
+          
         <label>End time</label>
         <input
           name=${END_TIME_INPUT}
@@ -310,7 +306,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         />
         </input>
         <br>        
-        
+          
         <label>Event location</label>
         <input
           id=${EVENT_LOCATION_INPUT}
@@ -319,21 +315,21 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         />
         </input>
         <br>     
-    ${generateErrorMessage(data.errorMessage)}
-
-    ${generateButton({
-      class: "group-webpage-link",
-      id: SAVE_EVENT_BUTTON_ID,
-      text: "Save event"
-    })}
-    
-    ${generateButton({
-      id: CANCEL_EDIT_BUTTON_ID,
-      text: "Back to group information",
-      type: "submit"
-    })}  
-    </form>
-
+        
+        ${generateErrorMessage(data.errorMessage)}
+  
+        ${generateButton({
+          class: "group-webpage-link",
+          id: SAVE_EVENT_BUTTON_ID,
+          text: "Save event"
+        })}
+      
+        ${generateButton({
+          id: CANCEL_EDIT_BUTTON_ID,
+          text: "Back to group information",
+          type: "submit"
+        })}  
+      </form>
    `
   }
 
@@ -351,9 +347,12 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         })}
          
         ${data.isRecurring ? 
-          `<p>${convertDayOfWeekForDisplay(data.day)}s from ${convert24HourTimeForDisplay(data.startTime)} to 
-              ${convert24HourTimeForDisplay(data.endTime)} </p>` :
-          `<p>Time: ${data.startDate}, ${convert24HourTimeForDisplay(data.startTime)}</p>`
+          `<p>
+            ${convertDayOfWeekForDisplay(data.day)}s from ${convert24HourTimeForDisplay(data.startTime)} to 
+            ${convert24HourTimeForDisplay(data.endTime)} </p>` :
+          `<p>
+            Time: ${data.startDate}, ${convert24HourTimeForDisplay(data.startTime)}
+          </p>`
         }
         
         <p>Location: ${convertLocationStringForDisplay(data.location)}</p>
@@ -378,10 +377,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             url: `${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}`
           })}
           
-         ` : ''}
+       ` : ''}
 
       </div>
     `;
   }
-
 }
