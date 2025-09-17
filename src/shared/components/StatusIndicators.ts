@@ -14,6 +14,6 @@ export function generateErrorMessage(message: string | string[] | undefined){
 
 export function generateSuccessMessage(message: string | undefined) {
   return `
-    ${message ? `<p class="successMessage">${message}</p>` : ''}
+    ${message ? `<p class="success-message">${message}</p>` : ''}
   `
 }

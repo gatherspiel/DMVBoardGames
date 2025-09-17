@@ -13,40 +13,6 @@ import {generateErrorMessage} from "../../shared/components/StatusIndicators.ts"
 import {generateButton} from "../../shared/components/ButtonGenerator.ts";
 import {API_ROOT} from "../../shared/Params.ts";
 
-//TODO: Refactor CSS to use fix widths on labels in the future instead of having a hardcoded margin on the email label.
-
-const template = `
-  <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
-
-  <style>
-    #login-component-container {
-      padding-top: 0.25rem;
-    }
-    
-    #component-buttons {
-      padding-top:0.5rem;
-    }
-    
-    .ui-input {
-      display: inline-block;
-    }
-    
-    #email {
-      display: inline-block;
-      margin-right:2.85rem;
-    }
-    
-    @media screen and (width < 32em) {
-      #login-component-container {
-        text-align: center;
-      }
-      .login-element {
-        font-size:1rem;
-      }
-    }
-  </style>
-`;
-
 const LOGIN_BUTTON_ID = "login-button";
 const REGISTER_BUTTON_ID = "register-button";
 const LOGOUT_BUTTON_ID = "logout-button";
@@ -137,7 +103,6 @@ export class LoginComponent extends BaseDynamicComponent {
             })
           }
         }
-
         if (targetId === LOGOUT_BUTTON_ID) {
           LOGOUT_STORE.fetchData({}, LOGIN_STORE)
         }
@@ -146,11 +111,35 @@ export class LoginComponent extends BaseDynamicComponent {
           throw e;
         }
       }
-
     })
   }
+
   override getTemplateStyle(): string {
-    return template;
+    return `  
+      <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style>
+        #login-component-container {
+          padding-top: 0.25rem;
+        }
+        #component-buttons {
+          padding-top:0.5rem;
+        }   
+        .ui-input {
+          display: inline-block;
+        }
+        #email {
+          display: inline-block;
+          margin-right:2.85rem;
+        }
+        @media screen and (width < 32em) {
+          #login-component-container {
+            text-align: center;
+          }
+          .login-element {
+            font-size:1rem;
+          }
+        }
+      </style>`;
   }
 
   render(data: any) {
