@@ -4,7 +4,6 @@ import {
 
 import {
   CITY_LIST_STORE,
-  updateCities,
 } from "../../data/search/CityListStore.ts";
 
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
@@ -20,80 +19,72 @@ const SEARCH_DAYS_ID:string = "search-days-id";
 const SEARCH_CITY_ID: string = "search-cities";
 const SEARCH_FORM_ID: string = "search-form";
 
-const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-
-  <style>
- 
-    #search-form {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4rem;
-      padding-bottom: 5px;
-    }
-    
-    
-    select {
-      width:10rem;
-    }
-    
-    .searchDropdownLabel {
-      display: inline-block;
-      width: 13rem;
-    }
-      
-    #searchInputDiv {
-      padding-top: 0.5rem;
-    }
-    
-    @media not screen and (width < 32em) {
-      select {
-        margin-right: 1rem;
-      }
-    }
-      
-    @media screen and (width < 32em) {
-      #search-form {
-        gap: 2rem;
-      } 
-    }
-  </style>
-`;
-
 const DAYS_IN_WEEK = [
-  {index:0, name:DEFAULT_SEARCH_PARAMETER},
-  {index:1,name: "Sunday"},
-  {index:2, name:"Monday"},
-  {index:3, name:"Tuesday"},
-  {index:4, name:"Wednesday"},
-  {index:5, name:"Thursday"},
-  {index:6, name:"Friday"},
-  {index:7, name:"Saturday"}
+  DEFAULT_SEARCH_PARAMETER,
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday"
 ];
 
 const DISTANCE_OPTIONS= [
-  {index:0, name:"0"},
-  {index:1,name: "5"},
-  {index:2, name:"10"},
-  {index:3, name:"15"},
-  {index:4, name:"30"},
-  {index:5, name:"50"},
+  "0",
+  "5",
+  "10",
+  "15",
+  "30",
+  "50",
 ];
-
-const loadConfig = [{
-  componentReducer: updateCities,
-  dataStore:CITY_LIST_STORE,
-  fieldName: "cityList"
-}];
 
 export class GroupSearchComponent extends BaseDynamicComponent {
 
   constructor() {
-    super(loadConfig);
+    super([{
+      componentReducer: (cityArray:any)=>{
+        cityArray.sort();
+        cityArray.unshift(DEFAULT_SEARCH_PARAMETER);
+        return cityArray
+      },
+      dataStore:CITY_LIST_STORE,
+      fieldName: "cityList"
+    }]);
   }
 
   override getTemplateStyle(): string {
-    return template;
+    return `
+     <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style>
+        #search-form {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 4rem;
+          padding-bottom: 5px;
+        }
+        select {
+          width:10rem;
+        }
+        .searchDropdownLabel {
+          display: inline-block;
+          width: 13rem;
+        }
+        #searchInputDiv {
+          padding-top: 0.5rem;
+        }
+        @media not screen and (width < 32em) {
+          select {
+            margin-right: 1rem;
+          }
+        }    
+        @media screen and (width < 32em) {
+          #search-form {
+            gap: 2rem;
+          } 
+        }
+      </style>   
+    `;
   }
 
   override attachHandlersToShadowRoot(shadowRoot?: any) {
@@ -189,11 +180,11 @@ export class GroupSearchComponent extends BaseDynamicComponent {
       <select class="form-select" id=${dropdownConfig.id}>
         ${dropdownConfig.data?.map(
           (item: any) =>
-            `<option value="${item.name}" ${item.name === dropdownConfig.selected ? "selected" : ""}>
+            `<option value="${item}" ${item === dropdownConfig.selected ? "selected" : ""}>
               ${
-              item.name === DEFAULT_SEARCH_PARAMETER
+              item === DEFAULT_SEARCH_PARAMETER
                 ? dropdownConfig.defaultParameterDisplay
-                : getDisplayName(item.name)
+                : getDisplayName(item)
             }
             </option>`,
         )}

@@ -28,122 +28,10 @@ import {LoginStatusComponent} from "../../shared/components/LoginStatusComponent
 import {convertDayOfWeekForDisplay} from "../../shared/DisplayNameConversion.ts";
 customElements.define("login-status-component", LoginStatusComponent);
 
-const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-
-  <style>
-     
-    .${GROUP_DESCRIPTION_TEXT} {
-      display: block;
-      position: relative;
-      padding: 0.5rem;
-      border-radius: 12px;
-      font-size: 1.5rem;
-      color: var(--clr-dark-blue);
-      background-color: #0AACFB;
-      
-      border: 10px solid pink;
-      border-image-source: url(assets/meepleThree.png);
-      border-image-slice: 10 10;
-      border-image-repeat: round;
-    }
-    
-    .group-data-input {
-      height:24px;
-      font-size:24px;
-      display: block;
-    }
-        
-    #${GROUP_NAME_INPUT} {
-      width: 600px;
-    }
-    
-    #${GROUP_URL_INPUT} {
-      width: 600px;
-    }
-    
-    #${GROUP_DESCRIPTION_INPUT} {
-      height: 500px;
-      width: 800px;
-    }
-  
-    button {
-      margin-top:0.5rem;
-    }
-  
-    .group-webpage-link {
-      display: inline-block;
-    }
-    
-    .raised {
-      display: inline-block;
-      line-height: 1;
-    }
-    
-    .event {
-      padding-bottom: 0.5rem;
-    }
-    .event p {
-      word-wrap: break-word;
-      white-space: normal;
-  
-      font-size: 1rem;
-      font-weight:600;
-        
-      max-width: 65ch;
-      margin-top: 0.5rem;
-    }
-  
-   .event-time, .event-location {
-      font-size: 1.25rem;
-      font-weight: 600;
-   }
-    
-    .add-event-button {
-      margin-top:0.5rem;
-    }
-    
-    @media not screen and (width < 32em) {
-      .${GROUP_DESCRIPTION_TEXT} {
-        margin-top: 1rem;
-      }
-    }
-    
-    @media screen and (width < 32em) {
-      .${GROUP_DESCRIPTION_TEXT} {
-        padding: 0.5rem;
-        margin-top: 1rem;
-        font-size:1rem;
-      }
-      .delete-button {
-        margin-top: 0.5rem;
-      }
- 
-
-      .raised {
-        margin-left:2rem;
-        margin-right:2rem;
-      }
-    }    
-  </style>
-  <div></div>
-`;
-
 
 const groupDataReducer = (groupData:any)=>{
   return {...groupData, [SUCCESS_MESSAGE_KEY]:''}
 }
-
-const loadConfig = [{
-  componentReducer:groupDataReducer,
-  dataStore:new DataStore(new ApiLoadAction(
-    (requestParams: any) =>  {
-      return {
-        url: API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`,
-      };
-    })),
-  urlParams:["name"]
-}]
 
 const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
 const EDIT_GROUP_BUTTON_ID = "edit-group-button";
@@ -151,11 +39,95 @@ const SAVE_UPDATES_BUTTON_ID = "save-updates";
 
 export class GroupPageComponent extends BaseDynamicComponent {
   constructor() {
-    super(loadConfig);
+    super([{
+      componentReducer:groupDataReducer,
+      dataStore:new DataStore(new ApiLoadAction(
+        (requestParams: any) =>  {
+          return {
+            url: API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`,
+          };
+        })),
+      urlParams:["name"]
+    }]);
   }
 
   getTemplateStyle(): string {
-    return template;
+    return `
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style>
+        .${GROUP_DESCRIPTION_TEXT} {
+          display: block;
+          position: relative;
+          padding: 0.5rem;
+          border-radius: 12px;
+          font-size: 1.5rem;
+          color: var(--clr-dark-blue);
+          background-color: #0AACFB;
+          
+          border: 10px solid pink;
+          border-image-source: url(assets/meepleThree.png);
+          border-image-slice: 10 10;
+          border-image-repeat: round;
+        }  
+        #${GROUP_NAME_INPUT} {
+          width: 600px;
+        }
+        #${GROUP_URL_INPUT} {
+          width: 600px;
+        }  
+        #${GROUP_DESCRIPTION_INPUT} {
+          height: 500px;
+          width: 800px;
+        }
+        button {
+          margin-top:0.5rem;
+        }
+        .group-webpage-link {
+          display: inline-block;
+        }  
+        .raised {
+          display: inline-block;
+          line-height: 1;
+        }  
+        .event {
+          padding-bottom: 0.5rem;
+        }
+        .event p {
+          font-size: 1rem;
+          font-weight:600;     
+          max-width: 65ch;
+          margin-top: 0.5rem;
+          word-wrap: break-word;
+          white-space: normal;
+        }
+       .event-time, .event-location {
+          font-size: 1.25rem;
+          font-weight: 600;
+       } 
+        .add-event-button {
+          margin-top:0.5rem;
+        }
+        @media not screen and (width < 32em) {
+          .${GROUP_DESCRIPTION_TEXT} {
+            margin-top: 1rem;
+          }
+        }   
+        @media screen and (width < 32em) {
+          .${GROUP_DESCRIPTION_TEXT} {
+            padding: 0.5rem;
+            margin-top: 1rem;
+            font-size:1rem;
+          }
+          .delete-button {
+            margin-top: 0.5rem;
+          }  
+          .raised {
+            margin-left:2rem;
+            margin-right:2rem;
+          }
+        }    
+      </style>
+    `;
   }
 
   override attachHandlersToShadowRoot(shadowRoot:ShadowRoot) {

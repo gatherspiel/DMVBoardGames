@@ -5,43 +5,35 @@ import {LOCATIONS_STORE} from "../data/search/LocationsStore.ts";
 import {ListingNavComponent} from "../../../shared/components/ListingNavComponent.ts";
 customElements.define("listing-nav-component", ListingNavComponent);
 
-const loadConfig = [{
+export class GameStoreListComponent extends BaseDynamicComponent {
+  constructor() {
+    super([{
       componentReducer: (data:any)=>{
         return data.gameStores;
       },
       dataStore: LOCATIONS_STORE,
-    }]
-
-
-const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-  <style>
-
-  
-  .game-store-list-item * {
-    display: inline-block;
-  }
-  
-  .section-separator-small {
-    border-bottom:  5px solid;
-    border-image-source: url(assets/Section_Border_Tiny.png);
-    border-image-slice: 5 5;
-    border-image-repeat: round;
-    padding-bottom: 0.5rem;
-  }
-  
-  p {
-      font-size: 1rem;
-    }
-  </style>
-`;
-export class GameStoreListComponent extends BaseDynamicComponent {
-  constructor() {
-    super(loadConfig);
+    }]);
   }
 
   override getTemplateStyle(): string {
-    return template;
+    return `
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style>
+      .game-store-list-item * {
+        display: inline-block;
+      }
+      .section-separator-small {
+        border-bottom:  5px solid;
+        border-image-source: url(assets/Section_Border_Tiny.png);
+        border-image-slice: 5 5;
+        border-image-repeat: round;
+        padding-bottom: 0.5rem;
+      }
+      p {
+          font-size: 1rem;
+        }
+      </style> 
+    `;
   }
 
   getItemHtml(gameStore: any) {

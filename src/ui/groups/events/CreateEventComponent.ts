@@ -23,30 +23,12 @@ import {getEventDetailsFromForm, validateEventFormData} from "./EventDetailsHand
 import {API_ROOT} from "../../../shared/Params.ts";
 import {getDayOfWeekSelectHtml} from "../../../shared/components/SelectGenerator.ts";
 
-const templateStyle = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+const CREATE_EVENT_BUTTON_ID = "create-event-button";
+const RECURRING_EVENT_INPUT = "is-recurring";
 
-  <style>
-    #${EVENT_NAME_INPUT} {
-      display:inline-block;
-      width: 50rem;
-    }
-    #${EVENT_DESCRIPTION_INPUT} {
-     display:inline-block;
-      width: 50rem;
-      height: 10rem;
-    }
-    #${EVENT_LOCATION_INPUT} {
-      width: 50rem;
-    }
-    
-    .raised {
-       display:inline-block;
-    }
-  </style>
-`;
-
-const loadConfig =  [{
+export class CreateEventComponent extends BaseDynamicComponent {
+  constructor() {
+    super([{
       componentReducer:(data:any)=>{
         return {
           name: "",
@@ -56,14 +38,29 @@ const loadConfig =  [{
         };
       },
       dataStore: LOGIN_STORE
-    }];
+    }]);
+  }
 
-const CREATE_EVENT_BUTTON_ID = "create-event-button";
-const RECURRING_EVENT_INPUT = "is-recurring";
-
-export class CreateEventComponent extends BaseDynamicComponent {
-  constructor() {
-    super(loadConfig);
+  getTemplateStyle(): string {
+    return `
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style>
+        #${EVENT_NAME_INPUT} {
+          display:inline-block;
+          width: 50rem;
+        }
+        #${EVENT_DESCRIPTION_INPUT} {
+         display:inline-block;
+          width: 50rem;
+          height: 10rem;
+        }
+        #${EVENT_LOCATION_INPUT} {
+          width: 50rem;
+        }
+        .raised {
+           display:inline-block;
+        }
+      </style>`;
   }
 
   override attachHandlersToShadowRoot(shadowRoot: ShadowRoot) {
@@ -124,17 +121,8 @@ export class CreateEventComponent extends BaseDynamicComponent {
         }
       }
     })
-
-    /*
-    shadowRoot?.getElementById('create-event-form')?.addEventListener('submit',(event:any)=>{
-
-    })
-     */
   }
 
-  getTemplateStyle(): string {
-    return templateStyle;
-  }
 
   render(data: any): string {
 

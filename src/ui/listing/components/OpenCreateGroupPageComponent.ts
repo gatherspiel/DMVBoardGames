@@ -4,20 +4,17 @@ import {IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
 
-
-const loadConfig = [{
-  componentReducer:(data:any)=>{
-    return {
-      [IS_LOGGED_IN_KEY]: data?.loggedIn
-    }
-  },
-  dataStore:LOGIN_STORE
-}]
-
 export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
 
   constructor() {
-    super(loadConfig);
+    super([{
+      componentReducer:(data:any)=>{
+        return {
+          [IS_LOGGED_IN_KEY]: data?.loggedIn
+        }
+      },
+      dataStore:LOGIN_STORE
+    }]);
   }
 
   override getTemplateStyle():string{

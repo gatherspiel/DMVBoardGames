@@ -6,36 +6,31 @@ import {LOCATIONS_STORE} from "../data/search/LocationsStore.ts";
 import {ListingNavComponent} from "../../../shared/components/ListingNavComponent.ts";
 customElements.define("listing-nav-component", ListingNavComponent);
 
-const loadConfig = [{
-  componentReducer: (data:any)=>{
-    return data.conventions;
-  },
-  dataStore: LOCATIONS_STORE,
-}]
-
-
-const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-
-   <style>
-  .conv-list-item > * {
-    display: inline-block;
-  }
-  
-  h3 {
-    font-size: 1.5rem;
-  }
-  
-  p {
-    padding-left: 0.5rem;
-  }
-
-
-</style>`;
-
 export class ConventionListComponent extends BaseDynamicComponent {
   constructor() {
-    super(loadConfig);
+    super([{
+      componentReducer: (data:any)=>{
+        return data.conventions;
+      },
+      dataStore: LOCATIONS_STORE,
+    }]);
+  }
+
+  override getTemplateStyle(): string {
+    return `
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style>
+        .conv-list-item > * {
+          display: inline-block;
+        }  
+        h3 {
+          font-size: 1.5rem;
+        }
+        p {
+          padding-left: 0.5rem;
+        }
+      </style>
+    `;
   }
 
   getItemHtml(convention: any) {
@@ -43,18 +38,14 @@ export class ConventionListComponent extends BaseDynamicComponent {
     <div id = convention-${convention.id} class="conv-list-item">
      <h3>
       ${generateLinkButton({
-        text: convention.name,
-        url: convention.url
-      })}
+      text: convention.name,
+      url: convention.url
+    })}
       </h3>
       <p>Days: ${convention.days.join(", ")}</p>
     
     </div>
   `;
-  }
-
-  override getTemplateStyle(): string {
-    return template;
   }
 
   render(data: any) {

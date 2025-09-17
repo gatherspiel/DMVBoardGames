@@ -36,43 +36,7 @@ import {convertDayOfWeekForDisplay} from "../../../shared/DisplayNameConversion.
 import {getDayOfWeekSelectHtml} from "../../../shared/components/SelectGenerator.ts";
 customElements.define("login-status-component", LoginStatusComponent);
 
-const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-  <style>   
-  
-    #${EVENT_NAME_INPUT} {
-      width: 50rem;
-    }
-    
-    #${EVENT_DESCRIPTION_INPUT} {
-      width: 50rem;
-      height: 10rem;
-    }
-    
-    #${EVENT_LOCATION_INPUT} {
-      width: 50rem;
-    }
-    
-    .back-to-group-button {
-      margin-top: 0.5rem;
-    }
-    .raised {
-      display: inline-block;
-      line-height: 1;
-    }
-    
-  </style>
-`;
 
-const loadConfig =  [{
-    dataStore: GROUP_EVENT_REQUEST_STORE,
-    componentReducer: (data:any)=>{
-      if(data.startDate){
-        data.startDate = data.startDate.join("-")
-      }
-      return data
-    }
-  }]
 
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 const CANCEL_DELETE_BUTTON_ID = "cancel-delete-button";
@@ -83,7 +47,41 @@ const SAVE_EVENT_BUTTON_ID = "save-event-button";
 
 export class EventDetailsComponent extends BaseDynamicComponent {
   constructor() {
-    super(loadConfig);
+    super([{
+      dataStore: GROUP_EVENT_REQUEST_STORE,
+      componentReducer: (data:any)=>{
+        if(data.startDate){
+          data.startDate = data.startDate.join("-")
+        }
+        return data
+      }
+    }]);
+  }
+
+  getTemplateStyle(): string {
+    return `
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style>   
+        #${EVENT_NAME_INPUT} {
+          width: 50rem;
+        }
+        #${EVENT_DESCRIPTION_INPUT} {
+          width: 50rem;
+          height: 10rem;
+        }
+        #${EVENT_LOCATION_INPUT} {
+          width: 50rem;
+        } 
+        .back-to-group-button {
+          margin-top: 0.5rem;
+        }
+        .raised {
+          display: inline-block;
+          line-height: 1;
+        }    
+      </style>    
+    
+    `;
   }
 
   override attachHandlersToShadowRoot(shadowRoot?: any) {
@@ -386,7 +384,4 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     `;
   }
 
-  getTemplateStyle(): string {
-    return template;
-  }
 }
