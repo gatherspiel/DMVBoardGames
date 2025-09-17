@@ -2,54 +2,46 @@ import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 import {LOCATIONS_STORE} from "../data/search/LocationsStore.ts";
 
-
 import {ListingNavComponent} from "../../../shared/components/ListingNavComponent.ts";
 customElements.define("listing-nav-component", ListingNavComponent);
-const loadConfig = [{
+
+export class GameRestaurantListComponent extends BaseDynamicComponent {
+  constructor() {
+    super([{
       componentReducer: (data:any)=>{
         return data.gameRestaurants;
       },
       dataStore: LOCATIONS_STORE,
-    }]
-
-
-const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-
-  <style>
- 
-    
-    h3 {
-      display: inline-block;
-    }
-            
-    p {
-      font-size: 1rem;
-    }
-  </style>
-`;
-export class GameRestaurantListComponent extends BaseDynamicComponent {
-  constructor() {
-    super(loadConfig);
+    }]);
   }
 
   override getTemplateStyle(): string {
-    return template;
+    return `
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/> 
+      <style>
+        h3 {
+          display: inline-block;
+        }          
+        p {
+          font-size: 1rem;
+        }
+      </style>
+    `;
   }
 
   getItemHtml(gameRestaurant: any) {
     return `
-    <div>
-     <h3>
-        ${generateLinkButton({
-          text: gameRestaurant.name,
-          url: gameRestaurant.url
-        })}
-      </h3>
-    <p>Location: ${gameRestaurant.location}</p>
-    <div class="section-separator-small"></div>
-    </div>
-  `;
+      <div>
+        <h3>
+          ${generateLinkButton({
+            text: gameRestaurant.name,
+            url: gameRestaurant.url
+          })}
+        </h3>
+        <p>Location: ${gameRestaurant.location}</p>
+        <div class="section-separator-small"></div>
+      </div>
+    `;
   }
 
   render(data: any) {
@@ -62,14 +54,13 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
       >
       </listing-nav-component>
       <div class="game-restaurants">
-      <h1 class="hideOnMobile">Board Game Bars and Cafés</h1>
-      <h2 class="showOnMobile">Board Game Bars and Cafés</h2>
+      <h1 class="hide-mobile">Board Game Bars and Cafés</h1>
+      <h2 class="show-mobile">Board Game Bars and Cafés</h2>
       <div class="section-separator-medium"></div>
 
     `;
     Object.values(data).forEach((item:any) => {
-      const itemHtml = this.getItemHtml(item);
-      html += itemHtml;
+      html += this.getItemHtml(item);
     });
 
     return html + `</div>`;

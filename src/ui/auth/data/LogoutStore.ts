@@ -5,18 +5,13 @@ import {deleteLocalStoreData, getLocalStorageDataIfPresent} from "@bponnaluri/pl
 
 async function retrieveData() {
 
-  const url = `${SUPABASE_CLIENT_URL}/auth/v1/logout?scope=global`
-  const authData = await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY);
-
-  const headers = {
-    apiKey: SUPABASE_CLIENT_KEY,
-    authorization: "bearer "+authData.access_token
-  }
-
   const data:Response = await fetch(
-   url, {
+    `${SUPABASE_CLIENT_URL}/auth/v1/logout?scope=global`, {
       method: "POST",
-      headers:headers
+      headers:{
+        apiKey: SUPABASE_CLIENT_KEY,
+        authorization: "bearer "+(await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY))
+      }
     }
   )
   if (data.ok) {

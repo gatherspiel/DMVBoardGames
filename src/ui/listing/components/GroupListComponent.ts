@@ -5,136 +5,84 @@ import {getDisplayName} from "../../../shared/DisplayNameConversion.ts";
 import {GROUP_SEARCH_STORE} from "../data/search/GroupSearchStore.ts";
 import {DEFAULT_SEARCH_PARAMETER} from "./group-search/Constants.ts";
 
-const loadConfig = [{
-  componentReducer: (searchResults: any)=> {
-
-    var results:any = searchResults?.groupData;
-    const updatedResults: Record<string, any> = {};
-
-    if(!results){
-      return {};
-    }
-
-    Object.keys(results).forEach((groupId)=>{
-      const group = results[groupId];
-
-      updatedResults[`group-${group.id}`] = {
-        events: group["events"],
-        locations: group.cities || group.locations,
-        url: group.url,
-        title: group.name,
-        summary: group.summary,
-        isHidden: false,
-      };
-    });
-    return updatedResults
-  },
-  dataStore: GROUP_SEARCH_STORE,
-  /*When updating component state, values for top level keys that do not have corresponding key value pairs
-   in the reducer remain. As a result, a key must be specified to ensure that component state is updated
-   to only contain groups from the search results.
-   */
-  fieldName: "searchResults",
-  params: {
-    city: DEFAULT_SEARCH_PARAMETER,
-    day: DEFAULT_SEARCH_PARAMETER
-  }
-}]
-
-
-const template = `
-
-  <link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
-
-  <style>
-
-
-    
-    @media not screen and (width < 32em) {
-    
-      .event-group-location {
-        display: inline-block;
-        margin-left: 2rem;
-      }
-      
-      .raised {
-        display: inline-block;
-      }
-    }  
-    
-    @media screen and (width < 32em) {
-      a {
-        margin-top: 1rem;
-      }
-  
-      .event-group-location {
-        display: none; 
-      }
-      
-      .ui-section .event-group:not(:first-child) {
-        margin-top: 0.5rem;
-      }
-      
-      .raised {
-        margin-top: 0.5rem;
-        margin-left:2rem;
-        margin-right:2rem;
-      }
-    }
-
-    .button-div {
-      display: flex;
-    }
-  </style>
-`;
 export class GroupListComponent extends BaseDynamicComponent {
   constructor() {
-    super(loadConfig);
+    super([{
+      dataStore: GROUP_SEARCH_STORE,
+      params: {
+        city: DEFAULT_SEARCH_PARAMETER,
+        day: DEFAULT_SEARCH_PARAMETER
+      }
+    }]);
   }
 
-  private getItemHtml(groupId: string, group: any) {
+  override getTemplateStyle(): string {
+    return `
+      <link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
+      <style>
+        .button-div {
+          display: flex;
+        }
+        @media not screen and (width < 32em) {
+          .group-cities {
+            display: inline-block;
+            margin-left: 2rem;
+          }
+          .raised {
+            display: inline-block;
+          }
+        }  
+        @media screen and (width < 32em) {
+          a {
+            margin-top: 1rem;
+          }
+          .group-cities {
+            display: none; 
+          }
+          .ui-section .event-group:not(:first-child) {
+            margin-top: 0.5rem;
+          }
+          .raised {
+            margin-top: 0.5rem;
+            margin-left:2rem;
+            margin-right:2rem;
+          }
+        } 
+      </style>
+    `;
+  }
 
-    const groupLocationStr = group.locations.map((name:string) => getDisplayName(name))?.join(", ");
+  private getItemHtml(group: any) {
+
+    const groupCitiesStr = group.cities.map((name:string) => getDisplayName(name))?.join(", ");
     let groupHtml: string;
-    groupHtml = `
-      <div id=${groupId} >
 
+    groupHtml = `
+      <div>
         ${generateLinkButton({
-          text: group.title,
-          url: `groups.html?name=${encodeURIComponent(group.title)}`
+          text: group.name,
+          url: `groups.html?name=${encodeURIComponent(group.name)}`
         })}
-   
-        <p class="event-group-location">${groupLocationStr && groupLocationStr != "" ? groupLocationStr : "DMV Area"}</p>              
-        
+        <p class="group-cities">${groupCitiesStr && groupCitiesStr != "" ? groupCitiesStr : "DMV Area"}</p>              
       </div>
     `;
     return groupHtml;
   }
-  
-  override getTemplateStyle(): string {
-    return template;
-  }
 
   render(data: any): string {
     let html = `<div class="ui-section">`;
-    let i = 0;
-    const groupHtml = Object.keys(data.searchResults).reduce((result:any, groupId:any)=>{
-      i++;
-      if(i > 1) {
-        return result+`<div class="section-separator-small"></div> ${this.getItemHtml(groupId, data.searchResults[groupId])}`
-      }
-      return result+this.getItemHtml(groupId, data.searchResults[groupId])
-    },'')
+    html+= `${this.getItemHtml(data.groupData[0])}`
 
-    if(!groupHtml)  {
-      html += `
-      <p>No groups found.</p>
-    `;
+    for(let i = 1;i<data.groupData.length; i++){
+      html+= `
+        <div class="section-separator-small"></div> 
+        ${this.getItemHtml(data.groupData[i])}
+      `
+    }
+    if(data.groupData.length === 0)  {
+      html += `<p>No groups found.</p>`;
     }
 
-    else {
-      html+=groupHtml;
-    }
     return html + `</div>`;
   }
 }

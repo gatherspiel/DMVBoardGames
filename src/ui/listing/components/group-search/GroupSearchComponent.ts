@@ -4,7 +4,6 @@ import {
 
 import {
   CITY_LIST_STORE,
-  updateCities,
 } from "../../data/search/CityListStore.ts";
 
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
@@ -20,88 +19,72 @@ const SEARCH_DAYS_ID:string = "search-days-id";
 const SEARCH_CITY_ID: string = "search-cities";
 const SEARCH_FORM_ID: string = "search-form";
 
-const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-
-  <style>
- 
-    #search-form {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4rem;
-      padding-bottom: 5px;
-    }
-    
-    #search-form select {
-      border-color: var(--clr-light-blue);
-      border-radius: 5px;
-      color: var(--clr-light-blue);
-      cursor: pointer;
-      padding: 0.25rem;
-    }
-    
-    select {
-      width:10rem;
-    }
-    
-    .searchDropdownLabel {
-      display: inline-block;
-      width: 13rem;
-    }
-      
-    #searchInputDiv {
-      padding-top: 0.5rem;
-    }
-    
-    @media not screen and (width < 32em) {
-      select {
-        margin-right: 1rem;
-      }
-    }
-      
-    @media screen and (width < 32em) {
-      #search-form {
-        gap: 2rem;
-      } 
-    }
-  </style>
-`;
-
-
 const DAYS_IN_WEEK = [
-  {index:0, name:DEFAULT_SEARCH_PARAMETER},
-  {index:1,name: "Sunday"},
-  {index:2, name:"Monday"},
-  {index:3, name:"Tuesday"},
-  {index:4, name:"Wednesday"},
-  {index:5, name:"Thursday"},
-  {index:6, name:"Friday"},
-  {index:7, name:"Saturday"}
+  DEFAULT_SEARCH_PARAMETER,
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday"
 ];
 
 const DISTANCE_OPTIONS= [
-  {index:0, name:"0"},
-  {index:1,name: "5"},
-  {index:2, name:"10"},
-  {index:3, name:"15"},
-  {index:4, name:"30"},
-  {index:5, name:"50"},
+  "0",
+  "5",
+  "10",
+  "15",
+  "30",
+  "50",
 ];
-
-const loadConfig = [{
-  componentReducer: updateCities,
-  dataStore:CITY_LIST_STORE,
-  fieldName: "cityList"
-}];
 
 export class GroupSearchComponent extends BaseDynamicComponent {
 
   constructor() {
-    super(loadConfig);
+    super([{
+      componentReducer: (cityArray:any)=>{
+        cityArray.sort();
+        cityArray.unshift(DEFAULT_SEARCH_PARAMETER);
+        return cityArray
+      },
+      dataStore:CITY_LIST_STORE,
+      fieldName: "cityList"
+    }]);
   }
 
   override getTemplateStyle(): string {
-    return template;
+    return `
+     <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style>
+        #search-form {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 4rem;
+          padding-bottom: 5px;
+        }
+        select {
+          width:10rem;
+        }
+        .searchDropdownLabel {
+          display: inline-block;
+          width: 13rem;
+        }
+        #searchInputDiv {
+          padding-top: 0.5rem;
+        }
+        @media not screen and (width < 32em) {
+          select {
+            margin-right: 1rem;
+          }
+        }    
+        @media screen and (width < 32em) {
+          #search-form {
+            gap: 2rem;
+          } 
+        }
+      </style>   
+    `;
   }
 
   override attachHandlersToShadowRoot(shadowRoot?: any) {
@@ -143,19 +126,19 @@ export class GroupSearchComponent extends BaseDynamicComponent {
       <form id=${SEARCH_FORM_ID} onsubmit="return false">
         <div>
           <div>
+            <label class="searchDropdownLabel">Select event city: </label>
               ${this.getDropdownHtml({
-              label:"Select event day:",
-              id: SEARCH_DAYS_ID,
-              name: "days",
-              data: DAYS_IN_WEEK,
-              selected: store.day,
-              [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
-              [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
-            })}
+                id: SEARCH_DAYS_ID,
+                name: "days",
+                data: DAYS_IN_WEEK,
+                selected: store.day,
+                [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
+                [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
+              })}
           </div>  
-          <div>  
+          <div>
+            <label class="searchDropdownLabel">Select event city: </label>
             ${this.getDropdownHtml({
-              label:"Select event city:",
               id: SEARCH_CITY_ID,
               name: "cities",
               data: store.cityList ?? [{name:"Any location"}],
@@ -166,15 +149,16 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           </div>  
           <div>
             ${store.location && store.location !== DEFAULT_SEARCH_PARAMETER ?`
+            <label class="searchDropdownLabel">Select distance: </label>
+
             ${this.getDropdownHtml({
-                  label:"Select distance:",
-                  id: SEARCH_DISTANCE_ID,
-                  name: "distance",
-                  data: DISTANCE_OPTIONS,
-                  selected: store.distance,
-                  [DEFAULT_PARAMETER_KEY]:"0 miles",
-                  [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
-                })}` :
+                id: SEARCH_DISTANCE_ID,
+                name: "distance",
+                data: DISTANCE_OPTIONS,
+                selected: store.distance,
+                [DEFAULT_PARAMETER_KEY]:"0 miles",
+                [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
+              })}` :
           ``}       
           </div>
             
@@ -193,23 +177,18 @@ export class GroupSearchComponent extends BaseDynamicComponent {
   getDropdownHtml(dropdownConfig: any) {
 
     return ` 
-    <label class="searchDropdownLabel">${dropdownConfig.label} </label>
-    <select
-      id=${dropdownConfig.id}
-      name=${dropdownConfig.name}
-      value=${dropdownConfig.data}
-    >
-    ${dropdownConfig.data?.map(
-      (item: any) =>
-        `<option key=${item.index} value="${item.name}" ${item.name === dropdownConfig.selected ? "selected" : ""}>
-          ${
-          item.name === DEFAULT_SEARCH_PARAMETER
-            ? dropdownConfig.defaultParameterDisplay
-            : getDisplayName(item.name)
-        }
-        </option>`,
-    )}
-    </select>`;
+      <select class="form-select" id=${dropdownConfig.id}>
+        ${dropdownConfig.data?.map(
+          (item: any) =>
+            `<option value="${item}" ${item === dropdownConfig.selected ? "selected" : ""}>
+              ${
+              item === DEFAULT_SEARCH_PARAMETER
+                ? dropdownConfig.defaultParameterDisplay
+                : getDisplayName(item)
+            }
+            </option>`,
+        )}
+      </select>`;
   }
 
 

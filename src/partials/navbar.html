@@ -85,7 +85,7 @@
             border-width: 1px;
         }
 
-        .showOnMobile {
+        .show-mobile {
             display:none;
         }
 
@@ -106,10 +106,10 @@
             border-color: white;
             border-width: 1px;
         }
-        .hideOnMobile {
+        .hide-mobile {
             display: none;
         }
-        .showOnMobile {
+        .show-mobile {
             width: 0;
             height: 0;
             margin-top:0.5rem;
@@ -147,18 +147,18 @@
     <div class="ui-section top-nav">
       <div class="top-nav">
 
-        <div class="showOnMobile triangle-down">
+        <div class="show-mobile triangle-down">
         </div>
-        <a class = "hideOnMobile" href="/index.html">Home
+        <a class = "hide-mobile" href="/index.html">Home
         </a>
 
-        <a class="hideOnMobile" href="/designers.html">Local designers
-        </a><a class="hideOnMobile" href="/print_and_play.html">Print and Play
-        </a><a class="hideOnMobile" href="https://gatherspiel.com/vision.html">Future plans
-        </a><a class="hideOnMobile" href="/useful_links.html">Useful Links
-        </a><a class="hideOnMobile" href="/feedback.html">Feedback</a>
+        <a class="hide-mobile" href="/designers.html">Local designers
+        </a><a class="hide-mobile" href="/print_and_play.html">Print and Play
+        </a><a class="hide-mobile" href="https://gatherspiel.com/vision.html">Future plans
+        </a><a class="hide-mobile" href="/useful_links.html">Useful Links
+        </a><a class="hide-mobile" href="/feedback.html">Feedback</a>
 
-        <div class="hideOnMobile">
+        <div class="hide-mobile">
             <login-status-component></login-status-component>
         </div>
 
@@ -267,24 +267,23 @@
 </div>
 
 <script>
-  document.getElementById("navbar").addEventListener("click", (event) => {
-    const elements = document.getElementsByClassName("hideOnMobile")
+  document.getElementById("navbar").addEventListener("click", () => {
+    const hiddenMobileElements = document.getElementsByClassName("hide-mobile")
 
-    if(elements.length >0){
-      for(let i = elements.length-1; i>=0;i--){
-        elements.item(i).className ="isVisible";
+    if(hiddenMobileElements.length >0){
+      for(let i = hiddenMobileElements.length-1; i>=0;i--){
+        hiddenMobileElements.item(i).className ="is-visible";
       }
-      document.getElementsByClassName("triangle-down").item(0).className = "triangle-up showOnMobile"
+      document.getElementsByClassName("triangle-down").item(0).className = "triangle-up show-mobile"
 
     } else {
-      const elements = document.getElementsByClassName("isVisible")
-      for(let i = elements.length-1; i>=0;i--){
-        elements.item(i).className ="hideOnMobile";
+      const visibleMobileElements = document.getElementsByClassName("is-visible")
+      for(let i = visibleMobileElements.length-1; i>=0;i--){
+        visibleMobileElements.item(i).className ="hide-mobile";
       }
-      document.getElementsByClassName("triangle-up").item(0).className = "triangle-down showOnMobile"
+      document.getElementsByClassName("triangle-up").item(0).className = "triangle-down show-mobile"
     }
   })
-
 
 </script>
 

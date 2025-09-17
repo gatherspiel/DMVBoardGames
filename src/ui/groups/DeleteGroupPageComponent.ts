@@ -9,33 +9,27 @@ import {
 import {API_ROOT} from "../../shared/Params.ts";
 import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
 
-const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-
-  <style>
-    #delete-group-error-message {
-      color:darkred;
-    }
-    #openGroupEditPageButton {
-      padding: 2rem;
-    }
-  </style>
-`;
-
-const loadConfig = [{
-      dataStore: LOGIN_STORE
-    }];
-
-
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 
 export class DeleteGroupPageComponent extends BaseDynamicComponent {
   constructor() {
-    super(loadConfig);
+    super([{
+      dataStore: LOGIN_STORE
+    }]);
   }
 
   getTemplateStyle(): string {
-    return template;
+    return `
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style>
+        #delete-group-error-message {
+          color:darkred;
+        }
+        #openGroupEditPageButton {
+          padding: 2rem;
+        }
+      </style>    
+    `;
   }
 
   connectedCallback(){

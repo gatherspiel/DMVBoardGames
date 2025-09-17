@@ -4,63 +4,50 @@ import {
 import {LOGIN_STORE} from "../../ui/auth/data/LoginStore.ts";
 import {LOGOUT_STORE} from "../../ui/auth/data/LogoutStore.ts";
 
-const loadConfig = [{
-      dataStore: LOGIN_STORE
-    }]
-
-
-const template = `
-   
-  <style>
-  
-  a {
-    color: white;
-    font-size: 1.5rem;
-    font-weight: 400;
-    text-decoration: none;
-  }
-  
-  span {
-    font-weight: 400;
-  }
-  
-  a:hover {
-    background-color: var(--clr-darker-blue);
-  }
-  
-  div {
-    padding-top:0.5rem;
-    font-size: 1.5rem;
-    color:var(--clr-darker-blue)
-  }
-  
-  button {
-    font-size: 1.5rem;
-  }
-  
-  button:active {
-    background-color: var(--clr-darker-blue) !important;
-  }
-  
-      
-  @media not screen and (width < 32em) {
-    div {
-      padding-left:1rem;
-    }
-  }
-
-  </style>
-`
-
 const SIGN_OUT_LINK_ID = "signout-link"
 export class LoginStatusComponent extends BaseDynamicComponent {
 
   constructor() {
-    super(loadConfig);
+    super([{
+        dataStore: LOGIN_STORE
+      }]
+    );
   }
 
   override getTemplateStyle(): string {
-    return template;
+    return `
+      <style>
+        a {
+          color: white;
+          font-size: 1.5rem;
+          font-weight: 400;
+          text-decoration: none;
+        }
+        span {
+          font-weight: 400;
+        } 
+        a:hover {
+          background-color: var(--clr-darker-blue);
+        }
+        div {
+          padding-top:0.5rem;
+          font-size: 1.5rem;
+          color:var(--clr-darker-blue)
+        } 
+        button {
+          font-size: 1.5rem;
+        }
+        button:active {
+          background-color: var(--clr-darker-blue) !important;
+        }
+
+        @media not screen and (width < 32em) {
+          div {
+            padding-left:1rem;
+          }
+        }
+      </style>
+    `;
   }
 
   override attachHandlersToShadowRoot(shadowRoot?: any){
