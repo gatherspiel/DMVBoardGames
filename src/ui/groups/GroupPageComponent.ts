@@ -85,6 +85,9 @@ export class GroupPageComponent extends BaseDynamicComponent {
         .group-webpage-link {
           display: inline-block;
         }  
+        h1,h2 {
+          color: var(--clr-dark-blue)
+        }
         .raised {
           display: inline-block;
           line-height: 1;

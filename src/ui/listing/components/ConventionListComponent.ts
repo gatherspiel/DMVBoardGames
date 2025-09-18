@@ -56,7 +56,7 @@ export class ConventionListComponent extends BaseDynamicComponent {
       <listing-nav-component
         class="ui-section"
         id="show-info-ui"
-        currentPage="conventions.html?${Math.random()}"
+        currentPage="conventions.html"
       >
       </listing-nav-component>
 
