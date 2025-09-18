@@ -67,6 +67,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           width:10rem;
         }
         .searchDropdownLabel {
+          color: var(--clr-dark-blue);
           display: inline-block;
           width: 13rem;
         }
@@ -126,7 +127,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
       <form id=${SEARCH_FORM_ID} onsubmit="return false">
         <div>
           <div>
-            <label class="searchDropdownLabel">Select event city: </label>
+            <label class="searchDropdownLabel">Select event day: </label>
               ${this.getDropdownHtml({
                 id: SEARCH_DAYS_ID,
                 name: "days",
