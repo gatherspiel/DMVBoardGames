@@ -2,6 +2,24 @@ const months = ['January', 'February','March', 'April','May', 'June','July','Aug
 const validStates = ['DC', 'MD', 'VA'];
 
 
+export function convertDateListToRange(dates: string[]){
+
+  const startMonth = months[parseInt(dates[0].substring(5,7))-1];
+  const startDate = `${dates[0].substring(8)}`
+  const year = `${dates[0].substring(0,4)}`
+
+  let endSection = ``;
+  if(dates.length > 1) {
+    const endMonth = months[parseInt(dates[dates.length-1].substring(5,7))-1];
+    if(endMonth === startMonth) {
+      endSection += `${dates[dates.length-1].substring(8)}`
+    } else {
+      endSection += `${endMonth} ${dates[dates.length-1].substring(8)}`
+    }
+    return `${startMonth} ${startDate} - ${endSection}, ${year}`
+  }
+  return `${startMonth} ${startDate}, ${year}`
+}
 
 export function combineDateAndTime(date: string, time: string){
   const dateSplit = date.split("-");
@@ -12,8 +30,7 @@ export function combineDateAndTime(date: string, time: string){
   if(dateSplit[2].length === 1) {
     dateSplit[2]=`0${dateSplit[2]}`
   }
-  var updated = `${dateSplit[0]}-${dateSplit[1]}-${dateSplit[2]}T${convertTimeTo24Hours(time)}`
-  return updated;
+  return  `${dateSplit[0]}-${dateSplit[1]}-${dateSplit[2]}T${convertTimeTo24Hours(time)}`;
 }
 
 export function convertDateTimeForDisplay(date: string){
@@ -29,9 +46,9 @@ export function convertDateTimeForDisplay(date: string){
     displayMinutes = `0${displayMinutes}`;
   }
 
-  const dateStr = `${months[dateObj.getMonth()]} ${dateObj.getDate()}, ${dateObj.getFullYear()} ` +
+
+  return `${months[dateObj.getMonth()]} ${dateObj.getDate()}, ${dateObj.getFullYear()} ` +
     `${displayHours}:${displayMinutes}${dateObj.getHours()>=12 ?'PM':' AM'}`
-  return dateStr;
 }
 
 export function convert24HourTimeForDisplay(timeString:string){
