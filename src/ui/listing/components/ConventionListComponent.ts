@@ -23,11 +23,13 @@ export class ConventionListComponent extends BaseDynamicComponent {
       <style>
         .conv-list-item > * {
           display: inline-block;
+          font-size: 1.5rem;
+          font-weight: 600;
         }  
         h3 {
           font-size: 1.5rem;
         }
-        p {
+        .date-info {
           padding-left: 0.5rem;
         }
       </style>
@@ -43,7 +45,7 @@ export class ConventionListComponent extends BaseDynamicComponent {
       url: convention.url
     })}
       </h3>
-      <p>${convertDateListToRange(convention.days)}</p>
+      <span class="date-info">${convertDateListToRange(convention.days)}</span>
     </div>
     <div class="section-separator-small"></div>
   `;
