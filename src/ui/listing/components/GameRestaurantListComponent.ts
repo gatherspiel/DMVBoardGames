@@ -1,6 +1,6 @@
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
-import {LOCATIONS_STORE} from "../data/search/LocationsStore.ts";
+import {GAME_RESTAURANT_STORE} from "../data/search/LocationsStore.ts";
 
 import {ListingNavComponent} from "../../../shared/components/ListingNavComponent.ts";
 customElements.define("listing-nav-component", ListingNavComponent);
@@ -9,9 +9,9 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
   constructor() {
     super([{
       componentReducer: (data:any)=>{
-        return data.gameRestaurants;
+        return data;
       },
-      dataStore: LOCATIONS_STORE,
+      dataStore: GAME_RESTAURANT_STORE,
     }]);
   }
 

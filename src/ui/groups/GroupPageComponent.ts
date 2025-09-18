@@ -64,7 +64,6 @@ export class GroupPageComponent extends BaseDynamicComponent {
           border-image-slice: 10 10;
           border-image-repeat: round;
           border-radius: 12px;
-          color: var(--clr-dark-blue);
           display: block;
           font-size: 1.5rem;
           position: relative;
