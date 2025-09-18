@@ -1,18 +1,19 @@
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import { generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 
-import {LOCATIONS_STORE} from "../data/search/LocationsStore.ts";
+import {CONVENTIONS_STORE} from "../data/search/LocationsStore.ts";
 
 import {ListingNavComponent} from "../../../shared/components/ListingNavComponent.ts";
+import {convertDateListToRange} from "../../../shared/EventDataUtils.ts";
 customElements.define("listing-nav-component", ListingNavComponent);
 
 export class ConventionListComponent extends BaseDynamicComponent {
   constructor() {
     super([{
       componentReducer: (data:any)=>{
-        return data.conventions;
+        return data;
       },
-      dataStore: LOCATIONS_STORE,
+      dataStore: CONVENTIONS_STORE,
     }]);
   }
 
@@ -42,9 +43,9 @@ export class ConventionListComponent extends BaseDynamicComponent {
       url: convention.url
     })}
       </h3>
-      <p>Days: ${convention.days.join(", ")}</p>
-    
+      <p>${convertDateListToRange(convention.days)}</p>
     </div>
+    <div class="section-separator-small"></div>
   `;
   }
 
@@ -58,7 +59,10 @@ export class ConventionListComponent extends BaseDynamicComponent {
       </listing-nav-component>
 
       <div class="ui-section"><h1 class="hide-mobile">Upcoming conventions</h1>
-      <h2 class="show-mobile">Upcoming conventions</h2>`;
+      <h2 class="show-mobile">Upcoming conventions</h2>
+      <div class="section-separator-medium"></div>
+
+    `;
 
     Object.values(data).forEach((item:any) => {
       html += this.getItemHtml(item);
