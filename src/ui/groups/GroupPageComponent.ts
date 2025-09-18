@@ -37,7 +37,6 @@ export class GroupPageComponent extends BaseDynamicComponent {
   constructor() {
     super([{
       componentReducer:(groupData:any)=>{
-        console.log("Hi")
         return {
           ...groupData,
           [SUCCESS_MESSAGE_KEY]:''
