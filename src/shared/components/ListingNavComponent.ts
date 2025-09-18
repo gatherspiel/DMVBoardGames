@@ -18,9 +18,11 @@ export class ListingNavComponent extends BaseTemplateComponent {
       <style>
       
        #show-info-ui {
+          padding-top: 0.5rem;
           padding-bottom: 0.5rem;
         }
         #show-more-info {
+          color: var(--clr-dark-blue);
          font-size: 1.5rem;
          font-weight: 600;       
         }
