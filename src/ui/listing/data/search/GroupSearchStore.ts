@@ -6,17 +6,14 @@ import type { ApiRequestConfig } from "@bponnaluri/places-js";
 function getGroupsQueryConfig(searchParams: any): ApiRequestConfig {
   console.log("Starting to load search results at:"+Date.now());
 
-  let url = API_ROOT + "/searchGroups";
-
   const paramMap: any = {};
 
   if (searchParams.day && searchParams.day !== DEFAULT_SEARCH_PARAMETER) {
     paramMap["day"] = searchParams.day;
   }
   if (
-    searchParams.location &&
-    searchParams.location !== DEFAULT_SEARCH_PARAMETER &&
-    searchParams.location !== undefined
+    searchParams?.location &&
+    searchParams.location !== DEFAULT_SEARCH_PARAMETER
   ) {
     paramMap["city"] = searchParams.location;
 
@@ -25,15 +22,14 @@ function getGroupsQueryConfig(searchParams: any): ApiRequestConfig {
     }
   }
 
-  if (paramMap && Object.keys(paramMap).length > 0) {
-    let queryString = "?";
+  let url = API_ROOT + "/searchGroups";
+  if (Object.keys(paramMap).length > 0) {
 
     let params: string[] = [];
     Object.keys(paramMap).forEach((param) => {
       params.push(param + "=" + paramMap[param].replace(" ", "%20"));
     });
-    queryString += params.join("&");
-    url += queryString;
+    url += `?${params.join("&")}`;
   }
   return {
     url: url,
