@@ -133,7 +133,7 @@ p {
 }
 
 @media not screen and (width < 32em) {
-  .showOnMobile {
+  .show-mobile {
     display:none
   }
 }
@@ -142,10 +142,10 @@ p {
   .ui-section {
     text-align: center;
   }
-  .hideOnMobile {
+  .hide-mobile {
     display:none;
   }
-  .showOnMobile {
+  .show-mobile {
     display:initial;
   }
 }
