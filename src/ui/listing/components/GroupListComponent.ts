@@ -54,26 +54,25 @@ export class GroupListComponent extends BaseDynamicComponent {
 
   private getItemHtml(group: any) {
 
-    const groupCitiesStr = group.cities.map((name:string) => getDisplayName(name))?.join(", ");
-    let groupHtml: string;
-
-    groupHtml = `
+    const groupCitiesStr = group.cities ?
+        group.cities.map((name:string) => getDisplayName(name))?.join(", ") :
+        "DMV Area"
+    return `
       <div>
         ${generateLinkButton({
           text: group.name,
           url: `groups.html?name=${encodeURIComponent(group.name)}`
         })}
-        <p class="group-cities">${groupCitiesStr && groupCitiesStr != "" ? groupCitiesStr : "DMV Area"}</p>              
+        <p class="group-cities">${groupCitiesStr}</p>              
       </div>
     `;
-    return groupHtml;
   }
 
   render(data: any): string {
     let html = `<div class="ui-section">`;
     html+= `${this.getItemHtml(data.groupData[0])}`
 
-    for(let i = 1;i<data.groupData.length; i++){
+    for(let i = 1; i<data.groupData.length; i++){
       html+= `
         <div class="section-separator-small"></div> 
         ${this.getItemHtml(data.groupData[i])}

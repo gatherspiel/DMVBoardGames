@@ -92,18 +92,18 @@ export class GroupSearchComponent extends BaseDynamicComponent {
 
     const self = this;
     shadowRoot.addEventListener("change",(event:any)=>{
-      const eventTarget = event.target.id;
-      if(eventTarget === SEARCH_DAYS_ID){
+      const eventTarget = event.target;
+      if(eventTarget.id === SEARCH_DAYS_ID){
         self.updateData({
-          day: (event.target as HTMLInputElement).value,
+          day: (eventTarget as HTMLInputElement).value,
         })
-      } else if(eventTarget === SEARCH_CITY_ID){
+      } else if(eventTarget.id === SEARCH_CITY_ID){
         self.updateData({
-          location: (event.target  as HTMLInputElement).value,
+          location: (eventTarget  as HTMLInputElement).value,
         })
-      } else if(eventTarget === SEARCH_DISTANCE_ID) {
+      } else if(eventTarget.id === SEARCH_DISTANCE_ID) {
         self.updateData({
-          distance: (event.target as HTMLInputElement).value
+          distance: (eventTarget as HTMLInputElement).value
         })
       }
     });
@@ -129,9 +129,9 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           <div>
             <label class="searchDropdownLabel">Select event day: </label>
               ${this.getDropdownHtml({
+                data: DAYS_IN_WEEK,
                 id: SEARCH_DAYS_ID,
                 name: "days",
-                data: DAYS_IN_WEEK,
                 selected: store.day,
                 [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
                 [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
@@ -140,9 +140,9 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           <div>
             <label class="searchDropdownLabel">Select event city: </label>
             ${this.getDropdownHtml({
+              data: store.cityList ?? [{name:"Any location"}],
               id: SEARCH_CITY_ID,
               name: "cities",
-              data: store.cityList ?? [{name:"Any location"}],
               selected: store.location,
               [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
               [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
@@ -153,25 +153,25 @@ export class GroupSearchComponent extends BaseDynamicComponent {
             <label class="searchDropdownLabel">Select distance: </label>
 
             ${this.getDropdownHtml({
-                id: SEARCH_DISTANCE_ID,
-                name: "distance",
-                data: DISTANCE_OPTIONS,
-                selected: store.distance,
-                [DEFAULT_PARAMETER_KEY]:"0 miles",
-                [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
-              })}` :
+              data: DISTANCE_OPTIONS,
+              id: SEARCH_DISTANCE_ID,
+              name: "distance",
+              selected: store.distance,
+              [DEFAULT_PARAMETER_KEY]:"0 miles",
+              [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
+            })}` :
           ``}       
           </div>
             
           <div id="searchInputDiv"> 
-               ${generateButton({
-                id: SEARCH_BUTTON_ID,
-                text: "Search groups",
-              })}
+            ${generateButton({
+              id: SEARCH_BUTTON_ID,
+              text: "Search groups",
+            })}
           </div>
-      </div>
-    </form>
-  `;
+        </div>
+      </form>
+    `;
 
   }
 
