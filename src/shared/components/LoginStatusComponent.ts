@@ -40,7 +40,6 @@ export class LoginStatusComponent extends BaseDynamicComponent {
         button:active {
           background-color: var(--clr-darker-blue) !important;
         }
-
         @media not screen and (width < 32em) {
           div {
             padding-left:1rem;
