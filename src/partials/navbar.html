@@ -1,140 +1,120 @@
 <style>
-
-    .ui-section {
-        padding-top: 0;
-        padding-bottom: 0;
-    }
-
-    .raised:hover {
-        transform: none;
-        transition: none;
-    }
-
-    .raised:active {
-        transform: none;
-        transition: none;
-    }
-
+  .ui-section {
+      padding-top: 0;
+      padding-bottom: 0;
+  }
+  .raised:hover {
+      transform: none;
+      transition: none;
+  }
+  .raised:active {
+      transform: none;
+      transition: none;
+  }
+  #logo-div {
+      min-width: 15.5rem;
+  }
+  #logo-div img {
+      max-height: 4.5rem;
+      padding-left: 0.5rem;
+      padding-top: 0.2rem;
+  }
+  nav a {
+      border: none;
+      background-color: none;
+      color: white;
+      font-weight: 400;
+      font-size: 1.5rem;
+      margin-top: 0.25rem;
+      margin-bottom: 0.25rem;
+      padding-bottom: 0.25rem;
+      padding-top: 0.25rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+  }
+  nav a.active {
+      background-color: #04aa6d;
+      color: white;
+      text-decoration: none;
+  }
+  nav a:hover {
+      background-color: var(--clr-darker-blue);
+      color: white;
+      text-decoration: none;
+  }
+  nav a:last-child {
+      text-wrap: nowrap;
+      text-decoration: none;
+  }
+  #nav-filler {
+      display: inline-block;
+      background-color: var(--clr-lighter-blue);
+      flex-grow: 1;
+  }
+  #navbar {
+    margin-bottom:1rem;
+  }
+  @media not screen and (width < 32em) {
     #logo-div {
-        min-width: 15.5rem;
+      float: left;
     }
-
-    #logo-div img {
-        max-height: 4.5rem;
-        padding-left: 0.5rem;
-        padding-top: 0.2rem;
+    .top-nav {
+      display: flex;
+      flex-wrap: wrap;
+      padding-left: 0.5rem;
     }
-
-    nav a {
-        border: none;
-        background-color: none;
-        color: white;
-        font-weight: 400;
-        font-size: 1.5rem;
-        margin-top: 0.25rem;
-        margin-bottom: 0.25rem;
-        padding-bottom: 0.25rem;
-        padding-top: 0.25rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
-        text-decoration: none;
-        transition: all 0.3s ease;
+    nav a + a {
+      margin-left: 1px;
+      border-color: white;
+      border-width: 1px;
     }
-
-    nav a.active {
-        background-color: #04aa6d;
-        color: white;
-        text-decoration: none;
+    .show-mobile {
+      display:none;
     }
-
-    nav a:hover {
-        background-color: var(--clr-darker-blue);
-        color: white;
-        text-decoration: none;
+    #local-designers {
+      padding-left:2rem;
     }
-
-    nav a:last-child {
-        text-wrap: nowrap;
-        text-decoration: none;
+  }
+  @media screen and (width < 32em) {
+    #logo-div {
+      display: flex;
+      justify-content: center;
     }
-
-    #nav-filler {
-        display: inline-block;
-        background-color: var(--clr-lighter-blue);
-        flex-grow: 1;
+    .top-nav {
+      display: grid;
+      text-align: center;
     }
-
-    #navbar {
-      margin-bottom:1rem;
+    nav a + a {
+      border-color: white;
+      border-width: 1px;
     }
-
-    @media not screen and (width < 32em) {
-        #logo-div {
-            float: left;
-        }
-
-        .top-nav {
-            display: flex;
-            flex-wrap: wrap;
-            padding-left: 0.5rem;
-        }
-
-        nav a + a {
-            margin-left: 1px;
-            border-color: white;
-            border-width: 1px;
-        }
-
-        .show-mobile {
-            display:none;
-        }
-
+    .hide-mobile {
+      display: none;
     }
-
-    @media screen and (width < 32em) {
-        #logo-div {
-            display: flex;
-            justify-content: center;
-        }
-
-        .top-nav {
-            display: grid;
-            text-align: center;
-        }
-
-        nav a + a {
-            border-color: white;
-            border-width: 1px;
-        }
-        .hide-mobile {
-            display: none;
-        }
-        .show-mobile {
-            width: 0;
-            height: 0;
-            margin-top:0.5rem;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .triangle-down {
-            width: 0;
-            height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 10px solid black;
-        }
-
-
-        .triangle-up{
-            width: 0;
-            height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-bottom: 10px solid black;
-        }
-
+    .show-mobile {
+      width: 0;
+      height: 0;
+      margin-top:0.5rem;
+      margin-left: auto;
+      margin-right: auto;
     }
+    .triangle-down {
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid black;
+    }
+    .triangle-up{
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid black;
+    }
+  }
 </style>
 
 <nav class="raised" id="navbar">
@@ -151,19 +131,16 @@
         </div>
         <a class = "hide-mobile" href="/index.html">Home
         </a>
-
-        <a class="hide-mobile" href="/designers.html">Local designers
-        </a><a class="hide-mobile" href="/print_and_play.html">Print and Play
-        </a><a class="hide-mobile" href="https://gatherspiel.com/vision.html">Future plans
-        </a><a class="hide-mobile" href="/useful_links.html">Useful Links
         </a><a class="hide-mobile" href="/feedback.html">Feedback</a>
-
-        <div class="hide-mobile">
-            <login-status-component></login-status-component>
-        </div>
+        </a><a class="hide-mobile" href="https://gatherspiel.com/vision.html">Future plans
+        <a class="hide-mobile" id="local-designers" href="/designers.html">Local designers
+        </a><a class="hide-mobile" href="/print_and_play.html">Print and Play
+        </a><a class="hide-mobile" href="https://github.com/gatherspiel">Source code</a>
+        </a><a class="hide-mobile" href="/useful_links.html">Useful Links </a>
+        <login-status-component class="hide-mobile"  id="login-status"></login-status-component>
 
       </div>
-    <div id="nav-filler"></div>
+     <div id="nav-filler"></div>
     </div>
   </span>
 </nav>
