@@ -80,9 +80,10 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           }
         }    
         @media screen and (width < 32em) {
-          #search-form {
-            gap: 2rem;
-          } 
+          #form-div-outer {
+            width: 100%
+          }
+          
         }
       </style>   
     `;
@@ -125,7 +126,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
     return `
   
       <form id=${SEARCH_FORM_ID} onsubmit="return false">
-        <div>
+        <div id ="form-div-outer">
           <div>
             <label class="searchDropdownLabel">Select event day: </label>
               ${this.getDropdownHtml({
