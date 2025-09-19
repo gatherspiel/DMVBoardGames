@@ -54,6 +54,7 @@ export class GroupListComponent extends BaseDynamicComponent {
 
   private getItemHtml(group: any) {
 
+    console.log(group)
     const groupCitiesStr = group.cities ?
         group.cities.map((name:string) => getDisplayName(name))?.join(", ") :
         "DMV Area"
@@ -69,6 +70,13 @@ export class GroupListComponent extends BaseDynamicComponent {
   }
 
   render(data: any): string {
+    if(data.groupData.length === 0){
+      return `
+        <div class=ui-section>
+          <p>No groups found</p>
+        </div>`
+    }
+
     let html = `<div class="ui-section">`;
     html+= `${this.getItemHtml(data.groupData[0])}`
 
@@ -78,9 +86,7 @@ export class GroupListComponent extends BaseDynamicComponent {
         ${this.getItemHtml(data.groupData[i])}
       `
     }
-    if(data.groupData.length === 0)  {
-      html += `<p>No groups found.</p>`;
-    }
+
 
     return html + `</div>`;
   }
