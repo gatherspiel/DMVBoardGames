@@ -36,7 +36,7 @@ export default defineConfig({
         groups: resolve(__dirname, "src/groups.html"),
         designers: resolve(__dirname, "src/designers.html"),
         print_and_play: resolve(__dirname, "src/print_and_play.html"),
-        useful_links: resolve(__dirname, "src/useful_links.html"),
+        links: resolve(__dirname, "src/links.html"),
         feedback: resolve(__dirname, "src/feedback.html"),
         login: resolve(__dirname, "src/login.html"),
         create_groups: resolve(__dirname, "src/groups/create.html"),
