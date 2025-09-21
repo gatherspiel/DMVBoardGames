@@ -53,8 +53,6 @@ export class GroupListComponent extends BaseDynamicComponent {
   }
 
   private getItemHtml(group: any) {
-
-    console.log(group)
     const groupCitiesStr = group.cities ?
         group.cities.map((name:string) => getDisplayName(name))?.join(", ") :
         "DMV Area"
@@ -68,7 +66,6 @@ export class GroupListComponent extends BaseDynamicComponent {
       </div>
     `;
   }
-
   render(data: any): string {
     if(data.groupData.length === 0){
       return `
@@ -86,8 +83,6 @@ export class GroupListComponent extends BaseDynamicComponent {
         ${this.getItemHtml(data.groupData[i])}
       `
     }
-
-
     return html + `</div>`;
   }
 }
