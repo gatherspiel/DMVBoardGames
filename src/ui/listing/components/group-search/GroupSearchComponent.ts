@@ -67,7 +67,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
         .searchDropdownLabel {
           color: var(--clr-dark-blue);
           display: inline-block;
-          width: 15rem;
+          width: 14rem;
         }
         #searchInputDiv {
           padding-top: 0.5rem;
