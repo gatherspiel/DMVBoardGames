@@ -40,7 +40,6 @@ const DISTANCE_OPTIONS= [
 ];
 
 export class GroupSearchComponent extends BaseDynamicComponent {
-
   constructor() {
     super([{
       componentReducer: (cityArray:any)=>{
@@ -52,7 +51,6 @@ export class GroupSearchComponent extends BaseDynamicComponent {
       fieldName: "cityList"
     }]);
   }
-
   override getTemplateStyle(): string {
     return `
      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
@@ -69,7 +67,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
         .searchDropdownLabel {
           color: var(--clr-dark-blue);
           display: inline-block;
-          width: 13rem;
+          width: 15rem;
         }
         #searchInputDiv {
           padding-top: 0.5rem;
@@ -83,7 +81,6 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           #form-div-outer {
             width: 100%
           }
-          
         }
       </style>   
     `;
@@ -151,7 +148,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           </div>  
           <div>
             ${store.location && store.location !== DEFAULT_SEARCH_PARAMETER ?`
-            <label class="searchDropdownLabel">Select distance: </label>
+            <label class="searchDropdownLabel">Select max distance:</label>
 
             ${this.getDropdownHtml({
               data: DISTANCE_OPTIONS,
@@ -162,8 +159,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
               [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
             })}` :
           ``}       
-          </div>
-            
+          </div> 
           <div id="searchInputDiv"> 
             ${generateButton({
               id: SEARCH_BUTTON_ID,
@@ -173,11 +169,9 @@ export class GroupSearchComponent extends BaseDynamicComponent {
         </div>
       </form>
     `;
-
   }
 
   getDropdownHtml(dropdownConfig: any) {
-
     return ` 
       <select class="form-select" id=${dropdownConfig.id}>
         ${dropdownConfig.data?.map(
@@ -192,6 +186,4 @@ export class GroupSearchComponent extends BaseDynamicComponent {
         )}
       </select>`;
   }
-
-
 }
