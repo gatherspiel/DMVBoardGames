@@ -260,5 +260,22 @@
     }
   })
 
-</script>
+  const hexagons = window.innerWidth/240.0;
+  //z-index:-100;position: absolute;top: 0;left:${totalMargin/2};
+  console.log(hexagons);
 
+  //Center based on position of top row of hexagons
+  if((hexagons - Math.floor(hexagons))<0.5) {
+    const totalMargin = window.innerWidth-240*Math.floor(hexagons);
+    document.getElementsByClassName("part-1").item(0).style =`z-index:-100;position: absolute;top: 0;left:${totalMargin/2}px;`
+    document.getElementsByClassName("part-2").item(0).style =`z-index: -100;position: absolute;top: calc(var(--s)*0.86610);left:${120+totalMargin/2}px;`
+  }
+
+  else {
+    const totalMargin = window.innerWidth-(240*Math.floor(hexagons)+120);
+    console.log(totalMargin)
+    document.getElementsByClassName("part-1").item(0).style =`z-index:-100;position: absolute;top: 0;left:${totalMargin/2}px;`
+    document.getElementsByClassName("part-2").item(0).style =`z-index: -100;position: absolute;top: calc(var(--s)*0.86610);left:${120+totalMargin/2}px;`
+  }
+
+</script>

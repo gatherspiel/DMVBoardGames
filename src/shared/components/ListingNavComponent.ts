@@ -24,8 +24,7 @@ export class ListingNavComponent extends BaseTemplateComponent {
         #show-more-info {
           color: var(--clr-dark-blue);
          font-size: 1.5rem;
-         font-weight: 600;       
-        }
+\        }
         .raised {
           display: inline-block;
         }

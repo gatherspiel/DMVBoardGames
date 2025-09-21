@@ -96,7 +96,6 @@ export class GroupPageComponent extends BaseDynamicComponent {
         }
         .event p {
           font-size: 1rem;
-          font-weight:600;     
           max-width: 65ch;
           margin-top: 0.5rem;
           word-wrap: break-word;
@@ -104,7 +103,6 @@ export class GroupPageComponent extends BaseDynamicComponent {
         }
        .event-time, .event-location {
           font-size: 1.25rem;
-          font-weight: 600;
        } 
         .add-event-button {
           margin-top:0.5rem;
@@ -305,7 +303,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
         : `  
           <div class="section-separator-medium"></div>
           ${groupData.weeklyEventData.map((event: any) => {
-            return self.renderWeeklyEventData(event,groupData.id, groupData.id + "event-" + event.id)
+            return self.renderWeeklyEventData(event,groupData.id, groupData.id + "-event-" + event.id)
           }).join(" ")}
         `
     }

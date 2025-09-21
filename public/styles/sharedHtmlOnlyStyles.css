@@ -6,9 +6,14 @@
   --clr-very-light-blue: hsl(206, 100%, 92%);
 }
 
+html, body, div,p,span {
+  margin: 0;
+  padding: 0;
+  border:0;
+}
+
 html,
 body {
-  margin: 0;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -85,56 +90,6 @@ body {
   justify-content: center;
 }
 
-.front {
-  display: block;
-  position: relative;
-  padding: 0.5rem;
-  border-radius: 12px;
-  font-size: 1.5rem;
-  color: white;
-  background: var(--clr-light-blue);
-  will-change: transform;
-  transform: translateY(-4px);
-}
-
-.edge {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 12px;
-  background: linear-gradient(
-          to left,
-          var(--clr-darker-blue) 0%,
-          var(--clr-light-blue) 8%,
-          var(--clr-dark-blue) 92%,
-          var(--clr-darker-blue) 100%
-  );
-}
-.shadow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 12px;
-  background: hsl(0deg 0% 0% / 0.25);
-  will-change: transform;
-  transform: translateY(2px);
-}
-
-.raised {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  line-height:1;
-  outline-offset: 4px;
-  padding: 0;
-  position: relative;
-  -webkit-tap-highlight-color: transparent;
-}
-
 .bg-image-container div:nth-child(18n -1) {
   background:#00FC6E;
 }
@@ -156,7 +111,6 @@ body {
   background:#515354;
 }
 
-
 .bg-image-container div:nth-child(18n -6) {
   background:#00FC6E;
 }
@@ -164,7 +118,6 @@ body {
 .bg-image-container div:nth-child(18n - 7) {
   background:#A32200;
 }
-
 
 .bg-image-container div:nth-child(18n -8) {
   background:#00FC6E;
@@ -211,23 +164,10 @@ body {
   background:#007432;
 }
 
-.part-1 {
-  z-index: -100;
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
 .part-1 > div {
   margin-bottom: calc(var(--s)*0.576);
 }
 
-.part-2 {
-  z-index: -100;
-  position: fixed;
-  top: calc(var(--s)*0.86610);
-  left:calc(var(--s)/2);
-}
 
 .part-2 > div {
   margin-bottom: calc(var(--s)*0.576);
@@ -244,6 +184,56 @@ body {
           rgba(0,0,0, 255)  0 calc(var(--f)));
 }
 
+.front {
+  display: block;
+  position: relative;
+  padding: 0.5rem;
+  border-radius: 12px;
+  font-size: 1.5rem;
+  color: white;
+  background: var(--clr-light-blue);
+  will-change: transform;
+  transform: translateY(-4px);
+}
+
+.edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: linear-gradient(
+          to left,
+          var(--clr-darker-blue) 0%,
+          var(--clr-light-blue) 8%,
+          var(--clr-dark-blue) 92%,
+          var(--clr-darker-blue) 100%
+  );
+}
+
+.shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: hsl(0deg 0% 0% / 0.25);
+  will-change: transform;
+  transform: translateY(2px);
+}
+
+.raised {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  line-height:1;
+  outline-offset: 4px;
+  padding: 0;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
 
 @media not screen and (width < 32em) {
   .bg-image-container p {
