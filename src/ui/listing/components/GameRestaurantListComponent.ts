@@ -25,13 +25,16 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
         p {
           font-size: 1rem;
         }
+       .game-resturant-list-item * {
+          display: inline-block;
+        }
       </style>
     `;
   }
 
   getItemHtml(gameRestaurant: any) {
     return `
-      <div>
+      <div class="game-resturant-list-item">
         <h3>
           ${generateLinkButton({
             text: gameRestaurant.name,
@@ -39,19 +42,15 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
           })}
         </h3>
         <p>Location: ${gameRestaurant.location}</p>
-        <div class="section-separator-small"></div>
       </div>
+      <div class="section-separator-small"></div>
     `;
   }
 
   render(data: any) {
 
     let html = `
-      <listing-nav-component
-        class="ui-section"
-        id="show-info-ui"
-        currentPage="gameRestaurants.html"
-      >
+
       </listing-nav-component>
       <div class="game-restaurants">
       <h1 class="hide-mobile">Board Game Bars and Cafés</h1>
@@ -63,6 +62,11 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
       html += this.getItemHtml(item);
     });
 
-    return html + `</div>`;
+    return html + `</div>      
+    <listing-nav-component
+        class="ui-section"
+        id="show-info-ui"
+        currentPage="gameRestaurants.html"
+      >`;
   }
 }

@@ -47,11 +47,6 @@ export class GameStoreListComponent extends BaseDynamicComponent {
   render(data: any) {
 
     let html = `
-      <listing-nav-component
-        class="ui-section"
-        id="show-info-ui"
-        currentPage="gameStores.html"
-      >  
       </listing-nav-component>
       <div class="ui-section">
       <h1 class="hide-mobile">Game Stores</h1>
@@ -61,6 +56,12 @@ export class GameStoreListComponent extends BaseDynamicComponent {
     Object.values(data).forEach((item) => {
       html += this.getItemHtml(item);
     });
-    return html + "</div>";
+    return html + `</div>
+      <listing-nav-component
+        class="ui-section"
+        id="show-info-ui"
+        currentPage="gameStores.html"
+      >  
+    `;
   }
 }

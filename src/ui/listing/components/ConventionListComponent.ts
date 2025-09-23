@@ -53,12 +53,7 @@ export class ConventionListComponent extends BaseDynamicComponent {
 
   render(data: any) {
     let html = `
-      <listing-nav-component
-        class="ui-section"
-        id="show-info-ui"
-        currentPage="conventions.html"
-      >
-      </listing-nav-component>
+
 
       <div class="ui-section"><h1 class="hide-mobile">Upcoming conventions</h1>
       <h2 class="show-mobile">Upcoming conventions</h2>
@@ -74,6 +69,13 @@ export class ConventionListComponent extends BaseDynamicComponent {
       html+=`<p>No conventions found</p>`;
     }
 
-    return html + "</div>";
+    return html + `</div>
+      <listing-nav-component
+        class="ui-section"
+        id="show-info-ui"
+        currentPage="conventions.html"
+      >
+      </listing-nav-component>
+    `;
   }
 }
