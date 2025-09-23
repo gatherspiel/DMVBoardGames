@@ -24,7 +24,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-padding: 1.5rem;
-  cursor: url(/assets/meeple.png) 0 0, default;
+  cursor: url(/assets/meeple.png) 15 15, default;
 
 }
 
