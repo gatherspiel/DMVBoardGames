@@ -41,9 +41,6 @@ const DISTANCE_OPTIONS= [
 
 export class GroupSearchComponent extends BaseDynamicComponent {
 
-  day:string = DEFAULT_SEARCH_PARAMETER;
-  location:string = DEFAULT_SEARCH_PARAMETER;
-  distance:string = '';
 
   constructor() {
     super([{
@@ -123,9 +120,9 @@ export class GroupSearchComponent extends BaseDynamicComponent {
       if(event.target.id === SEARCH_BUTTON_ID){
         event.preventDefault();
         const searchParams:any = {
-          location: self.location,
-          day: self.day,
-          distance: self.distance
+          location: self.componentStore.location,
+          day: self.componentStore.day,
+          distance: self.componentStore.distance
         };
         GROUP_SEARCH_STORE.fetchData(searchParams)
       }
