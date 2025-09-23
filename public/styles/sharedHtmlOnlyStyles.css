@@ -19,7 +19,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-padding: 1.5rem;
-  cursor: url(/assets/meeple.png) 16 16, pointer;
+  cursor: url(/assets/meeple.png) 0 0, default;
 
 }
 
@@ -242,8 +242,6 @@ body {
     padding-top: 0.75rem;
   }
 }
-
-
 
 @media screen and (width < 32em) {
   #bg-image {

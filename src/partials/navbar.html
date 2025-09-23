@@ -29,8 +29,8 @@
       margin-bottom: 0.25rem;
       padding-bottom: 0.25rem;
       padding-top: 0.25rem;
-      padding-left: 1rem;
-      padding-right: 1rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
       text-decoration: none;
       transition: all 0.3s ease;
   }
@@ -56,24 +56,27 @@
   #navbar {
     margin-bottom:1rem;
   }
+
   @media not screen and (width < 32em) {
+    nav a + a {
+      border-color: white;
+      border-width: 1px;
+      margin-left: 1px;
+    }
     #logo-div {
       float: left;
+    }
+    #navbar-front {
+      padding: 1rem;
     }
     .top-nav {
       display: flex;
       flex-wrap: wrap;
       padding-left: 0.5rem;
     }
-    nav a + a {
-      margin-left: 1px;
-      border-color: white;
-      border-width: 1px;
-    }
     .show-mobile {
       display:none;
     }
-
   }
   @media screen and (width < 32em) {
     #logo-div {
@@ -118,7 +121,7 @@
 <nav class="raised" id="navbar">
   <span class="shadow"></span>
   <span class="edge"></span>
-  <span class="front">
+  <span class="front" id="navbar-front">
     <div id="logo-div">
       <img fetchpriority="high" src="/assets/logo.svg">
     </div>
@@ -130,10 +133,8 @@
         <a class = "hide-mobile" href="/index.html">Home
         </a>
         </a><a class="hide-mobile" href="/feedback.html">Feedback</a>
-        </a><a class="hide-mobile" href="https://gatherspiel.com/vision.html">Future plans
         <a class="hide-mobile" id="local-designers" href="/designers.html">Local designers
         </a><a class="hide-mobile" href="/print_and_play.html">Print and Play
-        </a><a class="hide-mobile" href="https://github.com/gatherspiel">Source code</a>
         </a><a class="hide-mobile" href="/links.html">Links </a>
         <login-status-component class="hide-mobile"  id="login-status"></login-status-component>
 

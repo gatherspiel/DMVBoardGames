@@ -75,12 +75,11 @@ export class GroupListComponent extends BaseDynamicComponent {
     }
 
     let html = `<div class="ui-section">`;
-    html+= `${this.getItemHtml(data.groupData[0])}`
-
-    for(let i = 1; i<data.groupData.length; i++){
+    for(let i = 0; i<data.groupData.length; i++){
       html+= `
-        <div class="section-separator-small"></div> 
         ${this.getItemHtml(data.groupData[i])}
+        <div class="section-separator-small"></div> 
+
       `
     }
     return html + `</div>`;
