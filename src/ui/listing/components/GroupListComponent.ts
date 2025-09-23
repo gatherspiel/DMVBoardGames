@@ -53,14 +53,14 @@ export class GroupListComponent extends BaseDynamicComponent {
   }
 
   private getItemHtml(group: any) {
-    const groupCitiesStr = group.cities ?
+    const groupCitiesStr = (group.cities && group.cities.length >0) ?
         group.cities.map((name:string) => getDisplayName(name))?.join(", ") :
         "DMV Area"
     return `
       <div>
         ${generateLinkButton({
           text: group.name,
-          url: `groups.html?name=${encodeURIComponent(group.name)}`
+          url: `${group.hasRecurringEvents ? `groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`
         })}
         <p class="group-cities">${groupCitiesStr}</p>              
       </div>
