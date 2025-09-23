@@ -4,6 +4,11 @@
   --clr-light-blue: hsl(199, 100%, 33%);
   --clr-lighter-blue: hsl(206, 100%, 52%);
   --clr-very-light-blue: hsl(206, 100%, 92%);
+
+  --clr-dark-gray: darkgray;
+  --clr-light-gray: lightgray;
+  --clr-gray: gray;
+
 }
 
 html, body, div,p,span {
@@ -19,7 +24,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-padding: 1.5rem;
-  cursor: url(/assets/meeple.png) 16 16, pointer;
+  cursor: url(/assets/meeple.png) 15 15, default;
 
 }
 
@@ -242,8 +247,6 @@ body {
     padding-top: 0.75rem;
   }
 }
-
-
 
 @media screen and (width < 32em) {
   #bg-image {

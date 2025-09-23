@@ -57,8 +57,8 @@ export class GroupPageComponent extends BaseDynamicComponent {
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
         .${GROUP_DESCRIPTION_TEXT} {
-          background-color: #0AACFB;
-          border: 10px solid pink;
+          border: 10px solid;
+          background-color: var(--clr-very-light-blue);
           border-image-source: url(assets/meepleThree.png);
           border-image-slice: 10 10;
           border-image-repeat: round;
