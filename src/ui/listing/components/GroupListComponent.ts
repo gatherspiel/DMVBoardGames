@@ -71,6 +71,7 @@ export class GroupListComponent extends BaseDynamicComponent {
       return `
         <div class=ui-section>
           <p>No groups found</p>
+          <div class="section-separator-small"></div> 
         </div>`
     }
 
