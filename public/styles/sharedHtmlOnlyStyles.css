@@ -4,6 +4,11 @@
   --clr-light-blue: hsl(199, 100%, 33%);
   --clr-lighter-blue: hsl(206, 100%, 52%);
   --clr-very-light-blue: hsl(206, 100%, 92%);
+
+  --clr-dark-gray: darkgray;
+  --clr-light-gray: lightgray;
+  --clr-gray: gray;
+
 }
 
 html, body, div,p,span {

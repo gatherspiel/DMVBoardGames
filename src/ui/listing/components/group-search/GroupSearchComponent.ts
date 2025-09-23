@@ -7,7 +7,7 @@ import {
 } from "../../data/search/CityListStore.ts";
 
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
-import {generateButton} from "../../../../shared/components/ButtonGenerator.ts";
+import {generateButton, generateDisabledButton} from "../../../../shared/components/ButtonGenerator.ts";
 import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
 import {GROUP_SEARCH_STORE} from "../../data/search/GroupSearchStore.ts";
 
@@ -40,6 +40,11 @@ const DISTANCE_OPTIONS= [
 ];
 
 export class GroupSearchComponent extends BaseDynamicComponent {
+
+  day:string = DEFAULT_SEARCH_PARAMETER;
+  location:string = DEFAULT_SEARCH_PARAMETER;
+  distance:string = '';
+
   constructor() {
     super([{
       componentReducer: (cityArray:any)=>{
@@ -67,19 +72,27 @@ export class GroupSearchComponent extends BaseDynamicComponent {
         .searchDropdownLabel {
           color: var(--clr-dark-blue);
           display: inline-block;
-          width: 14rem;
+          
         }
         #searchInputDiv {
           padding-top: 0.5rem;
         }
+        
         @media not screen and (width < 32em) {
           select {
-            margin-right: 1rem;
+            margin-right: 0.5rem;
+          }
+          #search-form .form-item {
+            display: inline-block;
           }
         }    
+        
         @media screen and (width < 32em) {
           #form-div-outer {
             width: 100%
+          }
+          .searchDropdownLabel {
+            width: 14rem;
           }
         }
       </style>   
@@ -110,9 +123,9 @@ export class GroupSearchComponent extends BaseDynamicComponent {
       if(event.target.id === SEARCH_BUTTON_ID){
         event.preventDefault();
         const searchParams:any = {
-          location: this.componentStore.location,
-          day: this.componentStore.day,
-          distance: this.componentStore.distance
+          location: self.location,
+          day: self.day,
+          distance: self.distance
         };
         GROUP_SEARCH_STORE.fetchData(searchParams)
       }
@@ -120,11 +133,14 @@ export class GroupSearchComponent extends BaseDynamicComponent {
   }
 
   render(store: any) {
+
+    const searchButtonEnabled =
+      store.day || store.location;
+
     return `
-  
       <form id=${SEARCH_FORM_ID} onsubmit="return false">
         <div id ="form-div-outer">
-          <div>
+          <div class="form-item">
             <label class="searchDropdownLabel">Select event day: </label>
               ${this.getDropdownHtml({
                 data: DAYS_IN_WEEK,
@@ -135,7 +151,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
                 [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
               })}
           </div>  
-          <div>
+          <div class="form-item">
             <label class="searchDropdownLabel">Select event city: </label>
             ${this.getDropdownHtml({
               data: store.cityList ?? [{name:"Any location"}],
@@ -146,9 +162,9 @@ export class GroupSearchComponent extends BaseDynamicComponent {
               [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
             })}
           </div>  
-          <div>
+          <div class="form-item">
             ${store.location && store.location !== DEFAULT_SEARCH_PARAMETER ?`
-            <label class="searchDropdownLabel">Select max distance:</label>
+            <label class="searchDropdownLabel">Max distance:</label>
 
             ${this.getDropdownHtml({
               data: DISTANCE_OPTIONS,
@@ -161,10 +177,16 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           ``}       
           </div> 
           <div id="searchInputDiv"> 
-            ${generateButton({
-              id: SEARCH_BUTTON_ID,
-              text: "Search groups",
-            })}
+            ${searchButtonEnabled ?
+              `${generateButton({
+                id: SEARCH_BUTTON_ID,
+                text: "Search groups",
+              })}` :
+              `${generateDisabledButton({
+                id: 'disabled-search-button',
+                text: "Search groups",
+              })}`
+            }
           </div>
         </div>
       </form>
