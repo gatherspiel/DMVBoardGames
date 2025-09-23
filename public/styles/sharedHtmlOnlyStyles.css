@@ -51,7 +51,7 @@ body {
   font-size: 1.5rem;
 }
 
-.page-section p {
+.page-section li,p {
   color: var(--clr-dark-blue);
   font-size: 1.25rem;
   font-weight: 600;
