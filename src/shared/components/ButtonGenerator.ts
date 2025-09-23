@@ -24,6 +24,20 @@ export function generateLinkButton(config:LinkButtonConfig){
   `
 }
 
+export function generateDisabledButton(config:ButtonConfig){
+  return `
+    <button 
+      class="raised${config.class ? ` ${config.class}` : ``}"
+      name="action"
+      value="${config.text}"
+      ${config.type ? `type=${config.type}` : ``}
+    >  
+      <span class="disabled-edge"></span>
+      <span class="disabled-front" ${config.id ? `id="${config.id}"`: ``}>${config.text}</span>   
+    </button>
+  `
+}
+
 export function generateButton(config:ButtonConfig){
   return `
     <button 

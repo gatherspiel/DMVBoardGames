@@ -60,8 +60,18 @@ export class ListingNavComponent extends BaseTemplateComponent {
         ${this.getAttribute("currentPage") != EVENT_LIST_URL ? generateLinkButton({
           text: "Groups",
           url: EVENT_LIST_URL
-        }): ``}          
-          
-      </div >`
+        }): ``}     
+        
+        ${generateLinkButton({
+          text: "Source code",
+          url: "https://github.com/gatherspiel"
+        })}   
+ 
+        ${generateLinkButton({
+          text: "Future plans",
+          url: "https://gatherspiel.com/vision.html"
+        })}    
+               
+      </div>`
   }
 }
