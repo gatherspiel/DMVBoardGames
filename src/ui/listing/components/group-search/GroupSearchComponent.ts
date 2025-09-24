@@ -118,7 +118,6 @@ export class GroupSearchComponent extends BaseDynamicComponent {
 
     shadowRoot.addEventListener("click",(event:any)=>{
       if(event.target.id === SEARCH_BUTTON_ID){
-        alert(event.target.id);
         event.preventDefault();
         const searchParams:any = {
           location: self.componentStore.location,
