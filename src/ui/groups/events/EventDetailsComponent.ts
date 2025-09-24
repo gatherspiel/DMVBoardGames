@@ -62,6 +62,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>   
+        input,select,textarea {
+          display: block;
+        }
         #${EVENT_NAME_INPUT} {
           width: 50rem;
         }
@@ -259,14 +262,12 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           value="${data.name}"
         />
         </input>
-        <br>
     
         <label>Event description</label>
         <textarea
           id=${EVENT_DESCRIPTION_INPUT}
           name=${EVENT_DESCRIPTION_INPUT}
         />${data.description ?? ""}</textarea>
-        <br>
            
         <label>Event URL</label>
         <input
@@ -274,21 +275,18 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           value="${data.url ?? ""}"
         />
         </input>
-        <br>
           
         ${data.isRecurring ?
           `
             <label>Day of week</label>
             ${getDayOfWeekSelectHtml(data.day)}
-            <br>
           ` :
           `
             <label>Start date</label>
             <input
               name=${START_DATE_INPUT}
               value=${data.startDate}
-            />
-            <br>`
+            />`
         }
           
         <label>Start time</label>
@@ -297,7 +295,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           value=${convert24HourTimeForDisplay(data.startTime)}
         />
         </input>
-        <br>
           
         <label>End time</label>
         <input
@@ -305,7 +302,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           value=${convert24HourTimeForDisplay(data.endTime)}
         />
         </input>
-        <br>        
           
         <label>Event location</label>
         <input
@@ -314,7 +310,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           value="${data.location ?? ""}"
         />
         </input>
-        <br>     
         
         ${generateErrorMessage(data.errorMessage)}
   

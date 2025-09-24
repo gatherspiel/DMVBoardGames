@@ -25,6 +25,10 @@ export class DeleteGroupPageComponent extends BaseDynamicComponent {
         #delete-group-error-message {
           color:darkred;
         }
+        #group-name-input {
+          display: block;
+          margin-bottom: 1rem;
+        }
         #openGroupEditPageButton {
           padding: 2rem;
         }
@@ -80,15 +84,12 @@ export class DeleteGroupPageComponent extends BaseDynamicComponent {
 
     return `
       <form onsubmit="return false">
-      
-      
+
       <label>Enter group name to confirm deleting</label>
       <input
           id=${GROUP_NAME_INPUT}
           value="${data.groupInput ?? ''}"
        />
-      <br>
-
          ${generateButton({
           id: CONFIRM_DELETE_BUTTON_ID,
           text: "Confirm delete"
