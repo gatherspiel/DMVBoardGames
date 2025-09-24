@@ -11,7 +11,7 @@
 
 }
 
-html, body, div,p,span {
+html, body,div,p,span {
   margin: 0;
   padding: 0;
   border:0;
@@ -25,7 +25,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   scroll-padding: 1.5rem;
   cursor: url(/assets/meeple.png) 15 15, default;
-
 }
 
 #container {

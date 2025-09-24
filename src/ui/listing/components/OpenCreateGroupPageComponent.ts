@@ -23,6 +23,7 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
       <style>
         .raised {
           line-height: 1;
+          margin-left: 1rem;
           margin-bottom: 0.5rem;
         }
         @media not screen and (width < 32em) {

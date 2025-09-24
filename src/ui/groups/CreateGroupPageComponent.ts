@@ -36,6 +36,9 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
+        input,textarea {
+          display: block;
+        }
         #group-description-input {
           height:500px;
           width: 800px;
@@ -97,7 +100,6 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
                     />${createGroupData.name}
                   </input>
                   
-                  <br>
                   <label>Group url</label>
                   <input
                     name=${GROUP_URL_INPUT}
@@ -105,17 +107,13 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
                   ${createGroupData.url}
                   </input>
                   
-            
-                  <br>
                   <label>Group description</label>
-                  <br>
                   <textarea
                     id=${GROUP_DESCRIPTION_INPUT}
                     name=${GROUP_DESCRIPTION_INPUT}
-                    />${createGroupData.description}</textarea>
-                  <br>
-          
-     
+                    />${createGroupData.description}
+                  </textarea>
+
                  ${generateButton({
                   id: CREATE_GROUP_BUTTON_ID,
                   type:"submit",

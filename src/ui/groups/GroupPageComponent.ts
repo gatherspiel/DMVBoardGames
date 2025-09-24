@@ -56,34 +56,12 @@ export class GroupPageComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
-        .${GROUP_DESCRIPTION_TEXT} {
-          border: 10px solid;
-          background-color: var(--clr-very-light-blue);
-          border-image-source: url(assets/meepleThree.png);
-          border-image-slice: 10 10;
-          border-image-repeat: round;
-          border-radius: 12px;
-          display: block;
-          font-size: 1.5rem;
-          position: relative;
-          padding: 0.5rem;
-        }  
-        #${GROUP_NAME_INPUT} {
-          width: 600px;
-        }
-        #${GROUP_URL_INPUT} {
-          width: 600px;
-        }  
-        #${GROUP_DESCRIPTION_INPUT} {
-          height: 500px;
-          width: 800px;
-        }
         button {
           margin-top:0.5rem;
         }
-        .group-webpage-link {
-          display: inline-block;
-        }  
+        input,textarea {
+          display: block;
+        }
         h1,h2 {
           color: var(--clr-dark-blue)
         }
@@ -101,11 +79,35 @@ export class GroupPageComponent extends BaseDynamicComponent {
           word-wrap: break-word;
           white-space: normal;
         }
-       .event-time, .event-location {
+        .event-time, .event-location {
           font-size: 1.25rem;
-       } 
+        } 
+       .group-webpage-link {
+          display: inline-block;
+        }  
         .add-event-button {
           margin-top:0.5rem;
+        }
+        .${GROUP_DESCRIPTION_TEXT} {
+          border: 10px solid;
+          background-color: var(--clr-very-light-blue);
+          border-image-source: url(assets/meepleThree.png);
+          border-image-slice: 10 10;
+          border-image-repeat: round;
+          border-radius: 12px;
+          font-size: 1.5rem;
+          position: relative;
+          padding: 0.5rem;
+        }  
+        #${GROUP_NAME_INPUT} {
+          width: 600px;
+        }
+        #${GROUP_URL_INPUT} {
+          width: 600px;
+        }  
+        #${GROUP_DESCRIPTION_INPUT} {
+          height: 500px;
+          width: 800px;
         }
         @media not screen and (width < 32em) {
           .${GROUP_DESCRIPTION_TEXT} {
@@ -134,20 +136,17 @@ export class GroupPageComponent extends BaseDynamicComponent {
     const self = this;
     shadowRoot?.addEventListener("click", (event:any)=>{
       event.preventDefault();
-
       const targetId = event.target?.id;
       if(targetId === EDIT_GROUP_BUTTON_ID) {
         self.updateData({
           isEditing: true,
         })
       }
-
       if(targetId === CANCEL_UPDATES_BUTTON_ID) {
         self.updateData({
           isEditing: false
         })
       }
-
       if(targetId === SAVE_UPDATES_BUTTON_ID){
         const params = {
           id: self.componentStore.id,
@@ -178,28 +177,22 @@ export class GroupPageComponent extends BaseDynamicComponent {
 
     <form>
       <label>Group name</label>
-      <br>
       <input
         id=${GROUP_NAME_INPUT}
         value="${groupData.name}"
       />
-      <br>
       <label>Group description</label>
-      <br>
   
       <textarea
         id=${GROUP_DESCRIPTION_INPUT}
       />${groupData.description}
       </textarea>        
-      <br>
   
       <label>Group url</label>
-      <br>
       <input
         id=${GROUP_URL_INPUT}
         value=${groupData.url}
       />
-      <br>
   
       ${generateButton({
         id: SAVE_UPDATES_BUTTON_ID,
