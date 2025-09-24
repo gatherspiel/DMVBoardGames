@@ -70,10 +70,11 @@ export class GroupPageComponent extends BaseDynamicComponent {
           line-height: 1;
         }  
         .event {
+          padding-top: 1rem;
           padding-bottom: 0.5rem;
         }
         .event p {
-          font-size: 1rem;
+          font-size: 1.5rem;
           max-width: 65ch;
           margin-top: 0.5rem;
           word-wrap: break-word;
@@ -233,16 +234,16 @@ export class GroupPageComponent extends BaseDynamicComponent {
     const dayString = convertDayOfWeekForDisplay(eventData.day);
     return `
       <div id=${key} class="event">
-        <h2>${eventData.name}</h2>
+        ${generateLinkButton({
+          text: eventData.name,
+          url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
+        })}
         <p class="event-time">
           ${dayString}s from ${convert24HourTimeForDisplay(eventData.startTime)} to 
           ${convert24HourTimeForDisplay(eventData.endTime)} 
         </p>
         <p class="event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
-        ${generateLinkButton({
-          text: "View event details",
-          url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
-        })}
+
       </div>
       <div class="section-separator-small"></div>
     `;
@@ -253,13 +254,13 @@ export class GroupPageComponent extends BaseDynamicComponent {
     const startDate = `${eventData.startDate[0]}-${eventData.startDate[1]}-${eventData.startDate[2]}`
     return `
       <div id=${key} class="event">
-          <h2>${eventData.name}</h2>
-          <p class = "event-time">${startDate} ${convert24HourTimeForDisplay(eventData.startTime)}</p>
-          <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
-           ${generateLinkButton({
-            text: "View event details",
-            url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
-          })}
+        ${generateLinkButton({
+          text: eventData.name,
+          url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
+        })}
+        <p class = "event-time">${startDate} ${convert24HourTimeForDisplay(eventData.startTime)}</p>
+        <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
+
       </div>
       <div class="section-separator-small"></div>
     `;
@@ -288,7 +289,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
 
      ${groupData.oneTimeEventData.length === 0 && groupData.weeklyEventData.length === 0 ?
       `<p id="no-event">Click on group link above for event information</p>`:
-      `<h1 class="hide-mobile">Upcoming events</h1>`
+      `<h1 class="hide-mobile">Upcoming recurring events</h1>`
     }
     ${
       groupData.weeklyEventData.length === 0
@@ -305,7 +306,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
       groupData.oneTimeEventData.length === 0
         ? ``
         : `  
-          <h2>Other events</h2> 
+          <h1>Other events</h1> 
           <div class="section-separator-medium"></div>
           ${groupData.oneTimeEventData
             .map((event: any) => {
