@@ -11,7 +11,10 @@ import {
 
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 
-import {convertLocationStringForDisplay,getDateFromDateString} from "../../shared/DateUtils.ts";
+import {
+  convert24HourTimeForDisplay,
+  convertLocationStringForDisplay,
+} from "../../shared/EventDataUtils.ts";
 import {
   generateButton,
   generateLinkButton
@@ -22,139 +25,9 @@ import {
 import {API_ROOT} from "../../shared/Params.ts";
 
 import {LoginStatusComponent} from "../../shared/components/LoginStatusComponent.ts";
+import {convertDayOfWeekForDisplay} from "../../shared/DisplayNameConversion.ts";
+import {generateSuccessMessage} from "../../shared/components/StatusIndicators.ts";
 customElements.define("login-status-component", LoginStatusComponent);
-
-const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
-
-  <style>
-     
-    .${GROUP_DESCRIPTION_TEXT} {
-      display: block;
-      position: relative;
-      padding: 0.5rem;
-      border-radius: 12px;
-      font-size: 1.5rem;
-      color: var(--clr-dark-blue);
-      background-color: #0AACFB;
-      
-      border: 10px solid pink;
-      border-image-source: url(assets/meepleThree.png);
-      border-image-slice: 10 10;
-      border-image-repeat: round;
-    }
-    
-    .group-data-input {
-      height:24px;
-      font-size:24px;
-      display: block;
-    }
-        
-    #${GROUP_NAME_INPUT} {
-      width: 600px;
-    }
-    
-    #${GROUP_URL_INPUT} {
-      width: 600px;
-    }
-    
-    #${GROUP_DESCRIPTION_INPUT} {
-      height: 500px;
-      width: 800px;
-    }
-  
-    button {
-      margin-top:0.5rem;
-    }
-  
-    .group-webpage-link {
-      display: inline-block;
-    }
-    
-    .raised {
-      display: inline-block;
-      line-height: 1;
-    }
-    
-    .section-separator-medium {
-      border-bottom:  20px solid;
-      border-image-source: url(assets/Section_Border_Medium.png);
-      border-image-slice: 20 20;
-      border-image-repeat: round;
-    }
-    
-    .event p {
-      word-wrap: break-word;
-      white-space: normal;
-  
-      font-size: 1rem;
-      font-weight:600;
-        
-      max-width: 65ch;
-      margin-top: 0.5rem;
-    }
-  
-   .event-time, .event-location {
-      font-size: 1.25rem;
-      font-weight: 600;
-   }
-   
-   .event {
-        border-bottom:  5px solid;
-        border-image-source: url(assets/Section_Border_Tiny.png);
-        border-image-slice: 5 5;
-        border-image-repeat: round;
-        padding-bottom: 0.5rem;
-    }
-    
-    .add-event-button {
-      margin-top:0.5rem;
-    }
-    
-    @media not screen and (width < 32em) {
-      .${GROUP_DESCRIPTION_TEXT} {
-        margin-top: 1rem;
-      }
-    }
-    
-    @media screen and (width < 32em) {
-      .${GROUP_DESCRIPTION_TEXT} {
-        padding: 0.5rem;
-        margin-top: 1rem;
-        font-size:1rem;
-      }
-      .delete-button {
-        margin-top: 0.5rem;
-      }
- 
-      p {
-        font-size:1rem;
-      }
-      
-      .raised {
-        margin-left:2rem;
-        margin-right:2rem;
-      }
-    }    
-  </style>
-  <div></div>
-`;
-
-
-const groupDataReducer = (groupData:any)=>{
-  return {...groupData, [SUCCESS_MESSAGE_KEY]:''}
-}
-
-const loadConfig = [{
-  componentReducer:groupDataReducer,
-  dataStore:new DataStore(new ApiLoadAction(
-    (requestParams: any) =>  {
-      return {
-        url: API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`,
-      };
-    })),
-  urlParams:["name"]
-}]
 
 const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
 const EDIT_GROUP_BUTTON_ID = "edit-group-button";
@@ -162,56 +35,138 @@ const SAVE_UPDATES_BUTTON_ID = "save-updates";
 
 export class GroupPageComponent extends BaseDynamicComponent {
   constructor() {
-    super(loadConfig);
+    super([{
+      componentReducer:(groupData:any)=>{
+        return {
+          ...groupData,
+          [SUCCESS_MESSAGE_KEY]:''
+        }
+      },
+      dataStore:new DataStore(new ApiLoadAction(
+        (requestParams: any) =>  {
+          return {
+            url: API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`,
+          };
+        })),
+      urlParams:["name"]
+    }]);
   }
 
   getTemplateStyle(): string {
-    return template;
+    return `
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style>
+        button {
+          margin-top:0.5rem;
+        }
+        input,textarea {
+          display: block;
+        }
+        h1,h2 {
+          color: var(--clr-dark-blue)
+        }
+        .raised {
+          display: inline-block;
+          line-height: 1;
+        }  
+        .event {
+          padding-top: 1rem;
+          padding-bottom: 0.5rem;
+        }
+        .event p {
+          font-size: 1.5rem;
+          max-width: 65ch;
+          margin-top: 0.5rem;
+          word-wrap: break-word;
+          white-space: normal;
+        }
+        .event-time, .event-location {
+          font-size: 1.25rem;
+        } 
+       .group-webpage-link {
+          display: inline-block;
+        }  
+        .add-event-button {
+          margin-top:0.5rem;
+        }
+        .${GROUP_DESCRIPTION_TEXT} {
+          border: 10px solid;
+          background-color: var(--clr-very-light-blue);
+          border-image-source: url(assets/meepleThree.png);
+          border-image-slice: 10 10;
+          border-image-repeat: round;
+          border-radius: 12px;
+          font-size: 1.5rem;
+          position: relative;
+          padding: 0.5rem;
+        }  
+        #${GROUP_NAME_INPUT} {
+          width: 600px;
+        }
+        #${GROUP_URL_INPUT} {
+          width: 600px;
+        }  
+        #${GROUP_DESCRIPTION_INPUT} {
+          height: 500px;
+          width: 800px;
+        }
+        @media not screen and (width < 32em) {
+          .${GROUP_DESCRIPTION_TEXT} {
+            margin-top: 1rem;
+          }
+        }   
+        @media screen and (width < 32em) {
+          .${GROUP_DESCRIPTION_TEXT} {
+            font-size:1rem;
+            margin-top: 1rem;
+            padding: 0.5rem;
+          }
+          .delete-button {
+            margin-top: 0.5rem;
+          }  
+          .raised {
+            margin-left:2rem;
+            margin-right:2rem;
+          }
+        }    
+      </style>
+    `;
   }
 
-  override attachEventsToShadowRoot(shadowRoot:ShadowRoot) {
+  override attachHandlersToShadowRoot(shadowRoot:ShadowRoot) {
     const self = this;
-    shadowRoot?.addEventListener("click", function(event:any){
+    shadowRoot?.addEventListener("click", (event:any)=>{
       event.preventDefault();
+      const targetId = event.target?.id;
+      if(targetId === EDIT_GROUP_BUTTON_ID) {
+        self.updateData({
+          isEditing: true,
+        })
+      }
+      if(targetId === CANCEL_UPDATES_BUTTON_ID) {
+        self.updateData({
+          isEditing: false
+        })
+      }
+      if(targetId === SAVE_UPDATES_BUTTON_ID){
+        const params = {
+          id: self.componentStore.id,
+          name: (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLTextAreaElement)?.value,
+          description: (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value,
+          url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value
+        }
 
-      try {
-        const targetId = event.target?.id;
-        if(targetId === EDIT_GROUP_BUTTON_ID) {
+        ApiLoadAction.getResponseData({
+          body: JSON.stringify(params),
+          method: ApiActionTypes.PUT,
+          url: API_ROOT + `/groups/?name=${encodeURIComponent(params.name)}`,
+        }).then(()=>{
           self.updateData({
-            isEditing: true,
-          })
-        }
-
-
-        if(targetId === CANCEL_UPDATES_BUTTON_ID) {
-          self.updateData({
-            isEditing: false
-          })
-        }
-        if(targetId === SAVE_UPDATES_BUTTON_ID){
-          const params = {
-            id: self.componentStore.id,
-            name: (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLTextAreaElement)?.value,
-            description: (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value,
-            url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value
-          }
-
-          ApiLoadAction.getResponseData({
-            body: JSON.stringify(params),
-            method: ApiActionTypes.PUT,
-            url: API_ROOT + `/groups/?name=${encodeURIComponent(params.name)}`,
-          }).then(()=>{
-
-            self.updateData({...params,
-              isEditing: false,
-              [SUCCESS_MESSAGE_KEY]: 'Group update successful'
-            });
-          })
-        }
-      } catch(e:any){
-        if(e.message !== `Permission denied to access property "id"`){
-          throw e;
-        }
+            ...params,
+            isEditing: false,
+            [SUCCESS_MESSAGE_KEY]: 'Group update successful'
+          });
+        })
       }
     })
   }
@@ -223,28 +178,22 @@ export class GroupPageComponent extends BaseDynamicComponent {
 
     <form>
       <label>Group name</label>
-      <br>
       <input
         id=${GROUP_NAME_INPUT}
         value="${groupData.name}"
-        />
-      <br>
+      />
       <label>Group description</label>
-      <br>
   
       <textarea
         id=${GROUP_DESCRIPTION_INPUT}
       />${groupData.description}
       </textarea>        
-      <br>
   
       <label>Group url</label>
-      <br>
       <input
         id=${GROUP_URL_INPUT}
         value=${groupData.url}
       />
-      <br>
   
       ${generateButton({
         id: SAVE_UPDATES_BUTTON_ID,
@@ -260,23 +209,18 @@ export class GroupPageComponent extends BaseDynamicComponent {
   }
 
   renderGroupEditUI(groupData:any):string {
-
     return `
-
-      ${groupData[SUCCESS_MESSAGE_KEY] ? `<h2>Group update successful</h2>` : ``}
+      ${groupData[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage("Group update successful") : ''}
       <div class="group-title">
-      
         ${generateButton({
           id:EDIT_GROUP_BUTTON_ID,
           text: "Edit group info",
         })}
-      
         ${generateLinkButton({
           class: "add-event-button",
           text: "Add event",
-          url: `groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}`
+          url: `groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}`
         })}
-      
         ${generateLinkButton({
           class: "delete-button",
           text: "Delete group",
@@ -285,17 +229,40 @@ export class GroupPageComponent extends BaseDynamicComponent {
       </div>`
   }
 
-  renderEventData(eventData:any, key:string){
+  renderWeeklyEventData(eventData:any, groupId:any, key:string){
+
+    const dayString = convertDayOfWeekForDisplay(eventData.day);
     return `
       <div id=${key} class="event">
-          <h2>${eventData.name}</h2>
-          <p class = "event-time">${getDateFromDateString(eventData.startTime)}</p>
-          <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
-           ${generateLinkButton({
-            text: "View event details",
-            url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(eventData.groupId)}`
-          })}
+        ${generateLinkButton({
+          text: eventData.name,
+          url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
+        })}
+        <p class="event-time">
+          ${dayString}s from ${convert24HourTimeForDisplay(eventData.startTime)} to 
+          ${convert24HourTimeForDisplay(eventData.endTime)} 
+        </p>
+        <p class="event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
+
       </div>
+      <div class="section-separator-small"></div>
+    `;
+  }
+
+  renderOneTimeEventData(eventData:any, groupId:any, key:string){
+
+    const startDate = `${eventData.startDate[0]}-${eventData.startDate[1]}-${eventData.startDate[2]}`
+    return `
+      <div id=${key} class="event">
+        ${generateLinkButton({
+          text: eventData.name,
+          url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
+        })}
+        <p class = "event-time">${startDate} ${convert24HourTimeForDisplay(eventData.startTime)}</p>
+        <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
+
+      </div>
+      <div class="section-separator-small"></div>
     `;
   }
 
@@ -305,9 +272,8 @@ export class GroupPageComponent extends BaseDynamicComponent {
     }
 
     const self = this;
-
     return `
-     ${!groupData.isEditing ? `
+      ${!groupData.isEditing ? `
         <h1>
           ${generateLinkButton({
             class: "group-webpage-link",
@@ -316,20 +282,38 @@ export class GroupPageComponent extends BaseDynamicComponent {
           })}
        </h1>
         ${groupData.permissions.userCanEdit ? this.renderGroupEditUI(groupData) : ''}
-        <p class="${GROUP_DESCRIPTION_TEXT}">${groupData.description}</p> `
-        : this.renderEditMode(groupData)
-     }
-     <h1 class="hideOnMobile">Upcoming events</h1>
-     <div class="section-separator-medium"></div>
-     ${
-        groupData.eventData.length === 0
-          ? `<p id="no-event">Click on group link above for event information</p>`
-          : `${groupData.eventData
-              .map((event: any) => {
-                return  self.renderEventData({groupId: groupData.id,...event},groupData.id + "event-" + event.id)
-              }).join(" ")}
+        <p class="${GROUP_DESCRIPTION_TEXT}">${groupData.description}</p> 
+        ` : 
+        this.renderEditMode(groupData)
+      }
+
+     ${groupData.oneTimeEventData.length === 0 && groupData.weeklyEventData.length === 0 ?
+      `<p id="no-event">Click on group link above for event information</p>`:
+      `<h1 class="hide-mobile">Upcoming recurring events</h1>`
+    }
+    ${
+      groupData.weeklyEventData.length === 0
+        ? ``
+        : `  
+          <div class="section-separator-medium"></div>
+          ${groupData.weeklyEventData.map((event: any) => {
+            return self.renderWeeklyEventData(event,groupData.id, groupData.id + "-event-" + event.id)
+          }).join(" ")}
+        `
+    }
+ 
+    ${
+      groupData.oneTimeEventData.length === 0
+        ? ``
+        : `  
+          <h1>Other events</h1> 
+          <div class="section-separator-medium"></div>
+          ${groupData.oneTimeEventData
+            .map((event: any) => {
+              return self.renderOneTimeEventData(event,groupData.id,groupData.id + "event-" + event.id)
+            }).join(" ")}
           <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
-          `
+      `
       }
     `;
   }

@@ -8,40 +8,33 @@ import {
 import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../../shared/Params.ts";
 
 import {DataStore} from "@bponnaluri/places-js";
-import {isAfterNow} from "../../../shared/DateUtils.ts";
 
 async function retrieveData(
-  data: any
+  params: any
 ): Promise<AuthResponse> {
 
-  const params = data.formInputs;
   try {
-
     const authData = await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY);
-    if (authData && isAfterNow(authData.expires_at)) {
+    if (authData && authData.expires_at * 1000 > new Date().getTime()) {
       return new AuthResponse(
         true,
         authData
       )
     }
 
-    const url = `${SUPABASE_CLIENT_URL}/auth/v1/token?grant_type=password`
-    const headers = {
-      apiKey: SUPABASE_CLIENT_KEY,
-    }
-    const body = {
-      email:params.username,
-      password: params.password
-    }
-
     const data:Response = await fetch(
-      url, {
+      `${SUPABASE_CLIENT_URL}/auth/v1/token?grant_type=password`,
+      {
         method: "POST",
-        headers:headers,
-        body:JSON.stringify(body)
+        headers:{
+          apiKey: SUPABASE_CLIENT_KEY,
+        },
+        body:JSON.stringify({
+          email:params.formInputs.username,
+          password: params.formInputs.password
+        })
       }
     )
-
 
     if (data.ok) {
       clearSessionStorage();
@@ -50,8 +43,7 @@ async function retrieveData(
       return new AuthResponse(true, {...authTokenData,username:authData?.username});
     }
 
-    const error = await data.json();
-    throw Error(error?.msg ?? data.statusText)
+    throw Error((await data.json())?.msg ?? data.statusText)
 
   } catch (e: any) {
 
@@ -69,4 +61,3 @@ async function retrieveData(
 }
 
 export const LOGIN_STORE: DataStore = new DataStore(new CustomLoadAction(retrieveData));
-

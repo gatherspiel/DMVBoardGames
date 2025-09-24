@@ -14,22 +14,12 @@ import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
 import { API_ROOT } from "../../shared/Params.ts";
 
-const templateStyle = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
 
-  <style>
-    #group-description-input {
-      height:500px;
-      width: 800px;
-      margin-bottom: 1rem;
-    }
-    #create-group-page-container {
-      padding-left: 1rem;
-    }
-  </style>
-`;
+const CREATE_GROUP_BUTTON_ID = "create-group-button-id";
 
-const loadConfig = [{
+export class CreateGroupPageComponent extends BaseDynamicComponent {
+  constructor() {
+    super([{
       componentReducer:(data:any)=>{
         return {
           name: "",
@@ -39,36 +29,42 @@ const loadConfig = [{
         }
       },
       dataStore:LOGIN_STORE
-    }];
-
-const CREATE_GROUP_BUTTON_ID = "create-group-button-id";
-
-export class CreateGroupPageComponent extends BaseDynamicComponent {
-  constructor() {
-    super(loadConfig);
+    }]);
   }
 
   getTemplateStyle(): string {
-    return templateStyle;
+    return `
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style>
+        input,textarea {
+          display: block;
+        }
+        #group-description-input {
+          height:500px;
+          width: 800px;
+          margin-bottom: 1rem;
+        }
+        #create-group-page-container {
+          padding-left: 1rem;
+        }
+      </style>
+    `;
   }
 
-  override attachEventsToShadowRoot(shadowRoot:ShadowRoot){
+  override attachHandlersToShadowRoot(shadowRoot:ShadowRoot){
 
-    var self = this;
+    const self = this;
     shadowRoot?.getElementById('create-group-form')?.addEventListener('submit',(event:any)=>{
-       event.preventDefault();
+      event.preventDefault();
 
-       const data = event.target.elements;
-
-       const params = {
-         id: self.componentStore.id,
-         name: data[0].value,
-         description: data[1].value,
-         url: data[2].value
-       }
-
+      const data = event.target.elements;
       ApiLoadAction.getResponseData({
-        body: JSON.stringify(params),
+        body: JSON.stringify({
+          id: self.componentStore.id,
+          name: (data.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
+          description: (data.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
+          url: (data.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value
+        }),
         method: ApiActionTypes.POST,
         url: API_ROOT + `/groups/`,
       }).then((data:any)=>{
@@ -85,11 +81,10 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
           });
         }
       })
-     })
+    });
   }
 
   render(createGroupData: any): string {
-
     return `
       <div id="create-group-page-container">
         <h1>Create board game group</h1>
@@ -105,7 +100,6 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
                     />${createGroupData.name}
                   </input>
                   
-                  <br>
                   <label>Group url</label>
                   <input
                     name=${GROUP_URL_INPUT}
@@ -113,17 +107,13 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
                   ${createGroupData.url}
                   </input>
                   
-            
-                  <br>
                   <label>Group description</label>
-                  <br>
                   <textarea
                     id=${GROUP_DESCRIPTION_INPUT}
                     name=${GROUP_DESCRIPTION_INPUT}
-                    />${createGroupData.description}</textarea>
-                  <br>
-          
-     
+                    />${createGroupData.description}
+                  </textarea>
+
                  ${generateButton({
                   id: CREATE_GROUP_BUTTON_ID,
                   type:"submit",

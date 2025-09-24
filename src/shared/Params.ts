@@ -8,10 +8,8 @@ export const IS_TEST = window.location.href.includes(
 
 export const API_ROOT: string =
   IS_PRODUCTION || IS_TEST
-    ? `https://gatherspiel-api-6mued.kinsta.app`
+    ? `https://api.gatherspiel.com`
     : import.meta.env.VITE_LOCAL_API_ROOT;
-
-console.log("Api root:"+API_ROOT);
 
 export const SUPABASE_CLIENT_URL =
   IS_PRODUCTION || IS_TEST
@@ -23,4 +21,4 @@ export const SUPABASE_CLIENT_KEY =
     ? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthcnF5c2t1dWRudmZ4b2h3a29rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE5ODQ5NjgsImV4cCI6MjA1NzU2MDk2OH0.TR-Pn6dknOTtqS9y-gxK_S1-nw6TX-sL3gRH2kXJY_I"
     : import.meta.env.VITE_LOCAL_AUTH_KEY;
 
-export const AUTH_TOKEN_KEY = "access_token";
+export const AUTH_TOKEN_KEY = "authToken";

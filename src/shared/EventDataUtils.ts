@@ -1,39 +1,24 @@
 const months = ['January', 'February','March', 'April','May', 'June','July','August','September','October','November','December'];
 const validStates = ['DC', 'MD', 'VA'];
-/**
- * Returns true if the timestamp is after the current moment, and returns false otherwise.
- * @param timestamp timestamp in seconds
- */
-export function isAfterNow(timestamp: number): boolean {
-  return timestamp * 1000 > new Date().getTime();
-}
 
-export function convertDayOfWeekForDisplay(day:string){
-  return `${day.substring(0,1).toUpperCase()}${day.substring(1).toLowerCase()}`
-}
 
-/**
- * Returns date in YYYY-MM-DD format.
- * @param date
- */
-export function getDateFromDateString(date: string) {
-  const dateObj = new Date(Date.parse(date));
-  return `${dateObj.getFullYear()}-${dateObj.getMonth()}-${dateObj.getDate()}`
-}
+export function convertDateListToRange(dates: string[]){
 
-export function getTimeFromDateString(date: string) {
-  const dateObj = new Date(Date.parse(date));
+  const startMonth = months[parseInt(dates[0].substring(5,7))-1];
+  const startDate = `${dates[0].substring(8)}`
+  const year = `${dates[0].substring(0,4)}`
 
-  let displayMinutes = ""+dateObj.getMinutes();
-  if(dateObj.getMinutes() < 10){
-    displayMinutes = `0${displayMinutes}`;
+  let endSection = ``;
+  if(dates.length > 1) {
+    const endMonth = months[parseInt(dates[dates.length-1].substring(5,7))-1];
+    if(endMonth === startMonth) {
+      endSection += `${dates[dates.length-1].substring(8)}`
+    } else {
+      endSection += `${endMonth} ${dates[dates.length-1].substring(8)}`
+    }
+    return `${startMonth} ${startDate} - ${endSection}, ${year}`
   }
-
-  let hours = dateObj.getHours();
-  if(dateObj.getHours()>12) {
-    hours = hours -12;
-  }
-  return `${hours}:${displayMinutes}${dateObj.getHours()>=12 ?'PM':' AM'}`
+  return `${startMonth} ${startDate}, ${year}`
 }
 
 export function combineDateAndTime(date: string, time: string){
@@ -45,8 +30,7 @@ export function combineDateAndTime(date: string, time: string){
   if(dateSplit[2].length === 1) {
     dateSplit[2]=`0${dateSplit[2]}`
   }
-  var updated = `${dateSplit[0]}-${dateSplit[1]}-${dateSplit[2]}T${convertTimeTo24Hours(time)}`
-  return updated;
+  return  `${dateSplit[0]}-${dateSplit[1]}-${dateSplit[2]}T${convertTimeTo24Hours(time)}`;
 }
 
 export function convertDateTimeForDisplay(date: string){
@@ -62,12 +46,35 @@ export function convertDateTimeForDisplay(date: string){
     displayMinutes = `0${displayMinutes}`;
   }
 
-  const dateStr = `${months[dateObj.getMonth()]} ${dateObj.getDate()}, ${dateObj.getFullYear()} ` +
+
+  return `${months[dateObj.getMonth()]} ${dateObj.getDate()}, ${dateObj.getFullYear()} ` +
     `${displayHours}:${displayMinutes}${dateObj.getHours()>=12 ?'PM':' AM'}`
-  return dateStr;
+}
+
+export function convert24HourTimeForDisplay(timeString:string){
+
+  const timeSplit = timeString.split(":");
+  const hours = parseInt(timeSplit[0]);
+  const minutes = parseInt(timeSplit[1]);
+
+  let displayHours = hours;
+  if(hours>12) {
+    displayHours = displayHours - 12;
+  }
+
+  let displayMinutes = ""+minutes
+  if(minutes < 10){
+    displayMinutes = `0${displayMinutes}`;
+  }
+
+  return `${displayHours}:${displayMinutes}${hours>=12 ?'PM':' AM'}`
 }
 
 export function convertTimeTo24Hours(time:string){
+
+  if(time.endsWith("AM")){
+    time = time.split("AM")[0];
+  }
   const timeSplit = time.split(" ")[0].split(":");
 
   if(time.split(" ")[1] && time.split(" ")[1].includes("PM") && timeSplit[0] !== '12'){
@@ -76,7 +83,7 @@ export function convertTimeTo24Hours(time:string){
 
   if(!time.split(" ")[1]){
     if(timeSplit[1].includes("PM")){
-      timeSplit[1]=timeSplit[1].substring(0,1);
+      timeSplit[1]=timeSplit[1].substring(0,2);
       if(timeSplit[0] !== '12' && parseInt(timeSplit[0]) <12){
         timeSplit[0] = "" + (parseInt(timeSplit[0])+12)
 
@@ -91,7 +98,6 @@ export function convertTimeTo24Hours(time:string){
   if(timeSplit[1].length === 1){
     timeSplit[1]=`0${timeSplit[1]}`;
   }
-
   return `${timeSplit[0]}:${timeSplit[1]}`
 }
 

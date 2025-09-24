@@ -3,6 +3,7 @@ import {
   BaseDynamicComponent, ApiLoadAction
 } from "@bponnaluri/places-js";
 import {
+  DAY_OF_WEEK_INPUT,
   END_TIME_INPUT,
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT,
@@ -16,8 +17,8 @@ import {
 } from "./EventDetailsHandler.ts";
 
 import {generateErrorMessage} from "../../../shared/components/StatusIndicators.ts";
-import {getDateFromDateString} from "../../../shared/DateUtils.ts";
-import {convertLocationStringForDisplay} from "../../../shared/DateUtils.ts";
+import {convert24HourTimeForDisplay, convertTimeTo24Hours} from "../../../shared/EventDataUtils.ts";
+import {convertLocationStringForDisplay} from "../../../shared/EventDataUtils.ts";
 import {
   generateButton,
   generateLinkButton
@@ -30,40 +31,11 @@ import {API_ROOT} from "../../../shared/Params.ts";
 
 import {LoginStatusComponent} from "../../../shared/components/LoginStatusComponent.ts";
 import {generateSuccessMessage} from "../../../shared/components/StatusIndicators.ts";
-import {convertDateTimeForDisplay, convertDayOfWeekForDisplay} from "../../../shared/DateUtils.ts";
+import {convertDateTimeForDisplay} from "../../../shared/EventDataUtils.ts";
+import {convertDayOfWeekForDisplay} from "../../../shared/DisplayNameConversion.ts";
+import {getDayOfWeekSelectHtml} from "../../../shared/components/SelectGenerator.ts";
 customElements.define("login-status-component", LoginStatusComponent);
 
-const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
-  <style>   
-  
-    #${EVENT_NAME_INPUT} {
-      width: 50rem;
-    }
-    
-    #${EVENT_DESCRIPTION_INPUT} {
-      width: 50rem;
-      height: 10rem;
-    }
-    
-    #${EVENT_LOCATION_INPUT} {
-      width: 50rem;
-    }
-    
-    .back-to-group-button {
-      margin-top: 0.5rem;
-    }
-    .raised {
-      display: inline-block;
-      line-height: 1;
-    }
-    
-  </style>
-`;
-
-const loadConfig =  [{
-    dataStore: GROUP_EVENT_REQUEST_STORE
-  }]
 
 
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
@@ -75,10 +47,46 @@ const SAVE_EVENT_BUTTON_ID = "save-event-button";
 
 export class EventDetailsComponent extends BaseDynamicComponent {
   constructor() {
-    super(loadConfig);
+    super([{
+      dataStore: GROUP_EVENT_REQUEST_STORE,
+      componentReducer: (data:any)=>{
+        if(data.startDate){
+          data.startDate = data.startDate.join("-")
+        }
+        return data
+      }
+    }]);
   }
 
-  override attachEventsToShadowRoot(shadowRoot?: any) {
+  getTemplateStyle(): string {
+    return `
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style>   
+        input,select,textarea {
+          display: block;
+        }
+        #${EVENT_NAME_INPUT} {
+          width: 50rem;
+        }
+        #${EVENT_DESCRIPTION_INPUT} {
+          width: 50rem;
+          height: 10rem;
+        }
+        #${EVENT_LOCATION_INPUT} {
+          width: 50rem;
+        } 
+        .back-to-group-button {
+          margin-top: 0.5rem;
+        }
+        .raised {
+          display: inline-block;
+          line-height: 1;
+        }    
+      </style>     
+    `;
+  }
+
+  override attachHandlersToShadowRoot(shadowRoot?: any) {
     const self = this;
 
     shadowRoot?.addEventListener("click",(event:any)=>{
@@ -87,7 +95,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           self.updateData({isEditing: false,
             [SUCCESS_MESSAGE_KEY]:''})
         }
-
         if(event.target.id === DELETE_EVENT_BUTTON_ID) {
           self.updateData({
             isDeleting: true,
@@ -101,13 +108,11 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             [SUCCESS_MESSAGE_KEY]:''
           })
         }
-
         if(event.target.id === CONFIRM_DELETE_BUTTON_ID){
           const params = {
             id: self.componentStore.id,
             groupId: self.componentStore.groupId
           }
-
           ApiLoadAction.getResponseData({
             method: ApiActionTypes.DELETE,
             url: `${API_ROOT}/groups/${params.groupId}/events/${encodeURIComponent(params.id)}/`,
@@ -136,17 +141,28 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
         if(event.target.id === SAVE_EVENT_BUTTON_ID){
 
-          const formElements = shadowRoot?.getElementById('event-details-form').elements;
+          const data = (shadowRoot.getElementById('event-details-form') as HTMLFormElement)?.elements;
+
           const formData = {
             id: self.componentStore.id,
-            [EVENT_NAME_INPUT]: formElements[0].value,
-            [EVENT_DESCRIPTION_INPUT]: formElements[1].value,
-            [EVENT_URL_INPUT]: formElements[2].value,
-            [START_DATE_INPUT]: formElements[3].value,
-            [START_TIME_INPUT]: formElements[4].value,
-            [END_TIME_INPUT]: formElements[5].value,
-            [EVENT_LOCATION_INPUT]: formElements[6].value
+            [EVENT_NAME_INPUT]: (data.namedItem(EVENT_NAME_INPUT) as HTMLInputElement)?.value,
+            [EVENT_DESCRIPTION_INPUT]: (data.namedItem(EVENT_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
+            [EVENT_URL_INPUT]: (data.namedItem(EVENT_URL_INPUT) as HTMLInputElement)?.value,
+            [START_TIME_INPUT]: convertTimeTo24Hours((data.namedItem(START_TIME_INPUT) as HTMLInputElement)?.value),
+            [END_TIME_INPUT]: convertTimeTo24Hours((data.namedItem(END_TIME_INPUT) as HTMLInputElement)?.value),
+            [EVENT_LOCATION_INPUT]: (data.namedItem(EVENT_LOCATION_INPUT) as HTMLInputElement)?.value,
+            isRecurring: self.componentStore.isRecurring
           }
+
+          console.log(data.namedItem(DAY_OF_WEEK_INPUT) as HTMLSelectElement)
+          if(self.componentStore.isRecurring){
+            // @ts-ignore
+            formData[DAY_OF_WEEK_INPUT] = (data.namedItem(DAY_OF_WEEK_INPUT) as HTMLSelectElement)?.value;
+          } else {
+            // @ts-ignore
+            formData[START_DATE_INPUT] = (data.namedItem(START_DATE_INPUT) as HTMLInputElement)?.value;
+          }
+
           const validationErrors:any = validateEventFormData(formData);
 
           if(validationErrors.errorMessage.length !==0){
@@ -160,6 +176,16 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             }).then((response:any)=>{
               if(!response.errorMessage){
                 self.updateData({
+                  name: formData[EVENT_NAME_INPUT],
+                  description: formData[EVENT_DESCRIPTION_INPUT],
+                  url: formData[EVENT_URL_INPUT],
+                  //@ts-ignore
+                  day: formData[DAY_OF_WEEK_INPUT],
+                  //@ts-ignore
+                  startDate: formData[START_DATE_INPUT],
+                  startTime: formData[START_TIME_INPUT],
+                  endTime: formData[END_TIME_INPUT],
+                  eventLocation: formData[EVENT_LOCATION_INPUT],
                   isEditing: false,
                   errorMessage: "",
                   [SUCCESS_MESSAGE_KEY]: "Successfully updated event",
@@ -203,7 +229,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
           
           ${generateLinkButton({
-            text: "Back to group",
+            text: "Back to group information",
             url: `${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}`
           })}
         </div>
@@ -224,56 +250,59 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   }
 
   renderEditMode(data:any): string {
-    return `<h1>Editing: ${data.name}</h1>
 
-    <form id="event-details-form" onsubmit="return false">
-     <label>Event name</label>
+    return `
+      <h1>Editing: ${data.name}</h1>
+  
+      <form id="event-details-form" onsubmit="return false">
+        <label>Event name</label>
         <input
           id=${EVENT_NAME_INPUT}
           name=${EVENT_NAME_INPUT}
           value="${data.name}"
-         />
+        />
         </input>
-        <br>
-  
+    
         <label>Event description</label>
         <textarea
           id=${EVENT_DESCRIPTION_INPUT}
           name=${EVENT_DESCRIPTION_INPUT}
-        />
-        ${data.description ?? ""}
-        </textarea>
-        <br>
-         
+        />${data.description ?? ""}</textarea>
+           
         <label>Event URL</label>
         <input
           name=${EVENT_URL_INPUT}
           value="${data.url ?? ""}"
         />
         </input>
-        <br>
-        
-        <label>Start date</label>
-        <input
-          name=${START_DATE_INPUT}
-        />
-        </input>
-        <br>
-        
+          
+        ${data.isRecurring ?
+          `
+            <label>Day of week</label>
+            ${getDayOfWeekSelectHtml(data.day)}
+          ` :
+          `
+            <label>Start date</label>
+            <input
+              name=${START_DATE_INPUT}
+              value=${data.startDate}
+            />`
+        }
+          
         <label>Start time</label>
         <input
           name=${START_TIME_INPUT}
+          value=${convert24HourTimeForDisplay(data.startTime)}
         />
         </input>
-        <br>
-        
+          
         <label>End time</label>
         <input
           name=${END_TIME_INPUT}
+          value=${convert24HourTimeForDisplay(data.endTime)}
         />
         </input>
-        <br>        
-        
+          
         <label>Event location</label>
         <input
           id=${EVENT_LOCATION_INPUT}
@@ -281,26 +310,26 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           value="${data.location ?? ""}"
         />
         </input>
-        <br>     
-    ${generateErrorMessage(data.errorMessage)}
-
-    ${generateButton({
-      class: "group-webpage-link",
-      id: SAVE_EVENT_BUTTON_ID,
-      text: "Save event"
-    })}
-    
-    ${generateButton({
-      id: CANCEL_EDIT_BUTTON_ID,
-      text: "Back to event",
-      type: "submit"
-    })}  
-    </form>
-
+        
+        ${generateErrorMessage(data.errorMessage)}
+  
+        ${generateButton({
+          class: "group-webpage-link",
+          id: SAVE_EVENT_BUTTON_ID,
+          text: "Save event"
+        })}
+      
+        ${generateButton({
+          id: CANCEL_EDIT_BUTTON_ID,
+          text: "Back to group information",
+          type: "submit"
+        })}  
+      </form>
    `
   }
 
   renderViewMode(data:any): string {
+
     if(data.errorMessage){
       return `${generateErrorMessage(data.errorMessage)}`
     }
@@ -311,8 +340,16 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           text: data.name, 
           url: data.url
         })}
-             
-        <p>Time: ${convertDayOfWeekForDisplay(data.day)}, ${getDateFromDateString(data.startTime)}</p>
+         
+        ${data.isRecurring ? 
+          `<p>
+            ${convertDayOfWeekForDisplay(data.day)}s from ${convert24HourTimeForDisplay(data.startTime)} to 
+            ${convert24HourTimeForDisplay(data.endTime)} </p>` :
+          `<p>
+            Time: ${data.startDate}, ${convert24HourTimeForDisplay(data.startTime)}
+          </p>`
+        }
+        
         <p>Location: ${convertLocationStringForDisplay(data.location)}</p>
         <p>${data.description}</p>
            
@@ -331,17 +368,13 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           
           ${generateLinkButton({
             class: "back-to-group-button",
-            text: "Back to group",
+            text: "Back to group information",
             url: `${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}`
           })}
           
-         ` : ''}
+       ` : ''}
 
       </div>
     `;
-  }
-
-  getTemplateStyle(): string {
-    return template;
   }
 }

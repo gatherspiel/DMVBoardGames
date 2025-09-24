@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <style inline-source src="../public/styles/styles.css" type="text/css"></style>
-  <style inline-source src="../public/styles/sharedComponentStyles.css" type="text/css"></style>
+  <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" type="text/css"></style>
+  <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" type="text/css"></style>
 
   <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,9 +12,7 @@
     type="module"
   >
     import {GroupPageComponent} from "./ui/groups/GroupPageComponent.ts";
-
     customElements.define("group-page-component", GroupPageComponent);
-
   </script>
 </head>
 <body>

@@ -1,19 +1,25 @@
 <!doctype html>
 <html lang="en">
   <head>
-
-    <meta charset="UTF-8"/>
-    <style inline-source src="../public/styles/styles.css" ></style>
-    <style inline-source src="../public/styles/sharedComponentStyles.css" ></style>
-
-    <link rel="preconnect" href="localhost:7070" />
-    <link rel="preconnect" href="api.gatherspiel.com" />
-
-    <script type="module">
+    <script async type="module">
       console.log("Starting to parse Javascript at:" + Date.now())
-      import {HomepageComponent} from "./ui/homepage/components/HomepageComponent.js";
-      customElements.define("homepage-component", HomepageComponent);
+      import {GroupSearchComponent} from "./ui/listing/components/group-search/GroupSearchComponent.js";
+      import {GroupListComponent} from "./ui/listing/components/GroupListComponent.js";
+      import {ListingNavComponent} from "./shared/components/ListingNavComponent.js";
+      import {LoginStatusComponent} from "./shared/components/LoginStatusComponent.js";
+      import {OpenCreateGroupPageComponent} from "./ui/listing/components/OpenCreateGroupPageComponent.js";
+
+      customElements.define("group-list-component", GroupListComponent);
+      customElements.define("group-search-component", GroupSearchComponent);
+      customElements.define("listing-nav-component", ListingNavComponent);
+      customElements.define("login-status-component",LoginStatusComponent)
+      customElements.define("open-create-group-component", OpenCreateGroupPageComponent);
     </script>
+    <meta charset="UTF-8"/>
+    <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
+    <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
+
+    <link rel="preconnect" href="api.gatherspiel.com" />
 
     <link rel="icon" type="image/ico" href="/assets/favicon.ico"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -24,9 +30,19 @@
     <div id="container">
       {{>navbar}}
 
-      <homepage-component>
-      </homepage-component>
+      <open-create-group-component class = "ui-section">
+      </open-create-group-component>
+      <group-search-component class = "ui-section" id="group-search-component">
+      </group-search-component>
+      <div class="section-separator-medium"></div>
+      <group-list-component class="ui-section"></group-list-component>
+      <listing-nav-component
+        class="ui-section"
+        currentPage="index.html"
+      >
+      </listing-nav-component>
     </div>
+
 
 
   </body>

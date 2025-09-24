@@ -9,33 +9,31 @@ import {
 import {API_ROOT} from "../../shared/Params.ts";
 import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
 
-const template = `
-  <link rel="stylesheet" type="text/css" href="/styles/sharedComponentStyles.css"/>
-
-  <style>
-    #delete-group-error-message {
-      color:darkred;
-    }
-    #openGroupEditPageButton {
-      padding: 2rem;
-    }
-  </style>
-`;
-
-const loadConfig = [{
-      dataStore: LOGIN_STORE
-    }];
-
-
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 
 export class DeleteGroupPageComponent extends BaseDynamicComponent {
   constructor() {
-    super(loadConfig);
+    super([{
+      dataStore: LOGIN_STORE
+    }]);
   }
 
   getTemplateStyle(): string {
-    return template;
+    return `
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style>
+        #delete-group-error-message {
+          color:darkred;
+        }
+        #group-name-input {
+          display: block;
+          margin-bottom: 1rem;
+        }
+        #openGroupEditPageButton {
+          padding: 2rem;
+        }
+      </style>    
+    `;
   }
 
   connectedCallback(){
@@ -44,37 +42,40 @@ export class DeleteGroupPageComponent extends BaseDynamicComponent {
       existingGroupName: (new URLSearchParams(document.location.search)).get("name") ?? ""})
   }
 
-  override attachEventHandlersToDom(shadowRoot?: any) {
+  override attachHandlersToShadowRoot(shadowRoot?: any) {
     const self = this;
-    shadowRoot?.getElementById(CONFIRM_DELETE_BUTTON_ID).addEventListener("click",()=>{
-      const groupName:any = (shadowRoot.getElementById(GROUP_NAME_INPUT) as HTMLInputElement)?.value.trim();
+    shadowRoot?.addEventListener("click",(event:any)=>{
 
-      if(groupName !== this.componentStore.existingGroupName){
-        self.updateData({
-          name:groupName,
-          errorMessage: "Group name not entered correctly",
-        });
-      } else {
+      if(event.target.id === CONFIRM_DELETE_BUTTON_ID) {
+        const groupName: any = (shadowRoot.getElementById(GROUP_NAME_INPUT) as HTMLInputElement)?.value.trim();
 
-        const id = (new URLSearchParams(document.location.search)).get("id") ?? "";
-        const params = {
-          method: ApiActionTypes.DELETE,
-          url: `${API_ROOT}/groups/?id=${id}`
-        };
+        if (groupName !== this.componentStore.existingGroupName) {
+          self.updateData({
+            name: groupName,
+            errorMessage: "Group name not entered correctly",
+          });
+        } else {
 
-        ApiLoadAction.getResponseData(params).then((response:any)=>{
-          if (response.errorMessage) {
-            self.updateData({
-              errorMessage: response.errorMessage,
-              [SUCCESS_MESSAGE_KEY]: "",
-            });
-          } else {
-            self.updateData({
-              errorMessage: "",
-              [SUCCESS_MESSAGE_KEY]: "Successfully deleted group",
-            });
-          }
-        })
+          const id = (new URLSearchParams(document.location.search)).get("id") ?? "";
+          const params = {
+            method: ApiActionTypes.DELETE,
+            url: `${API_ROOT}/groups/?id=${id}`
+          };
+
+          ApiLoadAction.getResponseData(params).then((response: any) => {
+            if (response.errorMessage) {
+              self.updateData({
+                errorMessage: response.errorMessage,
+                [SUCCESS_MESSAGE_KEY]: "",
+              });
+            } else {
+              self.updateData({
+                errorMessage: "",
+                [SUCCESS_MESSAGE_KEY]: "Successfully deleted group",
+              });
+            }
+          })
+        }
       }
     })
   }
@@ -83,15 +84,12 @@ export class DeleteGroupPageComponent extends BaseDynamicComponent {
 
     return `
       <form onsubmit="return false">
-      
-      
+
       <label>Enter group name to confirm deleting</label>
       <input
           id=${GROUP_NAME_INPUT}
           value="${data.groupInput ?? ''}"
        />
-      <br>
-
          ${generateButton({
           id: CONFIRM_DELETE_BUTTON_ID,
           text: "Confirm delete"

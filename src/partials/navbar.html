@@ -1,169 +1,148 @@
 <style>
+  .ui-section {
+      padding-top: 0;
+      padding-bottom: 0;
+  }
+  .raised:hover {
+      transform: none;
+      transition: none;
+  }
+  .raised:active {
+      transform: none;
+      transition: none;
+  }
+  #logo-div {
+      min-width: 15.5rem;
+  }
+  #logo-div img {
+      max-height: 4.5rem;
+      padding-left: 0.5rem;
+      padding-top: 0.2rem;
+  }
+  nav a {
+      border: none;
+      background-color: none;
+      color: white;
+      font-weight: 400;
+      font-size: 1.5rem;
+      margin-top: 0.25rem;
+      margin-bottom: 0.25rem;
+      padding-bottom: 0.25rem;
+      padding-top: 0.25rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+  }
+  nav a.active {
+      background-color: #04aa6d;
+      color: white;
+      text-decoration: none;
+  }
+  nav a:hover {
+      background-color: var(--clr-darker-blue);
+      color: white;
+      text-decoration: none;
+  }
+  nav a:last-child {
+      text-wrap: nowrap;
+      text-decoration: none;
+  }
+  #nav-filler {
+      display: inline-block;
+      background-color: var(--clr-lighter-blue);
+      flex-grow: 1;
+  }
+  #navbar {
+    margin-bottom:1rem;
+  }
 
-    .ui-section {
-        padding-top: 0;
-        padding-bottom: 0;
+  @media not screen and (width < 32em) {
+    nav a + a {
+      border-color: white;
+      border-width: 1px;
+      margin-left: 1px;
     }
-
-    .raised:hover {
-        transform: none;
-        transition: none;
-    }
-
-    .raised:active {
-        transform: none;
-        transition: none;
-    }
-
     #logo-div {
-        min-width: 15.5rem;
+      float: left;
     }
-
-    #logo-div img {
-        max-height: 4.5rem;
-        padding-left: 0.5rem;
-        padding-top: 0.2rem;
+    #navbar-front {
+      padding: 1rem;
     }
-
-    nav a {
-        border: none;
-        background-color: none;
-        color: white;
-        font-weight: 400;
-        font-size: 1.5rem;
-        margin-top: 0.25rem;
-        margin-bottom: 0.25rem;
-        padding-bottom: 0.25rem;
-        padding-top: 0.25rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
-        text-decoration: none;
-        transition: all 0.3s ease;
+    .top-nav {
+      display: flex;
+      flex-wrap: wrap;
+      padding-left: 0.5rem;
     }
-
-    nav a.active {
-        background-color: #04aa6d;
-        color: white;
-        text-decoration: none;
+    .show-mobile {
+      display:none;
     }
-
-    nav a:hover {
-        background-color: var(--clr-darker-blue);
-        color: white;
-        text-decoration: none;
+    #login-status {
+      margin-left: 1.1rem;
     }
-
-    nav a:last-child {
-        text-wrap: nowrap;
-        text-decoration: none;
+  }
+  @media screen and (width < 32em) {
+    #logo-div {
+      display: flex;
+      justify-content: center;
     }
-
-    #nav-filler {
-        display: inline-block;
-        background-color: var(--clr-lighter-blue);
-        flex-grow: 1;
+    .top-nav {
+      display: grid;
+      text-align: center;
     }
-
-    #navbar {
-      margin-bottom:2rem;
+    nav a + a {
+      border-color: white;
+      border-width: 1px;
     }
-
-    @media not screen and (width < 32em) {
-        #logo-div {
-            float: left;
-        }
-
-        .top-nav {
-            display: flex;
-            flex-wrap: wrap;
-            padding-left: 0.5rem;
-        }
-
-        nav a + a {
-            margin-left: 1px;
-            border-color: white;
-            border-width: 1px;
-        }
-
-        .showOnMobile {
-            display:none;
-        }
-
+    .hide-mobile {
+      display: none;
     }
-
-    @media screen and (width < 32em) {
-        #logo-div {
-            display: flex;
-            justify-content: center;
-        }
-
-        .top-nav {
-            display: grid;
-            text-align: center;
-        }
-
-        nav a + a {
-            border-color: white;
-            border-width: 1px;
-        }
-        .hideOnMobile {
-            display: none;
-        }
-        .showOnMobile {
-            width: 0;
-            height: 0;
-            margin-top:0.5rem;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .triangle-down {
-            width: 0;
-            height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 10px solid black;
-        }
-
-
-        .triangle-up{
-            width: 0;
-            height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-bottom: 10px solid black;
-        }
-
+    .show-mobile {
+      width: 0;
+      height: 0;
+      margin-top:0.5rem;
+      margin-left: auto;
+      margin-right: auto;
     }
+    .triangle-down {
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid black;
+    }
+    .triangle-up{
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid black;
+    }
+  }
 </style>
 
 <nav class="raised" id="navbar">
   <span class="shadow"></span>
   <span class="edge"></span>
-  <span class="front">
+  <span class="front" id="navbar-front">
     <div id="logo-div">
-      <img src="/assets/logo.svg">
+      <img fetchpriority="high" src="/assets/logo.svg">
     </div>
     <div class="ui-section top-nav">
       <div class="top-nav">
 
-        <div class="showOnMobile triangle-down">
+        <div class="show-mobile triangle-down">
         </div>
-        <a class = "hideOnMobile" href="/index.html">Home
+        <a class = "hide-mobile" href="/index.html">Home
         </a>
-
-        <a class="hideOnMobile" href="/designers.html">Local designers
-        </a><a class="hideOnMobile" href="/print_and_play.html">Print and Play
-        </a><a class="hideOnMobile" href="https://gatherspiel.com/vision.html">Future plans
-        </a><a class="hideOnMobile" href="/useful_links.html">Useful Links
-        </a><a class="hideOnMobile" href="/feedback.html">Feedback</a>
-
-        <div class="hideOnMobile">
-            <login-status-component></login-status-component>
-        </div>
+        </a><a class="hide-mobile" href="/feedback.html">Feedback</a>
+        <a class="hide-mobile" id="local-designers" href="/designers.html">Local designers
+        </a><a class="hide-mobile" href="/print_and_play.html">Print and Play
+        </a><a class="hide-mobile" href="/links.html">Links </a>
+        <login-status-component class="hide-mobile"  id="login-status"></login-status-component>
 
       </div>
-    <div id="nav-filler"></div>
+     <div id="nav-filler"></div>
     </div>
   </span>
 </nav>
@@ -267,24 +246,40 @@
 </div>
 
 <script>
-  document.getElementById("navbar").addEventListener("click", (event) => {
-    const elements = document.getElementsByClassName("hideOnMobile")
+  document.getElementById("navbar").addEventListener("click", () => {
+    const hiddenMobileElements = document.getElementsByClassName("hide-mobile")
 
-    if(elements.length >0){
-      for(let i = elements.length-1; i>=0;i--){
-        elements.item(i).className ="isVisible";
+    if(hiddenMobileElements.length >0){
+      for(let i = hiddenMobileElements.length-1; i>=0;i--){
+        hiddenMobileElements.item(i).className ="is-visible";
       }
-      document.getElementsByClassName("triangle-down").item(0).className = "triangle-up showOnMobile"
+      document.getElementsByClassName("triangle-down").item(0).className = "triangle-up show-mobile"
 
     } else {
-      const elements = document.getElementsByClassName("isVisible")
-      for(let i = elements.length-1; i>=0;i--){
-        elements.item(i).className ="hideOnMobile";
+      const visibleMobileElements = document.getElementsByClassName("is-visible")
+      for(let i = visibleMobileElements.length-1; i>=0;i--){
+        visibleMobileElements.item(i).className ="hide-mobile";
       }
-      document.getElementsByClassName("triangle-up").item(0).className = "triangle-down showOnMobile"
+      document.getElementsByClassName("triangle-up").item(0).className = "triangle-down show-mobile"
     }
   })
 
+  const hexagons = window.innerWidth/240.0;
+  //z-index:-100;position: absolute;top: 0;left:${totalMargin/2};
+  console.log(hexagons);
+
+  //Center based on position of top row of hexagons
+  if((hexagons - Math.floor(hexagons))<0.5) {
+    const totalMargin = window.innerWidth-240*Math.floor(hexagons);
+    document.getElementsByClassName("part-1").item(0).style =`z-index:-100;position: absolute;top: 0;left:${totalMargin/2}px;`
+    document.getElementsByClassName("part-2").item(0).style =`z-index: -100;position: absolute;top: calc(var(--s)*0.86610);left:${120+totalMargin/2}px;`
+  }
+
+  else {
+    const totalMargin = window.innerWidth-(240*Math.floor(hexagons)+120);
+    console.log(totalMargin)
+    document.getElementsByClassName("part-1").item(0).style =`z-index:-100;position: absolute;top: 0;left:${totalMargin/2}px;`
+    document.getElementsByClassName("part-2").item(0).style =`z-index: -100;position: absolute;top: calc(var(--s)*0.86610);left:${120+totalMargin/2}px;`
+  }
 
 </script>
-

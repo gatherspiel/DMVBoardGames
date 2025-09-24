@@ -9,19 +9,18 @@ a, button {
   text-decoration: none;
 }
 
+
 a:hover {
   background-color: var(--clr-darker-blue);
 }
 
 label {
   font-size: 1.5rem;
-  font-weight: 600;
 }
 
-p {
+p,span {
   color: var(--clr-dark-blue);
   font-size: 1.5rem;
-  font-weight: 600;
 }
 
 .success-message {
@@ -31,9 +30,19 @@ p {
   color: darkred;
 }
 
+.form-select {
+  border-color: var(--clr-light-blue);
+  border-radius: 5px;
+  color: var(--clr-light-blue);
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
 .raised {
   background: transparent;
-  border: none;
+  box-shadow: 2px 2px 2px hsl(0deg 0% 0% / 0.25);
+  border:none;
+  border-radius: 12px;
   cursor: pointer;
   line-height:1;
   outline-offset: 4px;
@@ -42,16 +51,23 @@ p {
   -webkit-tap-highlight-color: transparent;
 }
 
-.shadow {
+.disabled {
+  border:none
+}
+
+
+.disabled-edge {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   border-radius: 12px;
-  background: hsl(0deg 0% 0% / 0.25);
-  will-change: transform;
-  transform: translateY(2px);
+  background: linear-gradient(
+    to left,
+    var(--clr-light-gray) 8%,
+    var(--clr-dark-gray) 92%,
+  );
 }
 
 .edge {
@@ -82,6 +98,15 @@ p {
   transform: translateY(-4px);
 }
 
+.disabled-front {
+  display: block;
+  position: relative;
+  padding: 0.5rem;
+  border-radius: 12px;
+  font-size: 1.5rem;
+  color: white;
+  background: var(--clr-gray);
+}
 
 .activeHover:hover {
   filter: brightness(110%);
@@ -107,12 +132,26 @@ p {
   transition: transform 34ms;
 }
 
+.section-separator-medium {
+  border-bottom:  20px solid;
+  border-image-source: url(/assets/Section_Border_Medium.png);
+  border-image-slice: 20 20;
+  border-image-repeat: round;
+}
+
+.section-separator-small {
+  border-top:  5px solid;
+  border-image-source: url(/assets/Section_Border_Tiny.png);
+  border-image-slice: 5 5;
+  border-image-repeat: round;
+}
+
 .activeHover:focus:not(:focus-visible) {
   outline: none;
 }
 
 @media not screen and (width < 32em) {
-  .showOnMobile {
+  .show-mobile {
     display:none
   }
 }
@@ -121,10 +160,10 @@ p {
   .ui-section {
     text-align: center;
   }
-  .hideOnMobile {
+  .hide-mobile {
     display:none;
   }
-  .showOnMobile {
+  .show-mobile {
     display:initial;
   }
 }

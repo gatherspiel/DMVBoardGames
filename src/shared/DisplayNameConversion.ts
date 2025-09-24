@@ -11,3 +11,7 @@ const DISPLAY_NAME_MAPPING:Record<string, string> = {
 export function getDisplayName(name:string):string {
   return DISPLAY_NAME_MAPPING[name] ?? name;
 }
+
+export function convertDayOfWeekForDisplay(day:string){
+  return `${day.substring(0,1).toUpperCase()}${day.substring(1).toLowerCase()}`
+}
