@@ -40,8 +40,6 @@ const DISTANCE_OPTIONS= [
 ];
 
 export class GroupSearchComponent extends BaseDynamicComponent {
-
-
   constructor() {
     super([{
       componentReducer: (cityArray:any)=>{
@@ -82,14 +80,21 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           #search-form .form-item {
             display: inline-block;
           }
-        }    
-        
+        }     
         @media screen and (width < 32em) {
           #form-div-outer {
             width: 100%
           }
           .searchDropdownLabel {
             width: 14rem;
+          }
+          .search-form-two-inputs {
+            display: inline-block;
+            height:8rem;
+          }
+          .search-form-three-inputs {
+            display: inline-block;
+            height:12rem;
           }
         }
       </style>   
@@ -134,10 +139,12 @@ export class GroupSearchComponent extends BaseDynamicComponent {
     const searchButtonEnabled =
       store.day || store.location;
 
+    const searchInputsClass = store.location && store.location !== DEFAULT_SEARCH_PARAMETER ?
+      "search-form-three-inputs" : "search-form-two-inputs"
     return `
       <form id=${SEARCH_FORM_ID} onsubmit="return false">
         <div id ="form-div-outer">
-          <div class="form-item">
+          <div id="search-form-inputs" class="${searchInputsClass}">
             <label class="searchDropdownLabel">Select event day: </label>
               ${this.getDropdownHtml({
                 data: DAYS_IN_WEEK,
@@ -147,8 +154,6 @@ export class GroupSearchComponent extends BaseDynamicComponent {
                 [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
                 [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
               })}
-          </div>  
-          <div class="form-item">
             <label class="searchDropdownLabel">Select event city: </label>
             ${this.getDropdownHtml({
               data: store.cityList ?? [{name:"Any location"}],
@@ -158,9 +163,8 @@ export class GroupSearchComponent extends BaseDynamicComponent {
               [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
               [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
             })}
-          </div>  
-          <div class="form-item">
             ${store.location && store.location !== DEFAULT_SEARCH_PARAMETER ?`
+            <br>
             <label class="searchDropdownLabel">Max distance:</label>
 
             ${this.getDropdownHtml({
@@ -171,8 +175,8 @@ export class GroupSearchComponent extends BaseDynamicComponent {
               [DEFAULT_PARAMETER_KEY]:"0 miles",
               [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
             })}` :
-          ``}       
-          </div> 
+          ``}     
+          </div>  
           <div id="searchInputDiv"> 
             ${searchButtonEnabled ?
               `${generateButton({
