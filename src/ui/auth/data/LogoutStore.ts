@@ -10,7 +10,7 @@ async function retrieveData() {
       method: "POST",
       headers:{
         apiKey: SUPABASE_CLIENT_KEY,
-        authorization: "bearer "+(await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY))
+        authorization: "bearer "+(await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY))?.access_token
       }
     }
   )

@@ -45,12 +45,13 @@ export class CreateEventComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
+        input,textarea {
+          display: block;
+        }
         #${EVENT_NAME_INPUT} {
-          display:inline-block;
           width: 50rem;
         }
         #${EVENT_DESCRIPTION_INPUT} {
-         display:inline-block;
           width: 50rem;
           height: 10rem;
         }
@@ -59,6 +60,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
         }
         .raised {
            display:inline-block;
+           margin-top:1rem;
         }
       </style>
     `;
@@ -141,64 +143,54 @@ export class CreateEventComponent extends BaseDynamicComponent {
           type="checkbox"
           ${data.isRecurring ? 'checked' : ''}
         />
-        <br>
         <label>Event name</label>
         <input
           id=${EVENT_NAME_INPUT}
           name=${EVENT_NAME_INPUT}
           value="${data.name}"
          />
-        <br>
   
         <label>Event description</label>
-        <br>
         <textarea
           id=${EVENT_DESCRIPTION_INPUT}
           name=${EVENT_DESCRIPTION_INPUT}
         />
         ${data.description ?? ""}
         </textarea>
-        <br>
          
         <label>Event URL</label>
         <input
           name=${EVENT_URL_INPUT}
           value="${data.url ?? ""}"
         />
-        <br>
         
         ${data.isRecurring ? 
          `
           <label>Day of week</label>
           ${getDayOfWeekSelectHtml(data.day)}
-          <br>
          ` 
         :
         `
           <label>Start date</label>
           <input
             name=${START_DATE_INPUT}
-          />
-          <br>`}
+          />`}
         
         <label>Start time</label>
         <input
           name=${START_TIME_INPUT}
         />
-        <br>
         
         <label>End time</label>
         <input
           name=${END_TIME_INPUT}
         />
-        <br>        
         
         <label>Event location</label>
         <input
           name=${EVENT_LOCATION_INPUT}
           value="${data.location ?? ""}"
         />
-        <br>   
         ${generateButton({
           id: CREATE_EVENT_BUTTON_ID,
           text: "Create event",

@@ -60,8 +60,8 @@ export class GroupSearchComponent extends BaseDynamicComponent {
         #search-form {
           display: flex;
           flex-wrap: wrap;
-          gap: 4rem;
-          padding-bottom: 5px;
+          padding-left:1.5rem;
+          padding-bottom:1rem;
         }
         select {
           width:10rem;

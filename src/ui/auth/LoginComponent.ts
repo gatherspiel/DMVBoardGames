@@ -34,6 +34,37 @@ export class LoginComponent extends BaseDynamicComponent {
     this.loginAttempted = false;
   }
 
+  override getTemplateStyle(): string {
+    return `  
+      <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style>
+        #login-component-container {
+          padding-top: 0.25rem;
+        }
+        input {
+          display: block;
+        }
+        #component-buttons {
+          padding-top:0.5rem;
+        }   
+        .ui-input {
+          display: inline-block;
+        }
+        #email {
+          display: inline-block;
+          margin-right:2.85rem;
+        }
+        @media screen and (width < 32em) {
+          #login-component-container {
+            text-align: center;
+          }
+          .login-element {
+            font-size:1rem;
+          }
+        }
+      </style>`;
+  }
+
   retrieveAndValidateFormInputs(shadowRoot:ShadowRoot) {
 
     const username = (shadowRoot.getElementById(USERNAME_INPUT) as HTMLInputElement)?.value;
@@ -114,34 +145,6 @@ export class LoginComponent extends BaseDynamicComponent {
     })
   }
 
-  override getTemplateStyle(): string {
-    return `  
-      <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style>
-        #login-component-container {
-          padding-top: 0.25rem;
-        }
-        #component-buttons {
-          padding-top:0.5rem;
-        }   
-        .ui-input {
-          display: inline-block;
-        }
-        #email {
-          display: inline-block;
-          margin-right:2.85rem;
-        }
-        @media screen and (width < 32em) {
-          #login-component-container {
-            text-align: center;
-          }
-          .login-element {
-            font-size:1rem;
-          }
-        }
-      </style>`;
-  }
-
   render(data: any) {
     return data[IS_LOGGED_IN_KEY] ?
         '' :
@@ -158,7 +161,6 @@ export class LoginComponent extends BaseDynamicComponent {
           id=${USERNAME_INPUT}
         />
        </input>    
-       <br>
        
         <label>Password</label>
         <input        
@@ -166,31 +168,24 @@ export class LoginComponent extends BaseDynamicComponent {
         />
        </input>    
        </div>
-       <br>            
   
-
         <div id="component-buttons">
-        
-        ${generateButton({
-          class: "login-element",
-          id: LOGIN_BUTTON_ID,
-          text: "Login",
-          type: "submit",
-        })}
-        
-        ${generateButton({
-          class: "login-element",
-          id: REGISTER_BUTTON_ID,
-          type: "submit",
-          text: "Register",
-        })}
-
-                    
-          </div>
+          ${generateButton({
+            class: "login-element",
+            id: LOGIN_BUTTON_ID,
+            text: "Login",
+            type: "submit",
+          })}  
+          ${generateButton({
+            class: "login-element",
+            id: REGISTER_BUTTON_ID,
+            type: "submit",
+            text: "Register",
+          })}         
+        </div>
           ${this.loginAttempted ? generateErrorMessage(data.errorMessage) : ''}
         </form>
-
-    </div>
+      </div>
     `;
     return html;
   }
