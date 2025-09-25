@@ -40,6 +40,10 @@ export class GroupListComponent extends BaseDynamicComponent {
         .section-separator-small {
           margin-left:-1rem;
         }
+        .group-search-details {
+          display:block;
+          padding-top:0.5rem;
+        }
         @media not screen and (width < 32em) {
           .group-cities {
             display: inline-block;
@@ -75,13 +79,25 @@ export class GroupListComponent extends BaseDynamicComponent {
         group.cities.map((name:string) => getDisplayName(name))?.join(", ") :
         "DMV Area"
 
+
+    let recurringDays:string[] = []
+    if(group.recurringEventDays.length > 0){
+      const days = ["SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"];
+      days.forEach(day=>{
+        if(group.recurringEventDays.includes(day)){
+          recurringDays.push(day.substring(0,1)+day.substring(1).toLowerCase());
+        }
+      })
+    }
+
     return `
       <li>
         ${generateLinkButton({
           text: group.name,
-          url: `${group.hasRecurringEvents || loggedIn ? `groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`
+          url: `${recurringDays.length > 0 || loggedIn ? `groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`
         })}
-        <span class="group-cities">${groupCitiesStr}</span>              
+        <span class="group-cities">${groupCitiesStr}</span>           
+        ${recurringDays.length >0 ? `<span class="group-search-details">Days: ${recurringDays.join(", ")}</span>` : ``}   
       </li>
     `;
   }
