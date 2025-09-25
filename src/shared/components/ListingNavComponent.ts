@@ -20,15 +20,16 @@ export class ListingNavComponent extends BaseTemplateComponent {
        #show-info-ui {
           padding-top: 0.5rem;
           padding-bottom: 0.5rem;
+          padding-left: 1rem;
         }
         #show-more-info {
           color: var(--clr-dark-blue);
-         font-size: 1.5rem;
-\        }
+          font-size: 1.5rem;
+          padding-left:1rem;
+        }
         .raised {
           display: inline-block;
         }
-        
         @media screen and (width < 32em) {
           .raised {
             margin-top:0.5rem;
