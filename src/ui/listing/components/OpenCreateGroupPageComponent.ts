@@ -42,7 +42,6 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
   }
 
   render(data: any){
-    console.log("Hi")
     const url = data[IS_LOGGED_IN_KEY] ?
       `beta/create.html` :
       `beta/login.html?message=Register_an_account_and_log_in_to_create_a_group`

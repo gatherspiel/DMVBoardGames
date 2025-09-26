@@ -91,7 +91,6 @@ export class LoginComponent extends BaseDynamicComponent {
 
       try {
         const targetId = event.target?.id;
-        console.log(event.target.id)
 
         if(targetId === AGREE_RULES_ID){
           self.updateData({
@@ -118,7 +117,6 @@ export class LoginComponent extends BaseDynamicComponent {
           const formInputs = self.retrieveAndValidateFormInputs(shadowRoot)
 
           if (formInputs.errorMessage) {
-            console.log(formInputs.errorMessage)
             formInputs.errorMessage
             self.updateData({
               "errorMessage": formInputs.errorMessage
