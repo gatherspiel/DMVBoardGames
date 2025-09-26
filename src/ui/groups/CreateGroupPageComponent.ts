@@ -101,7 +101,8 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
 
                 ${generateSuccessMessage(createGroupData?.[SUCCESS_MESSAGE_KEY])}
 
-                <form id="create-group-form">
+                <form id="create-group-form" onsubmit="return false">
+>
                   <label>Group name</label>
                   <input
                     name=${GROUP_NAME_INPUT}
