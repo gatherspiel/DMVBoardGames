@@ -219,12 +219,12 @@ export class GroupPageComponent extends BaseDynamicComponent {
         ${generateLinkButton({
           class: "add-event-button",
           text: "Add event",
-          url: `groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}`
+          url: `beta/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}`
         })}
         ${generateLinkButton({
           class: "delete-button",
           text: "Delete group",
-          url: `groups/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}`
+          url: `beta/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}`
         })}
       </div>`
   }

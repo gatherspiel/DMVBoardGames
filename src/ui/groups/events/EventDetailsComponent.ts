@@ -154,7 +154,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             isRecurring: self.componentStore.isRecurring
           }
 
-          console.log(data.namedItem(DAY_OF_WEEK_INPUT) as HTMLSelectElement)
           if(self.componentStore.isRecurring){
             // @ts-ignore
             formData[DAY_OF_WEEK_INPUT] = (data.namedItem(DAY_OF_WEEK_INPUT) as HTMLSelectElement)?.value;
