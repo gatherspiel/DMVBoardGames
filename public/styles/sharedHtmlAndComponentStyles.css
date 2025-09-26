@@ -9,6 +9,9 @@ a, button {
   text-decoration: none;
 }
 
+label {
+  color: var(--clr-darker-blue)
+}
 
 a:hover {
   background-color: var(--clr-darker-blue);

@@ -42,15 +42,19 @@ export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
   }
 
   render(data: any){
-    if(!data[IS_LOGGED_IN_KEY]){
-      return ''
-    }
+    console.log("Hi")
+    const url = data[IS_LOGGED_IN_KEY] ?
+      `beta/create.html` :
+      `beta/login.html?message=Register_an_account_and_log_in_to_create_a_group`
+
     return `
         ${generateLinkButton({
-          text: "Create group",
-          url:`groups/create.html`
-        })}
+            text: "Create group",
+            url: url
+          })}
+        
         <div class="section-separator-small"></div>
-    `
+      `
+
   }
 }
