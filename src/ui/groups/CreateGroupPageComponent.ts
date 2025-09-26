@@ -5,7 +5,7 @@ import {
 } from "./Constants.ts";
 import {generateButton} from "../../shared/components/ButtonGenerator.ts";
 import {ApiActionTypes, ApiLoadAction} from "@bponnaluri/places-js";
-import {generateErrorMessage} from "../../shared/components/StatusIndicators.ts";
+import {generateErrorMessage, generateSuccessMessage} from "../../shared/components/StatusIndicators.ts";
 import {
   IS_LOGGED_IN_KEY,
   SUCCESS_MESSAGE_KEY
@@ -77,7 +77,13 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
         } else {
           self.updateData({
             errorMessage: "",
-            [SUCCESS_MESSAGE_KEY]: "Successfully created group",
+            [SUCCESS_MESSAGE_KEY]: `
+              Successfully created group. A site admin will review the group information before the group is visible on
+              dmvboardgames.com.
+              
+              
+              Email gulu@createthirdplaces.com if you have any questions or comments on the process for creating groups.
+             `,
           });
         }
       })
@@ -92,8 +98,10 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
           ${
             createGroupData.loggedIn
               ? `
+
+                ${generateSuccessMessage(createGroupData?.[SUCCESS_MESSAGE_KEY])}
+
                 <form id="create-group-form">
-                
                   <label>Group name</label>
                   <input
                     name=${GROUP_NAME_INPUT}
@@ -122,7 +130,6 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
              
                 </form>
                
-                <p class="${SUCCESS_MESSAGE_KEY}">${createGroupData?.[SUCCESS_MESSAGE_KEY]?.trim() ?? ""}</p>
                 ${generateErrorMessage(createGroupData.errorMessage)}
               `
               : `<p>You must log in to create a group </p>`
