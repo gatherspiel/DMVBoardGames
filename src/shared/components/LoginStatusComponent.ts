@@ -68,7 +68,7 @@ export class LoginStatusComponent extends BaseDynamicComponent {
 
       `
     }
-    return `<div><a href="/login.html">Sign in </a></div>`;
+    return `<div><a href="/beta/login.html">Sign in </a></div>`;
   }
 }
 
