@@ -38,11 +38,11 @@ export default defineConfig({
         print_and_play: resolve(__dirname, "src/print_and_play.html"),
         links: resolve(__dirname, "src/links.html"),
         feedback: resolve(__dirname, "src/feedback.html"),
-        login: resolve(__dirname, "src/login.html"),
-        create_groups: resolve(__dirname, "src/groups/create.html"),
+        login: resolve(__dirname, "src/beta/login.html"),
+        create_groups: resolve(__dirname, "src/beta/create.html"),
         event: resolve(__dirname, "src/groups/event.html"),
-        create_event: resolve(__dirname, "src/groups/addEvent.html"),
-        delete_group: resolve(__dirname, "src/groups/delete.html")
+        create_event: resolve(__dirname, "src/beta/addEvent.html"),
+        delete_group: resolve(__dirname, "src/beta/delete.html")
       }
     },
   },
