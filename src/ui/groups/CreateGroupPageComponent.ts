@@ -13,6 +13,7 @@ import {
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
 import { API_ROOT } from "../../shared/Params.ts";
+import {getGameTypeTagSelectHtml, getGameTypeTagSelectState} from "../../shared/components/SelectGenerator.ts";
 
 
 const CREATE_GROUP_BUTTON_ID = "create-group-button-id";
@@ -36,16 +37,24 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
-        input,textarea {
+        #${GROUP_NAME_INPUT},#${GROUP_DESCRIPTION_INPUT},#${GROUP_URL_INPUT} {
           display: block;
+        }
+        #create-group-page-container {
+          padding-left: 1rem;
         }
         #group-description-input {
           height:500px;
           width: 800px;
           margin-bottom: 1rem;
         }
-        #create-group-page-container {
-          padding-left: 1rem;
+        
+        #game-type-tag-select input {
+          display: inline-block;
+        }
+        
+        #game-type-tag-select {
+          margin-bottom:1rem;
         }
       </style>
     `;
@@ -58,12 +67,15 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
       event.preventDefault();
 
       const data = event.target.elements;
+
+
       ApiLoadAction.getResponseData({
         body: JSON.stringify({
           id: self.componentStore.id,
           name: (data.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
           description: (data.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
-          url: (data.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value
+          url: (data.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
+          gameTypeTags: getGameTypeTagSelectState(shadowRoot)
         }),
         method: ApiActionTypes.POST,
         url: API_ROOT + `/groups/`,
@@ -80,7 +92,6 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
             [SUCCESS_MESSAGE_KEY]: `
               Successfully created group. A site admin will review the group information before the group is visible on
               dmvboardgames.com.
-              
               
               Email gulu@createthirdplaces.com if you have any questions or comments on the process for creating groups.
              `,
@@ -102,15 +113,17 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
                 ${generateSuccessMessage(createGroupData?.[SUCCESS_MESSAGE_KEY])}
 
                 <form id="create-group-form" onsubmit="return false">
->
+                
                   <label>Group name</label>
                   <input
+                    id=${GROUP_NAME_INPUT}
                     name=${GROUP_NAME_INPUT}
                     />${createGroupData.name}
                   </input>
                   
                   <label>Group url</label>
                   <input
+                    id=${GROUP_URL_INPUT}
                     name=${GROUP_URL_INPUT}
                     />
                   ${createGroupData.url}
@@ -122,6 +135,8 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
                     name=${GROUP_DESCRIPTION_INPUT}
                     />${createGroupData.description}
                   </textarea>
+                  
+                  ${getGameTypeTagSelectHtml()}
 
                  ${generateButton({
                   id: CREATE_GROUP_BUTTON_ID,

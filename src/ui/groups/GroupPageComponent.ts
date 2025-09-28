@@ -27,6 +27,7 @@ import {API_ROOT} from "../../shared/Params.ts";
 import {LoginStatusComponent} from "../../shared/components/LoginStatusComponent.ts";
 import {convertDayOfWeekForDisplay} from "../../shared/DisplayNameConversion.ts";
 import {generateSuccessMessage} from "../../shared/components/StatusIndicators.ts";
+import {getGameTypeTagSelectHtml, getGameTypeTagSelectState} from "../../shared/components/SelectGenerator.ts";
 customElements.define("login-status-component", LoginStatusComponent);
 
 const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
@@ -34,6 +35,9 @@ const EDIT_GROUP_BUTTON_ID = "edit-group-button";
 const SAVE_UPDATES_BUTTON_ID = "save-updates";
 
 export class GroupPageComponent extends BaseDynamicComponent {
+
+  checkState = {};
+
   constructor() {
     super([{
       componentReducer:(groupData:any)=>{
@@ -59,9 +63,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
         button {
           margin-top:0.5rem;
         }
-        input,textarea {
-          display: block;
-        }
+ 
         h1,h2 {
           color: var(--clr-dark-blue)
         }
@@ -100,16 +102,21 @@ export class GroupPageComponent extends BaseDynamicComponent {
           position: relative;
           padding: 0.5rem;
         }  
-        #${GROUP_NAME_INPUT} {
-          width: 600px;
-        }
-        #${GROUP_URL_INPUT} {
-          width: 600px;
-        }  
+        
         #${GROUP_DESCRIPTION_INPUT} {
+          display: block;
           height: 500px;
           width: 800px;
         }
+        #${GROUP_NAME_INPUT} {
+          display:block;
+          width: 600px;
+        }
+        #${GROUP_URL_INPUT} {
+          display: block;
+          width: 600px;
+        }  
+
         @media not screen and (width < 32em) {
           .${GROUP_DESCRIPTION_TEXT} {
             margin-top: 1rem;
@@ -138,6 +145,13 @@ export class GroupPageComponent extends BaseDynamicComponent {
     shadowRoot?.addEventListener("click", (event:any)=>{
       event.preventDefault();
       const targetId = event.target?.id;
+
+      if(event.target.type === "checkbox"){
+        self.updateData({
+          [event.target.id]: self.componentStore?.[event.target.id] ? "" : "checked"
+        })
+      }
+
       if(targetId === EDIT_GROUP_BUTTON_ID) {
         self.updateData({
           isEditing: true,
@@ -153,7 +167,8 @@ export class GroupPageComponent extends BaseDynamicComponent {
           id: self.componentStore.id,
           name: (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLTextAreaElement)?.value,
           description: (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value,
-          url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value
+          url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value,
+          gameTypeTags:getGameTypeTagSelectState(shadowRoot)
         }
 
         ApiLoadAction.getResponseData({
@@ -195,6 +210,8 @@ export class GroupPageComponent extends BaseDynamicComponent {
         value=${groupData.url}
       />
   
+      ${getGameTypeTagSelectHtml(groupData)}
+      
       ${generateButton({
         id: SAVE_UPDATES_BUTTON_ID,
         text: "Save updates",

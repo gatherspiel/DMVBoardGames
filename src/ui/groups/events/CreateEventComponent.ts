@@ -82,6 +82,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
 
         const data = (shadowRoot.getElementById('create-event-form') as HTMLFormElement)?.elements;
 
+
         const formData = {
           id: self.componentStore.id,
           [EVENT_NAME_INPUT]: (data.namedItem(EVENT_NAME_INPUT) as HTMLInputElement)?.value,
