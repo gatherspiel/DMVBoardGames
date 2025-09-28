@@ -17,3 +17,32 @@ export function getDayOfWeekSelectHtml(dayOfWeek:string){
 
   return html
 }
+
+const tags:string[] = ["Eurogames","Hidden identity games","Light games","Social games", "Wargames"]
+
+export function getGameTypeTagSelectState(shadowRoot:ShadowRoot){
+  const selectedTags:string[] = [];
+
+  tags.forEach((tagName:string)=>{
+    if((shadowRoot?.getElementById(tagName) as HTMLInputElement)?.checked){
+      selectedTags.push(tagName);
+    }
+  })
+  return selectedTags;
+}
+
+export function getGameTypeTagSelectHtml(checkState?: any){
+
+  let html = `
+    <div id="game-type-tag-select">
+    <h2>Select group tags</h2>
+  `
+
+  tags.forEach((tagName:string)=>{
+    html +=`
+      <label for=${tagName}>${tagName}</label>
+      <input id="${tagName}" name=${tagName} type="checkbox" ${checkState?.[tagName]}> 
+    `
+  })
+  return html + `</div>`
+}

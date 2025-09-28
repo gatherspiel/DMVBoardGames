@@ -90,6 +90,13 @@ export class GroupListComponent extends BaseDynamicComponent {
       })
     }
 
+    let gameTypeTags:string[] = []
+    if(group.gameTypeTags.length > 0){
+      group.gameTypeTags.forEach((tag:string)=>{
+        gameTypeTags.push(tag.substring(0,1)+tag.substring(1).toLowerCase().replaceAll("_", " "));
+      })
+    }
+
     return `
       <li>
         ${generateLinkButton({
@@ -97,7 +104,8 @@ export class GroupListComponent extends BaseDynamicComponent {
           url: `${recurringDays.length > 0 || loggedIn ? `groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`
         })}
         <span class="group-cities">${groupCitiesStr}</span>           
-        ${recurringDays.length >0 ? `<span class="group-search-details">Days: ${recurringDays.join(", ")}</span>` : ``}   
+        ${recurringDays.length >0 ? `<span class="group-search-details"><b>Days:</b> ${recurringDays.join(", ")}</span>` : ``}  
+        ${gameTypeTags.length >0 ? `<span class="group-search-details"><b>Game types:</b> ${gameTypeTags.join(", ")}</span>` : ``}  
       </li>
     `;
   }
