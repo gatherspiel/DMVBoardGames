@@ -271,6 +271,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         <label>Event URL</label>
         <input
           name=${EVENT_URL_INPUT}
+          type="url"
           value="${data.url ?? ""}"
         />
         </input>
@@ -284,6 +285,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             <label>Start date</label>
             <input
               name=${START_DATE_INPUT}
+              type="date"
               value=${data.startDate}
             />`
         }
@@ -291,6 +293,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         <label>Start time</label>
         <input
           name=${START_TIME_INPUT}
+          type="time"
           value=${convert24HourTimeForDisplay(data.startTime)}
         />
         </input>
@@ -298,6 +301,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         <label>End time</label>
         <input
           name=${END_TIME_INPUT}
+          type="time"
           value=${convert24HourTimeForDisplay(data.endTime)}
         />
         </input>

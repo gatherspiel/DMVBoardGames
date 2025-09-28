@@ -218,12 +218,14 @@ export class LoginComponent extends BaseDynamicComponent {
         <label id="email">Email</label>
         <input        
           id=${USERNAME_INPUT}
+          type="email"
         />
        </input>    
        
         <label>Password</label>
         <input        
           id=${PASSWORD_INPUT}
+          type="password"
         />
        </input>    
        </div>

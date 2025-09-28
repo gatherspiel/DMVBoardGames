@@ -81,6 +81,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
       if(targetId === 'create-event-button'){
 
         const data = (shadowRoot.getElementById('create-event-form') as HTMLFormElement)?.elements;
+
         const formData = {
           id: self.componentStore.id,
           [EVENT_NAME_INPUT]: (data.namedItem(EVENT_NAME_INPUT) as HTMLInputElement)?.value,
@@ -91,6 +92,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
           [EVENT_LOCATION_INPUT]: (data.namedItem(EVENT_LOCATION_INPUT) as HTMLInputElement)?.value,
           isRecurring: self.componentStore.isRecurring,
         }
+
 
         if(self.componentStore.isRecurring){
           // @ts-ignore
@@ -116,7 +118,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
                 [SUCCESS_MESSAGE_KEY]: "Successfully created event"
               });
             }else {
-              const updates = {...response,...formData}
+              const updates = {...response,errorMessage:'',...formData}
               self.updateData(updates)
             }
           })
@@ -161,6 +163,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
         <label>Event URL</label>
         <input
           name=${EVENT_URL_INPUT}
+          type="url"
           value="${data.url ?? ""}"
         />
         
@@ -174,16 +177,20 @@ export class CreateEventComponent extends BaseDynamicComponent {
           <label>Start date</label>
           <input
             name=${START_DATE_INPUT}
+            type="date"
+
           />`}
         
         <label>Start time</label>
         <input
           name=${START_TIME_INPUT}
+          type="time"
         />
         
         <label>End time</label>
         <input
           name=${END_TIME_INPUT}
+          type="time"
         />
         
         <label>Event location</label>
