@@ -21,14 +21,19 @@ export class ConventionListComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
+        h3 {
+          font-size: 1.5rem;
+        }
+        ul {
+          list-style:url(/assets/meeple_small.png);
+          margin-top:0;
+          padding-left:1.5rem;
+        }
         .conv-list-item > * {
           display: inline-block;
           font-size: 1.5rem;
           font-weight: 600;
         }  
-        h3 {
-          font-size: 1.5rem;
-        }
         .date-info {
           padding-left: 0.5rem;
         }
@@ -38,7 +43,7 @@ export class ConventionListComponent extends BaseDynamicComponent {
 
   getItemHtml(convention: any) {
     return `
-    <div class="conv-list-item">
+    <li class="conv-list-item">
      <h3>
       ${generateLinkButton({
       text: convention.name,
@@ -46,8 +51,8 @@ export class ConventionListComponent extends BaseDynamicComponent {
     })}
       </h3>
       <span class="date-info">${convertDateListToRange(convention.days)}</span>
-    </div>
-    <div class="section-separator-small"></div>
+    </li>
+
   `;
   }
 
@@ -58,18 +63,18 @@ export class ConventionListComponent extends BaseDynamicComponent {
       <div class="ui-section"><h1 class="hide-mobile">Upcoming conventions</h1>
       <h2 class="show-mobile">Upcoming conventions</h2>
       <div class="section-separator-medium"></div>
-
+      <ul>
     `;
 
     Object.values(data).forEach((item:any) => {
-      html += this.getItemHtml(item);
+      html += this.getItemHtml(item) +`<div class="section-separator-small"></div>`;
     });
 
     if(Object.values(data).length === 0) {
       html+=`<p>No conventions found</p>`;
     }
 
-    return html + `</div>
+    return html + `</ul></div>
       <listing-nav-component
         class="ui-section"
         id="show-info-ui"

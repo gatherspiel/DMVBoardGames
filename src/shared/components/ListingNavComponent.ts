@@ -20,7 +20,7 @@ export class ListingNavComponent extends BaseTemplateComponent {
        #show-info-ui {
           padding-top: 0.5rem;
           padding-bottom: 0.5rem;
-          padding-left: 1rem;
+          padding-left: 1.5rem;
         }
         #show-more-info {
           color: var(--clr-dark-blue);
