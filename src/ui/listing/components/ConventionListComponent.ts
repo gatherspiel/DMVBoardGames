@@ -21,6 +21,9 @@ export class ConventionListComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
+        h1,h2{
+          padding-left:1.5rem;
+        }
         h3 {
           font-size: 1.5rem;
         }
