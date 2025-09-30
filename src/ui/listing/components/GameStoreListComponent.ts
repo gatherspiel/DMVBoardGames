@@ -19,19 +19,24 @@ export class GameStoreListComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
-      .game-store-list-item * {
-        display: inline-block;
-      }
-      p {
-        font-size: 1rem;
-      }
+        p {
+          font-size: 1rem;
+        }
+        ul {
+          list-style:url(/assets/meeple_small.png);
+          margin-top:0;
+          padding-left:1.5rem;
+        }
+        .game-store-list-item * {
+          display: inline-block;
+        }
       </style> 
     `;
   }
 
   getItemHtml(gameStore: any) {
     return `
-      <div class="game-store-list-item">
+      <li class="game-store-list-item">
         <h3>
           ${generateLinkButton({
             text: gameStore.name,
@@ -39,29 +44,29 @@ export class GameStoreListComponent extends BaseDynamicComponent {
           })}
         </h3>
         <p>Location: ${gameStore.location}</p>
-      </div>
-      <div class="section-separator-small"></div>
+      </li>
     `;
   }
 
   render(data: any) {
 
     let html = `
-      </listing-nav-component>
       <div class="ui-section">
       <h1 class="hide-mobile">Game Stores</h1>
       <h2 class="show-mobile">Game stores</h2>
       <div class="section-separator-medium"></div>
+      <ul>
     `;
     Object.values(data).forEach((item) => {
-      html += this.getItemHtml(item);
+      html += this.getItemHtml(item) + `      <div class="section-separator-small"></div>`;
     });
-    return html + `</div>
+    return html + `</ul></div>
       <listing-nav-component
         class="ui-section"
         id="show-info-ui"
         currentPage="gameStores.html"
-      >  
+      >
+      </listing-nav-component>  
     `;
   }
 }

@@ -25,6 +25,11 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
         p {
           font-size: 1rem;
         }
+        ul {
+          list-style:url(/assets/meeple_small.png);
+          margin-top:0;
+          padding-left:1.5rem;
+        }
        .game-resturant-list-item * {
           display: inline-block;
         }
@@ -34,7 +39,7 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
 
   getItemHtml(gameRestaurant: any) {
     return `
-      <div class="game-resturant-list-item">
+      <li class="game-resturant-list-item">
         <h3>
           ${generateLinkButton({
             text: gameRestaurant.name,
@@ -42,7 +47,7 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
           })}
         </h3>
         <p>Location: ${gameRestaurant.location}</p>
-      </div>
+      </li>
       <div class="section-separator-small"></div>
     `;
   }
@@ -56,13 +61,13 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
       <h1 class="hide-mobile">Board Game Bars and Cafés</h1>
       <h2 class="show-mobile">Board Game Bars and Cafés</h2>
       <div class="section-separator-medium"></div>
-
+      <ul>
     `;
     Object.values(data).forEach((item:any) => {
       html += this.getItemHtml(item);
     });
 
-    return html + `</div>      
+    return html + `</ul></div>      
     <listing-nav-component
         class="ui-section"
         id="show-info-ui"
