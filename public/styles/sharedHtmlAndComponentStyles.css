@@ -157,6 +157,11 @@ p,span {
   outline: none;
 }
 
+
+.label-border-left {
+  border-left: 1px solid black;
+}
+
 @media not screen and (width < 32em) {
   .show-mobile {
     display:none

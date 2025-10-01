@@ -48,7 +48,19 @@ export function getTagSelectedState(shadowRoot:ShadowRoot){
   return selectedTags;
 }
 
+export function getDaysOfWeekSelectedState(shadowRoot:ShadowRoot){
+  const selectedDays:Record<string,string> = {};
+
+  daysOfWeek.forEach((day:string)=>{
+    if((shadowRoot?.getElementById(day) as HTMLInputElement)?.checked){
+      selectedDays[day]="checked";
+    }
+  })
+  return selectedDays;
+}
+
 export function getDaysOfWeekSelectHtml(checkState?:any){
+
   let html = `
     <div id="days-of-week-select">
   `

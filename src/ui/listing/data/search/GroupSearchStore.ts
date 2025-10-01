@@ -9,7 +9,7 @@ function getGroupsQueryConfig(searchParams: any): ApiRequestConfig {
   const paramMap: any = {};
 
   if (searchParams.day && searchParams.day !== DEFAULT_SEARCH_PARAMETER) {
-    paramMap["day"] = searchParams.day;
+    paramMap["days"] = searchParams.day;
   }
   if (
     searchParams?.location &&

@@ -61,10 +61,7 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
           padding-left: 0.25rem;
         }
         
-        .label-border-left {
-          border-left: 1px solid black;
-        }
-        
+  
         @media not screen and (width < 32em) {
           #group-description-input {
              width: 800px; 
