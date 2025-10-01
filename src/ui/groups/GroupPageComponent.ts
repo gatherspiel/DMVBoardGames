@@ -28,7 +28,7 @@ import {API_ROOT} from "../../shared/Params.ts";
 import {LoginStatusComponent} from "../../shared/components/LoginStatusComponent.ts";
 import {convertDayOfWeekForDisplay} from "../../shared/DisplayNameConversion.ts";
 import {generateErrorMessage, generateSuccessMessage} from "../../shared/components/StatusIndicators.ts";
-import {getGameTypeTagSelectHtml, getGameTypeTagSelectState} from "../../shared/components/SelectGenerator.ts";
+import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/components/SelectGenerator.ts";
 customElements.define("login-status-component", LoginStatusComponent);
 
 const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
@@ -168,7 +168,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
           name: (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLTextAreaElement)?.value,
           description: (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value,
           url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value,
-          gameTypeTags:getGameTypeTagSelectState(shadowRoot)
+          gameTypeTags:getTagSelectedState(shadowRoot)
         }
 
         ApiLoadAction.getResponseData({

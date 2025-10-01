@@ -9,7 +9,10 @@ import {
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {generateButton, generateDisabledButton} from "../../../../shared/components/ButtonGenerator.ts";
 import {GROUP_SEARCH_STORE} from "../../data/search/GroupSearchStore.ts";
-import {getDropdownHtml} from "../../../../shared/components/SelectGenerator.ts";
+import {
+  getDaysOfWeekSelectHtml,
+  getDropdownHtml
+} from "../../../../shared/components/SelectGenerator.ts";
 
 const DEFAULT_PARAMETER_KEY = "defaultParameter";
 const DEFAULT_PARAMETER_DISPLAY_KEY = "defaultParameterDisplay";
@@ -18,17 +21,7 @@ const SEARCH_DISTANCE_ID:string = "search-distance-id";
 const SEARCH_DAYS_ID:string = "search-days-id";
 const SEARCH_CITY_ID: string = "search-cities";
 const SEARCH_FORM_ID: string = "search-form";
-
-const DAYS_IN_WEEK = [
-  DEFAULT_SEARCH_PARAMETER,
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday"
-];
+const SHOW_DAY_SELECT:string="show-day-select";
 
 const DISTANCE_OPTIONS= [
   "0",
@@ -131,6 +124,11 @@ export class GroupSearchComponent extends BaseDynamicComponent {
         };
         GROUP_SEARCH_STORE.fetchData(searchParams)
       }
+      if(event.target.id === SHOW_DAY_SELECT){
+        self.updateData({
+          showDaySelectOnMobile: !self.componentStore.showDaySelectOnMobile
+        })
+      }
     });
   }
 
@@ -146,14 +144,21 @@ export class GroupSearchComponent extends BaseDynamicComponent {
         <div id ="form-div-outer">
           <div id="search-form-inputs" class="${searchInputsClass}">
             <label class="searchDropdownLabel">Select event day: </label>
-              ${getDropdownHtml({
-                data: DAYS_IN_WEEK,
-                id: SEARCH_DAYS_ID,
-                name: "days",
-                selected: store.day,
-                [DEFAULT_PARAMETER_KEY]:DEFAULT_SEARCH_PARAMETER,
-                [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
-              })}
+            ${store.showDaySelectOnMobile ?
+              generateButton({
+                class:"show-mobile",
+                id: SHOW_DAY_SELECT,
+                text:"-"
+              }) :
+              generateButton({
+                class:"show-mobile",
+                id: SHOW_DAY_SELECT,
+                text:"+"
+              })
+            }
+            <div class="${store.showDaySelectOnMobile ? `` : `hide-mobile`}">
+              ${getDaysOfWeekSelectHtml(store.selectedDays)}
+            </div>
             <label class="searchDropdownLabel">Select event city: </label>
             ${getDropdownHtml({
               data: store.cityList ?? [{name:"Any location"}],
