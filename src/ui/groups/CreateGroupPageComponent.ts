@@ -37,6 +37,7 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
+  
         #${GROUP_NAME_INPUT},#${GROUP_DESCRIPTION_INPUT},#${GROUP_URL_INPUT} {
           display: block;
         }
@@ -45,7 +46,6 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
         }
         #group-description-input {
           height:500px;
-          width: 800px;
           margin-bottom: 1rem;
         }
         
@@ -55,6 +55,27 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
         
         #game-type-tag-select {
           margin-bottom:1rem;
+        }
+        
+        #game-type-tag-select label {
+          padding-left: 0.25rem;
+        }
+        
+        .label-border-left {
+          border-left: 1px solid black;
+        }
+        
+        @media not screen and (width < 32em) {
+          #group-description-input {
+             width: 800px; 
+          }
+        }
+        
+        @media screen and (width < 32em) {
+          #group-description-input {
+                width:330px;
+    
+          }
         }
       </style>
     `;

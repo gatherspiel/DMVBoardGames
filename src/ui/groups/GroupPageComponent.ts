@@ -20,13 +20,14 @@ import {
   generateLinkButton
 } from "../../shared/components/ButtonGenerator.ts";
 import {
+  ERROR_MESSAGE_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../shared/Constants.ts";
 import {API_ROOT} from "../../shared/Params.ts";
 
 import {LoginStatusComponent} from "../../shared/components/LoginStatusComponent.ts";
 import {convertDayOfWeekForDisplay} from "../../shared/DisplayNameConversion.ts";
-import {generateSuccessMessage} from "../../shared/components/StatusIndicators.ts";
+import {generateErrorMessage, generateSuccessMessage} from "../../shared/components/StatusIndicators.ts";
 import {getGameTypeTagSelectHtml, getGameTypeTagSelectState} from "../../shared/components/SelectGenerator.ts";
 customElements.define("login-status-component", LoginStatusComponent);
 
@@ -36,7 +37,6 @@ const SAVE_UPDATES_BUTTON_ID = "save-updates";
 
 export class GroupPageComponent extends BaseDynamicComponent {
 
-  checkState = {};
 
   constructor() {
     super([{
@@ -175,12 +175,21 @@ export class GroupPageComponent extends BaseDynamicComponent {
           body: JSON.stringify(params),
           method: ApiActionTypes.PUT,
           url: API_ROOT + `/groups/?name=${encodeURIComponent(params.name)}`,
-        }).then(()=>{
-          self.updateData({
-            ...params,
-            isEditing: false,
-            [SUCCESS_MESSAGE_KEY]: 'Group update successful'
-          });
+        }).then((data:any)=>{
+          console.log(data);
+          if(!data.errorMessage){
+            self.updateData({
+              ...params,
+              isEditing: false,
+              [SUCCESS_MESSAGE_KEY]: 'Group update successful'
+            });
+          } else {
+            console.log("Error")
+            self.updateData({
+              ...params,
+              [ERROR_MESSAGE_KEY]: data.errorMessage
+            })
+          }
         })
       }
     })
@@ -190,6 +199,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
     return`
     
     <h1>Editing group information</h1>
+    ${groupData[ERROR_MESSAGE_KEY] ? generateErrorMessage(groupData[ERROR_MESSAGE_KEY]) : ''}
 
     <form>
       <label>Group name</label>
@@ -227,7 +237,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
 
   renderGroupEditUI(groupData:any):string {
     return `
-      ${groupData[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage("Group update successful") : ''}
+      ${groupData[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY]) : ''}
       <div class="group-title">
         ${generateButton({
           id:EDIT_GROUP_BUTTON_ID,
@@ -290,6 +300,7 @@ export class GroupPageComponent extends BaseDynamicComponent {
 
     const self = this;
     return `
+      <div class="ui-section">
       ${!groupData.isEditing ? `
         <h1>
           ${generateLinkButton({
@@ -332,6 +343,6 @@ export class GroupPageComponent extends BaseDynamicComponent {
           <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
       `
       }
-    `;
+    </div>`;
   }
 }

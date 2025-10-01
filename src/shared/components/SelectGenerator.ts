@@ -1,4 +1,22 @@
 import {DAY_OF_WEEK_INPUT} from "../../ui/groups/Constants.ts";
+import {DEFAULT_SEARCH_PARAMETER} from "../../ui/listing/components/group-search/Constants.ts";
+import {getDisplayName} from "../DisplayNameConversion.ts";
+
+export function getDropdownHtml(dropdownConfig: any) {
+  return ` 
+      <select class="form-select" id=${dropdownConfig.id}>
+        ${dropdownConfig.data?.map(
+    (item: any) =>
+      `<option value="${item}" ${item === dropdownConfig.selected ? "selected" : ""}>
+              ${
+        item === DEFAULT_SEARCH_PARAMETER
+          ? dropdownConfig.defaultParameterDisplay
+          : getDisplayName(item)
+      }
+            </option>`,
+  )}
+      </select>`;
+}
 
 export function getDayOfWeekSelectHtml(dayOfWeek:string){
 
@@ -38,11 +56,13 @@ export function getGameTypeTagSelectHtml(checkState?: any){
     <h2>Select group tags</h2>
   `
 
+  let i = 0;
   tags.forEach((tagName:string)=>{
     html +=`
-      <label for=${tagName}>${tagName}</label>
+      <label for=${tagName} ${i>0? `class="label-border-left" `: ``}> ${tagName}</label>
       <input id="${tagName}" name=${tagName} type="checkbox" ${checkState?.[tagName]}> 
     `
+    i++;
   })
   return html + `</div>`
 }

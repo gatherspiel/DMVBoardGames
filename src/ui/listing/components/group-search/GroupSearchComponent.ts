@@ -8,8 +8,8 @@ import {
 
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {generateButton, generateDisabledButton} from "../../../../shared/components/ButtonGenerator.ts";
-import {getDisplayName} from "../../../../shared/DisplayNameConversion.ts";
 import {GROUP_SEARCH_STORE} from "../../data/search/GroupSearchStore.ts";
+import {getDropdownHtml} from "../../../../shared/components/SelectGenerator.ts";
 
 const DEFAULT_PARAMETER_KEY = "defaultParameter";
 const DEFAULT_PARAMETER_DISPLAY_KEY = "defaultParameterDisplay";
@@ -146,7 +146,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
         <div id ="form-div-outer">
           <div id="search-form-inputs" class="${searchInputsClass}">
             <label class="searchDropdownLabel">Select event day: </label>
-              ${this.getDropdownHtml({
+              ${getDropdownHtml({
                 data: DAYS_IN_WEEK,
                 id: SEARCH_DAYS_ID,
                 name: "days",
@@ -155,7 +155,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
                 [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any day",
               })}
             <label class="searchDropdownLabel">Select event city: </label>
-            ${this.getDropdownHtml({
+            ${getDropdownHtml({
               data: store.cityList ?? [{name:"Any location"}],
               id: SEARCH_CITY_ID,
               name: "cities",
@@ -167,7 +167,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
             <br>
             <label class="searchDropdownLabel">Max distance:</label>
 
-            ${this.getDropdownHtml({
+            ${getDropdownHtml({
               data: DISTANCE_OPTIONS,
               id: SEARCH_DISTANCE_ID,
               name: "distance",
@@ -194,19 +194,5 @@ export class GroupSearchComponent extends BaseDynamicComponent {
     `;
   }
 
-  getDropdownHtml(dropdownConfig: any) {
-    return ` 
-      <select class="form-select" id=${dropdownConfig.id}>
-        ${dropdownConfig.data?.map(
-          (item: any) =>
-            `<option value="${item}" ${item === dropdownConfig.selected ? "selected" : ""}>
-              ${
-              item === DEFAULT_SEARCH_PARAMETER
-                ? dropdownConfig.defaultParameterDisplay
-                : getDisplayName(item)
-            }
-            </option>`,
-        )}
-      </select>`;
-  }
+
 }
