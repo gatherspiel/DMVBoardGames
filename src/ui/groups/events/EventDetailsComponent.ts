@@ -62,6 +62,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>   
+        h1,form {
+          padding-left:1.5rem;
+        }
         input,select,textarea {
           display: block;
         }
@@ -294,7 +297,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         <input
           name=${START_TIME_INPUT}
           type="time"
-          value=${convert24HourTimeForDisplay(data.startTime)}
+          value=${(data.startTime)}
         />
         </input>
           
@@ -302,7 +305,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         <input
           name=${END_TIME_INPUT}
           type="time"
-          value=${convert24HourTimeForDisplay(data.endTime)}
+          value=${(data.endTime)}
         />
         </input>
           

@@ -13,7 +13,7 @@ import {
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
 import { API_ROOT } from "../../shared/Params.ts";
-import {getGameTypeTagSelectHtml, getGameTypeTagSelectState} from "../../shared/components/SelectGenerator.ts";
+import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/components/SelectGenerator.ts";
 
 
 const CREATE_GROUP_BUTTON_ID = "create-group-button-id";
@@ -37,6 +37,7 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
+  
         #${GROUP_NAME_INPUT},#${GROUP_DESCRIPTION_INPUT},#${GROUP_URL_INPUT} {
           display: block;
         }
@@ -45,7 +46,6 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
         }
         #group-description-input {
           height:500px;
-          width: 800px;
           margin-bottom: 1rem;
         }
         
@@ -55,6 +55,24 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
         
         #game-type-tag-select {
           margin-bottom:1rem;
+        }
+        
+        #game-type-tag-select label {
+          padding-left: 0.25rem;
+        }
+        
+  
+        @media not screen and (width < 32em) {
+          #group-description-input {
+             width: 800px; 
+          }
+        }
+        
+        @media screen and (width < 32em) {
+          #group-description-input {
+                width:330px;
+    
+          }
         }
       </style>
     `;
@@ -75,7 +93,7 @@ export class CreateGroupPageComponent extends BaseDynamicComponent {
           name: (data.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
           description: (data.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
           url: (data.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
-          gameTypeTags: getGameTypeTagSelectState(shadowRoot)
+          gameTypeTags: getTagSelectedState(shadowRoot)
         }),
         method: ApiActionTypes.POST,
         url: API_ROOT + `/groups/`,

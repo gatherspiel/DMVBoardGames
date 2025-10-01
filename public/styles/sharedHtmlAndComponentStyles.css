@@ -26,6 +26,10 @@ p,span {
   font-size: 1.5rem;
 }
 
+.ui-section {
+  padding-left:1.5rem;
+}
+
 .success-message {
   color: #00BB51
 }
@@ -151,6 +155,11 @@ p,span {
 
 .activeHover:focus:not(:focus-visible) {
   outline: none;
+}
+
+
+.label-border-left {
+  border-left: 1px solid black;
 }
 
 @media not screen and (width < 32em) {
