@@ -13,11 +13,12 @@ import {
 } from "../Constants.ts";
 import {generateButton, generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
 import {
+  ERROR_MESSAGE_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../../shared/Constants.ts";
 
 import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
-import {generateErrorMessage} from "../../../shared/components/StatusIndicators.ts";
+import {generateErrorMessage, generateSuccessMessage} from "../../../shared/components/StatusIndicators.ts";
 import {convertTimeTo24Hours} from "../../../shared/EventDataUtils.ts";
 import {getEventDetailsFromForm, validateEventFormData} from "./EventDetailsHandler.ts";
 import {API_ROOT} from "../../../shared/Params.ts";
@@ -45,7 +46,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
-        input,textarea {
+        input,select,textarea {
           display: block;
         }
         #${EVENT_NAME_INPUT} {
@@ -81,8 +82,6 @@ export class CreateEventComponent extends BaseDynamicComponent {
       if(targetId === 'create-event-button'){
 
         const data = (shadowRoot.getElementById('create-event-form') as HTMLFormElement)?.elements;
-
-
         const formData = {
           id: self.componentStore.id,
           [EVENT_NAME_INPUT]: (data.namedItem(EVENT_NAME_INPUT) as HTMLInputElement)?.value,
@@ -93,8 +92,6 @@ export class CreateEventComponent extends BaseDynamicComponent {
           [EVENT_LOCATION_INPUT]: (data.namedItem(EVENT_LOCATION_INPUT) as HTMLInputElement)?.value,
           isRecurring: self.componentStore.isRecurring,
         }
-
-
         if(self.componentStore.isRecurring){
           // @ts-ignore
           formData[DAY_OF_WEEK_INPUT] = (data.namedItem(DAY_OF_WEEK_INPUT) as HTMLSelectElement).value;
@@ -116,6 +113,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
           }).then((response:any)=>{
             if(!response.errorMessage){
               self.updateData({
+                [ERROR_MESSAGE_KEY]:"",
                 [SUCCESS_MESSAGE_KEY]: "Successfully created event"
               });
             }else {
@@ -133,8 +131,8 @@ export class CreateEventComponent extends BaseDynamicComponent {
     const groupName = (new URLSearchParams(document.location.search)).get("name") ?? ''
     return `   
       ${generateErrorMessage(data.errorMessage)}
+      ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
       
-      ${data[SUCCESS_MESSAGE_KEY] ? `<p class="${SUCCESS_MESSAGE_KEY}">${data[SUCCESS_MESSAGE_KEY]}</p>`: ``}
       <form id="create-event-form" onsubmit="return false">
         
         <h1>Create board game event for group ${(new URLSearchParams(document.location.search)).get("name") ?? ""}</h1>
@@ -179,19 +177,21 @@ export class CreateEventComponent extends BaseDynamicComponent {
           <input
             name=${START_DATE_INPUT}
             type="date"
-
+            value="${data[START_DATE_INPUT]}"
           />`}
         
         <label>Start time</label>
         <input
           name=${START_TIME_INPUT}
           type="time"
+          value="${data[START_TIME_INPUT]}"
         />
         
         <label>End time</label>
         <input
           name=${END_TIME_INPUT}
           type="time"
+          value="${data[END_TIME_INPUT]}"
         />
         
         <label>Event location</label>
