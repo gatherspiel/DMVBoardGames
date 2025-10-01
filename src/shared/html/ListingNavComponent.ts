@@ -41,7 +41,7 @@ export class ListingNavComponent extends BaseTemplateComponent {
 
   override render(): string {
     return `
-      <span id="show-more-info">Click for more info about:</span>
+      <span id="show-more-info"><b>Click for more info about:</b></span>
       <div id ="show-info-ui">
         ${this.getAttribute("currentPage") != CONVENTIONS_LIST_URL ? generateLinkButton({
           text: "Conventions",
