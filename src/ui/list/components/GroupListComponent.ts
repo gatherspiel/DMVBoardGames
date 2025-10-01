@@ -1,6 +1,6 @@
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
-import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
-import {getDisplayName} from "../../../shared/DisplayNameConversion.ts";
+import {generateLinkButton} from "../../../shared/html/ButtonGenerator.ts";
+import {getDisplayName} from "../../../shared/data/DisplayNameConversion.ts";
 
 import {GROUP_SEARCH_STORE} from "../data/search/GroupSearchStore.ts";
 import {DEFAULT_SEARCH_PARAMETER} from "./group-search/Constants.ts";

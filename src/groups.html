@@ -11,15 +11,15 @@
   <script
     type="module"
   >
-    import {GroupPageComponent} from "./ui/groups/GroupPageComponent.ts";
-    customElements.define("group-page-component", GroupPageComponent);
+    import {GroupComponent} from "./ui/groups/GroupComponent.ts";
+    customElements.define("group-component", GroupComponent);
   </script>
 </head>
 <body>
 <div id="container">
   {{>navbar}}
-  <group-page-component class="ui-section">
-  </group-page-component>
+  <group-component class="ui-section">
+  </group-component>
 </div>
 </body>
 </html>

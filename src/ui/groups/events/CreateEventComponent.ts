@@ -11,18 +11,18 @@ import {
   EVENT_URL_INPUT,
   START_DATE_INPUT, START_TIME_INPUT,
 } from "../Constants.ts";
-import {generateButton, generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
+import {generateButton, generateLinkButton} from "../../../shared/html/ButtonGenerator.ts";
 import {
   ERROR_MESSAGE_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../../shared/Constants.ts";
 
 import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
-import {generateErrorMessage, generateSuccessMessage} from "../../../shared/components/StatusIndicators.ts";
-import {convertTimeTo24Hours} from "../../../shared/EventDataUtils.ts";
+import {generateErrorMessage, generateSuccessMessage} from "../../../shared/html/StatusIndicators.ts";
+import {convertTimeTo24Hours} from "../../../shared/data/EventDataUtils.ts";
 import {getEventDetailsFromForm, validateEventFormData} from "./EventDetailsHandler.ts";
 import {API_ROOT} from "../../../shared/Params.ts";
-import {getDayOfWeekSelectHtml} from "../../../shared/components/SelectGenerator.ts";
+import {getDayOfWeekSelectHtml} from "../../../shared/html/SelectGenerator.ts";
 
 const CREATE_EVENT_BUTTON_ID = "create-event-button";
 const RECURRING_EVENT_INPUT = "is-recurring";

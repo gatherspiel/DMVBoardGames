@@ -1,7 +1,7 @@
 import {ApiActionTypes, BaseDynamicComponent, ApiLoadAction} from "@bponnaluri/places-js";
 import { GROUP_NAME_INPUT } from "./Constants.ts";
-import {generateButton} from "../../shared/components/ButtonGenerator.ts";
-import {generateErrorMessage} from "../../shared/components/StatusIndicators.ts";
+import {generateButton} from "../../shared/html/ButtonGenerator.ts";
+import {generateErrorMessage} from "../../shared/html/StatusIndicators.ts";
 import {
   SUCCESS_MESSAGE_KEY
 } from "../../shared/Constants.ts";
@@ -11,7 +11,7 @@ import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
 
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 
-export class DeleteGroupPageComponent extends BaseDynamicComponent {
+export class DeleteGroupComponent extends BaseDynamicComponent {
   constructor() {
     super([{
       dataStore: LOGIN_STORE
