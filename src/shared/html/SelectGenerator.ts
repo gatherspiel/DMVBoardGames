@@ -1,6 +1,6 @@
 import {DAY_OF_WEEK_INPUT} from "../../ui/groups/Constants.ts";
-import {DEFAULT_SEARCH_PARAMETER} from "../../ui/listing/components/group-search/Constants.ts";
-import {getDisplayName} from "../DisplayNameConversion.ts";
+import {DEFAULT_SEARCH_PARAMETER} from "../../ui/list/components/group-search/Constants.ts";
+import {getDisplayName} from "../data/DisplayNameConversion.ts";
 
 const daysOfWeek:string[]= ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
 const tags:string[] = ["Eurogames","Hidden identity games","Light games","Social games", "Wargames"]

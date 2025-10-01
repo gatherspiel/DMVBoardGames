@@ -1,10 +1,10 @@
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
-import { generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
+import { generateLinkButton} from "../../../shared/html/ButtonGenerator.ts";
 
 import {CONVENTIONS_STORE} from "../data/search/LocationsStore.ts";
 
-import {ListingNavComponent} from "../../../shared/components/ListingNavComponent.ts";
-import {convertDateListToRange} from "../../../shared/EventDataUtils.ts";
+import {ListingNavComponent} from "../../../shared/html/ListingNavComponent.ts";
+import {convertDateListToRange} from "../../../shared/data/EventDataUtils.ts";
 customElements.define("listing-nav-component", ListingNavComponent);
 
 export class ConventionListComponent extends BaseDynamicComponent {

@@ -3,17 +3,17 @@
   <head>
     <script async type="module">
       console.log("Starting to parse Javascript at:" + Date.now())
-      import {GroupSearchComponent} from "./ui/listing/components/group-search/GroupSearchComponent.js";
-      import {GroupListComponent} from "./ui/listing/components/GroupListComponent.js";
-      import {ListingNavComponent} from "./shared/components/ListingNavComponent.js";
-      import {LoginStatusComponent} from "./shared/components/LoginStatusComponent.js";
-      import {OpenCreateGroupPageComponent} from "./ui/listing/components/OpenCreateGroupPageComponent.js";
+      import {GroupSearchComponent} from "./ui/list/components/group-search/GroupSearchComponent.js";
+      import {GroupListComponent} from "./ui/list/components/GroupListComponent.js";
+      import {ListingNavComponent} from "./shared/html/ListingNavComponent.js";
+      import {LoginStatusComponent} from "./shared/html/LoginStatusComponent.js";
+      import {OpenCreateGroupComponent} from "./ui/list/components/OpenCreateGroupComponent.ts";
 
       customElements.define("group-list-component", GroupListComponent);
       customElements.define("group-search-component", GroupSearchComponent);
       customElements.define("listing-nav-component", ListingNavComponent);
       customElements.define("login-status-component",LoginStatusComponent)
-      customElements.define("open-create-group-component", OpenCreateGroupPageComponent);
+      customElements.define("open-create-group-component", OpenCreateGroupComponent);
     </script>
     <meta charset="UTF-8"/>
     <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>

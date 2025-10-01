@@ -8,9 +8,10 @@ import {
   ApiLoadAction,
   BaseDynamicComponent,
 } from "@bponnaluri/places-js";
-import {generateErrorMessage, generateSuccessMessage} from "../../shared/components/StatusIndicators.ts";
-import {generateButton} from "../../shared/components/ButtonGenerator.ts";
+import {generateErrorMessage, generateSuccessMessage} from "../../shared/html/StatusIndicators.ts";
+import {generateButton, generateDisabledButton} from "../../shared/html/ButtonGenerator.ts";
 import {API_ROOT} from "../../shared/Params.ts";
+import {getSiteRulesHtml} from "../../shared/html/SiteRules.ts";
 
 const LOGIN_BUTTON_ID = "login-button";
 const REGISTER_BUTTON_ID = "register-button";
@@ -18,7 +19,7 @@ const LOGOUT_BUTTON_ID = "logout-button";
 
 const AGREE_RULES_ID="agree-rules";
 const COMPLETE_REGISTER_ID="complete-registration";
-
+const COMPLETE_REGISTER_ID_DISABLED="complete-registration-disabled";
 export class LoginComponent extends BaseDynamicComponent {
 
   loginAttempted: boolean;
@@ -57,6 +58,14 @@ export class LoginComponent extends BaseDynamicComponent {
           display: inline-block;
           margin-right:2.85rem;
         }
+        #${COMPLETE_REGISTER_ID}{
+          display:block;
+        }
+        
+        #${COMPLETE_REGISTER_ID_DISABLED} .front {
+          background: gray;
+        }
+        
         @media screen and (width < 32em) {
           #login-component-container {
             text-align: center;
@@ -181,29 +190,23 @@ export class LoginComponent extends BaseDynamicComponent {
   }
 
   generateRegisterUi(data:any){
-
-
     return `
-      ${data[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage(data[SUCCESS_MESSAGE_KEY]) : `<p>Registering ${data.email}</p>`}
+      ${data[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage(data[SUCCESS_MESSAGE_KEY]) : `<p>Registering user: ${data.email}</p>`}
       
       ${this.loginAttempted || this.registerAttempted ? generateErrorMessage(data.errorMessage) : ''}
 
-      <label for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
-      <input type="checkbox" id="${AGREE_RULES_ID}" ${data[AGREE_RULES_ID] ? 'checked' : ''}>
-      
       ${data[AGREE_RULES_ID]  ? generateButton({
         id: COMPLETE_REGISTER_ID,
         text:"Complete registration"
-    }): `<button>Complete registration </button>`}
-      <h1>Rules for creating events and groups </h1>
+      }):  
+      generateDisabledButton({
+        id: COMPLETE_REGISTER_ID_DISABLED,
+        text:"Complete registration"
+      })}
+      <label for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
+      <input type="checkbox" id="${AGREE_RULES_ID}" ${data[AGREE_RULES_ID] ? 'checked' : ''}>
 
-      <ul>
-        <li>All events must be in person</li>
-        <li>Any links posted in descriptions must be informational content relevant to an event such as a group website
-            or details about a board game. Content must also be visible without logging in or entering personal information.</li>
-        <li>Contact information including phone numbers or email addresses cannot be posted. Users are encouraged
-        to share information in person at events.</li>
-      </ul>
+      ${getSiteRulesHtml()}
     `
   }
   generateLogin(data: any) {

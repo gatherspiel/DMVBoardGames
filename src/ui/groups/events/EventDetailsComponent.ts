@@ -16,24 +16,24 @@ import {
   validateEventFormData
 } from "./EventDetailsHandler.ts";
 
-import {generateErrorMessage} from "../../../shared/components/StatusIndicators.ts";
-import {convert24HourTimeForDisplay, convertTimeTo24Hours} from "../../../shared/EventDataUtils.ts";
-import {convertLocationStringForDisplay} from "../../../shared/EventDataUtils.ts";
+import {generateErrorMessage} from "../../../shared/html/StatusIndicators.ts";
+import {convert24HourTimeForDisplay, convertTimeTo24Hours} from "../../../shared/data/EventDataUtils.ts";
+import {convertLocationStringForDisplay} from "../../../shared/data/EventDataUtils.ts";
 import {
   generateButton,
   generateLinkButton
-} from "../../../shared/components/ButtonGenerator.ts";
+} from "../../../shared/html/ButtonGenerator.ts";
 import {
   SUCCESS_MESSAGE_KEY
 } from "../../../shared/Constants.ts";
 
 import {API_ROOT} from "../../../shared/Params.ts";
 
-import {LoginStatusComponent} from "../../../shared/components/LoginStatusComponent.ts";
-import {generateSuccessMessage} from "../../../shared/components/StatusIndicators.ts";
-import {convertDateTimeForDisplay} from "../../../shared/EventDataUtils.ts";
-import {convertDayOfWeekForDisplay} from "../../../shared/DisplayNameConversion.ts";
-import {getDayOfWeekSelectHtml} from "../../../shared/components/SelectGenerator.ts";
+import {LoginStatusComponent} from "../../../shared/html/LoginStatusComponent.ts";
+import {generateSuccessMessage} from "../../../shared/html/StatusIndicators.ts";
+import {convertDateTimeForDisplay} from "../../../shared/data/EventDataUtils.ts";
+import {convertDayOfWeekForDisplay} from "../../../shared/data/DisplayNameConversion.ts";
+import {getDayOfWeekSelectHtml} from "../../../shared/html/SelectGenerator.ts";
 customElements.define("login-status-component", LoginStatusComponent);
 
 

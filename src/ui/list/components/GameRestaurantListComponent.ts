@@ -1,8 +1,8 @@
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
-import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
+import {generateLinkButton} from "../../../shared/html/ButtonGenerator.ts";
 import {GAME_RESTAURANT_STORE} from "../data/search/LocationsStore.ts";
 
-import {ListingNavComponent} from "../../../shared/components/ListingNavComponent.ts";
+import {ListingNavComponent} from "../../../shared/html/ListingNavComponent.ts";
 customElements.define("listing-nav-component", ListingNavComponent);
 
 export class GameRestaurantListComponent extends BaseDynamicComponent {

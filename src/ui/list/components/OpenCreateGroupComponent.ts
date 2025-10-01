@@ -1,10 +1,10 @@
-import {generateLinkButton} from "../../../shared/components/ButtonGenerator.ts";
+import {generateLinkButton} from "../../../shared/html/ButtonGenerator.ts";
 import {IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
 
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
 
-export class OpenCreateGroupPageComponent extends BaseDynamicComponent {
+export class OpenCreateGroupComponent extends BaseDynamicComponent {
 
   constructor() {
     super([{

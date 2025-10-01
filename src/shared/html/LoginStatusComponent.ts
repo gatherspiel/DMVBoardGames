@@ -58,7 +58,6 @@ export class LoginStatusComponent extends BaseDynamicComponent {
   }
 
   override render(authData:any){
-
     if(authData.loggedIn){
       return `
         <div>
