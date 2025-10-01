@@ -11,16 +11,16 @@
   <script
     type="module"
   >
-    import {CreateGroupPageComponent} from "../ui/groups/CreateGroupPageComponent.ts";
-    customElements.define('create-group-page-component',CreateGroupPageComponent)
+    import {CreateGroupComponent} from "../ui/groups/CreateGroupComponent.ts";
+    customElements.define('create-group-component',CreateGroupComponent)
   </script>
 
 </head>
 <body>
 <div id="container">
   {{>navbar}}
-  <create-group-page-component>
-  </create-group-page-component>
+  <create-group-component>
+  </create-group-component>
 </div>
 </body>
 </html>

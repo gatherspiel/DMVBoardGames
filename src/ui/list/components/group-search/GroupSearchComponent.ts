@@ -7,13 +7,13 @@ import {
 } from "../../data/search/CityListStore.ts";
 
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
-import {generateButton, generateDisabledButton} from "../../../../shared/components/ButtonGenerator.ts";
+import {generateButton, generateDisabledButton} from "../../../../shared/html/ButtonGenerator.ts";
 import {GROUP_SEARCH_STORE} from "../../data/search/GroupSearchStore.ts";
 import {
   getDaysOfWeekSelectedState,
   getDaysOfWeekSelectHtml,
   getDropdownHtml
-} from "../../../../shared/components/SelectGenerator.ts";
+} from "../../../../shared/html/SelectGenerator.ts";
 
 const DEFAULT_PARAMETER_KEY = "defaultParameter";
 const DEFAULT_PARAMETER_DISPLAY_KEY = "defaultParameterDisplay";
@@ -48,28 +48,26 @@ export class GroupSearchComponent extends BaseDynamicComponent {
     return `
      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
+          select {
+          width:10rem;
+        }
         #search-form {
           display: flex;
           flex-wrap: wrap;
           padding-left:1.5rem;
           padding-bottom:1rem;
         }
-        select {
-          width:10rem;
-        }
         .searchDropdownLabel {
-          color: var(--clr-dark-blue);
+          color: var(--clr-darker-blue);
           display: inline-block;
-          
+          font-weight:600;
         }
         #searchInputDiv {
           padding-top: 0.5rem;
         }
-        
          #days-of-week-select > :not(:first-child) {
           padding-left: 0.25rem;
-        }
-        
+        }  
         @media not screen and (width < 32em) {
           select {
             margin-right: 0.5rem;

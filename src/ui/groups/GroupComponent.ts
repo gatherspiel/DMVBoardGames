@@ -14,28 +14,28 @@ import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import {
   convert24HourTimeForDisplay,
   convertLocationStringForDisplay,
-} from "../../shared/EventDataUtils.ts";
+} from "../../shared/data/EventDataUtils.ts";
 import {
   generateButton,
   generateLinkButton
-} from "../../shared/components/ButtonGenerator.ts";
+} from "../../shared/html/ButtonGenerator.ts";
 import {
   ERROR_MESSAGE_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../shared/Constants.ts";
 import {API_ROOT} from "../../shared/Params.ts";
 
-import {LoginStatusComponent} from "../../shared/components/LoginStatusComponent.ts";
-import {convertDayOfWeekForDisplay} from "../../shared/DisplayNameConversion.ts";
-import {generateErrorMessage, generateSuccessMessage} from "../../shared/components/StatusIndicators.ts";
-import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/components/SelectGenerator.ts";
+import {LoginStatusComponent} from "../../shared/html/LoginStatusComponent.ts";
+import {convertDayOfWeekForDisplay} from "../../shared/data/DisplayNameConversion.ts";
+import {generateErrorMessage, generateSuccessMessage} from "../../shared/html/StatusIndicators.ts";
+import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
 customElements.define("login-status-component", LoginStatusComponent);
 
 const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
 const EDIT_GROUP_BUTTON_ID = "edit-group-button";
 const SAVE_UPDATES_BUTTON_ID = "save-updates";
 
-export class GroupPageComponent extends BaseDynamicComponent {
+export class GroupComponent extends BaseDynamicComponent {
 
 
   constructor() {
