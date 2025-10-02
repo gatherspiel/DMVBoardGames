@@ -15,7 +15,7 @@ export function getSiteRulesHtml(){
       <li>Don't post information related to playtest games. If you are looking to playtest a game, it is recommended to reach
         out to <a href="https://www.breakmygame.com/">Break My Game</a> or try to organize a playtest in person at an event.</li>
       <li>If the event host is a local business such as a game store or restaurant, the business website should not be posted in event or group information. A
-          separate webpage should be created with event information<./li>
+          separate webpage should be created with event information.</li>
     </ul>
     <h2>Prohibited content</h2>
       <ul>
