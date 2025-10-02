@@ -38,11 +38,11 @@ export function getDayOfWeekSelectHtml(dayOfWeek:string){
 
 
 export function getTagSelectedState(shadowRoot:ShadowRoot){
-  const selectedTags:string[] = [];
+  const selectedTags:Record<string,string> = {};
 
   tags.forEach((tagName:string)=>{
     if((shadowRoot?.getElementById(tagName) as HTMLInputElement)?.checked){
-      selectedTags.push(tagName);
+      selectedTags[tagName]="checked";
     }
   })
   return selectedTags;
