@@ -117,7 +117,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
                 [SUCCESS_MESSAGE_KEY]: "Successfully created event"
               });
             }else {
-              const updates = {...response,errorMessage:'',...formData}
+              const updates = {...response,errorMessage:response.errorMessage,...formData}
               self.updateData(updates)
             }
           })
