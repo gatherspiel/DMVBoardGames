@@ -68,6 +68,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         input,select,textarea {
           display: block;
         }
+        #delete-event-form {
+          padding-left:1.5rem;
+        }
         #${EVENT_NAME_INPUT} {
           width: 50rem;
         }
@@ -211,7 +214,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   }
 
   render(data: any): string {
-
     if(!data || !data.name){
       return `<h1>Loading</h1>`;
     }
@@ -225,6 +227,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   }
 
   renderDeleteMode(data:any): string {
+    console.log(data)
     if (data[SUCCESS_MESSAGE_KEY]) {
       return `
         <div class="ui-section">
@@ -238,16 +241,20 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       `
     }
     return `
-      <h1>Are you sure you want to delete ${data.name} on ${convertDateTimeForDisplay(data.startTime)}</h1>
-      ${generateButton({
-        id: CONFIRM_DELETE_BUTTON_ID,
-        text: "Confirm delete"
-      })}
+      <h1>Are you sure you want to delete event ${data.name} ${data.isRecurring ? '': `on ${convertDateTimeForDisplay(data.startTime)}`}</h1>
       
-      ${generateButton({
-        id: CANCEL_DELETE_BUTTON_ID, 
-        text: "Cancel"
-    })}
+      <div id="delete-event-form">
+          ${generateButton({
+          id: CONFIRM_DELETE_BUTTON_ID,
+          text: "Confirm delete"
+        })}
+        
+        ${generateButton({
+          id: CANCEL_DELETE_BUTTON_ID,
+          text: "Cancel"
+        })}     
+      </div>
+
     `
   }
 

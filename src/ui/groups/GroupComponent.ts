@@ -36,7 +36,7 @@ const EDIT_GROUP_BUTTON_ID = "edit-group-button";
 const SAVE_UPDATES_BUTTON_ID = "save-updates";
 
 export class GroupComponent extends BaseDynamicComponent {
-  
+
   constructor() {
     super([{
       componentReducer:(groupData:any)=>{
