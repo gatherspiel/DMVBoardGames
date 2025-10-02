@@ -36,13 +36,19 @@ const EDIT_GROUP_BUTTON_ID = "edit-group-button";
 const SAVE_UPDATES_BUTTON_ID = "save-updates";
 
 export class GroupComponent extends BaseDynamicComponent {
-
-
+  
   constructor() {
     super([{
       componentReducer:(groupData:any)=>{
+        let gameTypeTags:Record<string,string>={}
+        if(groupData.gameTypeTags.length > 0){
+          groupData.gameTypeTags.forEach((tag:string)=>{
+            gameTypeTags[tag.substring(0,1)+tag.substring(1).toLowerCase().replaceAll("_", " ")]="checked";
+          })
+        }
         return {
           ...groupData,
+          gameTypeTags:gameTypeTags,
           [SUCCESS_MESSAGE_KEY]:''
         }
       },
@@ -153,7 +159,10 @@ export class GroupComponent extends BaseDynamicComponent {
 
       if(event.target.type === "checkbox"){
         self.updateData({
-          [event.target.id]: self.componentStore?.[event.target.id] ? "" : "checked"
+          name: (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLTextAreaElement)?.value,
+          description: (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value,
+          url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value,
+          gameTypeTags: getTagSelectedState(shadowRoot)
         })
       }
 
@@ -221,10 +230,10 @@ export class GroupComponent extends BaseDynamicComponent {
       <label>Group url</label>
       <input
         id=${GROUP_URL_INPUT}
-        value=${groupData.url}
+        value="${groupData.url}"
       />
   
-      ${getGameTypeTagSelectHtml(groupData)}
+      ${getGameTypeTagSelectHtml(groupData.gameTypeTags)}
       
       ${generateButton({
         id: SAVE_UPDATES_BUTTON_ID,
