@@ -154,7 +154,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                 <input
                   id=${GROUP_NAME_INPUT}
                   name=${GROUP_NAME_INPUT}
-                  value=${data.name}
+                  value="${data.name}"
                   >
                 
                 <label>Group url</label>
