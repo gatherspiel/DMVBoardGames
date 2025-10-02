@@ -29,6 +29,7 @@ p,span {
   color: darkred;
 }
 
+
 .form-select {
   border-color: var(--clr-light-blue);
   border-radius: 5px;
@@ -37,6 +38,9 @@ p,span {
   padding: 0.25rem;
 }
 
+.raised a {
+  text-decoration:none;
+}
 .raised {
   background: transparent;
   box-shadow: 2px 2px 2px hsl(0deg 0% 0% / 0.25);
