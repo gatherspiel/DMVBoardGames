@@ -91,6 +91,11 @@ export class GroupComponent extends BaseDynamicComponent {
         .add-event-button {
           margin-top:0.5rem;
         }
+        
+        #game-type-tag-select > :not(:first-child) {
+          padding-left: 0.25rem;
+        }  
+        
         .${GROUP_DESCRIPTION_TEXT} {
           border: 10px solid;
           background-color: var(--clr-very-light-blue);
@@ -168,7 +173,7 @@ export class GroupComponent extends BaseDynamicComponent {
           name: (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLTextAreaElement)?.value,
           description: (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value,
           url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value,
-          gameTypeTags:getTagSelectedState(shadowRoot)
+          gameTypeTags:Object.keys(getTagSelectedState(shadowRoot))
         }
 
         ApiLoadAction.getResponseData({
@@ -176,7 +181,6 @@ export class GroupComponent extends BaseDynamicComponent {
           method: ApiActionTypes.PUT,
           url: API_ROOT + `/groups/?name=${encodeURIComponent(params.name)}`,
         }).then((data:any)=>{
-          console.log(data);
           if(!data.errorMessage){
             self.updateData({
               ...params,

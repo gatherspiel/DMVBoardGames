@@ -48,11 +48,6 @@
       text-wrap: nowrap;
       text-decoration: none;
   }
-  #nav-filler {
-      display: inline-block;
-      background-color: var(--clr-lighter-blue);
-      flex-grow: 1;
-  }
   #navbar {
     margin-bottom:1rem;
   }
@@ -69,16 +64,18 @@
     #navbar-front {
       padding: 1rem;
     }
-    .top-nav {
-      display: flex;
-      flex-wrap: wrap;
-      padding-left: 0.5rem;
-    }
+
     .show-mobile {
       display:none;
     }
     #login-status {
-      margin-left: 1.1rem;
+      margin-left: 0.5rem;
+    }
+
+    .top-nav {
+      display: flex;
+      flex-wrap: wrap;
+      padding-left: 0.5rem;
     }
   }
   @media screen and (width < 32em) {
@@ -133,16 +130,13 @@
 
         <div class="show-mobile triangle-down">
         </div>
-        <a class = "hide-mobile" href="/index.html">Home
+        <a class = "hide-mobile" href="/index.html" id="main-page-link" >Home
         </a>
-        </a><a class="hide-mobile" href="/feedback.html">Feedback</a>
-        <a class="hide-mobile" id="local-designers" href="/designers.html">Local designers
-        </a><a class="hide-mobile" href="/print_and_play.html">Print and Play
-        </a><a class="hide-mobile" href="/links.html">Links </a>
+        </a><a class="hide-mobile" href="/feedback.html" id="share-feedback-link">Share feedback</a>
+        <a class="hide-mobile" href="/designers.html" id="local-designers-link">Local designers
+        </a><a id="links-page" class="hide-mobile" href="/links.html">Other websites </a>
         <login-status-component class="hide-mobile"  id="login-status"></login-status-component>
-
       </div>
-     <div id="nav-filler"></div>
     </div>
   </span>
 </nav>
