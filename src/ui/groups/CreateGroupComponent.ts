@@ -82,54 +82,62 @@ export class CreateGroupComponent extends BaseDynamicComponent {
     `;
   }
 
+
   override attachHandlersToShadowRoot(shadowRoot:ShadowRoot){
 
     const self = this;
 
     shadowRoot?.addEventListener("click",(event:any)=>{
+
       const targetId = event.target?.id;
+      const elements = (shadowRoot?.getElementById('create-group-form') as HTMLFormElement)?.elements
+
       if(targetId === AGREE_RULES_ID){
         self.updateData({
           [AGREE_RULES_ID]: event.target.checked,
+          name: (elements.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
+          description: (elements.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
+          url: (elements.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
+          gameTypeTags: getTagSelectedState(shadowRoot)
         })
       }
-    });
 
-    shadowRoot?.getElementById('create-group-form')?.addEventListener('submit',(event:any)=>{
-      event.preventDefault();
+      if(targetId === CREATE_GROUP_BUTTON_ID){
+        event.preventDefault();
 
-      const data = event.target.elements;
+        ApiLoadAction.getResponseData({
+          body: JSON.stringify({
+            id: self.componentStore.id,
+            name: (elements.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
+            description: (elements.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
+            url: (elements.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
+            gameTypeTags: Object.keys(getTagSelectedState(shadowRoot))
+          }),
+          method: ApiActionTypes.POST,
+          url: API_ROOT + `/groups/`,
+        }).then((data:any)=>{
 
-      ApiLoadAction.getResponseData({
-        body: JSON.stringify({
-          id: self.componentStore.id,
-          name: (data.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
-          description: (data.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
-          url: (data.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
-          gameTypeTags: getTagSelectedState(shadowRoot)
-        }),
-        method: ApiActionTypes.POST,
-        url: API_ROOT + `/groups/`,
-      }).then((data:any)=>{
-
-        if (data.errorMessage) {
-          self.updateData({
-            errorMessage: data.errorMessage,
-            [SUCCESS_MESSAGE_KEY]: "",
-          });
-        } else {
-          self.updateData({
-            errorMessage: "",
-            [SUCCESS_MESSAGE_KEY]: `
+          if (data.errorMessage) {
+            self.updateData({
+              errorMessage: data.errorMessage,
+              [SUCCESS_MESSAGE_KEY]: "",
+            });
+          } else {
+            self.updateData({
+              errorMessage: "",
+              [SUCCESS_MESSAGE_KEY]: `
               Successfully created group. A site admin will review the group information before the group is visible on
               dmvboardgames.com.
              
               Email gulu@createthirdplaces.com if you have any questions or comments on the process for creating groups.
              `,
-          });
-        }
-      })
+            });
+          }
+        })
+      }
     });
+
+
   }
 
   render(data: any): string {
@@ -137,7 +145,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
       <div id="create-group-container">
         <h1>Create board game group</h1>  
         ${
-      data.loggedIn
+            data.loggedIn
             ? `
               ${generateSuccessMessage(data?.[SUCCESS_MESSAGE_KEY])}
 
@@ -146,25 +154,24 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                 <input
                   id=${GROUP_NAME_INPUT}
                   name=${GROUP_NAME_INPUT}
-                  />${data.name}
-                </input>
+                  value=${data.name}
+                  >
                 
                 <label>Group url</label>
                 <input
                   id=${GROUP_URL_INPUT}
                   name=${GROUP_URL_INPUT}
-                  />
-                ${data.url}
-                </input>
+                  value=${data.url}
+                  >
                 
                 <label>Group description</label>
                 <textarea
                   id=${GROUP_DESCRIPTION_INPUT}
                   name=${GROUP_DESCRIPTION_INPUT}
-                  />${data.description}
+                  >${data.description}
                 </textarea>
                 
-                ${getGameTypeTagSelectHtml()}
+                ${getGameTypeTagSelectHtml(data.gameTypeTags)}
 
                 <div class="section-separator-medium"></div>
                 
