@@ -28,11 +28,7 @@ export class FeedbackComponent extends BaseDynamicComponent {
           margin-top: 0.5rem;
         }
         
-        #${FEEDBACK_TEXT_INPUT_ID} {
-          display: block;
-          height: 10rem;
-          width: 50rem;
-        }
+        
         
         #submit-feedback-form {
           padding-left: 1.5rem;
@@ -48,6 +44,30 @@ export class FeedbackComponent extends BaseDynamicComponent {
           #feedback-type-select input {
             padding-right: 0.25rem; 
           }  
+          #${FEEDBACK_TEXT_INPUT_ID} {
+            display: block;
+            height: 10rem;
+            width: 50rem;
+          }
+        }
+        
+        @media  screen and (width < 32em) {
+          #feedback-type-select div {
+            display: inline-block;
+          }  
+          #feedback-type-select  > :not(:first-child) {
+            border-left: 1px solid black;
+            padding-left: 0.25rem;
+          } 
+          #feedback-type-select input {
+            padding-right: 0.25rem; 
+          }  
+          
+          #${FEEDBACK_TEXT_INPUT_ID} {
+            display: block;
+            height: 10rem;
+            width: 20rem;
+          }
         }
       </style>
     `
