@@ -35,7 +35,7 @@ export default defineConfig({
         gameRestaurants: resolve(__dirname, "src/gameRestaurants.html"),
         groups: resolve(__dirname, "src/groups.html"),
         links: resolve(__dirname, "src/links.html"),
-        feedback: resolve(__dirname, "src/feedback.html"),
+        feedback: resolve(__dirname, "src/beta/feedback.html"),
         login: resolve(__dirname, "src/beta/login.html"),
         create_groups: resolve(__dirname, "src/beta/create.html"),
         event: resolve(__dirname, "src/groups/event.html"),
