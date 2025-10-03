@@ -137,8 +137,6 @@ export class CreateGroupComponent extends BaseDynamicComponent {
         })
       }
     });
-
-
   }
 
   render(data: any): string {

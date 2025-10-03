@@ -88,6 +88,3 @@ navigator.permissions.query({name:'notifications'}).then(function(permissionStat
 window.innerWidth = 22;
 window.innerHeight= 33;
 window.devicePixelRatio = 2;
-
-
-console.log(window.navigator)

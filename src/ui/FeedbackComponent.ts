@@ -1,5 +1,5 @@
 import {ApiActionTypes, ApiLoadAction, BaseDynamicComponent} from "@bponnaluri/places-js";
-import {generateButton, generateDisabledButton} from "../shared/html/ButtonGenerator.ts";
+import {generateButton} from "../shared/html/ButtonGenerator.ts";
 import {API_ROOT} from "../shared/Params.ts";
 import {SUCCESS_MESSAGE_KEY} from "../shared/Constants.ts";
 import {generateErrorMessage, generateSuccessMessage} from "../shared/html/StatusIndicators.ts";
@@ -34,8 +34,9 @@ export class FeedbackComponent extends BaseDynamicComponent {
           width: 50rem;
         }
         
-    
-  
+        #submit-feedback-form {
+          padding-left: 1.5rem;
+        }
         @media not screen and (width < 32em) {
           #feedback-type-select div {
             display: inline-block;
@@ -52,10 +53,19 @@ export class FeedbackComponent extends BaseDynamicComponent {
     `
   }
 
+  connectedCallback(){
+    this.updateData({
+      checkedState:{"general_feedback":"checked"},
+      email:'',
+      feedbackText:'',
+      name:'',
+    })
+  }
 
   override attachHandlersToShadowRoot(shadowRoot:ShadowRoot) {
 
     const self = this;
+
     shadowRoot?.addEventListener("change", () => {
       const elements = (shadowRoot?.getElementById('submit-feedback-form') as HTMLFormElement)?.elements
       const feedback: string = (elements.namedItem(FEEDBACK_TEXT_INPUT_ID) as HTMLInputElement)?.value;
@@ -88,10 +98,25 @@ export class FeedbackComponent extends BaseDynamicComponent {
       if (targetId === SUBMIT_FEEDBACK_ID) {
 
         const elements = (shadowRoot?.getElementById('submit-feedback-form') as HTMLFormElement)?.elements
+
+        const feedbackText = (elements.namedItem(ENTER_EMAIL_INPUT_ID) as HTMLInputElement)?.value;
+        if(feedbackText && feedbackText.length >10000){
+          self.updateData({
+            errorMessage:"Feedback text cannot be more than 10000 characters"
+          })
+          return;
+        }
+        if(!feedbackText || feedbackText.length === 0){
+          self.updateData({
+            errorMessage:"Feedback text cannot be blank"
+          })
+          return;
+        }
+
         ApiLoadAction.getResponseData({
           body: JSON.stringify({
             email: (elements.namedItem(ENTER_EMAIL_INPUT_ID) as HTMLInputElement)?.value,
-            feedbackText: (elements.namedItem(ENTER_EMAIL_INPUT_ID) as HTMLInputElement)?.value,
+            feedbackText: feedbackText,
             feedbackType: (elements.namedItem(FEEDBACK_TYPE_INPUT_ID) as HTMLInputElement)?.value,
             name: (elements.namedItem(ENTER_NAME_INPUT_ID) as HTMLInputElement)?.value,
           }),
@@ -115,78 +140,64 @@ export class FeedbackComponent extends BaseDynamicComponent {
     })
   }
 
-  connectedCallback(){
-    this.updateData({
-      checkedState:{"general_feedback":"checked"},
-      email:'',
-      feedbackText:'',
-      name:'',
-    })
-  }
-
-  //TODO: Make sure feedback form is not empty before submitting.
-
   render(data:any){
     return `
+
+      <form id="submit-feedback-form" onsubmit="return false">  
         ${generateSuccessMessage(data?.[SUCCESS_MESSAGE_KEY])}
         ${generateErrorMessage(data?.errorMessage)}
-       <form id="submit-feedback-form" onsubmit="return false">  
-      
-         <p>
-          Use this form or email gulu@createthirdplaces.com to share feedback or submit a bug.
-        </p>
-        <label class="section-label">Feedback:</label>
-        <textarea
-          id=${FEEDBACK_TEXT_INPUT_ID}
-          name=${FEEDBACK_TEXT_INPUT_ID}
-          >${data.feedbackText}</textarea>
+      <p>
+        Use this form or email gulu@createthirdplaces.com to share feedback or submit a bug.
+      </p>
+      <label class="section-label">Feedback:</label>
+      <textarea
+        id=${FEEDBACK_TEXT_INPUT_ID}
+        name=${FEEDBACK_TEXT_INPUT_ID}
+        >${data.feedbackText}</textarea>
         
-        <label class="section-label">(Optional)Enter name:</label>
-        <input
-          id=${ENTER_NAME_INPUT_ID}
-          name=${ENTER_NAME_INPUT_ID}
-          value="${data.name}"
-        >
+      <label class="section-label">(Optional)Enter name:</label>
+      <input
+        id=${ENTER_NAME_INPUT_ID}
+        name=${ENTER_NAME_INPUT_ID}
+        value="${data.name}"
+      >
         
-        <label class="section-label">(Optional)Enter email:</label>
-        <input
-          id=${ENTER_EMAIL_INPUT_ID}
-          name=${ENTER_EMAIL_INPUT_ID}
-          value=${data.email}
-        >   
+      <label class="section-label">(Optional)Enter email:</label>
+      <input
+        id=${ENTER_EMAIL_INPUT_ID}
+        name=${ENTER_EMAIL_INPUT_ID}
+        value=${data.email}
+      >     
         
-        <label class="section-label" id="feedback-type-label">Feedback type:</label>
-        
-        <div id="feedback-type-select">
-          <div>
-          <label>General feedback</label> 
-          <input type="radio" name=${FEEDBACK_TYPE_INPUT_ID} value="general_feedback" ${data.checkedState["general_feedback"]}>
-          </div>
-          
-          <div>
-          <label for="javascript">Bug report</label> 
-          <input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="bug_report" ${data.checkedState["bug_report"]}>
-          </div>
-          
-          <div>
-          <label>New feature</label>
-          <input type="radio" name=${FEEDBACK_TYPE_INPUT_ID} value="new_feature" ${data.checkedState["new_feature"]}>
-          </div>
-          
-          <div>
-          <label>Feature enhancement</label>
-          <input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="feature_enhancement" ${data.checkedState["feature_enhancement"]}>
-          </div>
+      <label class="section-label" id="feedback-type-label">Feedback type:</label>  
+      <div id="feedback-type-select">
+        <div>
+        <label>General feedback</label> 
+        <input type="radio" name=${FEEDBACK_TYPE_INPUT_ID} value="general_feedback" ${data.checkedState["general_feedback"]}>
         </div>
-           ${data.validInputs  ?
-              generateButton({
-                id: SUBMIT_FEEDBACK_ID,
-                text: "Submit feedback",
-                type:"submit",
-              }):
-              generateDisabledButton({
-                text:"Submit feedback"
-              })}
+        
+        <div>
+        <label for="javascript">Bug report</label> 
+        <input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="bug_report" ${data.checkedState["bug_report"]}>
+        </div>
+        
+        <div>
+        <label>New feature</label>
+        <input type="radio" name=${FEEDBACK_TYPE_INPUT_ID} value="new_feature" ${data.checkedState["new_feature"]}>
+        </div>
+        
+        <div>
+        <label>Feature enhancement</label>
+        <input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="feature_enhancement" ${data.checkedState["feature_enhancement"]}>
+        </div>
+      </div>
+   
+       ${generateButton({
+          id: SUBMIT_FEEDBACK_ID,
+          text: "Submit feedback",
+          type:"submit",
+        })}
+        
       </form>
     </div>
     `
