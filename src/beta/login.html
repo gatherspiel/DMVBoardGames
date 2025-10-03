@@ -23,6 +23,8 @@
     customElements.define("login-status-component", LoginStatusComponent);
     customElements.define("login-component", LoginComponent);
 
+    import {BotHelper} from "./botHelper.js";
+    BotHelper();
   </script>
 </head>
 <body>
@@ -32,7 +34,5 @@
     <login-component>
     </login-component>
   </div>
-  <script src="botHelper.js"></script>
-
 </body>
 </html>
