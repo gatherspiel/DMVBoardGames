@@ -66,32 +66,6 @@ export class FeedbackComponent extends BaseDynamicComponent {
 
     const self = this;
 
-    shadowRoot?.addEventListener("change", () => {
-      const elements = (shadowRoot?.getElementById('submit-feedback-form') as HTMLFormElement)?.elements
-      const feedback: string = (elements.namedItem(FEEDBACK_TEXT_INPUT_ID) as HTMLInputElement)?.value;
-
-      const dataToUpdate = {
-        email: (elements.namedItem(ENTER_EMAIL_INPUT_ID) as HTMLInputElement)?.value,
-        feedbackText: feedback,
-        name: (elements.namedItem(ENTER_NAME_INPUT_ID) as HTMLInputElement)?.value,
-        checkedState: {
-          [(elements.namedItem(FEEDBACK_TYPE_INPUT_ID) as HTMLInputElement)?.value]: "checked"
-        }
-      }
-
-      if (dataToUpdate.feedbackText && dataToUpdate.feedbackText.length > 0) {
-        self.updateData({
-          ...dataToUpdate,
-          validInputs: true
-        })
-      } else {
-        self.updateData({
-          ...dataToUpdate,
-          validInputs: false
-        })
-      }
-    })
-
     shadowRoot?.addEventListener("click", (event: any) => {
 
       const targetId = event.target?.id;
@@ -99,7 +73,7 @@ export class FeedbackComponent extends BaseDynamicComponent {
 
         const elements = (shadowRoot?.getElementById('submit-feedback-form') as HTMLFormElement)?.elements
 
-        const feedbackText = (elements.namedItem(ENTER_EMAIL_INPUT_ID) as HTMLInputElement)?.value;
+        const feedbackText = (elements.namedItem(FEEDBACK_TEXT_INPUT_ID) as HTMLInputElement)?.value;
         if(feedbackText && feedbackText.length >10000){
           self.updateData({
             errorMessage:"Feedback text cannot be more than 10000 characters"
