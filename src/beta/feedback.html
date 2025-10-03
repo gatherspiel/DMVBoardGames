@@ -21,6 +21,9 @@
   >
     import {FeedbackComponent} from "../ui/FeedbackComponent.ts";
     customElements.define("feedback-component", FeedbackComponent);
+
+    import {BotHelper} from "./botHelper.js";
+    BotHelper();
   </script>
 </head>
 <body>
@@ -29,6 +32,5 @@
     <feedback-component>
     </feedback-component>
   </div>
-  <script src="botHelper.js"></script>
 </body>
 </html>
