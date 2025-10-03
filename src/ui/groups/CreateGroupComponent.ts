@@ -59,7 +59,8 @@ export class CreateGroupComponent extends BaseDynamicComponent {
           padding-left: 0.25rem;
         }  
         #group-description-input {
-          height:500px;
+          height: 10rem;
+          width: 50rem;
           margin-bottom: 1rem;
         }   
         #rules-content {
