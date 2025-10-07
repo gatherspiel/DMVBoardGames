@@ -14,6 +14,7 @@ import {
   getDaysOfWeekSelectHtml,
   getDropdownHtml
 } from "../../../../shared/html/SelectGenerator.ts";
+import {getDisplayName} from "../../../../shared/data/DisplayNameConversion.ts";
 
 const DEFAULT_PARAMETER_KEY = "defaultParameter";
 const DEFAULT_PARAMETER_DISPLAY_KEY = "defaultParameterDisplay";
@@ -35,10 +36,14 @@ const DISTANCE_OPTIONS= [
 export class GroupSearchComponent extends BaseDynamicComponent {
   constructor() {
     super([{
-      componentReducer: (cityArray:any)=>{
-        cityArray.sort();
-        cityArray.unshift(DEFAULT_SEARCH_PARAMETER);
-        return cityArray
+      componentReducer: (cityArray:string[])=>{
+        const copy:string[] = [];
+        cityArray.forEach((city:string)=>{
+          copy.push(getDisplayName(city))
+        })
+        copy.sort();
+        copy.unshift(DEFAULT_SEARCH_PARAMETER);
+        return copy
       },
       dataStore:CITY_LIST_STORE,
       fieldName: "cityList"
