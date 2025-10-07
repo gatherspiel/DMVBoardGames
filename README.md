@@ -3,6 +3,7 @@ This repo contains the source code for https://dmvboardgames.com/, a website to 
 
 ## Contribution guidelines
 
+If you find a bug or have a recommendation for an area of improvement, create a GitHub issue or email gulu@createthirdplaces.com.
 Go to the following page to view general development guidelines for the project: [here](https://github.com/gatherspiel)
 
 Also, follow the guidelines below:
