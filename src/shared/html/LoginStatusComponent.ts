@@ -26,16 +26,23 @@ export class LoginStatusComponent extends BaseDynamicComponent {
         a:hover {
           background-color: var(--clr-darker-blue);
         }
-        div {
-          padding-top:0.25rem;
-        }
+    
         span {
           font-weight: 400;
         } 
         
+        @media not screen and (width < 32em){
+          div {
+            padding-top:0.25rem;
+          }
+        }
+        
         @media screen and (width < 32em) {    
           div {
-            padding-bottom: 0.5rem;
+            padding-top:0.5rem;
+          } 
+          div {
+            padding-bottom: 0.25rem;
           }
         }
       </style>

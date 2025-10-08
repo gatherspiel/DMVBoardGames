@@ -67,8 +67,6 @@
     line-height: 2rem;
   }
 
-
-
   @media not screen and (width < 32em) {
     nav a + a {
       border-color: white;
@@ -76,8 +74,8 @@
       margin-left: 1px;
     }
 
-    #login-status {
-      margin-left: 0.5rem;
+    #login-status-mobile {
+      display: none;
     }
 
     #logo-div {
@@ -114,6 +112,9 @@
     nav a + a {
       border-color: white;
       border-width: 1px;
+    }
+    #login-status-desktop{
+      display: none;
     }
     #logo-div {
       display: flex;
@@ -171,6 +172,8 @@
         <a class = "hide-mobile top-link" href="/index.html" id="main-page-link" >Home
         </a>
         </a><a class="hide-mobile top-link" href="/beta/feedback.html" id="share-feedback-link">Share feedback</a>
+        <login-status-component class="hide-mobile top-link"  id="login-status-mobile"></login-status-component>
+
         <div class = "dropdown">
           <div class="hide-mobile" id="dropdown-container">
             Other links
@@ -192,7 +195,8 @@
             </div>
             </div>
           </div>
-          <login-status-component class="hide-mobile top-link"  id="login-status"></login-status-component>
+          <login-status-component class="hide-mobile top-link"  id="login-status-desktop"></login-status-component>
+
       </div>
     </div>
   </span>
@@ -297,45 +301,51 @@
 </div>
 
 <script>
-  document.getElementById("navbar").addEventListener("click", (event) => {
 
-    if(event.target.id === 'dropdown-container'){
-      const dropdownLinks = document.querySelectorAll("#dropdown-container a")
+  //Javascript that should only run on mobile devices
+  if(navigator.maxTouchPoints > 0){
 
-      const dropdownContentStyle = document.querySelector(".dropdown-content").style;
-      if(dropdownContentStyle.display !== "block") {
-        dropdownLinks.forEach((link)=>{
-          link.className="showMobile"
-        })
-        document.querySelector(".dropdown-content").style="display:block;"
-      } else {
-        dropdownLinks.forEach((link)=>{
-          link.className="hideMobile"
-        })
-        document.querySelector(".dropdown-content").style="display:none;"
+    document.getElementById("navbar").addEventListener("click", (event) => {
+
+      if(event.target.id === 'dropdown-container'){
+        const dropdownLinks = document.querySelectorAll("#dropdown-container a")
+
+        const dropdownContentStyle = document.querySelector(".dropdown-content").style;
+        if(dropdownContentStyle.display !== "block") {
+          dropdownLinks.forEach((link)=>{
+            link.className="showMobile"
+          })
+          document.querySelector(".dropdown-content").style="display:block;"
+        } else {
+          dropdownLinks.forEach((link)=>{
+            link.className="hideMobile"
+          })
+          document.querySelector(".dropdown-content").style="display:none;"
+        }
+
       }
 
-    }
+      else {
+        const hiddenMobileElements = document.getElementsByClassName("hide-mobile")
 
-    else {
-      const hiddenMobileElements = document.getElementsByClassName("hide-mobile")
+        if(hiddenMobileElements.length >0){
+          for(let i = hiddenMobileElements.length-1; i>=0;i--){
+            hiddenMobileElements.item(i).className ="is-visible";
+          }
+          document.getElementsByClassName("triangle-down").item(0).className = "triangle-up show-mobile"
 
-      if(hiddenMobileElements.length >0){
-        for(let i = hiddenMobileElements.length-1; i>=0;i--){
-          hiddenMobileElements.item(i).className ="is-visible";
+        } else {
+          const visibleMobileElements = document.getElementsByClassName("is-visible")
+          for(let i = visibleMobileElements.length-1; i>=0;i--){
+            visibleMobileElements.item(i).className ="hide-mobile";
+          }
+          document.getElementsByClassName("triangle-up").item(0).className = "triangle-down show-mobile"
         }
-        document.getElementsByClassName("triangle-down").item(0).className = "triangle-up show-mobile"
-
-      } else {
-        const visibleMobileElements = document.getElementsByClassName("is-visible")
-        for(let i = visibleMobileElements.length-1; i>=0;i--){
-          visibleMobileElements.item(i).className ="hide-mobile";
-        }
-        document.getElementsByClassName("triangle-up").item(0).className = "triangle-down show-mobile"
       }
-    }
 
-  })
+    })
+  }
+
 
   const hexagons = window.innerWidth/240.0;
 
