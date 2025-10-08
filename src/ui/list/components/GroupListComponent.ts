@@ -29,6 +29,10 @@ export class GroupListComponent extends BaseDynamicComponent {
           padding-bottom: 1rem;
           padding-top:1rem;
         }
+        h1 {
+          margin-top:-1rem;
+          font-size: 3rem;
+        }
         ul {
           list-style:url(/assets/meeple_small.png);
           margin-top:0;
@@ -37,14 +41,17 @@ export class GroupListComponent extends BaseDynamicComponent {
        .button-div {
           display: flex;
         }
-        .section-separator-small {
-          margin-left:-1rem;
-        }
         .group-search-details {
           display:block;
           padding-top:0.5rem;
         }
+        .section-separator-small {
+          margin-left:-1rem;
+        }
         @media not screen and (width < 32em) {
+          #group-search-results-header {
+            padding-left:1.5rem;
+          }
           .group-cities {
             display: inline-block;
             margin-left: 2rem;
@@ -117,12 +124,12 @@ export class GroupListComponent extends BaseDynamicComponent {
         `
     }
 
-    let html = `<ul>`;
+    let html = `<h1 id="group-search-results-header">Search results</h1>
+    <ul>`;
     for(let i = 0; i<state.data.groupData.length; i++){
       html+= `
-        ${this.getItemHtml(state.data.groupData[i], state.loginStatus.loggedIn)}
         <div class="section-separator-small"></div> 
-
+        ${this.getItemHtml(state.data.groupData[i], state.loginStatus.loggedIn)}
       `
     }
     return html + `</ul>`;

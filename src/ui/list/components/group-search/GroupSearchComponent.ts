@@ -56,45 +56,65 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           select {
           width:10rem;
         }
+         #days-of-week-select > :not(:first-child) {
+          padding-left: 0.25rem;
+        }  
+        #group-search-header {
+          margin-top:-1rem;
+        }
         #search-form {
           display: flex;
           flex-wrap: wrap;
           padding-left:1.5rem;
           padding-bottom:1rem;
-        }     
+        }   
+        #search-form-inputs {
+          padding-top:0.5rem; 
+        } 
+        #searchInputDiv {
+          padding-top: 1rem;
+        } 
         .searchDropdownLabel {
           color: var(--clr-darker-blue);
           display: inline-block;
           font-weight:600;
         }
-        #searchInputDiv {
-          padding-top: 0.5rem;
-        }
-         #days-of-week-select > :not(:first-child) {
-          padding-left: 0.25rem;
-        }  
         @media not screen and (width < 32em) {
           select {
             margin-right: 0.5rem;
           }
+          #group-search-header {
+            padding-left:1.5rem;
+          }
+          #max-distance-label {
+            width: 8rem;
+          }
           #search-form .form-item {
             display: inline-block;
           }
+
         }     
         @media screen and (width < 32em) {
           #form-div-outer {
             width: 100%
           }
-          .searchDropdownLabel {
-            width: 14rem;
+          #search-cities {
+            margin-top:0.5rem;
           }
+          #search-distance-id {
+            margin-top:0.5rem;
+          }
+          .searchDropdownLabel {
+            width: 11rem;
+          }
+
           .search-form-two-inputs {
             display: inline-block;
-            height:8rem;
+            height:4rem;
           }
           .search-form-three-inputs {
             display: inline-block;
-            height:12rem;
+            height:6rem;
           }
         }
       </style>   
@@ -151,6 +171,8 @@ export class GroupSearchComponent extends BaseDynamicComponent {
     const searchInputsClass = store.location && store.location !== DEFAULT_SEARCH_PARAMETER ?
       "search-form-three-inputs" : "search-form-two-inputs"
     return `
+      <h1 id="group-search-header">Search groups</h1>
+      <div class="section-separator-small"></div>
       <form id=${SEARCH_FORM_ID} onsubmit="return false">
         <div id ="form-div-outer">
           <div id="search-form-inputs" class="${searchInputsClass}">
@@ -181,7 +203,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
             })}
             ${store.location && store.location !== DEFAULT_SEARCH_PARAMETER ?`
             <br>
-            <label class="searchDropdownLabel">Max distance:</label>
+            <label id="max-distance-label" class="searchDropdownLabel">Max distance:</label>
 
             ${getDropdownHtml({
               data: DISTANCE_OPTIONS,
@@ -201,7 +223,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
               })}` :
               `${generateDisabledButton({
                 id: 'disabled-search-button',
-                text: "Search groups",
+                text: "Search",
               })}`
             }
           </div>

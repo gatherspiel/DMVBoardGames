@@ -56,9 +56,10 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
 
     let html = `
       <div class="game-restaurants">
-      <h1 class="hide-mobile">Board Game Bars and Cafés</h1>
-      <h2 class="show-mobile">Board Game Bars and Cafés</h2>
       <div class="section-separator-medium"></div>
+      <h1>Board Game Bars and Cafés</h1>
+      <div class="section-separator-small"></div>
+
       <ul>
     `;
     Object.values(data).forEach((item:any) => {

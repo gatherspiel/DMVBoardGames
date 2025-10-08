@@ -3,10 +3,10 @@ import {
 } from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../../ui/auth/data/LoginStore.ts";
 import {LOGOUT_STORE} from "../../ui/auth/data/LogoutStore.ts";
+import {generateLinkButton} from "./ButtonGenerator.ts";
 
 const SIGN_OUT_LINK_ID = "signout-link"
 export class LoginStatusComponent extends BaseDynamicComponent {
-
   constructor() {
     super([{
         dataStore: LOGIN_STORE
@@ -16,35 +16,25 @@ export class LoginStatusComponent extends BaseDynamicComponent {
 
   override getTemplateStyle(): string {
     return `
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+
       <style>
-        a {
-          color: white;
-          font-size: 1.5rem;
-          font-weight: 400;
-          text-decoration: none;
-        }
-        a:hover {
-          background-color: var(--clr-darker-blue);
-        }
-    
-        span {
-          font-weight: 400;
-        } 
-        
-        @media not screen and (width < 32em){
+         @media not screen and (width < 32em) {
+          p {
+            display: inline-block;
+          }
           div {
-            padding-top:0.25rem;
+            margin-left: 1rem;
+          }
+          .raised {
+            display: inline-block;
           }
         }
-        
-        @media screen and (width < 32em) {    
-          div {
-            padding-top:0.5rem;
-          } 
-          div {
-            padding-bottom: 0.25rem;
+        @media screen and (width < 32em) {
+          p {
+            margin-top:0;
           }
-        }
+        }  
       </style>
     `;
   }
@@ -60,14 +50,19 @@ export class LoginStatusComponent extends BaseDynamicComponent {
   override render(authData:any){
     if(authData.loggedIn){
       return `
-        <div>
-          <span>Welcome ${authData.data.user.email}</span>
-          <a id="${SIGN_OUT_LINK_ID}">Sign out</a>   
-        </div>
-
+        <p id="user-text">Welcome ${authData.data.user.email}</p>
+        ${generateLinkButton({
+          text: "Sign out",
+          url: SIGN_OUT_LINK_ID
+        })}
       `
     }
-    return `<div><a href="/beta/login.html">Sign in </a></div>`;
+    return `
+      ${generateLinkButton({
+        text: "Sign in",
+        url: "/beta/login.html"
+      })}
+    `;
   }
 }
 
