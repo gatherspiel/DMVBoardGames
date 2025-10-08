@@ -2,9 +2,6 @@ import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import {generateLinkButton} from "../../../shared/html/ButtonGenerator.ts";
 import {GAME_RESTAURANT_STORE} from "../data/search/LocationsStore.ts";
 
-import {ListingNavComponent} from "../../../shared/html/ListingNavComponent.ts";
-customElements.define("listing-nav-component", ListingNavComponent);
-
 export class GameRestaurantListComponent extends BaseDynamicComponent {
   constructor() {
     super([{
@@ -58,8 +55,6 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
   render(data: any) {
 
     let html = `
-
-      </listing-nav-component>
       <div class="game-restaurants">
       <h1 class="hide-mobile">Board Game Bars and Cafés</h1>
       <h2 class="show-mobile">Board Game Bars and Cafés</h2>
@@ -70,11 +65,6 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
       html += this.getItemHtml(item);
     });
 
-    return html + `</ul></div>      
-    <listing-nav-component
-        class="ui-section"
-        id="show-info-ui"
-        currentPage="gameRestaurants.html"
-      >`;
+    return html + `</ul></div>`;
   }
 }

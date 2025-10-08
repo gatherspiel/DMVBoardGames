@@ -2,9 +2,6 @@ import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import {generateLinkButton} from "../../../shared/html/ButtonGenerator.ts";
 import {GAME_STORE_DATA} from "../data/search/LocationsStore.ts";
 
-import {ListingNavComponent} from "../../../shared/html/ListingNavComponent.ts";
-customElements.define("listing-nav-component", ListingNavComponent);
-
 export class GameStoreListComponent extends BaseDynamicComponent {
   constructor() {
     super([{
@@ -64,12 +61,6 @@ export class GameStoreListComponent extends BaseDynamicComponent {
       html += this.getItemHtml(item) + `      <div class="section-separator-small"></div>`;
     });
     return html + `</ul></div>
-      <listing-nav-component
-        class="ui-section"
-        id="show-info-ui"
-        currentPage="gameStores.html"
-      >
-      </listing-nav-component>  
     `;
   }
 }
