@@ -5,24 +5,18 @@
       console.log("Starting to parse Javascript at:" + Date.now())
       import {GroupSearchComponent} from "./ui/list/components/group-search/GroupSearchComponent.js";
       import {GroupListComponent} from "./ui/list/components/GroupListComponent.js";
-      import {ListingNavComponent} from "./shared/html/ListingNavComponent.js";
       import {LoginStatusComponent} from "./shared/html/LoginStatusComponent.js";
       import {OpenCreateGroupComponent} from "./ui/list/components/OpenCreateGroupComponent.js";
 
       customElements.define("group-list-component", GroupListComponent);
       customElements.define("group-search-component", GroupSearchComponent);
-      customElements.define("listing-nav-component", ListingNavComponent);
       customElements.define("login-status-component",LoginStatusComponent)
       customElements.define("open-create-group-component", OpenCreateGroupComponent);
     </script>
     <meta charset="UTF-8"/>
     <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
     <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
-    <style>
-      #main-page-link {
-          display:none;
-      }
-    </style>
+
     <link rel="preconnect" href="api.gatherspiel.com" />
     <link rel="icon" type="image/ico" href="/assets/favicon.ico"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -39,11 +33,6 @@
       </group-search-component>
       <div class="section-separator-medium"></div>
       <group-list-component class="ui-section"></group-list-component>
-      <listing-nav-component
-        class="ui-section"
-        currentPage="index.html"
-      >
-      </listing-nav-component>
     </div>
   </body>
 </html>
