@@ -30,11 +30,12 @@ export class OpenCreateGroupComponent extends BaseDynamicComponent {
             display: inline-block;
           }
         }
-        
         @media screen and (width < 32em) {
          .raised {
             margin-left: 2rem;
             margin-right:2rem;
+            margin-bottom:0;
+            margin-top:0;
           }
         }      
       </style>`
@@ -50,8 +51,6 @@ export class OpenCreateGroupComponent extends BaseDynamicComponent {
             text: "Create group",
             url: url
           })}
-        
-        <div class="section-separator-small"></div>
       `
 
   }

@@ -13,6 +13,9 @@
   >
     import {GroupComponent} from "./ui/groups/GroupComponent.ts";
     customElements.define("group-component", GroupComponent);
+
+    const params = new URLSearchParams(document.location.search);
+    document.title = params.get("name");
   </script>
 </head>
 <body>

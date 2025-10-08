@@ -1,20 +1,25 @@
 /* Styles that are shared with components */
 
 
-b,h1,h2,label,li {
-  color: var(--clr-darker-blue)
+b,h2,label,li {
+  color: var(--clr-darker-blue);
+  margin-top:0;
+  margin-bottom:0;
+}
+
+h1 {
+  color: var(--clr-darker-blue);
+  font-size:3rem;
+  margin-top:0;
+  margin-bottom:0;
 }
 
 a:hover {
   background-color: var(--clr-darker-blue);
 }
 
-label {
-  font-size: 1.5rem;
-}
 
-span {
-  color: var(--clr-darker-blue);
+.raised span {
   font-size: 1.5rem;
 }
 
@@ -96,7 +101,6 @@ span {
   position: relative;
   padding: 0.5rem;
   border-radius: 12px;
-  font-size: 1.5rem;
   color: white;
   background: var(--clr-light-blue);
   will-change: transform;

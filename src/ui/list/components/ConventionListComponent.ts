@@ -19,9 +19,7 @@ export class ConventionListComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
-        h1,h2{
-          padding-left:1.5rem;
-        }
+        
         h3 {
           font-size: 1.5rem;
         }
@@ -37,6 +35,12 @@ export class ConventionListComponent extends BaseDynamicComponent {
         }  
         .date-info {
           padding-left: 0.5rem;
+        }
+        @media not screen and (width < 32em) {
+          h1 {
+            padding-left:1.5rem;
+          }
+        
         }
       </style>
     `;
@@ -59,11 +63,9 @@ export class ConventionListComponent extends BaseDynamicComponent {
 
   render(data: any) {
     let html = `
-
-
-      <div class="ui-section"><h1 class="hide-mobile">Upcoming conventions</h1>
-      <h2 class="show-mobile">Upcoming conventions</h2>
-      <div class="section-separator-medium"></div>
+      <div class="ui-section">
+      <h1>Upcoming conventions</h1>
+      <div class="section-separator-small"></div>
       <ul>
     `;
 
