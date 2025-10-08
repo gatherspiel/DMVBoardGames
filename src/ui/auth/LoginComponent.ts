@@ -11,7 +11,7 @@ import {
 import {generateErrorMessage, generateSuccessMessage} from "../../shared/html/StatusIndicators.ts";
 import {generateButton, generateDisabledButton} from "../../shared/html/ButtonGenerator.ts";
 import {API_ROOT} from "../../shared/Params.ts";
-import {getSiteRulesHtml} from "../../shared/html/SiteRules.ts";
+import {getMainSiteRulesHtml} from "../../shared/html/SiteRules.ts";
 
 const LOGIN_BUTTON_ID = "login-button";
 const REGISTER_BUTTON_ID = "register-button";
@@ -206,7 +206,7 @@ export class LoginComponent extends BaseDynamicComponent {
       <label for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
       <input type="checkbox" id="${AGREE_RULES_ID}" ${data[AGREE_RULES_ID] ? 'checked' : ''}>
 
-      ${getSiteRulesHtml()}
+      ${getMainSiteRulesHtml()}
     `
   }
   generateLogin(data: any) {
