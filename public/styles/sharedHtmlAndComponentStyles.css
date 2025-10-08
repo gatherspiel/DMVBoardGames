@@ -13,7 +13,7 @@ label {
   font-size: 1.5rem;
 }
 
-p,span {
+span {
   color: var(--clr-darker-blue);
   font-size: 1.5rem;
 }

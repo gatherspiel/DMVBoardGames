@@ -14,7 +14,7 @@ import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
 import { API_ROOT } from "../../shared/Params.ts";
 import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
-import {getSiteRulesHtml} from "../../shared/html/SiteRules.ts";
+import {getFaqRulesHtml, getMainSiteRulesHtml} from "../../shared/html/SiteRules.ts";
 
 const AGREE_RULES_ID ="agree-rules-id";
 const CREATE_GROUP_BUTTON_ID = "create-group-button-id";
@@ -178,7 +178,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                   <label for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
                   <input type="checkbox" id="${AGREE_RULES_ID}" ${data[AGREE_RULES_ID] ? 'checked' : ''}>
   
-                  ${getSiteRulesHtml()}
+                  ${getMainSiteRulesHtml()}
                 </div>
                 ${data[AGREE_RULES_ID]  ? 
                   generateButton({
@@ -189,6 +189,8 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                   generateDisabledButton({
                     text:"Create group"
                   })}
+                
+                ${getFaqRulesHtml()}
 
               </form>
              

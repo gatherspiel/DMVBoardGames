@@ -105,7 +105,7 @@ export class GroupComponent extends BaseDynamicComponent {
         .${GROUP_DESCRIPTION_TEXT} {
           border: 10px solid;
           background-color: var(--clr-very-light-blue);
-          border-image-source: url(assets/meepleThree.png);
+          border-image-source: url(assets/Section_Border_Small.png);
           border-image-slice: 10 10;
           border-image-repeat: round;
           border-radius: 12px;
