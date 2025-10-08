@@ -16,9 +16,7 @@ export class GameStoreListComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
-        h1,h2 {
-          padding-left:1.5rem;
-        }
+
         p {
           font-size: 1rem;
         }
@@ -29,6 +27,12 @@ export class GameStoreListComponent extends BaseDynamicComponent {
         }
         .game-store-list-item * {
           display: inline-block;
+        }
+        @media not screen and (width < 32em) {
+          h1 {
+            padding-left:1.5rem;
+          }
+        
         }
       </style> 
     `;
@@ -52,9 +56,9 @@ export class GameStoreListComponent extends BaseDynamicComponent {
 
     let html = `
       <div class="ui-section">
-      <h1 class="hide-mobile">Game Stores</h1>
-      <h2 class="show-mobile">Game stores</h2>
       <div class="section-separator-medium"></div>
+      <h1>Game Stores</h1>
+      <div class="section-separator-small"></div>
       <ul>
     `;
     Object.values(data).forEach((item) => {
