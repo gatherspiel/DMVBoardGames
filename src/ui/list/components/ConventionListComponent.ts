@@ -3,9 +3,7 @@ import { generateLinkButton} from "../../../shared/html/ButtonGenerator.ts";
 
 import {CONVENTIONS_STORE} from "../data/search/LocationsStore.ts";
 
-import {ListingNavComponent} from "../../../shared/html/ListingNavComponent.ts";
 import {convertDateListToRange} from "../../../shared/data/EventDataUtils.ts";
-customElements.define("listing-nav-component", ListingNavComponent);
 
 export class ConventionListComponent extends BaseDynamicComponent {
   constructor() {
@@ -78,12 +76,6 @@ export class ConventionListComponent extends BaseDynamicComponent {
     }
 
     return html + `</ul></div>
-      <listing-nav-component
-        class="ui-section"
-        id="show-info-ui"
-        currentPage="conventions.html"
-      >
-      </listing-nav-component>
     `;
   }
 }

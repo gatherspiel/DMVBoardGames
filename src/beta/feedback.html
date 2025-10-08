@@ -9,18 +9,16 @@
 
   <link rel="stylesheet" href="/styles/designersAndLinks.css">
   <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
-  <style>
-    #share-feedback-link {
-      display:none;
-    }
-  </style>
   <script
     defer
     fetchpriority="low"
     type="module"
   >
     import {FeedbackComponent} from "../ui/FeedbackComponent.ts";
+    import {LoginStatusComponent} from "../shared/html/LoginStatusComponent.js";
+
     customElements.define("feedback-component", FeedbackComponent);
+    customElements.define("login-status-component",LoginStatusComponent)
 
     import {BotHelper} from "./botHelper.js";
     BotHelper();
