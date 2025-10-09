@@ -69,10 +69,6 @@ export class GroupComponent extends BaseDynamicComponent {
         button {
           margin-top:0.5rem;
         }
-        .raised {
-          display: inline-block;
-          line-height: 1;
-        }  
         .event {
           padding-top: 1rem;
           padding-bottom: 0.5rem;
@@ -129,6 +125,10 @@ export class GroupComponent extends BaseDynamicComponent {
           .${GROUP_DESCRIPTION_TEXT} {
             margin-top: 1rem;
           }
+          .raised {
+            display: inline-block;
+            line-height: 1;
+          }  
         }   
         @media screen and (width < 32em) {
           .${GROUP_DESCRIPTION_TEXT} {

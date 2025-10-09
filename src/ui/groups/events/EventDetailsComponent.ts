@@ -36,8 +36,6 @@ import {convertDayOfWeekForDisplay} from "../../../shared/data/DisplayNameConver
 import {getDayOfWeekSelectHtml} from "../../../shared/html/SelectGenerator.ts";
 customElements.define("login-status-component", LoginStatusComponent);
 
-
-
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 const CANCEL_DELETE_BUTTON_ID = "cancel-delete-button";
 const CANCEL_EDIT_BUTTON_ID = "cancel-edit-button";
@@ -62,8 +60,11 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   getTemplateStyle(): string {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style>   
-        h1,form {
+      <style>
+        h1 {
+          margin-top:0rem;
+        }   
+        form {
           padding-left:1.5rem;
         }
         input,select,textarea {
@@ -83,6 +84,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           width: 50rem;
         } 
         .back-to-group-button {
+          margin-top: 0.5rem;
+        }
+        .event-website-link {
           margin-top: 0.5rem;
         }
         .raised {
@@ -218,13 +222,46 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     if(!data || !data.name){
       return `<h1>Loading</h1>`;
     }
+
+    let html = `
+      <div class="ui-section" id = "user-actions-menu">
+        ${!data.isEditing && !data.isDeleting && data?.permissions?.userCanEdit ? `
+          ${generateButton({
+          id: EDIT_EVENT_BUTTON_ID,
+          text: "Edit event",
+        })}
+          
+        ${generateButton({
+          id: DELETE_EVENT_BUTTON_ID,
+          text: "Delete event",
+        })}
+    
+        ` : ''}
+        <login-status-component class = "ui-section"></login-status-component>
+      </div>
+      
+      <div class="section-separator-medium"></div>
+      ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
+
+    `
     if(data.isEditing){
-      return this.renderEditMode(data);
+      html += this.renderEditMode(data);
     }
-    if(data.isDeleting){
-      return this.renderDeleteMode(data);
+    else if(data.isDeleting){
+      html += this.renderDeleteMode(data);
+    } else {
+      html += this.renderViewMode(data);
     }
-    return this.renderViewMode(data);
+    html+=`
+      <div class="ui-section">
+      ${generateLinkButton({
+        class: "back-to-group-button",
+        text: "Back to group information",
+        url: `${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}`
+      })}
+      </div>
+    `
+    return html
   }
 
   renderDeleteMode(data:any): string {
@@ -255,7 +292,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           text: "Cancel"
         })}     
       </div>
-
     `
   }
 
@@ -349,9 +385,10 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     }
     return `
       <div class="ui-section">
-        <h1></h1>
+        <h1>${data.name}</h1>
         ${generateLinkButton({
-          text: data.name, 
+          class:"event-website-link",
+          text: "Event website", 
           url: data.url
         })}
          
@@ -367,27 +404,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         <p>Location: ${convertLocationStringForDisplay(data.location)}</p>
         <p>${data.description}</p>
            
-        ${data?.permissions?.userCanEdit ? `
-          ${generateButton({
-            id: EDIT_EVENT_BUTTON_ID, 
-            text: "Edit event",
-          })}
-          
-          ${generateButton({
-            id: DELETE_EVENT_BUTTON_ID,
-            text: "Delete event",
-          })}
     
-          ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
-          
-          ${generateLinkButton({
-            class: "back-to-group-button",
-            text: "Back to group information",
-            url: `${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}`
-          })}
-          
-       ` : ''}
-
       </div>
     `;
   }

@@ -12,7 +12,6 @@ export class LoginStatusComponent extends BaseDynamicComponent {
         dataStore: LOGIN_STORE
       }]
     );
-    console.log("Login status component constructor finished")
   }
 
   override getTemplateStyle(): string {
