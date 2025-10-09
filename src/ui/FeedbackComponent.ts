@@ -19,21 +19,22 @@ export class FeedbackComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
+        button {
+          margin-top:0.5rem;
+        }
         .section-label {
           font-weight: 600;
         }
-        
         #${ENTER_NAME_INPUT_ID},#${ENTER_EMAIL_INPUT_ID} {
           display: block;
-          margin-top: 0.5rem;
-        }
-        
-        
-        
+        }   
         #submit-feedback-form {
           padding-left: 1.5rem;
         }
         @media not screen and (width < 32em) {
+          h1 {
+            margin-left: 1.5rem;
+          }
           #feedback-type-select div {
             display: inline-block;
           }  
@@ -49,8 +50,7 @@ export class FeedbackComponent extends BaseDynamicComponent {
             height: 10rem;
             width: 50rem;
           }
-        }
-        
+        } 
         @media  screen and (width < 32em) {
           #feedback-type-select div {
             display: inline-block;
@@ -62,7 +62,6 @@ export class FeedbackComponent extends BaseDynamicComponent {
           #feedback-type-select input {
             padding-right: 0.25rem; 
           }  
-          
           #${FEEDBACK_TEXT_INPUT_ID} {
             display: block;
             height: 10rem;
@@ -92,8 +91,8 @@ export class FeedbackComponent extends BaseDynamicComponent {
       if (targetId === SUBMIT_FEEDBACK_ID) {
 
         const elements = (shadowRoot?.getElementById('submit-feedback-form') as HTMLFormElement)?.elements
-
         const feedbackText = (elements.namedItem(FEEDBACK_TEXT_INPUT_ID) as HTMLInputElement)?.value;
+
         if(feedbackText && feedbackText.length >10000){
           self.updateData({
             errorMessage:"Feedback text cannot be more than 10000 characters"
@@ -136,59 +135,58 @@ export class FeedbackComponent extends BaseDynamicComponent {
 
   render(data:any){
     return `
-
+      <h1>Share feedback</h1>
+      <div class="section-separator-small"></div>
       <form id="submit-feedback-form" onsubmit="return false">  
         ${generateSuccessMessage(data?.[SUCCESS_MESSAGE_KEY])}
         ${generateErrorMessage(data?.errorMessage)}
-      <p>
-        Use this form or email gulu@createthirdplaces.com to share feedback or submit a bug.
-      </p>
-      <label class="section-label">Feedback:</label>
-      <textarea
-        id=${FEEDBACK_TEXT_INPUT_ID}
-        name=${FEEDBACK_TEXT_INPUT_ID}
-        >${data.feedbackText}</textarea>
-        
-      <label class="section-label">(Optional)Enter name:</label>
-      <input
-        id=${ENTER_NAME_INPUT_ID}
-        name=${ENTER_NAME_INPUT_ID}
-        value="${data.name}"
-      >
-        
-      <label class="section-label">(Optional)Enter email:</label>
-      <input
-        id=${ENTER_EMAIL_INPUT_ID}
-        name=${ENTER_EMAIL_INPUT_ID}
-        value=${data.email}
-      >     
-        
-      <label class="section-label" id="feedback-type-label">Feedback type:</label>  
-      <div id="feedback-type-select">
-        <div>
-        <label>General feedback</label> 
-        <input type="radio" name=${FEEDBACK_TYPE_INPUT_ID} value="general_feedback" ${data.checkedState["general_feedback"]}>
+
+        <label class="section-label">Feedback:</label>
+        <textarea
+          id=${FEEDBACK_TEXT_INPUT_ID}
+          name=${FEEDBACK_TEXT_INPUT_ID}
+          >${data.feedbackText}</textarea>
+          
+        <label class="section-label">(Optional)Enter name:</label>
+        <input
+          id=${ENTER_NAME_INPUT_ID}
+          name=${ENTER_NAME_INPUT_ID}
+          value="${data.name}"
+        >
+          
+        <label class="section-label">(Optional)Enter email:</label>
+        <input
+          id=${ENTER_EMAIL_INPUT_ID}
+          name=${ENTER_EMAIL_INPUT_ID}
+          value=${data.email}
+        >     
+          
+        <label class="section-label" id="feedback-type-label">Feedback type:</label>  
+        <div id="feedback-type-select">
+          <div>
+          <label>General feedback</label> 
+          <input type="radio" name=${FEEDBACK_TYPE_INPUT_ID} value="general_feedback" ${data.checkedState["general_feedback"]}>
+          </div>
+          
+          <div>
+          <label for="javascript">Bug report</label> 
+          <input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="bug_report" ${data.checkedState["bug_report"]}>
+          </div>
+          
+          <div>
+          <label>New feature</label>
+          <input type="radio" name=${FEEDBACK_TYPE_INPUT_ID} value="new_feature" ${data.checkedState["new_feature"]}>
+          </div>
+          
+          <div>
+          <label>Feature enhancement</label>
+          <input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="feature_enhancement" ${data.checkedState["feature_enhancement"]}>
+          </div>
         </div>
-        
-        <div>
-        <label for="javascript">Bug report</label> 
-        <input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="bug_report" ${data.checkedState["bug_report"]}>
-        </div>
-        
-        <div>
-        <label>New feature</label>
-        <input type="radio" name=${FEEDBACK_TYPE_INPUT_ID} value="new_feature" ${data.checkedState["new_feature"]}>
-        </div>
-        
-        <div>
-        <label>Feature enhancement</label>
-        <input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="feature_enhancement" ${data.checkedState["feature_enhancement"]}>
-        </div>
-      </div>
-   
+     
        ${generateButton({
           id: SUBMIT_FEEDBACK_ID,
-          text: "Submit feedback",
+          text: "Submit",
           type:"submit",
         })}
         

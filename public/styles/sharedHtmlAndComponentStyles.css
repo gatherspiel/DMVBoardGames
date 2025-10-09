@@ -10,6 +10,13 @@ b,h2,label,li {
 h1 {
   color: var(--clr-darker-blue);
   font-size:3rem;
+  margin-top:-1rem;
+  margin-bottom:0;
+}
+
+h2 {
+  color: var(--clr-darker-blue);
+  font-size: 2rem;
   margin-top:0;
   margin-bottom:0;
 }
@@ -18,6 +25,17 @@ a:hover {
   background-color: var(--clr-darker-blue);
 }
 
+form input {
+  margin-bottom: 0.5rem;
+}
+
+form textarea {
+  margin-bottom: 0.5rem;
+}
+.form-field-header {
+  display:block;
+  font-weight:600;
+}
 
 .raised span {
   font-size: 1.5rem;
@@ -34,7 +52,6 @@ a:hover {
   color: darkred;
 }
 
-
 .form-select {
   border-color: var(--clr-light-blue);
   border-radius: 5px;
@@ -43,6 +60,9 @@ a:hover {
   padding: 0.25rem;
 }
 
+#user-actions-menu {
+  padding-top: 0.5rem;
+}
 .raised a {
   color: white;
   font-weight: 400;
@@ -179,5 +199,11 @@ a:hover {
   }
   .show-mobile {
     display:initial;
+  }
+  form {
+    margin-right:1.5rem;
+  }
+  input, textarea {
+    width:100%;
   }
 }

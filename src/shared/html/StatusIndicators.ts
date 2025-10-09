@@ -8,7 +8,7 @@ export function generateErrorMessage(message: string | string[] | undefined){
     return html;
   }
   return `
-    <p class="error-message">${message? message.trim() : ""}</p>
+    ${message ? `<p class="error-message">${message.trim()}</p>` : ``}
   `
 }
 
