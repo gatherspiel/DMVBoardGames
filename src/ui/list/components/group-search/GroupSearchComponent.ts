@@ -56,7 +56,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           select {
           width:10rem;
         }
-         #days-of-week-select > :not(:first-child) {
+        #days-of-week-select > :not(:first-child) {
           padding-left: 0.25rem;
         }  
         #group-search-header {
@@ -66,13 +66,10 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           display: flex;
           flex-wrap: wrap;
           padding-left:1.5rem;
-          padding-bottom:1rem;
+          padding-bottom:0.5rem;
         }   
         #search-form-inputs {
           padding-top:0.5rem; 
-        } 
-        #searchInputDiv {
-          padding-top: 1rem;
         } 
         .searchDropdownLabel {
           color: var(--clr-darker-blue);

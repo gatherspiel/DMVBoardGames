@@ -69,39 +69,29 @@ export class GroupComponent extends BaseDynamicComponent {
         button {
           margin-top:0.5rem;
         }
- 
-        h1,h2 {
-          color: var(--clr-dark-blue)
-        }
-        .raised {
-          display: inline-block;
-          line-height: 1;
-        }  
         .event {
           padding-top: 1rem;
           padding-bottom: 0.5rem;
         }
         .event p {
-          font-size: 1.5rem;
           max-width: 65ch;
           margin-top: 0.5rem;
           word-wrap: break-word;
           white-space: normal;
         }
-        .event-time, .event-location {
-          font-size: 1.25rem;
-        } 
        .group-webpage-link {
           display: inline-block;
+          margin-top: 0.5rem;
         }  
         .add-event-button {
           margin-top:0.5rem;
         }
-        
         #game-type-tag-select > :not(:first-child) {
           padding-left: 0.25rem;
         }  
-        
+        #group-name-header {
+          margin-top: 0;
+        }
         .${GROUP_DESCRIPTION_TEXT} {
           border: 10px solid;
           background-color: var(--clr-very-light-blue);
@@ -114,26 +104,37 @@ export class GroupComponent extends BaseDynamicComponent {
           padding: 0.5rem;
         }  
         
-        #${GROUP_DESCRIPTION_INPUT} {
-          display: block;
-          height: 500px;
-          width: 800px;
+ 
+        #recurring-events-separator {
+          margin-left: -1.5rem;
         }
-        #${GROUP_NAME_INPUT} {
-          display:block;
-          width: 600px;
-        }
-        #${GROUP_URL_INPUT} {
-          display: block;
-          width: 600px;
-        }  
 
         @media not screen and (width < 32em) {
+          #${GROUP_DESCRIPTION_INPUT} {
+            display: block;
+            height: 500px;
+            width: 800px;
+          }
+          #${GROUP_NAME_INPUT} {
+            display:block;
+            width: 600px;
+          }
+          #${GROUP_URL_INPUT} {
+            display: block;
+            width: 600px;
+          } 
           .${GROUP_DESCRIPTION_TEXT} {
             margin-top: 1rem;
           }
+          .raised {
+            display: inline-block;
+            line-height: 1;
+          }  
         }   
         @media screen and (width < 32em) {
+          #${GROUP_DESCRIPTION_INPUT} {
+            height:10rem;
+          }
           .${GROUP_DESCRIPTION_TEXT} {
             font-size:1rem;
             margin-top: 1rem;
@@ -142,6 +143,10 @@ export class GroupComponent extends BaseDynamicComponent {
           .delete-button {
             margin-top: 0.5rem;
           }  
+          .label-border-left {
+            border-top:1px solid;
+            border-left:none;
+          }
           .raised {
             margin-left:2rem;
             margin-right:2rem;
@@ -197,7 +202,6 @@ export class GroupComponent extends BaseDynamicComponent {
               [SUCCESS_MESSAGE_KEY]: 'Group update successful'
             });
           } else {
-            console.log("Error")
             self.updateData({
               ...params,
               [ERROR_MESSAGE_KEY]: data.errorMessage
@@ -211,23 +215,24 @@ export class GroupComponent extends BaseDynamicComponent {
   renderEditMode(groupData:any):string {
     return`
     
-    <h1>Editing group information</h1>
+    <h2>Edit group information</h2>
+    <div class="section-separator-small"></div>
     ${groupData[ERROR_MESSAGE_KEY] ? generateErrorMessage(groupData[ERROR_MESSAGE_KEY]) : ''}
 
     <form>
-      <label>Group name</label>
+      <label class="form-field-header">Name</label>
       <input
         id=${GROUP_NAME_INPUT}
         value="${groupData.name}"
       />
-      <label>Group description</label>
-  
+      
+      <label class="form-field-header">Description</label>
       <textarea
         id=${GROUP_DESCRIPTION_INPUT}
       />${groupData.description}
       </textarea>        
   
-      <label>Group url</label>
+      <label class="form-field-header">Url</label>
       <input
         id=${GROUP_URL_INPUT}
         value="${groupData.url}"
@@ -237,13 +242,13 @@ export class GroupComponent extends BaseDynamicComponent {
       
       ${generateButton({
         id: SAVE_UPDATES_BUTTON_ID,
-        text: "Save updates",
+        text: "Submit",
         type: "submit",
       })}
   
       ${generateButton({
         id: CANCEL_UPDATES_BUTTON_ID,
-        text: "Cancel updates",
+        text: "Cancel",
       })}
     </form>`
   }
@@ -251,10 +256,9 @@ export class GroupComponent extends BaseDynamicComponent {
   renderGroupEditUI(groupData:any):string {
     return `
       ${groupData[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY]) : ''}
-      <div class="group-title">
         ${generateButton({
           id:EDIT_GROUP_BUTTON_ID,
-          text: "Edit group info",
+          text: "Edit group information",
         })}
         ${generateLinkButton({
           class: "add-event-button",
@@ -266,13 +270,15 @@ export class GroupComponent extends BaseDynamicComponent {
           text: "Delete group",
           url: `beta/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}`
         })}
-      </div>`
+      `
   }
 
   renderWeeklyEventData(eventData:any, groupId:any, key:string){
 
     const dayString = convertDayOfWeekForDisplay(eventData.day);
     return `
+      <div class="section-separator-small"></div>
+
       <div id=${key} class="event">
         ${generateLinkButton({
           text: eventData.name,
@@ -282,10 +288,9 @@ export class GroupComponent extends BaseDynamicComponent {
           ${dayString}s from ${convert24HourTimeForDisplay(eventData.startTime)} to 
           ${convert24HourTimeForDisplay(eventData.endTime)} 
         </p>
-        <p class="event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
+        <p class="event-location">${convertLocationStringForDisplay(eventData.location)}</p>
 
       </div>
-      <div class="section-separator-small"></div>
     `;
   }
 
@@ -293,6 +298,8 @@ export class GroupComponent extends BaseDynamicComponent {
 
     const startDate = `${eventData.startDate[0]}-${eventData.startDate[1]}-${eventData.startDate[2]}`
     return `
+      <div class="section-separator-small"></div>
+
       <div id=${key} class="event">
         ${generateLinkButton({
           text: eventData.name,
@@ -302,7 +309,6 @@ export class GroupComponent extends BaseDynamicComponent {
         <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
 
       </div>
-      <div class="section-separator-small"></div>
     `;
   }
 
@@ -313,16 +319,21 @@ export class GroupComponent extends BaseDynamicComponent {
 
     const self = this;
     return `
+      <div class="ui-section" id = "user-actions-menu">
+        ${groupData.permissions.userCanEdit ? this.renderGroupEditUI(groupData) : ''}
+        <login-status-component class = "ui-section"></login-status-component>
+      </div>
+      
+      <div class="section-separator-medium"></div>
       <div class="ui-section">
+
+      <h1 id="group-name-header">${groupData.name}</h1>
       ${!groupData.isEditing ? `
-        <h1>
           ${generateLinkButton({
             class: "group-webpage-link",
-            text: groupData.name,
+            text: "Group website",
             url:groupData.url
           })}
-       </h1>
-        ${groupData.permissions.userCanEdit ? this.renderGroupEditUI(groupData) : ''}
         <p class="${GROUP_DESCRIPTION_TEXT}">${groupData.description}</p> 
         ` : 
         this.renderEditMode(groupData)
@@ -330,13 +341,15 @@ export class GroupComponent extends BaseDynamicComponent {
 
      ${groupData.oneTimeEventData.length === 0 && groupData.weeklyEventData.length === 0 ?
       `<p id="no-event">Click on group link above for event information</p>`:
-      `<h1 class="hide-mobile">Upcoming recurring events</h1>`
+      `
+        <div class="section-separator-medium" id="recurring-events-separator"></div>
+        <h2>Upcoming recurring events</h2>
+      `
     }
     ${
       groupData.weeklyEventData.length === 0
         ? ``
         : `  
-          <div class="section-separator-medium"></div>
           ${groupData.weeklyEventData.map((event: any) => {
             return self.renderWeeklyEventData(event,groupData.id, groupData.id + "-event-" + event.id)
           }).join(" ")}

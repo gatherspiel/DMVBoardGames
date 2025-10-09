@@ -41,7 +41,10 @@ export default defineConfig({
         create_groups: resolve(__dirname, "src/beta/create.html"),
         event: resolve(__dirname, "src/groups/event.html"),
         create_event: resolve(__dirname, "src/beta/addEvent.html"),
-        delete_group: resolve(__dirname, "src/beta/delete.html")
+        delete_group: resolve(__dirname, "src/beta/delete.html"),
+        landing: resolve(__dirname,"src/landing.html"),
+        create_account: resolve(__dirname,"src/beta/createAccount.html")
+
       }
     },
   },

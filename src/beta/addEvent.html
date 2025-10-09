@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Add new event</title>
 
   <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
   <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
 
-  <script
-    defer
-    fetchpriority="low"
-    type="module"
-    src="../ui/groups/events/CreateEventComponent.ts"
-  ></script>
+  <script type="module">
+    import {CreateEventComponent} from "../ui/groups/events/CreateEventComponent.js";
+    customElements.define('create-event-component', CreateEventComponent)
+  </script>
 
 </head>
 <body>

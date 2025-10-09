@@ -17,7 +17,6 @@ import {
   SUCCESS_MESSAGE_KEY
 } from "../../../shared/Constants.ts";
 
-import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
 import {generateErrorMessage, generateSuccessMessage} from "../../../shared/html/StatusIndicators.ts";
 import {convertTimeTo24Hours} from "../../../shared/data/EventDataUtils.ts";
 import {getEventDetailsFromForm, validateEventFormData} from "./EventDetailsHandler.ts";
@@ -27,41 +26,51 @@ import {getDayOfWeekSelectHtml} from "../../../shared/html/SelectGenerator.ts";
 const CREATE_EVENT_BUTTON_ID = "create-event-button";
 const RECURRING_EVENT_INPUT = "is-recurring";
 
+import {LoginStatusComponent} from "../../../shared/html/LoginStatusComponent.ts";
+customElements.define("login-status-component",LoginStatusComponent)
+
+console.log("Defined login status")
 export class CreateEventComponent extends BaseDynamicComponent {
   constructor() {
-    super([{
-      componentReducer:(data:any)=>{
-        return {
-          name: "",
-          description: "",
-          url: "",
-          isVisible: data["loggedIn"],
-        };
-      },
-      dataStore: LOGIN_STORE
-    }]);
+    super();
   }
 
+  connectedCallback(){
+    this.updateData({
+      name:''
+    })
+  }
   getTemplateStyle(): string {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
+        h1 {
+          margin-top:0;
+        }
         input,select,textarea {
           display: block;
         }
-        #${EVENT_NAME_INPUT} {
-          width: 50rem;
-        }
-        #${EVENT_DESCRIPTION_INPUT} {
-          width: 50rem;
-          height: 10rem;
-        }
-        #${EVENT_LOCATION_INPUT} {
-          width: 50rem;
-        }
+
         .raised {
            display:inline-block;
            margin-top:1rem;
+        }
+        @media not screen and (width < 32em) {
+          #${EVENT_NAME_INPUT} {
+            width: 50rem;
+          }
+          #${EVENT_DESCRIPTION_INPUT} {
+            width: 50rem;
+            height: 10rem;
+          }
+          #${EVENT_LOCATION_INPUT} {
+            width: 50rem;
+          }        
+        }
+        @media  screen and (width < 32em) {
+          #${EVENT_DESCRIPTION_INPUT} {
+            height: 10rem;
+          }        
         }
       </style>
     `;
@@ -128,30 +137,38 @@ export class CreateEventComponent extends BaseDynamicComponent {
 
   render(data: any): string {
 
+    const title = `Add event for group ${(new URLSearchParams(document.location.search)).get("name") ?? ""}`
+    document.title= title;
     const groupName = (new URLSearchParams(document.location.search)).get("name") ?? ''
     return `   
+   
+      <div class="ui-section" id = "user-actions-menu">
+        <login-status-component></login-status-component>
+      </div>
+      <div class="section-separator-medium"></div>
       ${generateErrorMessage(data.errorMessage)}
       ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
       
+      <div class="ui-section">
       <form id="create-event-form" onsubmit="return false">
         
-        <h1>Create board game event for group ${(new URLSearchParams(document.location.search)).get("name") ?? ""}</h1>
+        <h1>${title}</h1>
          
-        <label> Recurring event</label>
+        <label class="form-field-header"> Recurring event</label>
         <input 
           id=${RECURRING_EVENT_INPUT}
           name=${RECURRING_EVENT_INPUT}
           type="checkbox"
           ${data.isRecurring ? 'checked' : ''}
         />
-        <label>Event name</label>
+        <label class="form-field-header">Name</label>
         <input
           id=${EVENT_NAME_INPUT}
           name=${EVENT_NAME_INPUT}
           value="${data.name}"
          />
   
-        <label>Event description</label>
+        <label class="form-field-header">Description</label>
         <textarea
           id=${EVENT_DESCRIPTION_INPUT}
           name=${EVENT_DESCRIPTION_INPUT}
@@ -159,7 +176,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
         ${data.description ?? ""}
         </textarea>
          
-        <label>Event URL</label>
+        <label class="form-field-header">Event URL</label>
         <input
           name=${EVENT_URL_INPUT}
           type="url"
@@ -168,55 +185,49 @@ export class CreateEventComponent extends BaseDynamicComponent {
         
         ${data.isRecurring ? 
          `
-          <label>Day of week</label>
+          <label class="form-field-header">Day of week</label>
           ${getDayOfWeekSelectHtml(data.day)}
          ` 
         :
         `
-          <label>Start date</label>
+          <label class="form-field-header">Start date</label>
           <input
             name=${START_DATE_INPUT}
             type="date"
             value="${data[START_DATE_INPUT]}"
           />`}
         
-        <label>Start time</label>
+        <label class="form-field-header">Start time</label>
         <input
           name=${START_TIME_INPUT}
           type="time"
           value="${data[START_TIME_INPUT]}"
         />
         
-        <label>End time</label>
+        <label class="form-field-header">End time</label>
         <input
           name=${END_TIME_INPUT}
           type="time"
           value="${data[END_TIME_INPUT]}"
         />
         
-        <label>Event location</label>
+        <label class="form-field-header">Event address</label>
         <input
           name=${EVENT_LOCATION_INPUT}
           value="${data.location ?? ""}"
         />
         ${generateButton({
           id: CREATE_EVENT_BUTTON_ID,
-          text: "Create event",
+          text: "Submit",
           type: "Submit"
         })}
               
         ${generateLinkButton({
-          text: "Back to group information",
+          text: "Cancel",
           url: `${window.location.origin}/groups.html?name=${encodeURIComponent(groupName)}`
         })}
       </form>
+      </div>
     `;
   }
-}
-
-if (!customElements.get("create-event-component")) {
-  customElements.define(
-    "create-event-component",
-    CreateEventComponent,
-  );
 }

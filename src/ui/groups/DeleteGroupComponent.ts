@@ -37,9 +37,13 @@ export class DeleteGroupComponent extends BaseDynamicComponent {
   }
 
   connectedCallback(){
+
+    const groupName = (new URLSearchParams(document.location.search)).get("name") ?? ""
+    document.title = `Delete group ${groupName}?`
     this.updateData({
+      existingGroupName: groupName,
       isVisible: true,
-      existingGroupName: (new URLSearchParams(document.location.search)).get("name") ?? ""})
+    });
   }
 
   override attachHandlersToShadowRoot(shadowRoot?: any) {
@@ -83,9 +87,11 @@ export class DeleteGroupComponent extends BaseDynamicComponent {
   render(data: any): string {
 
     return `
+
+      <h1>${document.title}</h1>
       <form onsubmit="return false">
 
-      <label>Enter group name to confirm deleting</label>
+      <label class="form-field-header">Enter group name to confirm deleting</label>
       <input
           id=${GROUP_NAME_INPUT}
           value="${data.groupInput ?? ''}"
