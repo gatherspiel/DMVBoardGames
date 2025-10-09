@@ -108,12 +108,13 @@ export class LoginComponent extends BaseDynamicComponent {
   }
 
   render(data: any) {
-    const message = new URLSearchParams(document.location.search).get("message")
+    const isNewUser = new URLSearchParams(document.location.search).get("newUser")
 
     return `
-      <label>${message  ? message.replaceAll("_"," "): ``}</label>
       <div class="ui-section" id="login-component-container">
       <form id=${LOGIN_FORM_ID}>
+      ${isNewUser ? `<h2 class="success-message">Account successfully confirmed. Use this page to login </h2>` : ``}
+
         <div class="ui-input">
         <label class="form-field-header" id="email">Email</label>
         <input        

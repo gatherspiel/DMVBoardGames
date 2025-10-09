@@ -163,13 +163,14 @@ export class CreateAccountComponent extends BaseDynamicComponent {
               })
             } else {
               self.updateData({
-                [SUCCESS_MESSAGE_KEY]: "Successfully registered user",
+                [SUCCESS_MESSAGE_KEY]: `
+                  Successfully created account. Check your email for a message to confirm and
+                  activate your account.`,
                 errorMessage: ''
               })
             }
           })
         }
-
     })
   }
 
