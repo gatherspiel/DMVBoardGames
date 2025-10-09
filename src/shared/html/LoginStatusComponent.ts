@@ -3,7 +3,7 @@ import {
 } from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../../ui/auth/data/LoginStore.ts";
 import {LOGOUT_STORE} from "../../ui/auth/data/LogoutStore.ts";
-import {generateLinkButton} from "./ButtonGenerator.ts";
+import {generateButton, generateLinkButton} from "./ButtonGenerator.ts";
 
 const SIGN_OUT_LINK_ID = "signout-link"
 export class LoginStatusComponent extends BaseDynamicComponent {
@@ -48,15 +48,19 @@ export class LoginStatusComponent extends BaseDynamicComponent {
     if(authData.loggedIn){
       return `
         <p id="user-text">Welcome ${authData.data.user.email}</p>
-        ${generateLinkButton({
+        ${generateButton({
+          id: SIGN_OUT_LINK_ID,
           text: "Sign out",
-          url: SIGN_OUT_LINK_ID
         })}
       `
     }
     return `
       ${generateLinkButton({
         text: "Sign in",
+        url: "/beta/login.html"
+      })}
+      ${generateLinkButton({
+        text: "Create account",
         url: "/beta/login.html"
       })}
     `;
