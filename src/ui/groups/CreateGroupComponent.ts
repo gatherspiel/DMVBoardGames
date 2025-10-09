@@ -142,28 +142,28 @@ export class CreateGroupComponent extends BaseDynamicComponent {
   render(data: any): string {
     return `
       <div id="create-group-container">
-        <h1>Create board game group</h1>  
+        <h1>Create group</h1>  
         ${
             data.loggedIn
             ? `
               ${generateSuccessMessage(data?.[SUCCESS_MESSAGE_KEY])}
 
               <form id="create-group-form" onsubmit="return false">  
-                <label>Group name</label>
+                <label class="form-field-header">Group name</label>
                 <input
                   id=${GROUP_NAME_INPUT}
                   name=${GROUP_NAME_INPUT}
                   value="${data.name}"
                   >
                 
-                <label>Group url</label>
+                <label class="form-field-header">Group url</label>
                 <input
                   id=${GROUP_URL_INPUT}
                   name=${GROUP_URL_INPUT}
                   value=${data.url}
                   >
                 
-                <label>Group description</label>
+                <label class="form-field-header">Group description</label>
                 <textarea
                   id=${GROUP_DESCRIPTION_INPUT}
                   name=${GROUP_DESCRIPTION_INPUT}
@@ -189,7 +189,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                   generateDisabledButton({
                     text:"Create group"
                   })}
-                
+                <div class="section-separator-medium"></div>
                 ${getFaqRulesHtml()}
 
               </form>

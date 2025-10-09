@@ -50,6 +50,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     super([{
       dataStore: GROUP_EVENT_REQUEST_STORE,
       componentReducer: (data:any)=>{
+        document.title = data.name;
         if(data.startDate){
           data.startDate = data.startDate.join("-")
         }
