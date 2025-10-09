@@ -12,6 +12,7 @@ export class LoginStatusComponent extends BaseDynamicComponent {
         dataStore: LOGIN_STORE
       }]
     );
+    console.log("Login status component constructor finished")
   }
 
   override getTemplateStyle(): string {
@@ -22,9 +23,6 @@ export class LoginStatusComponent extends BaseDynamicComponent {
          @media not screen and (width < 32em) {
           p {
             display: inline-block;
-          }
-          div {
-            margin-left: 1rem;
           }
           .raised {
             display: inline-block;

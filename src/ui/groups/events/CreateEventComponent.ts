@@ -27,6 +27,11 @@ import {getDayOfWeekSelectHtml} from "../../../shared/html/SelectGenerator.ts";
 const CREATE_EVENT_BUTTON_ID = "create-event-button";
 const RECURRING_EVENT_INPUT = "is-recurring";
 
+
+import {LoginStatusComponent} from "../../../shared/html/LoginStatusComponent.ts";
+customElements.define("login-status-component",LoginStatusComponent)
+
+console.log("Defined login status")
 export class CreateEventComponent extends BaseDynamicComponent {
   constructor() {
     super([{
@@ -128,14 +133,20 @@ export class CreateEventComponent extends BaseDynamicComponent {
 
   render(data: any): string {
 
+    const title = `Add event for group ${(new URLSearchParams(document.location.search)).get("name") ?? ""}`
+    document.title= title;
     const groupName = (new URLSearchParams(document.location.search)).get("name") ?? ''
     return `   
+   
+      <div class="ui-section" id = "user-actions-menu">
+        <login-status-component class = "ui-section"></login-status-component>
+      </div>
       ${generateErrorMessage(data.errorMessage)}
       ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
       
       <form id="create-event-form" onsubmit="return false">
         
-        <h1>Create board game event for group ${(new URLSearchParams(document.location.search)).get("name") ?? ""}</h1>
+        <h1>${title}</h1>
          
         <label> Recurring event</label>
         <input 
@@ -212,11 +223,4 @@ export class CreateEventComponent extends BaseDynamicComponent {
       </form>
     `;
   }
-}
-
-if (!customElements.get("create-event-component")) {
-  customElements.define(
-    "create-event-component",
-    CreateEventComponent,
-  );
 }

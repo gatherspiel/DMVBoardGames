@@ -142,7 +142,8 @@ export class CreateGroupComponent extends BaseDynamicComponent {
   render(data: any): string {
     return `
       <div id="create-group-container">
-        <h1>Create group</h1>  
+        <h1>Create group</h1>
+        <div class="section-separator-small"></div>  
         ${
             data.loggedIn
             ? `
@@ -171,12 +172,12 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                 </textarea>
                 
                 ${getGameTypeTagSelectHtml(data.gameTypeTags)}
-
+                <label for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
+                <input type="checkbox" id="${AGREE_RULES_ID}" ${data[AGREE_RULES_ID] ? 'checked' : ''}>
                 <div class="section-separator-medium"></div>
                 
                 <div id="rules-content">
-                  <label for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
-                  <input type="checkbox" id="${AGREE_RULES_ID}" ${data[AGREE_RULES_ID] ? 'checked' : ''}>
+        
   
                   ${getMainSiteRulesHtml()}
                 </div>

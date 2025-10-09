@@ -7,12 +7,11 @@
   <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
   <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
 
-  <script
-    defer
-    fetchpriority="low"
-    type="module"
-    src="../ui/groups/events/CreateEventComponent.ts"
-  ></script>
+  <script type="module">
+    import {CreateEventComponent} from "../ui/groups/events/CreateEventComponent.js";
+    customElements.define('create-event-component', CreateEventComponent)
+    console.log("Defined main component")
+  </script>
 
 </head>
 <body>

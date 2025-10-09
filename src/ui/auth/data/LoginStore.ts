@@ -13,6 +13,7 @@ async function retrieveData(
   params: any
 ): Promise<AuthResponse> {
 
+  console.log("Retrieving data");
   try {
     const authData = await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY);
     if (authData && authData.expires_at * 1000 > new Date().getTime()) {

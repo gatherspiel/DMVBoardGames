@@ -13,6 +13,7 @@
     type="module"
   >
     import {GroupComponent} from "./ui/groups/GroupComponent.ts";
+
     customElements.define("group-component", GroupComponent);
 
     const params = new URLSearchParams(document.location.search);
@@ -22,7 +23,7 @@
 <body>
 <div id="container">
   {{>navbar}}
-  <group-component class="ui-section">
+  <group-component>
   </group-component>
 </div>
 </body>
