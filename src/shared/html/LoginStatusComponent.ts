@@ -56,12 +56,12 @@ export class LoginStatusComponent extends BaseDynamicComponent {
     }
     return `
       ${generateLinkButton({
-        text: "Sign in",
+        text: "Login",
         url: "/beta/login.html"
       })}
       ${generateLinkButton({
         text: "Create account",
-        url: "/beta/login.html"
+        url: "/beta/createAccount.html"
       })}
     `;
   }
