@@ -104,24 +104,25 @@ export class GroupComponent extends BaseDynamicComponent {
           padding: 0.5rem;
         }  
         
-        #${GROUP_DESCRIPTION_INPUT} {
-          display: block;
-          height: 500px;
-          width: 800px;
-        }
-        #${GROUP_NAME_INPUT} {
-          display:block;
-          width: 600px;
-        }
-        #${GROUP_URL_INPUT} {
-          display: block;
-          width: 600px;
-        }  
+ 
         #recurring-events-separator {
           margin-left: -1.5rem;
         }
 
         @media not screen and (width < 32em) {
+          #${GROUP_DESCRIPTION_INPUT} {
+            display: block;
+            height: 500px;
+            width: 800px;
+          }
+          #${GROUP_NAME_INPUT} {
+            display:block;
+            width: 600px;
+          }
+          #${GROUP_URL_INPUT} {
+            display: block;
+            width: 600px;
+          } 
           .${GROUP_DESCRIPTION_TEXT} {
             margin-top: 1rem;
           }
@@ -131,6 +132,9 @@ export class GroupComponent extends BaseDynamicComponent {
           }  
         }   
         @media screen and (width < 32em) {
+          #${GROUP_DESCRIPTION_INPUT} {
+            height:10rem;
+          }
           .${GROUP_DESCRIPTION_TEXT} {
             font-size:1rem;
             margin-top: 1rem;
@@ -139,6 +143,10 @@ export class GroupComponent extends BaseDynamicComponent {
           .delete-button {
             margin-top: 0.5rem;
           }  
+          .label-border-left {
+            border-top:1px solid;
+            border-left:none;
+          }
           .raised {
             margin-left:2rem;
             margin-right:2rem;
@@ -212,19 +220,19 @@ export class GroupComponent extends BaseDynamicComponent {
     ${groupData[ERROR_MESSAGE_KEY] ? generateErrorMessage(groupData[ERROR_MESSAGE_KEY]) : ''}
 
     <form>
-      <label class="form-field-header">Group name</label>
+      <label class="form-field-header">Name</label>
       <input
         id=${GROUP_NAME_INPUT}
         value="${groupData.name}"
       />
       
-      <label class="form-field-header">Group description</label>
+      <label class="form-field-header">Description</label>
       <textarea
         id=${GROUP_DESCRIPTION_INPUT}
       />${groupData.description}
       </textarea>        
   
-      <label class="form-field-header">Group url</label>
+      <label class="form-field-header">Url</label>
       <input
         id=${GROUP_URL_INPUT}
         value="${groupData.url}"

@@ -50,22 +50,27 @@ export class CreateEventComponent extends BaseDynamicComponent {
         input,select,textarea {
           display: block;
         }
-        #create-event-form {
-          padding-left:1.5rem;
-        }
-        #${EVENT_NAME_INPUT} {
-          width: 50rem;
-        }
-        #${EVENT_DESCRIPTION_INPUT} {
-          width: 50rem;
-          height: 10rem;
-        }
-        #${EVENT_LOCATION_INPUT} {
-          width: 50rem;
-        }
+
         .raised {
            display:inline-block;
            margin-top:1rem;
+        }
+        @media not screen and (width < 32em) {
+          #${EVENT_NAME_INPUT} {
+            width: 50rem;
+          }
+          #${EVENT_DESCRIPTION_INPUT} {
+            width: 50rem;
+            height: 10rem;
+          }
+          #${EVENT_LOCATION_INPUT} {
+            width: 50rem;
+          }        
+        }
+        @media  screen and (width < 32em) {
+          #${EVENT_DESCRIPTION_INPUT} {
+            height: 10rem;
+          }        
         }
       </style>
     `;
@@ -144,6 +149,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
       ${generateErrorMessage(data.errorMessage)}
       ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
       
+      <div class="ui-section">
       <form id="create-event-form" onsubmit="return false">
         
         <h1>${title}</h1>
@@ -155,7 +161,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
           type="checkbox"
           ${data.isRecurring ? 'checked' : ''}
         />
-        <label class="form-field-header">Mame</label>
+        <label class="form-field-header">Name</label>
         <input
           id=${EVENT_NAME_INPUT}
           name=${EVENT_NAME_INPUT}
@@ -221,6 +227,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
           url: `${window.location.origin}/groups.html?name=${encodeURIComponent(groupName)}`
         })}
       </form>
+      </div>
     `;
   }
 }

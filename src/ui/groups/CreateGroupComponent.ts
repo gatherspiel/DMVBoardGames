@@ -150,21 +150,21 @@ export class CreateGroupComponent extends BaseDynamicComponent {
               ${generateSuccessMessage(data?.[SUCCESS_MESSAGE_KEY])}
 
               <form id="create-group-form" onsubmit="return false">  
-                <label class="form-field-header">Group name</label>
+                <label class="form-field-header">Name</label>
                 <input
                   id=${GROUP_NAME_INPUT}
                   name=${GROUP_NAME_INPUT}
                   value="${data.name}"
                   >
                 
-                <label class="form-field-header">Group url</label>
+                <label class="form-field-header">Url</label>
                 <input
                   id=${GROUP_URL_INPUT}
                   name=${GROUP_URL_INPUT}
                   value=${data.url}
                   >
                 
-                <label class="form-field-header">Group description</label>
+                <label class="form-field-header">Description</label>
                 <textarea
                   id=${GROUP_DESCRIPTION_INPUT}
                   name=${GROUP_DESCRIPTION_INPUT}

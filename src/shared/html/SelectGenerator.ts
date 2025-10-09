@@ -79,7 +79,7 @@ export function getGameTypeTagSelectHtml(checkState?: any){
 
   let html = `
     <div id="game-type-tag-select">
-    <label class="form-field-header">Select group tags</label>
+    <label class="form-field-header">Tags</label>
   `
 
   let i = 0;

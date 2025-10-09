@@ -64,25 +64,11 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         h1 {
           margin-top:0rem;
         }   
-        form {
-          padding-left:1.5rem;
-        }
-        input,select,textarea {
-          display: block;
-        }
+
         #delete-event-form {
           padding-left:1.5rem;
         }
-        #${EVENT_NAME_INPUT} {
-          width: 50rem;
-        }
-        #${EVENT_DESCRIPTION_INPUT} {
-          width: 50rem;
-          height: 10rem;
-        }
-        #${EVENT_LOCATION_INPUT} {
-          width: 50rem;
-        } 
+
         .back-to-group-button {
           margin-top: 0.5rem;
         }
@@ -92,7 +78,30 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         .raised {
           display: inline-block;
           line-height: 1;
-        }    
+        } 
+        @media not screen and (width < 32em) {
+          input,select,textarea {
+            display: block;
+          }
+          #${EVENT_NAME_INPUT} {
+            width: 50rem;
+          }
+          #${EVENT_DESCRIPTION_INPUT} {
+            width: 50rem;
+            height: 10rem;
+          }
+          #${EVENT_LOCATION_INPUT} {
+            width: 50rem;
+          } 
+        } 
+        @media screen and (width < 32em) {
+          #${EVENT_DESCRIPTION_INPUT}{
+            height: 10rem;
+          }
+          #event-details-form {
+            margin-right:1.5rem;
+          }
+        }   
       </style>     
     `;
   }
@@ -270,11 +279,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       return `
         <div class="ui-section">
           ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
-          
-          ${generateLinkButton({
-            text: "Back to group information",
-            url: `${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}`
-          })}
         </div>
       `
     }
@@ -298,10 +302,11 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   renderEditMode(data:any): string {
 
     return `
+      <div class="ui-section">
       <h1>Editing: ${data.name}</h1>
   
       <form id="event-details-form" onsubmit="return false">
-        <label>Event name</label>
+        <label class="form-field-header">Event name</label>
         <input
           id=${EVENT_NAME_INPUT}
           name=${EVENT_NAME_INPUT}
@@ -309,13 +314,13 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         />
         </input>
     
-        <label>Event description</label>
+        <label class="form-field-header"> Event description</label>
         <textarea
           id=${EVENT_DESCRIPTION_INPUT}
           name=${EVENT_DESCRIPTION_INPUT}
         />${data.description ?? ""}</textarea>
            
-        <label>Event URL</label>
+        <label class="form-field-header">Event URL</label>
         <input
           name=${EVENT_URL_INPUT}
           type="url"
@@ -325,11 +330,11 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           
         ${data.isRecurring ?
           `
-            <label>Day of week</label>
+            <label class="form-field-header">Day of week</label>
             ${getDayOfWeekSelectHtml(data.day)}
           ` :
           `
-            <label>Start date</label>
+            <label class="form-field-header">Start date</label>
             <input
               name=${START_DATE_INPUT}
               type="date"
@@ -337,7 +342,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             />`
         }
           
-        <label>Start time</label>
+        <label class="form-field-header">Start time</label>
         <input
           name=${START_TIME_INPUT}
           type="time"
@@ -345,7 +350,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         />
         </input>
           
-        <label>End time</label>
+        <label class="form-field-header">End time</label>
         <input
           name=${END_TIME_INPUT}
           type="time"
@@ -353,7 +358,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         />
         </input>
           
-        <label>Event location</label>
+        <label class="form-field-header">Event location</label>
         <input
           id=${EVENT_LOCATION_INPUT}
           name=${EVENT_LOCATION_INPUT}
@@ -368,13 +373,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           id: SAVE_EVENT_BUTTON_ID,
           text: "Save event"
         })}
-      
-        ${generateButton({
-          id: CANCEL_EDIT_BUTTON_ID,
-          text: "Back to group information",
-          type: "submit"
-        })}  
       </form>
+    </div>
    `
   }
 

@@ -200,4 +200,10 @@ form textarea {
   .show-mobile {
     display:initial;
   }
+  form {
+    margin-right:1.5rem;
+  }
+  input, textarea {
+    width:100%;
+  }
 }

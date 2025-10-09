@@ -100,18 +100,14 @@ export class LoginComponent extends BaseDynamicComponent {
 
       try {
         const targetId = event.target?.id;
-
         if(targetId === AGREE_RULES_ID){
           self.updateData({
             [AGREE_RULES_ID]: event.target.checked,
           })
         }
-
         if (targetId === LOGIN_BUTTON_ID){
-
           self.loginAttempted = true;
           const formInputs = self.retrieveAndValidateFormInputs(shadowRoot)
-
           if(formInputs.errorMessage){
             self.updateData(formInputs)
           } else {
@@ -122,15 +118,12 @@ export class LoginComponent extends BaseDynamicComponent {
         }
 
         if (targetId === REGISTER_BUTTON_ID) {
-
           const formInputs = self.retrieveAndValidateFormInputs(shadowRoot)
-
           if (formInputs.errorMessage) {
             formInputs.errorMessage
             self.updateData({
               "errorMessage": formInputs.errorMessage
             })
-
           } else {
             self.updateData({
               email: formInputs.username,
@@ -142,14 +135,11 @@ export class LoginComponent extends BaseDynamicComponent {
         }
 
         if (targetId === COMPLETE_REGISTER_ID){
-
           self.registerAttempted = true;
-
             const requestData = {
               email: self.componentStore.email,
               password: self.componentStore.password
             }
-
             ApiLoadAction.getResponseData({
               body: JSON.stringify(requestData),
               method: "POST",
@@ -167,8 +157,6 @@ export class LoginComponent extends BaseDynamicComponent {
             }
           })
         }
-
-
         if (targetId === LOGOUT_BUTTON_ID) {
           LOGOUT_STORE.fetchData({}, LOGIN_STORE)
         }
@@ -218,14 +206,14 @@ export class LoginComponent extends BaseDynamicComponent {
       <div class="ui-section" id="login-component-container">
       <form id=${LOGIN_FORM_ID}>
         <div class="ui-input">
-        <label id="email">Email</label>
+        <label class="form-field-header" id="email">Email</label>
         <input        
           id=${USERNAME_INPUT}
           type="email"
         />
        </input>    
        
-        <label>Password</label>
+        <label class="form-field-header">Password</label>
         <input        
           id=${PASSWORD_INPUT}
           type="password"
