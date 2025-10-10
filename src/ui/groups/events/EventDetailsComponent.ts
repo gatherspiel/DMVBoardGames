@@ -64,11 +64,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         h1 {
           margin-top:0rem;
         }   
-
         #delete-event-form {
           padding-left:1.5rem;
         }
-
         .back-to-group-button {
           margin-top: 0.5rem;
         }
@@ -151,18 +149,14 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             }
           })
         }
-
         if(event.target.id === EDIT_EVENT_BUTTON_ID){
           self.updateData({
             isEditing: true,
             [SUCCESS_MESSAGE_KEY]:''
           })
         }
-
         if(event.target.id === SAVE_EVENT_BUTTON_ID){
-
           const data = (shadowRoot.getElementById('event-details-form') as HTMLFormElement)?.elements;
-
           const formData = {
             id: self.componentStore.id,
             [EVENT_NAME_INPUT]: (data.namedItem(EVENT_NAME_INPUT) as HTMLInputElement)?.value,
@@ -173,7 +167,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             [EVENT_LOCATION_INPUT]: (data.namedItem(EVENT_LOCATION_INPUT) as HTMLInputElement)?.value,
             isRecurring: self.componentStore.isRecurring
           }
-
           if(self.componentStore.isRecurring){
             // @ts-ignore
             formData[DAY_OF_WEEK_INPUT] = (data.namedItem(DAY_OF_WEEK_INPUT) as HTMLSelectElement)?.value;
@@ -181,9 +174,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             // @ts-ignore
             formData[START_DATE_INPUT] = (data.namedItem(START_DATE_INPUT) as HTMLInputElement)?.value;
           }
-
           const validationErrors:any = validateEventFormData(formData);
-
           if(validationErrors.errorMessage.length !==0){
             self.updateData(validationErrors);
           } else {
@@ -231,7 +222,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     if(!data || !data.name){
       return `<h1>Loading</h1>`;
     }
-
     let html = `
       <div class="ui-section" id = "user-actions-menu">
         ${!data.isEditing && !data.isDeleting && data?.permissions?.userCanEdit ? `
@@ -239,19 +229,16 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           id: EDIT_EVENT_BUTTON_ID,
           text: "Edit event",
         })}
-          
         ${generateButton({
           id: DELETE_EVENT_BUTTON_ID,
           text: "Delete event",
         })}
-    
         ` : ''}
-        <login-status-component class = "ui-section"></login-status-component>
+        <login-status-component></login-status-component>
       </div>
       
       <div class="section-separator-medium"></div>
       ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
-
     `
     if(data.isEditing){
       html += this.renderEditMode(data);
@@ -274,7 +261,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   }
 
   renderDeleteMode(data:any): string {
-    console.log(data)
     if (data[SUCCESS_MESSAGE_KEY]) {
       return `
         <div class="ui-section">
@@ -306,30 +292,34 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       <h1>Editing: ${data.name}</h1>
   
       <form id="event-details-form" onsubmit="return false">
-        <label class="form-field-header">Event name</label>
-        <input
-          id=${EVENT_NAME_INPUT}
-          name=${EVENT_NAME_INPUT}
-          value="${data.name}"
-        />
-        </input>
-    
-        <label class="form-field-header"> Event description</label>
-        <textarea
+        <div class="form-section">
+          <label class="form-field-header">Event name</label>
+          <input
+            id=${EVENT_NAME_INPUT}
+            name=${EVENT_NAME_INPUT}
+            value="${data.name}"
+          />
+          </input>
+        </div>
+        <div class="form-section">
+          <label class="form-field-header"> Event description</label>
+          <textarea
           id=${EVENT_DESCRIPTION_INPUT}
           name=${EVENT_DESCRIPTION_INPUT}
-        />${data.description ?? ""}</textarea>
-           
-        <label class="form-field-header">Event URL</label>
-        <input
-          name=${EVENT_URL_INPUT}
-          type="url"
-          value="${data.url ?? ""}"
-        />
-        </input>
-          
+          />${data.description ?? ""}</textarea>       
+        </div>
+        <div class="form-section">
+          <label class="form-field-header">Event URL</label>
+          <input
+            name=${EVENT_URL_INPUT}
+            type="url"
+            value="${data.url ?? ""}"
+          />
+          </input>
+        </div>  
         ${data.isRecurring ?
           `
+            <div class="form-section"></d
             <label class="form-field-header">Day of week</label>
             ${getDayOfWeekSelectHtml(data.day)}
           ` :
@@ -386,12 +376,12 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     return `
       <div class="ui-section">
         <h1>${data.name}</h1>
-        ${generateLinkButton({
-          class:"event-website-link",
-          text: "Event website", 
-          url: data.url
-        })}
-         
+        ${data.url ? generateLinkButton({
+            class:"event-website-link",
+            text: "Event website", 
+            url: data.url
+          }) : ''
+        } 
         ${data.isRecurring ? 
           `<p>
             ${convertDayOfWeekForDisplay(data.day)}s from ${convert24HourTimeForDisplay(data.startTime)} to 
@@ -399,12 +389,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           `<p>
             Time: ${data.startDate}, ${convert24HourTimeForDisplay(data.startTime)}
           </p>`
-        }
-        
+        }  
         <p>Location: ${convertLocationStringForDisplay(data.location)}</p>
         <p>${data.description}</p>
-           
-    
       </div>
     `;
   }

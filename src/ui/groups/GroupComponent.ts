@@ -389,9 +389,9 @@ export class GroupComponent extends BaseDynamicComponent {
     ${
       groupData.oneTimeEventData.length === 0
         ? ``
-        : `  
-          <h1>Other events</h1> 
-          <div class="section-separator-medium"></div>
+        : `
+          <div class="section-separator-small"></div>
+          <h2>Other events</h2> 
           ${groupData.oneTimeEventData
             .map((event: any) => {
               return self.renderOneTimeEventData(event,groupData.id,groupData.id + "event-" + event.id)
