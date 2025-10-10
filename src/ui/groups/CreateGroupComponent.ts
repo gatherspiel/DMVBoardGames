@@ -19,6 +19,9 @@ import {getFaqRulesHtml, getMainSiteRulesHtml} from "../../shared/html/SiteRules
 const AGREE_RULES_ID ="agree-rules-id";
 const CREATE_GROUP_BUTTON_ID = "create-group-button-id";
 
+const DESCRIPTION_ERROR_TEXT_KEY = "descriptionErrorText";
+const NAME_ERROR_TEXT_KEY = "nameErrorText";
+
 export class CreateGroupComponent extends BaseDynamicComponent {
   constructor() {
     super([{
@@ -48,7 +51,6 @@ export class CreateGroupComponent extends BaseDynamicComponent {
         #create-group-container {
           padding-left: 1rem;
         }
-
         #game-type-tag-select {
           margin-bottom:1rem;
         }  
@@ -61,7 +63,6 @@ export class CreateGroupComponent extends BaseDynamicComponent {
         #group-description-input {
           height: 10rem;
           width: 50rem;
-          margin-bottom: 1rem;
         }   
         #rules-content {
           margin-top:1rem;
@@ -106,11 +107,26 @@ export class CreateGroupComponent extends BaseDynamicComponent {
       if(targetId === CREATE_GROUP_BUTTON_ID){
         event.preventDefault();
 
+        const validationErrors:Record<string,string> = {}
+        const groupName = (elements.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value;
+        if(!groupName || groupName.length === 0){
+          validationErrors[NAME_ERROR_TEXT_KEY] = "Name is a required field"
+        }
+
+        const groupDescription = (elements.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value;
+        if(!groupDescription || groupDescription.length === 0){
+          validationErrors[DESCRIPTION_ERROR_TEXT_KEY]="Description is a required field"
+        }
+        if(Object.keys(validationErrors).length >0){
+          self.updateData(validationErrors);
+          return;
+        }
+
         ApiLoadAction.getResponseData({
           body: JSON.stringify({
             id: self.componentStore.id,
-            name: (elements.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
-            description: (elements.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
+            name: groupName,
+            description: groupDescription,
             url: (elements.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
             gameTypeTags: Object.keys(getTagSelectedState(shadowRoot))
           }),
@@ -118,19 +134,22 @@ export class CreateGroupComponent extends BaseDynamicComponent {
           url: API_ROOT + `/groups/`,
         }).then((data:any)=>{
 
+          console.log(data);
           if (data.errorMessage) {
             self.updateData({
               errorMessage: data.errorMessage,
+              [DESCRIPTION_ERROR_TEXT_KEY]: '',
+              [NAME_ERROR_TEXT_KEY]: '',
               [SUCCESS_MESSAGE_KEY]: "",
             });
           } else {
             self.updateData({
               errorMessage: "",
+              [DESCRIPTION_ERROR_TEXT_KEY]: '',
+              [NAME_ERROR_TEXT_KEY]: '',
               [SUCCESS_MESSAGE_KEY]: `
               Successfully created group. A site admin will review the group information before the group is visible on
-              dmvboardgames.com.
-             
-              Email gulu@createthirdplaces.com if you have any questions or comments on the process for creating groups.
+              dmvboardgames.com. Email gulu@createthirdplaces.com if you have any questions or comments.
              `,
             });
           }
@@ -147,40 +166,40 @@ export class CreateGroupComponent extends BaseDynamicComponent {
         ${
             data.loggedIn
             ? `
-              ${generateSuccessMessage(data?.[SUCCESS_MESSAGE_KEY])}
-
-              <form id="create-group-form" onsubmit="return false">  
-                <label class="form-field-header">Name</label>
-                <input
-                  id=${GROUP_NAME_INPUT}
-                  name=${GROUP_NAME_INPUT}
-                  value="${data.name}"
-                  >
-                
-                <label class="form-field-header">Url</label>
-                <input
-                  id=${GROUP_URL_INPUT}
-                  name=${GROUP_URL_INPUT}
-                  value=${data.url}
-                  >
-                
-                <label class="form-field-header">Description</label>
-                <textarea
-                  id=${GROUP_DESCRIPTION_INPUT}
-                  name=${GROUP_DESCRIPTION_INPUT}
-                  >${data.description}
-                </textarea>
-                
-                ${getGameTypeTagSelectHtml(data.gameTypeTags)}
-                <label for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
-                <input type="checkbox" id="${AGREE_RULES_ID}" ${data[AGREE_RULES_ID] ? 'checked' : ''}>
-                <div class="section-separator-medium"></div>
-                
-                <div id="rules-content">
-        
-  
-                  ${getMainSiteRulesHtml()}
+              <form id="create-group-form" onsubmit="return false">
+                <div id="form-status-div">
+                  ${generateSuccessMessage(data?.[SUCCESS_MESSAGE_KEY])}
+                  ${generateErrorMessage(data?.errorMessage)}           
                 </div>
+                <div class="form-section"> 
+                  <label class="required-field">Name</label>
+                  <input
+                    id=${GROUP_NAME_INPUT}
+                    name=${GROUP_NAME_INPUT}
+                    value="${data.name}"
+                    >
+                    ${generateErrorMessage(data[NAME_ERROR_TEXT_KEY])}
+                </div>  
+                <div class="form-section">
+                  <label class="form-field-header required-field">Description</label>
+                  <textarea
+                    id=${GROUP_DESCRIPTION_INPUT}
+                    name=${GROUP_DESCRIPTION_INPUT}
+                    >${data.description}</textarea>
+                  ${generateErrorMessage(data[DESCRIPTION_ERROR_TEXT_KEY])}
+                </div>
+                <div class="form-section">
+                  <label class="form-field-header">Url(optional)</label>
+                  <input
+                    id=${GROUP_URL_INPUT}
+                    name=${GROUP_URL_INPUT}
+                    value=${data.url}
+                    >
+                </div>
+                ${getGameTypeTagSelectHtml(data.gameTypeTags)}
+                <label class="form-field-header required-field" for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
+                <input type="checkbox" id="${AGREE_RULES_ID}" ${data[AGREE_RULES_ID] ? 'checked' : ''}>
+                
                 ${data[AGREE_RULES_ID]  ? 
                   generateButton({
                     id: CREATE_GROUP_BUTTON_ID,
@@ -191,10 +210,12 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                     text:"Create group"
                   })}
                 <div class="section-separator-medium"></div>
+                <div id="rules-content">
+                  ${getMainSiteRulesHtml()}
+                </div>
+                <div class="section-separator-medium"></div>
                 ${getFaqRulesHtml()}
-
               </form>
-             
               ${generateErrorMessage(data.errorMessage)}
             `
             : `<p>You must log in to create a group </p>`

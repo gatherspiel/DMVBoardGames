@@ -35,6 +35,9 @@ const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
 const EDIT_GROUP_BUTTON_ID = "edit-group-button";
 const SAVE_UPDATES_BUTTON_ID = "save-updates";
 
+const DESCRIPTION_ERROR_TEXT_KEY = "descriptionErrorText";
+const NAME_ERROR_TEXT_KEY = "nameErrorText";
+
 export class GroupComponent extends BaseDynamicComponent {
 
   constructor() {
@@ -103,12 +106,9 @@ export class GroupComponent extends BaseDynamicComponent {
           position: relative;
           padding: 0.5rem;
         }  
-        
- 
         #recurring-events-separator {
           margin-left: -1.5rem;
         }
-
         @media not screen and (width < 32em) {
           #${GROUP_DESCRIPTION_INPUT} {
             display: block;
@@ -174,6 +174,10 @@ export class GroupComponent extends BaseDynamicComponent {
       if(targetId === EDIT_GROUP_BUTTON_ID) {
         self.updateData({
           isEditing: true,
+          [DESCRIPTION_ERROR_TEXT_KEY]: '',
+          [ERROR_MESSAGE_KEY]: '',
+          [NAME_ERROR_TEXT_KEY]: '',
+          [SUCCESS_MESSAGE_KEY]: ''
         })
       }
       if(targetId === CANCEL_UPDATES_BUTTON_ID) {
@@ -182,12 +186,29 @@ export class GroupComponent extends BaseDynamicComponent {
         })
       }
       if(targetId === SAVE_UPDATES_BUTTON_ID){
+
+        const validationErrorState:Record<string,string> = {[SUCCESS_MESSAGE_KEY]:''}
+        const groupName = (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLInputElement)?.value;
+        if(!groupName || groupName.length === 0){
+          validationErrorState[NAME_ERROR_TEXT_KEY] = "Name is a required field"
+        }
+
+        const groupDescription = (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value.trim();
+        if(!groupDescription || groupDescription.length === 0){
+          validationErrorState[DESCRIPTION_ERROR_TEXT_KEY]="Description is a required field"
+        }
+
         const params = {
           id: self.componentStore.id,
-          name: (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLTextAreaElement)?.value,
-          description: (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value,
+          name: groupName,
+          description: groupDescription,
           url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value,
           gameTypeTags:Object.keys(getTagSelectedState(shadowRoot))
+        }
+
+        if(Object.keys(validationErrorState).length >1){
+          self.updateData({...validationErrorState,...params});
+          return;
         }
 
         ApiLoadAction.getResponseData({
@@ -220,23 +241,32 @@ export class GroupComponent extends BaseDynamicComponent {
     ${groupData[ERROR_MESSAGE_KEY] ? generateErrorMessage(groupData[ERROR_MESSAGE_KEY]) : ''}
 
     <form>
-      <label class="form-field-header">Name</label>
-      <input
-        id=${GROUP_NAME_INPUT}
-        value="${groupData.name}"
-      />
       
-      <label class="form-field-header">Description</label>
-      <textarea
-        id=${GROUP_DESCRIPTION_INPUT}
-      />${groupData.description}
-      </textarea>        
-  
-      <label class="form-field-header">Url</label>
-      <input
-        id=${GROUP_URL_INPUT}
-        value="${groupData.url}"
-      />
+      <div class="form-section">
+        <label class="required-field">Name</label>
+        <input
+          id=${GROUP_NAME_INPUT}
+          value="${groupData.name}"
+        />
+        ${generateErrorMessage(groupData[NAME_ERROR_TEXT_KEY])}
+      </div>
+
+      
+      <div class="form-section">
+        <label class="required-field">Description</label>
+        <textarea
+          id=${GROUP_DESCRIPTION_INPUT}
+        />${groupData.description}</textarea>    
+        ${generateErrorMessage(groupData[DESCRIPTION_ERROR_TEXT_KEY])}
+      </div>
+
+      <div class="form-section">
+        <label class="form-field-header">Url</label>
+        <input
+          id=${GROUP_URL_INPUT}
+          value="${groupData.url}"
+        />
+      </div>
   
       ${getGameTypeTagSelectHtml(groupData.gameTypeTags)}
       
@@ -329,18 +359,18 @@ export class GroupComponent extends BaseDynamicComponent {
 
       <h1 id="group-name-header">${groupData.name}</h1>
       ${!groupData.isEditing ? `
-          ${generateLinkButton({
+          ${groupData.url ? generateLinkButton({
             class: "group-webpage-link",
             text: "Group website",
             url:groupData.url
-          })}
+          }) : ''}
         <p class="${GROUP_DESCRIPTION_TEXT}">${groupData.description}</p> 
         ` : 
         this.renderEditMode(groupData)
       }
 
      ${groupData.oneTimeEventData.length === 0 && groupData.weeklyEventData.length === 0 ?
-      `<p id="no-event">Click on group link above for event information</p>`:
+      `<p id="no-event">No events found for group</p>`:
       `
         <div class="section-separator-medium" id="recurring-events-separator"></div>
         <h2>Upcoming recurring events</h2>

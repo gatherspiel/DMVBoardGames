@@ -25,31 +25,32 @@ a:hover {
   background-color: var(--clr-darker-blue);
 }
 
-form input {
-  margin-bottom: 0.5rem;
+#form-status-div {
+  height: 2.5rem;
 }
 
-form textarea {
-  margin-bottom: 0.5rem;
+#user-actions-menu {
+  padding-top: 0.5rem;
 }
+
+.error-message {
+  color: darkred;
+  position: absolute;
+  z-index: 1;
+}
+
 .form-field-header {
   display:block;
   font-weight:600;
 }
 
-.raised span {
-  font-size: 1.5rem;
+.form-section {
+  margin-bottom: 1rem;
 }
 
-.ui-section {
-  padding-left:1.5rem;
-}
-
-.success-message {
-  color: #00BB51
-}
-.error-message {
-  color: darkred;
+.form-section > label {
+  display: block;
+  font-weight: 600;
 }
 
 .form-select {
@@ -60,9 +61,24 @@ form textarea {
   padding: 0.25rem;
 }
 
-#user-actions-menu {
-  padding-top: 0.5rem;
+.raised span {
+  font-size: 1.5rem;
 }
+
+.required-field::after {
+  color: darkred;
+  content: "*";
+}
+.success-message {
+  color: #00BB51;
+  display:block;
+  font-weight: 600;
+}
+
+.ui-section {
+  padding-left:1.5rem;
+}
+
 .raised a {
   color: white;
   font-weight: 400;
