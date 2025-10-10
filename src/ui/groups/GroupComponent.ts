@@ -186,18 +186,15 @@ export class GroupComponent extends BaseDynamicComponent {
         })
       }
       if(targetId === SAVE_UPDATES_BUTTON_ID){
-
         const validationErrorState:Record<string,string> = {[SUCCESS_MESSAGE_KEY]:''}
         const groupName = (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLInputElement)?.value;
         if(!groupName || groupName.length === 0){
           validationErrorState[NAME_ERROR_TEXT_KEY] = "Name is a required field"
         }
-
         const groupDescription = (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value.trim();
         if(!groupDescription || groupDescription.length === 0){
           validationErrorState[DESCRIPTION_ERROR_TEXT_KEY]="Description is a required field"
         }
-
         const params = {
           id: self.componentStore.id,
           name: groupName,
@@ -205,18 +202,20 @@ export class GroupComponent extends BaseDynamicComponent {
           url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value,
           gameTypeTags:Object.keys(getTagSelectedState(shadowRoot))
         }
-
         if(Object.keys(validationErrorState).length >1){
           self.updateData({...validationErrorState,...params});
           return;
         }
-
         ApiLoadAction.getResponseData({
           body: JSON.stringify(params),
           method: ApiActionTypes.PUT,
           url: API_ROOT + `/groups/?name=${encodeURIComponent(params.name)}`,
         }).then((data:any)=>{
           if(!data.errorMessage){
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
             self.updateData({
               ...params,
               isEditing: false,
@@ -232,83 +231,78 @@ export class GroupComponent extends BaseDynamicComponent {
       }
     })
   }
-
   renderEditMode(groupData:any):string {
     return`
     
-    <h2>Edit group information</h2>
-    <div class="section-separator-small"></div>
-    ${groupData[ERROR_MESSAGE_KEY] ? generateErrorMessage(groupData[ERROR_MESSAGE_KEY]) : ''}
-
-    <form>
-      
-      <div class="form-section">
-        <label class="required-field">Name</label>
-        <input
-          id=${GROUP_NAME_INPUT}
-          value="${groupData.name}"
-        />
-        ${generateErrorMessage(groupData[NAME_ERROR_TEXT_KEY])}
-      </div>
-
-      
-      <div class="form-section">
-        <label class="required-field">Description</label>
-        <textarea
-          id=${GROUP_DESCRIPTION_INPUT}
-        />${groupData.description}</textarea>    
-        ${generateErrorMessage(groupData[DESCRIPTION_ERROR_TEXT_KEY])}
-      </div>
-
-      <div class="form-section">
-        <label class="form-field-header">Url</label>
-        <input
-          id=${GROUP_URL_INPUT}
-          value="${groupData.url}"
-        />
-      </div>
+      <h2>Edit group information</h2>
+      <div class="section-separator-small"></div>
+      ${groupData[ERROR_MESSAGE_KEY] ? generateErrorMessage(groupData[ERROR_MESSAGE_KEY]) : ''}
   
-      ${getGameTypeTagSelectHtml(groupData.gameTypeTags)}
-      
-      ${generateButton({
-        id: SAVE_UPDATES_BUTTON_ID,
-        text: "Submit",
-        type: "submit",
-      })}
+      <form>
+        
+        <div class="form-section">
+          <label class="required-field">Name</label>
+          <input
+            id=${GROUP_NAME_INPUT}
+            value="${groupData.name}"
+          />
+          ${generateErrorMessage(groupData[NAME_ERROR_TEXT_KEY])}
+        </div>
   
-      ${generateButton({
-        id: CANCEL_UPDATES_BUTTON_ID,
-        text: "Cancel",
-      })}
-    </form>`
+        
+        <div class="form-section">
+          <label class="required-field">Description</label>
+          <textarea
+            id=${GROUP_DESCRIPTION_INPUT}
+          />${groupData.description}</textarea>    
+          ${generateErrorMessage(groupData[DESCRIPTION_ERROR_TEXT_KEY])}
+        </div>
+  
+        <div class="form-section">
+          <label class="form-field-header">Url</label>
+          <input
+            id=${GROUP_URL_INPUT}
+            value="${groupData.url}"
+          />
+        </div>
+    
+        ${getGameTypeTagSelectHtml(groupData.gameTypeTags)}
+        
+        ${generateButton({
+          id: SAVE_UPDATES_BUTTON_ID,
+          text: "Submit",
+          type: "submit",
+        })}
+    
+        ${generateButton({
+          id: CANCEL_UPDATES_BUTTON_ID,
+          text: "Cancel",
+        })}
+      </form>`
   }
 
   renderGroupEditUI(groupData:any):string {
     return `
-      ${groupData[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY]) : ''}
-        ${generateButton({
-          id:EDIT_GROUP_BUTTON_ID,
-          text: "Edit group information",
-        })}
-        ${generateLinkButton({
-          class: "add-event-button",
-          text: "Add event",
-          url: `beta/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}`
-        })}
-        ${generateLinkButton({
-          class: "delete-button",
-          text: "Delete group",
-          url: `beta/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}`
-        })}
-      `
+      ${generateButton({
+        id:EDIT_GROUP_BUTTON_ID,
+        text: "Edit group information",
+      })}
+      ${generateLinkButton({
+        class: "add-event-button",
+        text: "Add event",
+        url: `beta/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}`
+      })}
+      ${generateLinkButton({
+        class: "delete-button",
+        text: "Delete group",
+        url: `beta/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}`
+      })}
+    `
   }
-
   renderWeeklyEventData(eventData:any, groupId:any, key:string){
-
     const dayString = convertDayOfWeekForDisplay(eventData.day);
     return `
       <div class="section-separator-small"></div>
-
       <div id=${key} class="event">
         ${generateLinkButton({
           text: eventData.name,
@@ -319,17 +313,14 @@ export class GroupComponent extends BaseDynamicComponent {
           ${convert24HourTimeForDisplay(eventData.endTime)} 
         </p>
         <p class="event-location">${convertLocationStringForDisplay(eventData.location)}</p>
-
       </div>
     `;
   }
 
   renderOneTimeEventData(eventData:any, groupId:any, key:string){
-
     const startDate = `${eventData.startDate[0]}-${eventData.startDate[1]}-${eventData.startDate[2]}`
     return `
       <div class="section-separator-small"></div>
-
       <div id=${key} class="event">
         ${generateLinkButton({
           text: eventData.name,
@@ -337,7 +328,6 @@ export class GroupComponent extends BaseDynamicComponent {
         })}
         <p class = "event-time">${startDate} ${convert24HourTimeForDisplay(eventData.startTime)}</p>
         <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
-
       </div>
     `;
   }
@@ -346,59 +336,57 @@ export class GroupComponent extends BaseDynamicComponent {
     if (!groupData.permissions) {
       return `<h1>Loading</h1>`;
     }
-
     const self = this;
     return `
       <div class="ui-section" id = "user-actions-menu">
         ${groupData.permissions.userCanEdit ? this.renderGroupEditUI(groupData) : ''}
         <login-status-component class = "ui-section"></login-status-component>
-      </div>
-      
+      </div>   
       <div class="section-separator-medium"></div>
       <div class="ui-section">
-
-      <h1 id="group-name-header">${groupData.name}</h1>
-      ${!groupData.isEditing ? `
-          ${groupData.url ? generateLinkButton({
-            class: "group-webpage-link",
-            text: "Group website",
-            url:groupData.url
-          }) : ''}
-        <p class="${GROUP_DESCRIPTION_TEXT}">${groupData.description}</p> 
-        ` : 
-        this.renderEditMode(groupData)
-      }
-
-     ${groupData.oneTimeEventData.length === 0 && groupData.weeklyEventData.length === 0 ?
-      `<p id="no-event">No events found for group</p>`:
-      `
-        <div class="section-separator-medium" id="recurring-events-separator"></div>
-        <h2>Upcoming recurring events</h2>
-      `
-    }
-    ${
-      groupData.weeklyEventData.length === 0
-        ? ``
-        : `  
-          ${groupData.weeklyEventData.map((event: any) => {
-            return self.renderWeeklyEventData(event,groupData.id, groupData.id + "-event-" + event.id)
-          }).join(" ")}
+        <h1 id="group-name-header">${groupData.name}</h1>
+        ${groupData[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY]) : ''}
+        ${!groupData.isEditing ? `
+            ${groupData.url ? generateLinkButton({
+              class: "group-webpage-link",
+              text: "Group website",
+              url:groupData.url
+            }) : ''}
+          <p class="${GROUP_DESCRIPTION_TEXT}">${groupData.description}</p> 
+          ` : 
+          this.renderEditMode(groupData)
+        }
+  
+       ${groupData.oneTimeEventData.length === 0 && groupData.weeklyEventData.length === 0 ?
+        `<p id="no-event">No events found for group</p>`:
         `
-    }
- 
-    ${
-      groupData.oneTimeEventData.length === 0
-        ? ``
-        : `
-          <div class="section-separator-small"></div>
-          <h2>Other events</h2> 
-          ${groupData.oneTimeEventData
-            .map((event: any) => {
-              return self.renderOneTimeEventData(event,groupData.id,groupData.id + "event-" + event.id)
-            }).join(" ")}
-          <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
-      `
+          <div class="section-separator-medium" id="recurring-events-separator"></div>
+          <h2>Upcoming recurring events</h2>
+        `
       }
+      ${
+        groupData.weeklyEventData.length === 0
+          ? ``
+          : `  
+            ${groupData.weeklyEventData.map((event: any) => {
+              return self.renderWeeklyEventData(event,groupData.id, groupData.id + "-event-" + event.id)
+            }).join(" ")}
+          `
+      }
+   
+      ${
+        groupData.oneTimeEventData.length === 0
+          ? ``
+          : `
+            <div class="section-separator-small"></div>
+            <h2>Other events</h2> 
+            ${groupData.oneTimeEventData
+              .map((event: any) => {
+                return self.renderOneTimeEventData(event,groupData.id,groupData.id + "event-" + event.id)
+              }).join(" ")}
+            <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
+        `
+        }
     </div>`;
   }
 }

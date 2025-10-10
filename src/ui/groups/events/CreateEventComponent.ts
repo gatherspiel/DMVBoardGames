@@ -110,8 +110,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
 
         const validationErrors:any = validate(formData);
         if(Object.keys(validationErrors.formValidationErrors).length !==0){
-          const updates = {...validationErrors,...formData}
-          self.updateData(updates);
+          self.updateData({...validationErrors,...formData});
         } else {
           const eventDetails = getEventDetailsFromForm(formData)
           ApiLoadAction.getResponseData({
@@ -143,6 +142,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
     return `   
    
       <div class="ui-section" id = "user-actions-menu">
+      
         <login-status-component></login-status-component>
       </div>
       <div class="section-separator-medium"></div>
