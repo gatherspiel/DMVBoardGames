@@ -12,8 +12,7 @@ import {
 } from "../Constants.ts";
 import {GROUP_EVENT_REQUEST_STORE} from "./GroupEventRequestStore.ts";
 import {
-  getEventDetailsFromForm,
-  validateEventFormData
+  getEventDetailsFromForm, validate,
 } from "./EventDetailsHandler.ts";
 
 import {generateErrorMessage} from "../../../shared/html/StatusIndicators.ts";
@@ -64,11 +63,12 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         h1 {
           margin-top:0rem;
         }   
-
         #delete-event-form {
           padding-left:1.5rem;
         }
-
+        #form-status-success {
+          padding-left: 1.5rem;
+        }
         .back-to-group-button {
           margin-top: 0.5rem;
         }
@@ -108,130 +108,117 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
   override attachHandlersToShadowRoot(shadowRoot?: any) {
     const self = this;
-
     shadowRoot?.addEventListener("click",(event:any)=>{
-      try {
-        if(event.target.id === CANCEL_EDIT_BUTTON_ID) {
-          self.updateData({isEditing: false,
-            [SUCCESS_MESSAGE_KEY]:''})
+      if(event.target.id === CANCEL_EDIT_BUTTON_ID) {
+        self.updateData({isEditing: false,
+          [SUCCESS_MESSAGE_KEY]:''})
+      }
+      if(event.target.id === DELETE_EVENT_BUTTON_ID) {
+        self.updateData({
+          isDeleting: true,
+          [SUCCESS_MESSAGE_KEY]:''
+        })
+      }
+      if(event.target.id === CANCEL_DELETE_BUTTON_ID){
+        self.updateData({
+          errorMessage: '',
+          isDeleting: false,
+          [SUCCESS_MESSAGE_KEY]:''
+        })
+      }
+      if(event.target.id === CONFIRM_DELETE_BUTTON_ID){
+        const params = {
+          id: self.componentStore.id,
+          groupId: self.componentStore.groupId
         }
-        if(event.target.id === DELETE_EVENT_BUTTON_ID) {
-          self.updateData({
-            isDeleting: true,
-            [SUCCESS_MESSAGE_KEY]:''
-          })
-        }
-        if(event.target.id === CANCEL_DELETE_BUTTON_ID){
-          self.updateData({
-            errorMessage: '',
-            isDeleting: false,
-            [SUCCESS_MESSAGE_KEY]:''
-          })
-        }
-        if(event.target.id === CONFIRM_DELETE_BUTTON_ID){
-          const params = {
-            id: self.componentStore.id,
-            groupId: self.componentStore.groupId
+        ApiLoadAction.getResponseData({
+          method: ApiActionTypes.DELETE,
+          url: `${API_ROOT}/groups/${params.groupId}/events/${encodeURIComponent(params.id)}/`,
+        }).then((response:any)=>{
+          if (response.errorMessage) {
+            self.updateData({
+              errorMessage: response.errorMessage,
+              [SUCCESS_MESSAGE_KEY]: "",
+            });
+          } else {
+            self.updateData({
+              isEditing: false,
+              errorMessage: "",
+              [SUCCESS_MESSAGE_KEY]: "Successfully deleted event"
+            });
           }
+        })
+      }
+      if(event.target.id === EDIT_EVENT_BUTTON_ID){
+        self.updateData({
+          isEditing: true,
+          [SUCCESS_MESSAGE_KEY]:''
+        })
+      }
+      if(event.target.id === SAVE_EVENT_BUTTON_ID){
+        const data = (shadowRoot.getElementById('event-details-form') as HTMLFormElement)?.elements;
+        const formData = {
+          id: self.componentStore.id,
+          [EVENT_NAME_INPUT]: (data.namedItem(EVENT_NAME_INPUT) as HTMLInputElement)?.value,
+          [EVENT_DESCRIPTION_INPUT]: (data.namedItem(EVENT_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
+          [EVENT_URL_INPUT]: (data.namedItem(EVENT_URL_INPUT) as HTMLInputElement)?.value,
+          [START_TIME_INPUT]: convertTimeTo24Hours((data.namedItem(START_TIME_INPUT) as HTMLInputElement)?.value),
+          [END_TIME_INPUT]: convertTimeTo24Hours((data.namedItem(END_TIME_INPUT) as HTMLInputElement)?.value),
+          [EVENT_LOCATION_INPUT]: (data.namedItem(EVENT_LOCATION_INPUT) as HTMLInputElement)?.value,
+          isRecurring: self.componentStore.isRecurring
+        }
+        if(self.componentStore.isRecurring){
+          // @ts-ignore
+          formData[DAY_OF_WEEK_INPUT] = (data.namedItem(DAY_OF_WEEK_INPUT) as HTMLSelectElement)?.value;
+        } else {
+          // @ts-ignore
+          formData[START_DATE_INPUT] = (data.namedItem(START_DATE_INPUT) as HTMLInputElement)?.value;
+        }
+        const validationErrors:any = validate(formData);
+        if(Object.keys(validationErrors.formValidationErrors).length !==0){
+          self.updateData({...validationErrors,...formData});
+        } else {
+          const eventDetails = getEventDetailsFromForm(formData)
           ApiLoadAction.getResponseData({
-            method: ApiActionTypes.DELETE,
-            url: `${API_ROOT}/groups/${params.groupId}/events/${encodeURIComponent(params.id)}/`,
+            body: JSON.stringify(eventDetails),
+            method: ApiActionTypes.PUT,
+            url: API_ROOT + `/groups/${eventDetails.groupId}/events/?id=${encodeURIComponent(eventDetails.id)}`,
           }).then((response:any)=>{
-            if (response.errorMessage) {
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+            if(!response.errorMessage){
               self.updateData({
-                errorMessage: response.errorMessage,
-                [SUCCESS_MESSAGE_KEY]: "",
+                name: formData[EVENT_NAME_INPUT],
+                description: formData[EVENT_DESCRIPTION_INPUT],
+                url: formData[EVENT_URL_INPUT],
+                //@ts-ignore
+                day: formData[DAY_OF_WEEK_INPUT],
+                //@ts-ignore
+                startDate: formData[START_DATE_INPUT],
+                startTime: formData[START_TIME_INPUT],
+                endTime: formData[END_TIME_INPUT],
+                eventLocation: formData[EVENT_LOCATION_INPUT],
+                isEditing: false,
+                errorMessage: "",
+                [SUCCESS_MESSAGE_KEY]: "Successfully updated event",
               });
             } else {
               self.updateData({
-                isEditing: false,
-                errorMessage: "",
-                [SUCCESS_MESSAGE_KEY]: "Successfully deleted event"
-              });
+                errorMessage: response.errorMessage,
+                [SUCCESS_MESSAGE_KEY]: ""
+              })
             }
           })
-        }
-
-        if(event.target.id === EDIT_EVENT_BUTTON_ID){
-          self.updateData({
-            isEditing: true,
-            [SUCCESS_MESSAGE_KEY]:''
-          })
-        }
-
-        if(event.target.id === SAVE_EVENT_BUTTON_ID){
-
-          const data = (shadowRoot.getElementById('event-details-form') as HTMLFormElement)?.elements;
-
-          const formData = {
-            id: self.componentStore.id,
-            [EVENT_NAME_INPUT]: (data.namedItem(EVENT_NAME_INPUT) as HTMLInputElement)?.value,
-            [EVENT_DESCRIPTION_INPUT]: (data.namedItem(EVENT_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
-            [EVENT_URL_INPUT]: (data.namedItem(EVENT_URL_INPUT) as HTMLInputElement)?.value,
-            [START_TIME_INPUT]: convertTimeTo24Hours((data.namedItem(START_TIME_INPUT) as HTMLInputElement)?.value),
-            [END_TIME_INPUT]: convertTimeTo24Hours((data.namedItem(END_TIME_INPUT) as HTMLInputElement)?.value),
-            [EVENT_LOCATION_INPUT]: (data.namedItem(EVENT_LOCATION_INPUT) as HTMLInputElement)?.value,
-            isRecurring: self.componentStore.isRecurring
-          }
-
-          if(self.componentStore.isRecurring){
-            // @ts-ignore
-            formData[DAY_OF_WEEK_INPUT] = (data.namedItem(DAY_OF_WEEK_INPUT) as HTMLSelectElement)?.value;
-          } else {
-            // @ts-ignore
-            formData[START_DATE_INPUT] = (data.namedItem(START_DATE_INPUT) as HTMLInputElement)?.value;
-          }
-
-          const validationErrors:any = validateEventFormData(formData);
-
-          if(validationErrors.errorMessage.length !==0){
-            self.updateData(validationErrors);
-          } else {
-            const eventDetails = getEventDetailsFromForm(formData)
-            ApiLoadAction.getResponseData({
-              body: JSON.stringify(eventDetails),
-              method: ApiActionTypes.PUT,
-              url: API_ROOT + `/groups/${eventDetails.groupId}/events/?id=${encodeURIComponent(eventDetails.id)}`,
-            }).then((response:any)=>{
-              if(!response.errorMessage){
-                self.updateData({
-                  name: formData[EVENT_NAME_INPUT],
-                  description: formData[EVENT_DESCRIPTION_INPUT],
-                  url: formData[EVENT_URL_INPUT],
-                  //@ts-ignore
-                  day: formData[DAY_OF_WEEK_INPUT],
-                  //@ts-ignore
-                  startDate: formData[START_DATE_INPUT],
-                  startTime: formData[START_TIME_INPUT],
-                  endTime: formData[END_TIME_INPUT],
-                  eventLocation: formData[EVENT_LOCATION_INPUT],
-                  isEditing: false,
-                  errorMessage: "",
-                  [SUCCESS_MESSAGE_KEY]: "Successfully updated event",
-                });
-              } else {
-                self.updateData({
-                  errorMessage: response.errorMessage,
-                  [SUCCESS_MESSAGE_KEY]: ""
-                })
-              }
-            })
-          }
-        }
-
-      } catch(e:any){
-        if(e.message !== `Permission denied to access property "id"`){
-          throw e;
         }
       }
     })
   }
-
   render(data: any): string {
     if(!data || !data.name){
       return `<h1>Loading</h1>`;
     }
-
     let html = `
       <div class="ui-section" id = "user-actions-menu">
         ${!data.isEditing && !data.isDeleting && data?.permissions?.userCanEdit ? `
@@ -239,19 +226,18 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           id: EDIT_EVENT_BUTTON_ID,
           text: "Edit event",
         })}
-          
         ${generateButton({
           id: DELETE_EVENT_BUTTON_ID,
           text: "Delete event",
         })}
-    
         ` : ''}
-        <login-status-component class = "ui-section"></login-status-component>
+        <login-status-component></login-status-component>
       </div>
       
       <div class="section-separator-medium"></div>
-      ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
-
+      <div id="form-status-success">
+        ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
+      </div>
     `
     if(data.isEditing){
       html += this.renderEditMode(data);
@@ -272,9 +258,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     `
     return html
   }
-
   renderDeleteMode(data:any): string {
-    console.log(data)
     if (data[SUCCESS_MESSAGE_KEY]) {
       return `
         <div class="ui-section">
@@ -284,7 +268,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     }
     return `
       <h1>Are you sure you want to delete event ${data.name} ${data.isRecurring ? '': `on ${convertDateTimeForDisplay(data.startTime)}`}</h1>
-      
       <div id="delete-event-form">
           ${generateButton({
           id: CONFIRM_DELETE_BUTTON_ID,
@@ -298,76 +281,85 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       </div>
     `
   }
-
   renderEditMode(data:any): string {
-
     return `
       <div class="ui-section">
-      <h1>Editing: ${data.name}</h1>
-  
+      <h1>Editing Event:</h1>
+      <b>${data.name}</b>
       <form id="event-details-form" onsubmit="return false">
-        <label class="form-field-header">Event name</label>
-        <input
-          id=${EVENT_NAME_INPUT}
-          name=${EVENT_NAME_INPUT}
-          value="${data.name}"
-        />
-        </input>
-    
-        <label class="form-field-header"> Event description</label>
-        <textarea
+        <div id="form-status-div">
+          ${generateErrorMessage(data.errorMessage)}
+        </div>
+        <div class="form-section">
+          <label class="required-field">Event name</label>
+          <input
+            id=${EVENT_NAME_INPUT}
+            name=${EVENT_NAME_INPUT}
+            value="${data.name}"
+          />
+          </input>
+        </div>
+        <div class="form-section">
+          <label class="required-field"> Event description</label>
+          <textarea
           id=${EVENT_DESCRIPTION_INPUT}
           name=${EVENT_DESCRIPTION_INPUT}
-        />${data.description ?? ""}</textarea>
-           
-        <label class="form-field-header">Event URL</label>
-        <input
-          name=${EVENT_URL_INPUT}
-          type="url"
-          value="${data.url ?? ""}"
-        />
-        </input>
-          
+          />${data.description ?? ""}</textarea>       
+        </div>
+        <div class="form-section">
+          <label class="form-field-header">Event URL</label>
+          <input
+            name=${EVENT_URL_INPUT}
+            type="url"
+            value="${data.url ?? ""}"
+          />
+          </input>
+        </div>  
         ${data.isRecurring ?
           `
-            <label class="form-field-header">Day of week</label>
-            ${getDayOfWeekSelectHtml(data.day)}
+            <div class="form-section">
+              <label class="required-field">Day of week</label>
+              ${getDayOfWeekSelectHtml(data.day)}
+            </div>
           ` :
           `
-            <label class="form-field-header">Start date</label>
-            <input
-              name=${START_DATE_INPUT}
-              type="date"
-              value=${data.startDate}
-            />`
-        }
-          
-        <label class="form-field-header">Start time</label>
-        <input
-          name=${START_TIME_INPUT}
-          type="time"
-          value=${(data.startTime)}
-        />
-        </input>
-          
-        <label class="form-field-header">End time</label>
-        <input
-          name=${END_TIME_INPUT}
-          type="time"
-          value=${(data.endTime)}
-        />
-        </input>
-          
-        <label class="form-field-header">Event location</label>
-        <input
-          id=${EVENT_LOCATION_INPUT}
-          name=${EVENT_LOCATION_INPUT}
-          value="${data.location ?? ""}"
-        />
-        </input>
-        
-        ${generateErrorMessage(data.errorMessage)}
-  
+            <div class="form-section">
+              <label class="required-field">Start date</label>
+              <input
+                name=${START_DATE_INPUT}
+                type="date"
+                value=${data.startDate}
+              />
+            </div>
+          `
+        }   
+        <div class="form-section">
+          <label class="required-field">Start time</label>
+          <input
+            name=${START_TIME_INPUT}
+            type="time"
+            value=${(data.startTime)}
+          />
+          </input>
+        </div>
+        <div class="form-section">
+          <label class="required-field">End time</label>
+          <input
+            name=${END_TIME_INPUT}
+            type="time"
+            value=${(data.endTime)}
+          />
+          </input>
+        </div>
+        <div class="form-section">
+          <label class="required-field">Event location</label>
+          <input
+            id=${EVENT_LOCATION_INPUT}
+            name=${EVENT_LOCATION_INPUT}
+            value="${data.location ?? ""}"
+          />
+          </input>
+        </div>  
         ${generateButton({
           class: "group-webpage-link",
           id: SAVE_EVENT_BUTTON_ID,
@@ -379,32 +371,29 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   }
 
   renderViewMode(data:any): string {
-
     if(data.errorMessage){
       return `${generateErrorMessage(data.errorMessage)}`
     }
     return `
       <div class="ui-section">
         <h1>${data.name}</h1>
-        ${generateLinkButton({
-          class:"event-website-link",
-          text: "Event website", 
-          url: data.url
-        })}
-         
-        ${data.isRecurring ? 
-          `<p>
+        ${data.url ? generateLinkButton({
+            class:"event-website-link",
+            text: "Event website", 
+            url: data.url
+          }) : ''
+        } 
+        <p><b>Time:</b>${data.isRecurring ? 
+          `
             ${convertDayOfWeekForDisplay(data.day)}s from ${convert24HourTimeForDisplay(data.startTime)} to 
-            ${convert24HourTimeForDisplay(data.endTime)} </p>` :
-          `<p>
-            Time: ${data.startDate}, ${convert24HourTimeForDisplay(data.startTime)}
-          </p>`
-        }
-        
-        <p>Location: ${convertLocationStringForDisplay(data.location)}</p>
+            ${convert24HourTimeForDisplay(data.endTime)}` :
+          `
+            ${data.startDate}, ${convert24HourTimeForDisplay(data.startTime)}
+          `
+        }</p>  
+        <p><b>Location:</b> ${convertLocationStringForDisplay(data.location)}</p>
+        <h2>Event details</h2>
         <p>${data.description}</p>
-           
-    
       </div>
     `;
   }

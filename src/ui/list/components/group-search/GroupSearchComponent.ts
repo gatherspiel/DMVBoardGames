@@ -65,8 +65,9 @@ export class GroupSearchComponent extends BaseDynamicComponent {
         #search-form {
           display: flex;
           flex-wrap: wrap;
-          padding-left:1.5rem;
           padding-bottom:0.5rem;
+          padding-left:1.5rem;
+          padding-top:0.5rem;
         }   
         #search-form-inputs {
           padding-top:0.5rem; 
@@ -89,7 +90,6 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           #search-form .form-item {
             display: inline-block;
           }
-
         }     
         @media screen and (width < 32em) {
           #form-div-outer {
@@ -104,14 +104,13 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           .searchDropdownLabel {
             width: 11rem;
           }
-
           .search-form-two-inputs {
             display: inline-block;
             height:4rem;
           }
           .search-form-three-inputs {
             display: inline-block;
-            height:6rem;
+            height:7.5rem;
           }
         }
       </style>   
@@ -172,23 +171,26 @@ export class GroupSearchComponent extends BaseDynamicComponent {
       <div class="section-separator-small"></div>
       <form id=${SEARCH_FORM_ID} onsubmit="return false">
         <div id ="form-div-outer">
-          <div id="search-form-inputs" class="${searchInputsClass}">
-            <label class="searchDropdownLabel">Select event day: </label>
-            ${store.showDaySelectOnMobile ?
-              generateButton({
-                class:"show-mobile",
-                id: SHOW_DAY_SELECT,
-                text:"-"
-              }) :
-              generateButton({
-                class:"show-mobile",
-                id: SHOW_DAY_SELECT,
-                text:"+"
-              })
-            }
-            <div class="${store.showDaySelectOnMobile ? `` : `hide-mobile`}">
+          <label class="searchDropdownLabel">Select event day: </label>
+
+          ${store.showDaySelectOnMobile ?
+            generateButton({
+              class:"show-mobile",
+              id: SHOW_DAY_SELECT,
+              text:"-"
+            }) :
+            generateButton({
+              class:"show-mobile",
+              id: SHOW_DAY_SELECT,
+              text:"+"
+            })
+          }
+          
+          <div class="${store.showDaySelectOnMobile ? `` : `hide-mobile`}">
               ${getDaysOfWeekSelectHtml(store.selectedDays)}
             </div>
+          <div id="search-form-inputs" class="${searchInputsClass}">
+
             <label class="searchDropdownLabel">Select event city: </label>
             ${getDropdownHtml({
               data: store.cityList ?? [{name:"Any location"}],

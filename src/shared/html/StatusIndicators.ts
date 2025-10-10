@@ -2,18 +2,18 @@ export function generateErrorMessage(message: string | string[] | undefined){
   if(Array.isArray(message)){
     let html = ''
     message.forEach((item)=>{
-      html+=`<p class="error-message">${item.trim()}</p>`
+      html+=`<span class="error-message">${item.trim()}</span>`
 
     })
     return html;
   }
   return `
-    ${message ? `<p class="error-message">${message.trim()}</p>` : ``}
+    ${message ? `<span class="error-message">${message.trim()}</span>` : ``}
   `
 }
 
 export function generateSuccessMessage(message: string | undefined) {
   return `
-    ${message ? `<p class="success-message">${message}</p>` : ''}
+    ${message ? `<span class="success-message">${message}</span>` : ''}
   `
 }
