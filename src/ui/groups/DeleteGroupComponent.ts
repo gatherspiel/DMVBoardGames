@@ -1,7 +1,7 @@
 import {ApiActionTypes, BaseDynamicComponent, ApiLoadAction} from "@bponnaluri/places-js";
 import { GROUP_NAME_INPUT } from "./Constants.ts";
 import {generateButton} from "../../shared/html/ButtonGenerator.ts";
-import {generateErrorMessage} from "../../shared/html/StatusIndicators.ts";
+import {generateErrorMessage, generateSuccessMessage} from "../../shared/html/StatusIndicators.ts";
 import {
   SUCCESS_MESSAGE_KEY
 } from "../../shared/Constants.ts";
@@ -85,25 +85,26 @@ export class DeleteGroupComponent extends BaseDynamicComponent {
   }
 
   render(data: any): string {
-
     return `
-
       <h1>${document.title}</h1>
       <form onsubmit="return false">
-
-      <label class="form-field-header">Enter group name to confirm deleting</label>
-      <input
-          id=${GROUP_NAME_INPUT}
-          value="${data.groupInput ?? ''}"
-       />
+        <div id="form-status-div">
+          ${generateErrorMessage(data.errorMessage)}
+          ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}      
+        </div>
+        
+        <div class = "form-section">
+          <label class="required-field">Enter group name to confirm deleting</label>
+          <input
+              id=${GROUP_NAME_INPUT}
+              value="${data.groupInput ?? ''}"
+           />
+         </div>
          ${generateButton({
           id: CONFIRM_DELETE_BUTTON_ID,
           text: "Confirm delete"
         })}
-      </form> 
-      ${generateErrorMessage(data.errorMessage)}
-      
-      <p class="${SUCCESS_MESSAGE_KEY}">${data?.[SUCCESS_MESSAGE_KEY]?.trim() ?? ""}</p>   
+      </form>       
     `;
   }
 }
