@@ -8,6 +8,7 @@
   --clr-dark-gray: darkgray;
   --clr-light-gray: lightgray;
   --clr-gray: gray;
+
 }
 
 html, body,div,p,span {
@@ -54,8 +55,10 @@ body {
 
 .page-section li,p {
   color: var(--clr-dark-blue);
+  font-size: 1.25rem;
   font-weight: 600;
 }
+
 
 
 #bg-image {
@@ -191,6 +194,7 @@ body {
   border-radius: 12px;
   font-size: 1.5rem;
   color: white;
+  background: var(--clr-light-blue);
   will-change: transform;
   transform: translateY(-4px);
 }
@@ -202,6 +206,13 @@ body {
   width: 100%;
   height: 100%;
   border-radius: 12px;
+  background: linear-gradient(
+          to left,
+          var(--clr-darker-blue) 0%,
+          var(--clr-light-blue) 8%,
+          var(--clr-dark-blue) 92%,
+          var(--clr-darker-blue) 100%
+  );
 }
 
 .shadow {
