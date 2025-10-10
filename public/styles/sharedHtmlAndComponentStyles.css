@@ -9,11 +9,13 @@ b,h2,label,li {
 
 h1 {
   background-color: var(--clr-very-light-blue);
+
   border-radius: 12px;
   color: var(--clr-darker-blue);
   font-size:3rem;
-  margin-top:-1rem;
+  margin-top:0;
   margin-bottom:0;
+  transform:translateY(2px);
 }
 
 h2 {
@@ -88,6 +90,20 @@ a:hover {
   font-weight: 400;
   text-decoration:none;
 }
+
+
+.shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: hsl(0deg 0% 0% / 0.25);
+  will-change: transform;
+  transform: translateY(2px);
+}
+
 
 .raised {
   background: transparent;

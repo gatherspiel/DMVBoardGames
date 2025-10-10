@@ -31,6 +31,9 @@ export class LoginStatusComponent extends BaseDynamicComponent {
           p {
             margin-top:0;
           }
+          .raised {
+            margin-top:0.5rem;
+          }
         }  
       </style>
     `;

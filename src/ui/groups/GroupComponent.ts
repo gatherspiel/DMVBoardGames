@@ -76,7 +76,9 @@ export class GroupComponent extends BaseDynamicComponent {
           padding-left: 0.25rem;
         }  
         #group-name-header {
-          margin-top: 0;
+          margin-bottom:0.5rem;
+          margin-left:-1.5rem;
+          margin-top: 0.5rem;
         }
         #other-events-header {
           margin-top: 0.5rem;
@@ -125,6 +127,16 @@ export class GroupComponent extends BaseDynamicComponent {
             display: inline-block;
             line-height: 1;
           }  
+         #group-name-header {
+            margin-bottom:0.5rem;
+            margin-left:-1.5rem;
+            margin-top: 0.5rem;
+            padding-left:1.5rem;
+          }
+          h2 {
+            margin-left:-1.5rem;
+            padding-left: 1.5rem;
+          }
         }   
         @media screen and (width < 32em) {
           #${GROUP_DESCRIPTION_INPUT} {
@@ -336,9 +348,10 @@ export class GroupComponent extends BaseDynamicComponent {
     return `
       <div class="ui-section" id = "user-actions-menu">
         ${groupData.permissions.userCanEdit ? this.renderGroupEditUI(groupData) : ''}
-        <login-status-component class = "ui-section"></login-status-component>
+        <login-status-component></login-status-component>
       </div>   
       <div class="ui-section">
+      
         <h1 id="group-name-header">${groupData.name}</h1>
         ${groupData[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY]) : ''}
         ${!groupData.isEditing ? `

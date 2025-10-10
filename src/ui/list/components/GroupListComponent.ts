@@ -30,7 +30,6 @@ export class GroupListComponent extends BaseDynamicComponent {
           padding-top:1rem;
         }
         h1 {
-          margin-top:-1rem;
           font-size: 3rem;
         }
         ul {
@@ -49,15 +48,15 @@ export class GroupListComponent extends BaseDynamicComponent {
           margin-left:-1rem;
         }
         @media not screen and (width < 32em) {
-          #group-search-results-header {
-            padding-left:1.5rem;
-          }
           .group-cities {
             display: inline-block;
             margin-left: 2rem;
           }
           .raised {
             display: inline-block;
+          }
+          #group-search-results-header {
+            padding-left:1.5rem;
           }
         }  
         @media screen and (width < 32em) {
@@ -122,12 +121,13 @@ export class GroupListComponent extends BaseDynamicComponent {
           <div class="section-separator-small"></div> 
         `
     }
-    let html = `<h1 id="group-search-results-header">Search results</h1>
-    <ul>`;
-    for(let i = 0; i<state.data.groupData.length; i++){
-      html+= `
-        ${this.getItemHtml(state.data.groupData[i], state.loginStatus.loggedIn)}
-        <div class="section-separator-small"></div> 
+    let html = `
+      <h1 id="group-search-results-header">Search results</h1>
+      <ul>`;
+      for(let i = 0; i<state.data.groupData.length; i++){
+        html+= `
+          ${this.getItemHtml(state.data.groupData[i], state.loginStatus.loggedIn)}
+          <div class="section-separator-small"></div> 
       `
     }
     return html + `</ul>`;
