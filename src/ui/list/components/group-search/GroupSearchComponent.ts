@@ -87,6 +87,9 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           #search-form .form-item {
             display: inline-block;
           }
+          #searchInputDiv {
+            margin-top:0.5rem;
+          }
           .raised {
             display: inline-block;
           }
@@ -220,7 +223,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
             ${searchButtonEnabled ?
               `${generateButton({
                 id: SEARCH_BUTTON_ID,
-                text: "Search groups",
+                text: "Search",
               })}` :
               `${generateDisabledButton({
                 id: 'disabled-search-button',
