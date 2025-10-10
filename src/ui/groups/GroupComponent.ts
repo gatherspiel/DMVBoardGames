@@ -1,5 +1,5 @@
 import {
-  GROUP_DESCRIPTION_INPUT, GROUP_DESCRIPTION_TEXT,
+  GROUP_DESCRIPTION_INPUT, GROUP_DESCRIPTION,
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
 } from "./Constants.js";
@@ -72,6 +72,21 @@ export class GroupComponent extends BaseDynamicComponent {
         button {
           margin-top:0.5rem;
         }
+        #game-type-tag-select > :not(:first-child) {
+          padding-left: 0.25rem;
+        }  
+        #group-name-header {
+          margin-top: 0;
+        }
+        #other-events-header {
+          margin-top: 0.5rem;
+        }
+        #recurring-events-separator {
+          margin-left: -1.5rem;
+        }  
+        .add-event-button {
+          margin-top:0.5rem;
+        }
         .event {
           padding-top: 1rem;
           padding-bottom: 0.5rem;
@@ -86,29 +101,9 @@ export class GroupComponent extends BaseDynamicComponent {
           display: inline-block;
           margin-top: 0.5rem;
         }  
-        .add-event-button {
-          margin-top:0.5rem;
-        }
-        #game-type-tag-select > :not(:first-child) {
-          padding-left: 0.25rem;
+        .${GROUP_DESCRIPTION} {
+          margin-bottom:0.5rem;
         }  
-        #group-name-header {
-          margin-top: 0;
-        }
-        .${GROUP_DESCRIPTION_TEXT} {
-          border: 10px solid;
-          background-color: var(--clr-very-light-blue);
-          border-image-source: url(assets/Section_Border_Small.png);
-          border-image-slice: 10 10;
-          border-image-repeat: round;
-          border-radius: 12px;
-          font-size: 1.5rem;
-          position: relative;
-          padding: 0.5rem;
-        }  
-        #recurring-events-separator {
-          margin-left: -1.5rem;
-        }
         @media not screen and (width < 32em) {
           #${GROUP_DESCRIPTION_INPUT} {
             display: block;
@@ -123,7 +118,7 @@ export class GroupComponent extends BaseDynamicComponent {
             display: block;
             width: 600px;
           } 
-          .${GROUP_DESCRIPTION_TEXT} {
+          .${GROUP_DESCRIPTION} {
             margin-top: 1rem;
           }
           .raised {
@@ -135,7 +130,7 @@ export class GroupComponent extends BaseDynamicComponent {
           #${GROUP_DESCRIPTION_INPUT} {
             height:10rem;
           }
-          .${GROUP_DESCRIPTION_TEXT} {
+          .${GROUP_DESCRIPTION} {
             font-size:1rem;
             margin-top: 1rem;
             padding: 0.5rem;
@@ -302,7 +297,6 @@ export class GroupComponent extends BaseDynamicComponent {
   renderWeeklyEventData(eventData:any, groupId:any, key:string){
     const dayString = convertDayOfWeekForDisplay(eventData.day);
     return `
-      <div class="section-separator-small"></div>
       <div id=${key} class="event">
         ${generateLinkButton({
           text: eventData.name,
@@ -314,13 +308,14 @@ export class GroupComponent extends BaseDynamicComponent {
         </p>
         <p class="event-location">${convertLocationStringForDisplay(eventData.location)}</p>
       </div>
+      <div class="section-separator-small"></div>
+
     `;
   }
 
   renderOneTimeEventData(eventData:any, groupId:any, key:string){
     const startDate = `${eventData.startDate[0]}-${eventData.startDate[1]}-${eventData.startDate[2]}`
     return `
-      <div class="section-separator-small"></div>
       <div id=${key} class="event">
         ${generateLinkButton({
           text: eventData.name,
@@ -329,6 +324,7 @@ export class GroupComponent extends BaseDynamicComponent {
         <p class = "event-time">${startDate} ${convert24HourTimeForDisplay(eventData.startTime)}</p>
         <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
       </div>
+      <div class="section-separator-small"></div>
     `;
   }
 
@@ -342,7 +338,6 @@ export class GroupComponent extends BaseDynamicComponent {
         ${groupData.permissions.userCanEdit ? this.renderGroupEditUI(groupData) : ''}
         <login-status-component class = "ui-section"></login-status-component>
       </div>   
-      <div class="section-separator-medium"></div>
       <div class="ui-section">
         <h1 id="group-name-header">${groupData.name}</h1>
         ${groupData[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY]) : ''}
@@ -352,7 +347,10 @@ export class GroupComponent extends BaseDynamicComponent {
               text: "Group website",
               url:groupData.url
             }) : ''}
-          <p class="${GROUP_DESCRIPTION_TEXT}">${groupData.description}</p> 
+          <div class="${GROUP_DESCRIPTION}">
+            <h2>Group description</h2>
+            <span>${groupData.description}</span> 
+          </div>
           ` : 
           this.renderEditMode(groupData)
         }
@@ -360,7 +358,6 @@ export class GroupComponent extends BaseDynamicComponent {
        ${groupData.oneTimeEventData.length === 0 && groupData.weeklyEventData.length === 0 ?
         `<p id="no-event">No events found for group</p>`:
         `
-          <div class="section-separator-medium" id="recurring-events-separator"></div>
           <h2>Upcoming recurring events</h2>
         `
       }
@@ -378,13 +375,12 @@ export class GroupComponent extends BaseDynamicComponent {
         groupData.oneTimeEventData.length === 0
           ? ``
           : `
-            <div class="section-separator-small"></div>
-            <h2>Other events</h2> 
+            <h2 id="other-events-header">Other events</h2> 
             ${groupData.oneTimeEventData
               .map((event: any) => {
                 return self.renderOneTimeEventData(event,groupData.id,groupData.id + "event-" + event.id)
               }).join(" ")}
-            <p>Only events for the next 30 days will be visible. See the group page for information on other events.</p>
+            <p>Only events for the next 30 days will be visible.</p>
         `
         }
     </div>`;

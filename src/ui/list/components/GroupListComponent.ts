@@ -103,7 +103,6 @@ export class GroupListComponent extends BaseDynamicComponent {
         gameTypeTags.push(tag.substring(0,1)+tag.substring(1).toLowerCase().replaceAll("_", " "));
       })
     }
-
     return `
       <li>
         ${generateLinkButton({
@@ -123,13 +122,12 @@ export class GroupListComponent extends BaseDynamicComponent {
           <div class="section-separator-small"></div> 
         `
     }
-
     let html = `<h1 id="group-search-results-header">Search results</h1>
     <ul>`;
     for(let i = 0; i<state.data.groupData.length; i++){
       html+= `
-        <div class="section-separator-small"></div> 
         ${this.getItemHtml(state.data.groupData[i], state.loginStatus.loggedIn)}
+        <div class="section-separator-small"></div> 
       `
     }
     return html + `</ul>`;

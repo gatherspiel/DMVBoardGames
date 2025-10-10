@@ -234,7 +234,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         <login-status-component></login-status-component>
       </div>
       
-      <div class="section-separator-medium"></div>
       <div id="form-status-success">
         ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
       </div>

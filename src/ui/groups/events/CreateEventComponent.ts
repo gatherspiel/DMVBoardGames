@@ -145,7 +145,6 @@ export class CreateEventComponent extends BaseDynamicComponent {
       
         <login-status-component></login-status-component>
       </div>
-      <div class="section-separator-medium"></div>
         <div class="ui-section">
         <form id="create-event-form" onsubmit="return false">   
           <h1>${title}</h1> 

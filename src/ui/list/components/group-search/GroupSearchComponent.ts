@@ -168,7 +168,6 @@ export class GroupSearchComponent extends BaseDynamicComponent {
       "search-form-three-inputs" : "search-form-two-inputs"
     return `
       <h1 id="group-search-header">Search groups</h1>
-      <div class="section-separator-small"></div>
       <form id=${SEARCH_FORM_ID} onsubmit="return false">
         <div id ="form-div-outer">
           <label class="searchDropdownLabel">Select event day: </label>

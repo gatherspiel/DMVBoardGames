@@ -8,6 +8,8 @@ b,h2,label,li {
 }
 
 h1 {
+  background-color: var(--clr-very-light-blue);
+  border-radius: 12px;
   color: var(--clr-darker-blue);
   font-size:3rem;
   margin-top:-1rem;
@@ -15,6 +17,8 @@ h1 {
 }
 
 h2 {
+  background-color: var(--clr-very-light-blue);
+  border-radius: 12px;
   color: var(--clr-darker-blue);
   font-size: 2rem;
   margin-top:0;
