@@ -383,15 +383,16 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             url: data.url
           }) : ''
         } 
-        ${data.isRecurring ? 
-          `<p>
+        <p><b>Time:</b>${data.isRecurring ? 
+          `
             ${convertDayOfWeekForDisplay(data.day)}s from ${convert24HourTimeForDisplay(data.startTime)} to 
-            ${convert24HourTimeForDisplay(data.endTime)} </p>` :
-          `<p>
-            Time: ${data.startDate}, ${convert24HourTimeForDisplay(data.startTime)}
-          </p>`
-        }  
-        <p>Location: ${convertLocationStringForDisplay(data.location)}</p>
+            ${convert24HourTimeForDisplay(data.endTime)}` :
+          `
+            ${data.startDate}, ${convert24HourTimeForDisplay(data.startTime)}
+          `
+        }</p>  
+        <p><b>Location:</b> ${convertLocationStringForDisplay(data.location)}</p>
+        <h2>Event details</h2>
         <p>${data.description}</p>
       </div>
     `;
