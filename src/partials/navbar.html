@@ -37,6 +37,7 @@
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
+
   nav a.active {
     background-color: #04aa6d;
     color: white;
@@ -59,7 +60,8 @@
     position: relative;
   }
   .dropdown-content a {
-    display:block;
+    display:inline-block;
+    padding-left:0.5rem;
     line-height: 2rem;
   }
   @media not screen and (width < 32em) {
@@ -71,6 +73,7 @@
     #logo-div {
       float: left;
     }
+
     #navbar-front {
       padding: 1rem;
     }
@@ -84,10 +87,12 @@
       border-radius: 12px;
       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
       display: none;
-      left:-1rem;
-      min-width: 15rem;
+      left:-10rem;
+      min-width: 35rem;
       padding: 1rem;
       position: absolute;
+      z-index: 1;
+
     }
     .show-mobile {
       display:none;
@@ -145,8 +150,8 @@
 </style>
 
 <nav class="raised" id="navbar">
-  <span class="shadow"></span>
-  <span class="edge"></span>
+  <span class="shadow" id="navbar-shadow"></span>
+  <span class="edge" id="navbar-edge"></span>
   <span class="front" id="navbar-front">
     <div id="logo-div">
       <img fetchpriority="high" src="/assets/logo.svg">
@@ -164,19 +169,10 @@
             Other links
             <div class="dropdown-content">
               <a class="hide-mobile" href="/conventions.html" id="conventions-link">Conventions</a>
-              <div class="section-separator-small"></div>
-
-              <a class="hide-mobile" href="/gameRestaurants.html">Game restaurants</a>
-              <div class="section-separator-small"></div>
-
-              <a class="hide-mobile" href="/gameStores.html">Game stores</a>
-              <div class="section-separator-small"></div>
-
+              <a class="hide-mobile label-border-left" href="/gameRestaurants.html">Game restaurants</a>
+              <a class="hide-mobile label-border-left" href="/gameStores.html">Game stores</a>
               <a class="hide-mobile" href="/designers.html">Local designers</a>
-              <div class="section-separator-small"></div>
-
-              <a class="hide-mobile" href="/links.html">Other websites </a>
-              <div class="section-separator-small"></div>
+              <a class="hide-mobile label-border-left" href="/links.html">Other websites </a>
             </div>
             </div>
           </div>
