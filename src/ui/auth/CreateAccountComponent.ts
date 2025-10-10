@@ -142,12 +142,14 @@ export class CreateAccountComponent extends BaseDynamicComponent {
             self.updateData({...formData,
               errorMessage: "Enter a valid username and password"
             })
+            return;
           }
 
           if(formData.password !== formData.confirmPassword) {
             self.updateData({...formData,
               errorMessage: "Passwords must match"
             })
+            return;
           }
 
           ApiLoadAction.getResponseData({
@@ -160,6 +162,7 @@ export class CreateAccountComponent extends BaseDynamicComponent {
               self.updateData({
                 ...formData,
                 "errorMessage":response.errorMessage,
+                "successMessage":"",
               })
             } else {
               self.updateData({

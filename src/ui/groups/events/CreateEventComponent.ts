@@ -27,12 +27,15 @@ const CREATE_EVENT_BUTTON_ID = "create-event-button";
 const RECURRING_EVENT_INPUT = "is-recurring";
 
 import {LoginStatusComponent} from "../../../shared/html/LoginStatusComponent.ts";
+import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
 customElements.define("login-status-component",LoginStatusComponent)
 
 console.log("Defined login status")
 export class CreateEventComponent extends BaseDynamicComponent {
   constructor() {
-    super();
+    super([{
+      dataStore: LOGIN_STORE
+    }]);
   }
 
   connectedCallback(){
