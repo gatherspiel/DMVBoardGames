@@ -15,6 +15,7 @@ export type ButtonConfig = {
 export function generateLinkButton(config:LinkButtonConfig){
   return `
     <div class="raised ${config.class ?? ''}">
+      <span class="shadow"></span>
       <span class="edge"></span>
       <span class="front">
         <a onclick="event.stopPropagation()" href=${config.url}>${config.text} </a>

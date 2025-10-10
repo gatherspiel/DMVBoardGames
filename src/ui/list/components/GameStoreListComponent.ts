@@ -56,7 +56,6 @@ export class GameStoreListComponent extends BaseDynamicComponent {
 
     let html = `
       <div class="ui-section">
-      <div class="section-separator-medium"></div>
       <h1>Game Stores</h1>
       <div class="section-separator-small"></div>
       <ul>

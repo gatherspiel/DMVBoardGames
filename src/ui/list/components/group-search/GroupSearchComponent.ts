@@ -59,9 +59,6 @@ export class GroupSearchComponent extends BaseDynamicComponent {
         #days-of-week-select > :not(:first-child) {
           padding-left: 0.25rem;
         }  
-        #group-search-header {
-          margin-top:-1rem;
-        }
         #search-form {
           display: flex;
           flex-wrap: wrap;
@@ -88,6 +85,9 @@ export class GroupSearchComponent extends BaseDynamicComponent {
             width: 8rem;
           }
           #search-form .form-item {
+            display: inline-block;
+          }
+          .raised {
             display: inline-block;
           }
         }     
@@ -167,8 +167,10 @@ export class GroupSearchComponent extends BaseDynamicComponent {
     const searchInputsClass = store.location && store.location !== DEFAULT_SEARCH_PARAMETER ?
       "search-form-three-inputs" : "search-form-two-inputs"
     return `
+
+
       <h1 id="group-search-header">Search groups</h1>
-      <div class="section-separator-small"></div>
+
       <form id=${SEARCH_FORM_ID} onsubmit="return false">
         <div id ="form-div-outer">
           <label class="searchDropdownLabel">Select event day: </label>

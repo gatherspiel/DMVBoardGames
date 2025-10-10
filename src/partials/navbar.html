@@ -37,6 +37,7 @@
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
+
   nav a.active {
     background-color: #04aa6d;
     color: white;
@@ -71,6 +72,14 @@
     #logo-div {
       float: left;
     }
+
+    #navbar-shyadow {
+      background: hsl(199deg 100% 20% / 0.25);
+    }
+    #navbar-eydge {
+        background:none;
+    }
+
     #navbar-front {
       padding: 1rem;
     }
@@ -145,8 +154,8 @@
 </style>
 
 <nav class="raised" id="navbar">
-  <span class="shadow"></span>
-  <span class="edge"></span>
+  <span class="shadow" id="navbar-shadow"></span>
+  <span class="edge" id="navbar-edge"></span>
   <span class="front" id="navbar-front">
     <div id="logo-div">
       <img fetchpriority="high" src="/assets/logo.svg">
