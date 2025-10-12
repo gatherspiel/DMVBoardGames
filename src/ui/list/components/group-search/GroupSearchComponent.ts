@@ -99,10 +99,9 @@ export class GroupSearchComponent extends BaseDynamicComponent {
             width: 100%
           }
           #search-cities {
-            margin-top:0.5rem;
+            margin-bottom: 0.5rem;
           }
           #search-distance-id {
-            margin-top:0.5rem;
           }
           .searchDropdownLabel {
             width: 11rem;
