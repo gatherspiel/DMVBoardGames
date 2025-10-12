@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Site rules</title>
+  <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css">
+  <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css">
+
+  <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
+  <script
+    defer
+    fetchpriority="low"
+    type="module"
+  >
+    import {BotHelper} from "./beta/botHelper.js";
+
+    import {getMainSiteRulesHtml} from "./shared/html/SiteRules.js";
+    import {LoginStatusComponent} from "./shared/html/LoginStatusComponent.js";
+    customElements.define("login-status-component",LoginStatusComponent)
+
+    window.onload = function() {
+      document.getElementById("site-rules").innerHTML = getMainSiteRulesHtml();
+      BotHelper();
+    }
+  </script>
+</head>
+<body>
+<div id ="container">
+  {{>navbar}}
+  <div id="site-rules" class="ui-section">
+  </div>
+</div>
+</body>
+</html>
