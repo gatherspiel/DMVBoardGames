@@ -5,6 +5,13 @@
   --clr-lighter-blue: hsl(206, 100%, 52%);
   --clr-very-light-blue: hsl(206, 100%, 92%);
 
+
+  --clr-dark-blue-t: hsl(199deg 100% 20% / 50%);
+  --clr-darker-blue-t: hsl(199 100% 10% / 50%);
+  --clr-light-blue-t: hsl(199 100% 33% / 50%);
+  --clr-lighter-blue-t: hsl(206 100% 52% / 50%);
+  --clr-very-light-blue-t: hsl(206 100% 92% / 50%);
+
   --clr-dark-gray: darkgray;
   --clr-light-gray: lightgray;
   --clr-gray: gray;
@@ -72,8 +79,8 @@ body {
   --f: calc(1.732 * var(--s) + 4 * var(--m)  - 1px);
   width:100%;
   height:100%;
-  background-color: #01118D;
-  opacity:0.06;
+  background-color: #000107;
+  opacity:1;
 
 }
 
@@ -94,77 +101,76 @@ body {
 }
 
 .bg-image-container div:nth-child(18n -1) {
-  background:#00FC6E;
+  background:#000703;
 }
 
 .bg-image-container div:nth-child(18n - 2) {
-  background:#A32200;
+  background:#080200;
 }
 
 .bg-image-container div:nth-child(18n - 3) {
-  background:#007432;
+  background:#000603;
 }
 
 .bg-image-container div:nth-child(18n - 4) {
-  background:#007432;
+  background:#000603;
 }
 
 
 .bg-image-container div:nth-child(18n - 5) {
-  background:#515354;
+  background:#080808;
 }
 
 .bg-image-container div:nth-child(18n -6) {
-  background:#00FC6E;
+  background:#000703;
 }
 
 .bg-image-container div:nth-child(18n - 7) {
-  background:#A32200;
+  background:#080200;
 }
 
 .bg-image-container div:nth-child(18n -8) {
-  background:#00FC6E;
+  background:#000703;
 }
 
 .bg-image-container div:nth-child(18n - 9) {
-  background:#FFB800;
+  background:#070500;
 }
 
 .bg-image-container div:nth-child(18n -10) {
-  background:#00FC6E;
+  background:#000703;
 }
 
 .bg-image-container div:nth-child(18n -11) {
-  background:#007432;
+  background:#000603;
 }
 
 .bg-image-container div:nth-child(18n - 12) {
-  background:#FFB800;
+  background:#070500;
 }
 
 .bg-image-container div:nth-child(18n -13) {
-  background:#FFB800;
+  background:#070500;
 }
 
-
 .bg-image-container div:nth-child(18n - 14) {
-  background:#A32200;
+  background:#080200;
 }
 
 .bg-image-container div:nth-child(18n - 15) {
-  background:#515354;
+  background:#080808;
 }
 
 .bg-image-container div:nth-child(18n - 16) {
-  background:#515354;
+  background:#080808;
 }
 
 .bg-image-container div:nth-child(18n - 17) {
-  background:#FFB800;
+  background:#070500;
 }
 
 .bg-image-container div:nth-child(18n - 18) {
-  background:#007432;
+  background:#000603;
 }
 
 .part-1 > div {
