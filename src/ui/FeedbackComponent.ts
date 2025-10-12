@@ -33,6 +33,7 @@ export class FeedbackComponent extends BaseDynamicComponent {
         }
         @media not screen and (width < 32em) {
           h1 {
+            margin-top:1rem;
             margin-left: 1.5rem;
           }
           #feedback-type-select div {

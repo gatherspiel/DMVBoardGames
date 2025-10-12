@@ -1,4 +1,3 @@
-import {generateLinkButton} from "../../../shared/html/ButtonGenerator.ts";
 import {IS_LOGGED_IN_KEY} from "../../../shared/Constants.ts";
 
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
@@ -21,23 +20,10 @@ export class OpenCreateGroupComponent extends BaseDynamicComponent {
     return `  
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
-        .raised {
-          line-height: 1;
-          margin-bottom: 0.5rem;
-        }
-        @media not screen and (width < 32em) {
-         .raised {
-            display: inline-block;
-          }
-        }
-        @media screen and (width < 32em) {
-         .raised {
-            margin-left: 2rem;
-            margin-right:2rem;
-            margin-bottom:0;
-            margin-top:0;
-          }
-        }      
+        a {
+          color: white;
+          text-decoration: none;
+        }    
       </style>`
   }
 
@@ -47,11 +33,7 @@ export class OpenCreateGroupComponent extends BaseDynamicComponent {
       `beta/login.html?message=Register_an_account_and_log_in_to_create_a_group`
 
     return `
-        ${generateLinkButton({
-            text: "Create group",
-            url: url
-          })}
-      `
+        <a href ="${url}">Create group</a>`
 
   }
 }

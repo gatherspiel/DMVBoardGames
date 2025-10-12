@@ -20,14 +20,22 @@ export function getFaqRulesHtml(){
      <h3>General site information </h3>
      
      <h4>What is the long term goal of this website</h4>
-     <p>The goal is to be a non-profit alternative to Meetup.com to promote playing board games in as a way of 
-     increasing interest in public spaces. In the long term, I want people to find board game events through offline 
-     means such as looking at event fliers at a local board game store or asking others. </p>
+     <p>The goal of dmvboardgames.com is to promote human connection through board games as a way of 
+     increasing interest in public spaces.
      
+     The site will be designed to be  non-profit alternative to Meetup.com where people can find and create public events. 
+     In the long term, I want people to find board game events through offline  means such as looking at event fliers 
+     at a local board game store or asking others.   </p>
+     </br>
+
      <p>A key part of this goal involves making sure people don't see a reason to frequently visit this site. If
      people are frequently visiting the site, it suggests that they are having difficultly finding events through offline
-     means or that this site is not effectively helping people play board games in person</p>
-     
+     means or that this site is not effectively helping people play board games in person. </p>
+     </br>
+      <p>Also, I want people to create their own local websites for different types of activities.
+      dmvboardgames.com is build on top of open source software that people can adapt for their own use.</p>
+          </br>
+
      <p>I am also working on a website <a href="gatherspiel.com">Gatherspiel</a> as a way of promoting in person board games
      across the US. I plan to use Gatherspiel as a place to list local sites such as dmvboardgames.com.</p>
      <h4>Who created this website?</h4>
@@ -37,16 +45,14 @@ export function getFaqRulesHtml(){
     <h4>What motivated you to make this website?</h4>
     
     <p>I reguarly host public board game events in the DC area. Through conversations with people, I noticed that people were having a hard time finding board game events.
-     Also, the site I used to host events, Meetup.com has been declining in quality, while pushing monetitization that is negatively affecting the user experience. I did some 
+     Also, the site I used to host events, Meetup.com has been declining in quality, while pushing monetization that is negatively affecting the user experience. I did some 
      research, and was not able to find a better alternative.</p>
      
     <p>Also, finding places to host events become increasingly difficult, and dealing with challenges with existing locations distracted me from running events. On August 30th,
     2024, the Landing in Crystal City removed all the tables and chairs. The Landing was a cornerstone of the DMV board game community, and I used to host events there. This made
     me realize that the decline in public spaces had become a very serious issue, and I wanted to increase interest in public spaces as a way of reversing this decline
     
-      I see dmvboardgames.com as a way to increase interest in public spaces because pepole have good experiences in them. Part of this involves supporting
-      people who want to run their own board game events. Also, I want people to create their own local websites for different types of activites. dmvboardgames.com
-      is build on top of open source software that people can adapt for their own use.
+
     </p>
     
     <p>For more information about my experiences with the Landing in Crystal City, see this <a href="/src/landing.html">page</a></p>
