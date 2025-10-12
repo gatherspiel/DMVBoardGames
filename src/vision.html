@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vision</title>
+  <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css">
+  <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css">
+  <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
+
+  <style>
+    h1,h2 {
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+  <script
+    defer
+    fetchpriority="low"
+    type="module"
+  >
+    import {BotHelper} from "./beta/botHelper.js";
+    import {LoginStatusComponent} from "./shared/html/LoginStatusComponent.js";
+    customElements.define("login-status-component",LoginStatusComponent)
+
+    BotHelper();
+  </script>
+</head>
+<body>
+<div id ="container">
+  {{>navbar}}
+  <div>
+    <h1>Vision</h1>
+
+    <p>
+      <b>
+      The goal of dmvboardgames.com is to promote human connection through board games as a way of
+      increasing interest in public spaces.To promote this goal, these guidelines wil be followed for any changes.
+      </b>
+    </p>
+
+    <h2>Support for in person interaction</h2>
+
+    <p>All content added will support the goal of encouraging people to interact in person. For example,
+      a feature that makes it easier for people to find in person events would be a good fit for the website.
+      Changes to improve usability or readability of the website also support this goal.
+
+      Forums, comments, or any other form of online messaging will not be supported by dmvboardgames.com. People should
+      be encouraged to meet and exchange contact information in person before communicating online.
+    </p>
+
+    <h2>All content is human generated</h2>
+
+    <p>Dmvboardgames.com will be developed and maintained by humans without the use of automated tools such as
+      bots or generative AI. Users will also not be allowed to use automated tools to interact with the website.</p>
+
+
+    <h2>No personalized recommendations</h2>
+
+    <p>Dmvboardgames.com will not provide personalized recommendations. Users are encouraged to recommendations
+      through connecting with others in person at events.  When users see events or other content,
+      it should be because they made a decision to view that content.
+    </p>
+
+    <h2>Non Commercial</h2>
+
+    <p>Dmvboardgames.com will not be a profit making entity. Monetization will be minimized and only be used for the goal
+      of supporting expenses associated with the platform.
+    </p>
+
+    <h2>Decentralization</h2>
+
+    <p>
+      Information about events and groups will be accessible using a free public API. Users can then use
+      that information on their own websites.
+
+      All code used on dmvboardgames.com will also be open source and able to be used by people looking to self
+      host their own event websites.
+    </p>
+
+  </div>
+</div>
+</body>
+</html>

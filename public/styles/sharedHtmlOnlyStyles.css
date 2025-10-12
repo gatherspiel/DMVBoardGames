@@ -53,12 +53,9 @@ body {
   font-size: 1.5rem;
 }
 
-.page-section li,p {
-  color: var(--clr-dark-blue);
-  font-size: 1.25rem;
-  font-weight: 600;
+p {
+  color: var(--clr-darker-blue)
 }
-
 
 
 #bg-image {

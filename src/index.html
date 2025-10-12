@@ -27,9 +27,16 @@
     <div id="container">
       {{>navbar}}
       <div class = "ui-section" id="user-actions-menu">
-        <open-create-group-component>
-        </open-create-group-component>
-        <login-status-component></login-status-component>
+
+        <nav class="raised">
+          <span class="shadow"></span>
+          <span class="edge"></span>
+          <span class="front">
+              <open-create-group-component>
+              </open-create-group-component>
+          </span>
+        </nav>
+
       </div>
       <group-search-component class = "ui-section" id="group-search-component">
       </group-search-component>
