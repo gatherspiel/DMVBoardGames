@@ -165,22 +165,22 @@ export class FeedbackComponent extends BaseDynamicComponent {
         <div id="feedback-type-select">
           <div>
           <label>General feedback</label> 
-          <input type="radio" name=${FEEDBACK_TYPE_INPUT_ID} value="general_feedback" ${data.checkedState["general_feedback"]}>
+          <input type="radio" name=${FEEDBACK_TYPE_INPUT_ID} value="general_feedback" ${data.checkedState?.["general_feedback"]}>
           </div>
           
           <div>
           <label for="javascript">Bug report</label> 
-          <input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="bug_report" ${data.checkedState["bug_report"]}>
+          <input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="bug_report" ${data?.checkedState?.["bug_report"]}>
           </div>
           
           <div>
           <label>New feature</label>
-          <input type="radio" name=${FEEDBACK_TYPE_INPUT_ID} value="new_feature" ${data.checkedState["new_feature"]}>
+          <input type="radio" name=${FEEDBACK_TYPE_INPUT_ID} value="new_feature" ${data?.checkedState?.["new_feature"]}>
           </div>
           
           <div>
           <label>Feature enhancement</label>
-          <input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="feature_enhancement" ${data.checkedState["feature_enhancement"]}>
+          <input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="feature_enhancement" ${data?.checkedState?.["feature_enhancement"]}>
           </div>
         </div>
      

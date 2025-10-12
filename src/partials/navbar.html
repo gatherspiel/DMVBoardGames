@@ -11,9 +11,7 @@
       transform: none;
       transition: none;
   }
-  #logo-div {
-      min-width: 15.5rem;
-  }
+
   #logo-div img {
       max-height: 4.5rem;
       padding-left: 0.5rem;
@@ -34,8 +32,8 @@
   .top-link {
     padding-bottom: 0.25rem;
     padding-top: 0.25rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   nav a.active {
@@ -52,62 +50,97 @@
     text-wrap: nowrap;
     text-decoration: none;
   }
-  #conventions-link {
-    padding-top:0.5rem;
-  }
+
   .dropdown {
-    padding-top:0.5rem;
-    position: relative;
+      display: block;
+      position: relative;
   }
   .dropdown-content a {
-    display:inline-block;
-    padding-left:0.5rem;
+    display: block;
     line-height: 2rem;
   }
+
+  #site-rules-link {
+      padding-top:0.5rem;
+  }
+  #other-links-container {
+    display: inline-block;
+  }
+
+  #secondary-nav a {
+      font-size: 1rem;
+      line-height: 1.5rem;
+      margin-right:2rem;
+  }
+
   @media not screen and (width < 32em) {
     nav a + a {
-      border-color: white;
-      border-width: 1px;
-      margin-left: 1px;
+        border-color: white;
+        border-width: 1px;
+        margin-left: 1px;
     }
+
     #logo-div {
       float: left;
+      height:5rem;
+      width: 15.5rem;
     }
 
     #navbar-front {
-      padding: 1rem;
+        padding: 1rem;
     }
 
     .dropdown:hover .dropdown-content {
-      display: block;
+        display: block;
     }
 
-    .dropdown-content {
+    .dropdown-content a {
+      display:inline-block;
+      font-size:1rem;
+      padding-left:0.5rem;
+    }
+    #dropdown-container {
       background-color: var(--clr-light-blue);
       border-radius: 12px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      display: none;
-      left:-10rem;
-      min-width: 35rem;
-      padding: 1rem;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      left: -10rem;
+      min-width: 37.5rem;
       position: absolute;
       z-index: 1;
-
+    }
+    #login-component-container {
+      position: absolute;
+      right:1rem;
+      padding-top:0.5rem;
+    }
+    .dropdown-content {
+        display: none;
     }
     .show-mobile {
-      display:none;
+        display: none;
     }
     .top-nav {
       display: flex;
       flex-wrap: wrap;
       padding-left: 0.5rem;
     }
+    #other-links-container {
+      padding-top:0.5rem;
+    }
+    #tertiary-nav {
+      display: inline-block;
+    }
+    #secondary-nav a, span {
+      font-size: 1rem;
+    }
   }
+
   @media screen and (width < 32em) {
     nav a + a {
       border-color: white;
       border-width: 1px;
     }
+
     #logo-div {
       display: flex;
       justify-content: center;
@@ -116,9 +149,6 @@
       display: none;
     }
     .hide-mobile {
-      display: none;
-    }
-    .section-separator-small {
       display: none;
     }
     .show-mobile {
@@ -146,6 +176,29 @@
       border-right: 10px solid transparent;
       border-bottom: 10px solid black;
     }
+
+    #dropdown-triangle-secondary {
+      display: block;
+    }
+
+    #other-links-container {
+      font-size:1.5rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+    #dropdown-container {
+      text-align: center;
+    }
+    #tertiary-nav {
+      text-align: center;
+    }
+      #share-feedback-link {
+          line-height: 1.5;
+      }
+
+    .dropdown-content a {
+      line-height: 1.5;
+    }
   }
 </style>
 
@@ -156,30 +209,39 @@
     <div id="logo-div">
       <img fetchpriority="high" src="/assets/logo.svg">
     </div>
-    <div class="ui-section top-nav">
+    <div id = "main-nav" class="ui-section top-nav">
       <div class="top-nav">
 
         <div class="show-mobile triangle-down">
         </div>
-        <a class = "hide-mobile top-link" href="/index.html" id="main-page-link" >Home
+        <a class = " hide-mobile top-link" href="/index.html" id="main-page-link" >Home
         </a>
         </a><a class="hide-mobile top-link" href="/beta/feedback.html" id="share-feedback-link">Share feedback</a>
-        <div class = "dropdown top-link">
-          <div class="hide-mobile" id="dropdown-container">
-            Other links
+
+      <div id="tertiary-nav" class="dropdown hide-mobile">
+        <span id="other-links-container" class="top-link">Other links</span>
+        <div id="dropdown-triangle-secondary" class="show-mobile triangle-down"></div>
+
+          <div id="dropdown-container">
             <div class="dropdown-content">
-              <a class="hide-mobile" href="/conventions.html" id="conventions-link">Conventions</a>
-              <a class="hide-mobile label-border-left" href="/gameRestaurants.html">Game restaurants</a>
-              <a class="hide-mobile label-border-left" href="/gameStores.html">Game stores</a>
-              <a class="hide-mobile" href="/designers.html">Local designers</a>
-              <a class="hide-mobile label-border-left" href="/links.html">Other websites </a>
+              <a id="site-rules-link"  href="faq">Site rules</a>
+              <a class ="label-border-left" href="faq">FAQ</a>
+              <a class ="label-border-left" href="faq">Vision</a>
+              <a class ="label-border-left"  href="/conventions.html" >Conventions</a>
+              <a class ="label-border-left" href="/gameRestaurants.html">Game restaurants</a>
+              <a class="label-border-left" href="/gameStores.html">Game stores</a>
+              <a class="" href="/designers.html">Local designers</a>
+              <a class=" label-border-left" href="/links.html">Other websites </a>
             </div>
-            </div>
-          </div>
+        </div>
+      </div>
+
+        <div id="login-component-container" class="hide-mobile"><login-status-component></login-status-component></div>
       </div>
     </div>
   </span>
 </nav>
+
 
 
 <div id="bg-image">
@@ -284,9 +346,10 @@
   //Javascript that should only run on mobile devices
   if(navigator.maxTouchPoints > 0){
 
-    document.getElementById("navbar").addEventListener("click", (event) => {
+    document.getElementById("main-nav").addEventListener("click", (event) => {
+      event.preventDefault();
 
-      if(event.target.id === 'dropdown-container'){
+      if(event.target.id === "dropdown-triangle-secondary") {
         const dropdownLinks = document.querySelectorAll("#dropdown-container a")
 
         const dropdownContentStyle = document.querySelector(".dropdown-content").style;
@@ -295,13 +358,14 @@
             link.className="showMobile"
           })
           document.querySelector(".dropdown-content").style="display:block;"
+          document.getElementById("dropdown-triangle-secondary").className = "triangle-up show-mobile"
         } else {
           dropdownLinks.forEach((link)=>{
             link.className="hideMobile"
           })
           document.querySelector(".dropdown-content").style="display:none;"
+          document.getElementById("dropdown-triangle-secondary").className = "triangle-down show-mobile"
         }
-
       }
 
       else {

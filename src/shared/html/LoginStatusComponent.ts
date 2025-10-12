@@ -3,7 +3,7 @@ import {
 } from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../../ui/auth/data/LoginStore.ts";
 import {LOGOUT_STORE} from "../../ui/auth/data/LogoutStore.ts";
-import {generateButton, generateLinkButton} from "./ButtonGenerator.ts";
+import {generateButton} from "./ButtonGenerator.ts";
 
 const SIGN_OUT_LINK_ID = "signout-link"
 export class LoginStatusComponent extends BaseDynamicComponent {
@@ -19,7 +19,14 @@ export class LoginStatusComponent extends BaseDynamicComponent {
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
 
       <style>
-         @media not screen and (width < 32em) {
+        a {
+          color: white;
+          text-decoration: none;;
+        }
+        @media not screen and (width < 32em) {
+          a {
+            margin-left:2rem;
+          }
           p {
             display: inline-block;
           }
@@ -33,6 +40,11 @@ export class LoginStatusComponent extends BaseDynamicComponent {
           }
           .raised {
             margin-top:0.5rem;
+          }
+          a {
+            display: block;
+            line-height: 1.25;
+            margin-bottom:0.5rem;
           }
         }  
       </style>
@@ -58,14 +70,8 @@ export class LoginStatusComponent extends BaseDynamicComponent {
       `
     }
     return `
-      ${generateLinkButton({
-        text: "Login",
-        url: "/beta/login.html"
-      })}
-      ${generateLinkButton({
-        text: "Create account",
-        url: "/beta/createAccount.html"
-      })}
+      <a href="/beta/login.html">Login</a>
+      <a href="/beta/createAccount.html">Create account</a>
     `;
   }
 }
