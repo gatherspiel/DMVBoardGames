@@ -123,6 +123,7 @@ export class GroupComponent extends BaseDynamicComponent {
           .${GROUP_DESCRIPTION} {
             margin-top: 1rem;
           }
+  
           .raised {
             display: inline-block;
             line-height: 1;
@@ -137,6 +138,7 @@ export class GroupComponent extends BaseDynamicComponent {
             margin-left:-1.5rem;
             padding-left: 1.5rem;
           }
+
         }   
         @media screen and (width < 32em) {
           #${GROUP_DESCRIPTION_INPUT} {
@@ -290,20 +292,9 @@ export class GroupComponent extends BaseDynamicComponent {
 
   renderGroupEditUI(groupData:any):string {
     return `
-      ${generateButton({
-        id:EDIT_GROUP_BUTTON_ID,
-        text: "Edit group information",
-      })}
-      ${generateLinkButton({
-        class: "add-event-button",
-        text: "Add event",
-        url: `beta/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}`
-      })}
-      ${generateLinkButton({
-        class: "delete-button",
-        text: "Delete group",
-        url: `beta/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}`
-      })}
+      <span id="${EDIT_GROUP_BUTTON_ID}">Edit group information</span>
+      <a href="beta/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}">Add event</a>
+      <a href="beta/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}">Delete group</a>
     `
   }
   renderWeeklyEventData(eventData:any, groupId:any, key:string){
@@ -346,10 +337,19 @@ export class GroupComponent extends BaseDynamicComponent {
     }
     const self = this;
     return `
-      <div class="ui-section" id = "user-actions-menu">
-        ${groupData.permissions.userCanEdit ? this.renderGroupEditUI(groupData) : ''}
-        <login-status-component></login-status-component>
-      </div>   
+    <div id="user-actions-menu">
+
+        <nav  id="user-actions-menu-raised" class="raised">
+          <span class="shadow"></span>
+          <span class="edge"></span>
+          <span class="front" id="user-actions-front">
+              <div class="top-nav-secondary">
+                  ${groupData.permissions.userCanEdit ? this.renderGroupEditUI(groupData) : ''}
+              </div>
+          </span>
+        </nav>
+      </div>
+  
       <div class="ui-section">
       
         <h1 id="group-name-header">${groupData.name}</h1>

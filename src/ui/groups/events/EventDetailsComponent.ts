@@ -93,6 +93,13 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           #${EVENT_LOCATION_INPUT} {
             width: 50rem;
           } 
+          #user-actions-menu {
+            margin-bottom: 0.5rem;
+          }
+
+          h1,h2 {
+            margin-left:-1.5rem;
+          }
         } 
         @media screen and (width < 32em) {
           #${EVENT_DESCRIPTION_INPUT}{
@@ -100,6 +107,10 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           }
           #event-details-form {
             margin-right:1.5rem;
+          }
+          #user-actions-menu-raised {
+            display:inherit;
+            margin-bottom: 0.5rem;
           }
         }   
       </style>     
@@ -220,18 +231,19 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       return `<h1>Loading</h1>`;
     }
     let html = `
-      <div class="ui-section" id = "user-actions-menu">
+      <div id = "user-actions-menu">
         ${!data.isEditing && !data.isDeleting && data?.permissions?.userCanEdit ? `
-          ${generateButton({
-          id: EDIT_EVENT_BUTTON_ID,
-          text: "Edit event",
-        })}
-        ${generateButton({
-          id: DELETE_EVENT_BUTTON_ID,
-          text: "Delete event",
-        })}
+          <nav id="user-actions-menu-raised" class="raised">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front" id="user-actions-front">
+                <div class="top-nav-secondary">
+                  <span>Edit event</span>
+                  <span>Delete event</span>
+                </div>
+            </span>
+          </nav>
         ` : ''}
-        <login-status-component></login-status-component>
       </div>
       
       <div id="form-status-success">
