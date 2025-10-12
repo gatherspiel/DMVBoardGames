@@ -336,19 +336,25 @@ export class GroupComponent extends BaseDynamicComponent {
       return `<h1>Loading</h1>`;
     }
     const self = this;
-    return `
-    <div id="user-actions-menu">
 
-        <nav  id="user-actions-menu-raised" class="raised">
-          <span class="shadow"></span>
-          <span class="edge"></span>
-          <span class="front" id="user-actions-front">
+    let html = ``;
+    if(groupData.permissions.userCanEdit) {
+      html+=`
+        <div id="user-actions-menu">
+          <nav  id="user-actions-menu-raised" class="raised">
+            <span class="shadow"></span>
+              <span class="edge"></span>
+              <span class="front" id="user-actions-front">
               <div class="top-nav-secondary">
-                  ${groupData.permissions.userCanEdit ? this.renderGroupEditUI(groupData) : ''}
+                ${this.renderGroupEditUI(groupData)}
               </div>
-          </span>
-        </nav>
-      </div>
+            </span>
+          </nav>
+        </div>
+      `
+    }
+    return html+`
+      
   
       <div class="ui-section">
       
