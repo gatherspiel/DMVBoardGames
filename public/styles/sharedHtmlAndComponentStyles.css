@@ -2,16 +2,14 @@
 
 
 b,h2,label,li {
-  color: var(--clr-darker-blue);
+  color: white;
   margin-top:0;
   margin-bottom:0;
 }
 
 h1 {
-  background-color: var(--clr-very-light-blue);
-
   border-radius: 12px;
-  color: var(--clr-darker-blue);
+  color: white;
   font-size:3rem;
   margin-top:0;
   margin-bottom:0;
@@ -99,15 +97,16 @@ a:hover {
   width: 100%;
   height: 100%;
   border-radius: 12px;
-  background: hsl(0deg 0% 0% / 0.25);
+  background:hsl(206deg 100% 92% / 0.25);
   will-change: transform;
   transform: translateY(2px);
 }
 
 
 .raised {
-  background: transparent;
-  box-shadow: 2px 2px 2px hsl(0deg 0% 0% / 0.25);
+  backdrop-filter: brightness(1000%);
+  background:rgba(135,206,235,0.9);
+  box-shadow:4px 4px 4px hsl(206deg 100% 92% / 0.65);
   border:none;
   border-radius: 12px;
   cursor: pointer;
@@ -143,13 +142,7 @@ a:hover {
   width: 100%;
   height: 100%;
   border-radius: 12px;
-  background: linear-gradient(
-    to left,
-    var(--clr-darker-blue) 0%,
-    var(--clr-light-blue) 8%,
-    var(--clr-dark-blue) 92%,
-    var(--clr-darker-blue) 100%
-  );
+
 }
 
 .front {
@@ -158,7 +151,7 @@ a:hover {
   padding: 0.5rem;
   border-radius: 12px;
   color: white;
-  background: var(--clr-light-blue);
+  background: none;
   will-change: transform;
   transform: translateY(-4px);
 }
