@@ -10,6 +10,7 @@ import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {generateButton, generateDisabledButton} from "../../../../shared/html/ButtonGenerator.ts";
 import {GROUP_SEARCH_STORE} from "../../data/search/GroupSearchStore.ts";
 import {
+  generateCheckedStateFromUrlParamArray,
   getDaysOfWeekSelectedState,
   getDaysOfWeekSelectHtml,
   getDropdownHtml
@@ -34,6 +35,7 @@ const DISTANCE_OPTIONS= [
 ];
 
 export class GroupSearchComponent extends BaseDynamicComponent {
+
   constructor() {
     super([{
       componentReducer: (cityArray:string[])=>{
@@ -43,12 +45,32 @@ export class GroupSearchComponent extends BaseDynamicComponent {
         })
         copy.sort();
         copy.unshift(DEFAULT_SEARCH_PARAMETER);
-        return copy
+        const params =  (new URLSearchParams(document.location.search))
+        const defaultSearchParams = {
+          location: params.get("location"),
+          days: generateCheckedStateFromUrlParamArray(params.get("days")),
+          distance: params.get("distance")?.replaceAll("_"," "),
+        }
+        return {
+          "cityList":copy,"showGroups":params.size > 0, ...defaultSearchParams
+        }
       },
       dataStore:CITY_LIST_STORE,
-      fieldName: "cityList"
     }]);
+
+    const params =  (new URLSearchParams(document.location.search))
+
+    const defaultSearchParams = {
+      location: params.get("location"),
+      days: params.get("days"),
+      distance: params.get("distance")?.replaceAll("_"," "),
+    }
+    if(params.size > 0){
+      GROUP_SEARCH_STORE.fetchData(defaultSearchParams)
+    }
   }
+
+
   override getTemplateStyle(): string {
     return `
      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
@@ -134,28 +156,36 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           distance: (eventTarget as HTMLInputElement).value
         })
       }
-
-      if(event.target.type === "checkbox"){
-        const selectedDaysState:Record<string, string> = getDaysOfWeekSelectedState(shadowRoot);
-        self.updateData({
-          selectedDays: Object.keys(selectedDaysState).length > 0 ? selectedDaysState : null
-        })
-      }
     });
 
     shadowRoot.addEventListener("click",(event:any)=>{
-
+      event.preventDefault();
+      if(event.target.type === "checkbox"){
+        const selectedDaysState:Record<string, string> = getDaysOfWeekSelectedState(shadowRoot);
+        self.updateData({
+          days: Object.keys(selectedDaysState).length > 0 ? selectedDaysState : null
+        })
+      }
       if(event.target.id === SEARCH_BUTTON_ID){
-        event.preventDefault();
+
         const searchParams:any = {
-          location: self.componentStore.location,
-          day: self.componentStore.selectedDays ? Object.keys(self.componentStore.selectedDays).join(",") : '',
+          location: self.componentStore.location ?? '',
+          days: self.componentStore.days ? Object.keys(self.componentStore.days).join(",") : '',
           distance: self.componentStore.distance,
         };
-        GROUP_SEARCH_STORE.fetchData(searchParams)
+
         self.updateData({
           showGroups:true
         })
+
+        const baseUrl = window.location.origin.split("?");
+        let updatedUrl = `${baseUrl}?`
+        updatedUrl += `location=${searchParams.location.replaceAll(" ","_")}&`
+        updatedUrl +=  `days=${searchParams.days.replaceAll(" ","_")}&`
+        updatedUrl += `distance=${searchParams?.distance?.replaceAll(" ","_") ?? ``}`
+
+        window.history.replaceState({},'',updatedUrl)
+        GROUP_SEARCH_STORE.fetchData(searchParams)
       }
       if(event.target.id === SHOW_DAY_SELECT){
         self.updateData({
@@ -168,7 +198,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
   render(store: any) {
 
     const searchButtonEnabled =
-      store.selectedDays || store.location;
+      store.days || store.location;
 
     const searchInputsClass = store.location && store.location !== DEFAULT_SEARCH_PARAMETER ?
       "search-form-three-inputs" : "search-form-two-inputs"
@@ -195,7 +225,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           }
           
           <div class="${store.showDaySelectOnMobile ? `` : `hide-mobile`}">
-              ${getDaysOfWeekSelectHtml(store.selectedDays)}
+              ${getDaysOfWeekSelectHtml(store.days)}
             </div>
           <div id="search-form-inputs" class="${searchInputsClass}">
 
@@ -223,7 +253,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           ``}     
           </div>  
           <div id="searchInputDiv"> 
-            ${searchButtonEnabled ?
+            ${searchButtonEnabled || store.showGroups ?
               `${generateButton({
                 id: SEARCH_BUTTON_ID,
                 text: "Search",

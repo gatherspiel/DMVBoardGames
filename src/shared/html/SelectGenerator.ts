@@ -20,6 +20,19 @@ export function getDropdownHtml(dropdownConfig: any) {
     </select>`;
 }
 
+export function generateCheckedStateFromUrlParamArray(data:string | null){
+  let state:Record<string,string> = {};
+
+  if(!data){
+    return state;
+  }
+
+  data.split(",").forEach((item)=>{
+    state[item]="checked";
+  })
+  return state;
+}
+
 export function getDayOfWeekSelectHtml(dayOfWeek:string){
 
   const selectedDayToDisplay = (dayOfWeek && dayOfWeek.length > 1) ?

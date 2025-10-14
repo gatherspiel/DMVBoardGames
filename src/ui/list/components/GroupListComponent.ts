@@ -3,17 +3,12 @@ import {generateLinkButton} from "../../../shared/html/ButtonGenerator.ts";
 import {getDisplayName} from "../../../shared/data/DisplayNameConversion.ts";
 
 import {GROUP_SEARCH_STORE} from "../data/search/GroupSearchStore.ts";
-import {DEFAULT_SEARCH_PARAMETER} from "./group-search/Constants.ts";
 import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
 
 export class GroupListComponent extends BaseDynamicComponent {
   constructor() {
     super([{
       dataStore: GROUP_SEARCH_STORE,
-      params: {
-        city: DEFAULT_SEARCH_PARAMETER,
-        day: DEFAULT_SEARCH_PARAMETER
-      },
       fieldName:"data"
     },{
       dataStore: LOGIN_STORE,
