@@ -345,28 +345,34 @@
 <script>
 
   //Javascript that should only run on mobile devices
+  /**
+   * TODO
+   *
+   */
   if(navigator.maxTouchPoints > 0){
 
-    document.getElementById("dropdown-triangle-secondary").addEventListener("click", (event) => {
+    const dropdownTriangleSecondary = document.getElementById("dropdown-triangle-secondary");
+
+      document.getElementById("dropdown-triangle-secondary").addEventListener("click", (event) => {
       event.preventDefault();
 
         const dropdownLinks = document.querySelectorAll("#dropdown-container a")
+        const dropdownContent = document.getElementsByClassName("dropdown-content").item(0)
+        const dropdownContentStyle = dropdownContent.style;
 
-        const dropdownContentStyle = document.querySelector(".dropdown-content").style;
         if (dropdownContentStyle.display !== "block") {
           dropdownLinks.forEach((link) => {
             link.className = "showMobile"
           })
-          document.querySelector(".dropdown-content").style = "display:block;"
-          document.getElementById("dropdown-triangle-secondary").className = "triangle-up show-mobile"
+          dropdownContent.style = "display:block;"
+          dropdownTriangleSecondary.className = "triangle-up show-mobile"
         } else {
           dropdownLinks.forEach((link) => {
             link.className = "hideMobile"
           })
-          document.querySelector(".dropdown-content").style = "display:none;"
-          document.getElementById("dropdown-triangle-secondary").className = "triangle-down show-mobile"
+          dropdownContent.style = "display:none;"
+          dropdownTriangleSecondary.className = "triangle-down show-mobile"
         }
-
     });
     document.getElementById("dropdown-triangle").addEventListener("click", (event) => {
       const hiddenMobileElements = document.getElementsByClassName("hide-mobile")
@@ -378,7 +384,6 @@
         document.getElementsByClassName("triangle-down").item(0).className = "triangle-up show-mobile"
 
       } else if(event.target.className && event.target.className.includes("triangle")) {
-        console.log(event.target.className)
         const visibleMobileElements = document.getElementsByClassName("is-visible")
         for(let i = visibleMobileElements.length-1; i>=0;i--){
           visibleMobileElements.item(i).className ="hide-mobile";

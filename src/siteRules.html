@@ -13,23 +13,20 @@
     fetchpriority="low"
     type="module"
   >
+    import {SiteRulesComponent} from "./shared/html/SiteRulesComponent.ts";
+    customElements.define('site-rules-component',SiteRulesComponent)
+
     import {BotHelper} from "./beta/botHelper.js";
-
-    import {getMainSiteRulesHtml} from "./shared/html/SiteRules.js";
-    import {LoginStatusComponent} from "./shared/html/LoginStatusComponent.js";
-    customElements.define("login-status-component",LoginStatusComponent)
-
     window.onload = function() {
-      document.getElementById("site-rules").innerHTML = getMainSiteRulesHtml();
       BotHelper();
     }
+
   </script>
 </head>
 <body>
 <div id ="container">
   {{>navbar}}
-  <div id="site-rules" class="ui-section">
-  </div>
+  <site-rules-component></site-rules-component>
 </div>
 </body>
 </html>

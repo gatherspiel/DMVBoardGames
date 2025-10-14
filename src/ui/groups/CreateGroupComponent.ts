@@ -14,7 +14,6 @@ import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
 import { API_ROOT } from "../../shared/Params.ts";
 import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
-import {getFaqRulesHtml, getMainSiteRulesHtml} from "../../shared/html/SiteRules.ts";
 
 const AGREE_RULES_ID ="agree-rules-id";
 const CREATE_GROUP_BUTTON_ID = "create-group-button-id";
@@ -134,7 +133,6 @@ export class CreateGroupComponent extends BaseDynamicComponent {
           url: API_ROOT + `/groups/`,
         }).then((data:any)=>{
 
-          console.log(data);
           if (data.errorMessage) {
             self.updateData({
               errorMessage: data.errorMessage,
@@ -210,11 +208,8 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                     text:"Create group"
                   })}
                 <div class="section-separator-medium"></div>
-                <div id="rules-content">
-                  ${getMainSiteRulesHtml()}
-                </div>
-                <div class="section-separator-medium"></div>
-                ${getFaqRulesHtml()}
+                <site-rules-component></site-rules-component>
+                <faq-component></faq-component>
               </form>
               ${generateErrorMessage(data.errorMessage)}
             `
