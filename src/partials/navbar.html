@@ -142,10 +142,28 @@
       border-width: 1px;
     }
 
+    #dropdown-container {
+      text-align: center;
+    }
+    #dropdown-triangle-secondary {
+      display: block;
+    }
+
     #logo-div {
       display: flex;
       justify-content: center;
     }
+    #other-links-container {
+      line-height: 1.5;
+      text-align: center;
+    }
+    #share-feedback-link {
+      line-height: 1.5;
+    }
+    #tertiary-nav {
+      text-align: center;
+    }
+
     .dropdown-content {
       display: none;
     }
@@ -158,6 +176,9 @@
       margin-top:0.5rem;
       margin-left: auto;
       margin-right: auto;
+    }
+    .show-more-links {
+      font-size:1rem;
     }
     .top-nav {
       display: grid;
@@ -178,24 +199,8 @@
       border-bottom: 20px solid black;
     }
 
-    #dropdown-triangle-secondary {
-      display: block;
-    }
 
-    #other-links-container {
-      font-size:1.5rem;
-      line-height: 1.5;
-      text-align: center;
-    }
-    #dropdown-container {
-      text-align: center;
-    }
-    #tertiary-nav {
-      text-align: center;
-    }
-    #share-feedback-link {
-        line-height: 1.5;
-    }
+
 
     .dropdown-content a {
       line-height: 1.5;
@@ -213,14 +218,17 @@
     <div id = "main-nav" class="ui-section top-nav">
       <div class="top-nav">
 
+        <a class = " top-link" href="/index.html" id="main-page-link" >Home        </a>
+
+        <div id="other-links-first">
+             <div class="show-mobile show-more-links">Other links</div>
+        </div>
         <div id="dropdown-triangle" class="show-mobile triangle-down">
         </div>
-        <a class = " hide-mobile top-link" href="/index.html" id="main-page-link" >Home
-        </a>
         </a><a class="hide-mobile top-link" href="/beta/feedback.html" id="share-feedback-link">Share feedback</a>
 
       <div id="tertiary-nav" class="dropdown hide-mobile">
-        <span id="other-links-container" class="top-link">Other links</span>
+        <div id="other-links-container" class="top-link show-more-links">Other links</div>
         <div id="dropdown-triangle-secondary" class="show-mobile triangle-down"></div>
 
           <div id="dropdown-container">
@@ -345,50 +353,75 @@
 <script>
 
   //Javascript that should only run on mobile devices
+  /**
+   * TODO
+   *
+   */
   if(navigator.maxTouchPoints > 0){
+
+    const togglePrimaryDropdown = function() {
+      const hiddenMobileElements = document.getElementsByClassName("hide-mobile")
+
+      if (hiddenMobileElements.length > 0) {
+
+        for (let i = hiddenMobileElements.length - 1; i >= 0; i--) {
+            hiddenMobileElements.item(i).className = "is-visible";
+        }
+        document.getElementsByClassName("triangle-down").item(0).className = "triangle-up show-mobile"
+        document.querySelectorAll("#other-links-first .show-mobile").item(0).innerText = "Hide links";
+
+      } else {
+
+        const visibleMobileElements = document.getElementsByClassName("is-visible")
+        for (let i = visibleMobileElements.length - 1; i >= 0; i--) {
+            visibleMobileElements.item(i).className = "hide-mobile";
+        }
+        document.getElementsByClassName("triangle-up").item(0).className = "triangle-down show-mobile"
+        document.querySelectorAll("#other-links-first .show-mobile").item(0).innerText = "Other links";
+      }
+    }
+
+
+    const dropdownTriangleSecondary = document.getElementById("dropdown-triangle-secondary");
+    const toggleSecondaryDropdown = function() {
+
+      const dropdownLinks = document.querySelectorAll("#dropdown-container a")
+      const dropdownContent = document.getElementsByClassName("dropdown-content").item(0)
+      const dropdownContentStyle = dropdownContent.style;
+
+      if (dropdownContentStyle.display !== "block") {
+        dropdownLinks.forEach((link) => {
+          link.className = "showMobile"
+        })
+        dropdownContent.style = "display:block;"
+        dropdownTriangleSecondary.className = "triangle-up show-mobile"
+        document.querySelectorAll("#other-links-container").item(0).innerText="Hide links";
+      } else {
+        dropdownLinks.forEach((link) => {
+          link.className = "hideMobile"
+        })
+        dropdownContent.style = "display:none;"
+        dropdownTriangleSecondary.className = "triangle-down show-mobile"
+        document.querySelectorAll("#other-links-container").item(0).innerText="Other links";
+      }
+    }
 
     document.getElementById("dropdown-triangle-secondary").addEventListener("click", (event) => {
       event.preventDefault();
-
-        const dropdownLinks = document.querySelectorAll("#dropdown-container a")
-
-        const dropdownContentStyle = document.querySelector(".dropdown-content").style;
-        if (dropdownContentStyle.display !== "block") {
-          dropdownLinks.forEach((link) => {
-            link.className = "showMobile"
-          })
-          document.querySelector(".dropdown-content").style = "display:block;"
-          document.getElementById("dropdown-triangle-secondary").className = "triangle-up show-mobile"
-        } else {
-          dropdownLinks.forEach((link) => {
-            link.className = "hideMobile"
-          })
-          document.querySelector(".dropdown-content").style = "display:none;"
-          document.getElementById("dropdown-triangle-secondary").className = "triangle-down show-mobile"
-        }
-
+      toggleSecondaryDropdown();
     });
     document.getElementById("dropdown-triangle").addEventListener("click", (event) => {
-      const hiddenMobileElements = document.getElementsByClassName("hide-mobile")
-
-      if(hiddenMobileElements.length >0){
-        for(let i = hiddenMobileElements.length-1; i>=0;i--){
-          hiddenMobileElements.item(i).className ="is-visible";
-        }
-        document.getElementsByClassName("triangle-down").item(0).className = "triangle-up show-mobile"
-
-      } else if(event.target.className && event.target.className.includes("triangle")) {
-        console.log(event.target.className)
-        const visibleMobileElements = document.getElementsByClassName("is-visible")
-        for(let i = visibleMobileElements.length-1; i>=0;i--){
-          visibleMobileElements.item(i).className ="hide-mobile";
-        }
-        document.getElementsByClassName("triangle-up").item(0).className = "triangle-down show-mobile"
-      }
+      event.preventDefault();
+      togglePrimaryDropdown()
     });
-
-
-
+    document.getElementById("other-links-first").addEventListener("click", (event) => {
+      event.preventDefault();
+      togglePrimaryDropdown()
+    });
+    document.getElementById("other-links-container").addEventListener("click", (event) => {
+      event.preventDefault();
+      togglePrimaryDropdown()
+    });
   }
 
 

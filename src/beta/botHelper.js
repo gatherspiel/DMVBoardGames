@@ -48,9 +48,12 @@ export function BotHelper() {
 
   const container = document.getElementById("container");
 
+  const whitelistedSelectors= new Set();
+  whitelistedSelectors.add(["meta[property=csp-nonce]"])
   const old = document.querySelector;
+
   document.querySelector = function (...args) {
-    if (args[0] === "meta[property=csp-nonce]") {
+    if (whitelistedSelectors.has(args[0])) {
       return old.apply(this, args);
     } else {
       container.innerHTML = getMonopolyHtml();

@@ -25,12 +25,12 @@ const SEARCH_FORM_ID: string = "search-form";
 const SHOW_DAY_SELECT:string="show-day-select";
 
 const DISTANCE_OPTIONS= [
-  "0",
-  "5",
-  "10",
-  "15",
-  "30",
-  "50",
+  "0 miles",
+  "5 miles",
+  "10 miles",
+  "15 miles",
+  "30 miles",
+  "50 miles",
 ];
 
 export class GroupSearchComponent extends BaseDynamicComponent {
@@ -82,6 +82,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
             padding-left:1.5rem;
           }
           #max-distance-label {
+            margin-top:0.5rem;
             width: 8rem;
           }
           #search-form .form-item {
@@ -149,9 +150,12 @@ export class GroupSearchComponent extends BaseDynamicComponent {
         const searchParams:any = {
           location: self.componentStore.location,
           day: self.componentStore.selectedDays ? Object.keys(self.componentStore.selectedDays).join(",") : '',
-          distance: self.componentStore.distance
+          distance: self.componentStore.distance,
         };
         GROUP_SEARCH_STORE.fetchData(searchParams)
+        self.updateData({
+          showGroups:true
+        })
       }
       if(event.target.id === SHOW_DAY_SELECT){
         self.updateData({
@@ -171,7 +175,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
     return `
 
 
-      <h1 id="group-search-header">Search groups</h1>
+      <h1 id="group-search-header">Search for board game groups</h1>
 
       <form id=${SEARCH_FORM_ID} onsubmit="return false">
         <div id ="form-div-outer">
@@ -212,9 +216,9 @@ export class GroupSearchComponent extends BaseDynamicComponent {
               data: DISTANCE_OPTIONS,
               id: SEARCH_DISTANCE_ID,
               name: "distance",
-              selected: store.distance,
-              [DEFAULT_PARAMETER_KEY]:"0 miles",
-              [DEFAULT_PARAMETER_DISPLAY_KEY]: "0 miles",
+              selected: store.distance ?? "5 miles",
+              [DEFAULT_PARAMETER_KEY]:"5 miles",
+              [DEFAULT_PARAMETER_DISPLAY_KEY]: "5 miles",
             })}` :
           ``}     
           </div>  
@@ -232,6 +236,13 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           </div>
         </div>
       </form>
+      
+      ${store.showGroups ?
+        `<group-list-component></group-list-component>` :
+        ``
+    
+      }
+
     `;
   }
 
