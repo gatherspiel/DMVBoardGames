@@ -18,7 +18,7 @@ function getGroupsQueryConfig(searchParams: any): ApiRequestConfig {
     paramMap["city"] = searchParams.location;
 
     if(searchParams.distance){
-      paramMap["distance"] = searchParams.distance;
+      paramMap["distance"] = searchParams.distance.split(" ")[0];
     }
   }
 
