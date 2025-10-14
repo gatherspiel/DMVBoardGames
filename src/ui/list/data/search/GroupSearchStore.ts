@@ -4,12 +4,12 @@ import {ApiLoadAction, DataStore} from "@bponnaluri/places-js";
 import type { ApiRequestConfig } from "@bponnaluri/places-js";
 
 function getGroupsQueryConfig(searchParams: any): ApiRequestConfig {
-  console.log("Starting to load search results at:"+Date.now());
 
+  console.log("Starting to load search results at:"+Date.now());
   const paramMap: any = {};
 
-  if (searchParams.day && searchParams.day !== DEFAULT_SEARCH_PARAMETER) {
-    paramMap["days"] = searchParams.day;
+  if (searchParams.days && searchParams.days !== DEFAULT_SEARCH_PARAMETER) {
+    paramMap["days"] = searchParams.days;
   }
   if (
     searchParams?.location &&
