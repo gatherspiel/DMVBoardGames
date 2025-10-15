@@ -45,8 +45,7 @@ export class LoginComponent extends BaseDynamicComponent {
         }
         #email {
           display: inline-block;
-        }   
-             
+        }          
         @media not screen and (width < 32em) {
           #email {
           display: inline-block;

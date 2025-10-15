@@ -113,9 +113,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           #searchInputDiv {
             margin-top:0.5rem;
           }
-          .raised {
-            display: inline-block;
-          }
+
         }     
         @media screen and (width < 32em) {
           #form-div-outer {
