@@ -8,7 +8,7 @@ import {
 
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {generateButton, generateDisabledButton} from "../../../../shared/html/ButtonGenerator.ts";
-import {GROUP_SEARCH_STORE} from "../../data/search/GroupSearchStore.ts";
+import {GROUP_SEARCH_STORE, SHOW_GROUP_LIST_STORE} from "../../data/search/GroupSearchStore.ts";
 import {
   generateCheckedStateFromUrlParamArray,
   getDaysOfWeekSelectedState,
@@ -66,10 +66,9 @@ export class GroupSearchComponent extends BaseDynamicComponent {
       distance: params.get("distance")?.replaceAll("_"," "),
     }
     if(params.size > 0){
-      GROUP_SEARCH_STORE.fetchData(defaultSearchParams)
+      GROUP_SEARCH_STORE.fetchData(defaultSearchParams,SHOW_GROUP_LIST_STORE)
     }
   }
-
 
   override getTemplateStyle(): string {
     return `
@@ -183,7 +182,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
         updatedUrl += `distance=${searchParams?.distance?.replaceAll(" ","_") ?? ``}`
 
         window.history.replaceState({},'',updatedUrl)
-        GROUP_SEARCH_STORE.fetchData(searchParams)
+        GROUP_SEARCH_STORE.fetchData(searchParams, SHOW_GROUP_LIST_STORE);
       }
       if(event.target.id === SHOW_DAY_SELECT){
         self.updateData({
@@ -201,8 +200,6 @@ export class GroupSearchComponent extends BaseDynamicComponent {
     const searchInputsClass = store.location && store.location !== DEFAULT_SEARCH_PARAMETER ?
       "search-form-three-inputs" : "search-form-two-inputs"
     return `
-
-
       <h1 id="group-search-header">Search for board game groups</h1>
 
       <form id=${SEARCH_FORM_ID} onsubmit="return false">
@@ -265,12 +262,6 @@ export class GroupSearchComponent extends BaseDynamicComponent {
         </div>
       </form>
       
-      ${store.showGroups ?
-        `<group-list-component></group-list-component>` :
-        ``
-    
-      }
-
     `;
   }
 
