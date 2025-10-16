@@ -2,13 +2,13 @@ import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {generateLinkButton} from "../../../shared/html/ButtonGenerator.ts";
 import {getDisplayName} from "../../../shared/data/DisplayNameConversion.ts";
 
-import {GROUP_SEARCH_STORE} from "../data/search/GroupSearchStore.ts";
+import {SHOW_GROUP_LIST_STORE} from "../data/search/GroupSearchStore.ts";
 import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
 
 export class GroupListComponent extends BaseDynamicComponent {
   constructor() {
     super([{
-      dataStore: GROUP_SEARCH_STORE,
+      dataStore: SHOW_GROUP_LIST_STORE,
       fieldName:"data"
     },{
       dataStore: LOGIN_STORE,
@@ -110,6 +110,10 @@ export class GroupListComponent extends BaseDynamicComponent {
     `;
   }
   render(state: any): string {
+
+    if(!state.data){
+      return ``;
+    }
     if(state.data.groupData.length === 0){
       return `
           <p>No groups found</p>
