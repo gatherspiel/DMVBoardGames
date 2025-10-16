@@ -13,13 +13,16 @@ export class SiteRulesComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
 
-      <style>any
+      <style>
+        h1 {
+          margin-top:1rem;
+        }
       </style>
     `;
   }
   override render() {
     return `
-      <h2>Rules for groups and group event information posted on dmvboardgames.com</h2>
+    <h1>Rules for groups and group event information posted on dmvboardgames.com</h1>
 
     <h3>General guidelines</h3>
     <ul>

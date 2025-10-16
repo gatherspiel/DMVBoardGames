@@ -168,10 +168,13 @@ export class GroupComponent extends BaseDynamicComponent {
   override attachHandlersToShadowRoot(shadowRoot:ShadowRoot) {
     const self = this;
     shadowRoot?.addEventListener("click", (event:any)=>{
-      event.preventDefault();
+
+      let useDefault = false;
       const targetId = event.target?.id;
 
+      console.log(targetId)
       if(event.target.type === "checkbox"){
+        event.preventDefault();
         self.updateData({
           name: (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLTextAreaElement)?.value,
           description: (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value,
@@ -179,8 +182,7 @@ export class GroupComponent extends BaseDynamicComponent {
           gameTypeTags: getTagSelectedState(shadowRoot)
         })
       }
-
-      if(targetId === EDIT_GROUP_BUTTON_ID) {
+      else if(targetId === EDIT_GROUP_BUTTON_ID) {
         self.updateData({
           isEditing: true,
           [DESCRIPTION_ERROR_TEXT_KEY]: '',
@@ -189,12 +191,12 @@ export class GroupComponent extends BaseDynamicComponent {
           [SUCCESS_MESSAGE_KEY]: ''
         })
       }
-      if(targetId === CANCEL_UPDATES_BUTTON_ID) {
+      else if(targetId === CANCEL_UPDATES_BUTTON_ID) {
         self.updateData({
           isEditing: false
         })
       }
-      if(targetId === SAVE_UPDATES_BUTTON_ID){
+      else if(targetId === SAVE_UPDATES_BUTTON_ID){
         const validationErrorState:Record<string,string> = {[SUCCESS_MESSAGE_KEY]:''}
         const groupName = (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLInputElement)?.value;
         if(!groupName || groupName.length === 0){
@@ -237,6 +239,11 @@ export class GroupComponent extends BaseDynamicComponent {
             })
           }
         })
+      } else {
+        useDefault = true;
+      }
+      if(!useDefault){
+        event.preventDefault();
       }
     })
   }
@@ -282,7 +289,6 @@ export class GroupComponent extends BaseDynamicComponent {
           text: "Submit",
           type: "submit",
         })}
-    
         ${generateButton({
           id: CANCEL_UPDATES_BUTTON_ID,
           text: "Cancel",

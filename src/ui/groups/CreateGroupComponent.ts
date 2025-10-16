@@ -12,8 +12,9 @@ import {
 } from "../../shared/Constants.ts";
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
-import { API_ROOT } from "../../shared/Params.ts";
+import {API_ROOT, IS_PRODUCTION} from "../../shared/Params.ts";
 import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
+
 
 const AGREE_RULES_ID ="agree-rules-id";
 const CREATE_GROUP_BUTTON_ID = "create-group-button-id";
@@ -84,9 +85,37 @@ export class CreateGroupComponent extends BaseDynamicComponent {
   }
 
 
+
   override attachHandlersToShadowRoot(shadowRoot:ShadowRoot){
 
     const self = this;
+
+    const updatePreview = function(input:any, target:any) {
+      let file = input.files[0];
+      let reader = new FileReader();
+
+      const elements = (shadowRoot?.getElementById('create-group-form') as HTMLFormElement)?.elements
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        let img:any = shadowRoot.getElementById(target);
+        img.src = reader.result;
+        self.updateData({
+          imagePath: reader.result,
+          description: (elements.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
+          gameTypeTags: getTagSelectedState(shadowRoot),
+          image: self.componentStore.imagePath,
+          name: (elements.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
+          url: (elements.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
+        })
+      }
+    }
+
+    shadowRoot?.addEventListener("change",(event:any)=>{
+      if(event.target.id === 'group-image'){
+        const input = shadowRoot.getElementById("group-image")
+        updatePreview(input,"image-preview")
+      }
+    })
 
     shadowRoot?.addEventListener("click",(event:any)=>{
 
@@ -94,12 +123,14 @@ export class CreateGroupComponent extends BaseDynamicComponent {
       const elements = (shadowRoot?.getElementById('create-group-form') as HTMLFormElement)?.elements
 
       if(targetId === AGREE_RULES_ID){
+
         self.updateData({
           [AGREE_RULES_ID]: event.target.checked,
-          name: (elements.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
           description: (elements.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
+          gameTypeTags: getTagSelectedState(shadowRoot),
+          image: self.componentStore.imagePath,
+          name: (elements.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
           url: (elements.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
-          gameTypeTags: getTagSelectedState(shadowRoot)
         })
       }
 
@@ -111,7 +142,6 @@ export class CreateGroupComponent extends BaseDynamicComponent {
         if(!groupName || groupName.length === 0){
           validationErrors[NAME_ERROR_TEXT_KEY] = "Name is a required field"
         }
-
         const groupDescription = (elements.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value;
         if(!groupDescription || groupDescription.length === 0){
           validationErrors[DESCRIPTION_ERROR_TEXT_KEY]="Description is a required field"
@@ -126,6 +156,8 @@ export class CreateGroupComponent extends BaseDynamicComponent {
             id: self.componentStore.id,
             name: groupName,
             description: groupDescription,
+            image: self.componentStore.imagePath,
+
             url: (elements.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
             gameTypeTags: Object.keys(getTagSelectedState(shadowRoot))
           }),
@@ -186,6 +218,15 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                     >${data.description}</textarea>
                   ${generateErrorMessage(data[DESCRIPTION_ERROR_TEXT_KEY])}
                 </div>
+                
+                ${IS_PRODUCTION ? ``: `
+                  <label class="form-field-header">Image(optional)</label>
+                  <input type="file" id="group-image" name="group-image" accept="image/png, image/jpeg" />
+                           <img id="image-preview" 
+                       src=${data.imagePath ?? ''}
+                       style="width:400px"
+                       alt="group-image-placeholder">
+                `}
                 <div class="form-section">
                   <label class="form-field-header">Url(optional)</label>
                   <input
@@ -193,6 +234,8 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                     name=${GROUP_URL_INPUT}
                     value=${data.url}
                     >
+           
+
                 </div>
                 ${getGameTypeTagSelectHtml(data.gameTypeTags)}
                 <label class="form-field-header required-field" for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
