@@ -23,6 +23,8 @@
     "vite-plugin-minify": "^2.1.0"
   },
   "dependencies": {
-    "@bponnaluri/places-js": "^0.0.37"
+    "@aws-sdk/client-s3": "^3.911.0",
+    "@bponnaluri/places-js": "^0.0.37",
+    "aws-sdk": "^2.1692.0"
   }
 }
