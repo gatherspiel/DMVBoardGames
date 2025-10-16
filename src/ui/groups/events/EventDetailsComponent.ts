@@ -64,6 +64,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           margin-top:0rem;
         }   
         #delete-event-form {
+          margin-top:1rem;
           padding-left:1.5rem;
         }
         #form-status-success {
@@ -120,6 +121,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   override attachHandlersToShadowRoot(shadowRoot?: any) {
     const self = this;
     shadowRoot?.addEventListener("click",(event:any)=>{
+      console.log("Hi")
+      console.log(event.target.id)
       if(event.target.id === CANCEL_EDIT_BUTTON_ID) {
         self.updateData({isEditing: false,
           [SUCCESS_MESSAGE_KEY]:''})
@@ -238,8 +241,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             <span class="edge"></span>
             <span class="front" id="user-actions-front">
                 <div class="top-nav-secondary">
-                  <span>Edit event</span>
-                  <span>Delete event</span>
+                  <span id="${EDIT_EVENT_BUTTON_ID}">Edit event</span>
+                  <span id="${DELETE_EVENT_BUTTON_ID}">Delete event</span>
                 </div>
             </span>
           </nav>
@@ -278,25 +281,26 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       `
     }
     return `
-      <h1>Are you sure you want to delete event ${data.name} ${data.isRecurring ? '': `on ${convertDateTimeForDisplay(data.startTime)}`}</h1>
-      <div id="delete-event-form">
+      <div class="ui-section">
+        <h1>Are you sure you want to delete event ${data.name} ${data.isRecurring ? '': `on ${convertDateTimeForDisplay(data.startTime)}`}</h1>
+        <div id="delete-event-form">
+            ${generateButton({
+            id: CONFIRM_DELETE_BUTTON_ID,
+            text: "Confirm delete"
+          })}
+          
           ${generateButton({
-          id: CONFIRM_DELETE_BUTTON_ID,
-          text: "Confirm delete"
-        })}
-        
-        ${generateButton({
-          id: CANCEL_DELETE_BUTTON_ID,
-          text: "Cancel"
-        })}     
+            id: CANCEL_DELETE_BUTTON_ID,
+            text: "Cancel"
+          })}     
+        </div>
       </div>
     `
   }
   renderEditMode(data:any): string {
     return `
       <div class="ui-section">
-      <h1>Editing Event:</h1>
-      <b>${data.name}</b>
+      <h1>Editing Event:${data.name}</h1>
       <form id="event-details-form" onsubmit="return false">
         <div id="form-status-div">
           ${generateErrorMessage(data.errorMessage)}

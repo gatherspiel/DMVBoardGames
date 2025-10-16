@@ -1,41 +1,15 @@
 <style>
-  .ui-section {
-      padding-top: 0;
-      padding-bottom: 0;
-  }
-  .raised:hover {
-      transform: none;
-      transition: none;
-  }
-  .raised:active {
-      transform: none;
-      transition: none;
-  }
-
-  #logo-div img {
-      max-height: 4.5rem;
-      padding-left: 0.5rem;
-      padding-top: 0.2rem;
-  }
   nav a{
-      border: none;
-      background-color: none;
-      color: white;
-      font-weight: 400;
-      font-size: 1.5rem;
-      margin-top: 0.25rem;
-      margin-bottom: 0.25rem;
-
-      text-decoration: none;
-      transition: all 0.3s ease;
+    border: none;
+    background-color: none;
+    color: white;
+    font-weight: 400;
+    font-size: 1.5rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
   }
-  .top-link {
-    padding-bottom: 0.25rem;
-    padding-top: 0.25rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
   nav a.active {
     background-color: #04aa6d;
     color: white;
@@ -50,54 +24,53 @@
     text-wrap: nowrap;
     text-decoration: none;
   }
-
+  #logo-div img {
+    max-height: 4.5rem;
+    padding-left: 0.5rem;
+    padding-top: 0.2rem;
+  }
+  #other-links-container {
+    display: inline-block;
+  }
+  #secondary-nav a {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    margin-right:2rem;
+  }
+  #site-rules-link {
+      padding-top:0.5rem;
+  }
   .dropdown {
       display: block;
       position: relative;
   }
   .dropdown-content a {
     display: block;
-    line-height: 2rem;
+    line-height: 1.5rem;
   }
-
-  #site-rules-link {
-      padding-top:0.5rem;
+  .raised:active {
+    transform: none;
+    transition: none;
   }
-  #other-links-container {
-    display: inline-block;
+  .raised:hover {
+    transform: none;
+    transition: none;
   }
-
-  #secondary-nav a {
-      font-size: 1rem;
-      line-height: 1.5rem;
-      margin-right:2rem;
+  .top-link {
+      padding-bottom: 0.25rem;
+      padding-top: 0.25rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
   }
-
+  .ui-section {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
   @media not screen and (width < 32em) {
     nav a + a {
-        border-color: white;
-        border-width: 1px;
-        margin-left: 1px;
-    }
-
-    #logo-div {
-      float: left;
-      height:5rem;
-      width: 15.5rem;
-    }
-
-    #navbar-front {
-        padding: 1rem;
-    }
-
-    .dropdown:hover .dropdown-content {
-        display: block;
-    }
-
-    .dropdown-content a {
-      display:inline-block;
-      font-size:1rem;
-      padding-left:0.5rem;
+      border-color: white;
+      border-width: 1px;
+      margin-left: 1px;
     }
     #dropdown-container {
       background-color: var(--clr-light-blue);
@@ -113,16 +86,13 @@
       position: absolute;
       right:1rem;
     }
-    .dropdown-content {
-        display: none;
+    #logo-div {
+      float: left;
+      height:5rem;
+      width: 15.5rem;
     }
-    .show-mobile {
-        display: none;
-    }
-    .top-nav {
-      display: flex;
-      flex-wrap: wrap;
-      padding-left: 0.5rem;
+    #navbar-front {
+      padding: 1rem;
     }
     #other-links-container {
       padding-top:0.5rem;
@@ -133,22 +103,38 @@
     #secondary-nav a, span {
       font-size: 1rem;
     }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .dropdown-content a {
+      display:inline-block;
+      font-size:1rem;
+      padding-left:0.5rem;
+    }
+
+    .dropdown-content {
+      display: none;
+    }
+    .show-mobile {
+      display: none;
+    }
+    .top-nav {
+      display: flex;
+      flex-wrap: wrap;
+      padding-left: 0.5rem;
+    }
   }
-
-
   @media screen and (width < 32em) {
     nav a + a {
       border-color: white;
       border-width: 1px;
     }
-
     #dropdown-container {
       text-align: center;
     }
     #dropdown-triangle-secondary {
       display: block;
     }
-
     #logo-div {
       display: flex;
       justify-content: center;
@@ -163,9 +149,11 @@
     #tertiary-nav {
       text-align: center;
     }
-
     .dropdown-content {
       display: none;
+    }
+    .dropdown-content a {
+      line-height: 1.5;
     }
     .hide-mobile {
       display: none;
@@ -197,13 +185,6 @@
       border-left: 20px solid transparent;
       border-right: 20px solid transparent;
       border-bottom: 20px solid black;
-    }
-
-
-
-
-    .dropdown-content a {
-      line-height: 1.5;
     }
   }
 </style>
