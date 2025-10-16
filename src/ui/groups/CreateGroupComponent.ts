@@ -94,12 +94,19 @@ export class CreateGroupComponent extends BaseDynamicComponent {
       let file = input.files[0];
       let reader = new FileReader();
 
+      const elements = (shadowRoot?.getElementById('create-group-form') as HTMLFormElement)?.elements
+
       reader.readAsDataURL(file);
       reader.onload = function () {
         let img:any = shadowRoot.getElementById(target);
         img.src = reader.result;
         self.updateData({
-          imagePath: reader.result
+          imagePath: reader.result,
+          description: (elements.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
+          gameTypeTags: getTagSelectedState(shadowRoot),
+          image: self.componentStore.imagePath,
+          name: (elements.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
+          url: (elements.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
         })
       }
 
