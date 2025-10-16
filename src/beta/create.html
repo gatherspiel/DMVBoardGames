@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Create group</title>
+
+  <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
+  <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
+  <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
+
+  <script type="module">
+    import {CreateGroupComponent} from "../ui/groups/CreateGroupComponent.js";
+    import {LoginStatusComponent} from "../shared/html/LoginStatusComponent.js";
+
+    customElements.define('create-group-component',CreateGroupComponent)
+    customElements.define("login-status-component",LoginStatusComponent)
+
+  </script>
+
+</head>
+<body>
+<div id="container">
+  {{>navbar}}
+  <create-group-component class="ui-section">
+  </create-group-component>
+</div>
+</body>
+</html>

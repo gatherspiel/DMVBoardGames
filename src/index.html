@@ -3,17 +3,15 @@
   <head>
     <script async type="module">
       console.log("Starting to parse Javascript at:" + Date.now())
-      import {GroupSearchComponent} from "./ui/listing/components/group-search/GroupSearchComponent.js";
-      import {GroupListComponent} from "./ui/listing/components/GroupListComponent.js";
-      import {ListingNavComponent} from "./shared/components/ListingNavComponent.js";
-      import {LoginStatusComponent} from "./shared/components/LoginStatusComponent.js";
-      import {OpenCreateGroupPageComponent} from "./ui/listing/components/OpenCreateGroupPageComponent.js";
+      import {GroupSearchComponent} from "./ui/list/components/group-search/GroupSearchComponent.js";
+      import {GroupListComponent} from "./ui/list/components/GroupListComponent.js";
+      import {LoginStatusComponent} from "./shared/html/LoginStatusComponent.js";
+      import {OpenCreateGroupComponent} from "./ui/list/components/OpenCreateGroupComponent.js";
 
       customElements.define("group-list-component", GroupListComponent);
       customElements.define("group-search-component", GroupSearchComponent);
-      customElements.define("listing-nav-component", ListingNavComponent);
       customElements.define("login-status-component",LoginStatusComponent)
-      customElements.define("open-create-group-component", OpenCreateGroupPageComponent);
+      customElements.define("open-create-group-component", OpenCreateGroupComponent);
     </script>
     <meta charset="UTF-8"/>
     <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
@@ -28,18 +26,26 @@
 
     <div id="container">
       {{>navbar}}
+      <div id="user-actions-menu">
 
-      <open-create-group-component class = "ui-section">
-      </open-create-group-component>
+        <nav class="raised">
+          <span class="shadow"></span>
+          <span class="edge"></span>
+          <span class="front" id="user-actions-front">
+              <div class="top-nav-secondary">
+                <open-create-group-component>
+                </open-create-group-component>
+              </div>
+          </span>
+        </nav>
+      </div>
       <group-search-component class = "ui-section" id="group-search-component">
       </group-search-component>
-      <div class="section-separator-medium"></div>
-      <group-list-component class="ui-section"></group-list-component>
-      <listing-nav-component
-        class="ui-section"
-        currentPage="index.html"
-      >
-      </listing-nav-component>
     </div>
+
+    <div id="bot-container">
+
+    </div>
+    {{>footer}}
   </body>
 </html>

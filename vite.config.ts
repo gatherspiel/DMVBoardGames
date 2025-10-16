@@ -29,20 +29,32 @@ export default defineConfig({
     outDir: "../dist",
     rollupOptions: {
       input: {
-        main: resolve(__dirname, "src/index.html"),
         conventions: resolve(__dirname, "src/conventions.html"),
+        create_account: resolve(__dirname,"src/beta/createAccount.html"),
+        create_groups: resolve(__dirname, "src/beta/create.html"),
+        create_event: resolve(__dirname, "src/beta/addEvent.html"),
+
+        delete_group: resolve(__dirname, "src/beta/delete.html"),
+        designers: resolve(__dirname, "src/designers.html"),
+
+        event: resolve(__dirname, "src/groups/event.html"),
+
+        faq: resolve(__dirname, "src/faq.html"),
+        feedback: resolve(__dirname, "src/beta/feedback.html"),
+
         gameStores: resolve(__dirname, "src/gameStores.html"),
         gameRestaurants: resolve(__dirname, "src/gameRestaurants.html"),
         groups: resolve(__dirname, "src/groups.html"),
-        designers: resolve(__dirname, "src/designers.html"),
-        print_and_play: resolve(__dirname, "src/print_and_play.html"),
+
+        landing: resolve(__dirname,"src/landing.html"),
         links: resolve(__dirname, "src/links.html"),
-        feedback: resolve(__dirname, "src/feedback.html"),
-        login: resolve(__dirname, "src/login.html"),
-        create_groups: resolve(__dirname, "src/groups/create.html"),
-        event: resolve(__dirname, "src/groups/event.html"),
-        create_event: resolve(__dirname, "src/groups/addEvent.html"),
-        delete_group: resolve(__dirname, "src/groups/delete.html")
+        login: resolve(__dirname, "src/beta/login.html"),
+
+        main: resolve(__dirname, "src/index.html"),
+
+        siteRules: resolve(__dirname,"src/siteRules.html"),
+
+        vision: resolve(__dirname,"src/vision.html")
       }
     },
   },

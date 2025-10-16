@@ -1,33 +1,65 @@
 /* Styles that are shared with components */
-a, button {
-  border-color: var(--clr-darker-blue);
-  border-radius: 5px;
-  border-width: 1px;
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 400;
-  text-decoration: none;
+
+
+b,h2,label,li {
+  color: var(--clr-darker-blue);
+  margin-top:0;
+  margin-bottom:0;
 }
 
+h1 {
+  background-color: var(--clr-very-light-blue);
+
+  border-radius: 12px;
+  color: var(--clr-darker-blue);
+  font-size:3rem;
+  margin-top:0;
+  margin-bottom:0;
+  transform:translateY(2px);
+}
+
+h2 {
+  background-color: var(--clr-very-light-blue);
+  border-radius: 12px;
+  color: var(--clr-darker-blue);
+  font-size: 2rem;
+  margin-top:0;
+  margin-bottom:0;
+}
 
 a:hover {
   background-color: var(--clr-darker-blue);
 }
 
-label {
-  font-size: 1.5rem;
+#form-status-div {
+  height: 2.5rem;
 }
 
-p,span {
-  color: var(--clr-dark-blue);
-  font-size: 1.5rem;
+#user-actions-menu {
+  padding-top: 1.5rem;
 }
 
-.success-message {
-  color: #00BB51
+#user-actions-front {
+  padding-left:1.5rem;
 }
 .error-message {
   color: darkred;
+  display:block;
+  font-weight:600;
+}
+
+.form-field-header {
+  display:block;
+  font-weight:600;
+}
+
+.form-section {
+  margin-bottom: 1rem;
+}
+
+.form-section > label {
+  display: block;
+  font-weight: 600;
 }
 
 .form-select {
@@ -37,6 +69,44 @@ p,span {
   cursor: pointer;
   padding: 0.25rem;
 }
+
+.raised span {
+  font-size: 1.5rem;
+}
+
+.required-field::after {
+  color: darkred;
+  content: "*";
+}
+.success-message {
+  color: #00BB51;
+  display:block;
+  font-weight: 600;
+}
+
+.ui-section {
+  padding-left:1.5rem;
+}
+
+.raised a {
+  color: white;
+  font-weight: 400;
+  text-decoration:none;
+}
+
+
+.shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: hsl(0deg 0% 0% / 0.25);
+  will-change: transform;
+  transform: translateY(2px);
+}
+
 
 .raised {
   background: transparent;
@@ -54,7 +124,6 @@ p,span {
 .disabled {
   border:none
 }
-
 
 .disabled-edge {
   position: absolute;
@@ -91,7 +160,6 @@ p,span {
   position: relative;
   padding: 0.5rem;
   border-radius: 12px;
-  font-size: 1.5rem;
   color: white;
   background: var(--clr-light-blue);
   will-change: transform;
@@ -105,9 +173,12 @@ p,span {
   border-radius: 12px;
   font-size: 1.5rem;
   color: white;
-  background: var(--clr-gray);
+  background-color:gray;
 }
 
+.top-nav-secondary {
+
+}
 .activeHover:hover {
   filter: brightness(110%);
 }
@@ -150,9 +221,25 @@ p,span {
   outline: none;
 }
 
+
+.label-border-left {
+  border-left: 1px solid black;
+}
+
 @media not screen and (width < 32em) {
   .show-mobile {
     display:none
+  }
+  .top-nav-secondary a {
+    display: inline-block;
+    margin-right: 2rem;
+  }
+
+  .top-nav-secondary span {
+    margin-right: 2rem;
+  }
+  #user-actions-menu-raised {
+    display:inherit;
   }
 }
 
@@ -166,4 +253,24 @@ p,span {
   .show-mobile {
     display:initial;
   }
+  form {
+    margin-right:1.5rem;
+  }
+  input, textarea {
+    width:100%;
+  }
+
+  .top-nav-secondary {
+    display: grid;
+    text-align: center;
+  }
+
+  .top-nav-secondary a {
+    padding-top:1rem;
+  }
+
+  .top-nav-secondary span {
+    padding-top: 1rem;
+  }
+
 }

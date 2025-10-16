@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8"/>
+  <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
+  <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
+
+
+  <link rel="icon" type="image/ico" href="/assets/favicon.ico"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create account</title>
+
+  <script
+    defer
+    fetchpriority="low"
+    type="module"
+  >
+    import {CreateAccountComponent} from "../ui/auth/CreateAccountComponent.js";
+    customElements.define("create-account-component", CreateAccountComponent);
+
+    import {BotHelper} from "./botHelper.js";
+    BotHelper();
+  </script>
+</head>
+<body>
+<div id="container">
+  {{>navbar}}
+
+  <create-account-component class="ui-section">
+  </create-account-component>
+</div>
+</body>
+</html>

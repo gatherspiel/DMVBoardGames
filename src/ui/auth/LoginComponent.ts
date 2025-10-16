@@ -1,26 +1,18 @@
 import {LOGIN_STORE,} from "./data/LoginStore.ts";
-import {LOGOUT_STORE} from "./data/LogoutStore.ts";
 import {LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT,} from "./Constants.js";
-import {
-  IS_LOGGED_IN_KEY,
-  SUCCESS_MESSAGE_KEY
-} from "../../shared/Constants.ts";
+
 import {
   BaseDynamicComponent,
-  ApiLoadAction,
 } from "@bponnaluri/places-js";
-import {generateErrorMessage} from "../../shared/components/StatusIndicators.ts";
-import {generateButton} from "../../shared/components/ButtonGenerator.ts";
-import {API_ROOT} from "../../shared/Params.ts";
+import {generateErrorMessage} from "../../shared/html/StatusIndicators.ts";
+import {generateButton} from "../../shared/html/ButtonGenerator.ts";
 
 const LOGIN_BUTTON_ID = "login-button";
-const REGISTER_BUTTON_ID = "register-button";
-const LOGOUT_BUTTON_ID = "logout-button";
 
 export class LoginComponent extends BaseDynamicComponent {
 
   loginAttempted: boolean;
-
+  registerAttempted: boolean;
   constructor() {
     super([{
       componentReducer:(loginState:any)=>{
@@ -32,6 +24,7 @@ export class LoginComponent extends BaseDynamicComponent {
       dataStore: LOGIN_STORE,
     }]);
     this.loginAttempted = false;
+    this.registerAttempted = false;
   }
 
   override getTemplateStyle(): string {
@@ -52,7 +45,12 @@ export class LoginComponent extends BaseDynamicComponent {
         }
         #email {
           display: inline-block;
+        }          
+        @media not screen and (width < 32em) {
+          #email {
+          display: inline-block;
           margin-right:2.85rem;
+          }  
         }
         @media screen and (width < 32em) {
           #login-component-container {
@@ -84,16 +82,13 @@ export class LoginComponent extends BaseDynamicComponent {
 
     const self = this;
     shadowRoot?.addEventListener("click",(event:any)=>{
-
       event.preventDefault();
 
       try {
         const targetId = event.target?.id;
         if (targetId === LOGIN_BUTTON_ID){
-
           self.loginAttempted = true;
           const formInputs = self.retrieveAndValidateFormInputs(shadowRoot)
-
           if(formInputs.errorMessage){
             self.updateData(formInputs)
           } else {
@@ -103,40 +98,6 @@ export class LoginComponent extends BaseDynamicComponent {
           }
         }
 
-        if (targetId === REGISTER_BUTTON_ID) {
-          const formInputs = self.retrieveAndValidateFormInputs(shadowRoot)
-          if(formInputs.errorMessage){
-            self.updateData(formInputs)
-          } else {
-
-            console.log("Registering user")
-
-            const requestData = {
-              email: formInputs.username,
-              password: formInputs.password
-            }
-
-            ApiLoadAction.getResponseData({
-              body: JSON.stringify(requestData),
-              method: "POST",
-              url: API_ROOT + `/users/register`,
-            }).then((response:any)=>{
-
-              if(response.errorMessage){
-                self.updateData({
-                  "errorMessage":response.errorMessage
-                })
-              } else {
-                self.updateData({
-                  [SUCCESS_MESSAGE_KEY]: "Successfully registered user"
-                })
-              }
-            })
-          }
-        }
-        if (targetId === LOGOUT_BUTTON_ID) {
-          LOGOUT_STORE.fetchData({}, LOGIN_STORE)
-        }
       }catch(e:any){
         if(e.message !== `Permission denied to access property "id"`){
           throw e;
@@ -146,29 +107,28 @@ export class LoginComponent extends BaseDynamicComponent {
   }
 
   render(data: any) {
-    return data[IS_LOGGED_IN_KEY] ?
-        '' :
-        this.generateLogin(data)
-  }
-  generateLogin(data: any) {
+    const isNewUser = new URLSearchParams(document.location.search).get("newUser")
 
-    const html = `
-     <div class="ui-section" id="login-component-container">
+    return `
+      <div class="ui-section" id="login-component-container">
       <form id=${LOGIN_FORM_ID}>
+      ${isNewUser ? `<h2 class="success-message">Account successfully confirmed. Use this page to login </h2>` : ``}
+
         <div class="ui-input">
-        <label id="email">Email</label>
+        <label class="form-field-header" id="email">Email</label>
         <input        
           id=${USERNAME_INPUT}
+          type="email"
         />
        </input>    
        
-        <label>Password</label>
+        <label class="form-field-header">Password</label>
         <input        
           id=${PASSWORD_INPUT}
+          type="password"
         />
        </input>    
-       </div>
-  
+       </div>       
         <div id="component-buttons">
           ${generateButton({
             class: "login-element",
@@ -176,17 +136,11 @@ export class LoginComponent extends BaseDynamicComponent {
             text: "Login",
             type: "submit",
           })}  
-          ${generateButton({
-            class: "login-element",
-            id: REGISTER_BUTTON_ID,
-            type: "submit",
-            text: "Register",
-          })}         
+      
         </div>
-          ${this.loginAttempted ? generateErrorMessage(data.errorMessage) : ''}
+          ${this.loginAttempted || this.registerAttempted ? generateErrorMessage(data.errorMessage) : ''}
         </form>
       </div>
     `;
-    return html;
   }
 }

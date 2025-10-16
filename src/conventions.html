@@ -5,12 +5,12 @@
   <meta charset="UTF-8"/>
   <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
   <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
-
+  <title>Conventions</title>
   <link rel="preconnect" href="localhost:7070" />
   <link rel="preconnect" href="api.gatherspiel.com" />
 
   <script type="module">
-    import {ConventionListComponent} from "./ui/listing/components/ConventionListComponent.js";
+    import {ConventionListComponent} from "./ui/list/components/ConventionListComponent.js";
     customElements.define("convention-list-component",ConventionListComponent)
   </script>
 
@@ -22,7 +22,6 @@
 
 <div id="container">
   {{>navbar}}
-
   <convention-list-component>
   </convention-list-component>
 </div>

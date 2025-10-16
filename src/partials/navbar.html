@@ -1,98 +1,159 @@
 <style>
-  .ui-section {
-      padding-top: 0;
-      padding-bottom: 0;
-  }
-  .raised:hover {
-      transform: none;
-      transition: none;
-  }
-  .raised:active {
-      transform: none;
-      transition: none;
-  }
-  #logo-div {
-      min-width: 15.5rem;
-  }
-  #logo-div img {
-      max-height: 4.5rem;
-      padding-left: 0.5rem;
-      padding-top: 0.2rem;
-  }
-  nav a {
-      border: none;
-      background-color: none;
-      color: white;
-      font-weight: 400;
-      font-size: 1.5rem;
-      margin-top: 0.25rem;
-      margin-bottom: 0.25rem;
-      padding-bottom: 0.25rem;
-      padding-top: 0.25rem;
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-      text-decoration: none;
-      transition: all 0.3s ease;
+  nav a{
+    border: none;
+    background-color: none;
+    color: white;
+    font-weight: 400;
+    font-size: 1.5rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
   }
   nav a.active {
-      background-color: #04aa6d;
-      color: white;
-      text-decoration: none;
+    background-color: #04aa6d;
+    color: white;
+    text-decoration: none;
   }
   nav a:hover {
-      background-color: var(--clr-darker-blue);
-      color: white;
-      text-decoration: none;
+    background-color: var(--clr-light-blue);
+    color: white;
+    text-decoration: none;
   }
   nav a:last-child {
-      text-wrap: nowrap;
-      text-decoration: none;
+    text-wrap: nowrap;
+    text-decoration: none;
   }
-  #nav-filler {
-      display: inline-block;
-      background-color: var(--clr-lighter-blue);
-      flex-grow: 1;
+  #logo-div img {
+    max-height: 4.5rem;
+    padding-left: 0.5rem;
+    padding-top: 0.2rem;
   }
-  #navbar {
-    margin-bottom:1rem;
+  #other-links-container {
+    display: inline-block;
   }
-
+  #secondary-nav a {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    margin-right:2rem;
+  }
+  #site-rules-link {
+      padding-top:0.5rem;
+  }
+  .dropdown {
+      display: block;
+      position: relative;
+  }
+  .dropdown-content a {
+    display: block;
+    line-height: 1.5rem;
+  }
+  .raised:active {
+    transform: none;
+    transition: none;
+  }
+  .raised:hover {
+    transform: none;
+    transition: none;
+  }
+  .top-link {
+      padding-bottom: 0.25rem;
+      padding-top: 0.25rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+  }
+  .ui-section {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
   @media not screen and (width < 32em) {
     nav a + a {
       border-color: white;
       border-width: 1px;
       margin-left: 1px;
     }
+    #dropdown-container {
+      background-color: var(--clr-light-blue);
+      border-radius: 12px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      left: -10rem;
+      min-width: 37.5rem;
+      position: absolute;
+      z-index: 1;
+    }
+    #login-component-container {
+      padding-top:0.5rem;
+      position: absolute;
+      right:1rem;
+    }
     #logo-div {
       float: left;
+      height:5rem;
+      width: 15.5rem;
     }
     #navbar-front {
       padding: 1rem;
+    }
+    #other-links-container {
+      padding-top:0.5rem;
+    }
+    #tertiary-nav {
+      display: inline-block;
+    }
+    #secondary-nav a, span {
+      font-size: 1rem;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .dropdown-content a {
+      display:inline-block;
+      font-size:1rem;
+      padding-left:0.5rem;
+    }
+
+    .dropdown-content {
+      display: none;
+    }
+    .show-mobile {
+      display: none;
     }
     .top-nav {
       display: flex;
       flex-wrap: wrap;
       padding-left: 0.5rem;
     }
-    .show-mobile {
-      display:none;
-    }
-    #login-status {
-      margin-left: 1.1rem;
-    }
   }
   @media screen and (width < 32em) {
+    nav a + a {
+      border-color: white;
+      border-width: 1px;
+    }
+    #dropdown-container {
+      text-align: center;
+    }
+    #dropdown-triangle-secondary {
+      display: block;
+    }
     #logo-div {
       display: flex;
       justify-content: center;
     }
-    .top-nav {
-      display: grid;
+    #other-links-container {
+      line-height: 1.5;
       text-align: center;
     }
-    nav a + a {
-      border-color: white;
-      border-width: 1px;
+    #share-feedback-link {
+      line-height: 1.5;
+    }
+    #tertiary-nav {
+      text-align: center;
+    }
+    .dropdown-content {
+      display: none;
+    }
+    .dropdown-content a {
+      line-height: 1.5;
     }
     .hide-mobile {
       display: none;
@@ -104,48 +165,73 @@
       margin-left: auto;
       margin-right: auto;
     }
+    .show-more-links {
+      font-size:1rem;
+    }
+    .top-nav {
+      display: grid;
+      text-align: center;
+    }
     .triangle-down {
       width: 0;
       height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-top: 10px solid black;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-top: 20px solid black;
     }
     .triangle-up{
       width: 0;
       height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-bottom: 10px solid black;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 20px solid black;
     }
   }
 </style>
 
 <nav class="raised" id="navbar">
-  <span class="shadow"></span>
-  <span class="edge"></span>
+  <span class="shadow" id="navbar-shadow"></span>
+  <span class="edge" id="navbar-edge"></span>
   <span class="front" id="navbar-front">
     <div id="logo-div">
       <img fetchpriority="high" src="/assets/logo.svg">
     </div>
-    <div class="ui-section top-nav">
+    <div id = "main-nav" class="ui-section top-nav">
       <div class="top-nav">
 
-        <div class="show-mobile triangle-down">
-        </div>
-        <a class = "hide-mobile" href="/index.html">Home
-        </a>
-        </a><a class="hide-mobile" href="/feedback.html">Feedback</a>
-        <a class="hide-mobile" id="local-designers" href="/designers.html">Local designers
-        </a><a class="hide-mobile" href="/print_and_play.html">Print and Play
-        </a><a class="hide-mobile" href="/links.html">Links </a>
-        <login-status-component class="hide-mobile"  id="login-status"></login-status-component>
+        <a class = " top-link" href="/index.html" id="main-page-link" >Home        </a>
 
+        <div id="other-links-first">
+             <div class="show-mobile show-more-links">Other links</div>
+        </div>
+        <div id="dropdown-triangle" class="show-mobile triangle-down">
+        </div>
+        </a><a class="hide-mobile top-link" href="/beta/feedback.html" id="share-feedback-link">Share feedback</a>
+
+      <div id="tertiary-nav" class="dropdown hide-mobile">
+        <div id="other-links-container" class="top-link show-more-links">Other links</div>
+        <div id="dropdown-triangle-secondary" class="show-mobile triangle-down"></div>
+
+          <div id="dropdown-container">
+            <div class="dropdown-content">
+              <a id="site-rules-link"  href="/siteRules.html">Site rules</a>
+              <a class ="label-border-left" href="/faq.html">FAQ</a>
+              <a class ="label-border-left" href="/vision.html">Vision</a>
+              <a class ="label-border-left"  href="/conventions.html" >Conventions</a>
+              <a class ="label-border-left" href="/gameRestaurants.html">Game restaurants</a>
+              <a class="label-border-left" href="/gameStores.html">Game stores</a>
+              <a class="" href="/designers.html">Local designers</a>
+              <a class=" label-border-left" href="/links.html">Other websites </a>
+            </div>
+        </div>
       </div>
-     <div id="nav-filler"></div>
+
+        <div id="login-component-container" class="hide-mobile"><login-status-component></login-status-component></div>
+      </div>
     </div>
   </span>
 </nav>
+
 
 
 <div id="bg-image">
@@ -246,27 +332,81 @@
 </div>
 
 <script>
-  document.getElementById("navbar").addEventListener("click", () => {
-    const hiddenMobileElements = document.getElementsByClassName("hide-mobile")
 
-    if(hiddenMobileElements.length >0){
-      for(let i = hiddenMobileElements.length-1; i>=0;i--){
-        hiddenMobileElements.item(i).className ="is-visible";
-      }
-      document.getElementsByClassName("triangle-down").item(0).className = "triangle-up show-mobile"
+  //Javascript that should only run on mobile devices
+  /**
+   * TODO
+   *
+   */
+  if(navigator.maxTouchPoints > 0){
 
-    } else {
-      const visibleMobileElements = document.getElementsByClassName("is-visible")
-      for(let i = visibleMobileElements.length-1; i>=0;i--){
-        visibleMobileElements.item(i).className ="hide-mobile";
+    const togglePrimaryDropdown = function() {
+      const hiddenMobileElements = document.getElementsByClassName("hide-mobile")
+
+      if (hiddenMobileElements.length > 0) {
+
+        for (let i = hiddenMobileElements.length - 1; i >= 0; i--) {
+            hiddenMobileElements.item(i).className = "is-visible";
+        }
+        document.getElementsByClassName("triangle-down").item(0).className = "triangle-up show-mobile"
+        document.querySelectorAll("#other-links-first .show-mobile").item(0).innerText = "Hide links";
+
+      } else {
+
+        const visibleMobileElements = document.getElementsByClassName("is-visible")
+        for (let i = visibleMobileElements.length - 1; i >= 0; i--) {
+            visibleMobileElements.item(i).className = "hide-mobile";
+        }
+        document.getElementsByClassName("triangle-up").item(0).className = "triangle-down show-mobile"
+        document.querySelectorAll("#other-links-first .show-mobile").item(0).innerText = "Other links";
       }
-      document.getElementsByClassName("triangle-up").item(0).className = "triangle-down show-mobile"
     }
-  })
+
+
+    const dropdownTriangleSecondary = document.getElementById("dropdown-triangle-secondary");
+    const toggleSecondaryDropdown = function() {
+
+      const dropdownLinks = document.querySelectorAll("#dropdown-container a")
+      const dropdownContent = document.getElementsByClassName("dropdown-content").item(0)
+      const dropdownContentStyle = dropdownContent.style;
+
+      if (dropdownContentStyle.display !== "block") {
+        dropdownLinks.forEach((link) => {
+          link.className = "showMobile"
+        })
+        dropdownContent.style = "display:block;"
+        dropdownTriangleSecondary.className = "triangle-up show-mobile"
+        document.querySelectorAll("#other-links-container").item(0).innerText="Hide links";
+      } else {
+        dropdownLinks.forEach((link) => {
+          link.className = "hideMobile"
+        })
+        dropdownContent.style = "display:none;"
+        dropdownTriangleSecondary.className = "triangle-down show-mobile"
+        document.querySelectorAll("#other-links-container").item(0).innerText="Other links";
+      }
+    }
+
+    document.getElementById("dropdown-triangle-secondary").addEventListener("click", (event) => {
+      event.preventDefault();
+      toggleSecondaryDropdown();
+    });
+    document.getElementById("dropdown-triangle").addEventListener("click", (event) => {
+      event.preventDefault();
+      togglePrimaryDropdown()
+    });
+    document.getElementById("other-links-first").addEventListener("click", (event) => {
+      event.preventDefault();
+      togglePrimaryDropdown()
+    });
+    document.getElementById("other-links-container").addEventListener("click", (event) => {
+      event.preventDefault();
+      togglePrimaryDropdown()
+    });
+  }
+
 
   const hexagons = window.innerWidth/240.0;
-  //z-index:-100;position: absolute;top: 0;left:${totalMargin/2};
-  console.log(hexagons);
 
   //Center based on position of top row of hexagons
   if((hexagons - Math.floor(hexagons))<0.5) {
@@ -277,7 +417,6 @@
 
   else {
     const totalMargin = window.innerWidth-(240*Math.floor(hexagons)+120);
-    console.log(totalMargin)
     document.getElementsByClassName("part-1").item(0).style =`z-index:-100;position: absolute;top: 0;left:${totalMargin/2}px;`
     document.getElementsByClassName("part-2").item(0).style =`z-index: -100;position: absolute;top: calc(var(--s)*0.86610);left:${120+totalMargin/2}px;`
   }
