@@ -95,7 +95,6 @@ export class CreateGroupComponent extends BaseDynamicComponent {
       let reader = new FileReader();
 
       const elements = (shadowRoot?.getElementById('create-group-form') as HTMLFormElement)?.elements
-
       reader.readAsDataURL(file);
       reader.onload = function () {
         let img:any = shadowRoot.getElementById(target);
@@ -109,7 +108,6 @@ export class CreateGroupComponent extends BaseDynamicComponent {
           url: (elements.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
         })
       }
-
     }
 
     shadowRoot?.addEventListener("change",(event:any)=>{

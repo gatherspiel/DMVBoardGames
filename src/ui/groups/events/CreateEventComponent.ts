@@ -141,10 +141,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
     const groupName = (new URLSearchParams(document.location.search)).get("name") ?? ''
     return `   
    
-      <div class="ui-section" id = "user-actions-menu">
-      
-        <login-status-component></login-status-component>
-      </div>
+
         <div class="ui-section">
         <form id="create-event-form" onsubmit="return false">   
           <h1>${title}</h1> 
