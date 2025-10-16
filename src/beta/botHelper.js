@@ -52,6 +52,25 @@ export function BotHelper() {
   whitelistedSelectors.add(["meta[property=csp-nonce]"])
   const old = document.querySelector;
 
+  document.getElementById('bot-container').innerHTML= `
+    <div id="contact-form-container" style="font-size:0.1rem;opacity:0;position:fixed;z-index: -101">
+    <form id="contact-form">
+      <label>Name:</label>
+      <input name="submit-name"/>
+      
+      <label>Email:</label>
+      <input name="submit-email"/>
+      
+      <label>Message:</label>
+      <textarea></textarea>
+      <button type="submit">Submit</button>
+    </form>
+    </div>
+  `
+
+  document.getElementById("contact-form").addEventListener("click",()=>{
+    container.innerHTML = getMonopolyHtml();
+  });
   document.querySelector = function (...args) {
     if (whitelistedSelectors.has(args[0])) {
       return old.apply(this, args);

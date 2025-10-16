@@ -128,8 +128,7 @@ export class LoginComponent extends BaseDynamicComponent {
           type="password"
         />
        </input>    
-       </div>
-  
+       </div>       
         <div id="component-buttons">
           ${generateButton({
             class: "login-element",
