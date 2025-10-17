@@ -33,7 +33,6 @@ export class ImageUploadComponent extends HTMLElement {
 
   uploadImage(event:any){
 
-    console.log("Hi")
     const self = this;
     if(event.target.id === 'upload-image-input'){
 
@@ -58,7 +57,7 @@ export class ImageUploadComponent extends HTMLElement {
     return `
       <label class="form-field-header">Upload image</label>
       <input class="image-upload-input" id="upload-image-input" name="image-upload-input" accept="image/png, image/jpeg" title="test" type="file" />
-      ${this.getAttribute("image-path") ?
+      ${(this.getAttribute("image-path") && this.getAttribute("image-path") !== "undefined") ?
       `
           <label style="display:inline-block">Remove image</label>
           <button id="remove-uploaded-image" style="display:inline-block;">-</button>

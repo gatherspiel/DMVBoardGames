@@ -21,15 +21,16 @@ import {generateErrorMessage, generateSuccessMessage} from "../../../shared/html
 import {getEventDetailsFromForm, validate} from "./EventDetailsHandler.ts";
 import {API_ROOT} from "../../../shared/Params.ts";
 import {getDayOfWeekSelectHtml} from "../../../shared/html/SelectGenerator.ts";
+import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
+
+import {ImageUploadComponent} from "../../../shared/html/ImageUploadComponent.ts";
+import {LoginStatusComponent} from "../../../shared/html/LoginStatusComponent.ts";
+
+customElements.define("image-upload-component",ImageUploadComponent)
+customElements.define("login-status-component",LoginStatusComponent)
 
 const CREATE_EVENT_BUTTON_ID = "create-event-button";
 const RECURRING_EVENT_INPUT = "is-recurring";
-
-import {LoginStatusComponent} from "../../../shared/html/LoginStatusComponent.ts";
-import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
-customElements.define("login-status-component",LoginStatusComponent)
-
-console.log("Defined login status")
 export class CreateEventComponent extends BaseDynamicComponent {
   constructor() {
     super([{
@@ -90,15 +91,19 @@ export class CreateEventComponent extends BaseDynamicComponent {
 
       if(targetId === 'create-event-button'){
         const data = (shadowRoot.getElementById('create-event-form') as HTMLFormElement)?.elements;
+        const imageForm = shadowRoot.getElementById("image-upload-ui") as ImageUploadComponent;
+
+        console.log(imageForm)
         const formData = {
           id: self.componentStore.id,
+          image:imageForm.getAttribute("image-path"),
+          isRecurring: self.componentStore.isRecurring,
           [EVENT_NAME_INPUT]: (data.namedItem(EVENT_NAME_INPUT) as HTMLInputElement)?.value,
           [EVENT_DESCRIPTION_INPUT]: (data.namedItem(EVENT_DESCRIPTION_INPUT) as HTMLInputElement)?.value.trim(),
           [EVENT_URL_INPUT]: (data.namedItem(EVENT_URL_INPUT) as HTMLInputElement)?.value,
           [START_TIME_INPUT]: (data.namedItem(START_TIME_INPUT) as HTMLInputElement)?.value ?? "",
           [END_TIME_INPUT]: (data.namedItem(END_TIME_INPUT) as HTMLInputElement)?.value ?? "",
           [EVENT_LOCATION_INPUT]: (data.namedItem(EVENT_LOCATION_INPUT) as HTMLInputElement)?.value,
-          isRecurring: self.componentStore.isRecurring,
         }
         if(self.componentStore.isRecurring){
           // @ts-ignore
@@ -108,10 +113,13 @@ export class CreateEventComponent extends BaseDynamicComponent {
           formData[START_DATE_INPUT] = (data.namedItem(START_DATE_INPUT) as HTMLInputElement).value;
         }
 
+        //@ts-ignore
         const validationErrors:any = validate(formData);
         if(Object.keys(validationErrors.formValidationErrors).length !==0){
           self.updateData({...validationErrors,...formData});
         } else {
+
+          //@ts-ignore
           const eventDetails = getEventDetailsFromForm(formData)
           ApiLoadAction.getResponseData({
             body: JSON.stringify(eventDetails),
@@ -159,7 +167,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
             />
           </div>  
           <div class="form-section">
-            <label class="required-field">Name</label>
+            <label class="form-field-header required-field">Name</label>
             <input
               id=${EVENT_NAME_INPUT}
               name=${EVENT_NAME_INPUT}
@@ -168,15 +176,21 @@ export class CreateEventComponent extends BaseDynamicComponent {
              ${generateErrorMessage(data.formValidationErrors?.[EVENT_NAME_INPUT])}
            </div>
           <div class="form-section">
-            <label class="required-field">Description</label>
+            <label class="form-field-header required-field">Description</label>
             <textarea
               id=${EVENT_DESCRIPTION_INPUT}
               name=${EVENT_DESCRIPTION_INPUT}
             />${data.description ?? ""}</textarea>
             ${generateErrorMessage(data.formValidationErrors?.[EVENT_DESCRIPTION_INPUT])}
           </div>   
+          
+          <image-upload-component
+            id="image-upload-ui"
+          >
+          
+          </image-upload-component>
           <div class="form-section">
-            <label>Event URL(optional)</label>
+            <label class="form-field-header">Event URL(optional)</label>
             <input
               name=${EVENT_URL_INPUT}
               type="url"
@@ -186,7 +200,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
           ${data.isRecurring ? 
            `
             <div class="form-section">
-              <label class="required-field">Day of week</label>
+              <label class="form-field-header required-field">Day of week</label>
               ${getDayOfWeekSelectHtml(data.day)}
               ${generateErrorMessage(data.formValidationErrors?.[DAY_OF_WEEK_INPUT])}
             </div>
@@ -194,7 +208,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
           :
           `
             <div class="form-section">
-              <label class="required-field">Start date</label>
+              <label class="form-field-header required-field">Start date</label>
               <input
                 name=${START_DATE_INPUT}
                 type="date"
@@ -204,7 +218,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
             </div>`
           }
           <div class="form-section">
-            <label class="required-field">Start time</label>
+            <label class="form-field-header required-field">Start time</label>
             <input
               name=${START_TIME_INPUT}
               type="time"
@@ -213,7 +227,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
             ${generateErrorMessage(data.formValidationErrors?.[START_TIME_INPUT])} 
           </div>
           <div class="form-section">
-            <label class="required-field">End time</label>
+            <label class="form-field-header required-field">End time</label>
             <input
               name=${END_TIME_INPUT}
               type="time"
@@ -222,7 +236,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
             ${generateErrorMessage(data.formValidationErrors?.[END_TIME_INPUT])} 
           </div>
           <div class="form-section">
-            <label class="required-field">Event address</label>
+            <label class="form-field-header required-field">Event address</label>
             <input
               name=${EVENT_LOCATION_INPUT}
               value="${data.location ?? ""}"

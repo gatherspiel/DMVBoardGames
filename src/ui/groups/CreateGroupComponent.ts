@@ -14,8 +14,14 @@ import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
 import {API_ROOT} from "../../shared/Params.ts";
 import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
+
+import {FaqComponent} from "../../shared/html/FaqComponent.ts";
 import {ImageUploadComponent} from "../../shared/html/ImageUploadComponent.ts";
+import {SiteRulesComponent} from "../../shared/html/SiteRulesComponent.ts";
+
+customElements.define('faq-component',FaqComponent)
 customElements.define('image-upload-component',ImageUploadComponent)
+customElements.define('site-rules-component',SiteRulesComponent)
 
 const AGREE_RULES_ID ="agree-rules-id";
 const CREATE_GROUP_BUTTON_ID = "create-group-button-id";
@@ -55,6 +61,9 @@ export class CreateGroupComponent extends BaseDynamicComponent {
         #game-type-tag-select {
           margin-bottom:1rem;
         }  
+        #image-upload-container {
+          margin-bottom: 1rem;
+        }
         #game-type-tag-select input {
           display: inline-block;
         }      
@@ -191,12 +200,13 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                   ${generateErrorMessage(data[DESCRIPTION_ERROR_TEXT_KEY])}
                 </div>
                 
-                <image-upload-component
+                <div id="image-upload-container">
+                  <image-upload-component
                   id="image-upload-ui"
                   image-path="${data.imagePath}"
-                ></image-upload-component>
+                ></image-upload-component>              
+                </div>
 
-                
                 <div class="form-section">
                   <label class="form-field-header">Url(optional)</label>
                   <input

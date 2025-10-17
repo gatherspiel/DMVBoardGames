@@ -24,7 +24,9 @@ export function getEventDetailsFromForm(formData:Record<string,string>){
     endTime: endTime,
     location: formData[EVENT_LOCATION_INPUT],
     isRecurring: formData["isRecurring"],
-    day: formData[DAY_OF_WEEK_INPUT]
+    day: formData[DAY_OF_WEEK_INPUT],
+    image:formData["image"],
+    imageFilePath: formData["image-file-path"]
   };
 }
 
@@ -62,7 +64,6 @@ export function validate(formData:Record<string,string>) {
     errorMessages[END_TIME_INPUT] = "End time is required";
   }
 
-  console.log(formData["isRecurring"])
   if(formData["isRecurring"]){
     if(!formData[DAY_OF_WEEK_INPUT]){
       errorMessages[DAY_OF_WEEK_INPUT] = "Day of week is required"
