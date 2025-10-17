@@ -23,7 +23,7 @@ import {
   ERROR_MESSAGE_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../shared/Constants.ts";
-import {API_ROOT} from "../../shared/Params.ts";
+import {API_ROOT, IMAGE_BUCKET_URL} from "../../shared/Params.ts";
 
 import {LoginStatusComponent} from "../../shared/html/LoginStatusComponent.ts";
 import {convertDayOfWeekForDisplay} from "../../shared/data/DisplayNameConversion.ts";
@@ -361,53 +361,54 @@ export class GroupComponent extends BaseDynamicComponent {
     }
     return html+`
       
-  
+      
       <div class="ui-section">
       
-        <h1 id="group-name-header">${groupData.name}</h1>
-        ${groupData[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY]) : ''}
-        ${!groupData.isEditing ? `
-            ${groupData.url ? generateLinkButton({
-              class: "group-webpage-link",
-              text: "Group website",
-              url:groupData.url
-            }) : ''}
-          <div class="${GROUP_DESCRIPTION}">
-            <h2>Group description</h2>
-            <span>${groupData.description}</span> 
-          </div>
-          ` : 
-          this.renderEditMode(groupData)
-        }
-  
-       ${groupData.oneTimeEventData.length === 0 && groupData.weeklyEventData.length === 0 ?
-        `<p id="no-event">No events found for group</p>`:
-        `
-          <h2>Upcoming recurring events</h2>
-        `
+      <h1 id="group-name-header">${groupData.name}</h1>
+      ${groupData[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY]) : ''}
+      ${!groupData.isEditing ? `
+          ${groupData.url ? generateLinkButton({
+            class: "group-webpage-link",
+            text: "Group website",
+            url:groupData.url
+          }) : ''}
+        <div class="${GROUP_DESCRIPTION}">
+          <h2>Group description</h2>
+          <span>${groupData.description}</span> 
+        </div>
+        ` : 
+        this.renderEditMode(groupData)
       }
-      ${
-        groupData.weeklyEventData.length === 0
-          ? ``
-          : `  
-            ${groupData.weeklyEventData.map((event: any) => {
-              return self.renderWeeklyEventData(event,groupData.id, groupData.id + "-event-" + event.id)
+
+      <img src="${IMAGE_BUCKET_URL}${groupData.imagePath}"></img>
+     ${groupData.oneTimeEventData.length === 0 && groupData.weeklyEventData.length === 0 ?
+      `<p id="no-event">No events found for group</p>`:
+      `
+        <h2>Upcoming recurring events</h2>
+      `
+    }
+    ${
+      groupData.weeklyEventData.length === 0
+        ? ``
+        : `  
+          ${groupData.weeklyEventData.map((event: any) => {
+            return self.renderWeeklyEventData(event,groupData.id, groupData.id + "-event-" + event.id)
+          }).join(" ")}
+        `
+    }
+ 
+    ${
+      groupData.oneTimeEventData.length === 0
+        ? ``
+        : `
+          <h2 id="other-events-header">Other events</h2> 
+          ${groupData.oneTimeEventData
+            .map((event: any) => {
+              return self.renderOneTimeEventData(event,groupData.id,groupData.id + "event-" + event.id)
             }).join(" ")}
-          `
+          <p>Only events for the next 30 days will be visible.</p>
+      `
       }
-   
-      ${
-        groupData.oneTimeEventData.length === 0
-          ? ``
-          : `
-            <h2 id="other-events-header">Other events</h2> 
-            ${groupData.oneTimeEventData
-              .map((event: any) => {
-                return self.renderOneTimeEventData(event,groupData.id,groupData.id + "event-" + event.id)
-              }).join(" ")}
-            <p>Only events for the next 30 days will be visible.</p>
-        `
-        }
     </div>`;
   }
 }
