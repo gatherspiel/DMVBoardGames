@@ -29,8 +29,10 @@ import {LoginStatusComponent} from "../../shared/html/LoginStatusComponent.ts";
 import {convertDayOfWeekForDisplay} from "../../shared/data/DisplayNameConversion.ts";
 import {generateErrorMessage, generateSuccessMessage} from "../../shared/html/StatusIndicators.ts";
 import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
-import {generateImageUploadForm, REMOVE_IMAGE_FROM_GROUP_ID} from "../../shared/html/ImageUploadGenerator.ts";
+import {ImageUploadComponent} from "../../shared/html/ImageUploadComponent.ts";
+
 customElements.define("login-status-component", LoginStatusComponent);
+customElements.define('image-upload-component',ImageUploadComponent)
 
 const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
 const EDIT_GROUP_BUTTON_ID = "edit-group-button";
@@ -191,33 +193,6 @@ export class GroupComponent extends BaseDynamicComponent {
   override attachHandlersToShadowRoot(shadowRoot:ShadowRoot) {
     const self = this;
 
-    const updatePreview = function(input:any, target:any){
-      let file = input.files[0];
-      let reader = new FileReader();
-
-      const elements = (shadowRoot?.getElementById('edit-group-form') as HTMLFormElement)?.elements
-      reader.readAsDataURL(file);
-      reader.onload = function () {
-        let img:any = shadowRoot.getElementById(target);
-        img.src = reader.result;
-        self.updateData({
-          imagePath: reader.result,
-          description: (elements.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
-          gameTypeTags: getTagSelectedState(shadowRoot),
-          image: self.componentStore.imagePath,
-          name: (elements.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
-          url: (elements.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
-        })
-      }
-    }
-
-    shadowRoot?.addEventListener("change",(event:any)=>{
-      if(event.target.id === "group-image-upload"){
-        const input = shadowRoot.getElementById("group-image-upload");
-        updatePreview(input,"image-preview")
-      }
-    })
-
     shadowRoot?.addEventListener("click", (event:any)=>{
 
       let useDefault = false;
@@ -225,10 +200,11 @@ export class GroupComponent extends BaseDynamicComponent {
 
       if(event.target.type === "checkbox"){
         self.updateData({
-          name: (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLTextAreaElement)?.value,
           description: (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value,
+          gameTypeTags: getTagSelectedState(shadowRoot),
+          imagePath:(shadowRoot.getElementById("image-upload-ui") as ImageUploadComponent).getAttribute("image-path"),
+          name: (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLTextAreaElement)?.value,
           url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value,
-          gameTypeTags: getTagSelectedState(shadowRoot)
         })
       }
       else if(targetId === EDIT_GROUP_BUTTON_ID) {
@@ -238,16 +214,6 @@ export class GroupComponent extends BaseDynamicComponent {
           [ERROR_MESSAGE_KEY]: '',
           [NAME_ERROR_TEXT_KEY]: '',
           [SUCCESS_MESSAGE_KEY]: ''
-        })
-      }
-      else if (targetId === REMOVE_IMAGE_FROM_GROUP_ID) {
-        console.log("Hi")
-        self.updateData({
-          name: (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLTextAreaElement)?.value,
-          description: (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value,
-          imagePath:'',
-          url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value,
-          gameTypeTags: getTagSelectedState(shadowRoot)
         })
       }
       else if(targetId === CANCEL_UPDATES_BUTTON_ID) {
@@ -265,12 +231,17 @@ export class GroupComponent extends BaseDynamicComponent {
         if(!groupDescription || groupDescription.length === 0){
           validationErrorState[DESCRIPTION_ERROR_TEXT_KEY]="Description is a required field"
         }
+
+        const imageForm = shadowRoot.getElementById("image-upload-ui") as ImageUploadComponent;
         const params = {
+          description: groupDescription,
+          gameTypeTags:Object.keys(getTagSelectedState(shadowRoot)),
+          image:imageForm.getImage(),
+          imageFilePath:imageForm.getImageFilePath(),
           id: self.componentStore.id,
           name: groupName,
-          description: groupDescription,
           url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value,
-          gameTypeTags:Object.keys(getTagSelectedState(shadowRoot))
+
         }
         if(Object.keys(validationErrorState).length >1){
           self.updateData({...validationErrorState,...params});
@@ -289,6 +260,7 @@ export class GroupComponent extends BaseDynamicComponent {
             self.updateData({
               ...params,
               isEditing: false,
+              imagePath: params.image || params.imageFilePath,
               [SUCCESS_MESSAGE_KEY]: 'Group update successful'
             });
           } else {
@@ -336,7 +308,10 @@ export class GroupComponent extends BaseDynamicComponent {
         <label class="form-field-header">Image(optional)</label>
         
         <div class ="form-section" id="image-upload">
-          ${generateImageUploadForm(groupData.imagePath,"group-image-upload")}
+          <image-upload-component
+            id="image-upload-ui"
+            image-path="${groupData.imagePath}"
+          ></image-upload-component>
         </div>
             
               

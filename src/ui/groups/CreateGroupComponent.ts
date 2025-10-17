@@ -14,7 +14,8 @@ import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
 import {API_ROOT} from "../../shared/Params.ts";
 import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
-
+import {ImageUploadComponent} from "../../shared/html/ImageUploadComponent.ts";
+customElements.define('image-upload-component',ImageUploadComponent)
 
 const AGREE_RULES_ID ="agree-rules-id";
 const CREATE_GROUP_BUTTON_ID = "create-group-button-id";
@@ -85,37 +86,9 @@ export class CreateGroupComponent extends BaseDynamicComponent {
   }
 
 
-
   override attachHandlersToShadowRoot(shadowRoot:ShadowRoot){
 
     const self = this;
-
-    const updatePreview = function(input:any, target:any) {
-      let file = input.files[0];
-      let reader = new FileReader();
-
-      const elements = (shadowRoot?.getElementById('create-group-form') as HTMLFormElement)?.elements
-      reader.readAsDataURL(file);
-      reader.onload = function () {
-        let img:any = shadowRoot.getElementById(target);
-        img.src = reader.result;
-        self.updateData({
-          imagePath: reader.result,
-          description: (elements.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
-          gameTypeTags: getTagSelectedState(shadowRoot),
-          image: self.componentStore.imagePath,
-          name: (elements.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
-          url: (elements.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
-        })
-      }
-    }
-
-    shadowRoot?.addEventListener("change",(event:any)=>{
-      if(event.target.id === 'group-image'){
-        const input = shadowRoot.getElementById("group-image")
-        updatePreview(input,"image-preview")
-      }
-    })
 
     shadowRoot?.addEventListener("click",(event:any)=>{
 
@@ -128,7 +101,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
           [AGREE_RULES_ID]: event.target.checked,
           description: (elements.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
           gameTypeTags: getTagSelectedState(shadowRoot),
-          image: self.componentStore.imagePath,
+          imagePath: (shadowRoot.getElementById("image-upload-ui") as ImageUploadComponent).getAttribute("image-path"),
           name: (elements.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
           url: (elements.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
         })
@@ -156,8 +129,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
             id: self.componentStore.id,
             name: groupName,
             description: groupDescription,
-            image: self.componentStore.imagePath,
-
+            image: (shadowRoot.getElementById("image-upload-ui") as ImageUploadComponent).getAttribute("image-path"),
             url: (elements.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
             gameTypeTags: Object.keys(getTagSelectedState(shadowRoot))
           }),
@@ -219,12 +191,11 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                   ${generateErrorMessage(data[DESCRIPTION_ERROR_TEXT_KEY])}
                 </div>
                 
-                <label class="form-field-header">Image(optional)</label>
-                <input type="file" id="group-image" name="group-image" accept="image/png, image/jpeg" />
-                  <img id="image-preview" 
-                    src=${data.imagePath ?? ''}
-                    style="width:400px"
-                    alt="">
+                <image-upload-component
+                  id="image-upload-ui"
+                  image-path="${data.imagePath}"
+                ></image-upload-component>
+
                 
                 <div class="form-section">
                   <label class="form-field-header">Url(optional)</label>
