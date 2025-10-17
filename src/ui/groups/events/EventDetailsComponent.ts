@@ -26,13 +26,17 @@ import {
   SUCCESS_MESSAGE_KEY
 } from "../../../shared/Constants.ts";
 
-import {API_ROOT} from "../../../shared/Params.ts";
+import {API_ROOT, IMAGE_BUCKET_URL} from "../../../shared/Params.ts";
 
-import {LoginStatusComponent} from "../../../shared/html/LoginStatusComponent.ts";
 import {generateSuccessMessage} from "../../../shared/html/StatusIndicators.ts";
 import {convertDateTimeForDisplay} from "../../../shared/data/EventDataUtils.ts";
 import {convertDayOfWeekForDisplay} from "../../../shared/data/DisplayNameConversion.ts";
 import {getDayOfWeekSelectHtml} from "../../../shared/html/SelectGenerator.ts";
+
+import {ImageUploadComponent} from "../../../shared/html/ImageUploadComponent.ts";
+import {LoginStatusComponent} from "../../../shared/html/LoginStatusComponent.ts";
+
+customElements.define("image-upload-component",ImageUploadComponent)
 customElements.define("login-status-component", LoginStatusComponent);
 
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
@@ -51,7 +55,10 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         if(data.startDate){
           data.startDate = data.startDate.join("-")
         }
-        return data
+        if(data.imageFilePath){
+          data.imagePath = IMAGE_BUCKET_URL + data.imageFilePath;
+        }
+        return data;
       }
     }]);
   }
@@ -81,6 +88,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           line-height: 1;
         } 
         @media not screen and (width < 32em) {
+          h1,h2 {
+            margin-left:-1.5rem;
+          }
           input,select,textarea {
             display: block;
           }
@@ -94,12 +104,12 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           #${EVENT_LOCATION_INPUT} {
             width: 50rem;
           } 
+          #event-image {
+            margin-top: 0.5rem;
+            width:63rem;
+          }
           #user-actions-menu {
             margin-bottom: 0.5rem;
-          }
-
-          h1,h2 {
-            margin-left:-1.5rem;
           }
         } 
         @media screen and (width < 32em) {
@@ -108,6 +118,10 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           }
           #event-details-form {
             margin-right:1.5rem;
+          }
+          #event-image {
+            margin-top: 0.5rem;
+            width:20rem;
           }
           #user-actions-menu-raised {
             display:inherit;
@@ -171,6 +185,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       }
       if(event.target.id === SAVE_EVENT_BUTTON_ID){
         const data = (shadowRoot.getElementById('event-details-form') as HTMLFormElement)?.elements;
+        const imageForm = shadowRoot.getElementById("image-upload-ui") as ImageUploadComponent;
+
         const formData = {
           id: self.componentStore.id,
           [EVENT_NAME_INPUT]: (data.namedItem(EVENT_NAME_INPUT) as HTMLInputElement)?.value,
@@ -179,6 +195,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           [START_TIME_INPUT]: convertTimeTo24Hours((data.namedItem(START_TIME_INPUT) as HTMLInputElement)?.value),
           [END_TIME_INPUT]: convertTimeTo24Hours((data.namedItem(END_TIME_INPUT) as HTMLInputElement)?.value),
           [EVENT_LOCATION_INPUT]: (data.namedItem(EVENT_LOCATION_INPUT) as HTMLInputElement)?.value,
+          image:imageForm.getImage(),
+          imageFilePath:imageForm.getImageFilePath(),
           isRecurring: self.componentStore.isRecurring
         }
         if(self.componentStore.isRecurring){
@@ -188,10 +206,13 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           // @ts-ignore
           formData[START_DATE_INPUT] = (data.namedItem(START_DATE_INPUT) as HTMLInputElement)?.value;
         }
+
+        //@ts-ignore
         const validationErrors:any = validate(formData);
         if(Object.keys(validationErrors.formValidationErrors).length !==0){
           self.updateData({...validationErrors,...formData});
         } else {
+          //@ts-ignore
           const eventDetails = getEventDetailsFromForm(formData)
           ApiLoadAction.getResponseData({
             body: JSON.stringify(eventDetails),
@@ -214,6 +235,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
                 startTime: formData[START_TIME_INPUT],
                 endTime: formData[END_TIME_INPUT],
                 eventLocation: formData[EVENT_LOCATION_INPUT],
+                imagePath: imageForm.getImage() || imageForm.getImageFilePath(),
                 isEditing: false,
                 errorMessage: "",
                 [SUCCESS_MESSAGE_KEY]: "Successfully updated event",
@@ -275,9 +297,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   renderDeleteMode(data:any): string {
     if (data[SUCCESS_MESSAGE_KEY]) {
       return `
-        <div class="ui-section">
-          ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
-        </div>
       `
     }
     return `
@@ -329,6 +348,12 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             value="${data.url ?? ""}"
           />
           </input>
+        </div>
+        <div class ="form-section" id="image-upload">
+          <image-upload-component
+            id="image-upload-ui"
+            image-path="${data.imagePath}"
+          ></image-upload-component>
         </div>  
         ${data.isRecurring ?
           `
@@ -407,7 +432,10 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           `
         }</p>  
         <p><b>Location:</b> ${convertLocationStringForDisplay(data.location)}</p>
+        ${data.imagePath ? `<img id="event-image" src="${data.imagePath}"/>` : ``}
+
         <h2>Event details</h2>
+
         <p>${data.description}</p>
       </div>
     `;
