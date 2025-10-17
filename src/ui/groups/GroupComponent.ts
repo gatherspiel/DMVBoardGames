@@ -144,7 +144,6 @@ export class GroupComponent extends BaseDynamicComponent {
             display: block;
             width: 600px;
           }
-
           #group-image {
             width:63rem;
           }
@@ -280,9 +279,7 @@ export class GroupComponent extends BaseDynamicComponent {
   }
   renderEditMode(groupData:any):string {
 
-
     return`
-    
       <h2>Edit group information</h2>
       ${groupData[ERROR_MESSAGE_KEY] ? generateErrorMessage(groupData[ERROR_MESSAGE_KEY]) : ''}
   
@@ -295,8 +292,6 @@ export class GroupComponent extends BaseDynamicComponent {
           />
           ${generateErrorMessage(groupData[NAME_ERROR_TEXT_KEY])}
         </div>
-  
-       
         <div class="form-section">
           <label class="form-field-header required-field">Description</label>
           <textarea
@@ -306,15 +301,13 @@ export class GroupComponent extends BaseDynamicComponent {
         </div>
   
         <label class="form-field-header">Image(optional)</label>
-        
+       
         <div class ="form-section" id="image-upload">
           <image-upload-component
             id="image-upload-ui"
             image-path="${groupData.imagePath}"
           ></image-upload-component>
-        </div>
-            
-              
+        </div>    
         <div class="form-section">
           <label class="form-field-header">Url</label>
           <input
@@ -401,11 +394,10 @@ export class GroupComponent extends BaseDynamicComponent {
         </div>
       `
     }
-    return html+`
-      
-      
+
+    return html + `
+  
       <div class="ui-section">
-      
       <h1 id="group-name-header">${groupData.name}</h1>
       ${groupData[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY]) : ''}
       ${!groupData.isEditing ? `
