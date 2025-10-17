@@ -57,11 +57,6 @@ a:hover {
   margin-bottom: 1rem;
 }
 
-.form-section > label {
-  display: block;
-  font-weight: 600;
-}
-
 .form-select {
   border-color: var(--clr-light-blue);
   border-radius: 5px;

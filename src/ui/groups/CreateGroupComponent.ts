@@ -12,7 +12,7 @@ import {
 } from "../../shared/Constants.ts";
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
-import {API_ROOT, IS_PRODUCTION} from "../../shared/Params.ts";
+import {API_ROOT} from "../../shared/Params.ts";
 import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
 
 
@@ -219,14 +219,13 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                   ${generateErrorMessage(data[DESCRIPTION_ERROR_TEXT_KEY])}
                 </div>
                 
-                ${IS_PRODUCTION ? ``: `
-                  <label class="form-field-header">Image(optional)</label>
-                  <input type="file" id="group-image" name="group-image" accept="image/png, image/jpeg" />
-                           <img id="image-preview" 
-                       src=${data.imagePath ?? ''}
-                       style="width:400px"
-                       alt="group-image-placeholder">
-                `}
+                <label class="form-field-header">Image(optional)</label>
+                <input type="file" id="group-image" name="group-image" accept="image/png, image/jpeg" />
+                  <img id="image-preview" 
+                    src=${data.imagePath ?? ''}
+                    style="width:400px"
+                    alt="">
+                
                 <div class="form-section">
                   <label class="form-field-header">Url(optional)</label>
                   <input
@@ -234,8 +233,6 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                     name=${GROUP_URL_INPUT}
                     value=${data.url}
                     >
-           
-
                 </div>
                 ${getGameTypeTagSelectHtml(data.gameTypeTags)}
                 <label class="form-field-header required-field" for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
