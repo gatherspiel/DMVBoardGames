@@ -231,7 +231,6 @@ export class GroupComponent extends BaseDynamicComponent {
           validationErrorState[DESCRIPTION_ERROR_TEXT_KEY]="Description is a required field"
         }
 
-        console.log(groupDescription)
         const imageForm = shadowRoot.getElementById("image-upload-ui") as ImageUploadComponent;
         const params = {
           description: groupDescription,
