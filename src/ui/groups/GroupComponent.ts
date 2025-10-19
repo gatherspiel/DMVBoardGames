@@ -94,7 +94,6 @@ export class GroupComponent extends BaseDynamicComponent {
         }  
         #group-name-header {
           margin-bottom:0.5rem;
-          margin-left:-1.5rem;
           margin-top: 0.5rem;
         }
         #image-preview {
