@@ -226,11 +226,12 @@ export class GroupComponent extends BaseDynamicComponent {
         if(!groupName || groupName.length === 0){
           validationErrorState[NAME_ERROR_TEXT_KEY] = "Name is a required field"
         }
-        const groupDescription = (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value.trim();
+        const groupDescription = (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value;
         if(!groupDescription || groupDescription.length === 0){
           validationErrorState[DESCRIPTION_ERROR_TEXT_KEY]="Description is a required field"
         }
 
+        console.log(groupDescription)
         const imageForm = shadowRoot.getElementById("image-upload-ui") as ImageUploadComponent;
         const params = {
           description: groupDescription,
