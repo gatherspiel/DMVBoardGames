@@ -74,8 +74,10 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           margin-top:1rem;
           padding-left:1.5rem;
         }
-        #event-description h1,h2,h3,li,p {
-          color: var(--clr-darker-blue)
+        #event-description b, #event-description h1, #event-description h2,#event-description h3,#event-description h4,#event-description li, #event-description p {
+          color: var(--clr-darker-blue);
+          text-align: left;
+
         }
         #form-status-success {
           padding-left: 1.5rem;
@@ -84,6 +86,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           margin-top: 0.5rem;
         }
         .event-website-link {
+          margin-bottom: 0.5rem;
           margin-top: 0.5rem;
         }
         .raised {
@@ -431,7 +434,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
         <h2>Event details</h2>
         <p><b>Location:</b> ${convertLocationStringForDisplay(data.location)}</p>
-
 
         <p>
           <b>Time:</b>${data.isRecurring ?
