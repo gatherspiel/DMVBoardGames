@@ -74,6 +74,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           margin-top:1rem;
           padding-left:1.5rem;
         }
+        #event-description h1,h2,h3,li,p {
+          color: var(--clr-darker-blue)
+        }
         #form-status-success {
           padding-left: 1.5rem;
         }
@@ -423,20 +426,24 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             url: data.url
           }) : ''
         } 
-        <p><b>Time:</b>${data.isRecurring ? 
-          `
-            ${convertDayOfWeekForDisplay(data.day)}s from ${convert24HourTimeForDisplay(data.startTime)} to 
-            ${convert24HourTimeForDisplay(data.endTime)}` :
-          `
-            ${data.startDate}, ${convert24HourTimeForDisplay(data.startTime)}
-          `
-        }</p>  
-        <p><b>Location:</b> ${convertLocationStringForDisplay(data.location)}</p>
+
         ${data.imagePath ? `<img id="event-image" src="${data.imagePath}"/>` : ``}
 
         <h2>Event details</h2>
+        <p><b>Location:</b> ${convertLocationStringForDisplay(data.location)}</p>
 
-        <p>${data.description}</p>
+
+        <p>
+          <b>Time:</b>${data.isRecurring ?
+            `
+              ${convertDayOfWeekForDisplay(data.day)}s from ${convert24HourTimeForDisplay(data.startTime)} to 
+              ${convert24HourTimeForDisplay(data.endTime)}` :
+            `
+              ${data.startDate}, ${convert24HourTimeForDisplay(data.startTime)}
+           `
+          }
+        </p>  
+        <div id="event-description">${data.description}</div>
       </div>
     `;
   }
