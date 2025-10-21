@@ -28,6 +28,12 @@ export class LoginStatusComponent extends BaseDynamicComponent {
           p {
             display: inline-block;
           }
+          #links-container div{
+            display: inline-block;
+          }
+          #user-text-container {
+            text-align: right;
+          }
           #user-text {
             font-size:1rem;
           }
@@ -71,8 +77,11 @@ export class LoginStatusComponent extends BaseDynamicComponent {
     if(authData.loggedIn){
       return `
       <div id="login-status-container">
-      <div id="user-text-container">
-              <div id="${SIGN_OUT_LINK_ID}">Sign out</div>
+        <div id="links-container">
+                <div id="${SIGN_OUT_LINK_ID}">Sign out</div>
+          <div><a href="/beta/editProfile.html">Edit profile</a></div>
+        </div>
+        <div id="user-text-container">
 
           <p id="user-text">${authData.data.user.email}</p>
         </div>
