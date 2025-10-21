@@ -108,8 +108,8 @@ export class FaqComponent extends BaseDynamicComponent {
         
       <h3>Other questions</h3>
       <h4>How can I help contribute to dmvboardgames.com?</h4>
-      <p>Email gulu@createthirdplaces.com. dmvboardgames.com is looking for help with development, testing, and web design. All source code can be viewed 
-      <a href="https://github.com/orgs/gatherspiel/repositories">here</a></p>
+      <p>Email gulu@createthirdplaces.com. dmvboardgames.com is looking for help with development, testing, and web design. More details are 
+      <a href="/join.html">here</a></p>
          
       <h4>How can I share search results or group information on my own site?</h4>
       <p>dmvboardgames.com includes an API that can be used to access information.  Email gulu@createthirdplaces.com for more details.</p>
