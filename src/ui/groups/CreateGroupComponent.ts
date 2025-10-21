@@ -183,7 +183,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                   ${generateErrorMessage(data?.errorMessage)}           
                 </div>
                 <div class="form-section"> 
-                  <label class="required-field">Name</label>
+                  <label class="form-field-header required-field">Name</label>
                   <input
                     id=${GROUP_NAME_INPUT}
                     name=${GROUP_NAME_INPUT}

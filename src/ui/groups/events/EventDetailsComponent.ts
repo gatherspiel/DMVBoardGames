@@ -407,7 +407,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           </input>
         </div>  
         ${generateButton({
-          class: "group-webpage-link",
           id: SAVE_EVENT_BUTTON_ID,
           text: "Save event"
         })}
