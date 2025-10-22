@@ -3,11 +3,23 @@ import {
 } from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../../ui/auth/data/LoginStore.ts";
 import {LOGOUT_STORE} from "../../ui/auth/data/LogoutStore.ts";
+import {USER_DATA_STORE} from "../../ui/auth/data/UserDataStore";
+import {IMAGE_BUCKET_URL} from "../Params";
 const SIGN_OUT_LINK_ID = "signout-link"
 export class LoginStatusComponent extends BaseDynamicComponent {
   constructor() {
     super([{
-        dataStore: LOGIN_STORE
+        dataStore:LOGIN_STORE,
+        fieldName: "auth_data"
+      },{
+        componentReducer: (data:any)=>{
+          if(data.imageFilePath){
+            data.imageFilePath = IMAGE_BUCKET_URL + data.imageFilePath;
+          }
+          return data;
+        },
+        dataStore: USER_DATA_STORE,
+        fieldName: "user_data",
       }]
     );
   }
@@ -20,6 +32,10 @@ export class LoginStatusComponent extends BaseDynamicComponent {
         a {
           color: white;
           text-decoration: none;;
+        }
+        #user-image-icon {
+          clip-path: circle();
+          height:3rem;
         }
         @media not screen and (width < 32em) {
           a {
@@ -36,6 +52,20 @@ export class LoginStatusComponent extends BaseDynamicComponent {
           }
           #user-text {
             font-size:1rem;
+          }
+          #user-image-container, #username-container {
+            display: inline-block;
+          }
+          #username-container {
+            font-size:1rem;
+            margin-left: 1rem;
+            padding-top:1rem;
+          }
+          #user-text-container-filler {
+            flex-grow:1;
+          }
+          #user-text-container-inner {
+            display: flex;
           }
           .raised {
             display: inline-block;
@@ -73,7 +103,10 @@ export class LoginStatusComponent extends BaseDynamicComponent {
     })
   }
 
-  override render(authData:any){
+  override render(data:any){
+
+    const authData = data["auth_data"];
+    const userData = data["user_data"];
     if(authData.loggedIn){
       return `
       <div id="login-status-container">
@@ -81,9 +114,18 @@ export class LoginStatusComponent extends BaseDynamicComponent {
                 <div id="${SIGN_OUT_LINK_ID}">Sign out</div>
           <div><a href="/beta/editProfile.html">Edit profile</a></div>
         </div>
-        <div id="user-text-container">
 
-          <p id="user-text">${authData.data.user.email}</p>
+        <div id="user-text-container">
+          <div id="user-text-container-inner">
+              <div id="user-text-container-filler"></div>
+              <div id="user-image-container">
+                ${userData.imageFilePath ? `<img id="user-image-icon" src="${userData.imageFilePath}"></img>` : ``}
+              </div>
+              <div id="username-container">
+                <span>${userData.username || authData.data.user.email}</span>
+                <div></div>
+              </div>
+          </div>
         </div>
   </div>
       `

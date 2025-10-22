@@ -1,9 +1,7 @@
 import {
   ApiActionTypes,
   ApiLoadAction,
-  type ApiRequestConfig,
   BaseDynamicComponent,
-  DataStore
 } from "@bponnaluri/places-js";
 import {API_ROOT, IMAGE_BUCKET_URL} from "../Params";
 import {generateErrorMessage, generateSuccessMessage} from "./StatusIndicators";
@@ -11,29 +9,26 @@ import {generateButton} from "./ButtonGenerator";
 
 import {ImageUploadComponent} from "./ImageUploadComponent";
 import {SUCCESS_MESSAGE_KEY} from "../Constants";
+import {USER_DATA_STORE} from "../../ui/auth/data/UserDataStore";
 customElements.define('image-upload-component', ImageUploadComponent);
 
 const UPDATE_USER_DATA_ID = "update-user-data";
 const USERNAME_INPUT = "username-input";
 const USERNAME_ERROR_TEXT_KEY = "username-error-text";/**/
 
-function getUserQueryConfig(): ApiRequestConfig {
-  return {
-    url: API_ROOT + "/user",
-  };
-}
+
 export class EditProfileComponent extends BaseDynamicComponent {
   constructor() {
     super([
       {
-        dataStore: new DataStore(new ApiLoadAction(getUserQueryConfig)),
         componentReducer: (data:any)=>{
           if(data.imageFilePath){
             data.imageFilePath = IMAGE_BUCKET_URL + data.imageFilePath;
           }
           return data;
-        }
-    }]);
+        },
+        dataStore: USER_DATA_STORE,
+      }]);
   }
   override getTemplateStyle():string {
     return `
