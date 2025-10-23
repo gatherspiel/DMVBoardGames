@@ -17,6 +17,7 @@ export class ImageUploadComponent extends HTMLElement {
   //This is an image that was already uploaded.
   getImageFilePath(){
     if(!this.getAttribute("image-path")?.includes("base64")) {
+      console.log(this.getAttribute("image-path"))
       return this.getAttribute("image-path")
     }
   }
@@ -56,11 +57,10 @@ export class ImageUploadComponent extends HTMLElement {
   #getHtml():string{
 
     const filePath = this.getAttribute("image-path")
-    console.log(filePath)
     return `
       <label class="form-field-header">Upload image</label>
       <input class="image-upload-input" id="upload-image-input" name="image-upload-input" accept="image/png, image/jpeg" title="test" type="file" />
-      ${(filePath !== null && filePath !== undefined && filePath !== "null" ) ?
+      ${(filePath !== null && filePath !== undefined && filePath !== "null" && filePath !== "undefined") ?
       `
           <label style="display:inline-block">Remove image</label>
           <button id="remove-uploaded-image" style="display:inline-block;">-</button>

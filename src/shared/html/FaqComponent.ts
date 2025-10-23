@@ -69,7 +69,7 @@ export class FaqComponent extends BaseDynamicComponent {
       2024, the Landing in Crystal City removed all the tables and chairs. The Landing was a cornerstone of the DMV board game community, and I used to host events there. This made
       me realize that the decline in public spaces had become a very serious issue, and I wanted to increase interest in public spaces as a way of reversing this decline.</p>
       
-      <p>For more information about my experiences with the Landing in Crystal City, see this <a href="/src/landing.html">page</a></p>
+      <p>For more information about my experiences with the Landing in Crystal City, see this <a href="/landing.html">page</a></p>
       
       <h3>Site costs and running the site</h3>
        

@@ -48,6 +48,7 @@ export class LoginStatusComponent extends BaseDynamicComponent {
             display: inline-block;
           }
           #user-text-container {
+            margin-top:0.5rem;
             text-align: right;
           }
           #user-text {
@@ -111,7 +112,7 @@ export class LoginStatusComponent extends BaseDynamicComponent {
       return `
       <div id="login-status-container">
         <div id="links-container">
-                <div id="${SIGN_OUT_LINK_ID}">Sign out</div>
+           <div id="${SIGN_OUT_LINK_ID}">Sign out</div>
           <div><a href="/beta/editProfile.html">Edit profile</a></div>
         </div>
 
