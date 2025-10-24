@@ -3,7 +3,7 @@ import {
   ApiLoadAction,
   BaseDynamicComponent,
 } from "@bponnaluri/places-js";
-import {API_ROOT, IMAGE_BUCKET_URL} from "../Params";
+import {API_ROOT} from "../Params";
 import {generateErrorMessage, generateSuccessMessage} from "./StatusIndicators";
 import {generateButton} from "./ButtonGenerator";
 
@@ -20,12 +20,6 @@ export class EditProfileComponent extends BaseDynamicComponent {
   constructor() {
     super([
       {
-        componentReducer: (data:any)=>{
-          if(data.imageFilePath){
-            data.imageFilePath = IMAGE_BUCKET_URL + data.imageFilePath;
-          }
-          return data;
-        },
         dataStore: USER_DATA_STORE,
       }]);
   }
@@ -55,7 +49,7 @@ export class EditProfileComponent extends BaseDynamicComponent {
 
         const username = (elements.namedItem(USERNAME_INPUT) as HTMLInputElement)?.value;
         if(!username || username.length === 0){
-          validationErrors[USERNAME_ERROR_TEXT_KEY] = "Username is a required field"
+          validationErrors[USERNAME_ERROR_TEXT_KEY] = "Name is a required field"
         }
         if(Object.keys(validationErrors).length >0){
           self.updateData(validationErrors);

@@ -26,7 +26,7 @@ export function getEventDetailsFromForm(formData:Record<string,string>){
     isRecurring: formData["isRecurring"],
     day: formData[DAY_OF_WEEK_INPUT],
     image:formData["image"],
-    imageFilePath: formData["image-file-path"]
+    imageFilePath: formData["imageFilePath"]
   };
 }
 

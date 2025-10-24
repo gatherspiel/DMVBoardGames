@@ -23,7 +23,7 @@ import {
   ERROR_MESSAGE_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../shared/Constants.ts";
-import {API_ROOT, IMAGE_BUCKET_URL} from "../../shared/Params.ts";
+import {API_ROOT} from "../../shared/Params.ts";
 
 import {LoginStatusComponent} from "../../shared/html/LoginStatusComponent.ts";
 import {convertDayOfWeekForDisplay} from "../../shared/data/DisplayNameConversion.ts";
@@ -52,15 +52,9 @@ export class GroupComponent extends BaseDynamicComponent {
             gameTypeTags[tag.substring(0,1)+tag.substring(1).toLowerCase().replaceAll("_", " ")]="checked";
           })
         }
-        let imagePath = null;
-
-        if(groupData.imagePath){
-          imagePath = IMAGE_BUCKET_URL + groupData.imagePath;
-        }
         return {
           ...groupData,
           gameTypeTags:gameTypeTags,
-          imagePath:imagePath,
           [SUCCESS_MESSAGE_KEY]:''
         }
       },
@@ -132,8 +126,6 @@ export class GroupComponent extends BaseDynamicComponent {
           }
           #${GROUP_DESCRIPTION_INPUT} {
             display: block;
-            height: 500px;
-            width: 800px;
           }
           #${GROUP_NAME_INPUT} {
             display:block;

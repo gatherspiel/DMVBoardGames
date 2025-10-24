@@ -222,6 +222,13 @@ a:hover {
 }
 
 @media not screen and (width < 32em) {
+  textarea {
+    width:63.5rem;
+    height:25rem;
+  }
+  #user-actions-menu-raised {
+    display:inherit;
+  }
   .show-mobile {
     display:none
   }
@@ -229,13 +236,10 @@ a:hover {
     display: inline-block;
     margin-right: 2rem;
   }
-
   .top-nav-secondary span {
     margin-right: 2rem;
   }
-  #user-actions-menu-raised {
-    display:inherit;
-  }
+
 }
 
 @media screen and (width < 32em) {
