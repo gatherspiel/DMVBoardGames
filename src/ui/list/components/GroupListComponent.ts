@@ -69,8 +69,7 @@ export class GroupListComponent extends BaseDynamicComponent {
           }
           .raised {
             margin-top: 0.5rem;
-            margin-left:2rem;
-            margin-right:2rem;
+
           }
         } 
       </style>
