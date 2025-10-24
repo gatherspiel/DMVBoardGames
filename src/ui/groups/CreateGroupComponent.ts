@@ -70,20 +70,11 @@ export class CreateGroupComponent extends BaseDynamicComponent {
         #game-type-tag-select label {
           padding-left: 0.25rem;
         }  
-        #group-description-input {
-          height: 10rem;
-          width: 50rem;
-        }   
         #rules-content {
           margin-top:1rem;
         }
         .raised {
           margin-top:0.5rem;
-        }
-        @media not screen and (width < 32em) {
-          #group-description-input {
-             width: 800px; 
-          }
         }
         @media screen and (width < 32em) {
           #group-description-input {

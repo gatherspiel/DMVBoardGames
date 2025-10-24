@@ -4,7 +4,6 @@ import {
 import {LOGIN_STORE} from "../../ui/auth/data/LoginStore.ts";
 import {LOGOUT_STORE} from "../../ui/auth/data/LogoutStore.ts";
 import {USER_DATA_STORE} from "../../ui/auth/data/UserDataStore";
-import {IMAGE_BUCKET_URL} from "../Params";
 const SIGN_OUT_LINK_ID = "signout-link"
 export class LoginStatusComponent extends BaseDynamicComponent {
   constructor() {
@@ -12,12 +11,6 @@ export class LoginStatusComponent extends BaseDynamicComponent {
         dataStore:LOGIN_STORE,
         fieldName: "auth_data"
       },{
-        componentReducer: (data:any)=>{
-          if(data.imageFilePath){
-            data.imageFilePath = IMAGE_BUCKET_URL + data.imageFilePath;
-          }
-          return data;
-        },
         dataStore: USER_DATA_STORE,
         fieldName: "user_data",
       }]
@@ -77,19 +70,22 @@ export class LoginStatusComponent extends BaseDynamicComponent {
           p {
             margin-top:0;
           }
-          .raised {
-            margin-top:0.5rem;
-          }
           a {
             display: block;
             line-height: 1.25;
             margin-bottom:0.5rem;
+          }
+          #edit-profile-div {
+            margin-top:0.5rem;
           }
           #user-text-container {
             margin-bottom:1.5rem;
           }
           #user-text {
             margin-top:1rem;
+          }
+          .raised {
+            margin-top:0.5rem;
           }
         }  
       </style>
@@ -112,8 +108,8 @@ export class LoginStatusComponent extends BaseDynamicComponent {
       return `
       <div id="login-status-container">
         <div id="links-container">
-           <div id="${SIGN_OUT_LINK_ID}">Sign out</div>
-          <div><a href="/beta/editProfile.html">Edit profile</a></div>
+          <div id="${SIGN_OUT_LINK_ID}">Sign out</div>
+          <div id="edit-profile-div"><a href="/beta/editProfile.html">Edit profile</a></div>
         </div>
 
         <div id="user-text-container">

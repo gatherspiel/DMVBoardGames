@@ -60,10 +60,6 @@ export class CreateEventComponent extends BaseDynamicComponent {
           #${EVENT_NAME_INPUT} {
             width: 50rem;
           }
-          #${EVENT_DESCRIPTION_INPUT} {
-            width: 50rem;
-            height: 10rem;
-          }
           #${EVENT_LOCATION_INPUT} {
             width: 50rem;
           }        
@@ -93,7 +89,6 @@ export class CreateEventComponent extends BaseDynamicComponent {
         const data = (shadowRoot.getElementById('create-event-form') as HTMLFormElement)?.elements;
         const imageForm = shadowRoot.getElementById("image-upload-ui") as ImageUploadComponent;
 
-        console.log(imageForm)
         const formData = {
           id: self.componentStore.id,
           image:imageForm.getAttribute("image-path"),
