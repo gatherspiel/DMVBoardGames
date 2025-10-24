@@ -37,6 +37,7 @@ export default defineConfig({
         delete_group: resolve(__dirname, "src/beta/delete.html"),
         designers: resolve(__dirname, "src/designers.html"),
 
+        editProfile: resolve(__dirname, "src/beta/editProfile.html"),
         event: resolve(__dirname, "src/groups/event.html"),
 
         faq: resolve(__dirname, "src/faq.html"),
