@@ -6,7 +6,7 @@ import {
   DAY_OF_WEEK_INPUT,
   END_TIME_INPUT,
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
-  EVENT_NAME_INPUT,
+  EVENT_NAME_INPUT, EVENT_ORGANIZER_INPUT,
   EVENT_URL_INPUT,
   START_DATE_INPUT, START_TIME_INPUT
 } from "../Constants.ts";
@@ -93,6 +93,21 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           display: inline-block;
           line-height: 1;
         } 
+        .user-image-icon {
+          clip-path: circle();
+          height:2rem;
+        }
+        .user-image-container {
+          display: inline-block;
+        }
+        .user-data-container {
+          display: flex;
+        }
+        .username-container {
+          display: inline-block;
+          margin-top: 0.5rem;
+          margin-right:0.5rem
+        }
         @media not screen and (width < 32em) {
           h1,h2 {
             margin-left:-1.5rem;
@@ -219,7 +234,16 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           self.updateData({...validationErrors,...formData});
         } else {
           //@ts-ignore
-          const eventDetails = getEventDetailsFromForm(formData)
+          const eventDetails = getEventDetailsFromForm(formData);
+
+          const moderatorEmail = (data.namedItem(EVENT_ORGANIZER_INPUT) as HTMLInputElement)?.value
+          if(moderatorEmail){
+            //@ts-ignore
+            eventDetails["moderators"] =  [{
+              email:moderatorEmail
+            }]
+          }
+
           ApiLoadAction.getResponseData({
             body: JSON.stringify(eventDetails),
             method: ApiActionTypes.PUT,
@@ -230,20 +254,24 @@ export class EventDetailsComponent extends BaseDynamicComponent {
               behavior: "smooth"
             });
             if(!response.errorMessage){
+
+
+
               self.updateData({
-                name: formData[EVENT_NAME_INPUT],
                 description: formData[EVENT_DESCRIPTION_INPUT],
-                url: formData[EVENT_URL_INPUT],
                 //@ts-ignore
                 day: formData[DAY_OF_WEEK_INPUT],
                 //@ts-ignore
-                startDate: formData[START_DATE_INPUT],
-                startTime: formData[START_TIME_INPUT],
                 endTime: formData[END_TIME_INPUT],
                 eventLocation: formData[EVENT_LOCATION_INPUT],
+                errorMessage: "",
                 imagePath: imageForm.getImage() || imageForm.getImageFilePath(),
                 isEditing: false,
-                errorMessage: "",
+                name: formData[EVENT_NAME_INPUT],
+                //@ts-ignore
+                startDate: formData[START_DATE_INPUT],
+                startTime: formData[START_TIME_INPUT],
+                url: formData[EVENT_URL_INPUT],
                 [SUCCESS_MESSAGE_KEY]: "Successfully updated event",
               });
             } else {
@@ -257,6 +285,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       }
     })
   }
+
   render(data: any): string {
     if(!data || !data.name){
       return `<h1>Loading</h1>`;
@@ -300,6 +329,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     `
     return html
   }
+
   renderDeleteMode(data:any): string {
     if (data[SUCCESS_MESSAGE_KEY]) {
       return `
@@ -322,6 +352,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       </div>
     `
   }
+
   renderEditMode(data:any): string {
     return `
       <div class="ui-section">
@@ -331,7 +362,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           ${generateErrorMessage(data.errorMessage)}
         </div>
         <div class="form-section">
-          <label class="required-field">Event name</label>
+          <label class="form-field-header required-field">Event name</label>
           <input
             id=${EVENT_NAME_INPUT}
             name=${EVENT_NAME_INPUT}
@@ -340,14 +371,14 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           </input>
         </div>
         <div class="form-section">
-          <label class="required-field"> Event description</label>
+          <label class="form-field-header required-field"> Event description</label>
           <textarea
           id=${EVENT_DESCRIPTION_INPUT}
           name=${EVENT_DESCRIPTION_INPUT}
           />${data.description ?? ""}</textarea>       
         </div>
         <div class="form-section">
-          <label class="form-field-header">Event URL</label>
+          <label class="form-field-header">Event URL(optional)</label>
           <input
             name=${EVENT_URL_INPUT}
             type="url"
@@ -364,13 +395,13 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         ${data.isRecurring ?
           `
             <div class="form-section">
-              <label class="required-field">Day of week</label>
+              <label class="form-field-header required-field">Day of week</label>
               ${getDayOfWeekSelectHtml(data.day)}
             </div>
           ` :
           `
             <div class="form-section">
-              <label class="required-field">Start date</label>
+              <label class="form-field-header required-field">Start date</label>
               <input
                 name=${START_DATE_INPUT}
                 type="date"
@@ -380,7 +411,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           `
         }   
         <div class="form-section">
-          <label class="required-field">Start time</label>
+          <label class="form-field-header required-field">Start time</label>
           <input
             name=${START_TIME_INPUT}
             type="time"
@@ -389,7 +420,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           </input>
         </div>
         <div class="form-section">
-          <label class="required-field">End time</label>
+          <label class="form-field-header required-field">End time</label>
           <input
             name=${END_TIME_INPUT}
             type="time"
@@ -398,16 +429,28 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           </input>
         </div>
         <div class="form-section">
-          <label class="required-field">Event location</label>
+          <label class="form-field-header required-field">Event location</label>
           <input
             id=${EVENT_LOCATION_INPUT}
             name=${EVENT_LOCATION_INPUT}
             value="${data.location ?? ""}"
           />
           </input>
-        </div>  
+        </div> 
+        <div class = "form-section">
+          <label class="form-field-header">
+              Event organizer email(optional). Use if you want to make a site user an event organizer. They will
+              have permissions to edit the event. If this field is left blank, existing moderator settings will be used.</label>
+      
+          <input
+            id=${EVENT_ORGANIZER_INPUT}
+            name=${EVENT_ORGANIZER_INPUT}
+            type="email"
+            value="${data.eventOrganizer ?? ""}"
+          />
+          </input>  
+        </div> 
         ${generateButton({
-          class: "group-webpage-link",
           id: SAVE_EVENT_BUTTON_ID,
           text: "Save event"
         })}
@@ -416,7 +459,32 @@ export class EventDetailsComponent extends BaseDynamicComponent {
    `
   }
 
+  displayModerators(data:any){
+    if(!data.moderators || data.moderators.length === 0){
+      return ``;
+    }
+
+    let html = ``;
+    const hostText = data.moderators.length > 1 ? "Hosts:" : "Host:";
+    data.moderators.forEach((moderator:any)=>{
+      console.log(moderator)
+
+      html = `
+        <div class ="user-data-container">
+          <div class="username-container">
+            <b>${hostText}</b> ${moderator.userData.username}
+          </div>
+          <div class="user-image-container">
+          ${moderator.userData.imageFilePath ? `<img class="user-image-icon" src="${IMAGE_BUCKET_URL + moderator.userData.imageFilePath}"></img>` : ``}
+          </div>
+        </div>
+      `
+    })
+    return html;
+  }
   renderViewMode(data:any): string {
+
+
     if(data.errorMessage){
       return `${generateErrorMessage(data.errorMessage)}`
     }
@@ -432,7 +500,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
         ${data.imagePath ? `<img id="event-image" src="${data.imagePath}"/>` : ``}
 
-        <h2>Event details</h2>
+        <h2 id="event-details-header">Event details</h2>
+        ${this.displayModerators(data)}
         <p><b>Location:</b> ${convertLocationStringForDisplay(data.location)}</p>
 
         <p>

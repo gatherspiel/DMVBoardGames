@@ -135,7 +135,7 @@ export class CreateAccountComponent extends BaseDynamicComponent {
           ApiLoadAction.getResponseData({
             body: JSON.stringify({email:formData.username,password:formData.password}),
             method: "POST",
-            url: API_ROOT + `/users/register`,
+            url: API_ROOT + `/user/register`,
           }).then((response:any)=>{
 
             if(response.errorMessage){
