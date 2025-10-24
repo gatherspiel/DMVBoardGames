@@ -28,21 +28,40 @@ export class GroupListComponent extends BaseDynamicComponent {
           font-size: 3rem;
         }
         ul {
-          list-style:url(/assets/meeple_small.png);
+          list-style: none;
           margin-top:0;
           padding-left:1.5rem;
         }
        .button-div {
           display: flex;
         }
+        
+        .group-image-container {
+          display:inline-block;
+        }
+        .group-icon {
+          clip-path: circle();
+          height:3rem;
+          width: 4rem;
+        }
         .group-search-details {
-          display:block;
-          padding-top:0.5rem;
+          margin-left:1rem;
+        }
+
+        .info-wrapper {
+          margin-top:0.5rem;
+        }
+        .raised {
+          margin-bottom: 1rem;
         }
         .section-separator-small {
           margin-left:-1rem;
         }
         @media not screen and (width < 32em) {
+          #group-search-results-header {
+            padding-left:1.5rem;
+          }
+          
           .group-cities {
             display: inline-block;
             margin-left: 2rem;
@@ -50,17 +69,21 @@ export class GroupListComponent extends BaseDynamicComponent {
           .raised {
             display: inline-block;
           }
-          #group-search-results-header {
-            padding-left:1.5rem;
+           .group-wrapper {
+            display:flex;
           }
+
         }  
+
         @media screen and (width < 32em) {
           a {
             margin-top: 1rem;
           }
-   
           .group-cities {
             display: none; 
+          }
+          .group-image-container {
+            display:none;
           }
           .ui-section .event-group:not(:first-child) {
             margin-top: 0.5rem;
@@ -99,13 +122,23 @@ export class GroupListComponent extends BaseDynamicComponent {
     }
     return `
       <li>
+      <div class="group-wrapper">
+      
+        <div class="group-image-container">
+          <img class="group-icon" src="/assets/beer_and_board_games.webp">
+        </div>
         ${generateLinkButton({
           text: group.name,
           url: `${recurringDays.length > 0 || loggedIn ? `groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`
         })}
-        <span class="group-cities">${groupCitiesStr}</span>           
+        <div class = "info-wrapper">
+            <span class="group-cities">${groupCitiesStr}</span>           
         ${recurringDays.length >0 ? `<span class="group-search-details"><b>Days:</b> ${recurringDays.join(", ")}</span>` : ``}  
-        ${gameTypeTags.length >0 ? `<span class="group-search-details"><b>Game types:</b> ${gameTypeTags.join(", ")}</span>` : ``}  
+        ${gameTypeTags.length >0 ? `<span class="group-search-details"><b>Game types:</b> ${gameTypeTags.join(", ")}</span>` : ``}     
+</div>
+ 
+      </div>
+
       </li>
     `;
   }
