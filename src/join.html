@@ -13,20 +13,20 @@
     fetchpriority="low"
     type="module"
   >
-    import {FaqComponent} from "./shared/html/FaqComponent.js";
-    customElements.define("faq-component",FaqComponent)
+      import {JoinComponent} from "./shared/html/JoinComponent.js";
+      customElements.define("join-component",JoinComponent)
 
-    import {BotHelper} from "./beta/botHelper.js";
+      import {BotHelper} from "./beta/botHelper.js";
 
-    window.onload = function() {
-      BotHelper();
-    }
+      window.onload = function() {
+          BotHelper();
+      }
   </script>
 </head>
 <body>
 <div id ="container">
   {{>navbar}}
-  <faq-component></faq-component>
+  <join-component></join-component>
   <div id="bot-container"></div>
 
 </div>

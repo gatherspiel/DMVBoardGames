@@ -69,7 +69,7 @@ export class FaqComponent extends BaseDynamicComponent {
       2024, the Landing in Crystal City removed all the tables and chairs. The Landing was a cornerstone of the DMV board game community, and I used to host events there. This made
       me realize that the decline in public spaces had become a very serious issue, and I wanted to increase interest in public spaces as a way of reversing this decline.</p>
       
-      <p>For more information about my experiences with the Landing in Crystal City, see this <a href="/src/landing.html">page</a></p>
+      <p>For more information about my experiences with the Landing in Crystal City, see this <a href="/landing.html">page</a></p>
       
       <h3>Site costs and running the site</h3>
        
@@ -108,8 +108,8 @@ export class FaqComponent extends BaseDynamicComponent {
         
       <h3>Other questions</h3>
       <h4>How can I help contribute to dmvboardgames.com?</h4>
-      <p>Email gulu@createthirdplaces.com. dmvboardgames.com is looking for help with development, testing, and web design. All source code can be viewed 
-      <a href="https://github.com/orgs/gatherspiel/repositories">here</a></p>
+      <p>Email gulu@createthirdplaces.com. dmvboardgames.com is looking for help with development, testing, and web design. More details are 
+      <a href="/join.html">here</a></p>
          
       <h4>How can I share search results or group information on my own site?</h4>
       <p>dmvboardgames.com includes an API that can be used to access information.  Email gulu@createthirdplaces.com for more details.</p>
