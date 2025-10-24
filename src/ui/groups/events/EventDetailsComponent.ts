@@ -156,8 +156,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   override attachHandlersToShadowRoot(shadowRoot?: any) {
     const self = this;
     shadowRoot?.addEventListener("click",(event:any)=>{
-      console.log("Hi")
-      console.log(event.target.id)
       if(event.target.id === CANCEL_EDIT_BUTTON_ID) {
         self.updateData({isEditing: false,
           [SUCCESS_MESSAGE_KEY]:''})
