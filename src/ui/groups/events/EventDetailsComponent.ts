@@ -90,6 +90,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           display: inline-block;
           line-height: 1;
         } 
+        .user-data-container-inner {
+          display:flex;
+        }
         .user-image-icon {
           clip-path: circle();
           height:2rem;
@@ -97,7 +100,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         .user-image-container {
           display: inline-block;
         }
-
         .username-container {
           display: inline-block;
           margin-top: 0.5rem;
@@ -468,11 +470,12 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       html = `
         <div class ="user-data-container">
           <div class="user-data-container-inner">
-            <div class="username-container">
-              <b>${hostText}</b> ${moderator.userData.username}
-            </div>
+      
             <div class="user-image-container">
-            ${moderator.userData.imageFilePath ? `<img class="user-image-icon" src="${moderator.userData.imageFilePath}"></img>` : ``}
+              ${moderator.userData.imageFilePath ? `<img class="user-image-icon" src="${moderator.userData.imageFilePath}"></img>` : ``}
+            </div>
+            <div class="username-container">
+              <span><b>${hostText}</b> ${moderator.userData.username}</span>
             </div>
           </div>
         </div>

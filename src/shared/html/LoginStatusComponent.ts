@@ -5,14 +5,55 @@ import {LOGIN_STORE} from "../../ui/auth/data/LoginStore.ts";
 import {LOGOUT_STORE} from "../../ui/auth/data/LogoutStore.ts";
 import {USER_DATA_STORE} from "../../ui/auth/data/UserDataStore";
 const SIGN_OUT_LINK_ID = "signout-link"
+
 export class LoginStatusComponent extends BaseDynamicComponent {
   constructor() {
     super([{
-        dataStore:LOGIN_STORE,
-        fieldName: "auth_data"
-      },{
+        dataStore: LOGIN_STORE,
+      }]
+    );
+  }
+
+  override getTemplateStyle(): string {
+    return `<style>
+       a {
+        color: white;
+        text-decoration: none;;
+      }
+      @media not screen and (width < 32em) {
+        a {
+          margin-left:2rem;
+        }
+      }
+      @media screen and (width < 32em) {
+        a {
+          display: block;
+          line-height: 1.25;
+          margin-bottom:0.5rem;
+        }
+      }
+    </style>`
+  }
+
+  render(authData: any): string {
+    if (!authData.loggedIn) {
+      return `
+        <a href="/beta/login.html">Login</a>
+        <a href="/beta/createAccount.html">Create account</a>
+      `
+    }
+
+    return `<login-status-component-inner
+              email="${authData.data.user.email}"
+            ></login-status-component-inner>`
+  }
+}
+
+
+class LoginStatusComponentInner extends BaseDynamicComponent {
+  constructor() {
+    super([{
         dataStore: USER_DATA_STORE,
-        fieldName: "user_data",
       }]
     );
   }
@@ -31,7 +72,7 @@ export class LoginStatusComponent extends BaseDynamicComponent {
           height:3rem;
         }
         @media not screen and (width < 32em) {
-          a {
+           a {
             margin-left:2rem;
           }
           p {
@@ -100,11 +141,8 @@ export class LoginStatusComponent extends BaseDynamicComponent {
     })
   }
 
-  override render(data:any){
+  override render(userData:any){
 
-    const authData = data["auth_data"];
-    const userData = data["user_data"];
-    if(authData.loggedIn){
       return `
       <div id="login-status-container">
         <div id="links-container">
@@ -119,18 +157,16 @@ export class LoginStatusComponent extends BaseDynamicComponent {
                 ${userData.imageFilePath ? `<img id="user-image-icon" src="${userData.imageFilePath}"></img>` : ``}
               </div>
               <div id="username-container">
-                <span>${userData.username || authData.data.user.email}</span>
-                <div></div>
+                <span>${userData.username || this.getAttribute("email")}</span>
               </div>
           </div>
         </div>
-  </div>
+      </div>
       `
-    }
-    return `
-      <a href="/beta/login.html">Login</a>
-      <a href="/beta/createAccount.html">Create account</a>
-    `;
+
   }
 }
+
+customElements.define("login-status-component-inner",LoginStatusComponentInner)
+
 

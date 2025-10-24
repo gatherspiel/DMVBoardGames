@@ -2,6 +2,7 @@ import {ApiLoadAction, type ApiRequestConfig, DataStore} from "@bponnaluri/place
 import {API_ROOT} from "../../../shared/Params.ts";
 
 function getUserQueryConfig(): ApiRequestConfig {
+
   return {
     url: API_ROOT + "/user",
   };
