@@ -90,6 +90,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           display: inline-block;
           line-height: 1;
         } 
+        .user-data-container {
+          margin-top: 0.5rem;
+        }
         .user-data-container-inner {
           display:flex;
         }
