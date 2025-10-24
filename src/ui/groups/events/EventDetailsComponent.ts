@@ -26,7 +26,7 @@ import {
   SUCCESS_MESSAGE_KEY
 } from "../../../shared/Constants.ts";
 
-import {API_ROOT, IMAGE_BUCKET_URL} from "../../../shared/Params.ts";
+import {API_ROOT} from "../../../shared/Params.ts";
 
 import {generateSuccessMessage} from "../../../shared/html/StatusIndicators.ts";
 import {convertDateTimeForDisplay} from "../../../shared/data/EventDataUtils.ts";
@@ -54,9 +54,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         document.title = data.name;
         if(data.startDate){
           data.startDate = data.startDate.join("-")
-        }
-        if(data.imageFilePath){
-          data.imagePath = IMAGE_BUCKET_URL + data.imageFilePath;
         }
         return data;
       }
@@ -100,9 +97,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         .user-image-container {
           display: inline-block;
         }
-        .user-data-container {
-          display: flex;
-        }
+
         .username-container {
           display: inline-block;
           margin-top: 0.5rem;
@@ -117,10 +112,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           }
           #${EVENT_NAME_INPUT} {
             width: 50rem;
-          }
-          #${EVENT_DESCRIPTION_INPUT} {
-            width: 50rem;
-            height: 10rem;
           }
           #${EVENT_LOCATION_INPUT} {
             width: 50rem;
@@ -147,6 +138,12 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           #user-actions-menu-raised {
             display:inherit;
             margin-bottom: 0.5rem;
+          }
+          
+          .user-data-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
           }
         }   
       </style>     
@@ -205,6 +202,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       if(event.target.id === SAVE_EVENT_BUTTON_ID){
         const data = (shadowRoot.getElementById('event-details-form') as HTMLFormElement)?.elements;
         const imageForm = shadowRoot.getElementById("image-upload-ui") as ImageUploadComponent;
+
+        console.log(imageForm.getImage());
+        console.log(imageForm.getImageFilePath());
 
         const formData = {
           id: self.componentStore.id,
@@ -387,7 +387,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         <div class ="form-section" id="image-upload">
           <image-upload-component
             id="image-upload-ui"
-            image-path="${data.imagePath}"
+            image-path="${data.imageFilePath}"
           ></image-upload-component>
         </div>  
         ${data.isRecurring ?
@@ -465,15 +465,15 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     let html = ``;
     const hostText = data.moderators.length > 1 ? "Hosts:" : "Host:";
     data.moderators.forEach((moderator:any)=>{
-      console.log(moderator)
-
       html = `
         <div class ="user-data-container">
-          <div class="username-container">
-            <b>${hostText}</b> ${moderator.userData.username}
-          </div>
-          <div class="user-image-container">
-          ${moderator.userData.imageFilePath ? `<img class="user-image-icon" src="${IMAGE_BUCKET_URL + moderator.userData.imageFilePath}"></img>` : ``}
+          <div class="user-data-container-inner">
+            <div class="username-container">
+              <b>${hostText}</b> ${moderator.userData.username}
+            </div>
+            <div class="user-image-container">
+            ${moderator.userData.imageFilePath ? `<img class="user-image-icon" src="${moderator.userData.imageFilePath}"></img>` : ``}
+            </div>
           </div>
         </div>
       `
@@ -482,7 +482,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   }
   renderViewMode(data:any): string {
 
-
+    console.log(data.imageFilePath);
     if(data.errorMessage){
       return `${generateErrorMessage(data.errorMessage)}`
     }
@@ -496,7 +496,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           }) : ''
         } 
 
-        ${data.imagePath ? `<img id="event-image" src="${data.imagePath}"/>` : ``}
+        ${data.imageFilePath ? `<img id="event-image" src="${data.imageFilePath}"/>` : ``}
 
         <h2 id="event-details-header">Event details</h2>
         ${this.displayModerators(data)}
