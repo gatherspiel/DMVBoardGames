@@ -115,9 +115,6 @@ export class GroupSearchComponent extends BaseDynamicComponent {
 
         }     
         @media screen and (width < 32em) {
-          h1 {
-            text-align: center;
-          }
           #form-div-outer {
             width: 100%
           }

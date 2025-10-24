@@ -116,7 +116,6 @@ export class GroupListComponent extends BaseDynamicComponent {
     if(!state.data){
       return ``;
     }
-    console.log(state)
     if(state.data.groupData.length === 0){
       return `
           <p>No groups found</p>
