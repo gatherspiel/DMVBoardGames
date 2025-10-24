@@ -28,40 +28,21 @@ export class GroupListComponent extends BaseDynamicComponent {
           font-size: 3rem;
         }
         ul {
-          list-style: none;
+          list-style:url(/assets/meeple_small.png);
           margin-top:0;
           padding-left:1.5rem;
         }
        .button-div {
           display: flex;
         }
-        
-        .group-image-container {
-          display:inline-block;
-        }
-        .group-icon {
-          clip-path: circle();
-          height:3rem;
-          width: 4rem;
-        }
         .group-search-details {
-          margin-left:1rem;
-        }
-
-        .info-wrapper {
-          margin-top:0.5rem;
-        }
-        .raised {
-          margin-bottom: 1rem;
+          display:block;
+          padding-top:0.5rem;
         }
         .section-separator-small {
           margin-left:-1rem;
         }
         @media not screen and (width < 32em) {
-          #group-search-results-header {
-            padding-left:1.5rem;
-          }
-          
           .group-cities {
             display: inline-block;
             margin-left: 2rem;
@@ -69,21 +50,19 @@ export class GroupListComponent extends BaseDynamicComponent {
           .raised {
             display: inline-block;
           }
-           .group-wrapper {
-            display:flex;
+          #group-search-results-header {
+            padding-left:1.5rem;
           }
-
         }  
-
         @media screen and (width < 32em) {
           a {
             margin-top: 1rem;
           }
+          #group-search-results-header {
+            text-align: center;
+          }
           .group-cities {
             display: none; 
-          }
-          .group-image-container {
-            display:none;
           }
           .ui-section .event-group:not(:first-child) {
             margin-top: 0.5rem;
@@ -122,23 +101,13 @@ export class GroupListComponent extends BaseDynamicComponent {
     }
     return `
       <li>
-      <div class="group-wrapper">
-      
-        <div class="group-image-container">
-          <img class="group-icon" src="/assets/beer_and_board_games.webp">
-        </div>
         ${generateLinkButton({
           text: group.name,
           url: `${recurringDays.length > 0 || loggedIn ? `groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`
         })}
-        <div class = "info-wrapper">
-            <span class="group-cities">${groupCitiesStr}</span>           
+        <span class="group-cities">${groupCitiesStr}</span>           
         ${recurringDays.length >0 ? `<span class="group-search-details"><b>Days:</b> ${recurringDays.join(", ")}</span>` : ``}  
-        ${gameTypeTags.length >0 ? `<span class="group-search-details"><b>Game types:</b> ${gameTypeTags.join(", ")}</span>` : ``}     
-</div>
- 
-      </div>
-
+        ${gameTypeTags.length >0 ? `<span class="group-search-details"><b>Game types:</b> ${gameTypeTags.join(", ")}</span>` : ``}  
       </li>
     `;
   }
@@ -147,6 +116,7 @@ export class GroupListComponent extends BaseDynamicComponent {
     if(!state.data){
       return ``;
     }
+    console.log(state)
     if(state.data.groupData.length === 0){
       return `
           <p>No groups found</p>
