@@ -58,7 +58,9 @@ export class GroupListComponent extends BaseDynamicComponent {
           a {
             margin-top: 1rem;
           }
-   
+          #group-search-results-header {
+            text-align: center;
+          }
           .group-cities {
             display: none; 
           }
@@ -67,8 +69,7 @@ export class GroupListComponent extends BaseDynamicComponent {
           }
           .raised {
             margin-top: 0.5rem;
-            margin-left:2rem;
-            margin-right:2rem;
+
           }
         } 
       </style>

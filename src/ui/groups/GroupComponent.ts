@@ -397,7 +397,7 @@ export class GroupComponent extends BaseDynamicComponent {
             text: "Group website",
             url:groupData.url
           }) : ''}
-        ${groupData.imagePath ? `<img id="group-image" src="${groupData.imagePath}"/>` : ``}
+        ${groupData.imagePath ? `<img id="group-image" src="${'https://gatherspiel.nyc3.cdn.digitaloceanspaces.com/'+groupData.imagePath}"/>` : ``}
         <div class="${GROUP_DESCRIPTION}">
           <h2>Group description</h2>
           <div id="group-description-text">
