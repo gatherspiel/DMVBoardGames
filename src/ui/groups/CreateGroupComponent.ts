@@ -174,7 +174,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                   ${generateErrorMessage(data?.errorMessage)}           
                 </div>
                 <div class="form-section"> 
-                  <label class="form-field-header required-field">Name</label>
+                  <label class=" required-field">Name</label>
                   <input
                     id=${GROUP_NAME_INPUT}
                     name=${GROUP_NAME_INPUT}
@@ -183,7 +183,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                     ${generateErrorMessage(data[NAME_ERROR_TEXT_KEY])}
                 </div>  
                 <div class="form-section">
-                  <label class="form-field-header required-field">Description</label>
+                  <label class=" required-field">Description</label>
                   <textarea
                     id=${GROUP_DESCRIPTION_INPUT}
                     name=${GROUP_DESCRIPTION_INPUT}
@@ -199,7 +199,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                 </div>
 
                 <div class="form-section">
-                  <label class="form-field-header">Url(optional)</label>
+                  <label class="">Url(optional)</label>
                   <input
                     id=${GROUP_URL_INPUT}
                     name=${GROUP_URL_INPUT}
@@ -207,7 +207,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                     >
                 </div>
                 ${getGameTypeTagSelectHtml(data.gameTypeTags)}
-                <label class="form-field-header required-field" for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
+                <label class=" required-field" for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
                 <input type="checkbox" id="${AGREE_RULES_ID}" ${data[AGREE_RULES_ID] ? 'checked' : ''}>
                 
                 ${data[AGREE_RULES_ID]  ? 

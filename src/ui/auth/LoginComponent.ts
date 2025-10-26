@@ -115,14 +115,14 @@ export class LoginComponent extends BaseDynamicComponent {
       ${isNewUser ? `<h2 class="success-message">Account successfully confirmed. Use this page to login </h2>` : ``}
 
         <div class="ui-input">
-        <label class="form-field-header" id="email">Email</label>
+        <label class="" id="email">Email</label>
         <input        
           id=${USERNAME_INPUT}
           type="email"
         />
        </input>    
        
-        <label class="form-field-header">Password</label>
+        <label class="">Password</label>
         <input        
           id=${PASSWORD_INPUT}
           type="password"

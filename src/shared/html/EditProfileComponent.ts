@@ -92,7 +92,7 @@ export class EditProfileComponent extends BaseDynamicComponent {
           <div class="form-section">
               ${generateSuccessMessage(data?.[SUCCESS_MESSAGE_KEY])}
               ${generateErrorMessage(data?.errorMessage)}      
-            <label class="form-field-header required-field">Name</label>
+            <label class=" required-field">Name</label>
               <input
                 id=${USERNAME_INPUT}
                 name=${USERNAME_INPUT}

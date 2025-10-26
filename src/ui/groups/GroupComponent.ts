@@ -276,7 +276,7 @@ export class GroupComponent extends BaseDynamicComponent {
   
       <form id="edit-group-form">
         <div class="form-section">
-          <label class="form-field-header required-field">Name</label>
+          <label class=" required-field">Name</label>
           <input
             id=${GROUP_NAME_INPUT}
             value="${groupData.name}"
@@ -284,14 +284,14 @@ export class GroupComponent extends BaseDynamicComponent {
           ${generateErrorMessage(groupData[NAME_ERROR_TEXT_KEY])}
         </div>
         <div class="form-section">
-          <label class="form-field-header required-field">Description</label>
+          <label class=" required-field">Description</label>
           <textarea
             id=${GROUP_DESCRIPTION_INPUT}
           />${groupData.description}</textarea>    
           ${generateErrorMessage(groupData[DESCRIPTION_ERROR_TEXT_KEY])}
         </div>
   
-        <label class="form-field-header">Image(optional)</label>
+        <label class="">Image(optional)</label>
        
         <div class ="form-section" id="image-upload">
           <image-upload-component
@@ -300,7 +300,7 @@ export class GroupComponent extends BaseDynamicComponent {
           ></image-upload-component>
         </div>    
         <div class="form-section">
-          <label class="form-field-header">Url</label>
+          <label class="">Url</label>
           <input
             id=${GROUP_URL_INPUT}
             value="${groupData.url}"
@@ -397,7 +397,7 @@ export class GroupComponent extends BaseDynamicComponent {
             text: "Group website",
             url:groupData.url
           }) : ''}
-        ${groupData.imagePath ? `<img id="group-image" src="${'https://gatherspiel.nyc3.cdn.digitaloceanspaces.com/'+groupData.imagePath}"/>` : ``}
+        ${groupData.imagePath ? `<img id="group-image" src="${groupData.imagePath}"/>` : ``}
         <div class="${GROUP_DESCRIPTION}">
           <h2>Group description</h2>
           <div id="group-description-text">
