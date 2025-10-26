@@ -48,13 +48,13 @@ a:hover {
   font-weight:600;
 }
 
-.form-field-header {
-  display:block;
-  font-weight:600;
-}
-
 .form-section {
   margin-bottom: 1rem;
+}
+
+.form-section > label {
+  display: block;
+  font-weight: 600;
 }
 
 .form-select {
