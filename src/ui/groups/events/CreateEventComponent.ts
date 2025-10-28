@@ -19,7 +19,7 @@ import {
 
 import {generateErrorMessage, generateSuccessMessage} from "../../../shared/html/StatusIndicators.ts";
 import {getEventDetailsFromForm, validate} from "./EventDetailsHandler.ts";
-import {API_ROOT} from "../../../shared/Params.ts";
+import {API_ROOT, IS_PRODUCTION} from "../../../shared/Params.ts";
 import {getDayOfWeekSelectHtml} from "../../../shared/html/SelectGenerator.ts";
 import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
 
@@ -143,7 +143,6 @@ export class CreateEventComponent extends BaseDynamicComponent {
     document.title= title;
     const groupName = (new URLSearchParams(document.location.search)).get("name") ?? ''
     return `   
-   
 
         <div class="ui-section">
         <form id="create-event-form" onsubmit="return false">   
@@ -161,13 +160,14 @@ export class CreateEventComponent extends BaseDynamicComponent {
               ${data.isRecurring ? 'checked' : ''}
             />
           </div>  
-          <div class = "form-section">
-            <label>Enable RSVPs</label>
+          ${!IS_PRODUCTION ? `<div class = "form-section">
+            <label>Enable RSVPs. Enable if you want to use this site to manage RSVPs instead of another website 
+            such as Meetup.com</label>
             <input
               type="checkbox"
             >
             </input>
-          </div>  
+          </div>` : ``}
           <div class="form-section">
             <label class="required-field">Name</label>
             <input

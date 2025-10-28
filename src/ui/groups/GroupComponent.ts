@@ -112,6 +112,9 @@ export class GroupComponent extends BaseDynamicComponent {
           word-wrap: break-word;
           white-space: normal;
         }
+        .${GROUP_DESCRIPTION} a:hover {
+          background-color: var(--clr-very-light-blue)
+        }
        .group-webpage-link {
           display: inline-block;
           margin-top: 0.5rem;
