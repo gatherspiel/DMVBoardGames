@@ -3,6 +3,11 @@ export class ImageUploadComponent extends HTMLElement {
 
   constructor(){
     super();
+
+    const filePath = this.getAttribute("image-path")
+    if(filePath === null || filePath === undefined || filePath === "null" || filePath === "undefined" || filePath.length > 0){
+      this.setAttribute("image-path","");
+    }
     this.addEventListener("change", this.uploadImage)
     this.addEventListener("click",this.deleteImage)
   }
@@ -17,7 +22,7 @@ export class ImageUploadComponent extends HTMLElement {
   //This is an image that was already uploaded.
   getImageFilePath(){
     if(!this.getAttribute("image-path")?.includes("base64")) {
-      return this.getAttribute("image-path");
+      return this.getAttribute("image-path") || '';
     }
   }
 
@@ -57,14 +62,14 @@ export class ImageUploadComponent extends HTMLElement {
 
     const filePath = this.getAttribute("image-path")
     return `
-      <label class="form-field-header">Upload image</label>
+      <label class=""><b>Upload image(optional)</b></label>
       <input class="image-upload-input" id="upload-image-input" name="image-upload-input" accept="image/png, image/jpeg" title="test" type="file" />
       ${(filePath !== null && filePath !== undefined && filePath !== "null" && filePath !== "undefined" && filePath.length > 0) ?
       `
           <label style="display:inline-block">Remove image</label>
           <button id="remove-uploaded-image" style="display:inline-block;">-</button>
           <br>
-          <label class="form-field-header">Current image</label>` :
+          <label class=""><b>Current image</b></label>` :
       ``
     }
       <img id="image-preview" 

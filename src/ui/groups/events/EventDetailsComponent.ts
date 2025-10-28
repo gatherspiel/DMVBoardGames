@@ -365,7 +365,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           ${generateErrorMessage(data.errorMessage)}
         </div>
         <div class="form-section">
-          <label class="form-field-header required-field">Event name</label>
+          <label class=" required-field">Event name</label>
           <input
             id=${EVENT_NAME_INPUT}
             name=${EVENT_NAME_INPUT}
@@ -374,14 +374,14 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           </input>
         </div>
         <div class="form-section">
-          <label class="form-field-header required-field"> Event description</label>
+          <label class=" required-field"> Event description</label>
           <textarea
           id=${EVENT_DESCRIPTION_INPUT}
           name=${EVENT_DESCRIPTION_INPUT}
           />${data.description ?? ""}</textarea>       
         </div>
         <div class="form-section">
-          <label class="form-field-header">Event URL(optional)</label>
+          <label class="">Event URL(optional)</label>
           <input
             name=${EVENT_URL_INPUT}
             type="url"
@@ -398,13 +398,13 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         ${data.isRecurring ?
           `
             <div class="form-section">
-              <label class="form-field-header required-field">Day of week</label>
+              <label class=" required-field">Day of week</label>
               ${getDayOfWeekSelectHtml(data.day)}
             </div>
           ` :
           `
             <div class="form-section">
-              <label class="form-field-header required-field">Start date</label>
+              <label class=" required-field">Start date</label>
               <input
                 name=${START_DATE_INPUT}
                 type="date"
@@ -414,7 +414,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           `
         }   
         <div class="form-section">
-          <label class="form-field-header required-field">Start time</label>
+          <label class=" required-field">Start time</label>
           <input
             name=${START_TIME_INPUT}
             type="time"
@@ -423,7 +423,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           </input>
         </div>
         <div class="form-section">
-          <label class="form-field-header required-field">End time</label>
+          <label class=" required-field">End time</label>
           <input
             name=${END_TIME_INPUT}
             type="time"
@@ -432,7 +432,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           </input>
         </div>
         <div class="form-section">
-          <label class="form-field-header required-field">Event location</label>
+          <label class=" required-field">Event location</label>
           <input
             id=${EVENT_LOCATION_INPUT}
             name=${EVENT_LOCATION_INPUT}
@@ -441,7 +441,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           </input>
         </div> 
         <div class = "form-section">
-          <label class="form-field-header">
+          <label class="">
               Event organizer email(optional). Use if you want to make a site user an event organizer. They will
               have permissions to edit the event. If this field is left blank, existing moderator settings will be used.</label>
       
@@ -467,6 +467,17 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       return ``;
     }
 
+    let moderatorHasUsername = false;
+    for(let i = 0;i <data.moderators.length;i++){
+      if(data.moderators[i]?.userData?.username.length > 0){
+        moderatorHasUsername = true;
+        break;
+      }
+    }
+    if(!moderatorHasUsername){
+      return ``
+    }
+
     let html = ``;
     const hostText = data.moderators.length > 1 ? "Hosts:" : "Host:";
     data.moderators.forEach((moderator:any)=>{
@@ -488,7 +499,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   }
   renderViewMode(data:any): string {
 
-    console.log(data.imageFilePath);
     if(data.errorMessage){
       return `${generateErrorMessage(data.errorMessage)}`
     }
