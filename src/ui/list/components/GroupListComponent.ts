@@ -102,7 +102,7 @@ export class GroupListComponent extends BaseDynamicComponent {
       <li>
         ${generateLinkButton({
           text: group.name,
-          url: `${recurringDays.length > 0 || loggedIn ? `groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`
+          url: `${recurringDays.length > 0 || loggedIn  || group.gameTypeTags.length > 0 ? `groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`
         })}
         <span class="group-cities">${groupCitiesStr}</span>           
         ${recurringDays.length >0 ? `<span class="group-search-details"><b>Days:</b> ${recurringDays.join(", ")}</span>` : ``}  

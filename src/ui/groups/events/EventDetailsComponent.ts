@@ -467,6 +467,17 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       return ``;
     }
 
+    let moderatorHasUsername = false;
+    for(let i = 0;i <data.moderators.length;i++){
+      if(data.moderators[i]?.userData?.username.length > 0){
+        moderatorHasUsername = true;
+        break;
+      }
+    }
+    if(!moderatorHasUsername){
+      return ``
+    }
+
     let html = ``;
     const hostText = data.moderators.length > 1 ? "Hosts:" : "Host:";
     data.moderators.forEach((moderator:any)=>{
@@ -488,7 +499,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   }
   renderViewMode(data:any): string {
 
-    console.log(data.imageFilePath);
     if(data.errorMessage){
       return `${generateErrorMessage(data.errorMessage)}`
     }
