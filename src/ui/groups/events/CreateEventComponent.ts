@@ -23,7 +23,7 @@ import {API_ROOT, IS_PRODUCTION} from "../../../shared/Params.ts";
 import {getDayOfWeekSelectHtml} from "../../shared/SelectGenerator.ts";
 import {LOGIN_STORE} from "../../../data/auth/LoginStore.ts";
 
-import {ImageUploadComponent} from "../../shared/ImageUploadComponent.ts";
+import {ImageUploadComponent} from "../../../shared/zeroDepComponents/ImageUploadComponent.ts";
 import {LoginStatusComponent} from "../../shared/LoginStatusComponent.ts";
 
 customElements.define("image-upload-component",ImageUploadComponent)

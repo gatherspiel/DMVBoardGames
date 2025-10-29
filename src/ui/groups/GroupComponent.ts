@@ -24,15 +24,17 @@ import {
   SUCCESS_MESSAGE_KEY
 } from "../../shared/Constants.ts";
 import {API_ROOT} from "../../shared/Params.ts";
-
-import {LoginStatusComponent} from "../shared/LoginStatusComponent.ts";
 import {convertDayOfWeekForDisplay} from "../../shared/utils/DisplayNameConversion.ts";
 import {generateErrorMessage, generateSuccessMessage} from "../shared/StatusIndicators.ts";
 import {getGameTypeTagSelectHtml, getTagSelectedState} from "../shared/SelectGenerator.ts";
-import {ImageUploadComponent} from "../shared/ImageUploadComponent.ts";
 
-customElements.define("login-status-component", LoginStatusComponent);
+import {ImageUploadComponent} from "../../shared/zeroDepComponents/ImageUploadComponent.ts";
+import {LoginStatusComponent} from "../shared/LoginStatusComponent.ts";
+import {RsvpComponent} from "../../shared/zeroDepComponents/RsvpComponent.ts";
+
 customElements.define('image-upload-component',ImageUploadComponent)
+customElements.define("login-status-component", LoginStatusComponent);
+customElements.define('rsvp-component',RsvpComponent)
 
 const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
 const EDIT_GROUP_BUTTON_ID = "edit-group-button";
@@ -333,12 +335,17 @@ export class GroupComponent extends BaseDynamicComponent {
   }
   renderWeeklyEventData(eventData:any, groupId:any, key:string){
     const dayString = convertDayOfWeekForDisplay(eventData.day);
+
     return `
       <div id=${key} class="event">
         ${generateLinkButton({
           text: eventData.name,
           url: `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
         })}
+        <rsvp-component
+          rsvp-count=${eventData.rsvpCount}
+          rsvp-url="${API_ROOT}/groups/events/${eventData.id}/rsvp"
+        ></rsvp-component>
         <p class="event-time">
           ${dayString}s from ${convert24HourTimeForDisplay(eventData.startTime)} to 
           ${convert24HourTimeForDisplay(eventData.endTime)} 

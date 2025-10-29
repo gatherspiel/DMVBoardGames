@@ -33,11 +33,13 @@ import {convertDateTimeForDisplay} from "../../../shared/utils/EventDataUtils.ts
 import {convertDayOfWeekForDisplay} from "../../../shared/utils/DisplayNameConversion.ts";
 import {getDayOfWeekSelectHtml} from "../../shared/SelectGenerator.ts";
 
-import {ImageUploadComponent} from "../../shared/ImageUploadComponent.ts";
+import {ImageUploadComponent} from "../../../shared/zeroDepComponents/ImageUploadComponent.ts";
 import {LoginStatusComponent} from "../../shared/LoginStatusComponent.ts";
+import {RsvpComponent} from "../../../shared/zeroDepComponents/RsvpComponent.ts";
 
 customElements.define("image-upload-component",ImageUploadComponent)
 customElements.define("login-status-component", LoginStatusComponent);
+customElements.define('rsvp-component',RsvpComponent)
 
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 const CANCEL_DELETE_BUTTON_ID = "cancel-delete-button";
@@ -257,9 +259,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
               behavior: "smooth"
             });
             if(!response.errorMessage){
-
-
-
               self.updateData({
                 description: formData[EVENT_DESCRIPTION_INPUT],
                 //@ts-ignore
@@ -528,6 +527,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
            `
           }
         </p>  
+        <rsvp-component></rsvp-component>
         <div id="event-description">${data.description}</div>
       </div>
     `;

@@ -7,7 +7,7 @@ import {API_ROOT} from "../shared/Params.ts";
 import {generateErrorMessage, generateSuccessMessage} from "./shared/StatusIndicators.ts";
 import {generateButton} from "./shared/ButtonGenerator.ts";
 
-import {ImageUploadComponent} from "./shared/ImageUploadComponent.ts";
+import {ImageUploadComponent} from "../shared/zeroDepComponents/ImageUploadComponent.ts";
 import {SUCCESS_MESSAGE_KEY} from "../shared/Constants.ts";
 import {USER_DATA_STORE} from "../data/auth/UserDataStore.ts";
 customElements.define('image-upload-component', ImageUploadComponent);

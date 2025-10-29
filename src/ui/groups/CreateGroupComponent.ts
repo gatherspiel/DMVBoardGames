@@ -16,7 +16,7 @@ import {API_ROOT} from "../../shared/Params.ts";
 import {getGameTypeTagSelectHtml, getTagSelectedState} from "../shared/SelectGenerator.ts";
 
 import {FaqComponent} from "../static/FaqComponent.ts";
-import {ImageUploadComponent} from "../shared/ImageUploadComponent.ts";
+import {ImageUploadComponent} from "../../shared/zeroDepComponents/ImageUploadComponent.ts";
 import {SiteRulesComponent} from "../static/SiteRulesComponent.ts";
 
 customElements.define('faq-component',FaqComponent)

@@ -112,7 +112,7 @@ export class LoginComponent extends BaseDynamicComponent {
     return `
       <div class="ui-section" id="login-component-container">
       <form id=${LOGIN_FORM_ID}>
-      ${isNewUser ? `<h2 class="success-message">Account successfully confirmed. Use this page to login </h2>` : ``}
+      ${isNewUser ? `<h2 class="success-message">Account successfully confirmed. Use this page to login. </h2>` : ``}
 
         <div class="ui-input">
           <div class="form-section">
