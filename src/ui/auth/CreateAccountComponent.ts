@@ -135,7 +135,7 @@ export class CreateAccountComponent extends BaseDynamicComponent {
           ApiLoadAction.getResponseData({
             body: JSON.stringify({email:formData.username,password:formData.password}),
             method: "POST",
-            url: API_ROOT + `/users/register`,
+            url: API_ROOT + `/user/register`,
           }).then((response:any)=>{
 
             if(response.errorMessage){
@@ -164,21 +164,21 @@ export class CreateAccountComponent extends BaseDynamicComponent {
       <div class="ui-section" id="login-component-container">
         <form id=${LOGIN_FORM_ID}>
           <div id="ui-input">
-            <label class="form-field-header" id="email">Email</label>
+            <label class="" id="email">Email</label>
             <input        
               id=${USERNAME_INPUT}
               type="email"
               value="${data.username}"
             />
            </input>    
-          <label class="form-field-header">Password</label>
+          <label class="">Password</label>
           <input        
             id=${PASSWORD_INPUT}
             type="password"
             value="${data.password}"
           />
           </input>
-          <label class="form-field-header">Confirm password</label>
+          <label class="">Confirm password</label>
           <input        
             id=${CONFIRM_PASSWORD_INPUT}
             type="password"

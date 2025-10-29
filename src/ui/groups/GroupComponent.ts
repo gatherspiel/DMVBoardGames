@@ -29,7 +29,10 @@ import {LoginStatusComponent} from "../../shared/html/LoginStatusComponent.ts";
 import {convertDayOfWeekForDisplay} from "../../shared/data/DisplayNameConversion.ts";
 import {generateErrorMessage, generateSuccessMessage} from "../../shared/html/StatusIndicators.ts";
 import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
+import {ImageUploadComponent} from "../../shared/html/ImageUploadComponent.ts";
+
 customElements.define("login-status-component", LoginStatusComponent);
+customElements.define('image-upload-component',ImageUploadComponent)
 
 const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
 const EDIT_GROUP_BUTTON_ID = "edit-group-button";
@@ -72,13 +75,23 @@ export class GroupComponent extends BaseDynamicComponent {
         button {
           margin-top:0.5rem;
         }
+        #edit-group-form {
+          margin-top:0.5rem;
+          margin-bottom:1rem;
+        }
         #game-type-tag-select > :not(:first-child) {
           padding-left: 0.25rem;
+        }
+        #group-description-text {
+          margin-top:0.5rem;
+          margin-bottom:1rem;
         }  
         #group-name-header {
           margin-bottom:0.5rem;
-          margin-left:-1.5rem;
           margin-top: 0.5rem;
+        }
+        #image-preview {
+          display:block;
         }
         #other-events-header {
           margin-top: 0.5rem;
@@ -99,6 +112,9 @@ export class GroupComponent extends BaseDynamicComponent {
           word-wrap: break-word;
           white-space: normal;
         }
+        .${GROUP_DESCRIPTION} a:hover {
+          background-color: var(--clr-very-light-blue)
+        }
        .group-webpage-link {
           display: inline-block;
           margin-top: 0.5rem;
@@ -107,10 +123,12 @@ export class GroupComponent extends BaseDynamicComponent {
           margin-bottom:0.5rem;
         }  
         @media not screen and (width < 32em) {
+          h2 {
+            margin-left:-1.5rem;
+            padding-left: 1.5rem;
+          }
           #${GROUP_DESCRIPTION_INPUT} {
             display: block;
-            height: 500px;
-            width: 800px;
           }
           #${GROUP_NAME_INPUT} {
             display:block;
@@ -119,30 +137,30 @@ export class GroupComponent extends BaseDynamicComponent {
           #${GROUP_URL_INPUT} {
             display: block;
             width: 600px;
-          } 
-          .${GROUP_DESCRIPTION} {
-            margin-top: 1rem;
           }
-  
-          .raised {
-            display: inline-block;
-            line-height: 1;
-          }  
-         #group-name-header {
+          #group-image {
+            width:63rem;
+          }
+          #group-name-header {
             margin-bottom:0.5rem;
             margin-left:-1.5rem;
             margin-top: 0.5rem;
             padding-left:1.5rem;
           }
-          h2 {
-            margin-left:-1.5rem;
-            padding-left: 1.5rem;
+          .${GROUP_DESCRIPTION} {
+            margin-top: 1rem;
           }
-
+          .raised {
+            display: inline-block;
+            line-height: 1;
+          }  
         }   
         @media screen and (width < 32em) {
           #${GROUP_DESCRIPTION_INPUT} {
             height:10rem;
+          }
+          #group-image{
+            width:20rem;
           }
           .${GROUP_DESCRIPTION} {
             font-size:1rem;
@@ -167,20 +185,22 @@ export class GroupComponent extends BaseDynamicComponent {
 
   override attachHandlersToShadowRoot(shadowRoot:ShadowRoot) {
     const self = this;
+
     shadowRoot?.addEventListener("click", (event:any)=>{
-      event.preventDefault();
+
+      let useDefault = false;
       const targetId = event.target?.id;
 
       if(event.target.type === "checkbox"){
         self.updateData({
-          name: (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLTextAreaElement)?.value,
           description: (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value,
+          gameTypeTags: getTagSelectedState(shadowRoot),
+          imagePath:(shadowRoot.getElementById("image-upload-ui") as ImageUploadComponent).getAttribute("image-path"),
+          name: (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLTextAreaElement)?.value,
           url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value,
-          gameTypeTags: getTagSelectedState(shadowRoot)
         })
       }
-
-      if(targetId === EDIT_GROUP_BUTTON_ID) {
+      else if(targetId === EDIT_GROUP_BUTTON_ID) {
         self.updateData({
           isEditing: true,
           [DESCRIPTION_ERROR_TEXT_KEY]: '',
@@ -189,27 +209,32 @@ export class GroupComponent extends BaseDynamicComponent {
           [SUCCESS_MESSAGE_KEY]: ''
         })
       }
-      if(targetId === CANCEL_UPDATES_BUTTON_ID) {
+      else if(targetId === CANCEL_UPDATES_BUTTON_ID) {
         self.updateData({
           isEditing: false
         })
       }
-      if(targetId === SAVE_UPDATES_BUTTON_ID){
+      else if(targetId === SAVE_UPDATES_BUTTON_ID){
         const validationErrorState:Record<string,string> = {[SUCCESS_MESSAGE_KEY]:''}
         const groupName = (shadowRoot?.getElementById(GROUP_NAME_INPUT) as HTMLInputElement)?.value;
         if(!groupName || groupName.length === 0){
           validationErrorState[NAME_ERROR_TEXT_KEY] = "Name is a required field"
         }
-        const groupDescription = (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value.trim();
+        const groupDescription = (shadowRoot?.getElementById(GROUP_DESCRIPTION_INPUT) as HTMLTextAreaElement)?.value;
         if(!groupDescription || groupDescription.length === 0){
           validationErrorState[DESCRIPTION_ERROR_TEXT_KEY]="Description is a required field"
         }
+
+        const imageForm = shadowRoot.getElementById("image-upload-ui") as ImageUploadComponent;
         const params = {
+          description: groupDescription,
+          gameTypeTags:Object.keys(getTagSelectedState(shadowRoot)),
+          image:imageForm.getImage(),
+          imageFilePath:imageForm.getImageFilePath(),
           id: self.componentStore.id,
           name: groupName,
-          description: groupDescription,
           url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value,
-          gameTypeTags:Object.keys(getTagSelectedState(shadowRoot))
+
         }
         if(Object.keys(validationErrorState).length >1){
           self.updateData({...validationErrorState,...params});
@@ -228,6 +253,7 @@ export class GroupComponent extends BaseDynamicComponent {
             self.updateData({
               ...params,
               isEditing: false,
+              imagePath: params.image || params.imageFilePath,
               [SUCCESS_MESSAGE_KEY]: 'Group update successful'
             });
           } else {
@@ -237,38 +263,47 @@ export class GroupComponent extends BaseDynamicComponent {
             })
           }
         })
+      } else {
+        useDefault = true;
+      }
+      if(!useDefault){
+        event.preventDefault();
       }
     })
   }
   renderEditMode(groupData:any):string {
+
     return`
-    
       <h2>Edit group information</h2>
-      <div class="section-separator-small"></div>
       ${groupData[ERROR_MESSAGE_KEY] ? generateErrorMessage(groupData[ERROR_MESSAGE_KEY]) : ''}
   
-      <form>
-        
+      <form id="edit-group-form">
         <div class="form-section">
-          <label class="required-field">Name</label>
+          <label class=" required-field">Name</label>
           <input
             id=${GROUP_NAME_INPUT}
             value="${groupData.name}"
           />
           ${generateErrorMessage(groupData[NAME_ERROR_TEXT_KEY])}
         </div>
-  
-        
         <div class="form-section">
-          <label class="required-field">Description</label>
+          <label class=" required-field">Description</label>
           <textarea
             id=${GROUP_DESCRIPTION_INPUT}
           />${groupData.description}</textarea>    
           ${generateErrorMessage(groupData[DESCRIPTION_ERROR_TEXT_KEY])}
         </div>
   
+        <label class="">Image(optional)</label>
+       
+        <div class ="form-section" id="image-upload">
+          <image-upload-component
+            id="image-upload-ui"
+            image-path="${groupData.imagePath}"
+          ></image-upload-component>
+        </div>    
         <div class="form-section">
-          <label class="form-field-header">Url</label>
+          <label class="">Url</label>
           <input
             id=${GROUP_URL_INPUT}
             value="${groupData.url}"
@@ -282,7 +317,6 @@ export class GroupComponent extends BaseDynamicComponent {
           text: "Submit",
           type: "submit",
         })}
-    
         ${generateButton({
           id: CANCEL_UPDATES_BUTTON_ID,
           text: "Cancel",
@@ -332,6 +366,7 @@ export class GroupComponent extends BaseDynamicComponent {
   }
 
   render(groupData: any): string {
+
     if (!groupData.permissions) {
       return `<h1>Loading</h1>`;
     }
@@ -353,55 +388,58 @@ export class GroupComponent extends BaseDynamicComponent {
         </div>
       `
     }
-    return html+`
-      
+
+    return html + `
   
       <div class="ui-section">
-      
-        <h1 id="group-name-header">${groupData.name}</h1>
-        ${groupData[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY]) : ''}
-        ${!groupData.isEditing ? `
-            ${groupData.url ? generateLinkButton({
-              class: "group-webpage-link",
-              text: "Group website",
-              url:groupData.url
-            }) : ''}
-          <div class="${GROUP_DESCRIPTION}">
-            <h2>Group description</h2>
+      <h1 id="group-name-header">${groupData.name}</h1>
+      ${groupData[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY]) : ''}
+      ${!groupData.isEditing ? `
+          ${groupData.url ? generateLinkButton({
+            class: "group-webpage-link",
+            text: "Group website",
+            url:groupData.url
+          }) : ''}
+        ${groupData.imagePath ? `<img id="group-image" src="${groupData.imagePath}"/>` : ``}
+        <div class="${GROUP_DESCRIPTION}">
+          <h2>Group description</h2>
+          <div id="group-description-text">
             <span>${groupData.description}</span> 
           </div>
-          ` : 
-          this.renderEditMode(groupData)
-        }
-  
-       ${groupData.oneTimeEventData.length === 0 && groupData.weeklyEventData.length === 0 ?
-        `<p id="no-event">No events found for group</p>`:
-        `
-          <h2>Upcoming recurring events</h2>
-        `
+        </div>
+        ` : 
+        this.renderEditMode(groupData)
       }
-      ${
-        groupData.weeklyEventData.length === 0
-          ? ``
-          : `  
-            ${groupData.weeklyEventData.map((event: any) => {
-              return self.renderWeeklyEventData(event,groupData.id, groupData.id + "-event-" + event.id)
+
+
+     ${groupData.oneTimeEventData.length === 0 && groupData.weeklyEventData.length === 0 ?
+      ``:
+      `
+        <h2>Upcoming recurring events</h2>
+      `
+    }
+    ${
+      groupData.weeklyEventData.length === 0
+        ? ``
+        : `  
+          ${groupData.weeklyEventData.map((event: any) => {
+            return self.renderWeeklyEventData(event,groupData.id, groupData.id + "-event-" + event.id)
+          }).join(" ")}
+        `
+    }
+ 
+    ${
+      groupData.oneTimeEventData.length === 0
+        ? ``
+        : `
+          <h2 id="other-events-header">Other events</h2> 
+          ${groupData.oneTimeEventData
+            .map((event: any) => {
+              return self.renderOneTimeEventData(event,groupData.id,groupData.id + "event-" + event.id)
             }).join(" ")}
-          `
+          <p>Only events for the next 30 days will be visible.</p>
+      `
       }
-   
-      ${
-        groupData.oneTimeEventData.length === 0
-          ? ``
-          : `
-            <h2 id="other-events-header">Other events</h2> 
-            ${groupData.oneTimeEventData
-              .map((event: any) => {
-                return self.renderOneTimeEventData(event,groupData.id,groupData.id + "event-" + event.id)
-              }).join(" ")}
-            <p>Only events for the next 30 days will be visible.</p>
-        `
-        }
     </div>`;
   }
 }

@@ -48,11 +48,6 @@ a:hover {
   font-weight:600;
 }
 
-.form-field-header {
-  display:block;
-  font-weight:600;
-}
-
 .form-section {
   margin-bottom: 1rem;
 }
@@ -205,14 +200,14 @@ a:hover {
 
 .section-separator-medium {
   border-bottom:  20px solid;
-  border-image-source: url(/assets/Section_Border_Medium.png);
+  border-image-source: url(/assets/images/Section_Border_Medium.png);
   border-image-slice: 20 20;
   border-image-repeat: round;
 }
 
 .section-separator-small {
   border-top:  5px solid;
-  border-image-source: url(/assets/Section_Border_Tiny.png);
+  border-image-source: url(/assets/images/Section_Border_Tiny.png);
   border-image-slice: 5 5;
   border-image-repeat: round;
 }
@@ -227,6 +222,13 @@ a:hover {
 }
 
 @media not screen and (width < 32em) {
+  textarea {
+    width:63.5rem;
+    height:25rem;
+  }
+  #user-actions-menu-raised {
+    display:inherit;
+  }
   .show-mobile {
     display:none
   }
@@ -234,17 +236,16 @@ a:hover {
     display: inline-block;
     margin-right: 2rem;
   }
-
   .top-nav-secondary span {
     margin-right: 2rem;
   }
-  #user-actions-menu-raised {
-    display:inherit;
-  }
+
 }
 
 @media screen and (width < 32em) {
   .ui-section {
+    padding-left:0.5rem;
+    padding-right:0.5rem;
     text-align: center;
   }
   .hide-mobile {

@@ -21,7 +21,7 @@ export class GameStoreListComponent extends BaseDynamicComponent {
           font-size: 1rem;
         }
         ul {
-          list-style:url(/assets/meeple_small.png);
+          list-style:url(/assets/images/meeple_small.png);
           margin-top:0;
           padding-left:1.5rem;
         }

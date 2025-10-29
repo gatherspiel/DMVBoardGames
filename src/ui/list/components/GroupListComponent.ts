@@ -2,13 +2,13 @@ import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {generateLinkButton} from "../../../shared/html/ButtonGenerator.ts";
 import {getDisplayName} from "../../../shared/data/DisplayNameConversion.ts";
 
-import {GROUP_SEARCH_STORE} from "../data/search/GroupSearchStore.ts";
+import {SHOW_GROUP_LIST_STORE} from "../data/search/GroupSearchStore.ts";
 import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
 
 export class GroupListComponent extends BaseDynamicComponent {
   constructor() {
     super([{
-      dataStore: GROUP_SEARCH_STORE,
+      dataStore: SHOW_GROUP_LIST_STORE,
       fieldName:"data"
     },{
       dataStore: LOGIN_STORE,
@@ -28,7 +28,7 @@ export class GroupListComponent extends BaseDynamicComponent {
           font-size: 3rem;
         }
         ul {
-          list-style:url(/assets/meeple_small.png);
+          list-style:url(/assets/images/meeple_small.png);
           margin-top:0;
           padding-left:1.5rem;
         }
@@ -58,7 +58,9 @@ export class GroupListComponent extends BaseDynamicComponent {
           a {
             margin-top: 1rem;
           }
-   
+          #group-search-results-header {
+            text-align: center;
+          }
           .group-cities {
             display: none; 
           }
@@ -67,8 +69,7 @@ export class GroupListComponent extends BaseDynamicComponent {
           }
           .raised {
             margin-top: 0.5rem;
-            margin-left:2rem;
-            margin-right:2rem;
+
           }
         } 
       </style>
@@ -101,7 +102,7 @@ export class GroupListComponent extends BaseDynamicComponent {
       <li>
         ${generateLinkButton({
           text: group.name,
-          url: `${recurringDays.length > 0 || loggedIn ? `groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`
+          url: `${recurringDays.length > 0 || loggedIn  || group.gameTypeTags.length > 0 ? `groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`
         })}
         <span class="group-cities">${groupCitiesStr}</span>           
         ${recurringDays.length >0 ? `<span class="group-search-details"><b>Days:</b> ${recurringDays.join(", ")}</span>` : ``}  
@@ -110,6 +111,10 @@ export class GroupListComponent extends BaseDynamicComponent {
     `;
   }
   render(state: any): string {
+
+    if(!state.data){
+      return ``;
+    }
     if(state.data.groupData.length === 0){
       return `
           <p>No groups found</p>

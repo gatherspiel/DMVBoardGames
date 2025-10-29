@@ -3,7 +3,7 @@
 <head>
 
   <meta charset="UTF-8"/>
-  <title>Game stores</title>
+  <title>Game restaurants</title>
   <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
   <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
 
@@ -11,22 +11,25 @@
   <link rel="preconnect" href="api.gatherspiel.com" />
 
   <script type="module">
-    import {GameStoreListComponent} from "./ui/list/components/GameStoreListComponent.js";
-    customElements.define("game-store-list-component",GameStoreListComponent)
+    import {
+      GameRestaurantListComponent,
+    } from "../ui/list/components/GameRestaurantListComponent.ts";
+    customElements.define("game-restaurant-list-component",GameRestaurantListComponent)
   </script>
 
-  <link rel="icon" type="image/ico" href="/assets/favicon.ico"/>
+  <link rel="icon" type="image/ico" href="/assets/images/favicon.ico"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DMV Board Games</title>
 </head>
 <body>
 
-    <div id="container">
-      {{>navbar}}
+<div id="container">
+  {{>navbar}}
 
-      <game-store-list-component>
-      </game-store-list-component>
-    </div>
+  <game-restaurant-list-component>
+  </game-restaurant-list-component>
+</div>
 
-  </body>
+
+</body>
 </html>

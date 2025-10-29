@@ -12,9 +12,16 @@ import {
 } from "../../shared/Constants.ts";
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
-import {API_ROOT, IS_PRODUCTION} from "../../shared/Params.ts";
+import {API_ROOT} from "../../shared/Params.ts";
 import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
 
+import {FaqComponent} from "../../shared/html/FaqComponent.ts";
+import {ImageUploadComponent} from "../../shared/html/ImageUploadComponent.ts";
+import {SiteRulesComponent} from "../../shared/html/SiteRulesComponent.ts";
+
+customElements.define('faq-component',FaqComponent)
+customElements.define('image-upload-component',ImageUploadComponent)
+customElements.define('site-rules-component',SiteRulesComponent)
 
 const AGREE_RULES_ID ="agree-rules-id";
 const CREATE_GROUP_BUTTON_ID = "create-group-button-id";
@@ -54,26 +61,20 @@ export class CreateGroupComponent extends BaseDynamicComponent {
         #game-type-tag-select {
           margin-bottom:1rem;
         }  
+        #image-upload-container {
+          margin-bottom: 1rem;
+        }
         #game-type-tag-select input {
           display: inline-block;
         }      
         #game-type-tag-select label {
           padding-left: 0.25rem;
         }  
-        #group-description-input {
-          height: 10rem;
-          width: 50rem;
-        }   
         #rules-content {
           margin-top:1rem;
         }
         .raised {
           margin-top:0.5rem;
-        }
-        @media not screen and (width < 32em) {
-          #group-description-input {
-             width: 800px; 
-          }
         }
         @media screen and (width < 32em) {
           #group-description-input {
@@ -85,32 +86,9 @@ export class CreateGroupComponent extends BaseDynamicComponent {
   }
 
 
-
   override attachHandlersToShadowRoot(shadowRoot:ShadowRoot){
 
     const self = this;
-
-    const updatePreview = function(input:any, target:any) {
-      let file = input.files[0];
-      let reader = new FileReader();
-
-      reader.readAsDataURL(file);
-      reader.onload = function () {
-        let img:any = shadowRoot.getElementById(target);
-        img.src = reader.result;
-        self.updateData({
-          imagePath: reader.result
-        })
-      }
-
-    }
-
-    shadowRoot?.addEventListener("change",(event:any)=>{
-      if(event.target.id === 'group-image'){
-        const input = shadowRoot.getElementById("group-image")
-        updatePreview(input,"image-preview")
-      }
-    })
 
     shadowRoot?.addEventListener("click",(event:any)=>{
 
@@ -123,7 +101,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
           [AGREE_RULES_ID]: event.target.checked,
           description: (elements.namedItem(GROUP_DESCRIPTION_INPUT) as HTMLInputElement)?.value,
           gameTypeTags: getTagSelectedState(shadowRoot),
-          image: self.componentStore.imagePath,
+          imagePath: (shadowRoot.getElementById("image-upload-ui") as ImageUploadComponent).getAttribute("image-path"),
           name: (elements.namedItem(GROUP_NAME_INPUT) as HTMLInputElement)?.value,
           url: (elements.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
         })
@@ -151,8 +129,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
             id: self.componentStore.id,
             name: groupName,
             description: groupDescription,
-            image: self.componentStore.imagePath,
-
+            image: (shadowRoot.getElementById("image-upload-ui") as ImageUploadComponent).getAttribute("image-path"),
             url: (elements.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
             gameTypeTags: Object.keys(getTagSelectedState(shadowRoot))
           }),
@@ -197,7 +174,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                   ${generateErrorMessage(data?.errorMessage)}           
                 </div>
                 <div class="form-section"> 
-                  <label class="required-field">Name</label>
+                  <label class=" required-field">Name</label>
                   <input
                     id=${GROUP_NAME_INPUT}
                     name=${GROUP_NAME_INPUT}
@@ -206,7 +183,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                     ${generateErrorMessage(data[NAME_ERROR_TEXT_KEY])}
                 </div>  
                 <div class="form-section">
-                  <label class="form-field-header required-field">Description</label>
+                  <label class=" required-field">Description</label>
                   <textarea
                     id=${GROUP_DESCRIPTION_INPUT}
                     name=${GROUP_DESCRIPTION_INPUT}
@@ -214,26 +191,23 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                   ${generateErrorMessage(data[DESCRIPTION_ERROR_TEXT_KEY])}
                 </div>
                 
-                ${IS_PRODUCTION ? ``: `
-                  <label class="form-field-header">Image(optional)</label>
-                  <input type="file" id="group-image" name="group-image" accept="image/png, image/jpeg" />
-                           <img id="image-preview" 
-                       src=${data.imagePath ?? ''}
-                       style="width:400px"
-                       alt="group-image-placeholder">
-                `}
+                <div id="image-upload-container">
+                  <image-upload-component
+                  id="image-upload-ui"
+                  image-path="${data.imagePath}"
+                ></image-upload-component>              
+                </div>
+
                 <div class="form-section">
-                  <label class="form-field-header">Url(optional)</label>
+                  <label class="">Url(optional)</label>
                   <input
                     id=${GROUP_URL_INPUT}
                     name=${GROUP_URL_INPUT}
                     value=${data.url}
                     >
-           
-
                 </div>
                 ${getGameTypeTagSelectHtml(data.gameTypeTags)}
-                <label class="form-field-header required-field" for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
+                <label class=" required-field" for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
                 <input type="checkbox" id="${AGREE_RULES_ID}" ${data[AGREE_RULES_ID] ? 'checked' : ''}>
                 
                 ${data[AGREE_RULES_ID]  ? 

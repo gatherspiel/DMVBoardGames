@@ -29,32 +29,35 @@ export default defineConfig({
     outDir: "../dist",
     rollupOptions: {
       input: {
-        conventions: resolve(__dirname, "src/conventions.html"),
-        create_account: resolve(__dirname,"src/beta/createAccount.html"),
-        create_groups: resolve(__dirname, "src/beta/create.html"),
-        create_event: resolve(__dirname, "src/beta/addEvent.html"),
+        conventions: resolve(__dirname, "src/html/conventions.html"),
+        create_account: resolve(__dirname,"src/html/createAccount.html"),
+        create_groups: resolve(__dirname, "src/html/groups/create.html"),
+        create_event: resolve(__dirname, "src/html//groups/addEvent.html"),
 
-        delete_group: resolve(__dirname, "src/beta/delete.html"),
-        designers: resolve(__dirname, "src/designers.html"),
+        delete_group: resolve(__dirname, "src/html//groups/delete.html"),
+        designers: resolve(__dirname, "src/html/static/designers.html"),
 
-        event: resolve(__dirname, "src/groups/event.html"),
+        editProfile: resolve(__dirname, "src/html/editProfile.html"),
+        event: resolve(__dirname, "src/html/groups/event.html"),
 
-        faq: resolve(__dirname, "src/faq.html"),
-        feedback: resolve(__dirname, "src/beta/feedback.html"),
+        faq: resolve(__dirname, "src/html/static/faq.html"),
+        feedback: resolve(__dirname, "src/html/feedback.html"),
 
-        gameStores: resolve(__dirname, "src/gameStores.html"),
-        gameRestaurants: resolve(__dirname, "src/gameRestaurants.html"),
-        groups: resolve(__dirname, "src/groups.html"),
+        gameStores: resolve(__dirname, "src/html/gameStores.html"),
+        gameRestaurants: resolve(__dirname, "src/html/gameRestaurants.html"),
+        groups: resolve(__dirname, "src/html/groups/groups.html"),
 
-        landing: resolve(__dirname,"src/landing.html"),
-        links: resolve(__dirname, "src/links.html"),
-        login: resolve(__dirname, "src/beta/login.html"),
+        join: resolve(__dirname, "src/html/join.html"),
 
-        main: resolve(__dirname, "src/index.html"),
+        landing: resolve(__dirname,"src/html/static/landing.html"),
+        links: resolve(__dirname, "src/html/static/links.html"),
+        login: resolve(__dirname, "src/html/login.html"),
 
-        siteRules: resolve(__dirname,"src/siteRules.html"),
+        main: resolve(__dirname, "src/html/index.html"),
 
-        vision: resolve(__dirname,"src/vision.html")
+        siteRules: resolve(__dirname,"src/html/static/siteRules.html"),
+
+        vision: resolve(__dirname,"src/html/static/vision.html")
       }
     },
   },

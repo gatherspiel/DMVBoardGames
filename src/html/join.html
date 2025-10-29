@@ -7,26 +7,28 @@
   <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css">
   <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css">
 
-  <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
+  <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
   <script
     defer
     fetchpriority="low"
     type="module"
   >
-    import {FaqComponent} from "./shared/html/FaqComponent.js";
-    customElements.define("faq-component",FaqComponent)
+      import {JoinComponent} from "../shared/html/JoinComponent.ts";
+      customElements.define("join-component",JoinComponent)
 
-    import {BotHelper} from "./beta/botHelper.js";
+      import {BotHelper} from "../beta/botHelper.js";
 
-    window.onload = function() {
-      BotHelper();
-    }
+      window.onload = function() {
+          BotHelper();
+      }
   </script>
 </head>
 <body>
 <div id ="container">
   {{>navbar}}
-  <faq-component></faq-component>
+  <join-component></join-component>
+  <div id="bot-container"></div>
+
 </div>
 </body>
 </html>

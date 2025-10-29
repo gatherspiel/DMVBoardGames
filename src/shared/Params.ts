@@ -22,3 +22,4 @@ export const SUPABASE_CLIENT_KEY =
     : import.meta.env.VITE_LOCAL_AUTH_KEY;
 
 export const AUTH_TOKEN_KEY = "authToken";
+

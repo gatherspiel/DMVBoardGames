@@ -1,6 +1,6 @@
 import { API_ROOT } from "../../../../shared/Params.ts";
 import { DEFAULT_SEARCH_PARAMETER } from "../../components/group-search/Constants.ts";
-import {ApiLoadAction, DataStore} from "@bponnaluri/places-js";
+import {ApiLoadAction, CustomLoadAction, DataStore} from "@bponnaluri/places-js";
 import type { ApiRequestConfig } from "@bponnaluri/places-js";
 
 function getGroupsQueryConfig(searchParams: any): ApiRequestConfig {
@@ -37,3 +37,5 @@ function getGroupsQueryConfig(searchParams: any): ApiRequestConfig {
 }
 
 export const GROUP_SEARCH_STORE = new DataStore(new ApiLoadAction(getGroupsQueryConfig));
+
+export const SHOW_GROUP_LIST_STORE = new DataStore(new CustomLoadAction(()=>{}));
