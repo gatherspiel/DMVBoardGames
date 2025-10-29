@@ -10,31 +10,31 @@ import {
   EVENT_URL_INPUT,
   START_DATE_INPUT, START_TIME_INPUT
 } from "../Constants.ts";
-import {GROUP_EVENT_REQUEST_STORE} from "./GroupEventRequestStore.ts";
+import {GROUP_EVENT_REQUEST_STORE} from "../../../data/groups/GroupEventRequestStore.ts";
 import {
   getEventDetailsFromForm, validate,
 } from "./EventDetailsHandler.ts";
 
-import {generateErrorMessage} from "../../../shared/html/StatusIndicators.ts";
-import {convert24HourTimeForDisplay, convertTimeTo24Hours} from "../../../shared/data/EventDataUtils.ts";
-import {convertLocationStringForDisplay} from "../../../shared/data/EventDataUtils.ts";
+import {generateErrorMessage} from "../../shared/StatusIndicators.ts";
+import {convert24HourTimeForDisplay, convertTimeTo24Hours} from "../../../shared/utils/EventDataUtils.ts";
+import {convertLocationStringForDisplay} from "../../../shared/utils/EventDataUtils.ts";
 import {
   generateButton,
   generateLinkButton
-} from "../../../shared/html/ButtonGenerator.ts";
+} from "../../shared/ButtonGenerator.ts";
 import {
   SUCCESS_MESSAGE_KEY
 } from "../../../shared/Constants.ts";
 
 import {API_ROOT} from "../../../shared/Params.ts";
 
-import {generateSuccessMessage} from "../../../shared/html/StatusIndicators.ts";
-import {convertDateTimeForDisplay} from "../../../shared/data/EventDataUtils.ts";
-import {convertDayOfWeekForDisplay} from "../../../shared/data/DisplayNameConversion.ts";
-import {getDayOfWeekSelectHtml} from "../../../shared/html/SelectGenerator.ts";
+import {generateSuccessMessage} from "../../shared/StatusIndicators.ts";
+import {convertDateTimeForDisplay} from "../../../shared/utils/EventDataUtils.ts";
+import {convertDayOfWeekForDisplay} from "../../../shared/utils/DisplayNameConversion.ts";
+import {getDayOfWeekSelectHtml} from "../../shared/SelectGenerator.ts";
 
-import {ImageUploadComponent} from "../../../shared/html/ImageUploadComponent.ts";
-import {LoginStatusComponent} from "../../../shared/html/LoginStatusComponent.ts";
+import {ImageUploadComponent} from "../../shared/ImageUploadComponent.ts";
+import {LoginStatusComponent} from "../../shared/LoginStatusComponent.ts";
 
 customElements.define("image-upload-component",ImageUploadComponent)
 customElements.define("login-status-component", LoginStatusComponent);
@@ -326,7 +326,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       ${generateLinkButton({
         class: "back-to-group-button",
         text: "Back to group information",
-        url: `${window.location.origin}/groups.html?name=${encodeURIComponent(data.groupName)}`
+        url: `${window.location.origin}/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}`
       })}
       </div>
     `

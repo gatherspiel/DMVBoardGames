@@ -9,14 +9,13 @@ import { ViteMinifyPlugin } from 'vite-plugin-minify'
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-  base: "./",
   plugins: [
     checker({
       // e.g. use TypeScript check
       typescript: true,
     }),
     handlebars({
-      partialDirectory: resolve(__dirname, 'src/partials'),
+      partialDirectory: resolve(__dirname, 'src/html/partials'),
     }),
     inlineSource(),
     ViteMinifyPlugin({}),
@@ -30,14 +29,14 @@ export default defineConfig({
     rollupOptions: {
       input: {
         conventions: resolve(__dirname, "src/html/conventions.html"),
-        create_account: resolve(__dirname,"src/html/createAccount.html"),
+        create_account: resolve(__dirname,"src/html/user/createAccount.html"),
         create_groups: resolve(__dirname, "src/html/groups/create.html"),
         create_event: resolve(__dirname, "src/html//groups/addEvent.html"),
 
         delete_group: resolve(__dirname, "src/html//groups/delete.html"),
         designers: resolve(__dirname, "src/html/static/designers.html"),
 
-        editProfile: resolve(__dirname, "src/html/editProfile.html"),
+        editProfile: resolve(__dirname, "src/html/user/editProfile.html"),
         event: resolve(__dirname, "src/html/groups/event.html"),
 
         faq: resolve(__dirname, "src/html/static/faq.html"),
@@ -51,9 +50,9 @@ export default defineConfig({
 
         landing: resolve(__dirname,"src/html/static/landing.html"),
         links: resolve(__dirname, "src/html/static/links.html"),
-        login: resolve(__dirname, "src/html/login.html"),
+        login: resolve(__dirname, "src/html/user/login.html"),
 
-        main: resolve(__dirname, "src/html/index.html"),
+        main: resolve(__dirname, "src/index.html"),
 
         siteRules: resolve(__dirname,"src/html/static/siteRules.html"),
 

@@ -1,6 +1,6 @@
 import {a, setupDomMethodsForBots} from "./data.js";
 import {setupScreenForBots} from "./data.js";
-import {ImageUploadComponent} from "../shared/html/ImageUploadComponent.js";
+import {ImageUploadComponent} from "../ui/shared/ImageUploadComponent.ts";
 import {
   DAY_OF_WEEK_INPUT,
   END_TIME_INPUT,

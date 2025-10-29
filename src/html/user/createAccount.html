@@ -5,27 +5,30 @@
   <meta charset="UTF-8"/>
   <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
   <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
-  <title>Conventions</title>
-  <link rel="preconnect" href="localhost:7070" />
-  <link rel="preconnect" href="api.gatherspiel.com" />
 
-  <script type="module">
-    import {ConventionListComponent} from "../ui/list/ConventionListComponent.ts";
-    customElements.define("convention-list-component",ConventionListComponent)
-  </script>
 
   <link rel="icon" type="image/ico" href="/assets/images/favicon.ico"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DMV Board Games</title>
+  <title>Create account</title>
+
+  <script
+    defer
+    fetchpriority="low"
+    type="module"
+  >
+    import {CreateAccountComponent} from "../../ui/user/CreateAccountComponent.ts";
+    customElements.define("create-account-component", CreateAccountComponent);
+
+    import {BotHelper} from "../../beta/botHelper.js";
+    BotHelper();
+  </script>
 </head>
 <body>
-
 <div id="container">
   {{>navbar}}
-  <convention-list-component>
-  </convention-list-component>
+
+  <create-account-component class="ui-section">
+  </create-account-component>
 </div>
-
-
 </body>
 </html>

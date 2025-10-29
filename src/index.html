@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script async type="module">
+      console.log("Starting to parse Javascript at:" + Date.now())
+      import {GroupSearchComponent} from "./ui/list/group-search/GroupSearchComponent.ts";
+      import {GroupListComponent} from "./ui/list/GroupListComponent.ts";
+      import {LoginStatusComponent} from "./ui/shared/LoginStatusComponent.ts";
+      import {OpenCreateGroupComponent} from "./ui/list/OpenCreateGroupComponent.ts";
+
+      customElements.define("group-list-component", GroupListComponent);
+      customElements.define("group-search-component", GroupSearchComponent);
+      customElements.define("login-status-component",LoginStatusComponent)
+      customElements.define("open-create-group-component", OpenCreateGroupComponent);
+    </script>
+    <meta charset="UTF-8"/>
+    <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
+    <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
+    <link rel="preconnect" href="api.gatherspiel.com" />
+    <link rel="icon" type="image/ico" href="/assets/images/favicon.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>DMV Board Games</title>
+  </head>
+  <body>
+
+    <div id="container">
+      {{>navbar}}
+      <div id="user-actions-menu">
+
+        <nav class="raised">
+          <span class="shadow"></span>
+          <span class="edge"></span>
+          <span class="front" id="user-actions-front">
+              <div class="top-nav-secondary">
+                <open-create-group-component>
+                </open-create-group-component>
+              </div>
+          </span>
+        </nav>
+      </div>
+      <group-search-component class = "ui-section" id="group-search-component">
+      </group-search-component>
+      <group-list-component></group-list-component>
+
+    </div>
+
+    <div id="bot-container">
+
+    </div>
+    {{>footer}}
+  </body>
+</html>
