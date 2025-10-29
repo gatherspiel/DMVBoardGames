@@ -13,7 +13,8 @@
     fetchpriority="low"
     type="module"
   >
-    import {SiteRulesComponent} from "../../shared/html/SiteRulesComponent.ts";
+
+    import {SiteRulesComponent} from "../../ui/static/SiteRulesComponent.js";
     customElements.define('site-rules-component',SiteRulesComponent)
 
     import {BotHelper} from "../../beta/botHelper.js";
@@ -27,6 +28,8 @@
 <div id ="container">
   {{>navbar}}
   <site-rules-component></site-rules-component>
+  <div id="bot-container"></div>
+
 </div>
 </body>
 </html>

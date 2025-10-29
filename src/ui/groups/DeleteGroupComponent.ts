@@ -1,13 +1,13 @@
 import {ApiActionTypes, BaseDynamicComponent, ApiLoadAction} from "@bponnaluri/places-js";
 import { GROUP_NAME_INPUT } from "./Constants.ts";
-import {generateButton} from "../../shared/html/ButtonGenerator.ts";
-import {generateErrorMessage, generateSuccessMessage} from "../../shared/html/StatusIndicators.ts";
+import {generateButton} from "../shared/ButtonGenerator.ts";
+import {generateErrorMessage, generateSuccessMessage} from "../shared/StatusIndicators.ts";
 import {
   SUCCESS_MESSAGE_KEY
 } from "../../shared/Constants.ts";
 
 import {API_ROOT} from "../../shared/Params.ts";
-import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
+import {LOGIN_STORE} from "../../data/auth/LoginStore.ts";
 
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 

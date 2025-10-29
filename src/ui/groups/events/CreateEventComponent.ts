@@ -11,20 +11,20 @@ import {
   EVENT_URL_INPUT,
   START_DATE_INPUT, START_TIME_INPUT,
 } from "../Constants.ts";
-import {generateButton, generateLinkButton} from "../../../shared/html/ButtonGenerator.ts";
+import {generateButton, generateLinkButton} from "../../shared/ButtonGenerator.ts";
 import {
   ERROR_MESSAGE_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../../shared/Constants.ts";
 
-import {generateErrorMessage, generateSuccessMessage} from "../../../shared/html/StatusIndicators.ts";
+import {generateErrorMessage, generateSuccessMessage} from "../../shared/StatusIndicators.ts";
 import {getEventDetailsFromForm, validate} from "./EventDetailsHandler.ts";
 import {API_ROOT, IS_PRODUCTION} from "../../../shared/Params.ts";
-import {getDayOfWeekSelectHtml} from "../../../shared/html/SelectGenerator.ts";
-import {LOGIN_STORE} from "../../auth/data/LoginStore.ts";
+import {getDayOfWeekSelectHtml} from "../../shared/SelectGenerator.ts";
+import {LOGIN_STORE} from "../../../data/auth/LoginStore.ts";
 
-import {ImageUploadComponent} from "../../../shared/html/ImageUploadComponent.ts";
-import {LoginStatusComponent} from "../../../shared/html/LoginStatusComponent.ts";
+import {ImageUploadComponent} from "../../shared/ImageUploadComponent.ts";
+import {LoginStatusComponent} from "../../shared/LoginStatusComponent.ts";
 
 customElements.define("image-upload-component",ImageUploadComponent)
 customElements.define("login-status-component",LoginStatusComponent)

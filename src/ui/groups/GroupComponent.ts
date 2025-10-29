@@ -14,22 +14,22 @@ import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import {
   convert24HourTimeForDisplay,
   convertLocationStringForDisplay,
-} from "../../shared/data/EventDataUtils.ts";
+} from "../../shared/utils/EventDataUtils.ts";
 import {
   generateButton,
   generateLinkButton
-} from "../../shared/html/ButtonGenerator.ts";
+} from "../shared/ButtonGenerator.ts";
 import {
   ERROR_MESSAGE_KEY,
   SUCCESS_MESSAGE_KEY
 } from "../../shared/Constants.ts";
 import {API_ROOT} from "../../shared/Params.ts";
 
-import {LoginStatusComponent} from "../../shared/html/LoginStatusComponent.ts";
-import {convertDayOfWeekForDisplay} from "../../shared/data/DisplayNameConversion.ts";
-import {generateErrorMessage, generateSuccessMessage} from "../../shared/html/StatusIndicators.ts";
-import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
-import {ImageUploadComponent} from "../../shared/html/ImageUploadComponent.ts";
+import {LoginStatusComponent} from "../shared/LoginStatusComponent.ts";
+import {convertDayOfWeekForDisplay} from "../../shared/utils/DisplayNameConversion.ts";
+import {generateErrorMessage, generateSuccessMessage} from "../shared/StatusIndicators.ts";
+import {getGameTypeTagSelectHtml, getTagSelectedState} from "../shared/SelectGenerator.ts";
+import {ImageUploadComponent} from "../shared/ImageUploadComponent.ts";
 
 customElements.define("login-status-component", LoginStatusComponent);
 customElements.define('image-upload-component',ImageUploadComponent)
@@ -327,8 +327,8 @@ export class GroupComponent extends BaseDynamicComponent {
   renderGroupEditUI(groupData:any):string {
     return `
       <span id="${EDIT_GROUP_BUTTON_ID}">Edit group information</span>
-      <a href="beta/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}">Add event</a>
-      <a href="beta/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}">Delete group</a>
+      <a href="/html/groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}">Add event</a>
+      <a href="/html/groups/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}">Delete group</a>
     `
   }
   renderWeeklyEventData(eventData:any, groupId:any, key:string){
@@ -337,7 +337,7 @@ export class GroupComponent extends BaseDynamicComponent {
       <div id=${key} class="event">
         ${generateLinkButton({
           text: eventData.name,
-          url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
+          url: `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
         })}
         <p class="event-time">
           ${dayString}s from ${convert24HourTimeForDisplay(eventData.startTime)} to 
@@ -356,7 +356,7 @@ export class GroupComponent extends BaseDynamicComponent {
       <div id=${key} class="event">
         ${generateLinkButton({
           text: eventData.name,
-          url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
+          url: `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
         })}
         <p class = "event-time">${startDate} ${convert24HourTimeForDisplay(eventData.startTime)}</p>
         <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
