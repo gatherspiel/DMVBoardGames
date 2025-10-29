@@ -3,21 +3,18 @@
 <head>
 
   <meta charset="UTF-8"/>
-  <title>Game restaurants</title>
   <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
   <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
-
+  <title>Conventions</title>
   <link rel="preconnect" href="localhost:7070" />
   <link rel="preconnect" href="api.gatherspiel.com" />
 
   <script type="module">
-    import {
-      GameRestaurantListComponent,
-    } from "./ui/list/components/GameRestaurantListComponent.js";
-    customElements.define("game-restaurant-list-component",GameRestaurantListComponent)
+    import {ConventionListComponent} from "../ui/list/components/ConventionListComponent.ts";
+    customElements.define("convention-list-component",ConventionListComponent)
   </script>
 
-  <link rel="icon" type="image/ico" href="/assets/favicon.ico"/>
+  <link rel="icon" type="image/ico" href="/assets/images/favicon.ico"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DMV Board Games</title>
 </head>
@@ -25,9 +22,8 @@
 
 <div id="container">
   {{>navbar}}
-
-  <game-restaurant-list-component>
-  </game-restaurant-list-component>
+  <convention-list-component>
+  </convention-list-component>
 </div>
 
 

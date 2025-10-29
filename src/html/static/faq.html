@@ -3,30 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Site rules</title>
+  <title>FAQ</title>
   <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css">
   <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css">
 
-  <link rel="icon" type="image/ico" href="/assets/favicon.ico" />
+  <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
   <script
     defer
     fetchpriority="low"
     type="module"
   >
-    import {SiteRulesComponent} from "./shared/html/SiteRulesComponent.ts";
-    customElements.define('site-rules-component',SiteRulesComponent)
+    import {FaqComponent} from "../../shared/html/FaqComponent.ts";
+    customElements.define("faq-component",FaqComponent)
 
-    import {BotHelper} from "./beta/botHelper.js";
+    import {BotHelper} from "../../beta/botHelper.js";
+
     window.onload = function() {
       BotHelper();
     }
-
   </script>
 </head>
 <body>
 <div id ="container">
   {{>navbar}}
-  <site-rules-component></site-rules-component>
+  <faq-component></faq-component>
+  <div id="bot-container"></div>
+
 </div>
 </body>
 </html>
