@@ -1,14 +1,12 @@
 import {
-  BaseDynamicComponent,
+  BaseTemplateComponent,
 } from "@bponnaluri/places-js";
-export class FaqComponent extends BaseDynamicComponent {
+export class FaqComponent extends BaseTemplateComponent {
   constructor() {
     super()
   }
 
-  connectedCallback(){
-    this.updateData({})
-  }
+
   override getTemplateStyle(): string {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>

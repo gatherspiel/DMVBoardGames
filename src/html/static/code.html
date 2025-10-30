@@ -13,20 +13,21 @@
     fetchpriority="low"
     type="module"
   >
-      import {JoinComponent} from "../ui/static/JoinComponent.ts";
-      customElements.define("join-component",JoinComponent)
 
-      import {BotHelper} from "../beta/botHelper.js";
+    import {CodeComponent} from "../../ui/static/CodeComponent.js";
+    customElements.define("code-component",CodeComponent)
 
-      window.onload = function() {
-          BotHelper();
-      }
+    import {GetGameAdvice} from "../../beta/getGameAdvice.js";
+
+    window.onload = function() {
+      GetGameAdvice();
+    }
   </script>
 </head>
 <body>
 <div id ="container">
   {{>navbar}}
-  <join-component></join-component>
+  <code-component></code-component>
   <div id="bot-container"></div>
 
 </div>

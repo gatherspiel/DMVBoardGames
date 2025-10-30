@@ -1,4 +1,4 @@
-import { API_ROOT } from "../../shared/Params.ts";
+import { API_ROOT } from "../../ui/shared/Params.ts";
 
 import {ApiLoadAction, type ApiRequestConfig, DataStore} from "@bponnaluri/places-js";
 

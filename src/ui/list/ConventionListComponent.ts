@@ -1,9 +1,9 @@
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
-import { generateLinkButton} from "../shared/ButtonGenerator.ts";
 
 import {CONVENTIONS_STORE} from "../../data/list/LocationsStore.ts";
 
-import {convertDateListToRange} from "../../shared/utils/EventDataUtils.ts";
+import {convertDateListToRange} from "../../shared/EventDataUtils.ts";
+import {generateLinkButton} from "../../shared/html/ButtonGenerator.ts";
 
 export class ConventionListComponent extends BaseDynamicComponent {
   constructor() {

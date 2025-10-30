@@ -1,5 +1,5 @@
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
-import {generateLinkButton} from "../shared/ButtonGenerator.ts";
+import {generateLinkButton} from "../../shared/html/ButtonGenerator.ts";
 import {GAME_STORE_DATA} from "../../data/list/LocationsStore.ts";
 
 export class GameStoreListComponent extends BaseDynamicComponent {

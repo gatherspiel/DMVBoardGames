@@ -4,12 +4,11 @@ import {
   BaseDynamicComponent,
 } from "@bponnaluri/places-js";
 import {API_ROOT} from "../shared/Params.ts";
-import {generateErrorMessage, generateSuccessMessage} from "./shared/StatusIndicators.ts";
-import {generateButton} from "./shared/ButtonGenerator.ts";
 
-import {ImageUploadComponent} from "../shared/zeroDepComponents/ImageUploadComponent.ts";
-import {SUCCESS_MESSAGE_KEY} from "../shared/Constants.ts";
-import {USER_DATA_STORE} from "../data/auth/UserDataStore.ts";
+import {USER_DATA_STORE} from "../../data/auth/UserDataStore.ts";
+import {generateErrorMessage, generateSuccessMessage, SUCCESS_MESSAGE_KEY} from "../../shared/html/StatusIndicators.ts";
+import {generateButton} from "../../shared/html/ButtonGenerator.ts";
+import  {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.ts";
 customElements.define('image-upload-component', ImageUploadComponent);
 
 const UPDATE_USER_DATA_ID = "update-user-data";
@@ -33,6 +32,7 @@ export class EditProfileComponent extends BaseDynamicComponent {
       </style>      
     `
   }
+
 
   override attachHandlersToShadowRoot(shadowRoot:ShadowRoot){
 

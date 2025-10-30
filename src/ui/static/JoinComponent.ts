@@ -1,14 +1,12 @@
 import {
-  BaseDynamicComponent,
+   BaseTemplateComponent,
 } from "@bponnaluri/places-js";
-export class JoinComponent extends BaseDynamicComponent {
+export class JoinComponent extends BaseTemplateComponent {
   constructor() {
     super()
   }
 
-  connectedCallback(){
-    this.updateData({})
-  }
+
   override getTemplateStyle(): string {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
@@ -36,6 +34,7 @@ export class JoinComponent extends BaseDynamicComponent {
           <li>Backend: Java</li>
           <li>Database: PostgreSQL</li>
 </ul>
+        See more technical details about the project <a href="/html/static/code.html">here.</a>
         Source code for the project is <a href="https://github.com/gatherspiel">here.</a>
       <li><b>Testing</b></li>
         <ul>

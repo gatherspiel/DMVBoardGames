@@ -19,11 +19,11 @@
     fetchpriority="low"
     type="module"
   >
-    import {BotHelper} from "../../beta/botHelper.js";
+    import {GetGameAdvice} from "../../beta/getGameAdvice.js";
     import {LoginStatusComponent} from "../../ui/shared/LoginStatusComponent.ts";
     customElements.define("login-status-component",LoginStatusComponent)
 
-    BotHelper();
+    GetGameAdvice();
   </script>
 </head>
 <body>
@@ -57,7 +57,7 @@
 
     <h2>No personalized recommendations</h2>
 
-    <p>Dmvboardgames.com will not provide personalized recommendations. Users are encouraged to recommendations
+    <p>Dmvboardgames.com will not provide personalized recommendations. Users are encouraged to get recommendations
       through connecting with others in person at events.  When users see events or other content,
       it should be because they made a decision to view that content.
     </p>

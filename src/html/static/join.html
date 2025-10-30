@@ -13,20 +13,20 @@
     fetchpriority="low"
     type="module"
   >
-    import {FaqComponent} from "../../ui/static/FaqComponent.ts";
-    customElements.define("faq-component",FaqComponent)
+      import {JoinComponent} from "../../ui/static/JoinComponent.ts";
+      customElements.define("join-component",JoinComponent)
 
-    import {GetGameAdvice} from "../../beta/getGameAdvice.js";
+      import {GetGameAdvice} from "../../beta/getGameAdvice.js";
 
-    window.onload = function() {
-      GetGameAdvice();
-    }
+      window.onload = function() {
+          GetGameAdvice();
+      }
   </script>
 </head>
 <body>
 <div id ="container">
   {{>navbar}}
-  <faq-component></faq-component>
+  <join-component></join-component>
   <div id="bot-container"></div>
 
 </div>

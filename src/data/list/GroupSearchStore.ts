@@ -1,7 +1,7 @@
-import { API_ROOT } from "../../shared/Params.ts";
-import { DEFAULT_SEARCH_PARAMETER } from "../../ui/list/group-search/Constants.ts";
+import { API_ROOT } from "../../ui/shared/Params.ts";
 import {ApiLoadAction, CustomLoadAction, DataStore} from "@bponnaluri/places-js";
 import type { ApiRequestConfig } from "@bponnaluri/places-js";
+import {DEFAULT_SEARCH_PARAMETER} from "../../shared/html/SelectGenerator.ts";
 
 function getGroupsQueryConfig(searchParams: any): ApiRequestConfig {
 

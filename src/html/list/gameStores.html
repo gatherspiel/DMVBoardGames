@@ -3,15 +3,16 @@
 <head>
 
   <meta charset="UTF-8"/>
+  <title>Game stores</title>
   <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
   <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
-  <title>Conventions</title>
+
   <link rel="preconnect" href="localhost:7070" />
   <link rel="preconnect" href="api.gatherspiel.com" />
 
   <script type="module">
-    import {ConventionListComponent} from "../ui/list/ConventionListComponent.ts";
-    customElements.define("convention-list-component",ConventionListComponent)
+    import {GameStoreListComponent} from "../../ui/list/GameStoreListComponent.ts";
+    customElements.define("game-store-list-component",GameStoreListComponent)
   </script>
 
   <link rel="icon" type="image/ico" href="/assets/images/favicon.ico"/>
@@ -20,12 +21,12 @@
 </head>
 <body>
 
-<div id="container">
-  {{>navbar}}
-  <convention-list-component>
-  </convention-list-component>
-</div>
+    <div id="container">
+      {{>navbar}}
 
+      <game-store-list-component>
+      </game-store-list-component>
+    </div>
 
-</body>
+  </body>
 </html>

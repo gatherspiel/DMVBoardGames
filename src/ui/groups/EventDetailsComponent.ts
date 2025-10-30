@@ -3,39 +3,36 @@ import {
   BaseDynamicComponent, ApiLoadAction
 } from "@bponnaluri/places-js";
 import {
-  DAY_OF_WEEK_INPUT,
   END_TIME_INPUT,
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT, EVENT_ORGANIZER_INPUT,
   EVENT_URL_INPUT,
   START_DATE_INPUT, START_TIME_INPUT
-} from "../Constants.ts";
-import {GROUP_EVENT_REQUEST_STORE} from "../../../data/groups/GroupEventRequestStore.ts";
+} from "./Constants.ts";
+import {GROUP_EVENT_REQUEST_STORE} from "../../data/groups/GroupEventRequestStore.ts";
 import {
   getEventDetailsFromForm, validate,
 } from "./EventDetailsHandler.ts";
 
-import {generateErrorMessage} from "../../shared/StatusIndicators.ts";
-import {convert24HourTimeForDisplay, convertTimeTo24Hours} from "../../../shared/utils/EventDataUtils.ts";
-import {convertLocationStringForDisplay} from "../../../shared/utils/EventDataUtils.ts";
+import {convert24HourTimeForDisplay, convertTimeTo24Hours} from "../../shared/EventDataUtils.ts";
+import {convertLocationStringForDisplay} from "../../shared/EventDataUtils.ts";
+
+
+import {API_ROOT} from "../shared/Params.ts";
+
+import {convertDateTimeForDisplay} from "../../shared/EventDataUtils.ts";
+import {convertDayOfWeekForDisplay} from "../../shared/DisplayNameConversion.ts";
+import {DAY_OF_WEEK_INPUT, getDayOfWeekSelectHtml} from "../../shared/html/SelectGenerator.ts";
+
+import {LoginStatusComponent} from "../shared/LoginStatusComponent.ts";
 import {
-  generateButton,
-  generateLinkButton
-} from "../../shared/ButtonGenerator.ts";
-import {
+  generateErrorMessage,
+  generateSuccessMessage,
   SUCCESS_MESSAGE_KEY
-} from "../../../shared/Constants.ts";
-
-import {API_ROOT} from "../../../shared/Params.ts";
-
-import {generateSuccessMessage} from "../../shared/StatusIndicators.ts";
-import {convertDateTimeForDisplay} from "../../../shared/utils/EventDataUtils.ts";
-import {convertDayOfWeekForDisplay} from "../../../shared/utils/DisplayNameConversion.ts";
-import {getDayOfWeekSelectHtml} from "../../shared/SelectGenerator.ts";
-
-import {ImageUploadComponent} from "../../../shared/zeroDepComponents/ImageUploadComponent.ts";
-import {LoginStatusComponent} from "../../shared/LoginStatusComponent.ts";
-import {RsvpComponent} from "../../../shared/zeroDepComponents/RsvpComponent.ts";
+} from "../../shared/html/StatusIndicators.ts";
+import {generateButton, generateLinkButton} from "../../shared/html/ButtonGenerator.ts";
+import {RsvpComponent} from "../../shared/components/RsvpComponent.ts";
+import {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.ts";
 
 customElements.define("image-upload-component",ImageUploadComponent)
 customElements.define("login-status-component", LoginStatusComponent);

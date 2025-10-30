@@ -1,4 +1,4 @@
-import { API_ROOT } from "../../shared/Params.js";
+import { API_ROOT } from "../../ui/shared/Params.js";
 import {ApiLoadAction, type ApiRequestConfig, DataStore} from "@bponnaluri/places-js";
 
 function getEventRequestConfig(): ApiRequestConfig {

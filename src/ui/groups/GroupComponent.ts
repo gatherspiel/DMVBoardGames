@@ -14,23 +14,22 @@ import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import {
   convert24HourTimeForDisplay,
   convertLocationStringForDisplay,
-} from "../../shared/utils/EventDataUtils.ts";
-import {
-  generateButton,
-  generateLinkButton
-} from "../shared/ButtonGenerator.ts";
+} from "../../shared/EventDataUtils.ts";
+
+import {API_ROOT} from "../shared/Params.ts";
+import {convertDayOfWeekForDisplay} from "../../shared/DisplayNameConversion.ts";
+import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
+
+import {LoginStatusComponent} from "../shared/LoginStatusComponent.ts";
 import {
   ERROR_MESSAGE_KEY,
+  generateErrorMessage,
+  generateSuccessMessage,
   SUCCESS_MESSAGE_KEY
-} from "../../shared/Constants.ts";
-import {API_ROOT} from "../../shared/Params.ts";
-import {convertDayOfWeekForDisplay} from "../../shared/utils/DisplayNameConversion.ts";
-import {generateErrorMessage, generateSuccessMessage} from "../shared/StatusIndicators.ts";
-import {getGameTypeTagSelectHtml, getTagSelectedState} from "../shared/SelectGenerator.ts";
-
-import {ImageUploadComponent} from "../../shared/zeroDepComponents/ImageUploadComponent.ts";
-import {LoginStatusComponent} from "../shared/LoginStatusComponent.ts";
-import {RsvpComponent} from "../../shared/zeroDepComponents/RsvpComponent.ts";
+} from "../../shared/html/StatusIndicators.ts";
+import  {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.ts";
+import {generateButton, generateLinkButton} from "../../shared/html/ButtonGenerator.ts";
+import {RsvpComponent} from "../../shared/components/RsvpComponent.ts";
 
 customElements.define('image-upload-component',ImageUploadComponent)
 customElements.define("login-status-component", LoginStatusComponent);

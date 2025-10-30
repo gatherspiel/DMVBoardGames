@@ -4,27 +4,27 @@ import {
   BaseDynamicComponent,
 } from "@bponnaluri/places-js";
 import {
-  DAY_OF_WEEK_INPUT,
   END_TIME_INPUT,
   EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT,
   EVENT_URL_INPUT,
   START_DATE_INPUT, START_TIME_INPUT,
-} from "../Constants.ts";
-import {generateButton, generateLinkButton} from "../../shared/ButtonGenerator.ts";
+} from "./Constants.ts";
+
+import {getEventDetailsFromForm, validate} from "./EventDetailsHandler.ts";
+import {API_ROOT, IS_PRODUCTION} from "../shared/Params.ts";
+import {DAY_OF_WEEK_INPUT, getDayOfWeekSelectHtml} from "../../shared/html/SelectGenerator.ts";
+import {LOGIN_STORE} from "../../data/auth/LoginStore.ts";
+
+import {LoginStatusComponent} from "../shared/LoginStatusComponent.ts";
+import {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.ts";
 import {
   ERROR_MESSAGE_KEY,
+  generateErrorMessage,
+  generateSuccessMessage,
   SUCCESS_MESSAGE_KEY
-} from "../../../shared/Constants.ts";
-
-import {generateErrorMessage, generateSuccessMessage} from "../../shared/StatusIndicators.ts";
-import {getEventDetailsFromForm, validate} from "./EventDetailsHandler.ts";
-import {API_ROOT, IS_PRODUCTION} from "../../../shared/Params.ts";
-import {getDayOfWeekSelectHtml} from "../../shared/SelectGenerator.ts";
-import {LOGIN_STORE} from "../../../data/auth/LoginStore.ts";
-
-import {ImageUploadComponent} from "../../../shared/zeroDepComponents/ImageUploadComponent.ts";
-import {LoginStatusComponent} from "../../shared/LoginStatusComponent.ts";
+} from "../../shared/html/StatusIndicators.ts";
+import {generateButton, generateLinkButton} from "../../shared/html/ButtonGenerator.ts";
 
 customElements.define("image-upload-component",ImageUploadComponent)
 customElements.define("login-status-component",LoginStatusComponent)

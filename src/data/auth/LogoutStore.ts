@@ -1,6 +1,6 @@
 import {CustomLoadAction, DataStore} from "@bponnaluri/places-js";
 import { AuthResponse } from "../../ui/user/AuthResponse.ts";
-import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../shared/Params.ts";
+import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../ui/shared/Params.ts";
 import {deleteLocalStoreData, getLocalStorageDataIfPresent} from "@bponnaluri/places-js";
 
 async function retrieveData() {

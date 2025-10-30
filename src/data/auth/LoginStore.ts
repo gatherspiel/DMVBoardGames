@@ -1,13 +1,15 @@
-import { AuthResponse } from "../../ui/user/AuthResponse.ts";
+import {AuthResponse} from "../../ui/user/AuthResponse.ts";
 import {
   addLocalStorageData,
   clearSessionStorage,
   CustomLoadAction,
+  DataStore,
   getLocalStorageDataIfPresent
 } from "@bponnaluri/places-js";
-import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../shared/Params.ts";
+import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../ui/shared/Params.ts";
 
-import {DataStore} from "@bponnaluri/places-js";
+
+export const IS_LOGGED_IN_KEY = "loggedIn";
 
 async function retrieveData(
   params: any

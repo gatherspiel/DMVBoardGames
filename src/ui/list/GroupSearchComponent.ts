@@ -1,21 +1,18 @@
 import {
-  DEFAULT_SEARCH_PARAMETER,
-} from "./Constants.ts";
-
-import {
   CITY_LIST_STORE,
-} from "../../../data/list/CityListStore.ts";
+} from "../../data/list/CityListStore.ts";
 
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
-import {generateButton, generateDisabledButton} from "../../shared/ButtonGenerator.ts";
-import {GROUP_SEARCH_STORE, SHOW_GROUP_LIST_STORE} from "../../../data/list/GroupSearchStore.ts";
+import {GROUP_SEARCH_STORE, SHOW_GROUP_LIST_STORE} from "../../data/list/GroupSearchStore.ts";
 import {
+  DEFAULT_SEARCH_PARAMETER,
   generateCheckedStateFromUrlParamArray,
   getDaysOfWeekSelectedState,
   getDaysOfWeekSelectHtml,
   getDropdownHtml
-} from "../../shared/SelectGenerator.ts";
-import {getDisplayName} from "../../../shared/utils/DisplayNameConversion.ts";
+} from "../../shared/html/SelectGenerator.ts";
+import {getDisplayName} from "../../shared/DisplayNameConversion.ts";
+import {generateButton, generateDisabledButton} from "../../shared/html/ButtonGenerator.ts";
 
 const DEFAULT_PARAMETER_KEY = "defaultParameter";
 const DEFAULT_PARAMETER_DISPLAY_KEY = "defaultParameterDisplay";

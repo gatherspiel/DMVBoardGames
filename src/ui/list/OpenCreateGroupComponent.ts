@@ -1,7 +1,5 @@
-import {IS_LOGGED_IN_KEY} from "../../shared/Constants.ts";
-
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
-import {LOGIN_STORE} from "../../data/auth/LoginStore.ts";
+import {IS_LOGGED_IN_KEY, LOGIN_STORE} from "../../data/auth/LoginStore.ts";
 
 export class OpenCreateGroupComponent extends BaseDynamicComponent {
 

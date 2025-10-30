@@ -1,18 +1,15 @@
 import {LOGIN_STORE,} from "../../data/auth/LoginStore.ts";
 import {LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT,} from "./Constants.js";
 import {
-  SUCCESS_MESSAGE_KEY,
-} from "../../shared/Constants.ts";
-import {
   ApiLoadAction,
   BaseDynamicComponent,
 } from "@bponnaluri/places-js";
-import {generateErrorMessage, generateSuccessMessage} from "../shared/StatusIndicators.ts";
-import {generateButton, generateDisabledButton} from "../shared/ButtonGenerator.ts";
-import {API_ROOT} from "../../shared/Params.ts";
+import {API_ROOT} from "../shared/Params.ts";
 
 import {SiteRulesComponent} from "../static/SiteRulesComponent.ts";
 import {FaqComponent} from "../static/FaqComponent.ts";
+import {generateErrorMessage, generateSuccessMessage, SUCCESS_MESSAGE_KEY} from "../../shared/html/StatusIndicators.ts";
+import {generateButton, generateDisabledButton} from "../../shared/html/ButtonGenerator.ts";
 customElements.define("site-rules-component", SiteRulesComponent);
 customElements.define("faq-component",FaqComponent);
 
@@ -195,6 +192,7 @@ export class CreateAccountComponent extends BaseDynamicComponent {
             id: CREATE_ACCOUNT_ID,
             text:"Create account"
           }):
+      
           generateDisabledButton({
             class: CREATE_ACCOUNT_ID_DISABLED,
             id: CREATE_ACCOUNT_ID_DISABLED,

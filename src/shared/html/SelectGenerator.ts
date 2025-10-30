@@ -1,8 +1,7 @@
-import {DAY_OF_WEEK_INPUT} from "../groups/Constants.ts";
-import {DEFAULT_SEARCH_PARAMETER} from "../list/group-search/Constants.ts";
-
 const daysOfWeek:string[]= ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
 const tags:string[] = ["Eurogames","Hidden identity games","Light games","Social games", "Wargames"]
+
+export const DEFAULT_SEARCH_PARAMETER: string = "any";
 
 export function getDropdownHtml(dropdownConfig: any) {
   return ` 
@@ -32,6 +31,8 @@ export function generateCheckedStateFromUrlParamArray(data:string | null){
   })
   return state;
 }
+
+export const DAY_OF_WEEK_INPUT: string = "day-of-week"
 
 export function getDayOfWeekSelectHtml(dayOfWeek:string){
 

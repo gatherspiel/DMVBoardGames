@@ -4,8 +4,8 @@ import {LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT,} from "./Constants.js";
 import {
   BaseDynamicComponent,
 } from "@bponnaluri/places-js";
-import {generateErrorMessage} from "../shared/StatusIndicators.ts";
-import {generateButton} from "../shared/ButtonGenerator.ts";
+import {generateButton} from "../../shared/html/ButtonGenerator.ts";
+import {generateErrorMessage} from "../../shared/html/StatusIndicators.ts";
 
 const LOGIN_BUTTON_ID = "login-button";
 
