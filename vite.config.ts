@@ -28,12 +28,12 @@ export default defineConfig({
     outDir: "../dist",
     rollupOptions: {
       input: {
-        conventions: resolve(__dirname, "src/html/conventions.html"),
+        conventions: resolve(__dirname, "src/html/list/conventions.html"),
         create_account: resolve(__dirname,"src/html/user/createAccount.html"),
         create_groups: resolve(__dirname, "src/html/groups/create.html"),
-        create_event: resolve(__dirname, "src/html//groups/addEvent.html"),
+        create_event: resolve(__dirname, "src/html/groups/addEvent.html"),
 
-        delete_group: resolve(__dirname, "src/html//groups/delete.html"),
+        delete_group: resolve(__dirname, "src/html/groups/delete.html"),
         designers: resolve(__dirname, "src/html/static/designers.html"),
 
         editProfile: resolve(__dirname, "src/html/user/editProfile.html"),
@@ -42,11 +42,11 @@ export default defineConfig({
         faq: resolve(__dirname, "src/html/static/faq.html"),
         feedback: resolve(__dirname, "src/html/feedback.html"),
 
-        gameStores: resolve(__dirname, "src/html/gameStores.html"),
-        gameRestaurants: resolve(__dirname, "src/html/gameRestaurants.html"),
+        gameStores: resolve(__dirname, "src/html/list/gameStores.html"),
+        gameRestaurants: resolve(__dirname, "src/html/list/gameRestaurants.html"),
         groups: resolve(__dirname, "src/html/groups/groups.html"),
 
-        join: resolve(__dirname, "src/html/join.html"),
+        join: resolve(__dirname, "src/html/static/join.html"),
 
         landing: resolve(__dirname,"src/html/static/landing.html"),
         links: resolve(__dirname, "src/html/static/links.html"),

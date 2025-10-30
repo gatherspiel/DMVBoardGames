@@ -31,7 +31,7 @@ import {
   SUCCESS_MESSAGE_KEY
 } from "../../shared/html/StatusIndicators.ts";
 import {generateButton, generateLinkButton} from "../../shared/html/ButtonGenerator.ts";
-import {RsvpComponent} from "../../shared/components/RsvpComponent.ts";
+import {RsvpComponent} from "./RsvpComponent.ts";
 import {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.ts";
 
 customElements.define("image-upload-component",ImageUploadComponent)

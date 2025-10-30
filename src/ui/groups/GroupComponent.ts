@@ -6,6 +6,7 @@ import {
 
 import {
   ApiActionTypes,
+
   ApiLoadAction, DataStore,
 } from "@bponnaluri/places-js";
 
@@ -29,7 +30,7 @@ import {
 } from "../../shared/html/StatusIndicators.ts";
 import  {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.ts";
 import {generateButton, generateLinkButton} from "../../shared/html/ButtonGenerator.ts";
-import {RsvpComponent} from "../../shared/components/RsvpComponent.ts";
+import {RsvpComponent} from "./RsvpComponent.ts";
 
 customElements.define('image-upload-component',ImageUploadComponent)
 customElements.define("login-status-component", LoginStatusComponent);
@@ -272,8 +273,10 @@ export class GroupComponent extends BaseDynamicComponent {
       }
     })
   }
-  renderEditMode(groupData:any):string {
+  renderEditMode(data:any):string {
 
+    console.log(data);
+    const groupData = data.groupData;
     return`
       <h2>Edit group information</h2>
       ${groupData[ERROR_MESSAGE_KEY] ? generateErrorMessage(groupData[ERROR_MESSAGE_KEY]) : ''}
@@ -342,8 +345,9 @@ export class GroupComponent extends BaseDynamicComponent {
           url: `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
         })}
         <rsvp-component
+          current-user-rsvp=${eventData.userHasRsvp}
+          event-id=${eventData.id}
           rsvp-count=${eventData.rsvpCount}
-          rsvp-url="${API_ROOT}/groups/events/${eventData.id}/rsvp"
         ></rsvp-component>
         <p class="event-time">
           ${dayString}s from ${convert24HourTimeForDisplay(eventData.startTime)} to 

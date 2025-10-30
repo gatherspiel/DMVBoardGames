@@ -36,6 +36,7 @@ export class LoginStatusComponent extends BaseDynamicComponent {
   }
 
   render(authData: any): string {
+
     if (!authData.loggedIn) {
       return `
         <a href="/html/user/login.html">Login</a>
