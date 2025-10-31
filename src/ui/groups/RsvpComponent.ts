@@ -93,12 +93,12 @@ export class RsvpComponent extends BaseDynamicComponent {
       data.userHasRsvp ? "Cancel RSVP" : "RSVP";
     return `
 
-      <button 
+     ${this.getAttribute("user-can-update-rsvp") !== "false"  ? `<button 
         class="raised activeHover"
       >  
         <span class="edge"></span>
         <span class="front">${rsvpButtonText}</span>   
-      </button>
+      </button>` : ``}
       
       <p>${rsvpStr}</p>
       ${generateErrorMessage(data.errorMessage)}
