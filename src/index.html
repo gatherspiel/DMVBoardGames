@@ -3,10 +3,10 @@
   <head>
     <script async type="module">
       console.log("Starting to parse Javascript at:" + Date.now())
-      import {GroupSearchComponent} from "./ui/list/components/group-search/GroupSearchComponent.js";
-      import {GroupListComponent} from "./ui/list/components/GroupListComponent.js";
-      import {LoginStatusComponent} from "./shared/html/LoginStatusComponent.js";
-      import {OpenCreateGroupComponent} from "./ui/list/components/OpenCreateGroupComponent.js";
+      import {GroupSearchComponent} from "./ui/list/GroupSearchComponent.ts";
+      import {GroupListComponent} from "./ui/list/GroupListComponent.ts";
+      import {LoginStatusComponent} from "./ui/shared/LoginStatusComponent.ts";
+      import {OpenCreateGroupComponent} from "./ui/list/OpenCreateGroupComponent.ts";
 
       customElements.define("group-list-component", GroupListComponent);
       customElements.define("group-search-component", GroupSearchComponent);
@@ -17,7 +17,7 @@
     <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
     <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
     <link rel="preconnect" href="api.gatherspiel.com" />
-    <link rel="icon" type="image/ico" href="/assets/favicon.ico"/>
+    <link rel="icon" type="image/ico" href="/assets/images/favicon.ico"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>DMV Board Games</title>
   </head>

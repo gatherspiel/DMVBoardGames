@@ -17,3 +17,6 @@ export function generateSuccessMessage(message: string | undefined) {
     ${message ? `<span class="success-message">${message}</span>` : ''}
   `
 }
+
+export const SUCCESS_MESSAGE_KEY = "successMessage";
+export const ERROR_MESSAGE_KEY = "errorMessage";
