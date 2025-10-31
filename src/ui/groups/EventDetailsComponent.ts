@@ -501,7 +501,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     return `
       <div class="ui-section">
         <h1>${data.name}</h1>
-        ${data.url ? generateLinkButton({
+        ${data.url && !data.url.startsWith('https://dmvobardgames.com/groups/event.html')? generateLinkButton({
             class:"event-website-link",
             text: "Event website", 
             url: data.url
