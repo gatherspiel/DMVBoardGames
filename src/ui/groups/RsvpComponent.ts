@@ -50,9 +50,11 @@ export class RsvpComponent extends BaseDynamicComponent {
             if(response.errorMessage){
               self.updateData({
                 [ERROR_MESSAGE_KEY]: "Failed RSVP:"+response.errorMessage,
+                [SUCCESS_MESSAGE_KEY]: '',
               })
             } else {
               self.updateData({
+                [ERROR_MESSAGE_KEY]: '',
                 [SUCCESS_MESSAGE_KEY]: "RSVP successful",
                 rsvpCount: self.componentStore.rsvpCount + 1,
                 userHasRsvp: true
@@ -67,9 +69,11 @@ export class RsvpComponent extends BaseDynamicComponent {
             if(response.errorMessage){
               self.updateData({
                 [ERROR_MESSAGE_KEY]: "Failed to cancel RSVP:"+response.errorMessage,
+                [SUCCESS_MESSAGE_KEY]: ''
               })
             } else {
               self.updateData({
+                [ERROR_MESSAGE_KEY]: '',
                 [SUCCESS_MESSAGE_KEY]: "RSVP cancelled",
                 rsvpCount: self.componentStore.rsvpCount - 1,
                 userHasRsvp: false
