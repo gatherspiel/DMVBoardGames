@@ -161,27 +161,35 @@ export class CreateAccountComponent extends BaseDynamicComponent {
       <div class="ui-section" id="login-component-container">
         <form id=${LOGIN_FORM_ID}>
           <div id="ui-input">
-            <label class="" id="email">Email</label>
+            <div class="form-section">
+              <label class="required-field" id="email">Email</label>
+              <input        
+                id=${USERNAME_INPUT}
+                type="email"
+                value="${data.username}"
+              />
+             </input>   
+          </div> 
+          <div class="form-section">
+            <label class="required-field">Password</label>
             <input        
-              id=${USERNAME_INPUT}
-              type="email"
-              value="${data.username}"
+              id=${PASSWORD_INPUT}
+              type="password"
+              value="${data.password}"
+            />   
+            </input>
+          </div>
+     
+          <div class="form-section">
+            <label class="required-field">Confirm password</label>
+            <input        
+              id=${CONFIRM_PASSWORD_INPUT}
+              type="password"
+              value="${data.confirmPassword}"
             />
-           </input>    
-          <label class="">Password</label>
-          <input        
-            id=${PASSWORD_INPUT}
-            type="password"
-            value="${data.password}"
-          />
-          </input>
-          <label class="">Confirm password</label>
-          <input        
-            id=${CONFIRM_PASSWORD_INPUT}
-            type="password"
-            value="${data.confirmPassword}"
-          />
-          </input>    
+          </input>          
+          </div>
+   
          </div>
   
           ${generateErrorMessage(data.errorMessage) }
