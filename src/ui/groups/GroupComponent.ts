@@ -348,7 +348,7 @@ export class GroupComponent extends BaseDynamicComponent {
           current-user-rsvp=${eventData.userHasRsvp}
           event-id=${eventData.id}
           rsvp-count=${eventData.rsvpCount}
-          user-can-update-rsvp=${eventData.userCanUpdateRsvp}
+          user-can-update-rsvp=${eventData.permissions.userCanRsvp}
         ></rsvp-component>
         <p class="event-time">
           ${dayString}s from ${convert24HourTimeForDisplay(eventData.startTime)} to 
