@@ -528,7 +528,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           current-user-rsvp="${data.userHasRsvp}"
           event-id=${data.id}
           rsvp-count=${data.rsvpCount}
-          user-can-update-rsvp="${data.userCanUpdateRsvp}"
+          user-can-update-rsvp="${data?.permissions?.userCanRsvp}"
         ></rsvp-component>
         <div id="event-description">${data.description}</div>
       </div>
