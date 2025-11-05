@@ -24,7 +24,8 @@ export class SiteRulesComponent extends BaseTemplateComponent {
 
     <h3>General guidelines</h3>
     <ul>
-      <li>All events must be in person at a location within the DMV area and must be related to board games.</li>
+      <li>All groups and events must have board games as a primary focus.</li>
+      <li>All events must be in person at a location within the DMV area.</li>
       <li>Any links must be content relevant to an event. Content must also be visible without logging in or entering personal information.</li>
       <li>All information must be manually entered by a human without the use of bots or generative AI.</li>
     </ul>
@@ -33,9 +34,9 @@ export class SiteRulesComponent extends BaseTemplateComponent {
       <h4>External links</h4>
       <ul>
           <li>Websites that involve spending money such as an online store. If an organizer needs to collect fees for running an event,
-          , they should share payment details or collect money in person at the event.</li>
+          they should share payment details or collect money in person at the event.</li>
           <li>Business websites where an event will take place including game stores and restaurants.</li>
-          <li>Online chat groups or forums</li>
+          <li>Online chat groups or forums.</li>
       </ul>
       <h4>Other prohibited content</h4>
       <ul>
