@@ -3,21 +3,18 @@ import {
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
 } from "./Constants.ts";
-import {generateButton, generateDisabledButton} from "../../shared/html/ButtonGenerator.ts";
 import {ApiActionTypes, ApiLoadAction} from "@bponnaluri/places-js";
 import {generateErrorMessage, generateSuccessMessage} from "../../shared/html/StatusIndicators.ts";
-import {
-  IS_LOGGED_IN_KEY,
-  SUCCESS_MESSAGE_KEY
-} from "../../shared/Constants.ts";
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
-import {LOGIN_STORE} from "../auth/data/LoginStore.ts";
-import {API_ROOT} from "../../shared/Params.ts";
+import {IS_LOGGED_IN_KEY, LOGIN_STORE} from "../../data/auth/LoginStore.ts";
+import {API_ROOT} from "../shared/Params.ts";
 import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
 
-import {FaqComponent} from "../../shared/html/FaqComponent.ts";
-import {ImageUploadComponent} from "../../shared/html/ImageUploadComponent.ts";
-import {SiteRulesComponent} from "../../shared/html/SiteRulesComponent.ts";
+import {FaqComponent} from "../static/FaqComponent.ts";
+import {SiteRulesComponent} from "../static/SiteRulesComponent.ts";
+import {SUCCESS_MESSAGE_KEY} from "../../shared/html/StatusIndicators.ts";
+import {generateButton, generateDisabledButton} from "../../shared/html/ButtonGenerator.ts";
+import  {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.ts";
 
 customElements.define('faq-component',FaqComponent)
 customElements.define('image-upload-component',ImageUploadComponent)

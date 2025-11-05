@@ -6,6 +6,7 @@ import {
 
 import {
   ApiActionTypes,
+
   ApiLoadAction, DataStore,
 } from "@bponnaluri/places-js";
 
@@ -14,25 +15,26 @@ import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import {
   convert24HourTimeForDisplay,
   convertLocationStringForDisplay,
-} from "../../shared/data/EventDataUtils.ts";
-import {
-  generateButton,
-  generateLinkButton
-} from "../../shared/html/ButtonGenerator.ts";
+} from "../../shared/EventDataUtils.ts";
+
+import {API_ROOT} from "../shared/Params.ts";
+import {convertDayOfWeekForDisplay} from "../../shared/DisplayNameConversion.ts";
+import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
+
+import {LoginStatusComponent} from "../shared/LoginStatusComponent.ts";
 import {
   ERROR_MESSAGE_KEY,
+  generateErrorMessage,
+  generateSuccessMessage,
   SUCCESS_MESSAGE_KEY
-} from "../../shared/Constants.ts";
-import {API_ROOT} from "../../shared/Params.ts";
+} from "../../shared/html/StatusIndicators.ts";
+import  {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.ts";
+import {generateButton, generateLinkButton} from "../../shared/html/ButtonGenerator.ts";
+import {RsvpComponent} from "./RsvpComponent.ts";
 
-import {LoginStatusComponent} from "../../shared/html/LoginStatusComponent.ts";
-import {convertDayOfWeekForDisplay} from "../../shared/data/DisplayNameConversion.ts";
-import {generateErrorMessage, generateSuccessMessage} from "../../shared/html/StatusIndicators.ts";
-import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
-import {ImageUploadComponent} from "../../shared/html/ImageUploadComponent.ts";
-
-customElements.define("login-status-component", LoginStatusComponent);
 customElements.define('image-upload-component',ImageUploadComponent)
+customElements.define("login-status-component", LoginStatusComponent);
+customElements.define('rsvp-component',RsvpComponent)
 
 const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
 const EDIT_GROUP_BUTTON_ID = "edit-group-button";
@@ -271,8 +273,10 @@ export class GroupComponent extends BaseDynamicComponent {
       }
     })
   }
-  renderEditMode(groupData:any):string {
+  renderEditMode(data:any):string {
 
+    console.log(data);
+    const groupData = data.groupData;
     return`
       <h2>Edit group information</h2>
       ${groupData[ERROR_MESSAGE_KEY] ? generateErrorMessage(groupData[ERROR_MESSAGE_KEY]) : ''}
@@ -327,18 +331,25 @@ export class GroupComponent extends BaseDynamicComponent {
   renderGroupEditUI(groupData:any):string {
     return `
       <span id="${EDIT_GROUP_BUTTON_ID}">Edit group information</span>
-      <a href="beta/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}">Add event</a>
-      <a href="beta/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}">Delete group</a>
+      <a href="/html/groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}">Add event</a>
+      <a href="/html/groups/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}">Delete group</a>
     `
   }
   renderWeeklyEventData(eventData:any, groupId:any, key:string){
     const dayString = convertDayOfWeekForDisplay(eventData.day);
+
     return `
       <div id=${key} class="event">
         ${generateLinkButton({
           text: eventData.name,
-          url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
+          url: `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
         })}
+        <rsvp-component
+          current-user-rsvp=${eventData.userHasRsvp}
+          event-id=${eventData.id}
+          rsvp-count=${eventData.rsvpCount}
+          user-can-update-rsvp=${eventData.userCanUpdateRsvp}
+        ></rsvp-component>
         <p class="event-time">
           ${dayString}s from ${convert24HourTimeForDisplay(eventData.startTime)} to 
           ${convert24HourTimeForDisplay(eventData.endTime)} 
@@ -356,7 +367,7 @@ export class GroupComponent extends BaseDynamicComponent {
       <div id=${key} class="event">
         ${generateLinkButton({
           text: eventData.name,
-          url: `groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
+          url: `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
         })}
         <p class = "event-time">${startDate} ${convert24HourTimeForDisplay(eventData.startTime)}</p>
         <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
