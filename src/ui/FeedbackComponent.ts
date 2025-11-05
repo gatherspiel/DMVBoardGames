@@ -1,8 +1,7 @@
 import {ApiActionTypes, ApiLoadAction, BaseDynamicComponent} from "@bponnaluri/places-js";
+import {API_ROOT} from "./shared/Params.ts";
+import {generateErrorMessage, generateSuccessMessage, SUCCESS_MESSAGE_KEY} from "../shared/html/StatusIndicators.ts";
 import {generateButton} from "../shared/html/ButtonGenerator.ts";
-import {API_ROOT} from "../shared/Params.ts";
-import {SUCCESS_MESSAGE_KEY} from "../shared/Constants.ts";
-import {generateErrorMessage, generateSuccessMessage} from "../shared/html/StatusIndicators.ts";
 
 const ENTER_NAME_INPUT_ID:string = "enter-name-input-id";
 const ENTER_EMAIL_INPUT_ID:string = "enter-email-input-id";
