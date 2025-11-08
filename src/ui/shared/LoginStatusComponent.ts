@@ -153,7 +153,7 @@ class LoginStatusComponentInner extends BaseDynamicComponent {
           <div id="user-text-container-inner">
               <div id="user-text-container-filler"></div>
               <div id="user-image-container">
-                ${userData.imageFilePath ? `<img id="user-image-icon" src="${userData.imageFilePath}"></img>` : ``}
+                ${userData.imageFilePath ? `<img id="user-image-icon" src="${userData.imageFilePath}"/>` : ``}
               </div>
               <div id="username-container">
                 <span>${userData.username || this.getAttribute("email")}</span>

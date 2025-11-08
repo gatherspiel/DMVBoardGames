@@ -1,7 +1,7 @@
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {IS_LOGGED_IN_KEY, LOGIN_STORE} from "../../data/auth/LoginStore.ts";
 
-export class OpenCreateGroupComponent extends BaseDynamicComponent {
+export class UserActionsComponent extends BaseDynamicComponent {
 
   constructor() {
     super([{
@@ -25,13 +25,27 @@ export class OpenCreateGroupComponent extends BaseDynamicComponent {
       </style>`
   }
 
-  render(data: any){
+  getLinks(data: any){
     const url = data[IS_LOGGED_IN_KEY] ?
-      `html/groups/create.html` :
+      `/html/groups/create.html` :
       `/html/users/createAccount.html?message=Register_an_account_and_log_in_to_create_a_group`
 
-    return `
-        <a href ="${url}">Create group</a>`
+    let html = `
+      <a href ="${url}">Create group</a>
+    `
 
+    if(data[IS_LOGGED_IN_KEY]){
+      html += `<a href="/html/user/memberData.html">View my groups and events</a>`
+    }
+
+    return html;
+  }
+
+  override render(data:any){
+    return `
+      <div class="top-nav-secondary">
+        ${this.getLinks(data)}
+      </div>
+    `
   }
 }
