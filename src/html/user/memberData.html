@@ -7,10 +7,9 @@
   <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
   <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
 
-
   <link rel="icon" type="image/ico" href="/assets/images/favicon.ico"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login</title>
+  <title>Member data</title>
 
   <script
     defer
@@ -23,15 +22,14 @@
     customElements.define("login-status-component", LoginStatusComponent);
     customElements.define("member-data-component", MemberDataComponent);
 
-
   </script>
 </head>
 <body>
 <div id="container">
   {{>navbar}}
 
-  <login-component>
-  </login-component>
+  <member-data-component>
+  </member-data-component>
 </div>
 </body>
 </html>

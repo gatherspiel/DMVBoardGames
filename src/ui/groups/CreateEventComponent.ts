@@ -14,7 +14,7 @@ import {
 import {getEventDetailsFromForm, validate} from "./EventDetailsHandler.ts";
 import {API_ROOT, IS_PRODUCTION} from "../shared/Params.ts";
 import {DAY_OF_WEEK_INPUT, getDayOfWeekSelectHtml} from "../../shared/html/SelectGenerator.ts";
-import {LOGIN_STORE} from "../../data/auth/LoginStore.ts";
+import {LOGIN_STORE} from "../../data/user/LoginStore.ts";
 
 import {LoginStatusComponent} from "../shared/LoginStatusComponent.ts";
 import {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.ts";
@@ -114,12 +114,14 @@ export class CreateEventComponent extends BaseDynamicComponent {
           self.updateData({...validationErrors,...formData});
         } else {
 
+          const groupId = new URLSearchParams(document.location.search).get("groupId")
+
           //@ts-ignore
           const eventDetails = getEventDetailsFromForm(formData)
           ApiLoadAction.getResponseData({
             body: JSON.stringify(eventDetails),
             method: ApiActionTypes.POST,
-            url: API_ROOT + `/groups/${eventDetails.groupId}/events/`,
+            url: API_ROOT + `/groups/${groupId}/events/`,
           }).then((response:any)=>{
             if(!response.errorMessage){
               self.updateData({
@@ -252,8 +254,8 @@ export class CreateEventComponent extends BaseDynamicComponent {
           })}
                 
           ${generateLinkButton({
-            text: "Cancel",
-            url: `${window.location.origin}/groups.html?name=${encodeURIComponent(groupName)}`
+            text: "Back to group",
+            url: `/html/groups/groups.html?name=${encodeURIComponent(groupName)}`
           })}
         </form>
       </div>

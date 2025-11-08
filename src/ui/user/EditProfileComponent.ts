@@ -5,7 +5,7 @@ import {
 } from "@bponnaluri/places-js";
 import {API_ROOT} from "../shared/Params.ts";
 
-import {USER_DATA_STORE} from "../../data/auth/UserDataStore.ts";
+import {USER_DATA_STORE} from "../../data/user/UserDataStore.ts";
 import {generateErrorMessage, generateSuccessMessage, SUCCESS_MESSAGE_KEY} from "../../shared/html/StatusIndicators.ts";
 import {generateButton} from "../../shared/html/ButtonGenerator.ts";
 import  {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.ts";

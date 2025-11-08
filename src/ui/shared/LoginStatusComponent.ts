@@ -1,9 +1,9 @@
 import {
   BaseDynamicComponent,
 } from "@bponnaluri/places-js";
-import {LOGIN_STORE} from "../../data/auth/LoginStore.ts";
-import {LOGOUT_STORE} from "../../data/auth/LogoutStore.ts";
-import {USER_DATA_STORE} from "../../data/auth/UserDataStore.ts";
+import {LOGIN_STORE} from "../../data/user/LoginStore.ts";
+import {LOGOUT_STORE} from "../../data/user/LogoutStore.ts";
+import {USER_DATA_STORE} from "../../data/user/UserDataStore.ts";
 const SIGN_OUT_LINK_ID = "signout-link"
 
 export class LoginStatusComponent extends BaseDynamicComponent {

@@ -1,5 +1,5 @@
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
-import {IS_LOGGED_IN_KEY, LOGIN_STORE} from "../../data/auth/LoginStore.ts";
+import {IS_LOGGED_IN_KEY, LOGIN_STORE} from "../../data/user/LoginStore.ts";
 
 export class UserActionsComponent extends BaseDynamicComponent {
 
