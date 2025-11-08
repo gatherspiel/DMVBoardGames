@@ -203,6 +203,33 @@ export class GroupComponent extends BaseDynamicComponent {
           url: (shadowRoot?.getElementById(GROUP_URL_INPUT) as HTMLTextAreaElement)?.value,
         })
       }
+      else if(targetId === JOIN_GROUP_BUTTON_ID){
+
+        const userIsMember:boolean = self.componentStore.permissions?.userIsMember
+        const apiMethod =
+          userIsMember ? ApiActionTypes.DELETE : ApiActionTypes.POST;
+
+        ApiLoadAction.getResponseData({
+          method: apiMethod,
+          url: API_ROOT + `/user/memberData/group/${(self.componentStore.id)}`,
+        }).then((response:any)=>{
+          const error = response[ERROR_MESSAGE_KEY];
+          if(!error){
+            let permissions = Object.assign({},self.componentStore.permissions);
+            permissions.userIsMember = !userIsMember
+            self.updateData({
+              [ERROR_MESSAGE_KEY]:'',
+              [SUCCESS_MESSAGE_KEY]:'',
+              permissions: permissions
+            })
+          } else {
+            self.updateData({
+              [ERROR_MESSAGE_KEY]: error,
+              [SUCCESS_MESSAGE_KEY]:''
+            })
+          }
+        })
+      }
       else if(targetId === EDIT_GROUP_BUTTON_ID) {
         self.updateData({
           isEditing: true,
@@ -291,7 +318,7 @@ export class GroupComponent extends BaseDynamicComponent {
               <span class="edge"></span>
               <span class="front" id="user-actions-front">
               <div class="top-nav-secondary">
-                ${this.renderGroupEditUI(groupData)}
+                ${this.renderUserUi(groupData)}
               </div>
             </span>
           </nav>
@@ -303,6 +330,8 @@ export class GroupComponent extends BaseDynamicComponent {
   
       <div class="ui-section">
       <h1 id="group-name-header">${groupData.name}</h1>
+      ${groupData[ERROR_MESSAGE_KEY] ? generateErrorMessage(groupData[ERROR_MESSAGE_KEY]) : ''}
+
       ${groupData[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY]) : ''}
       ${!groupData.isEditing ? `
           ${groupData.url ? generateLinkButton({
@@ -320,9 +349,7 @@ export class GroupComponent extends BaseDynamicComponent {
         ` :
       this.renderEditMode(groupData)
     }
-
-
-     ${groupData.oneTimeEventData.length === 0 && groupData.weeklyEventData.length === 0 ?
+    ${groupData.oneTimeEventData.length === 0 && groupData.weeklyEventData.length === 0 ?
       ``:
       `
         <h2>Upcoming recurring events</h2>
@@ -357,7 +384,6 @@ export class GroupComponent extends BaseDynamicComponent {
 
     return`
       <h2>Edit group information</h2>
-      ${groupData[ERROR_MESSAGE_KEY] ? generateErrorMessage(groupData[ERROR_MESSAGE_KEY]) : ''}
   
       <form id="edit-group-form">
         <div class="form-section">
@@ -406,14 +432,21 @@ export class GroupComponent extends BaseDynamicComponent {
       </form>`
   }
 
-  renderGroupEditUI(groupData:any):string {
+  renderUserUi(groupData:any):string {
+    let joinGroupText = "Join group"
+    if(groupData.permissions?.userIsMember){
+      joinGroupText = "Leave group";
+    }
+
     return `
-      <span id="${JOIN_GROUP_BUTTON_ID}">Join group</span>
       <span id="${EDIT_GROUP_BUTTON_ID}">Edit group information</span>
       <a href="/html/groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}">Add event</a>
       <a href="/html/groups/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}">Delete group</a>
+      <span id="${JOIN_GROUP_BUTTON_ID}">${joinGroupText}</span>
+
     `
   }
+
   renderWeeklyEventData(eventData:any, groupId:any, key:string){
     const dayString = convertDayOfWeekForDisplay(eventData.day);
 

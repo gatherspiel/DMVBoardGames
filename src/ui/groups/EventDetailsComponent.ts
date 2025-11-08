@@ -85,7 +85,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         }
         .event-website-link {
           margin-bottom: 0.5rem;
-          margin-top: 0.5rem;
+          margin-top: 1rem;
         }
         .raised {
           display: inline-block;
