@@ -257,20 +257,10 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             });
             if(!response.errorMessage){
               self.updateData({
-                description: formData[EVENT_DESCRIPTION_INPUT],
-                //@ts-ignore
-                day: formData[DAY_OF_WEEK_INPUT],
-                //@ts-ignore
-                endTime: formData[END_TIME_INPUT],
-                eventLocation: formData[EVENT_LOCATION_INPUT],
+                ...formData,
                 errorMessage: "",
                 imagePath: imageForm.getImage() || imageForm.getImageFilePath(),
                 isEditing: false,
-                name: formData[EVENT_NAME_INPUT],
-                //@ts-ignore
-                startDate: formData[START_DATE_INPUT],
-                startTime: formData[START_TIME_INPUT],
-                url: formData[EVENT_URL_INPUT],
                 [SUCCESS_MESSAGE_KEY]: "Successfully updated event",
               });
             } else {
