@@ -1,4 +1,4 @@
-import {LOGIN_STORE,} from "../../data/auth/LoginStore.ts";
+import {LOGIN_STORE,} from "../../data/user/LoginStore.ts";
 import {LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT,} from "./Constants.js";
 import {
   ApiLoadAction,

@@ -14,7 +14,6 @@ export function getEventDetailsFromForm(formData:Record<string,string>){
   const endTime =   formData[END_TIME_INPUT]
   return  {
     id:formData.id,
-    groupId:(new URLSearchParams(document.location.search)).get("groupId") ?? "",
     name: formData[EVENT_NAME_INPUT],
     description: formData[EVENT_DESCRIPTION_INPUT],
     url: formData[EVENT_URL_INPUT],

@@ -2,7 +2,7 @@ import {ApiActionTypes, BaseDynamicComponent, ApiLoadAction} from "@bponnaluri/p
 import { GROUP_NAME_INPUT } from "./Constants.ts";
 
 import {API_ROOT} from "../shared/Params.ts";
-import {LOGIN_STORE} from "../../data/auth/LoginStore.ts";
+import {LOGIN_STORE} from "../../data/user/LoginStore.ts";
 import {generateErrorMessage, generateSuccessMessage, SUCCESS_MESSAGE_KEY} from "../../shared/html/StatusIndicators.ts";
 import {generateButton} from "../../shared/html/ButtonGenerator.ts";
 

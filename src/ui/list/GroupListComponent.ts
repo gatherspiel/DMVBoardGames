@@ -2,7 +2,7 @@ import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {getDisplayName} from "../../shared/DisplayNameConversion.ts";
 
 import {SHOW_GROUP_LIST_STORE} from "../../data/list/GroupSearchStore.ts";
-import {LOGIN_STORE} from "../../data/auth/LoginStore.ts";
+import {LOGIN_STORE} from "../../data/user/LoginStore.ts";
 import {generateLinkButton} from "../../shared/html/ButtonGenerator.ts";
 
 export class GroupListComponent extends BaseDynamicComponent {

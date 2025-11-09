@@ -9,3 +9,4 @@ function getUserQueryConfig(): ApiRequestConfig {
 }
 
 export const USER_DATA_STORE = new DataStore(new ApiLoadAction(getUserQueryConfig))
+

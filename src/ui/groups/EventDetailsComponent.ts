@@ -73,7 +73,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         #event-description b, #event-description h1, #event-description h2,#event-description h3,#event-description h4,#event-description li, #event-description p {
           color: var(--clr-darker-blue);
           text-align: left;
-
+        }
+        #event-details-header {
+          margin-top:0.5rem;
         }
         #form-status-success {
           padding-left: 1.5rem;
@@ -83,7 +85,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         }
         .event-website-link {
           margin-bottom: 0.5rem;
-          margin-top: 0.5rem;
+          margin-top: 1rem;
         }
         .raised {
           display: inline-block;
@@ -246,10 +248,12 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             }]
           }
 
+          const groupId = new URLSearchParams(document.location.search).get("groupId")
+
           ApiLoadAction.getResponseData({
             body: JSON.stringify(eventDetails),
             method: ApiActionTypes.PUT,
-            url: API_ROOT + `/groups/${eventDetails.groupId}/events/?id=${encodeURIComponent(eventDetails.id)}`,
+            url: API_ROOT + `/groups/${groupId}/events/?id=${encodeURIComponent(eventDetails.id)}`,
           }).then((response:any)=>{
             window.scrollTo({
               top: 0,
@@ -321,7 +325,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       <div class="ui-section">
       ${generateLinkButton({
         class: "back-to-group-button",
-        text: "Back to group information",
+        text: "Back to group",
         url: `${window.location.origin}/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}`
       })}
       </div>
