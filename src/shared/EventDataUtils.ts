@@ -101,6 +101,12 @@ export function convertTimeTo24Hours(time:string){
   return `${timeSplit[0]}:${timeSplit[1]}`
 }
 
+export function convertDateFromArrayToDisplayString(date:string[],dayOfWeek?:string){
+
+  const dayOfWeekStr = dayOfWeek ? `${dayOfWeek.substring(0,1)}${dayOfWeek.substring(1).toLowerCase()},` : ``
+  return `${dayOfWeekStr} ${months[parseInt(date[1])-1]} ${date[2]}`
+}
+
 export function convertLocationStringForDisplay(location:string) {
   if(!location){
     return ""

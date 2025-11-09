@@ -13,7 +13,7 @@ import {
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 
 import {
-  convert24HourTimeForDisplay,
+  convert24HourTimeForDisplay, convertDateFromArrayToDisplayString,
   convertLocationStringForDisplay,
 } from "../../shared/EventDataUtils.ts";
 
@@ -474,7 +474,7 @@ export class GroupComponent extends BaseDynamicComponent {
   }
 
   renderOneTimeEventData(eventData:any, groupId:any, key:string){
-    const startDate = `${eventData.startDate[0]}-${eventData.startDate[1]}-${eventData.startDate[2]}`
+    const startDate = `${convertDateFromArrayToDisplayString(eventData.startDate)}`
     return `
       <div id=${key} class="event">
         ${generateLinkButton({

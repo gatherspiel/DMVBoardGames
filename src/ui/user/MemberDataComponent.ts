@@ -1,5 +1,6 @@
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {USER_MEMBER_STORE} from "../../data/user/UserMemberStore.ts";
+import {convert24HourTimeForDisplay, convertDateFromArrayToDisplayString} from "../../shared/EventDataUtils.ts";
 
 
 export class MemberDataComponent extends BaseDynamicComponent {
@@ -9,6 +10,7 @@ export class MemberDataComponent extends BaseDynamicComponent {
       dataStore: USER_MEMBER_STORE
     }]);
   }
+
   override getTemplateStyle():string {
     return `
       <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
@@ -50,12 +52,17 @@ export class MemberDataComponent extends BaseDynamicComponent {
       return ``;
     }
 
-    let html = `<h2>Moderating groups: </h2>`
+    let html = ``
     for(let i=0;i<moderatingGroups.length;i++){
       const groupName = moderatingGroups[i].name;
-      html+=`<a href="/html/groups/groups.html?name=${encodeURIComponent(groupName)}">${groupName}</a>`
+      if(groupName){
+        html+=`<li><a href="/html/groups/groups.html?name=${encodeURIComponent(groupName)}">${groupName}</a></li>`
+
+      }
     }
-    return html;
+    return `
+      <h2>Moderating groups: </h2>
+      <ul>${html}</ul>`;
   }
 
   getModeratingEventsHtml(moderatingEvents:any){
@@ -64,12 +71,16 @@ export class MemberDataComponent extends BaseDynamicComponent {
       return ``;
     }
 
-    let html = `<h2>Moderating events: </h2>`
+    let html = ``
     for(let i=0;i<moderatingEvents.length;i++){
+      const eventId = moderatingEvents[i].id;
       const eventName = moderatingEvents[i].name;
-      html+=`<a href="/html/groups/groups.html?name=${eventName}">${eventName}</a>`
+      const groupId = moderatingEvents[i].groupId;
+      html+=`<li><a href="/html/groups/event.html?id=${eventId}&groupId=${groupId}">${eventName}</a></li>`
     }
-    return html;
+    return `
+      <h2>Moderating events: </h2>
+      <ul>${html}</ul>`;
   }
 
   getJoinedGroupsHtml(joinedGroups:any){
@@ -77,15 +88,16 @@ export class MemberDataComponent extends BaseDynamicComponent {
       return ``;
     }
 
-    let html = `<h2>Joined groups: </h2>`
+    let html = ``;
 
     for(let i=0;i<joinedGroups.length;i++){
       const groupName = joinedGroups[i].name;
-      html+=`<a href="/html/groups/groups.html?name=${groupName}">${groupName}</a>`
+      html+=`<li><a href="/html/groups/groups.html?name=${encodeURIComponent(groupName)}">${groupName}</a></li>`
     }
-    return html;
+    return `
+      <h2>Joined groups: </h2>
+      <ul>${html}</ul>`;
   }
-
 
   getAttendingEventsHtml(attendingEvents:any){
 
@@ -93,12 +105,23 @@ export class MemberDataComponent extends BaseDynamicComponent {
       return ``;
     }
 
-    let html = `<h2>Attending events</h2>`
+    let html = ``
 
     for(let i=0;i<attendingEvents.length;i++){
+      const eventId = attendingEvents[i].id;
       const eventName = attendingEvents[i].name;
-      html+=`<a href="/html/groups/groups.html?name=${eventName}">${eventName}</a>`
+      const groupId = attendingEvents[i].groupId;
+
+      html+=`
+        <li>
+          ${convertDateFromArrayToDisplayString(attendingEvents[i].startDate, attendingEvents[i].day)}
+          ${convert24HourTimeForDisplay(attendingEvents[i].startTime)}
+          <a href="/html/groups/event.html?id=${eventId}&groupId=${groupId}">${eventName}</a>
+        </li>
+        `
     }
-    return html;
+    return `
+      <h2>Attending events:</h2>
+      <ul>${html}</ul>`;
   }
 }
