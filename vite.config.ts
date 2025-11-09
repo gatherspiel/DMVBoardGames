@@ -46,13 +46,16 @@ export default defineConfig({
         gameRestaurants: resolve(__dirname, "src/html/list/gameRestaurants.html"),
         groups: resolve(__dirname, "src/html/groups/groups.html"),
 
+        main: resolve(__dirname, "src/index.html"),
+
         join: resolve(__dirname, "src/html/static/join.html"),
 
         landing: resolve(__dirname,"src/html/static/landing.html"),
         links: resolve(__dirname, "src/html/static/links.html"),
         login: resolve(__dirname, "src/html/user/login.html"),
 
-        main: resolve(__dirname, "src/index.html"),
+
+        memberData: resolve(__dirname, "src/html/user/memberData.html"),
 
         siteRules: resolve(__dirname,"src/html/static/siteRules.html"),
 
