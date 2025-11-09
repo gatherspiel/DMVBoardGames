@@ -333,11 +333,10 @@
 
 <script>
 
-  //Javascript that should only run on mobile devices
-  /**
-   * TODO
-   *
-   */
+  document.getElementById('logo-div').addEventListener(`click`,()=>{
+    window.location.assign('/index.html');
+  })
+
   if(navigator.maxTouchPoints > 0){
 
     const togglePrimaryDropdown = function() {

@@ -309,9 +309,7 @@ export class GroupComponent extends BaseDynamicComponent {
     }
     const self = this;
 
-    let html = ``;
-    if(groupData.permissions.userCanEdit) {
-      html+=`
+    let html =`
         <div id="user-actions-menu">
           <nav  id="user-actions-menu-raised" class="raised">
             <span class="shadow"></span>
@@ -324,7 +322,7 @@ export class GroupComponent extends BaseDynamicComponent {
           </nav>
         </div>
       `
-    }
+
 
     return html + `
   
@@ -438,10 +436,13 @@ export class GroupComponent extends BaseDynamicComponent {
       joinGroupText = "Leave group";
     }
 
+
     return `
-      <span id="${EDIT_GROUP_BUTTON_ID}">Edit group information</span>
-      <a href="/html/groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}">Add event</a>
-      <a href="/html/groups/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}">Delete group</a>
+      ${groupData.permissions.userCanEdit ? `
+        <span id="${EDIT_GROUP_BUTTON_ID}">Edit group information</span>
+        <a href="/html/groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}">Add event</a>
+        <a href="/html/groups/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}">Delete group</a>
+      ` : ``}
       <span id="${JOIN_GROUP_BUTTON_ID}">${joinGroupText}</span>
 
     `

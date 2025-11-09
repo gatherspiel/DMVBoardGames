@@ -58,6 +58,9 @@ export function convert24HourTimeForDisplay(timeString:string){
   const minutes = parseInt(timeSplit[1]);
 
   let displayHours = hours;
+  if(hours === 0){
+    displayHours = 12;
+  }
   if(hours>12) {
     displayHours = displayHours - 12;
   }
