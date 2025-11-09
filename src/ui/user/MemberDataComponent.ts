@@ -18,6 +18,9 @@ export class MemberDataComponent extends BaseDynamicComponent {
         a {
           margin-right: 0.5rem;
         }
+        h1 {
+          margin-top:1.5rem;
+        }
         h2 {
           margin-top:0.5rem;
         }
