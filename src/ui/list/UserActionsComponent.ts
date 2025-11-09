@@ -6,8 +6,11 @@ export class UserActionsComponent extends BaseDynamicComponent {
   constructor() {
     super([{
       componentReducer:(data:any)=>{
+        const url = data[IS_LOGGED_IN_KEY] ?
+          `/html/groups/create.html` :
+          `/html/user/createAccount.html?message=Register_an_account_and_log_in_to_create_a_group`
         return {
-          [IS_LOGGED_IN_KEY]: data?.loggedIn
+          url: url
         }
       },
       dataStore:LOGIN_STORE
@@ -26,12 +29,10 @@ export class UserActionsComponent extends BaseDynamicComponent {
   }
 
   getLinks(data: any){
-    const url = data[IS_LOGGED_IN_KEY] ?
-      `/html/groups/create.html` :
-      `/html/users/createAccount.html?message=Register_an_account_and_log_in_to_create_a_group`
+
 
     let html = `
-      <a href ="${url}">Create group</a>
+      <a href ="${data.url}">Create group</a>
     `
 
     if(data[IS_LOGGED_IN_KEY]){
