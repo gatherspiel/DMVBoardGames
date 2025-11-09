@@ -6,7 +6,7 @@ import {
 import {ApiActionTypes, ApiLoadAction} from "@bponnaluri/places-js";
 import {generateErrorMessage, generateSuccessMessage} from "../../shared/html/StatusIndicators.ts";
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
-import {IS_LOGGED_IN_KEY, LOGIN_STORE} from "../../data/auth/LoginStore.ts";
+import {IS_LOGGED_IN_KEY, LOGIN_STORE} from "../../data/user/LoginStore.ts";
 import {API_ROOT} from "../shared/Params.ts";
 import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
 
