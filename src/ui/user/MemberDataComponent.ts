@@ -76,7 +76,11 @@ export class MemberDataComponent extends BaseDynamicComponent {
       const eventId = moderatingEvents[i].id;
       const eventName = moderatingEvents[i].name;
       const groupId = moderatingEvents[i].groupId;
-      html+=`<li><a href="/html/groups/event.html?id=${eventId}&groupId=${groupId}">${eventName}</a></li>`
+      html+=`<li>
+        ${convertDateFromArrayToDisplayString(moderatingEvents[i].startDate, moderatingEvents[i].day)}
+        ${convert24HourTimeForDisplay(moderatingEvents[i].startTime)}
+        <a href="/html/groups/event.html?id=${eventId}&groupId=${groupId}">${eventName}</a>
+      </li>`
     }
     return `
       <h2>Moderating events: </h2>
