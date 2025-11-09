@@ -208,10 +208,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       if(event.target.id === SAVE_EVENT_BUTTON_ID){
         const data = (shadowRoot.getElementById('event-details-form') as HTMLFormElement)?.elements;
         const imageForm = shadowRoot.getElementById("image-upload-ui") as ImageUploadComponent;
-
-        console.log(imageForm.getImage());
-        console.log(imageForm.getImageFilePath());
-
         const formData = {
           id: self.componentStore.id,
           [EVENT_NAME_INPUT]: (data.namedItem(EVENT_NAME_INPUT) as HTMLInputElement)?.value,
@@ -481,7 +477,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     let html = ``;
     const hostText = data.moderators.length > 1 ? "Hosts:" : "Host:";
     data.moderators.forEach((moderator:any)=>{
-      html = `
+      html += `
         <div class ="user-data-container">
           <div class="user-data-container-inner">
       
