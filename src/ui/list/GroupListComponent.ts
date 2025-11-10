@@ -77,36 +77,24 @@ export class GroupListComponent extends BaseDynamicComponent {
   }
 
   private getItemHtml(group: any, loggedIn: boolean) {
+
     const groupCitiesStr = (group.cities && group.cities.length >0) ?
         group.cities.map((name:string) => getDisplayName(name))?.join(", ") :
         "DMV Area"
 
+    const hasRecurringEventDays = group.recurringEventDays.length > 0;
+    const hasGameTypeTags = group.gameTypeTags.length > 0;
 
-    let recurringDays:string[] = []
-    if(group.recurringEventDays.length > 0){
-      const days = ["SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"];
-      days.forEach(day=>{
-        if(group.recurringEventDays.includes(day)){
-          recurringDays.push(day.substring(0,1)+day.substring(1).toLowerCase());
-        }
-      })
-    }
 
-    let gameTypeTags:string[] = []
-    if(group.gameTypeTags.length > 0){
-      group.gameTypeTags.forEach((tag:string)=>{
-        gameTypeTags.push(tag.substring(0,1)+tag.substring(1).toLowerCase().replaceAll("_", " "));
-      })
-    }
     return `
       <li>
         ${generateLinkButton({
           text: group.name,
-          url: `${recurringDays.length > 0 || loggedIn  || group.gameTypeTags.length > 0 ? `/html/groups/groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`
+          url: `${hasRecurringEventDays || loggedIn  || hasGameTypeTags  ? `/html/groups/groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`
         })}
         <span class="group-cities">${groupCitiesStr}</span>           
-        ${recurringDays.length >0 ? `<span class="group-search-details"><b>Days:</b> ${recurringDays.join(", ")}</span>` : ``}  
-        ${gameTypeTags.length >0 ? `<span class="group-search-details"><b>Game types:</b> ${gameTypeTags.join(", ")}</span>` : ``}  
+        ${hasRecurringEventDays ? `<span class="group-search-details"><b>Days:</b> ${group.recurringEventDays.join(", ")}</span>` : ``}  
+        ${hasGameTypeTags ? `<span class="group-search-details"><b>Game types:</b> ${group.gameTypeTags.join(", ")}</span>` : ``}  
       </li>
     `;
   }
