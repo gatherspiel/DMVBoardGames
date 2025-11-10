@@ -12,11 +12,6 @@ import {
 
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 
-import {
-  convert24HourTimeForDisplay, convertDateFromArrayToDisplayString,
-  convertLocationStringForDisplay,
-} from "../../shared/EventDataUtils.ts";
-
 import {API_ROOT} from "../shared/Params.ts";
 import {convertDayOfWeekForDisplay} from "../../shared/DisplayNameConversion.ts";
 import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
@@ -49,16 +44,8 @@ export class GroupComponent extends BaseDynamicComponent {
   constructor() {
     super([{
       componentReducer:(groupData:any)=>{
-        let gameTypeTags:Record<string,string>={}
-        if(groupData.gameTypeTags.length > 0){
-          groupData.gameTypeTags.forEach((tag:string)=>{
-            //TODO: Update backend response to ensure that string conversion isn't necessary here.
-            gameTypeTags[tag.substring(0,1)+tag.substring(1).toLowerCase().replaceAll("_", " ")]="checked";
-          })
-        }
         return {
           ...groupData,
-          gameTypeTags:gameTypeTags,
           [SUCCESS_MESSAGE_KEY]:''
         }
       },
@@ -465,10 +452,10 @@ export class GroupComponent extends BaseDynamicComponent {
         ></rsvp-component>
         <p class="event-time">
           //TODO: Update backend response to ensure that string conversion isn't necessary here.
-          ${dayString}s from ${convert24HourTimeForDisplay(eventData.startTime)} to 
-          ${convert24HourTimeForDisplay(eventData.endTime)} 
+          ${dayString}s from ${(eventData.startTime)} to 
+          ${(eventData.endTime)} 
         </p>
-        <p class="event-location">${convertLocationStringForDisplay(eventData.location)}</p>
+        <p class="event-location">${eventData.location}</p>
       </div>
       <div class="section-separator-small"></div>
 
@@ -476,17 +463,14 @@ export class GroupComponent extends BaseDynamicComponent {
   }
 
   renderOneTimeEventData(eventData:any, groupId:any, key:string){
-    //TODO: Update backend response to ensure that string conversion isn't necessary here.
-    const startDate = `${convertDateFromArrayToDisplayString(eventData.startDate)}`
     return `
       <div id=${key} class="event">
         ${generateLinkButton({
           text: eventData.name,
           url: `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
         })}
-        //TODO: Update backend response to ensure that string conversion isn't necessary here.
-        <p class = "event-time">${startDate} ${convert24HourTimeForDisplay(eventData.startTime)}</p>
-        <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
+        <p class = "event-time">${eventData.startDate} ${(eventData.startTime)}</p>
+        <p class = "event-location">Location: ${eventData.location}</p>
       </div>
       <div class="section-separator-small"></div>
     `;

@@ -10,6 +10,7 @@ export class UserActionsComponent extends BaseDynamicComponent {
           `/html/groups/create.html` :
           `/html/user/createAccount.html?message=Register_an_account_and_log_in_to_create_a_group`
         return {
+          [IS_LOGGED_IN_KEY]: data[IS_LOGGED_IN_KEY],
           url: url
         }
       },
@@ -35,6 +36,7 @@ export class UserActionsComponent extends BaseDynamicComponent {
       <a href ="${data.url}">Create group</a>
     `
 
+    console.log(data);
     if(data[IS_LOGGED_IN_KEY]){
       html += `<a href="/html/user/memberData.html">View my groups and events</a>`
     }

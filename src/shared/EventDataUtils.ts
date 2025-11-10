@@ -33,45 +33,6 @@ export function combineDateAndTime(date: string, time: string){
   return  `${dateSplit[0]}-${dateSplit[1]}-${dateSplit[2]}T${convertTimeTo24Hours(time)}`;
 }
 
-export function convertDateTimeForDisplay(date: string){
-  const dateObj:Date = new Date(Date.parse(date))
-
-  let displayHours = dateObj.getHours();
-  if(dateObj.getHours()>12) {
-    displayHours = displayHours - 12;
-  }
-
-  let displayMinutes = ""+dateObj.getMinutes();
-  if(dateObj.getMinutes() < 10){
-    displayMinutes = `0${displayMinutes}`;
-  }
-
-
-  return `${months[dateObj.getMonth()]} ${dateObj.getDate()}, ${dateObj.getFullYear()} ` +
-    `${displayHours}:${displayMinutes}${dateObj.getHours()>=12 ?'PM':' AM'}`
-}
-
-export function convert24HourTimeForDisplay(timeString:string){
-
-  const timeSplit = timeString.split(":");
-  const hours = parseInt(timeSplit[0]);
-  const minutes = parseInt(timeSplit[1]);
-
-  let displayHours = hours;
-  if(hours === 0){
-    displayHours = 12;
-  }
-  if(hours>12) {
-    displayHours = displayHours - 12;
-  }
-
-  let displayMinutes = ""+minutes
-  if(minutes < 10){
-    displayMinutes = `0${displayMinutes}`;
-  }
-
-  return `${displayHours}:${displayMinutes}${hours>=12 ?'PM':' AM'}`
-}
 
 export function convertTimeTo24Hours(time:string){
 
@@ -104,18 +65,11 @@ export function convertTimeTo24Hours(time:string){
   return `${timeSplit[0]}:${timeSplit[1]}`
 }
 
-export function convertDateFromArrayToDisplayString(date:string[],dayOfWeek?:string){
+export function convertDateAndDayToDisplayString(date:string,dayOfWeek?:string){
 
-  const dayOfWeekStr = dayOfWeek ? `${dayOfWeek.substring(0,1)}${dayOfWeek.substring(1).toLowerCase()},` : ``
-  return `${dayOfWeekStr} ${months[parseInt(date[1])-1]} ${date[2]}`
-}
-
-export function convertLocationStringForDisplay(location:string) {
-  if(!location){
-    return ""
-  }
-  const split = location.split(',');
-  return `${split[0].trim()}, ${split[1].trim()}, ${split[2].trim()}`
+  const dateSplit = date.split("-")
+  const dayOfWeekStr = dayOfWeek ? `${dayOfWeek},` : ``
+  return `${dayOfWeekStr} ${months[parseInt(dateSplit[1])-1]} ${dateSplit[2]}`
 }
 
 export function validateDateFormat(date: string){
