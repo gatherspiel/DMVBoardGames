@@ -31,12 +31,10 @@ export class UserActionsComponent extends BaseDynamicComponent {
 
   getLinks(data: any){
 
-
     let html = `
       <a href ="${data.url}">Create group</a>
     `
 
-    console.log(data);
     if(data[IS_LOGGED_IN_KEY]){
       html += `<a href="/html/user/memberData.html">View my groups and events</a>`
     }

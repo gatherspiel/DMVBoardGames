@@ -22,7 +22,11 @@ function getGroupsQueryConfig(searchParams: any): ApiRequestConfig {
     }
   }
 
-  let url = API_ROOT + "/searchGroups";
+  if(!searchParams.apiUrl.startsWith("/")){
+    console.error("Invalid url:"+searchParams.apiUrl);
+  }
+  let url = API_ROOT + searchParams.apiUrl;
+  console.log(url);
   if (Object.keys(paramMap).length > 0) {
 
     let params: string[] = [];
