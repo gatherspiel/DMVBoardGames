@@ -3,7 +3,7 @@ import {
 } from "../../data/list/CityListStore.ts";
 
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
-import {GROUP_SEARCH_STORE, SHOW_GROUP_LIST_STORE} from "../../data/list/GroupSearchStore.ts";
+import {SEARCH_RESULTS_LIST_STORE, SHOW_LIST_STORE} from "../../data/list/SearchStores.ts";
 import {
   DEFAULT_SEARCH_PARAMETER,
   generateCheckedStateFromUrlParamArray,
@@ -31,7 +31,7 @@ const DISTANCE_OPTIONS= [
   "50 miles",
 ];
 
-export class GroupSearchComponent extends BaseDynamicComponent {
+export class SearchComponent extends BaseDynamicComponent {
 
   constructor() {
     super([{
@@ -59,11 +59,12 @@ export class GroupSearchComponent extends BaseDynamicComponent {
 
     const defaultSearchParams = {
       location: params.get("location"),
+      apiUrl: this.getAttribute("api-url"),
       days: params.get("days"),
       distance: params.get("distance")?.replaceAll("_"," "),
     }
     if(params.size > 0){
-      GROUP_SEARCH_STORE.fetchData(defaultSearchParams,SHOW_GROUP_LIST_STORE)
+      SEARCH_RESULTS_LIST_STORE.fetchData(defaultSearchParams,SHOW_LIST_STORE)
     }
   }
 
@@ -109,7 +110,6 @@ export class GroupSearchComponent extends BaseDynamicComponent {
           #searchInputDiv {
             margin-top:0.5rem;
           }
-
         }     
         @media screen and (width < 32em) {
           #form-div-outer {
@@ -179,7 +179,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
         updatedUrl += `distance=${searchParams?.distance?.replaceAll(" ","_") ?? ``}`
 
         window.history.replaceState({},'',updatedUrl)
-        GROUP_SEARCH_STORE.fetchData(searchParams, SHOW_GROUP_LIST_STORE);
+        SEARCH_RESULTS_LIST_STORE.fetchData({...searchParams, ...{apiUrl:self.getAttribute("api-url")??''}}, SHOW_LIST_STORE);
       }
       if(event.target.id === SHOW_DAY_SELECT){
         self.updateData({
@@ -197,7 +197,7 @@ export class GroupSearchComponent extends BaseDynamicComponent {
     const searchInputsClass = store.location && store.location !== DEFAULT_SEARCH_PARAMETER ?
       "search-form-three-inputs" : "search-form-two-inputs"
     return `
-      <h1 id="group-search-header">Search for board game groups</h1>
+      <h1 id="group-search-header">${this.getAttribute("search-text")}</h1>
 
       <form id=${SEARCH_FORM_ID} onsubmit="return false">
         <div id ="form-div-outer">

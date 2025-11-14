@@ -1,6 +1,6 @@
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {USER_MEMBER_STORE} from "../../data/user/UserMemberStore.ts";
-import {convert24HourTimeForDisplay, convertDateFromArrayToDisplayString} from "../../shared/EventDataUtils.ts";
+import {convertDateAndDayToDisplayString} from "../../shared/EventDataUtils.ts";
 
 
 export class MemberDataComponent extends BaseDynamicComponent {
@@ -80,8 +80,8 @@ export class MemberDataComponent extends BaseDynamicComponent {
       const eventName = moderatingEvents[i].name;
       const groupId = moderatingEvents[i].groupId;
       html+=`<li>
-        ${convertDateFromArrayToDisplayString(moderatingEvents[i].startDate, moderatingEvents[i].day)}
-        &#8729; ${convert24HourTimeForDisplay(moderatingEvents[i].startTime)}
+        ${convertDateAndDayToDisplayString(moderatingEvents[i].startDate, moderatingEvents[i].day)}
+        &#8729; ${(moderatingEvents[i].startTime)}
         <a href="/html/groups/event.html?id=${eventId}&groupId=${groupId}">${eventName}</a>
       </li>`
     }
@@ -121,8 +121,8 @@ export class MemberDataComponent extends BaseDynamicComponent {
 
       html+=`
         <li>
-          ${convertDateFromArrayToDisplayString(attendingEvents[i].startDate, attendingEvents[i].day)}
-          &#8729; ${convert24HourTimeForDisplay(attendingEvents[i].startTime)}
+          ${convertDateAndDayToDisplayString(attendingEvents[i].startDate, attendingEvents[i].day)}
+          &#8729; ${(attendingEvents[i].startTime)}
           <a href="/html/groups/event.html?id=${eventId}&groupId=${groupId}">${eventName}</a>
         </li>
         `
