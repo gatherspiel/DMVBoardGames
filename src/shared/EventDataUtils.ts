@@ -90,3 +90,7 @@ export function validateAddress(addressStr:string) {
     throw new Error("Invalid state code");
   }
 }
+
+export function convertLocationDataForDisplay(location:any){
+  return `${location.streetAddress}, ${location.city}, ${location.state}, ${location.zipCode}`
+}

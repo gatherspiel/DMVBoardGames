@@ -311,7 +311,6 @@ export class GroupComponent extends BaseDynamicComponent {
         </div>
       `
 
-
     return html + `
   
       <div class="ui-section">
@@ -349,7 +348,6 @@ export class GroupComponent extends BaseDynamicComponent {
         }).join(" ")}
         `
     }
- 
     ${
       groupData.oneTimeEventData.length === 0
         ? ``

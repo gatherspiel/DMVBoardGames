@@ -2,13 +2,15 @@
 <html lang="en">
   <head>
     <script async type="module">
-      console.log("Starting to parse Javascript at:" + Date.now())
-      import {SearchComponent} from "./ui/list/SearchComponent.ts";
-      import {GroupListComponent} from "./ui/list/GroupListComponent.ts";
-      import {LoginStatusComponent} from "./ui/shared/LoginStatusComponent.ts";
-      import {UserActionsComponent} from "./ui/list/UserActionsComponent.ts";
 
-      customElements.define("group-list-component", GroupListComponent);
+      console.log("Starting to parse Javascript at:" + Date.now())
+
+      import {EventListComponent} from "./ui/list/EventListComponent.js";
+      import {LoginStatusComponent} from "./ui/shared/LoginStatusComponent.ts";
+      import {SearchComponent} from "./ui/list/SearchComponent.ts";
+      import {UserActionsComponent} from "./ui/shared/UserActionsComponent.ts";
+
+      customElements.define("event-list-component", EventListComponent);
       customElements.define("search-component", SearchComponent);
       customElements.define("login-status-component",LoginStatusComponent)
       customElements.define("user-actions-component", UserActionsComponent);
@@ -42,7 +44,7 @@
         search-text = "Search for board game events"
       >
       </search-component>
-      <group-list-component></group-list-component>
+      <event-list-component></event-list-component>
 
     </div>
 

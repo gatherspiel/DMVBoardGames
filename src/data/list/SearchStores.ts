@@ -3,7 +3,7 @@ import {ApiLoadAction, CustomLoadAction, DataStore} from "@bponnaluri/places-js"
 import type { ApiRequestConfig } from "@bponnaluri/places-js";
 import {DEFAULT_SEARCH_PARAMETER} from "../../shared/html/SelectGenerator.ts";
 
-function getGroupsQueryConfig(searchParams: any): ApiRequestConfig {
+function getSearchResultsQueryConfig(searchParams: any): ApiRequestConfig {
 
   console.log("Starting to load search results at:"+Date.now());
   const paramMap: any = {};
@@ -40,6 +40,6 @@ function getGroupsQueryConfig(searchParams: any): ApiRequestConfig {
   };
 }
 
-export const GROUP_SEARCH_STORE = new DataStore(new ApiLoadAction(getGroupsQueryConfig));
+export const SEARCH_RESULTS_LIST_STORE = new DataStore(new ApiLoadAction(getSearchResultsQueryConfig));
 
-export const SHOW_GROUP_LIST_STORE = new DataStore(new CustomLoadAction(()=>{}));
+export const SHOW_LIST_STORE = new DataStore(new CustomLoadAction(()=>{}));
