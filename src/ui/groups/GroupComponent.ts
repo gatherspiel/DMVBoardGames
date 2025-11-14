@@ -12,11 +12,6 @@ import {
 
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 
-import {
-  convert24HourTimeForDisplay, convertDateFromArrayToDisplayString,
-  convertLocationStringForDisplay,
-} from "../../shared/EventDataUtils.ts";
-
 import {API_ROOT} from "../shared/Params.ts";
 import {convertDayOfWeekForDisplay} from "../../shared/DisplayNameConversion.ts";
 import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.ts";
@@ -49,15 +44,8 @@ export class GroupComponent extends BaseDynamicComponent {
   constructor() {
     super([{
       componentReducer:(groupData:any)=>{
-        let gameTypeTags:Record<string,string>={}
-        if(groupData.gameTypeTags.length > 0){
-          groupData.gameTypeTags.forEach((tag:string)=>{
-            gameTypeTags[tag.substring(0,1)+tag.substring(1).toLowerCase().replaceAll("_", " ")]="checked";
-          })
-        }
         return {
           ...groupData,
-          gameTypeTags:gameTypeTags,
           [SUCCESS_MESSAGE_KEY]:''
         }
       },
@@ -323,14 +311,12 @@ export class GroupComponent extends BaseDynamicComponent {
         </div>
       `
 
-
     return html + `
   
       <div class="ui-section">
       <h1 id="group-name-header">${groupData.name}</h1>
-      ${groupData[ERROR_MESSAGE_KEY] ? generateErrorMessage(groupData[ERROR_MESSAGE_KEY]) : ''}
-
-      ${groupData[SUCCESS_MESSAGE_KEY] ? generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY]) : ''}
+      ${generateErrorMessage(groupData[ERROR_MESSAGE_KEY])}
+      ${generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY])}
       ${!groupData.isEditing ? `
           ${groupData.url ? generateLinkButton({
         class: "group-webpage-link",
@@ -362,7 +348,6 @@ export class GroupComponent extends BaseDynamicComponent {
         }).join(" ")}
         `
     }
- 
     ${
       groupData.oneTimeEventData.length === 0
         ? ``
@@ -464,10 +449,11 @@ export class GroupComponent extends BaseDynamicComponent {
           user-can-update-rsvp=${eventData.permissions.userCanRsvp}
         ></rsvp-component>
         <p class="event-time">
-          ${dayString}s from ${convert24HourTimeForDisplay(eventData.startTime)} to 
-          ${convert24HourTimeForDisplay(eventData.endTime)} 
+          //TODO: Update backend response to ensure that string conversion isn't necessary here.
+          ${dayString}s from ${(eventData.startTime)} to 
+          ${(eventData.endTime)} 
         </p>
-        <p class="event-location">${convertLocationStringForDisplay(eventData.location)}</p>
+        <p class="event-location">${eventData.location}</p>
       </div>
       <div class="section-separator-small"></div>
 
@@ -475,15 +461,14 @@ export class GroupComponent extends BaseDynamicComponent {
   }
 
   renderOneTimeEventData(eventData:any, groupId:any, key:string){
-    const startDate = `${convertDateFromArrayToDisplayString(eventData.startDate)}`
     return `
       <div id=${key} class="event">
         ${generateLinkButton({
           text: eventData.name,
           url: `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
         })}
-        <p class = "event-time">${startDate} ${convert24HourTimeForDisplay(eventData.startTime)}</p>
-        <p class = "event-location">Location: ${convertLocationStringForDisplay(eventData.location)}</p>
+        <p class = "event-time">${eventData.startDate} ${(eventData.startTime)}</p>
+        <p class = "event-location">Location: ${eventData.location}</p>
       </div>
       <div class="section-separator-small"></div>
     `;

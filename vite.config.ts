@@ -46,9 +46,9 @@ export default defineConfig({
         gameRestaurants: resolve(__dirname, "src/html/list/gameRestaurants.html"),
         groups: resolve(__dirname, "src/html/groups/groups.html"),
 
-        main: resolve(__dirname, "src/index.html"),
-
         join: resolve(__dirname, "src/html/static/join.html"),
+
+        main: resolve(__dirname, "src/index.html"),
 
         landing: resolve(__dirname,"src/html/static/landing.html"),
         links: resolve(__dirname, "src/html/static/links.html"),
@@ -57,6 +57,7 @@ export default defineConfig({
 
         memberData: resolve(__dirname, "src/html/user/memberData.html"),
 
+        searchGroups: resolve(__dirname, "src/html/list/searchGroups.html"),
         siteRules: resolve(__dirname,"src/html/static/siteRules.html"),
 
         vision: resolve(__dirname,"src/html/static/vision.html")

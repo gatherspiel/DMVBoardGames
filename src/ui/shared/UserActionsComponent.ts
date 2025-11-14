@@ -10,6 +10,7 @@ export class UserActionsComponent extends BaseDynamicComponent {
           `/html/groups/create.html` :
           `/html/user/createAccount.html?message=Register_an_account_and_log_in_to_create_a_group`
         return {
+          [IS_LOGGED_IN_KEY]: data[IS_LOGGED_IN_KEY],
           url: url
         }
       },
@@ -29,7 +30,6 @@ export class UserActionsComponent extends BaseDynamicComponent {
   }
 
   getLinks(data: any){
-
 
     let html = `
       <a href ="${data.url}">Create group</a>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script async type="module">
+      console.log("Starting to parse Javascript at:" + Date.now())
+      import {GroupListComponent} from "../../ui/list/GroupListComponent.ts";
+      import {LoginStatusComponent} from "../../ui/shared/LoginStatusComponent.ts";
+      import {SearchComponent} from "../../ui/list/SearchComponent.ts";
+      import {UserActionsComponent} from "../../ui/shared/UserActionsComponent.ts";
+
+      customElements.define("group-list-component", GroupListComponent);
+      customElements.define("search-component", SearchComponent);
+      customElements.define("login-status-component",LoginStatusComponent)
+      customElements.define("user-actions-component", UserActionsComponent);
+  </script>
+  <meta charset="UTF-8"/>
+  <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
+  <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
+  <link rel="preconnect" href="api.gatherspiel.com" />
+  <link rel="icon" type="image/ico" href="/assets/images/favicon.ico"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Search groups</title>
+</head>
+<body>
+
+<div id="container">
+  {{>navbar}}
+  <div id="user-actions-menu">
+
+    <nav class="raised">
+      <span class="shadow"></span>
+      <span class="edge"></span>
+      <span class="front" id="user-actions-front">
+            <user-actions-component>
+            </user-actions-component>
+          </span>
+    </nav>
+  </div>
+  <search-component
+    api-url="/searchGroups"
+    class = "ui-section"
+    search-text = "Search for board game groups"
+  >
+  </search-component>
+  <group-list-component></group-list-component>
+
+</div>
+
+<div id="bot-container">
+
+</div>
+{{>footer}}
+</body>
+</html>

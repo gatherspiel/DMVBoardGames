@@ -14,14 +14,11 @@ import {
   getEventDetailsFromForm, validate,
 } from "./EventDetailsHandler.ts";
 
-import {convert24HourTimeForDisplay, convertTimeTo24Hours} from "../../shared/EventDataUtils.ts";
-import {convertLocationStringForDisplay} from "../../shared/EventDataUtils.ts";
+import {convertTimeTo24Hours} from "../../shared/EventDataUtils.ts";
 
 
 import {API_ROOT} from "../shared/Params.ts";
 
-import {convertDateTimeForDisplay} from "../../shared/EventDataUtils.ts";
-import {convertDayOfWeekForDisplay} from "../../shared/DisplayNameConversion.ts";
 import {DAY_OF_WEEK_INPUT, getDayOfWeekSelectHtml} from "../../shared/html/SelectGenerator.ts";
 
 import {LoginStatusComponent} from "../shared/LoginStatusComponent.ts";
@@ -257,20 +254,10 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             });
             if(!response.errorMessage){
               self.updateData({
-                description: formData[EVENT_DESCRIPTION_INPUT],
-                //@ts-ignore
-                day: formData[DAY_OF_WEEK_INPUT],
-                //@ts-ignore
-                endTime: formData[END_TIME_INPUT],
-                eventLocation: formData[EVENT_LOCATION_INPUT],
+                ...formData,
                 errorMessage: "",
                 imagePath: imageForm.getImage() || imageForm.getImageFilePath(),
                 isEditing: false,
-                name: formData[EVENT_NAME_INPUT],
-                //@ts-ignore
-                startDate: formData[START_DATE_INPUT],
-                startTime: formData[START_TIME_INPUT],
-                url: formData[EVENT_URL_INPUT],
                 [SUCCESS_MESSAGE_KEY]: "Successfully updated event",
               });
             } else {
@@ -336,7 +323,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     }
     return `
       <div class="ui-section">
-        <h1>Are you sure you want to delete event ${data.name} ${data.isRecurring ? '': `on ${convertDateTimeForDisplay(data.startTime)}`}</h1>
+        <h1>Are you sure you want to delete event ${data.name} ${data.isRecurring ? '': `on ${(data.startTime)}`}</h1>
         <div id="delete-event-form">
             ${generateButton({
             id: CONFIRM_DELETE_BUTTON_ID,
@@ -353,6 +340,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   }
 
   renderEditMode(data:any): string {
+    console.log(data.startTime)
     return `
       <div class="ui-section">
       <h1>Editing Event:${data.name}</h1>
@@ -414,7 +402,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           <input
             name=${START_TIME_INPUT}
             type="time"
-            value=${(data.startTime)}
+            value="${(convertTimeTo24Hours(data.startTime))}"
           />
           </input>
         </div>
@@ -512,15 +500,15 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
         <h2 id="event-details-header">Event details</h2>
         ${this.displayModerators(data)}
-        <p><b>Location:</b> ${convertLocationStringForDisplay(data.location)}</p>
+        <p><b>Location:</b> ${(data.location)}</p>
 
         <p>
           <b>Time:</b>${data.isRecurring ?
             `
-              ${convertDayOfWeekForDisplay(data.day)}s from ${convert24HourTimeForDisplay(data.startTime)} to 
-              ${convert24HourTimeForDisplay(data.endTime)}` :
+              ${(data.day)}s from ${(data.startTime)} to 
+              ${(data.endTime)}` :
             `
-              ${data.startDate}, ${convert24HourTimeForDisplay(data.startTime)}
+              ${data.startDate}, ${(data.startTime)}
            `
           }
         </p>  
