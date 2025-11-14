@@ -32,7 +32,7 @@ export class GroupListComponent extends BaseDynamicComponent {
           margin-top:0;
           padding-left:1.5rem;
         }
-       .button-div {
+        .button-div {
           display: flex;
         }
         .group-search-details {

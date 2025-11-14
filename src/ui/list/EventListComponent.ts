@@ -31,9 +31,8 @@ export class EventListComponent extends BaseDynamicComponent {
        .button-div {
           display: flex;
         }
-        .group-search-details {
-          display:block;
-          padding-top:0.5rem;
+        #event-location,#event-time {
+          margin-top:0.5rem;
         }
         .section-separator-small {
           margin-left:-1rem;
@@ -46,7 +45,7 @@ export class EventListComponent extends BaseDynamicComponent {
           .raised {
             display: inline-block;
           }
-          #group-search-results-header {
+          #search-results-header {
             padding-left:1.5rem;
           }
         }  
@@ -54,18 +53,14 @@ export class EventListComponent extends BaseDynamicComponent {
           a {
             margin-top: 1rem;
           }
-          #group-search-results-header {
+          #search-results-header {
             text-align: center;
-          }
-          .group-cities {
-            display: none; 
           }
           .ui-section .event-group:not(:first-child) {
             margin-top: 0.5rem;
           }
           .raised {
             margin-top: 0.5rem;
-
           }
         } 
       </style>
@@ -74,18 +69,23 @@ export class EventListComponent extends BaseDynamicComponent {
 
   private getItemHtml(eventData: any) {
 
-    console.log((eventData))
 
     return `
       <li>
         ${generateLinkButton({
           text: eventData.eventName,
-          url: `/html/groups/groups.html?id=${eventData.id}&groupId=${eventData.groupId}`
+          url: `/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}`
         })}
        
-        ${convertDateAndDayToDisplayString(eventData.nextEventDate, eventData.day)}
-        &#8729; ${(eventData.nextEventTime)}
-        ${convertLocationDataForDisplay(eventData.eventLocation)}
+        <div id="event-time">
+          ${eventData.dayOfWeek},
+          ${convertDateAndDayToDisplayString(eventData.nextEventDate, eventData.day)}
+          &#8729; ${(eventData.nextEventTime)}
+        </div>
+        <div id="event-location">
+          ${convertLocationDataForDisplay(eventData.eventLocation)}
+        </div>
+  
       </li>
     `;
   }
@@ -102,7 +102,7 @@ export class EventListComponent extends BaseDynamicComponent {
         `
     }
     let html = `
-      <h1 id="group-search-results-header">Search results</h1>
+      <h1 id="search-results-header">Search results</h1>
       <ul>`;
     for(let i = 0; i<state.data.eventData.length; i++){
       html+= `
