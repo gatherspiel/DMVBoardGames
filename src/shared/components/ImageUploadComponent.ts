@@ -4,8 +4,8 @@ export class ImageUploadComponent extends HTMLElement {
   constructor(){
     super();
 
-    const filePath = this.getAttribute("image-path")
-    if(filePath === null || filePath === undefined || filePath === "null" || filePath === "undefined" || filePath.length > 0){
+    const filePath = this.getAttribute("image-path");
+    if(filePath === null || filePath === undefined || filePath === "null" || filePath === "undefined" || filePath.length === 0){
       this.setAttribute("image-path","");
     }
     this.addEventListener("change", this.uploadImage)
