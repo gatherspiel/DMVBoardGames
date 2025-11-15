@@ -2,7 +2,7 @@ import {BaseDynamicComponent} from "@bponnaluri/places-js";
 
 import {SHOW_LIST_STORE} from "../../data/list/SearchStores.ts";
 import {generateLinkButton} from "../../shared/html/ButtonGenerator.ts";
-import {convertDateAndDayToDisplayString, convertLocationDataForDisplay} from "../../shared/EventDataUtils.ts";
+import {convertLocationDataForDisplay} from "../../shared/EventDataUtils.ts";
 
 export class EventListComponent extends BaseDynamicComponent {
   constructor() {
@@ -78,9 +78,7 @@ export class EventListComponent extends BaseDynamicComponent {
         })}
        
         <div id="event-time">
-          ${eventData.dayOfWeek},
-          ${convertDateAndDayToDisplayString(eventData.nextEventDate, eventData.day)}
-          &#8729; ${(eventData.nextEventTime)}
+          ${eventData.dayOfWeek}s at ${(eventData.nextEventTime)}
         </div>
         <div id="event-location">
           ${convertLocationDataForDisplay(eventData.eventLocation)}
