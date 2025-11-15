@@ -296,8 +296,10 @@ export class GroupComponent extends BaseDynamicComponent {
       return `<h1>Loading</h1>`;
     }
     const self = this;
+    let html = ``;
 
-    let html =`
+    if(groupData.permissions.userCanUpdateGroupMembership){
+      html =`
         <div id="user-actions-menu">
           <nav  id="user-actions-menu-raised" class="raised">
             <span class="shadow"></span>
@@ -310,6 +312,7 @@ export class GroupComponent extends BaseDynamicComponent {
           </nav>
         </div>
       `
+    }
 
     return html + `
   
@@ -416,6 +419,7 @@ export class GroupComponent extends BaseDynamicComponent {
   }
 
   renderUserUi(groupData:any):string {
+
     let joinGroupText = "Join group"
     if(groupData.permissions?.userIsMember){
       joinGroupText = "Leave group";
