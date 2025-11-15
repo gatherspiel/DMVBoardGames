@@ -1,4 +1,4 @@
-import {ApiActionTypes, ApiLoadAction, BaseDynamicComponent} from "@bponnaluri/places-js";
+import {ApiActionType, ApiLoadAction, BaseDynamicComponent} from "@bponnaluri/places-js";
 import {API_ROOT} from "./shared/Params.ts";
 import {generateErrorMessage, generateSuccessMessage, SUCCESS_MESSAGE_KEY} from "../shared/html/StatusIndicators.ts";
 import {generateButton} from "../shared/html/ButtonGenerator.ts";
@@ -113,7 +113,7 @@ export class FeedbackComponent extends BaseDynamicComponent {
             feedbackType: (elements.namedItem(FEEDBACK_TYPE_INPUT_ID) as HTMLInputElement)?.value,
             name: (elements.namedItem(ENTER_NAME_INPUT_ID) as HTMLInputElement)?.value,
           }),
-          method: ApiActionTypes.POST,
+          method: ApiActionType.POST,
           url: API_ROOT + '/feedback'
         }).then((data:any)=>{
           if(data.errorMessage){

@@ -5,7 +5,6 @@ import {DEFAULT_SEARCH_PARAMETER} from "../../shared/html/SelectGenerator.ts";
 
 function getSearchResultsQueryConfig(searchParams: any): ApiRequestConfig {
 
-  console.log("Starting to load search results at:"+Date.now());
   const paramMap: any = {};
 
   if (searchParams.days && searchParams.days !== DEFAULT_SEARCH_PARAMETER) {
@@ -26,7 +25,6 @@ function getSearchResultsQueryConfig(searchParams: any): ApiRequestConfig {
     console.error("Invalid url:"+searchParams.apiUrl);
   }
   let url = API_ROOT + searchParams.apiUrl;
-  console.log(url);
   if (Object.keys(paramMap).length > 0) {
 
     let params: string[] = [];

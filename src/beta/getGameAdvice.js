@@ -16,7 +16,7 @@ import {
   START_TIME_INPUT
 } from "../ui/groups/Constants.js";
 import {getEventDetailsFromForm, validate} from "../ui/groups/EventDetailsHandler.ts";
-import {ApiActionTypes, ApiLoadAction} from "@bponnaluri/places-js";
+import {ApiActionType, ApiLoadAction} from "@bponnaluri/places-js";
 import {API_ROOT} from "../ui/shared/Params.ts";
 
 
@@ -679,7 +679,7 @@ export function GetGameAdvice() {
           const eventDetails = getEventDetailsFromForm(formData)
           ApiLoadAction.getResponseData({
             body: JSON.stringify(eventDetails),
-            method: ApiActionTypes.POST,
+            method: ApiActionType.POST,
             url: API_ROOT + `/groups/${eventDetails.groupId}/events/`,
           }).then((response)=>{
             if(!response.errorMessage){

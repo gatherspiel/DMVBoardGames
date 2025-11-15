@@ -3,7 +3,7 @@ import {
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
 } from "./Constants.ts";
-import {ApiActionTypes, ApiLoadAction} from "@bponnaluri/places-js";
+import {ApiActionType, ApiLoadAction} from "@bponnaluri/places-js";
 import {generateErrorMessage, generateSuccessMessage} from "../../shared/html/StatusIndicators.ts";
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {IS_LOGGED_IN_KEY, LOGIN_STORE} from "../../data/user/LoginStore.ts";
@@ -130,7 +130,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
             url: (elements.namedItem(GROUP_URL_INPUT) as HTMLInputElement)?.value,
             gameTypeTags: Object.keys(getTagSelectedState(shadowRoot))
           }),
-          method: ApiActionTypes.POST,
+          method: ApiActionType.POST,
           url: API_ROOT + `/groups/`,
         }).then((data:any)=>{
 
