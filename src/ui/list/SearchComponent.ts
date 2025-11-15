@@ -16,6 +16,7 @@ import {generateButton, generateDisabledButton} from "../../shared/html/ButtonGe
 
 const DEFAULT_PARAMETER_KEY = "defaultParameter";
 const DEFAULT_PARAMETER_DISPLAY_KEY = "defaultParameterDisplay";
+const ENABLE_SEARCH_TOGGLE_KEY ="enableSearchButton";
 const SEARCH_BUTTON_ID:string = "search-button-id";
 const SEARCH_DISTANCE_ID:string = "search-distance-id";
 const SEARCH_CITY_ID: string = "search-cities";
@@ -49,7 +50,7 @@ export class SearchComponent extends BaseDynamicComponent {
           distance: params.get("distance")?.replaceAll("_"," "),
         }
         return {
-          "cityList":copy,"showGroups":params.size > 0, ...defaultSearchParams
+          "cityList":copy,ENABLE_SEARCH_TOGGLE_KEY:params.size > 0, ...defaultSearchParams
         }
       },
       dataStore:CITY_LIST_STORE,
@@ -141,13 +142,19 @@ export class SearchComponent extends BaseDynamicComponent {
     const self = this;
     shadowRoot.addEventListener("change",(event:any)=>{
       const eventTarget = event.target;
+
       if(eventTarget.id === SEARCH_CITY_ID){
+        const locationValue = (eventTarget  as HTMLInputElement).value
         self.updateData({
-          location: (eventTarget  as HTMLInputElement).value,
+          [ENABLE_SEARCH_TOGGLE_KEY]: locationValue !== DEFAULT_SEARCH_PARAMETER,
+          location: locationValue
         })
       } else if(eventTarget.id === SEARCH_DISTANCE_ID) {
+        const distanceValue = (eventTarget as HTMLInputElement).value
+
         self.updateData({
-          distance: (eventTarget as HTMLInputElement).value
+          [ENABLE_SEARCH_TOGGLE_KEY]: distanceValue !== DEFAULT_SEARCH_PARAMETER,
+          distance: distanceValue
         })
       }
     });
@@ -156,8 +163,10 @@ export class SearchComponent extends BaseDynamicComponent {
       event.preventDefault();
       if(event.target.type === "checkbox"){
         const selectedDaysState:Record<string, string> = getDaysOfWeekSelectedState(shadowRoot);
+        const daysSelected = Object.keys(selectedDaysState).length > 0;
         self.updateData({
-          days: Object.keys(selectedDaysState).length > 0 ? selectedDaysState : null
+          [ENABLE_SEARCH_TOGGLE_KEY]: daysSelected,
+          days: daysSelected? selectedDaysState : null
         })
       }
       if(event.target.id === SEARCH_BUTTON_ID){
@@ -190,9 +199,6 @@ export class SearchComponent extends BaseDynamicComponent {
   }
 
   render(store: any) {
-
-    const searchButtonEnabled =
-      store.days || store.location;
 
     const searchInputsClass = store.location && store.location !== DEFAULT_SEARCH_PARAMETER ?
       "search-form-three-inputs" : "search-form-two-inputs"
@@ -245,7 +251,7 @@ export class SearchComponent extends BaseDynamicComponent {
           ``}     
           </div>  
           <div id="searchInputDiv"> 
-            ${searchButtonEnabled || store.showGroups ?
+            ${store[ENABLE_SEARCH_TOGGLE_KEY] ?
               `${generateButton({
                 id: SEARCH_BUTTON_ID,
                 text: "Search",
