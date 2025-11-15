@@ -1,4 +1,4 @@
-import {ApiActionTypes, ApiLoadAction, BaseDynamicComponent} from "@bponnaluri/places-js";
+import {ApiActionType, ApiLoadAction, BaseDynamicComponent} from "@bponnaluri/places-js";
 import {API_ROOT} from "../shared/Params.ts";
 import {
   ERROR_MESSAGE_KEY,
@@ -44,7 +44,7 @@ export class RsvpComponent extends BaseDynamicComponent {
         if(!self.componentStore.userHasRsvp){
 
           ApiLoadAction.getResponseData({
-            method: ApiActionTypes.POST,
+            method: ApiActionType.POST,
             url: API_ROOT + this.#rsvpUrl
           }).then((response:any)=>{
             if(response.errorMessage){
@@ -63,7 +63,7 @@ export class RsvpComponent extends BaseDynamicComponent {
           })
         }else {
           ApiLoadAction.getResponseData({
-            method: ApiActionTypes.DELETE,
+            method: ApiActionType.DELETE,
             url: API_ROOT + this.#rsvpUrl
           }).then((response:any)=>{
             if(response.errorMessage){

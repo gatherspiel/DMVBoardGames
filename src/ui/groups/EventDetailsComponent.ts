@@ -1,5 +1,5 @@
 import {
-  ApiActionTypes,
+  ApiActionType,
   BaseDynamicComponent, ApiLoadAction
 } from "@bponnaluri/places-js";
 import {
@@ -179,7 +179,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           groupId: self.componentStore.groupId
         }
         ApiLoadAction.getResponseData({
-          method: ApiActionTypes.DELETE,
+          method: ApiActionType.DELETE,
           url: `${API_ROOT}/groups/${params.groupId}/events/${encodeURIComponent(params.id)}/`,
         }).then((response:any)=>{
           if (response.errorMessage) {
@@ -245,7 +245,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
           ApiLoadAction.getResponseData({
             body: JSON.stringify(eventDetails),
-            method: ApiActionTypes.PUT,
+            method: ApiActionType.PUT,
             url: API_ROOT + `/groups/${groupId}/events/?id=${encodeURIComponent(eventDetails.id)}`,
           }).then((response:any)=>{
             window.scrollTo({

@@ -5,7 +5,7 @@ import {
 } from "./Constants.js";
 
 import {
-  ApiActionTypes,
+  ApiActionType,
 
   ApiLoadAction, DataStore,
 } from "@bponnaluri/places-js";
@@ -195,7 +195,7 @@ export class GroupComponent extends BaseDynamicComponent {
 
         const userIsMember:boolean = self.componentStore.permissions?.userIsMember
         const apiMethod =
-          userIsMember ? ApiActionTypes.DELETE : ApiActionTypes.POST;
+          userIsMember ? ApiActionType.DELETE : ApiActionType.POST;
 
         ApiLoadAction.getResponseData({
           method: apiMethod,
@@ -260,7 +260,7 @@ export class GroupComponent extends BaseDynamicComponent {
         }
         ApiLoadAction.getResponseData({
           body: JSON.stringify(params),
-          method: ApiActionTypes.PUT,
+          method: ApiActionType.PUT,
           url: API_ROOT + `/groups/?name=${encodeURIComponent(params.name)}`,
         }).then((data:any)=>{
           if(!data.errorMessage){
