@@ -50,7 +50,7 @@ export class SearchComponent extends BaseDynamicComponent {
           distance: params.get("distance")?.replaceAll("_"," "),
         }
         return {
-          "cityList":copy,ENABLE_SEARCH_TOGGLE_KEY:params.size > 0, ...defaultSearchParams
+          "cityList":copy,[ENABLE_SEARCH_TOGGLE_KEY]:params.size === 0, ...defaultSearchParams
         }
       },
       dataStore:CITY_LIST_STORE,
@@ -144,17 +144,15 @@ export class SearchComponent extends BaseDynamicComponent {
       const eventTarget = event.target;
 
       if(eventTarget.id === SEARCH_CITY_ID){
-        const locationValue = (eventTarget  as HTMLInputElement).value
         self.updateData({
-          [ENABLE_SEARCH_TOGGLE_KEY]: locationValue !== DEFAULT_SEARCH_PARAMETER,
-          location: locationValue
+          [ENABLE_SEARCH_TOGGLE_KEY]: true,
+          location: (eventTarget  as HTMLInputElement).value
         })
       } else if(eventTarget.id === SEARCH_DISTANCE_ID) {
-        const distanceValue = (eventTarget as HTMLInputElement).value
 
         self.updateData({
-          [ENABLE_SEARCH_TOGGLE_KEY]: distanceValue !== DEFAULT_SEARCH_PARAMETER,
-          distance: distanceValue
+          [ENABLE_SEARCH_TOGGLE_KEY]: true,
+          distance: (eventTarget as HTMLInputElement).value
         })
       }
     });
@@ -163,10 +161,9 @@ export class SearchComponent extends BaseDynamicComponent {
       event.preventDefault();
       if(event.target.type === "checkbox"){
         const selectedDaysState:Record<string, string> = getDaysOfWeekSelectedState(shadowRoot);
-        const daysSelected = Object.keys(selectedDaysState).length > 0;
         self.updateData({
-          [ENABLE_SEARCH_TOGGLE_KEY]: daysSelected,
-          days: daysSelected? selectedDaysState : null
+          [ENABLE_SEARCH_TOGGLE_KEY]: true,
+          days: Object.keys(selectedDaysState).length > 0 ? selectedDaysState : null
         })
       }
       if(event.target.id === SEARCH_BUTTON_ID){
@@ -178,7 +175,7 @@ export class SearchComponent extends BaseDynamicComponent {
         };
 
         self.updateData({
-          showGroups:true
+          [ENABLE_SEARCH_TOGGLE_KEY]:false
         })
 
         const baseUrl = window.location.origin.split("?");
