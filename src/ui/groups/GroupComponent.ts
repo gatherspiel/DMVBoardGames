@@ -449,7 +449,6 @@ export class GroupComponent extends BaseDynamicComponent {
           user-can-update-rsvp=${eventData.permissions.userCanRsvp}
         ></rsvp-component>
         <p class="event-time">
-          //TODO: Update backend response to ensure that string conversion isn't necessary here.
           ${dayString}s from ${(eventData.startTime)} to 
           ${(eventData.endTime)} 
         </p>
