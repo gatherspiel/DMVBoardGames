@@ -1,4 +1,4 @@
-import {ApiActionTypes, BaseDynamicComponent, ApiLoadAction} from "@bponnaluri/places-js";
+import {ApiActionType, BaseDynamicComponent, ApiLoadAction} from "@bponnaluri/places-js";
 import { GROUP_NAME_INPUT } from "./Constants.ts";
 
 import {API_ROOT} from "../shared/Params.ts";
@@ -59,7 +59,7 @@ export class DeleteGroupComponent extends BaseDynamicComponent {
 
           const id = (new URLSearchParams(document.location.search)).get("id") ?? "";
           const params = {
-            method: ApiActionTypes.DELETE,
+            method: ApiActionType.DELETE,
             url: `${API_ROOT}/groups/?id=${id}`
           };
 

@@ -1,6 +1,6 @@
 import {AuthResponse} from "../../ui/user/AuthResponse.ts";
 import {
-  addLocalStorageData,
+  addLocalStorageData, ApiActionType,
   clearSessionStorage,
   CustomLoadAction,
   DataStore,
@@ -27,7 +27,7 @@ async function retrieveData(
     const data:Response = await fetch(
       `${SUPABASE_CLIENT_URL}/auth/v1/token?grant_type=password`,
       {
-        method: "POST",
+        method: ApiActionType.POST,
         headers:{
           apiKey: SUPABASE_CLIENT_KEY,
         },
