@@ -14,7 +14,6 @@ import {
 import {getEventDetailsFromForm, validate} from "./EventDetailsHandler.ts";
 import {API_ROOT, IS_PRODUCTION} from "../shared/Params.ts";
 import {DAY_OF_WEEK_INPUT, getDayOfWeekSelectHtml} from "../../shared/html/SelectGenerator.ts";
-import {LOGIN_STORE} from "../../data/user/LoginStore.ts";
 
 import {LoginStatusComponent} from "../shared/LoginStatusComponent.ts";
 import {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.ts";
@@ -33,9 +32,7 @@ const CREATE_EVENT_BUTTON_ID = "create-event-button";
 const RECURRING_EVENT_INPUT = "is-recurring";
 export class CreateEventComponent extends BaseDynamicComponent {
   constructor() {
-    super([{
-      dataStore: LOGIN_STORE
-    }]);
+    super();
   }
   connectedCallback(){
     this.updateData({

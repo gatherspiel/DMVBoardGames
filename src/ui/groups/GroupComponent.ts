@@ -50,12 +50,12 @@ export class GroupComponent extends BaseDynamicComponent {
         }
       },
       dataStore:new DataStore(new ApiLoadAction(
-        (requestParams: any) =>  {
+        () =>  {
+          const name = (new URLSearchParams(document.location.search)).get("name") ?? "";
           return {
-            url: API_ROOT + `/groups/?name=${encodeURIComponent(requestParams.name)}`,
+            url: API_ROOT + `/groups/?name=${encodeURIComponent(name)}`,
           };
         })),
-      urlParams:["name"]
     }]);
   }
 
