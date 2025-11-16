@@ -5,9 +5,6 @@ import {generateLinkButton} from "../../shared/html/ButtonGenerator.ts";
 export class GameRestaurantListComponent extends BaseDynamicComponent {
   constructor() {
     super([{
-      componentReducer: (data:any)=>{
-        return data;
-      },
       dataStore: GAME_RESTAURANT_STORE,
     }]);
   }
@@ -17,6 +14,7 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/> 
       <style>
         h1,h2 {
+          margin-top:0.5rem;
           padding-left:1.5rem;
         }
         h3 {
@@ -55,8 +53,6 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
   render(data: any) {
 
     let html = `
-      <div class="game-restaurants">
-      <div class="section-separator-medium"></div>
       <h1>Board Game Bars and Cafés</h1>
       <div class="section-separator-small"></div>
 

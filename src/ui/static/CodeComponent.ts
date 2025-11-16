@@ -24,8 +24,6 @@ export class CodeComponent extends BaseTemplateComponent {
 
   override render(){
 
-    console.log((ImageUploadComponent.toString()))
-
     return `
       <h1>Code notes</h1>
       
