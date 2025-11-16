@@ -8,9 +8,6 @@ import {generateLinkButton} from "../../shared/html/ButtonGenerator.ts";
 export class ConventionListComponent extends BaseDynamicComponent {
   constructor() {
     super([{
-      componentReducer: (data:any)=>{
-        return data;
-      },
       dataStore: CONVENTIONS_STORE,
     }]);
   }
@@ -19,7 +16,9 @@ export class ConventionListComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
-        
+        h1 {
+          margin-top:0.5rem;
+        }
         h3 {
           font-size: 1.5rem;
         }

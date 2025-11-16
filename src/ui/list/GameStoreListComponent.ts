@@ -5,9 +5,6 @@ import {GAME_STORE_DATA} from "../../data/list/LocationsStore.ts";
 export class GameStoreListComponent extends BaseDynamicComponent {
   constructor() {
     super([{
-      componentReducer: (data:any)=>{
-        return data;
-      },
       dataStore: GAME_STORE_DATA,
     }]);
   }
@@ -16,7 +13,9 @@ export class GameStoreListComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
-
+        h1 {
+          margin-top:1rem;
+        }
         p {
           font-size: 1rem;
         }
