@@ -9,8 +9,33 @@ const LOADING_INDICATOR_CONFIG:LoadingIndicatorConfig = {
     console.log("Generating loading indicator")
     return `
       <div class="loader">
-        <img src="/assets/images/meeple_small.png"/>
-                <img src="/assets/images/meeple_small.png"/>
+        
+        <div class="meeple" id="meeple-one">  
+          <img src="/assets/images/meeple_small.png">
+        </div>
+        
+        <div class="meeple"  id="meeple-two">
+          <img src="/assets/images/meeple_small.png">
+        </div>
+        
+        <div class="meeple"  id="meeple-three">
+          <img src="/assets/images/meeple_small.png">
+        </div>
+        
+        <div class="meeple"  id="meeple-four" >
+          <img src="/assets/images/meeple_small.png">
+        </div>
+        
+        <div class="meeple"  id="meeple-five" >
+          <img src="/assets/images/meeple_small.png">
+        </div>
+        
+        <div class="meeple"  id="meeple-six" >
+            <img src="/assets/images/meeple_small.png">
+        </div>
+        <div class="meeple"  id="meeple-seven" >
+          <img src="/assets/images/meeple_small.png">
+        </div>
 
 </div>
   `
@@ -36,29 +61,76 @@ export class EventListComponent extends BaseDynamicComponent {
       <link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
       <style>
       
+    
+      #meeple-one {
+        position: absolute;
+        top:50px;
+        left:25px;
+      }
+      
+      #meeple-two {
+        position: absolute;
+        top:43px;
+        left:43px;
+      }
+      
+      #meeple-three {
+        position: absolute;
+        top:25px;
+        left:50px;
+      }
+      
+      #meeple-four {
+        position: absolute;
+        top:7px;
+        left:43px;
+      }
+      
+      #meeple-five {
+        position: absolute;
+        top:0;
+        left:25px;
+      }
+      
+      #meeple-six {
+        position: absolute;
+        top:7px;
+        left:7px;
+      }
+      
+       #meeple-seven {
+        position: absolute;
+        top:25px;
+        left:0;
+      }
+      
+     
       /* HTML:  */
 /* HTML: <div class="loader"></div> */
-.loader {
-  --d:22px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  color: #25b09b;
-  box-shadow: 
-    calc(1*var(--d))      calc(0*var(--d))     0 0,
-    calc(0.707*var(--d))  calc(0.707*var(--d)) 0 1px,
-    calc(0*var(--d))      calc(1*var(--d))     0 2px,
-    calc(-0.707*var(--d)) calc(0.707*var(--d)) 0 3px,
-    calc(-1*var(--d))     calc(0*var(--d))     0 4px,
-    calc(-0.707*var(--d)) calc(-0.707*var(--d))0 5px,
-    calc(0*var(--d))      calc(-1*var(--d))    0 6px;
-  animation: l27 1s infinite steps(8);
-}
-@keyframes l27 {
-  100% {transform: rotate(1turn)}
-}
-
-
+    .loader {
+      margin-top:5rem;
+      width: 65px;
+      height: 65px;
+      animation: l27 1s infinite steps(8);
+    }
+    @keyframes l27 {
+      100% {
+      transform-origin: 32.5px 32.5px;
+      transform: rotate(1turn)
+      }
+    }
+    .meeple {
+      width:15px;
+      height:15px;
+      animation: l28 1111s infinite steps(8);
+    }
+    @keyframes l28 {
+      100% {
+      transform-origin: 7.5px 7.5px;
+      transform: rotate(-1turn)
+      }
+    }
+   
 
        li {
           padding-bottom: 1rem;
