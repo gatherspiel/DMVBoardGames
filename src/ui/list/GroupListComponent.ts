@@ -1,14 +1,14 @@
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {getDisplayName} from "../../shared/DisplayNameConversion.ts";
 
-import {SHOW_LIST_STORE} from "../../data/list/SearchStores.ts";
 import {LOGIN_STORE} from "../../data/user/LoginStore.ts";
 import {generateLinkButton} from "../../shared/html/ButtonGenerator.ts";
+import {SEARCH_RESULTS_LIST_STORE} from "../../data/list/SearchStores.ts";
 
 export class GroupListComponent extends BaseDynamicComponent {
   constructor() {
     super([{
-      dataStore: SHOW_LIST_STORE,
+      dataStore: SEARCH_RESULTS_LIST_STORE,
       fieldName:"data"
     },{
       dataStore: LOGIN_STORE,

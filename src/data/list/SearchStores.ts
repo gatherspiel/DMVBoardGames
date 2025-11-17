@@ -1,9 +1,11 @@
 import { API_ROOT } from "../../ui/shared/Params.ts";
-import {ApiLoadAction, CustomLoadAction, DataStore} from "@bponnaluri/places-js";
+import {ApiLoadAction, DataStore} from "@bponnaluri/places-js";
 import type { ApiRequestConfig } from "@bponnaluri/places-js";
 import {DEFAULT_SEARCH_PARAMETER} from "../../shared/html/SelectGenerator.ts";
 
 function getSearchResultsQueryConfig(searchParams: any): ApiRequestConfig {
+
+  console.log(searchParams);
 
   const paramMap: any = {};
 
@@ -40,4 +42,4 @@ function getSearchResultsQueryConfig(searchParams: any): ApiRequestConfig {
 
 export const SEARCH_RESULTS_LIST_STORE = new DataStore(new ApiLoadAction(getSearchResultsQueryConfig));
 
-export const SHOW_LIST_STORE = new DataStore(new CustomLoadAction(()=>{}));
+SEARCH_RESULTS_LIST_STORE.updateStoreData({status:"Waiting for user input"})
