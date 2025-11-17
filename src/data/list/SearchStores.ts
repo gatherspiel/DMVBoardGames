@@ -5,8 +5,6 @@ import {DEFAULT_SEARCH_PARAMETER} from "../../shared/html/SelectGenerator.ts";
 
 function getSearchResultsQueryConfig(searchParams: any): ApiRequestConfig {
 
-  console.log(searchParams);
-
   const paramMap: any = {};
 
   if (searchParams.days && searchParams.days !== DEFAULT_SEARCH_PARAMETER) {

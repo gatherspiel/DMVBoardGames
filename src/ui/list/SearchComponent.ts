@@ -37,7 +37,6 @@ export class SearchComponent extends BaseDynamicComponent {
   constructor() {
     super([{
       componentReducer: (cityArray:string[])=>{
-        console.log("HI")
         const copy:string[] = [];
         cityArray.forEach((city:string)=>{
           copy.push(getDisplayName(city))

@@ -6,7 +6,6 @@ import {SEARCH_RESULTS_LIST_STORE} from "../../data/list/SearchStores.ts";
 
 const LOADING_INDICATOR_CONFIG:LoadingIndicatorConfig = {
   generateLoadingIndicatorHtml: ()=>{
-    console.log("Generating loading indicator")
     return `
       <div class="loader">
         
@@ -40,7 +39,7 @@ const LOADING_INDICATOR_CONFIG:LoadingIndicatorConfig = {
 </div>
   `
   },
-  minTimeMs: 999999,
+  minTimeMs: 500,
 
 }
 
@@ -229,7 +228,6 @@ export class EventListComponent extends BaseDynamicComponent {
       return ``;
     }
 
-    console.log("Rendering event list component")
     if(!state.data){
       return ``;
     }
