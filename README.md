@@ -13,7 +13,6 @@ Also, follow the guidelines below:
 - Keep PRs as small as possible. Large features should be broken down into multiple PRs when possible.
 - If a PR has UI changes, include a screenshot of the change in the PR.
 - UI elements that are dynamic or will be used multiple times should be implemented as [Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components).
-- For new files, TypeScript should be used.
 
 ## Development
 
