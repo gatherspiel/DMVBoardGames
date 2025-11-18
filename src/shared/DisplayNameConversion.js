@@ -1,0 +1,17 @@
+const DISPLAY_NAME_MAPPING= {
+  "Washington": "DC",
+  "0":"0 miles",
+  "5": "5 miles",
+  "10": "10 miles",
+  "15": "15 miles",
+  "30": "30 miles",
+  "50": "50 miles"
+}
+
+export function getDisplayName(name) {
+  return DISPLAY_NAME_MAPPING[name] ?? name;
+}
+
+export function convertDayOfWeekForDisplay(day){
+  return `${day.substring(0,1).toUpperCase()}${day.substring(1).toLowerCase()}`
+}

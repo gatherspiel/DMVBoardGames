@@ -15,9 +15,9 @@ import {
   EVENT_URL_INPUT, START_DATE_INPUT,
   START_TIME_INPUT
 } from "../ui/groups/Constants.js";
-import {getEventDetailsFromForm, validate} from "../ui/groups/EventDetailsHandler.ts";
+import {getEventDetailsFromForm, validate} from "../ui/groups/EventDetailsHandler.js";
 import {ApiActionType, ApiLoadAction} from "@bponnaluri/places-js";
-import {API_ROOT} from "../ui/shared/Params.ts";
+import {API_ROOT} from "../ui/shared/Params.js";
 
 
 
@@ -642,7 +642,7 @@ export function GetGameAdvice() {
       const targetId = event.target.id;
       if(targetId === RECURRING_EVENT_INPUT){
         self.updateData({
-          isRecurring: (shadowRoot?.getElementById(RECURRING_EVENT_INPUT))?.checked
+          isRecurring: (shadowRoot.getElementById(RECURRING_EVENT_INPUT))?.checked
       })
       }
 
