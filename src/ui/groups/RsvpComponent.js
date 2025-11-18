@@ -1,4 +1,4 @@
-import {ApiActionType, ApiLoadAction, BaseDynamicComponent} from "@bponnaluri/places-js";
+import {ApiLoadAction, BaseDynamicComponent} from "@bponnaluri/places-js";
 import {API_ROOT} from "../shared/Params.js";
 import {
   ERROR_MESSAGE_KEY,

@@ -4,6 +4,8 @@ import {getDisplayName} from "../../shared/DisplayNameConversion.js";
 import {LOGIN_STORE} from "../../data/user/LoginStore.js";
 import {generateLinkButton} from "../../shared/html/ButtonGenerator.js";
 import {SEARCH_RESULTS_LIST_STORE} from "../../data/list/SearchStores.js";
+import {LOADING_INDICATOR_CONFIG} from "../../shared/LoadingIndicatorConfig.js";
+
 
 export class GroupListComponent extends BaseDynamicComponent {
   constructor() {
@@ -13,7 +15,8 @@ export class GroupListComponent extends BaseDynamicComponent {
     },{
       dataStore: LOGIN_STORE,
       fieldName: "loginStatus"
-   }]);
+   }],
+   LOADING_INDICATOR_CONFIG);
   }
 
   getTemplateStyle() {
@@ -100,9 +103,11 @@ export class GroupListComponent extends BaseDynamicComponent {
   }
   render(state) {
 
-    if(!state.data){
+
+    if(state?.status === "Waiting for user input" || !state.data.groupData){
       return ``;
     }
+
     if(state.data.groupData.length === 0){
       return `
           <p>No groups found</p>

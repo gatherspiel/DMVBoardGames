@@ -1,13 +1,12 @@
 import {AuthResponse} from "../../ui/user/AuthResponse.js";
 import {
-  addLocalStorageData,
+  addLocalStorageData, ApiActionType,
   clearSessionStorage,
   CustomLoadAction,
   DataStore,
   getLocalStorageDataIfPresent
 } from "@bponnaluri/places-js";
 import {AUTH_TOKEN_KEY, SUPABASE_CLIENT_KEY, SUPABASE_CLIENT_URL} from "../../ui/shared/Params.js";
-
 
 export const IS_LOGGED_IN_KEY = "loggedIn";
 

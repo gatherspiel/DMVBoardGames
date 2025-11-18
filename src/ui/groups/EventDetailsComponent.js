@@ -30,6 +30,7 @@ import {
 import {generateButton, generateLinkButton} from "../../shared/html/ButtonGenerator.js";
 import {RsvpComponent} from "./RsvpComponent.js";
 import {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.js";
+import {LOADING_INDICATOR_CONFIG} from "../../shared/LoadingIndicatorConfig.js";
 
 customElements.define("image-upload-component",ImageUploadComponent)
 customElements.define("login-status-component", LoginStatusComponent);
@@ -53,7 +54,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         }
         return data;
       }
-    }]);
+    }],LOADING_INDICATOR_CONFIG);
   }
 
   getTemplateStyle() {

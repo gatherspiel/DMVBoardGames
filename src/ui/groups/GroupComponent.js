@@ -5,8 +5,6 @@ import {
 } from "./Constants.js";
 
 import {
-  ApiActionType,
-
   ApiLoadAction, DataStore,
 } from "@bponnaluri/places-js";
 
@@ -26,6 +24,7 @@ import {
 import  {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.js";
 import {generateButton, generateLinkButton} from "../../shared/html/ButtonGenerator.js";
 import {RsvpComponent} from "./RsvpComponent.js";
+import {LOADING_INDICATOR_CONFIG} from "../../shared/LoadingIndicatorConfig.js";
 
 customElements.define('image-upload-component',ImageUploadComponent)
 customElements.define("login-status-component", LoginStatusComponent);
@@ -56,7 +55,8 @@ export class GroupComponent extends BaseDynamicComponent {
             url: API_ROOT + `/groups/?name=${encodeURIComponent(name)}`,
           };
         })),
-    }]);
+    }],
+    LOADING_INDICATOR_CONFIG);
   }
 
   getTemplateStyle() {
@@ -234,7 +234,7 @@ export class GroupComponent extends BaseDynamicComponent {
       }
       else if(targetId === SAVE_UPDATES_BUTTON_ID){
         const validationErrorState = {[SUCCESS_MESSAGE_KEY]:''}
-        const groupName = shadowRoot.getElementById(GROUP_NAME_INPUT)?.value;
+        const groupName = shadowRoot.getElementById(GROUP_NAME_INPUT);
         if(!groupName || groupName.length === 0){
           validationErrorState[NAME_ERROR_TEXT_KEY] = "Name is a required field"
         }
@@ -391,7 +391,7 @@ export class GroupComponent extends BaseDynamicComponent {
         <label class="">Image(optional)</label>
        
         <div class ="form-section" id="image-upload">
-          <image-upload-component
+          image-upload-component
             id="image-upload-ui"
             image-path="${groupData.imagePath}"
           ></image-upload-component>

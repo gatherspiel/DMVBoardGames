@@ -3,46 +3,7 @@ import {BaseDynamicComponent} from "@bponnaluri/places-js";
 import {generateLinkButton} from "../../shared/html/ButtonGenerator.js";
 import {convertLocationDataForDisplay} from "../../shared/EventDataUtils.js";
 import {SEARCH_RESULTS_LIST_STORE} from "../../data/list/SearchStores.js";
-
-const LOADING_INDICATOR_CONFIG = {
-  generateLoadingIndicatorHtml: ()=>{
-    return `
-      <div class="loader">
-        
-        <div class="meeple" id="meeple-one">  
-          <img src="/assets/images/meeple_small.png">
-        </div>
-        
-        <div class="meeple"  id="meeple-two">
-          <img src="/assets/images/meeple_small.png">
-        </div>
-        
-        <div class="meeple"  id="meeple-three">
-          <img src="/assets/images/meeple_small.png">
-        </div>
-        
-        <div class="meeple"  id="meeple-four" >
-          <img src="/assets/images/meeple_small.png">
-        </div>
-        
-        <div class="meeple"  id="meeple-five" >
-          <img src="/assets/images/meeple_small.png">
-        </div>
-        
-        <div class="meeple"  id="meeple-six" >
-            <img src="/assets/images/meeple_small.png">
-        </div>
-        <div class="meeple"  id="meeple-seven" >
-          <img src="/assets/images/meeple_small.png">
-        </div>
-
-</div>
-  `
-  },
-  minTimeMs: 500,
-
-}
-
+import {LOADING_INDICATOR_CONFIG} from "../../shared/LoadingIndicatorConfig.js";
 
 export class EventListComponent extends BaseDynamicComponent {
   constructor() {
@@ -53,103 +14,11 @@ export class EventListComponent extends BaseDynamicComponent {
     LOADING_INDICATOR_CONFIG)
   }
 
-
   getTemplateStyle() {
     return `
       <link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
       <style>
   
-        #meeple-one {
-          position: absolute;
-          height:4px;
-          width:4px;
-          top:50px;
-          left:25px;
-        }
-        #meeple-two {
-          position: absolute;
-          top:43px;
-          left:43px;
-        }
-        #meeple-three {
-          position: absolute;
-          top:25px;
-          left:50px;
-        }
-        #meeple-four {
-          position: absolute;
-          top:7px;
-          left:43px;
-        }
-        #meeple-five {
-          position: absolute;
-          top:0;
-          left:25px;
-        }  
-        #meeple-six {
-          position: absolute;
-          top:7px;
-          left:7px;
-        }  
-        #meeple-seven {
-          position: absolute;
-          top:25px;
-          left:0;
-        }
-        #meeple-seven img {
-          height:3px;
-          width:3px;
-        }
-        #meeple-six img {
-          height:5px;
-          width:5px;
-        }
-        #meeple-five img {
-          height:7px;
-          width:7px;
-        }
-        #meeple-four img {
-          height:9px;
-          width:9px;
-        }
-        #meeple-three img {
-          height:11px;
-          width:11px;
-        }
-        #meeple-two img {
-          height:13px;
-          width:13px;
-        }
-        #meeple-one img {
-          height:15px;
-          width:15px;
-        }
-        .loader {
-          animation: l27 1s infinite steps(8);
-          height: 65px;
-          margin-left:auto;
-          margin-right:auto;
-          margin-top:2rem;
-          width: 65px;
-      }
-      @keyframes l27 {
-        100% {
-        transform-origin: 32.5px 32.5px;
-        transform: rotate(1turn)
-        }
-      }
-      .meeple {
-        width:15px;
-        height:15px;
-        animation: l28 1s infinite steps(8);
-      }
-      @keyframes l28 {
-        100% {
-        transform-origin: 7.5px 7.5px;
-        transform: rotate(-1turn)
-        }
-      }
-   
        li {
           padding-bottom: 1rem;
           padding-top:1rem;
