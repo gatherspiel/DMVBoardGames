@@ -1,19 +1,22 @@
 /* Styles that are shared with components */
 
-b,h2,label,li {
+b,
+h2,
+label,
+li {
   color: var(--clr-darker-blue);
-  margin-top:0;
-  margin-bottom:0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 h1 {
   background-color: var(--clr-very-light-blue);
   border-radius: 12px;
   color: var(--clr-darker-blue);
-  font-size:3rem;
-  margin-top:0;
-  margin-bottom:0;
-  transform:translateY(2px);
+  font-size: 3rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  transform: translateY(2px);
 }
 
 h2 {
@@ -21,8 +24,8 @@ h2 {
   border-radius: 12px;
   color: var(--clr-darker-blue);
   font-size: 2rem;
-  margin-top:0;
-  margin-bottom:0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 a:hover {
@@ -38,7 +41,7 @@ a:hover {
 }
 
 #user-actions-front {
-  padding-left:1.5rem;
+  padding-left: 1.5rem;
 }
 
 .activeHover:hover {
@@ -70,7 +73,7 @@ a:hover {
 }
 
 .disabled {
-  border:none
+  border: none;
 }
 
 .disabled-edge {
@@ -81,9 +84,9 @@ a:hover {
   height: 100%;
   border-radius: 12px;
   background: linear-gradient(
-          to left,
-          var(--clr-light-gray) 8%,
-          var(--clr-dark-gray) 92%,
+    to left,
+    var(--clr-light-gray) 8%,
+    var(--clr-dark-gray) 92%
   );
 }
 
@@ -94,7 +97,7 @@ a:hover {
   border-radius: 12px;
   font-size: 1.5rem;
   color: white;
-  background-color:gray;
+  background-color: gray;
 }
 
 .edge {
@@ -105,18 +108,18 @@ a:hover {
   height: 100%;
   border-radius: 12px;
   background: linear-gradient(
-          to left,
-          var(--clr-darker-blue) 0%,
-          var(--clr-light-blue) 8%,
-          var(--clr-dark-blue) 92%,
-          var(--clr-darker-blue) 100%
+    to left,
+    var(--clr-darker-blue) 0%,
+    var(--clr-light-blue) 8%,
+    var(--clr-dark-blue) 92%,
+    var(--clr-darker-blue) 100%
   );
 }
 
 .error-message {
   color: darkred;
-  display:block;
-  font-weight:600;
+  display: block;
+  font-weight: 600;
 }
 
 .front {
@@ -154,10 +157,10 @@ a:hover {
 .raised {
   background: transparent;
   box-shadow: 2px 2px 2px hsl(0deg 0% 0% / 0.25);
-  border:none;
+  border: none;
   border-radius: 12px;
   cursor: pointer;
-  line-height:1;
+  line-height: 1;
   outline-offset: 4px;
   padding: 0;
   position: relative;
@@ -167,7 +170,7 @@ a:hover {
 .raised a {
   color: white;
   font-weight: 400;
-  text-decoration:none;
+  text-decoration: none;
 }
 
 .raised span {
@@ -180,14 +183,14 @@ a:hover {
 }
 
 .section-separator-medium {
-  border-bottom:  20px solid;
+  border-bottom: 20px solid;
   border-image-source: url(/assets/images/Section_Border_Medium.png);
   border-image-slice: 20 20;
   border-image-repeat: round;
 }
 
 .section-separator-small {
-  border-top:  5px solid;
+  border-top: 5px solid;
   border-image-source: url(/assets/images/Section_Border_Tiny.png);
   border-image-slice: 5 5;
   border-image-repeat: round;
@@ -206,25 +209,25 @@ a:hover {
 }
 
 .success-message {
-  color: #00BB51;
-  display:block;
+  color: #00bb51;
+  display: block;
   font-weight: 600;
 }
 
 .ui-section {
-  padding-left:1.5rem;
+  padding-left: 1.5rem;
 }
 
 @media not screen and (width < 32em) {
   textarea {
-    width:63.5rem;
-    height:25rem;
+    width: 63.5rem;
+    height: 25rem;
   }
   #user-actions-menu-raised {
-    display:inherit;
+    display: inherit;
   }
   .show-mobile {
-    display:none
+    display: none;
   }
   .top-nav-secondary a {
     display: inline-block;
@@ -233,26 +236,26 @@ a:hover {
   .top-nav-secondary span {
     margin-right: 2rem;
   }
-
 }
 
 @media screen and (width < 32em) {
   .ui-section {
-    padding-left:0.5rem;
-    padding-right:0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
     text-align: center;
   }
   .hide-mobile {
-    display:none;
+    display: none;
   }
   .show-mobile {
-    display:initial;
+    display: initial;
   }
   form {
-    margin-right:1.5rem;
+    margin-right: 1.5rem;
   }
-  input, textarea {
-    width:100%;
+  input,
+  textarea {
+    width: 100%;
   }
 
   .top-nav-secondary {
@@ -261,11 +264,10 @@ a:hover {
   }
 
   .top-nav-secondary > :not(:first-child) {
-    padding-top:0.5rem;
+    padding-top: 0.5rem;
   }
 
   .top-nav-secondary span {
     padding-top: 1rem;
   }
-
 }

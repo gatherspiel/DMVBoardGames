@@ -2,7 +2,6 @@
 
 Include a summary of the change and the relevant issue. Include a screenshot if a UI change was made.
 
-
 # Checklist
 
 - [ ] I have reviewed the development guidelines [here](https://github.com/free-gather/development/blob/main/development_guidelines.md).
