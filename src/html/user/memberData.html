@@ -16,9 +16,11 @@
     <title>Member data</title>
 
     <script defer fetchpriority="low" type="module">
+      import {LoadingIndicatorComponent} from "../../shared/components/LoadingIndicatorComponent.js";
       import { LoginStatusComponent } from "../../ui/shared/LoginStatusComponent.js";
       import { MemberDataComponent } from "../../ui/user/MemberDataComponent.js";
 
+      customElements.define('loading-indicator-component',LoadingIndicatorComponent)
       customElements.define("login-status-component", LoginStatusComponent);
       customElements.define("member-data-component", MemberDataComponent);
     </script>

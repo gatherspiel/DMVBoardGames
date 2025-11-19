@@ -13,13 +13,13 @@
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "eslint": "^9.39.1",
+    "globals": "^16.5.0",
     "prettier": "3.6.2",
     "vite": "7.2.2",
     "vite-plugin-handlebars": "2.0.0",
     "vite-plugin-inline-source": "4.1.0"
   },
   "dependencies": {
-    "@bponnaluri/places-js": "0.0.42",
-    "globals": "^16.5.0"
+    "@bponnaluri/places-js": "^0.0.42"
   }
 }
