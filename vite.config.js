@@ -21,6 +21,7 @@ export default defineConfig({
     outDir: "../dist",
     rollupOptions: {
       input: {
+        code: resolve(__dirname, "src/html/static/code.html"),
         conventions: resolve(__dirname, "src/html/list/conventions.html"),
         create_account: resolve(__dirname, "src/html/user/createAccount.html"),
         create_groups: resolve(__dirname, "src/html/groups/create.html"),
