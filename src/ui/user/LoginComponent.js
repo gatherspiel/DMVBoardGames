@@ -1,26 +1,27 @@
-import {LOGIN_STORE,} from "../../data/user/LoginStore.js";
-import {LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT,} from "./Constants.js";
+import { LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT } from "./Constants.js";
 
-import {BaseDynamicComponent} from "@bponnaluri/places-js";
-import {generateButton} from "../../shared/html/ButtonGenerator.js";
-import {generateErrorMessage} from "../../shared/html/StatusIndicators.js";
+import { BaseDynamicComponent } from "@bponnaluri/places-js";
+import { LOGIN_STORE } from "../../data/user/LoginStore.js";
+import { generateButton } from "../../shared/html/ButtonGenerator.js";
+import { generateErrorMessage } from "../../shared/html/StatusIndicators.js";
 
 const LOGIN_BUTTON_ID = "login-button";
 
 export class LoginComponent extends BaseDynamicComponent {
-
   loginAttempted;
   registerAttempted;
   constructor() {
-    super([{
-      componentReducer:(loginState)=>{
-        if(loginState.loggedIn){
-          window.location.assign('/html/user/memberData.html');
-        }
-        return loginState;
+    super([
+      {
+        componentReducer: (loginState) => {
+          if (loginState.loggedIn) {
+            window.location.assign("/html/user/memberData.html");
+          }
+          return loginState;
+        },
+        dataStore: LOGIN_STORE,
       },
-      dataStore: LOGIN_STORE,
-    }]);
+    ]);
     this.loginAttempted = false;
     this.registerAttempted = false;
   }
@@ -62,50 +63,49 @@ export class LoginComponent extends BaseDynamicComponent {
   }
 
   retrieveAndValidateFormInputs(shadowRoot) {
-
-    const username = (shadowRoot.getElementById(USERNAME_INPUT))?.value;
-    const password = (shadowRoot.getElementById(PASSWORD_INPUT))?.value;
+    const username = shadowRoot.getElementById(USERNAME_INPUT)?.value;
+    const password = shadowRoot.getElementById(PASSWORD_INPUT)?.value;
     if (!username || !password) {
       return {
-        errorMessage: "Enter a valid username and password"
-      }
+        errorMessage: "Enter a valid username and password",
+      };
     }
     return {
       username: username,
-      password: password
+      password: password,
     };
   }
 
-  attachHandlersToShadowRoot(shadowRoot){
-
+  attachHandlersToShadowRoot(shadowRoot) {
     const self = this;
-    shadowRoot.addEventListener("click",(event)=>{
+    shadowRoot.addEventListener("click", (event) => {
       event.preventDefault();
 
       try {
         const targetId = event.target?.id;
-        if (targetId === LOGIN_BUTTON_ID){
+        if (targetId === LOGIN_BUTTON_ID) {
           self.loginAttempted = true;
-          const formInputs = self.retrieveAndValidateFormInputs(shadowRoot)
-          if(formInputs.errorMessage){
-            self.updateData(formInputs)
+          const formInputs = self.retrieveAndValidateFormInputs(shadowRoot);
+          if (formInputs.errorMessage) {
+            self.updateData(formInputs);
           } else {
             LOGIN_STORE.fetchData({
-              formInputs
-            })
+              formInputs,
+            });
           }
         }
-
-      }catch(e){
-        if(e.message !== `Permission denied to access property "id"`){
+      } catch (e) {
+        if (e.message !== `Permission denied to access property "id"`) {
           throw e;
         }
       }
-    })
+    });
   }
 
   render(data) {
-    const isNewUser = new URLSearchParams(document.location.search).get("newUser")
+    const isNewUser = new URLSearchParams(document.location.search).get(
+      "newUser",
+    );
 
     return `
       <div class="ui-section" id="login-component-container">
@@ -139,7 +139,7 @@ export class LoginComponent extends BaseDynamicComponent {
           })}  
       
         </div>
-          ${this.loginAttempted || this.registerAttempted ? generateErrorMessage(data.errorMessage) : ''}
+          ${this.loginAttempted || this.registerAttempted ? generateErrorMessage(data.errorMessage) : ""}
         </form>
       </div>
     `;

@@ -1,12 +1,14 @@
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
-import {GAME_RESTAURANT_STORE} from "../../data/list/LocationsStore.js";
-import {generateLinkButton} from "../../shared/html/ButtonGenerator.js";
+import { GAME_RESTAURANT_STORE } from "../../data/list/LocationsStore.js";
+import { generateLinkButton } from "../../shared/html/ButtonGenerator.js";
 
 export class GameRestaurantListComponent extends BaseDynamicComponent {
   constructor() {
-    super([{
-      dataStore: GAME_RESTAURANT_STORE,
-    }]);
+    super([
+      {
+        dataStore: GAME_RESTAURANT_STORE,
+      },
+    ]);
   }
 
   getTemplateStyle() {
@@ -41,7 +43,7 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
         <h3>
           ${generateLinkButton({
             text: gameRestaurant.name,
-            url: gameRestaurant.url
+            url: gameRestaurant.url,
           })}
         </h3>
         <p>Location: ${gameRestaurant.location}</p>
@@ -51,7 +53,6 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
   }
 
   render(data) {
-
     let html = `
       <h1>Board Game Bars and Cafés</h1>
       <div class="section-separator-small"></div>

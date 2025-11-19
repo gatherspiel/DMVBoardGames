@@ -13,13 +13,11 @@
  * All logic is inside the connectedCallback method to optimize for performance.
  */
 export class LoadingIndicatorComponent extends HTMLElement {
-
-  constructor(){
+  constructor() {
     super();
-    this.imagePath = this.getAttribute('image-path')
+    this.imagePath = this.getAttribute("image-path");
   }
-  connectedCallback(){
-
+  connectedCallback() {
     this.attachShadow({ mode: "open" });
     const templateStyle = `      
       <style>
@@ -112,10 +110,12 @@ export class LoadingIndicatorComponent extends HTMLElement {
         transform-origin: 7.5px 7.5px;
         transform: rotate(-1turn)
         }
-      }</style>`
+      }</style>`;
 
     const template = document.createElement("template");
-    template.innerHTML = templateStyle + `     
+    template.innerHTML =
+      templateStyle +
+      `     
      <div class="loader">
    
         <div class="meeple" id="meeple-one">  
@@ -147,10 +147,12 @@ export class LoadingIndicatorComponent extends HTMLElement {
     </div>
     `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-
   }
 }
 
-if(!customElements.get('loading-indicator-component')){
-  customElements.define('loading-indicator-component', LoadingIndicatorComponent);
+if (!customElements.get("loading-indicator-component")) {
+  customElements.define(
+    "loading-indicator-component",
+    LoadingIndicatorComponent,
+  );
 }

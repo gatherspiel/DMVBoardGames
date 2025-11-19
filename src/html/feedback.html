@@ -1,36 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Share feedback</title>
-  <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css">
-  <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Share feedback</title>
+    <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
+    <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
 
-  <link rel="stylesheet" href="/styles/designersAndLinks.css">
-  <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
-  <script
-    defer
-    fetchpriority="low"
-    type="module"
-  >
-    import {FeedbackComponent} from "../ui/FeedbackComponent.js";
-    import {LoginStatusComponent} from "../ui/shared/LoginStatusComponent.js";
+    <link rel="stylesheet" href="/styles/designersAndLinks.css" />
+    <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
+    <script defer fetchpriority="low" type="module">
+      import { FeedbackComponent } from "../ui/FeedbackComponent.js";
+      import { LoginStatusComponent } from "../ui/shared/LoginStatusComponent.js";
 
-    customElements.define("feedback-component", FeedbackComponent);
-    customElements.define("login-status-component",LoginStatusComponent)
+      customElements.define("feedback-component", FeedbackComponent);
+      customElements.define("login-status-component", LoginStatusComponent);
 
-    import {GetGameAdvice} from "../beta/getGameAdvice.js";
-    GetGameAdvice();
-  </script>
-</head>
-<body>
-  <div id ="container">
-    {{>navbar}}
-    <feedback-component class="ui-section">
-    </feedback-component>
-  </div>
-  <div id="bot-container"></div>
-
-</body>
+      import { GetGameAdvice } from "../beta/getGameAdvice.js";
+      GetGameAdvice();
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      {{>navbar}}
+      <feedback-component class="ui-section"> </feedback-component>
+    </div>
+    <div id="bot-container"></div>
+  </body>
 </html>

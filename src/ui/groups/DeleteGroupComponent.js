@@ -1,18 +1,28 @@
-import {BaseDynamicComponent, ApiLoadAction} from "@bponnaluri/places-js";
-import { GROUP_NAME_INPUT } from "./Constants.js";
+import { ApiLoadAction, BaseDynamicComponent } from "@bponnaluri/places-js";
+import {
+  SUCCESS_MESSAGE_KEY,
+  generateErrorMessage,
+  generateSuccessMessage,
+} from "../../shared/html/StatusIndicators.js";
 
-import {API_ROOT} from "../shared/Params.js";
-import {LOGIN_STORE} from "../../data/user/LoginStore.js";
-import {generateErrorMessage, generateSuccessMessage, SUCCESS_MESSAGE_KEY} from "../../shared/html/StatusIndicators.js";
-import {generateButton} from "../../shared/html/ButtonGenerator.js";
+import { API_ROOT } from "../shared/Params.js";
+
+import { ApiActionType } from "@bponnaluri/places-js";
+
+import { GROUP_NAME_INPUT } from "./Constants.js";
+import { LOGIN_STORE } from "../../data/user/LoginStore.js";
+
+import { generateButton } from "../../shared/html/ButtonGenerator.js";
 
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 
 export class DeleteGroupComponent extends BaseDynamicComponent {
   constructor() {
-    super([{
-      dataStore: LOGIN_STORE
-    }]);
+    super([
+      {
+        dataStore: LOGIN_STORE,
+      },
+    ]);
   }
 
   getTemplateStyle() {
@@ -33,10 +43,10 @@ export class DeleteGroupComponent extends BaseDynamicComponent {
     `;
   }
 
-  connectedCallback(){
-
-    const groupName = (new URLSearchParams(document.location.search)).get("name") ?? ""
-    document.title = `Delete group ${groupName}?`
+  connectedCallback() {
+    const groupName =
+      new URLSearchParams(document.location.search).get("name") ?? "";
+    document.title = `Delete group ${groupName}?`;
     this.updateData({
       existingGroupName: groupName,
       isVisible: true,
@@ -45,10 +55,11 @@ export class DeleteGroupComponent extends BaseDynamicComponent {
 
   attachHandlersToShadowRoot(shadowRoot) {
     const self = this;
-    shadowRoot.addEventListener("click",(event)=>{
-
-      if(event.target.id === CONFIRM_DELETE_BUTTON_ID) {
-        const groupName = shadowRoot.getElementById(GROUP_NAME_INPUT)?.value.trim();
+    shadowRoot.addEventListener("click", (event) => {
+      if (event.target.id === CONFIRM_DELETE_BUTTON_ID) {
+        const groupName = shadowRoot
+          .getElementById(GROUP_NAME_INPUT)
+          ?.value.trim();
 
         if (groupName !== this.componentStore.existingGroupName) {
           self.updateData({
@@ -56,11 +67,11 @@ export class DeleteGroupComponent extends BaseDynamicComponent {
             errorMessage: "Group name not entered correctly",
           });
         } else {
-
-          const id = (new URLSearchParams(document.location.search)).get("id") ?? "";
+          const id =
+            new URLSearchParams(document.location.search).get("id") ?? "";
           const params = {
             method: ApiActionType.DELETE,
-            url: `${API_ROOT}/groups/?id=${id}`
+            url: `${API_ROOT}/groups/?id=${id}`,
           };
 
           ApiLoadAction.getResponseData(params).then((response) => {
@@ -75,10 +86,10 @@ export class DeleteGroupComponent extends BaseDynamicComponent {
                 [SUCCESS_MESSAGE_KEY]: "Successfully deleted group",
               });
             }
-          })
+          });
         }
       }
-    })
+    });
   }
 
   render(data) {
@@ -94,16 +105,14 @@ export class DeleteGroupComponent extends BaseDynamicComponent {
           <label class="required-field">Enter group name to confirm deleting</label>
           <input
               id=${GROUP_NAME_INPUT}
-              value="${data.groupInput ?? ''}"
+              value="${data.groupInput ?? ""}"
            />
          </div>
          ${generateButton({
-          id: CONFIRM_DELETE_BUTTON_ID,
-          text: "Confirm delete"
-        })}
+           id: CONFIRM_DELETE_BUTTON_ID,
+           text: "Confirm delete",
+         })}
       </form>       
     `;
   }
 }
-
-

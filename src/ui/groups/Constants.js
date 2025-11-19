@@ -1,7 +1,7 @@
 export const GROUP_NAME_INPUT = "group-name-input";
 export const GROUP_URL_INPUT = "group-url-input";
 export const GROUP_DESCRIPTION_INPUT = "group-description-input";
-export const GROUP_DESCRIPTION = "group-description"
+export const GROUP_DESCRIPTION = "group-description";
 export const EVENT_NAME_INPUT = "name";
 export const EVENT_DESCRIPTION_INPUT = "description";
 export const EVENT_URL_INPUT = "url";
@@ -9,4 +9,4 @@ export const START_DATE_INPUT = "start-date-input";
 export const START_TIME_INPUT = "start-time-input";
 export const END_TIME_INPUT = "end-time-input";
 export const EVENT_LOCATION_INPUT = "location";
-export const EVENT_ORGANIZER_INPUT = "event-organizer"
+export const EVENT_ORGANIZER_INPUT = "event-organizer";

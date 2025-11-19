@@ -1,12 +1,12 @@
-import {ApiLoadAction, DataStore} from "@bponnaluri/places-js";
-import {API_ROOT} from "../../ui/shared/Params.js";
+import { ApiLoadAction, DataStore } from "@bponnaluri/places-js";
+import { API_ROOT } from "../../ui/shared/Params.js";
 
-function getUserMemberDataStore(){
-
+function getUserMemberDataStore() {
   return {
     url: API_ROOT + "/user/memberData",
   };
 }
 
-export const USER_MEMBER_STORE = new DataStore(new ApiLoadAction(getUserMemberDataStore))
-
+export const USER_MEMBER_STORE = new DataStore(
+  new ApiLoadAction(getUserMemberDataStore),
+);

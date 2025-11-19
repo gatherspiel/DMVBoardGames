@@ -1,32 +1,41 @@
+import { API_ROOT, IS_PRODUCTION } from "../shared/Params.js";
+
 import {
   ApiActionType,
   ApiLoadAction,
   BaseDynamicComponent,
 } from "@bponnaluri/places-js";
 import {
+  DAY_OF_WEEK_INPUT,
+  getDayOfWeekSelectHtml,
+} from "../../shared/html/SelectGenerator.js";
+import {
   END_TIME_INPUT,
-  EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
+  EVENT_DESCRIPTION_INPUT,
+  EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT,
   EVENT_URL_INPUT,
-  START_DATE_INPUT, START_TIME_INPUT,
+  START_DATE_INPUT,
+  START_TIME_INPUT,
 } from "./Constants.js";
 
-import {getEventDetailsFromForm, validate} from "./EventDetailsHandler.js";
-import {API_ROOT, IS_PRODUCTION} from "../shared/Params.js";
-import {DAY_OF_WEEK_INPUT, getDayOfWeekSelectHtml} from "../../shared/html/SelectGenerator.js";
-
-import {LoginStatusComponent} from "../shared/LoginStatusComponent.js";
-import {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.js";
 import {
   ERROR_MESSAGE_KEY,
+  SUCCESS_MESSAGE_KEY,
   generateErrorMessage,
   generateSuccessMessage,
-  SUCCESS_MESSAGE_KEY
 } from "../../shared/html/StatusIndicators.js";
-import {generateButton, generateLinkButton} from "../../shared/html/ButtonGenerator.js";
+import {
+  generateButton,
+  generateLinkButton,
+} from "../../shared/html/ButtonGenerator.js";
+import { getEventDetailsFromForm, validate } from "./EventDetailsHandler.js";
 
-customElements.define("image-upload-component",ImageUploadComponent)
-customElements.define("login-status-component",LoginStatusComponent)
+import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
+import { LoginStatusComponent } from "../shared/LoginStatusComponent.js";
+
+customElements.define("image-upload-component", ImageUploadComponent);
+customElements.define("login-status-component", LoginStatusComponent);
 
 const CREATE_EVENT_BUTTON_ID = "create-event-button";
 const RECURRING_EVENT_INPUT = "is-recurring";
@@ -34,10 +43,10 @@ export class CreateEventComponent extends BaseDynamicComponent {
   constructor() {
     super();
   }
-  connectedCallback(){
+  connectedCallback() {
     this.updateData({
-      name:''
-    })
+      name: "",
+    });
   }
   getTemplateStyle() {
     return `
@@ -71,33 +80,35 @@ export class CreateEventComponent extends BaseDynamicComponent {
   }
 
   attachHandlersToShadowRoot(shadowRoot) {
-
     const self = this;
 
-    shadowRoot.addEventListener("click",(event)=>{
+    shadowRoot.addEventListener("click", (event) => {
       const targetId = event.target.id;
-      if(targetId === RECURRING_EVENT_INPUT){
+      if (targetId === RECURRING_EVENT_INPUT) {
         self.updateData({
-          isRecurring: shadowRoot.getElementById(RECURRING_EVENT_INPUT)?.checked
-        })
+          isRecurring: shadowRoot.getElementById(RECURRING_EVENT_INPUT)
+            ?.checked,
+        });
       }
 
-      if(targetId === 'create-event-button'){
-        const data = shadowRoot.getElementById('create-event-form')?.elements;
+      if (targetId === "create-event-button") {
+        const data = shadowRoot.getElementById("create-event-form")?.elements;
         const imageForm = shadowRoot.getElementById("image-upload-ui");
 
         const formData = {
           id: self.componentStore.id,
-          image:imageForm.getAttribute("image-path"),
+          image: imageForm.getAttribute("image-path"),
           isRecurring: self.componentStore.isRecurring,
           [EVENT_NAME_INPUT]: data.namedItem(EVENT_NAME_INPUT)?.value,
-          [EVENT_DESCRIPTION_INPUT]: data.namedItem(EVENT_DESCRIPTION_INPUT)?.value.trim(),
+          [EVENT_DESCRIPTION_INPUT]: data
+            .namedItem(EVENT_DESCRIPTION_INPUT)
+            ?.value.trim(),
           [EVENT_URL_INPUT]: data.namedItem(EVENT_URL_INPUT)?.value,
           [START_TIME_INPUT]: data.namedItem(START_TIME_INPUT)?.value ?? "",
           [END_TIME_INPUT]: data.namedItem(END_TIME_INPUT)?.value ?? "",
           [EVENT_LOCATION_INPUT]: data.namedItem(EVENT_LOCATION_INPUT)?.value,
-        }
-        if(self.componentStore.isRecurring){
+        };
+        if (self.componentStore.isRecurring) {
           // @ts-ignore
           formData[DAY_OF_WEEK_INPUT] = data.namedItem(DAY_OF_WEEK_INPUT).value;
         } else {
@@ -107,40 +118,45 @@ export class CreateEventComponent extends BaseDynamicComponent {
 
         //@ts-ignore
         const validationErrors = validate(formData);
-        if(Object.keys(validationErrors.formValidationErrors).length !==0){
-          self.updateData({...validationErrors,...formData});
+        if (Object.keys(validationErrors.formValidationErrors).length !== 0) {
+          self.updateData({ ...validationErrors, ...formData });
         } else {
-
-          const groupId = new URLSearchParams(document.location.search).get("groupId")
+          const groupId = new URLSearchParams(document.location.search).get(
+            "groupId",
+          );
 
           //@ts-ignore
-          const eventDetails = getEventDetailsFromForm(formData)
+          const eventDetails = getEventDetailsFromForm(formData);
           ApiLoadAction.getResponseData({
             body: JSON.stringify(eventDetails),
             method: ApiActionType.POST,
             url: API_ROOT + `/groups/${groupId}/events/`,
-          }).then((response)=>{
-            if(!response.errorMessage){
+          }).then((response) => {
+            if (!response.errorMessage) {
               self.updateData({
-                [ERROR_MESSAGE_KEY]:"",
+                [ERROR_MESSAGE_KEY]: "",
                 [SUCCESS_MESSAGE_KEY]: "Successfully created event",
-                "formValidationErrors":{}
+                formValidationErrors: {},
               });
-            }else {
-              const updates = {...response,errorMessage:response.errorMessage,...formData}
-              self.updateData(updates)
+            } else {
+              const updates = {
+                ...response,
+                errorMessage: response.errorMessage,
+                ...formData,
+              };
+              self.updateData(updates);
             }
-          })
+          });
         }
       }
-    })
+    });
   }
 
   render(data) {
-
-    const title = `Add event for group ${(new URLSearchParams(document.location.search)).get("name") ?? ""}`
-    document.title= title;
-    const groupName = (new URLSearchParams(document.location.search)).get("name") ?? ''
+    const title = `Add event for group ${new URLSearchParams(document.location.search).get("name") ?? ""}`;
+    document.title = title;
+    const groupName =
+      new URLSearchParams(document.location.search).get("name") ?? "";
     return `   
 
         <div class="ui-section">
@@ -156,17 +172,21 @@ export class CreateEventComponent extends BaseDynamicComponent {
               id=${RECURRING_EVENT_INPUT}
               name=${RECURRING_EVENT_INPUT}
               type="checkbox"
-              ${data.isRecurring ? 'checked' : ''}
+              ${data.isRecurring ? "checked" : ""}
             />
           </div>  
-          ${!IS_PRODUCTION ? `<div class = "form-section">
+          ${
+            !IS_PRODUCTION
+              ? `<div class = "form-section">
             <label>Enable RSVPs. Enable if you want to use this site to manage RSVPs instead of another website 
             such as Meetup.com</label>
             <input
               type="checkbox"
             >
             </input>
-          </div>` : ``}
+          </div>`
+              : ``
+          }
           <div class="form-section">
             <label class="required-field">Name</label>
             <input
@@ -198,16 +218,16 @@ export class CreateEventComponent extends BaseDynamicComponent {
               value="${data.url ?? ""}"
             />
           </div>
-          ${data.isRecurring ? 
-           `
+          ${
+            data.isRecurring
+              ? `
             <div class="form-section">
               <label class=" required-field">Day of week</label>
               ${getDayOfWeekSelectHtml(data.day)}
               ${generateErrorMessage(data.formValidationErrors?.[DAY_OF_WEEK_INPUT])}
             </div>
-           ` 
-          :
-          `
+           `
+              : `
             <div class="form-section">
               <label class=" required-field">Start date</label>
               <input
@@ -247,12 +267,12 @@ export class CreateEventComponent extends BaseDynamicComponent {
           ${generateButton({
             id: CREATE_EVENT_BUTTON_ID,
             text: "Submit",
-            type: "Submit"
+            type: "Submit",
           })}
                 
           ${generateLinkButton({
             text: "Back to group",
-            url: `/html/groups/groups.html?name=${encodeURIComponent(groupName)}`
+            url: `/html/groups/groups.html?name=${encodeURIComponent(groupName)}`,
           })}
         </form>
       </div>

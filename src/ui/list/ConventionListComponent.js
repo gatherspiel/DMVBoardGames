@@ -1,15 +1,17 @@
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 
-import {CONVENTIONS_STORE} from "../../data/list/LocationsStore.js";
+import { CONVENTIONS_STORE } from "../../data/list/LocationsStore.js";
 
-import {convertDateListToRange} from "../../shared/EventDataUtils.js";
-import {generateLinkButton} from "../../shared/html/ButtonGenerator.js";
+import { convertDateListToRange } from "../../shared/EventDataUtils.js";
+import { generateLinkButton } from "../../shared/html/ButtonGenerator.js";
 
 export class ConventionListComponent extends BaseDynamicComponent {
   constructor() {
-    super([{
-      dataStore: CONVENTIONS_STORE,
-    }]);
+    super([
+      {
+        dataStore: CONVENTIONS_STORE,
+      },
+    ]);
   }
 
   getTemplateStyle() {
@@ -50,9 +52,9 @@ export class ConventionListComponent extends BaseDynamicComponent {
     <li class="conv-list-item">
      <h3>
       ${generateLinkButton({
-      text: convention.name,
-      url: convention.url
-    })}
+        text: convention.name,
+        url: convention.url,
+      })}
       </h3>
       <span class="date-info">${convertDateListToRange(convention.days)}</span>
     </li>
@@ -69,14 +71,18 @@ export class ConventionListComponent extends BaseDynamicComponent {
     `;
 
     Object.values(data).forEach((item) => {
-      html += this.getItemHtml(item) +`<div class="section-separator-small"></div>`;
+      html +=
+        this.getItemHtml(item) + `<div class="section-separator-small"></div>`;
     });
 
-    if(Object.values(data).length === 0) {
-      html+=`<p>No conventions found</p>`;
+    if (Object.values(data).length === 0) {
+      html += `<p>No conventions found</p>`;
     }
 
-    return html + `</ul></div>
-    `;
+    return (
+      html +
+      `</ul></div>
+    `
+    );
   }
 }

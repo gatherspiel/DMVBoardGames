@@ -1,11 +1,8 @@
-import {
-   BaseTemplateComponent,
-} from "@bponnaluri/places-js";
+import { BaseTemplateComponent } from "@bponnaluri/places-js";
 export class JoinComponent extends BaseTemplateComponent {
   constructor() {
-    super()
+    super();
   }
-
 
   getTemplateStyle() {
     return `
@@ -63,7 +60,6 @@ export class JoinComponent extends BaseTemplateComponent {
         </ul>
     </ul>
  
-    `
+    `;
   }
 }
-

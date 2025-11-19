@@ -1,11 +1,8 @@
-import {
-  BaseTemplateComponent,
-} from "@bponnaluri/places-js";
+import { BaseTemplateComponent } from "@bponnaluri/places-js";
 export class FaqComponent extends BaseTemplateComponent {
   constructor() {
-    super()
+    super();
   }
-
 
   getTemplateStyle() {
     return `
@@ -111,7 +108,6 @@ export class FaqComponent extends BaseTemplateComponent {
          
       <h4>How can I share search results or group information on my own site?</h4>
       <p>dmvboardgames.com includes an API that can be used to access information.  Email gulu@createthirdplaces.com for more details.</p>
-    `
+    `;
   }
 }
-

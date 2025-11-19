@@ -1,11 +1,8 @@
-import {
-  BaseTemplateComponent,
-} from "@bponnaluri/places-js";
+import { BaseTemplateComponent } from "@bponnaluri/places-js";
 export class SiteRulesComponent extends BaseTemplateComponent {
   constructor() {
-    super()
+    super();
   }
-
 
   getTemplateStyle() {
     return `
@@ -49,7 +46,6 @@ export class SiteRulesComponent extends BaseTemplateComponent {
         out to <a href="https://www.breakmygame.com/">Break My Game</a> or try to organize a playtest in person at an event.</li>
       </ul>
     </ul>  
-    `
+    `;
   }
 }
-

@@ -1,22 +1,33 @@
+import {
+  ApiActionType,
+  ApiLoadAction,
+  BaseDynamicComponent,
+} from "@bponnaluri/places-js";
+import {
+  SUCCESS_MESSAGE_KEY,
+  generateErrorMessage,
+  generateSuccessMessage,
+} from "../../shared/html/StatusIndicators.js";
 
-import {API_ROOT} from "../shared/Params.js";
+import { API_ROOT } from "../shared/Params.js";
+import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
+import { USER_DATA_STORE } from "../../data/user/UserDataStore.js";
 
-import {USER_DATA_STORE} from "../../data/user/UserDataStore.js";
-import {generateErrorMessage, generateSuccessMessage, SUCCESS_MESSAGE_KEY} from "../../shared/html/StatusIndicators.js";
-import {generateButton} from "../../shared/html/ButtonGenerator.js";
-import  {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.js";
-customElements.define('image-upload-component', ImageUploadComponent);
+import { generateButton } from "../../shared/html/ButtonGenerator.js";
+
+customElements.define("image-upload-component", ImageUploadComponent);
 
 const UPDATE_USER_DATA_ID = "update-user-data";
 const USERNAME_INPUT = "username-input";
-const USERNAME_ERROR_TEXT_KEY = "username-error-text";/**/
+const USERNAME_ERROR_TEXT_KEY = "username-error-text"; /**/
 
 export class EditProfileComponent extends BaseDynamicComponent {
   constructor() {
     super([
       {
         dataStore: USER_DATA_STORE,
-      }]);
+      },
+    ]);
   }
 
   getTemplateStyle() {
@@ -27,62 +38,61 @@ export class EditProfileComponent extends BaseDynamicComponent {
           margin-top:1rem;
         }
       </style>      
-    `
+    `;
   }
 
-
-  attachHandlersToShadowRoot(shadowRoot){
-
+  attachHandlersToShadowRoot(shadowRoot) {
     let self = this;
-    shadowRoot.addEventListener("click",(event)=>{
+    shadowRoot.addEventListener("click", (event) => {
       const targetId = event.target?.id;
 
-      if(targetId === UPDATE_USER_DATA_ID){
+      if (targetId === UPDATE_USER_DATA_ID) {
         event.preventDefault();
 
-        const validationErrors = {}
-        const elements = (shadowRoot.getElementById('update-user-form'))?.elements
+        const validationErrors = {};
+        const elements =
+          shadowRoot.getElementById("update-user-form")?.elements;
         const imageForm = shadowRoot.getElementById("image-upload-ui");
 
-        const username = (elements.namedItem(USERNAME_INPUT))?.value;
-        if(!username || username.length === 0){
-          validationErrors[USERNAME_ERROR_TEXT_KEY] = "Name is a required field"
+        const username = elements.namedItem(USERNAME_INPUT)?.value;
+        if (!username || username.length === 0) {
+          validationErrors[USERNAME_ERROR_TEXT_KEY] =
+            "Name is a required field";
         }
-        if(Object.keys(validationErrors).length >0){
+        if (Object.keys(validationErrors).length > 0) {
           self.updateData(validationErrors);
           return;
         }
-
         const formData = {
           username: username,
           image: imageForm.getImage(),
-          imageFilePath: imageForm.getImageFilePath()
-        }
+          imageFilePath: imageForm.getImageFilePath(),
+        };
         ApiLoadAction.getResponseData({
           body: JSON.stringify(formData),
           method: ApiActionType.PUT,
           url: API_ROOT + "/user",
-        }).then((response)=>{
-          if(response.errorMessage){
+        }).then((response) => {
+          if (response.errorMessage) {
             self.updateData({
               ...formData,
               errorMessage: response.errorMessage,
-              [SUCCESS_MESSAGE_KEY]: ''
-            })
+              [SUCCESS_MESSAGE_KEY]: "",
+            });
           } else {
             self.updateData({
               ...formData,
-              errorMessage: '',
-              [SUCCESS_MESSAGE_KEY]: "Successfully updated user"
-            })
+              errorMessage: "",
+              [SUCCESS_MESSAGE_KEY]: "Successfully updated user",
+            });
           }
-        })
+        });
       }
-    })
+    });
   }
 
-  render(data){
-    console.log(data)
+  render(data) {
+    console.log(data);
     return `
       <h1>Edit profile</h1>
         <form id ="update-user-form" onsubmit="return false">
@@ -108,10 +118,10 @@ export class EditProfileComponent extends BaseDynamicComponent {
           ${generateButton({
             id: UPDATE_USER_DATA_ID,
             text: "Submit",
-            type:"submit",
+            type: "submit",
           })}
       </form>
     </div>
-    `
+    `;
   }
 }

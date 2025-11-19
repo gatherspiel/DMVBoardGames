@@ -1,17 +1,16 @@
-import {
-  BaseDynamicComponent,
-} from "@bponnaluri/places-js";
-import {LOGIN_STORE} from "../../data/user/LoginStore.js";
-import {LOGOUT_STORE} from "../../data/user/LogoutStore.js";
-import {USER_DATA_STORE} from "../../data/user/UserDataStore.js";
-const SIGN_OUT_LINK_ID = "signout-link"
+import { BaseDynamicComponent } from "@bponnaluri/places-js";
+import { LOGIN_STORE } from "../../data/user/LoginStore.js";
+import { LOGOUT_STORE } from "../../data/user/LogoutStore.js";
+import { USER_DATA_STORE } from "../../data/user/UserDataStore.js";
+const SIGN_OUT_LINK_ID = "signout-link";
 
 export class LoginStatusComponent extends BaseDynamicComponent {
   constructor() {
-    super([{
+    super([
+      {
         dataStore: LOGIN_STORE,
-      }]
-    );
+      },
+    ]);
   }
 
   getTemplateStyle() {
@@ -32,32 +31,31 @@ export class LoginStatusComponent extends BaseDynamicComponent {
           margin-bottom:0.5rem;
         }
       }
-    </style>`
+    </style>`;
   }
 
   render(authData) {
-
     if (!authData.loggedIn) {
       return `
         <a href="/html/user/login.html">Login</a>
         <a href="/html/user/createAccount.html">Create account</a>
-      `
+      `;
     }
 
     return `
       <login-status-component-inner
         email="${authData.data.user.email}"
-      ></login-status-component-inner>`
+      ></login-status-component-inner>`;
   }
 }
 
-
 class LoginStatusComponentInner extends BaseDynamicComponent {
   constructor() {
-    super([{
+    super([
+      {
         dataStore: USER_DATA_STORE,
-      }]
-    );
+      },
+    ]);
   }
 
   getTemplateStyle() {
@@ -134,15 +132,15 @@ class LoginStatusComponentInner extends BaseDynamicComponent {
     `;
   }
 
-  attachHandlersToShadowRoot(shadowRoot){
-    shadowRoot.addEventListener("click",(event)=>{
-      if(event.target.id === SIGN_OUT_LINK_ID) {
-        LOGOUT_STORE.fetchData({}, LOGIN_STORE)
+  attachHandlersToShadowRoot(shadowRoot) {
+    shadowRoot.addEventListener("click", (event) => {
+      if (event.target.id === SIGN_OUT_LINK_ID) {
+        LOGOUT_STORE.fetchData({}, LOGIN_STORE);
       }
-    })
+    });
   }
 
-  render(userData){
+  render(userData) {
     return `
       <div id="login-status-container">
         <div id="links-container">
@@ -161,8 +159,11 @@ class LoginStatusComponentInner extends BaseDynamicComponent {
           </div>
         </div>
       </div>
-    `
+    `;
   }
 }
 
-customElements.define("login-status-component-inner",LoginStatusComponentInner)
+customElements.define(
+  "login-status-component-inner",
+  LoginStatusComponentInner,
+);

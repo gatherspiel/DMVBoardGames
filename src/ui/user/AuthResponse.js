@@ -14,8 +14,8 @@ export class AuthResponse {
   }
 
   getErrorMessage() {
-    return (this.errorMessage || this.errorMessage.length > 0) ?
-      this.errorMessage.toString():
-      "";
+    return this.errorMessage || this.errorMessage.length > 0
+      ? this.errorMessage.toString()
+      : "";
   }
 }

@@ -2,18 +2,16 @@ import { defineConfig } from "vite";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import inlineSource from "vite-plugin-inline-source";
-import handlebars from 'vite-plugin-handlebars';
-import { ViteMinifyPlugin } from 'vite-plugin-minify'
+import handlebars from "vite-plugin-handlebars";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   plugins: [
     handlebars({
-      partialDirectory: resolve(__dirname, 'src/html/partials'),
+      partialDirectory: resolve(__dirname, "src/html/partials"),
     }),
     inlineSource(),
-    ViteMinifyPlugin({}),
   ],
   root: "src/",
   publicDir: "../public",
@@ -24,7 +22,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         conventions: resolve(__dirname, "src/html/list/conventions.html"),
-        create_account: resolve(__dirname,"src/html/user/createAccount.html"),
+        create_account: resolve(__dirname, "src/html/user/createAccount.html"),
         create_groups: resolve(__dirname, "src/html/groups/create.html"),
         create_event: resolve(__dirname, "src/html/groups/addEvent.html"),
 
@@ -38,25 +36,27 @@ export default defineConfig({
         feedback: resolve(__dirname, "src/html/feedback.html"),
 
         gameStores: resolve(__dirname, "src/html/list/gameStores.html"),
-        gameRestaurants: resolve(__dirname, "src/html/list/gameRestaurants.html"),
+        gameRestaurants: resolve(
+          __dirname,
+          "src/html/list/gameRestaurants.html",
+        ),
         groups: resolve(__dirname, "src/html/groups/groups.html"),
 
         join: resolve(__dirname, "src/html/static/join.html"),
 
         main: resolve(__dirname, "src/index.html"),
 
-        landing: resolve(__dirname,"src/html/static/landing.html"),
+        landing: resolve(__dirname, "src/html/static/landing.html"),
         links: resolve(__dirname, "src/html/static/links.html"),
         login: resolve(__dirname, "src/html/user/login.html"),
-
 
         memberData: resolve(__dirname, "src/html/user/memberData.html"),
 
         searchGroups: resolve(__dirname, "src/html/list/searchGroups.html"),
-        siteRules: resolve(__dirname,"src/html/static/siteRules.html"),
+        siteRules: resolve(__dirname, "src/html/static/siteRules.html"),
 
-        vision: resolve(__dirname,"src/html/static/vision.html")
-      }
+        vision: resolve(__dirname, "src/html/static/vision.html"),
+      },
     },
   },
 });

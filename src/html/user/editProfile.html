@@ -1,36 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Edit profile</title>
-  <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css">
-  <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit profile</title>
+    <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
+    <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
 
-  <link rel="stylesheet" href="/styles/designersAndLinks.css">
-  <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
-  <script
-    defer
-    fetchpriority="low"
-    type="module"
-  >
-      import {EditProfileComponent} from "../../ui/user/EditProfileComponent.js";
-      import {LoginStatusComponent} from "../../ui/shared/LoginStatusComponent.js";
+    <link rel="stylesheet" href="/styles/designersAndLinks.css" />
+    <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
+    <script defer fetchpriority="low" type="module">
+      import { EditProfileComponent } from "../../ui/user/EditProfileComponent.js";
+      import { LoginStatusComponent } from "../../ui/shared/LoginStatusComponent.js";
 
       customElements.define("edit-profile-component", EditProfileComponent);
       customElements.define("login-status-component", LoginStatusComponent);
 
-      import {GetGameAdvice} from "../../beta/getGameAdvice.js";
+      import { GetGameAdvice } from "../../beta/getGameAdvice.js";
       GetGameAdvice();
-  </script>
-</head>
-<body>
-<div id ="container">
-  {{>navbar}}
-  <edit-profile-component class="ui-section">
-  </edit-profile-component>
-</div>
-<div id="bot-container"></div>
-
-</body>
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      {{>navbar}}
+      <edit-profile-component class="ui-section"> </edit-profile-component>
+    </div>
+    <div id="bot-container"></div>
+  </body>
 </html>

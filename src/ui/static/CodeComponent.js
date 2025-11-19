@@ -1,9 +1,8 @@
-import {BaseTemplateComponent} from "@bponnaluri/places-js";
-import {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.js";
+import { BaseTemplateComponent } from "@bponnaluri/places-js";
+import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
 
-customElements.define('image-upload-component', ImageUploadComponent)
+customElements.define("image-upload-component", ImageUploadComponent);
 export class CodeComponent extends BaseTemplateComponent {
-
   getTemplateStyle() {
     return `
       <style>
@@ -19,11 +18,14 @@ export class CodeComponent extends BaseTemplateComponent {
 
   //Code is from https://css-tricks.com/snippets/javascript/htmlentities-for-javascript/
   htmlEntities(str) {
-   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
   }
 
-  render(){
-
+  render() {
     return `
       <h1>Code notes</h1>
       
@@ -105,11 +107,9 @@ export class CodeComponent extends BaseTemplateComponent {
        <pre>
          ${this.htmlEntities(`          
            <image-upload-component
-              id=\"image-upload-ui"
+              id="image-upload-ui"
               image-path="\${data.imageFilePath}"
-            ></image-upload-component>`)
-    
-          } 
+            ></image-upload-component>`)} 
        </pre>    
        
        <b>Image upload component code</b>
@@ -124,10 +124,6 @@ export class CodeComponent extends BaseTemplateComponent {
        
 </pre>
         
-    `
-
-
-
-
+    `;
   }
 }

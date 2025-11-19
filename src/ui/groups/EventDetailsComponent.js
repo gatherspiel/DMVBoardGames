@@ -1,40 +1,49 @@
 import {
   ApiActionType,
-  BaseDynamicComponent, ApiLoadAction
+  ApiLoadAction,
+  BaseDynamicComponent,
 } from "@bponnaluri/places-js";
+
+import {
+  DAY_OF_WEEK_INPUT,
+  getDayOfWeekSelectHtml,
+} from "../../shared/html/SelectGenerator.js";
+
 import {
   END_TIME_INPUT,
-  EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
-  EVENT_NAME_INPUT, EVENT_ORGANIZER_INPUT,
+  EVENT_DESCRIPTION_INPUT,
+  EVENT_LOCATION_INPUT,
+  EVENT_NAME_INPUT,
+  EVENT_ORGANIZER_INPUT,
   EVENT_URL_INPUT,
-  START_DATE_INPUT, START_TIME_INPUT
+  START_DATE_INPUT,
+  START_TIME_INPUT,
 } from "./Constants.js";
-import {GROUP_EVENT_REQUEST_STORE} from "../../data/groups/GroupEventRequestStore.js";
+
 import {
-  getEventDetailsFromForm, validate,
-} from "./EventDetailsHandler.js";
-
-import {convertTimeTo24Hours} from "../../shared/EventDataUtils.js";
-
-
-import {API_ROOT} from "../shared/Params.js";
-
-import {DAY_OF_WEEK_INPUT, getDayOfWeekSelectHtml} from "../../shared/html/SelectGenerator.js";
-
-import {LoginStatusComponent} from "../shared/LoginStatusComponent.js";
-import {
+  SUCCESS_MESSAGE_KEY,
   generateErrorMessage,
   generateSuccessMessage,
-  SUCCESS_MESSAGE_KEY
 } from "../../shared/html/StatusIndicators.js";
-import {generateButton, generateLinkButton} from "../../shared/html/ButtonGenerator.js";
-import {RsvpComponent} from "./RsvpComponent.js";
-import {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.js";
-import {LOADING_INDICATOR_CONFIG} from "../../shared/LoadingIndicatorConfig.js";
 
-customElements.define("image-upload-component",ImageUploadComponent)
+import {
+  generateButton,
+  generateLinkButton,
+} from "../../shared/html/ButtonGenerator.js";
+import { getEventDetailsFromForm, validate } from "./EventDetailsHandler.js";
+
+import { API_ROOT } from "../shared/Params.js";
+import { GROUP_EVENT_REQUEST_STORE } from "../../data/groups/GroupEventRequestStore.js";
+import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
+import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js";
+import { LoginStatusComponent } from "../shared/LoginStatusComponent.js";
+import { RsvpComponent } from "./RsvpComponent.js";
+
+import { convertTimeTo24Hours } from "../../shared/EventDataUtils.js";
+
+customElements.define("image-upload-component", ImageUploadComponent);
 customElements.define("login-status-component", LoginStatusComponent);
-customElements.define('rsvp-component',RsvpComponent)
+customElements.define("rsvp-component", RsvpComponent);
 
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 const CANCEL_DELETE_BUTTON_ID = "cancel-delete-button";
@@ -45,16 +54,21 @@ const SAVE_EVENT_BUTTON_ID = "save-event-button";
 
 export class EventDetailsComponent extends BaseDynamicComponent {
   constructor() {
-    super([{
-      dataStore: GROUP_EVENT_REQUEST_STORE,
-      componentReducer: (data)=>{
-        document.title = data.name;
-        if(data.startDate){
-          data.startDate = data.startDate.join("-")
-        }
-        return data;
-      }
-    }],LOADING_INDICATOR_CONFIG);
+    super(
+      [
+        {
+          dataStore: GROUP_EVENT_REQUEST_STORE,
+          componentReducer: (data) => {
+            document.title = data.name;
+            if (data.startDate) {
+              data.startDate = data.startDate.join("-");
+            }
+            return data;
+          },
+        },
+      ],
+      LOADING_INDICATOR_CONFIG,
+    );
   }
 
   getTemplateStyle() {
@@ -156,33 +170,32 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
   attachHandlersToShadowRoot(shadowRoot) {
     const self = this;
-    shadowRoot.addEventListener("click",(event)=>{
-      if(event.target.id === CANCEL_EDIT_BUTTON_ID) {
-        self.updateData({isEditing: false,
-          [SUCCESS_MESSAGE_KEY]:''})
+    shadowRoot.addEventListener("click", (event) => {
+      if (event.target.id === CANCEL_EDIT_BUTTON_ID) {
+        self.updateData({ isEditing: false, [SUCCESS_MESSAGE_KEY]: "" });
       }
-      if(event.target.id === DELETE_EVENT_BUTTON_ID) {
+      if (event.target.id === DELETE_EVENT_BUTTON_ID) {
         self.updateData({
           isDeleting: true,
-          [SUCCESS_MESSAGE_KEY]:''
-        })
+          [SUCCESS_MESSAGE_KEY]: "",
+        });
       }
-      if(event.target.id === CANCEL_DELETE_BUTTON_ID){
+      if (event.target.id === CANCEL_DELETE_BUTTON_ID) {
         self.updateData({
-          errorMessage: '',
+          errorMessage: "",
           isDeleting: false,
-          [SUCCESS_MESSAGE_KEY]:''
-        })
+          [SUCCESS_MESSAGE_KEY]: "",
+        });
       }
-      if(event.target.id === CONFIRM_DELETE_BUTTON_ID){
+      if (event.target.id === CONFIRM_DELETE_BUTTON_ID) {
         const params = {
           id: self.componentStore.id,
-          groupId: self.componentStore.groupId
-        }
+          groupId: self.componentStore.groupId,
+        };
         ApiLoadAction.getResponseData({
           method: ApiActionType.DELETE,
           url: `${API_ROOT}/groups/${params.groupId}/events/${encodeURIComponent(params.id)}/`,
-        }).then((response)=>{
+        }).then((response) => {
           if (response.errorMessage) {
             self.updateData({
               errorMessage: response.errorMessage,
@@ -192,35 +205,41 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             self.updateData({
               isEditing: false,
               errorMessage: "",
-              [SUCCESS_MESSAGE_KEY]: "Successfully deleted event"
+              [SUCCESS_MESSAGE_KEY]: "Successfully deleted event",
             });
           }
-        })
+        });
       }
-      if(event.target.id === EDIT_EVENT_BUTTON_ID){
+      if (event.target.id === EDIT_EVENT_BUTTON_ID) {
         self.updateData({
           isEditing: true,
-          [SUCCESS_MESSAGE_KEY]:''
-        })
+          [SUCCESS_MESSAGE_KEY]: "",
+        });
       }
-      if(event.target.id === SAVE_EVENT_BUTTON_ID){
-        const data = shadowRoot.getElementById('event-details-form')?.elements;
+      if (event.target.id === SAVE_EVENT_BUTTON_ID) {
+        const data = shadowRoot.getElementById("event-details-form")?.elements;
         const imageForm = shadowRoot.getElementById("image-upload-ui");
         const formData = {
           id: self.componentStore.id,
           [EVENT_NAME_INPUT]: data.namedItem(EVENT_NAME_INPUT).value,
-          [EVENT_DESCRIPTION_INPUT]: data.namedItem(EVENT_DESCRIPTION_INPUT)?.value,
+          [EVENT_DESCRIPTION_INPUT]: data.namedItem(EVENT_DESCRIPTION_INPUT)
+            ?.value,
           [EVENT_URL_INPUT]: data.namedItem(EVENT_URL_INPUT)?.value,
-          [START_TIME_INPUT]: convertTimeTo24Hours(data.namedItem(START_TIME_INPUT)?.value),
-          [END_TIME_INPUT]: convertTimeTo24Hours(data.namedItem(END_TIME_INPUT)?.value),
+          [START_TIME_INPUT]: convertTimeTo24Hours(
+            data.namedItem(START_TIME_INPUT)?.value,
+          ),
+          [END_TIME_INPUT]: convertTimeTo24Hours(
+            data.namedItem(END_TIME_INPUT)?.value,
+          ),
           [EVENT_LOCATION_INPUT]: data.namedItem(EVENT_LOCATION_INPUT)?.value,
-          image:imageForm.getImage(),
-          imageFilePath:imageForm.getImageFilePath(),
-          isRecurring: self.componentStore.isRecurring
-        }
-        if(self.componentStore.isRecurring){
+          image: imageForm.getImage(),
+          imageFilePath: imageForm.getImageFilePath(),
+          isRecurring: self.componentStore.isRecurring,
+        };
+        if (self.componentStore.isRecurring) {
           // @ts-ignore
-          formData[DAY_OF_WEEK_INPUT] = data.namedItem(DAY_OF_WEEK_INPUT)?.value;
+          formData[DAY_OF_WEEK_INPUT] =
+            data.namedItem(DAY_OF_WEEK_INPUT)?.value;
         } else {
           // @ts-ignore
           formData[START_DATE_INPUT] = data.namedItem(START_DATE_INPUT)?.value;
@@ -228,32 +247,38 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
         //@ts-ignore
         const validationErrors = validate(formData);
-        if(Object.keys(validationErrors.formValidationErrors).length !==0){
-          self.updateData({...validationErrors,...formData});
+        if (Object.keys(validationErrors.formValidationErrors).length !== 0) {
+          self.updateData({ ...validationErrors, ...formData });
         } else {
           //@ts-ignore
           const eventDetails = getEventDetailsFromForm(formData);
 
-          const moderatorEmail = data.namedItem(EVENT_ORGANIZER_INPUT)?.value
-          if(moderatorEmail){
+          const moderatorEmail = data.namedItem(EVENT_ORGANIZER_INPUT)?.value;
+          if (moderatorEmail) {
             //@ts-ignore
-            eventDetails["moderators"] =  [{
-              email:moderatorEmail
-            }]
+            eventDetails["moderators"] = [
+              {
+                email: moderatorEmail,
+              },
+            ];
           }
 
-          const groupId = new URLSearchParams(document.location.search).get("groupId")
+          const groupId = new URLSearchParams(document.location.search).get(
+            "groupId",
+          );
 
           ApiLoadAction.getResponseData({
             body: JSON.stringify(eventDetails),
             method: ApiActionType.PUT,
-            url: API_ROOT + `/groups/${groupId}/events/?id=${encodeURIComponent(eventDetails.id)}`,
-          }).then((response)=>{
+            url:
+              API_ROOT +
+              `/groups/${groupId}/events/?id=${encodeURIComponent(eventDetails.id)}`,
+          }).then((response) => {
             window.scrollTo({
               top: 0,
-              behavior: "smooth"
+              behavior: "smooth",
             });
-            if(!response.errorMessage){
+            if (!response.errorMessage) {
               self.updateData({
                 ...formData,
                 errorMessage: "",
@@ -264,22 +289,24 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             } else {
               self.updateData({
                 errorMessage: response.errorMessage,
-                [SUCCESS_MESSAGE_KEY]: ""
-              })
+                [SUCCESS_MESSAGE_KEY]: "",
+              });
             }
-          })
+          });
         }
       }
-    })
+    });
   }
 
   render(data) {
-    if(!data || !data.name){
+    if (!data || !data.name) {
       return `<h1>Loading</h1>`;
     }
     let html = `
       <div id = "user-actions-menu">
-        ${!data.isEditing && !data.isDeleting && data?.permissions?.userCanEdit ? `
+        ${
+          !data.isEditing && !data.isDeleting && data?.permissions?.userCanEdit
+            ? `
           <nav id="user-actions-menu-raised" class="raised">
             <span class="shadow"></span>
             <span class="edge"></span>
@@ -290,58 +317,59 @@ export class EventDetailsComponent extends BaseDynamicComponent {
                 </div>
             </span>
           </nav>
-        ` : ''}
+        `
+            : ""
+        }
       </div>
       
       <div id="form-status-success">
         ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
       </div>
-    `
-    if(data.isEditing){
+    `;
+    if (data.isEditing) {
       html += this.renderEditMode(data);
-    }
-    else if(data.isDeleting){
+    } else if (data.isDeleting) {
       html += this.renderDeleteMode(data);
     } else {
       html += this.renderViewMode(data);
     }
-    html+=`
+    html += `
       <div class="ui-section">
       ${generateLinkButton({
         class: "back-to-group-button",
         text: "Back to group",
-        url: `${window.location.origin}/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}`
+        url: `${window.location.origin}/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}`,
       })}
       </div>
-    `
-    return html
+    `;
+    return html;
   }
 
   renderDeleteMode(data) {
     if (data[SUCCESS_MESSAGE_KEY]) {
       return `
-      `
+      `;
     }
     return `
       <div class="ui-section">
-        <h1>Are you sure you want to delete event ${data.name} ${data.isRecurring ? '': `on ${(data.startTime)}`}</h1>
+        <h1>Are you sure you want to delete event ${data.name} ${data.isRecurring ? "" : `on ${data.startTime}`}</h1>
         <div id="delete-event-form">
             ${generateButton({
-            id: CONFIRM_DELETE_BUTTON_ID,
-            text: "Confirm delete"
-          })}
+              id: CONFIRM_DELETE_BUTTON_ID,
+              text: "Confirm delete",
+            })}
           
           ${generateButton({
             id: CANCEL_DELETE_BUTTON_ID,
-            text: "Cancel"
+            text: "Cancel",
           })}     
         </div>
       </div>
-    `
+    `;
   }
 
   renderEditMode(data) {
-    console.log(data.startTime)
+    console.log(data.startTime);
     return `
       <div class="ui-section">
       <h1>Editing Event:${data.name}</h1>
@@ -380,14 +408,15 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             image-path="${data.imageFilePath}"
           ></image-upload-component>
         </div>  
-        ${data.isRecurring ?
-          `
+        ${
+          data.isRecurring
+            ? `
             <div class="form-section">
               <label class=" required-field">Day of week</label>
               ${getDayOfWeekSelectHtml(data.day)}
             </div>
-          ` :
           `
+            : `
             <div class="form-section">
               <label class=" required-field">Start date</label>
               <input
@@ -403,7 +432,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           <input
             name=${START_TIME_INPUT}
             type="time"
-            value="${(convertTimeTo24Hours(data.startTime))}"
+            value="${convertTimeTo24Hours(data.startTime)}"
           />
           </input>
         </div>
@@ -412,7 +441,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           <input
             name=${END_TIME_INPUT}
             type="time"
-            value=${(data.endTime)}
+            value=${data.endTime}
           />
           </input>
         </div>
@@ -440,32 +469,32 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         </div> 
         ${generateButton({
           id: SAVE_EVENT_BUTTON_ID,
-          text: "Save event"
+          text: "Save event",
         })}
       </form>
     </div>
-   `
+   `;
   }
 
-  displayModerators(data){
-    if(!data.moderators || data.moderators.length === 0){
+  displayModerators(data) {
+    if (!data.moderators || data.moderators.length === 0) {
       return ``;
     }
 
     let moderatorHasUsername = false;
-    for(let i = 0;i <data.moderators.length;i++){
-      if(data.moderators[i]?.userData?.username.length > 0){
+    for (let i = 0; i < data.moderators.length; i++) {
+      if (data.moderators[i]?.userData?.username.length > 0) {
         moderatorHasUsername = true;
         break;
       }
     }
-    if(!moderatorHasUsername){
-      return ``
+    if (!moderatorHasUsername) {
+      return ``;
     }
 
     let html = ``;
     const hostText = data.moderators.length > 1 ? "Hosts:" : "Host:";
-    data.moderators.forEach((moderator)=>{
+    data.moderators.forEach((moderator) => {
       html += `
         <div class ="user-data-container">
           <div class="user-data-container-inner">
@@ -478,38 +507,42 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             </div>
           </div>
         </div>
-      `
-    })
+      `;
+    });
     return html;
   }
   renderViewMode(data) {
-
-    if(data.errorMessage){
-      return `${generateErrorMessage(data.errorMessage)}`
+    if (data.errorMessage) {
+      return `${generateErrorMessage(data.errorMessage)}`;
     }
     return `
       <div class="ui-section">
         <h1>${data.name}</h1>
-        ${data.url && !data.url.startsWith('https://dmvobardgames.com/groups/event.html')? generateLinkButton({
-            class:"event-website-link",
-            text: "Event website", 
-            url: data.url
-          }) : ''
+        ${
+          data.url &&
+          !data.url.startsWith("https://dmvobardgames.com/groups/event.html")
+            ? generateLinkButton({
+                class: "event-website-link",
+                text: "Event website",
+                url: data.url,
+              })
+            : ""
         } 
 
         ${data.imageFilePath ? `<img id="event-image" src="${data.imageFilePath}"/>` : ``}
 
         <h2 id="event-details-header">Event details</h2>
         ${this.displayModerators(data)}
-        <p><b>Location:</b> ${(data.location)}</p>
+        <p><b>Location:</b> ${data.location}</p>
 
         <p>
-          <b>Time:</b>${data.isRecurring ?
-            `
-              ${(data.day)}s from ${(data.startTime)} to 
-              ${(data.endTime)}` :
-            `
-              ${data.startDate}, ${(data.startTime)}
+          <b>Time:</b>${
+            data.isRecurring
+              ? `
+              ${data.day}s from ${data.startTime} to 
+              ${data.endTime}`
+              : `
+              ${data.startDate}, ${data.startTime}
            `
           }
         </p>  

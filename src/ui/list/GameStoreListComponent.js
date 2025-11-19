@@ -1,12 +1,14 @@
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
-import {generateLinkButton} from "../../shared/html/ButtonGenerator.js";
-import {GAME_STORE_DATA} from "../../data/list/LocationsStore.js";
+import { GAME_STORE_DATA } from "../../data/list/LocationsStore.js";
+import { generateLinkButton } from "../../shared/html/ButtonGenerator.js";
 
 export class GameStoreListComponent extends BaseDynamicComponent {
   constructor() {
-    super([{
-      dataStore: GAME_STORE_DATA,
-    }]);
+    super([
+      {
+        dataStore: GAME_STORE_DATA,
+      },
+    ]);
   }
 
   getTemplateStyle() {
@@ -43,7 +45,7 @@ export class GameStoreListComponent extends BaseDynamicComponent {
         <h3>
           ${generateLinkButton({
             text: gameStore.name,
-            url: gameStore.url
+            url: gameStore.url,
           })}
         </h3>
         <p>Location: ${gameStore.location}</p>
@@ -52,7 +54,6 @@ export class GameStoreListComponent extends BaseDynamicComponent {
   }
 
   render(data) {
-
     let html = `
       <div class="ui-section">
       <h1>Game Stores</h1>
@@ -60,9 +61,14 @@ export class GameStoreListComponent extends BaseDynamicComponent {
       <ul>
     `;
     Object.values(data).forEach((item) => {
-      html += this.getItemHtml(item) + `      <div class="section-separator-small"></div>`;
+      html +=
+        this.getItemHtml(item) +
+        `      <div class="section-separator-small"></div>`;
     });
-    return html + `</ul></div>
-    `;
+    return (
+      html +
+      `</ul></div>
+    `
+    );
   }
 }

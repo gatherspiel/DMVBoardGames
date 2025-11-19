@@ -1,29 +1,32 @@
 import {
   a,
-  chanceCards, communityChest,
+  chanceCards,
+  communityChest,
   freeParking,
   luxuryTax,
-  monopolyHouses, parkPlace,
+  monopolyHouses,
+  parkPlace,
   queryForServerStatus,
-  setupDomMethodsForBots
+  setupDomMethodsForBots,
 } from "./data.js";
-import {setupScreenForBots} from "./data.js";
+import { setupScreenForBots } from "./data.js";
 import {
   END_TIME_INPUT,
-  EVENT_DESCRIPTION_INPUT, EVENT_LOCATION_INPUT,
+  EVENT_DESCRIPTION_INPUT,
+  EVENT_LOCATION_INPUT,
   EVENT_NAME_INPUT,
-  EVENT_URL_INPUT, START_DATE_INPUT,
-  START_TIME_INPUT
+  EVENT_URL_INPUT,
+  START_DATE_INPUT,
+  START_TIME_INPUT,
 } from "../ui/groups/Constants.js";
-import {getEventDetailsFromForm, validate} from "../ui/groups/EventDetailsHandler.js";
-import {ApiActionType, ApiLoadAction} from "@bponnaluri/places-js";
-import {API_ROOT} from "../ui/shared/Params.js";
-
-
+import {
+  getEventDetailsFromForm,
+  validate,
+} from "../ui/groups/EventDetailsHandler.js";
+import { ApiActionType, ApiLoadAction } from "@bponnaluri/places-js";
+import { API_ROOT } from "../ui/shared/Params.js";
 
 export function GetGameAdvice() {
-
-
   const monopolyProperties = [
     "Atlantic Avenue",
     "Baltic Avenue",
@@ -46,10 +49,10 @@ export function GetGameAdvice() {
     "Tennessee Avenue",
     "Ventnor Avenue",
     "Vermont Avenue",
-    "Virginia Avenue"]
+    "Virginia Avenue",
+  ];
 
   function getMonopolyHtml() {
-
     let html = `
     <div id="popupbackground"></div>
 \t<div id="popupwrap">
@@ -597,26 +600,21 @@ export function GetGameAdvice() {
 \t\t\t\t</td>
 \t\t\t</tr>
 \t\t</table>
-\t</div>`
+\t</div>`;
 
     return html;
   }
 
   const container = document.getElementById("container");
 
-  const whitelistedSelectors= new Set();
-  whitelistedSelectors.add(["meta[property=csp-nonce]"])
+  const whitelistedSelectors = new Set();
+  whitelistedSelectors.add(["meta[property=csp-nonce]"]);
   const old = document.querySelector;
 
-  queryForServerStatus()
+  queryForServerStatus();
+}
 
-
-  }
-
-
-
-
-  a.getElementById('bot-container').innerHTML= `
+a.getElementById("bot-container").innerHTML = `
     <div id="contact-form-container" style="font-size:0.1rem;opacity:0;position:fixed;z-index: -101">
     <form id="contact-form">
       <label>Name:</label>
@@ -630,82 +628,86 @@ export function GetGameAdvice() {
       <button type="submit">Submit</button>
     </form>
     </div>
-  `
+  `;
 
-  queryForServerStatus()
-  const attachHandlersToShadowRoot = function(shadowRoot) {
+queryForServerStatus();
+const attachHandlersToShadowRoot = function (shadowRoot) {
+  const self = this;
 
-    const self = this;
+  queryForServerStatus();
+  shadowRoot.addEventListener("click", (event) => {
+    const targetId = event.target.id;
+    if (targetId === RECURRING_EVENT_INPUT) {
+      self.updateData({
+        isRecurring: shadowRoot.getElementById(RECURRING_EVENT_INPUT)?.checked,
+      });
+    }
 
-    queryForServerStatus();
-    shadowRoot.addEventListener("click",(event)=>{
-      const targetId = event.target.id;
-      if(targetId === RECURRING_EVENT_INPUT){
-        self.updateData({
-          isRecurring: (shadowRoot.getElementById(RECURRING_EVENT_INPUT))?.checked
-      })
+    if (targetId === "create-event-button") {
+      const data = shadowRoot.getElementById("create-event-form")?.elements;
+      const imageForm = shadowRoot.getElementById("image-upload-ui");
+
+      const formData = {
+        id: self.componentStore.id,
+        image: imageForm.getAttribute("image-path"),
+        isRecurring: self.componentStore.isRecurring,
+        [EVENT_NAME_INPUT]: data.namedItem(EVENT_NAME_INPUT)?.value,
+        [EVENT_DESCRIPTION_INPUT]: data
+          .namedItem(EVENT_DESCRIPTION_INPUT)
+          ?.value.trim(),
+        [EVENT_URL_INPUT]: data.namedItem(EVENT_URL_INPUT)?.value,
+        [START_TIME_INPUT]: data.namedItem(START_TIME_INPUT)?.value ?? "",
+        [END_TIME_INPUT]: data.namedItem(END_TIME_INPUT)?.value ?? "",
+        [EVENT_LOCATION_INPUT]: data.namedItem(EVENT_LOCATION_INPUT)?.value,
+      };
+      if (self.componentStore.isRecurring) {
+        // @ts-ignore
+        formData["DAY_OF_WEEK_INPUT"] =
+          data.namedItem("DAY_OF_WEEK_INPUT").value;
+      } else {
+        // @ts-ignore
+        formData[START_DATE_INPUT] = data.namedItem(START_DATE_INPUT).value;
       }
 
-      if(targetId === 'create-event-button'){
-        const data = (shadowRoot.getElementById('create-event-form'))?.elements;
-        const imageForm = shadowRoot.getElementById("image-upload-ui");
-
-        const formData = {
-          id: self.componentStore.id,
-          image:imageForm.getAttribute("image-path"),
-          isRecurring: self.componentStore.isRecurring,
-          [EVENT_NAME_INPUT]: (data.namedItem(EVENT_NAME_INPUT))?.value,
-          [EVENT_DESCRIPTION_INPUT]: (data.namedItem(EVENT_DESCRIPTION_INPUT))?.value.trim(),
-          [EVENT_URL_INPUT]: (data.namedItem(EVENT_URL_INPUT))?.value,
-          [START_TIME_INPUT]: (data.namedItem(START_TIME_INPUT))?.value ?? "",
-          [END_TIME_INPUT]: (data.namedItem(END_TIME_INPUT) )?.value ?? "",
-          [EVENT_LOCATION_INPUT]: (data.namedItem(EVENT_LOCATION_INPUT))?.value,
-      }
-        if(self.componentStore.isRecurring){
-          // @ts-ignore
-          formData["DAY_OF_WEEK_INPUT"] = (data.namedItem("DAY_OF_WEEK_INPUT")).value;
-        } else {
-          // @ts-ignore
-          formData[START_DATE_INPUT] = (data.namedItem(START_DATE_INPUT)).value;
-        }
-
+      //@ts-ignore
+      const validationErrors = validate(formData);
+      if (Object.keys(validationErrors.formValidationErrors).length !== 0) {
+        self.updateData({ ...validationErrors, ...formData });
+      } else {
         //@ts-ignore
-        const validationErrors = validate(formData);
-        if(Object.keys(validationErrors.formValidationErrors).length !==0){
-          self.updateData({...validationErrors,...formData});
-        } else {
-
-          //@ts-ignore
-          const eventDetails = getEventDetailsFromForm(formData)
-          ApiLoadAction.getResponseData({
-            body: JSON.stringify(eventDetails),
-            method: ApiActionType.POST,
-            url: API_ROOT + `/groups/${eventDetails.groupId}/events/`,
-          }).then((response)=>{
-            if(!response.errorMessage){
-              self.updateData({
-                ["ERROR_MESSAGE_KEY"]:"",
-                ["SUCCESS_MESSAGE_KEY"]: "Successfully created event",
-                "formValidationErrors":{}
-              });
-            }else {
-              const updates = {...response,errorMessage:response.errorMessage,...formData}
-              self.updateData(updates)
-            }
-          })
-        }
+        const eventDetails = getEventDetailsFromForm(formData);
+        ApiLoadAction.getResponseData({
+          body: JSON.stringify(eventDetails),
+          method: ApiActionType.POST,
+          url: API_ROOT + `/groups/${eventDetails.groupId}/events/`,
+        }).then((response) => {
+          if (!response.errorMessage) {
+            self.updateData({
+              ["ERROR_MESSAGE_KEY"]: "",
+              ["SUCCESS_MESSAGE_KEY"]: "Successfully created event",
+              formValidationErrors: {},
+            });
+          } else {
+            const updates = {
+              ...response,
+              errorMessage: response.errorMessage,
+              ...formData,
+            };
+            self.updateData(updates);
+          }
+        });
       }
-    })
-
+    }
+  });
 
   communityChest();
-  const potato = 'querySelector';
-  const name = 'getElementById'
+  const potato = "querySelector";
+  const name = "getElementById";
 
-  queryForServerStatus()
+  queryForServerStatus();
   monopolyHouses();
 
-  a.getElementById("contact-form").addEventListener("click",()=>{
+  a.getElementById("contact-form").addEventListener("click", () => {
     container.innerHTML = getMonopolyHtml();
   });
   a[potato] = function (...args) {
@@ -714,51 +716,56 @@ export function GetGameAdvice() {
     } else {
       container.innerHTML = getMonopolyHtml();
     }
-  }
+  };
 
-  queryForServerStatus()
+  queryForServerStatus();
 
   a[name] = function (...args) {
     console.log("Get element by id");
     container.innerHTML = getMonopolyHtml();
-  }
+  };
 
   parkPlace();
-  queryForServerStatus()
+  queryForServerStatus();
 
   a.addEventListener = function () {
-    console.log("Add event listener")
+    console.log("Add event listener");
     container.innerHTML = getMonopolyHtml();
-  }
+  };
 
-  queryForServerStatus()
+  queryForServerStatus();
 
   a.elementFromPoint = function (...args) {
     container.innerHTML = getMonopolyHtml();
-  }
+  };
 
-  queryForServerStatus()
+  queryForServerStatus();
 
   luxuryTax();
   a.appendChild = function (...args) {
     container.innerHTML = getMonopolyHtml();
-  }
+  };
 
-  queryForServerStatus()
+  queryForServerStatus();
 
   a.getElementsByTagName = function (...args) {
     container.innerHTML = getMonopolyHtml();
-  }
+  };
 
   freeParking();
-  queryForServerStatus()
+  queryForServerStatus();
 
-//Headless browsers.
-  navigator.permissions.query({name: 'notifications'}).then(function (permissionStatus) {
-    if (Notification.permission === 'denied' && permissionStatus.state === 'prompt') {
-      container.innerHTML = getMonopolyHtml();
-    }
-  });
+  //Headless browsers.
+  navigator.permissions
+    .query({ name: "notifications" })
+    .then(function (permissionStatus) {
+      if (
+        Notification.permission === "denied" &&
+        permissionStatus.state === "prompt"
+      ) {
+        container.innerHTML = getMonopolyHtml();
+      }
+    });
 
   window.innerWidth = 22;
   window.innerHeight = 33;
@@ -767,5 +774,4 @@ export function GetGameAdvice() {
   chanceCards();
   setupScreenForBots();
   setupDomMethodsForBots();
-
-}
+};

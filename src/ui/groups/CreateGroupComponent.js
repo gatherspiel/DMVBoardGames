@@ -3,24 +3,35 @@ import {
   GROUP_NAME_INPUT,
   GROUP_URL_INPUT,
 } from "./Constants.js";
-import {ApiLoadAction} from "@bponnaluri/places-js";
-import {generateErrorMessage, generateSuccessMessage} from "../../shared/html/StatusIndicators.js";
-import {BaseDynamicComponent} from "@bponnaluri/places-js";
-import {IS_LOGGED_IN_KEY, LOGIN_STORE} from "../../data/user/LoginStore.js";
-import {API_ROOT} from "../shared/Params.js";
-import {getGameTypeTagSelectHtml, getTagSelectedState} from "../../shared/html/SelectGenerator.js";
+import { IS_LOGGED_IN_KEY, LOGIN_STORE } from "../../data/user/LoginStore.js";
+import {
+  generateButton,
+  generateDisabledButton,
+} from "../../shared/html/ButtonGenerator.js";
+import {
+  generateErrorMessage,
+  generateSuccessMessage,
+} from "../../shared/html/StatusIndicators.js";
 
-import {FaqComponent} from "../static/FaqComponent.js";
-import {SiteRulesComponent} from "../static/SiteRulesComponent.js";
-import {SUCCESS_MESSAGE_KEY} from "../../shared/html/StatusIndicators.js";
-import {generateButton, generateDisabledButton} from "../../shared/html/ButtonGenerator.js";
-import  {ImageUploadComponent} from "../../shared/components/ImageUploadComponent.js";
+import {
+  getGameTypeTagSelectHtml,
+  getTagSelectedState,
+} from "../../shared/html/SelectGenerator.js";
+import { API_ROOT } from "../shared/Params.js";
+import { ApiActionType } from "@bponnaluri/places-js";
+import { ApiLoadAction } from "@bponnaluri/places-js";
 
-customElements.define('faq-component',FaqComponent)
-customElements.define('image-upload-component',ImageUploadComponent)
-customElements.define('site-rules-component',SiteRulesComponent)
+import { BaseDynamicComponent } from "@bponnaluri/places-js";
+import { FaqComponent } from "../static/FaqComponent.js";
+import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
+import { SUCCESS_MESSAGE_KEY } from "../../shared/html/StatusIndicators.js";
+import { SiteRulesComponent } from "../static/SiteRulesComponent.js";
 
-const AGREE_RULES_ID ="agree-rules-id";
+customElements.define("faq-component", FaqComponent);
+customElements.define("image-upload-component", ImageUploadComponent);
+customElements.define("site-rules-component", SiteRulesComponent);
+
+const AGREE_RULES_ID = "agree-rules-id";
 const CREATE_GROUP_BUTTON_ID = "create-group-button-id";
 
 const DESCRIPTION_ERROR_TEXT_KEY = "descriptionErrorText";
@@ -28,17 +39,19 @@ const NAME_ERROR_TEXT_KEY = "nameErrorText";
 
 export class CreateGroupComponent extends BaseDynamicComponent {
   constructor() {
-    super([{
-      componentReducer:(data)=>{
-        return {
-          name: "",
-          description: "",
-          url: "",
-          [IS_LOGGED_IN_KEY]: data.loggedIn
-        }
+    super([
+      {
+        componentReducer: (data) => {
+          return {
+            name: "",
+            description: "",
+            url: "",
+            [IS_LOGGED_IN_KEY]: data.loggedIn,
+          };
+        },
+        dataStore: LOGIN_STORE,
       },
-      dataStore:LOGIN_STORE
-    }]);
+    ]);
   }
 
   getTemplateStyle() {
@@ -82,41 +95,42 @@ export class CreateGroupComponent extends BaseDynamicComponent {
     `;
   }
 
-
-  attachHandlersToShadowRoot(shadowRoot){
-
+  attachHandlersToShadowRoot(shadowRoot) {
     const self = this;
 
-    shadowRoot.addEventListener("click",(event)=>{
-
+    shadowRoot.addEventListener("click", (event) => {
       const targetId = event.target?.id;
-      const elements = shadowRoot.getElementById('create-group-form')?.elements;
+      const elements = shadowRoot.getElementById("create-group-form")?.elements;
 
-      if(targetId === AGREE_RULES_ID){
-
+      if (targetId === AGREE_RULES_ID) {
         self.updateData({
           [AGREE_RULES_ID]: event.target.checked,
           description: elements.namedItem(GROUP_DESCRIPTION_INPUT)?.value,
           gameTypeTags: getTagSelectedState(shadowRoot),
-          imagePath: shadowRoot.getElementById("image-upload-ui").getAttribute("image-path"),
+          imagePath: shadowRoot
+            .getElementById("image-upload-ui")
+            .getAttribute("image-path"),
           name: elements.namedItem(GROUP_NAME_INPUT)?.value,
           url: elements.namedItem(GROUP_URL_INPUT)?.value,
-        })
+        });
       }
 
-      if(targetId === CREATE_GROUP_BUTTON_ID){
+      if (targetId === CREATE_GROUP_BUTTON_ID) {
         event.preventDefault();
 
-        const validationErrors = {}
+        const validationErrors = {};
         const groupName = elements.namedItem(GROUP_NAME_INPUT)?.value;
-        if(!groupName || groupName.length === 0){
-          validationErrors[NAME_ERROR_TEXT_KEY] = "Name is a required field"
+        if (!groupName || groupName.length === 0) {
+          validationErrors[NAME_ERROR_TEXT_KEY] = "Name is a required field";
         }
-        const groupDescription = elements.namedItem(GROUP_DESCRIPTION_INPUT)?.value;
-        if(!groupDescription || groupDescription.length === 0){
-          validationErrors[DESCRIPTION_ERROR_TEXT_KEY]="Description is a required field"
+        const groupDescription = elements.namedItem(
+          GROUP_DESCRIPTION_INPUT,
+        )?.value;
+        if (!groupDescription || groupDescription.length === 0) {
+          validationErrors[DESCRIPTION_ERROR_TEXT_KEY] =
+            "Description is a required field";
         }
-        if(Object.keys(validationErrors).length >0){
+        if (Object.keys(validationErrors).length > 0) {
           self.updateData(validationErrors);
           return;
         }
@@ -126,33 +140,34 @@ export class CreateGroupComponent extends BaseDynamicComponent {
             id: self.componentStore.id,
             name: groupName,
             description: groupDescription,
-            image: shadowRoot.getElementById("image-upload-ui").getAttribute("image-path"),
+            image: shadowRoot
+              .getElementById("image-upload-ui")
+              .getAttribute("image-path"),
             url: elements.namedItem(GROUP_URL_INPUT)?.value,
-            gameTypeTags: Object.keys(getTagSelectedState(shadowRoot))
+            gameTypeTags: Object.keys(getTagSelectedState(shadowRoot)),
           }),
           method: ApiActionType.POST,
           url: API_ROOT + `/groups/`,
-        }).then((data)=>{
-
+        }).then((data) => {
           if (data.errorMessage) {
             self.updateData({
               errorMessage: data.errorMessage,
-              [DESCRIPTION_ERROR_TEXT_KEY]: '',
-              [NAME_ERROR_TEXT_KEY]: '',
+              [DESCRIPTION_ERROR_TEXT_KEY]: "",
+              [NAME_ERROR_TEXT_KEY]: "",
               [SUCCESS_MESSAGE_KEY]: "",
             });
           } else {
             self.updateData({
               errorMessage: "",
-              [DESCRIPTION_ERROR_TEXT_KEY]: '',
-              [NAME_ERROR_TEXT_KEY]: '',
+              [DESCRIPTION_ERROR_TEXT_KEY]: "",
+              [NAME_ERROR_TEXT_KEY]: "",
               [SUCCESS_MESSAGE_KEY]: `
               Successfully created group. A site admin will review the group information before the group is visible on
               dmvboardgames.com. Email gulu@createthirdplaces.com if you have any questions or comments.
              `,
             });
           }
-        })
+        });
       }
     });
   }
@@ -163,7 +178,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
         <h1>Create group</h1>
         <div class="section-separator-small"></div>  
         ${
-            data.loggedIn
+          data.loggedIn
             ? `
               <form id="create-group-form" onsubmit="return false">
                 <div id="form-status-div">
@@ -205,17 +220,19 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                 </div>
                 ${getGameTypeTagSelectHtml(data.gameTypeTags)}
                 <label class=" required-field" for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
-                <input type="checkbox" id="${AGREE_RULES_ID}" ${data[AGREE_RULES_ID] ? 'checked' : ''}>
+                <input type="checkbox" id="${AGREE_RULES_ID}" ${data[AGREE_RULES_ID] ? "checked" : ""}>
                 
-                ${data[AGREE_RULES_ID]  ? 
-                  generateButton({
-                    id: CREATE_GROUP_BUTTON_ID,
-                    text: "Create group",
-                    type:"submit",
-                  }):
-                  generateDisabledButton({
-                    text:"Create group"
-                  })}
+                ${
+                  data[AGREE_RULES_ID]
+                    ? generateButton({
+                        id: CREATE_GROUP_BUTTON_ID,
+                        text: "Create group",
+                        type: "submit",
+                      })
+                    : generateDisabledButton({
+                        text: "Create group",
+                      })
+                }
                 <div class="section-separator-medium"></div>
                 <site-rules-component></site-rules-component>
                 <faq-component></faq-component>
@@ -223,10 +240,8 @@ export class CreateGroupComponent extends BaseDynamicComponent {
               ${generateErrorMessage(data.errorMessage)}
             `
             : `<p>You must log in to create a group </p>`
-          }    
+        }    
      </div> 
      `;
   }
 }
-
-

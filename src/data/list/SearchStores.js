@@ -1,9 +1,9 @@
+import { ApiLoadAction, DataStore } from "@bponnaluri/places-js";
+
 import { API_ROOT } from "../../ui/shared/Params.js";
-import {ApiLoadAction, DataStore} from "@bponnaluri/places-js";
-import {DEFAULT_SEARCH_PARAMETER} from "../../shared/html/SelectGenerator.js";
+import { DEFAULT_SEARCH_PARAMETER } from "../../shared/html/SelectGenerator.js";
 
 function getSearchResultsQueryConfig(searchParams) {
-
   const paramMap = {};
 
   if (searchParams.days && searchParams.days !== DEFAULT_SEARCH_PARAMETER) {
@@ -15,17 +15,16 @@ function getSearchResultsQueryConfig(searchParams) {
   ) {
     paramMap["city"] = searchParams.location;
 
-    if(searchParams.distance){
+    if (searchParams.distance) {
       paramMap["distance"] = searchParams.distance.split(" ")[0];
     }
   }
 
-  if(!searchParams.apiUrl.startsWith("/")){
-    console.error("Invalid url:"+searchParams.apiUrl);
+  if (!searchParams.apiUrl.startsWith("/")) {
+    console.error("Invalid url:" + searchParams.apiUrl);
   }
   let url = API_ROOT + searchParams.apiUrl;
   if (Object.keys(paramMap).length > 0) {
-
     let params = [];
     Object.keys(paramMap).forEach((param) => {
       params.push(param + "=" + paramMap[param].replace(" ", "%20"));
@@ -37,6 +36,8 @@ function getSearchResultsQueryConfig(searchParams) {
   };
 }
 
-export const SEARCH_RESULTS_LIST_STORE = new DataStore(new ApiLoadAction(getSearchResultsQueryConfig));
+export const SEARCH_RESULTS_LIST_STORE = new DataStore(
+  new ApiLoadAction(getSearchResultsQueryConfig),
+);
 
-SEARCH_RESULTS_LIST_STORE.updateStoreData({status:"Waiting for user input"})
+SEARCH_RESULTS_LIST_STORE.updateStoreData({ status: "Waiting for user input" });

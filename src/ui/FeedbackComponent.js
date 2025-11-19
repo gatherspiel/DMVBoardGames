@@ -1,16 +1,24 @@
-import {ApiActionType, ApiLoadAction, BaseDynamicComponent} from "@bponnaluri/places-js";
-import {API_ROOT} from "./shared/Params.js";
-import {generateErrorMessage, generateSuccessMessage, SUCCESS_MESSAGE_KEY} from "../shared/html/StatusIndicators.js";
-import {generateButton} from "../shared/html/ButtonGenerator.js";
+import {
+  ApiActionType,
+  ApiLoadAction,
+  BaseDynamicComponent,
+} from "@bponnaluri/places-js";
+import {
+  SUCCESS_MESSAGE_KEY,
+  generateErrorMessage,
+  generateSuccessMessage,
+} from "../shared/html/StatusIndicators.js";
+
+import { API_ROOT } from "./shared/Params.js";
+import { generateButton } from "../shared/html/ButtonGenerator.js";
 
 const ENTER_NAME_INPUT_ID = "enter-name-input-id";
 const ENTER_EMAIL_INPUT_ID = "enter-email-input-id";
 const FEEDBACK_TEXT_INPUT_ID = "feedback-text-input-id";
-const FEEDBACK_TYPE_INPUT_ID = "feedback-type-input-id"
+const FEEDBACK_TYPE_INPUT_ID = "feedback-type-input-id";
 const SUBMIT_FEEDBACK_ID = "submit-feedback-id";
 
 export class FeedbackComponent extends BaseDynamicComponent {
-
   constructor() {
     super();
   }
@@ -70,71 +78,69 @@ export class FeedbackComponent extends BaseDynamicComponent {
           }
         }
       </style>
-    `
+    `;
   }
 
-  connectedCallback(){
+  connectedCallback() {
     this.updateData({
-      checkedState:{"general_feedback":"checked"},
-      email:'',
-      feedbackText:'',
-      name:'',
-    })
+      checkedState: { general_feedback: "checked" },
+      email: "",
+      feedbackText: "",
+      name: "",
+    });
   }
 
   attachHandlersToShadowRoot(shadowRoot) {
-
     const self = this;
 
     shadowRoot.addEventListener("click", (event) => {
-
       const targetId = event.target?.id;
       if (targetId === SUBMIT_FEEDBACK_ID) {
+        const elements = shadowRoot.getElementById(
+          "submit-feedback-form",
+        )?.elements;
+        const feedbackText = elements.namedItem(FEEDBACK_TEXT_INPUT_ID)?.value;
 
-        const elements = (shadowRoot.getElementById('submit-feedback-form'))?.elements
-        const feedbackText = (elements.namedItem(FEEDBACK_TEXT_INPUT_ID))?.value;
-
-        if(feedbackText && feedbackText.length >10000){
+        if (feedbackText && feedbackText.length > 10000) {
           self.updateData({
-            errorMessage:"Feedback text cannot be more than 10000 characters"
-          })
+            errorMessage: "Feedback text cannot be more than 10000 characters",
+          });
           return;
         }
-        if(!feedbackText || feedbackText.length === 0){
+        if (!feedbackText || feedbackText.length === 0) {
           self.updateData({
-            errorMessage:"Feedback text cannot be blank"
-          })
+            errorMessage: "Feedback text cannot be blank",
+          });
           return;
         }
 
         ApiLoadAction.getResponseData({
           body: JSON.stringify({
-            email: (elements.namedItem(ENTER_EMAIL_INPUT_ID))?.value,
+            email: elements.namedItem(ENTER_EMAIL_INPUT_ID)?.value,
             feedbackText: feedbackText,
-            feedbackType: (elements.namedItem(FEEDBACK_TYPE_INPUT_ID))?.value,
-            name: (elements.namedItem(ENTER_NAME_INPUT_ID))?.value,
+            feedbackType: elements.namedItem(FEEDBACK_TYPE_INPUT_ID)?.value,
+            name: elements.namedItem(ENTER_NAME_INPUT_ID)?.value,
           }),
           method: ApiActionType.POST,
-          url: API_ROOT + '/feedback'
-        }).then((data)=>{
-          if(data.errorMessage){
+          url: API_ROOT + "/feedback",
+        }).then((data) => {
+          if (data.errorMessage) {
             self.updateData({
               errorMessage: data.errorMessage,
               [SUCCESS_MESSAGE_KEY]: "",
             });
-          } else{
+          } else {
             self.updateData({
               errorMessage: "",
               [SUCCESS_MESSAGE_KEY]: "Feedback submitted",
             });
           }
-        })
-
+        });
       }
-    })
+    });
   }
 
-  render(data){
+  render(data) {
     return `
       <h1>Share feedback</h1>
       <div class="section-separator-small"></div>
@@ -186,13 +192,13 @@ export class FeedbackComponent extends BaseDynamicComponent {
         </div>
      
        ${generateButton({
-          id: SUBMIT_FEEDBACK_ID,
-          text: "Submit",
-          type:"submit",
-        })}
+         id: SUBMIT_FEEDBACK_ID,
+         text: "Submit",
+         type: "submit",
+       })}
         
       </form>
     </div>
-    `
+    `;
   }
 }

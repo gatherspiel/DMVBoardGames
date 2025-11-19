@@ -2,55 +2,54 @@
 <html lang="en">
   <head>
     <script async type="module">
+      console.log("Starting to parse Javascript at:" + Date.now());
 
-      console.log("Starting to parse Javascript at:" + Date.now())
-
-      import {EventListComponent} from "./ui/list/EventListComponent.js";
-      import {LoginStatusComponent} from "./ui/shared/LoginStatusComponent.js";
-      import {SearchComponent} from "./ui/list/SearchComponent.js";
-      import {UserActionsComponent} from "./ui/shared/UserActionsComponent.js";
+      import { EventListComponent } from "./ui/list/EventListComponent.js";
+      import { LoginStatusComponent } from "./ui/shared/LoginStatusComponent.js";
+      import { SearchComponent } from "./ui/list/SearchComponent.js";
+      import { UserActionsComponent } from "./ui/shared/UserActionsComponent.js";
 
       customElements.define("event-list-component", EventListComponent);
       customElements.define("search-component", SearchComponent);
-      customElements.define("login-status-component",LoginStatusComponent)
+      customElements.define("login-status-component", LoginStatusComponent);
       customElements.define("user-actions-component", UserActionsComponent);
     </script>
-    <meta charset="UTF-8"/>
-    <style inline-source src="../public/styles/sharedHtmlAndComponentStyles.css" ></style>
-    <style inline-source src="../public/styles/sharedHtmlOnlyStyles.css" ></style>
+    <meta charset="UTF-8" />
+    <style
+      inline-source
+      src="../public/styles/sharedHtmlAndComponentStyles.css"
+    ></style>
+    <style
+      inline-source
+      src="../public/styles/sharedHtmlOnlyStyles.css"
+    ></style>
     <link rel="preconnect" href="api.gatherspiel.com" />
-    <link rel="icon" type="image/ico" href="/assets/images/favicon.ico"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DMV Board Games</title>
   </head>
   <body>
-
     <div id="container">
       {{>navbar}}
       <div id="user-actions-menu">
-
         <nav class="raised">
           <span class="shadow"></span>
           <span class="edge"></span>
           <span class="front" id="user-actions-front">
-            <user-actions-component>
-            </user-actions-component>
+            <user-actions-component> </user-actions-component>
           </span>
         </nav>
       </div>
       <search-component
         api-url="/searchEvents"
-        class = "ui-section"
-        search-text = "Search for board game events"
+        class="ui-section"
+        search-text="Search for board game events"
       >
       </search-component>
       <event-list-component></event-list-component>
-
     </div>
 
-    <div id="bot-container">
-
-    </div>
+    <div id="bot-container"></div>
     {{>footer}}
   </body>
 </html>
