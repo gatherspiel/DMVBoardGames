@@ -1,15 +1,16 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import tseslint from 'typescript-eslint'
+import { defineConfig, globalIgnores } from "eslint/config";
 
-export default tseslint.config(
-  { ignores: ['dist'] },
+import globals from "globals";
+import js from "@eslint/js";
+
+export default defineConfig([
+  globalIgnores(["src/beta"]),
+  { files: ["**/*.js"], languageOptions: { globals: globals.browser } },
+  { files: ["**/*.js"], plugins: { js }, extends: ["js/recommended"] },
+
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['**/*.{ts}'],
-    languageOptions: {
-      ecmaVersion: 2021,
-      globals: globals.browser,
+    rules: {
+      "sort-imports": "error",
     },
   },
-)
+]);

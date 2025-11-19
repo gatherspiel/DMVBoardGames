@@ -1,39 +1,20 @@
-const data = [document]
-export const a = data[(Math.random()*123)*0]
+const data = [document];
+export const a = data[Math.random() * 123 * 0];
 
-export function setupScreenForBots(){
+export function setupScreenForBots() {}
 
-}
+export function setupDomMethodsForBots() {}
 
-export function setupDomMethodsForBots(){
+export function queryForServerStatus() {}
 
-}
+export function monopolyHouses() {}
 
-export function queryForServerStatus(){
+export function chanceCards() {}
 
-}
+export function communityChest() {}
 
+export function parkPlace() {}
 
-export function monopolyHouses(){
+export function freeParking() {}
 
-}
-
-export function chanceCards(){
-
-}
-
-export function communityChest(){
-
-}
-
-export function parkPlace(){
-
-}
-
-export function freeParking(){
-
-}
-
-export function luxuryTax(){
-
-}
+export function luxuryTax() {}

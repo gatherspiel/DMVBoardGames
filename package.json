@@ -4,25 +4,22 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsc && vite --force",
-    "build": "tsc && vite build",
-    "lint": "eslint .",
+    "dev": "vite --force",
+    "build": "npm run lint && vite build",
+    "format": "npx prettier . --write",
+    "lint": "eslint src",
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@eslint/js": "^9.33.0",
-    "eslint": "^9.33.0",
-    "globals": "^16.3.0",
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
     "prettier": "3.6.2",
-    "typescript": "~5.9.2",
-    "typescript-eslint": "^8.41.0",
     "vite": "7.2.2",
-    "vite-plugin-checker": "^0.9.3",
-    "vite-plugin-handlebars": "^2.0.0",
-    "vite-plugin-inline-source": "^4.0.0",
-    "vite-plugin-minify": "^2.1.0"
+    "vite-plugin-handlebars": "2.0.0",
+    "vite-plugin-inline-source": "4.1.0"
   },
   "dependencies": {
-    "@bponnaluri/places-js": "0.0.41"
+    "@bponnaluri/places-js": "0.0.42",
+    "globals": "^16.5.0"
   }
 }

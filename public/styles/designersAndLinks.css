@@ -1,5 +1,3 @@
-
-
 #designers-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
@@ -24,14 +22,14 @@ li::marker {
 }
 
 .section-separator-medium {
-  border-bottom:  20px solid;
+  border-bottom: 20px solid;
   border-image-source: url(/assets/images/Section_Border_Medium.png);
   border-image-slice: 20 20;
   border-image-repeat: round;
 }
 
 .section-separator-small {
-  border-top:  10px solid;
+  border-top: 10px solid;
   border-image-source: url(/assets/images/Section_Border_Small.png);
   border-image-slice: 10 10;
   border-image-repeat: round;
