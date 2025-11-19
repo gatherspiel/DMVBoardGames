@@ -149,10 +149,3 @@ export class LoadingIndicatorComponent extends HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 }
-
-if (!customElements.get("loading-indicator-component")) {
-  customElements.define(
-    "loading-indicator-component",
-    LoadingIndicatorComponent,
-  );
-}

@@ -4,12 +4,17 @@
     <script async type="module">
       console.log("Starting to parse Javascript at:" + Date.now());
       import { GroupListComponent } from "../../ui/list/GroupListComponent.js";
+      import { LoadingIndicatorComponent } from "../../shared/components/LoadingIndicatorComponent.js";
       import { LoginStatusComponent } from "../../ui/shared/LoginStatusComponent.js";
       import { SearchComponent } from "../../ui/list/SearchComponent.js";
       import { UserActionsComponent } from "../../ui/shared/UserActionsComponent.js";
 
       customElements.define("group-list-component", GroupListComponent);
       customElements.define("search-component", SearchComponent);
+      customElements.define(
+        "loading-indicator-component",
+        LoadingIndicatorComponent,
+      );
       customElements.define("login-status-component", LoginStatusComponent);
       customElements.define("user-actions-component", UserActionsComponent);
     </script>
