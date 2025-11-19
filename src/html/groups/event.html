@@ -19,7 +19,13 @@
 
     <script type="module">
       import { EventDetailsComponent } from "../../ui/groups/EventDetailsComponent.js";
+      import { LoadingIndicatorComponent } from "../../shared/components/LoadingIndicatorComponent.js";
+
       customElements.define("event-details-component", EventDetailsComponent);
+      customElements.define(
+        "loading-indicator-component",
+        LoadingIndicatorComponent,
+      );
     </script>
   </head>
   <body>
