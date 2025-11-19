@@ -19,9 +19,13 @@
     <title>GroupSearchResult Information</title>
     <script type="module">
       import { GroupComponent } from "../../ui/groups/GroupComponent.js";
+      import { LoadingIndicatorComponent } from "../../shared/components/LoadingIndicatorComponent.js";
 
       customElements.define("group-component", GroupComponent);
-
+      customElements.define(
+        "loading-indicator-component",
+        LoadingIndicatorComponent,
+      );
       const params = new URLSearchParams(document.location.search);
       document.title = params.get("name");
     </script>

@@ -5,12 +5,18 @@
       console.log("Starting to parse Javascript at:" + Date.now());
 
       import { EventListComponent } from "./ui/list/EventListComponent.js";
+      import { LoadingIndicatorComponent } from "./shared/components/LoadingIndicatorComponent.js";
       import { LoginStatusComponent } from "./ui/shared/LoginStatusComponent.js";
       import { SearchComponent } from "./ui/list/SearchComponent.js";
       import { UserActionsComponent } from "./ui/shared/UserActionsComponent.js";
 
       customElements.define("event-list-component", EventListComponent);
       customElements.define("search-component", SearchComponent);
+      customElements.define(
+        "loading-indicator-component",
+        LoadingIndicatorComponent,
+      );
+
       customElements.define("login-status-component", LoginStatusComponent);
       customElements.define("user-actions-component", UserActionsComponent);
     </script>
