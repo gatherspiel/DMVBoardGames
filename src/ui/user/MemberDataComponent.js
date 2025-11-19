@@ -1,6 +1,7 @@
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
-import { USER_MEMBER_STORE } from "../../data/user/UserMemberStore.js";
 import { convertDateAndDayToDisplayString } from "../../shared/EventDataUtils.js";
+import {LOADING_INDICATOR_CONFIG} from "../../shared/LoadingIndicatorConfig.js";
+import { USER_MEMBER_STORE } from "../../data/user/UserMemberStore.js";
 
 export class MemberDataComponent extends BaseDynamicComponent {
   constructor() {
@@ -8,7 +9,8 @@ export class MemberDataComponent extends BaseDynamicComponent {
       {
         dataStore: USER_MEMBER_STORE,
       },
-    ]);
+    ],
+    LOADING_INDICATOR_CONFIG);
   }
 
   getTemplateStyle() {
@@ -29,12 +31,7 @@ export class MemberDataComponent extends BaseDynamicComponent {
   }
 
   connectedCallback() {
-    this.updateData({
-      moderatingGroups: [],
-      joinedGroups: [],
-      attendingEvents: [],
-      moderatingEvents: [],
-    });
+
   }
 
   render(data) {
