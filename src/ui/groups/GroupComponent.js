@@ -332,7 +332,7 @@ export class GroupComponent extends BaseDynamicComponent {
       html +
       `
   
-      <div class="ui-section">
+      <div class="fade-in-animation ui-section">
       <h1 id="group-name-header">${groupData.name}</h1>
       ${generateErrorMessage(groupData[ERROR_MESSAGE_KEY])}
       ${generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY])}

@@ -115,6 +115,7 @@ export class GroupListComponent extends BaseDynamicComponent {
         `;
     }
     let html = `
+      <div class="fade-in-animation">
       <h1 id="group-search-results-header">Search results</h1>
       <ul>`;
     for (let i = 0; i < state.data.groupData.length; i++) {
@@ -123,6 +124,6 @@ export class GroupListComponent extends BaseDynamicComponent {
           <div class="section-separator-small"></div> 
       `;
     }
-    return html + `</ul>`;
+    return html + `</ul></div>`;
   }
 }
