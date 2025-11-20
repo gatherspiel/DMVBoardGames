@@ -46,7 +46,7 @@ export default defineConfig({
         join: resolve(__dirname, "src/html/static/join.html"),
 
         main: resolve(__dirname, "src/index.html"),
-
+        manualTesting: resolve(__dirname, "src/html/static/test/manualTesting.html"),
         landing: resolve(__dirname, "src/html/static/landing.html"),
         links: resolve(__dirname, "src/html/static/links.html"),
         login: resolve(__dirname, "src/html/user/login.html"),

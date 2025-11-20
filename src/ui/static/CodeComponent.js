@@ -50,13 +50,11 @@ export class CodeComponent extends BaseTemplateComponent {
           The goal of dmvboardgames.com is to promote human connection through board games as a way of increasing interest in public spaces. 
           This website is not a profit making entity,
         </li>
-        <li><p>Human first testing: Testing should primarily be done manually. This allows myself and other people testing
-        the site to evaluate subjective criteria such as usability. A UI testing framework focuses on correctness and 
-        doesn't have the context necessary to evaluate subjective criteria. Keeping UI tests up to date with website changes
-        is also a challenge. Finally, bots are blocked from scraping the site and adding support for UI tests is likely to
-        mean bot blocking measures are affected. If the UI testing script is designed to run in a non-production environment
-        where the blocking measures are designed to be disabled, that means there is code that can be used to evade the blocking
-        measures in prod.</p>
+        <li><p>Manual UI testing: UI should primarily be done manually. This allows testing for subjective criteria such
+        as usuablity in addition to correctness.  Automated UI tests will not have the context necessary to
+        understand subjective critiera, and maintaining them is a cost.  Finally, bots are blocked from scraping the site 
+        and adding support for UI tests is likely to effect bot blocking measures. Additional thoughts are
+        <a href="/html/static/tech/manualTesting">here</a></p> </li>
         
         <p>On the other hand, the backend relies on automated database integration tests. With the backend, the expected output 
         can be clearly defined with objective criteria, the tests are not affected by UI changes, and code from the tests
