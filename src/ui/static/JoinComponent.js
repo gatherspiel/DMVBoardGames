@@ -21,7 +21,19 @@ export class JoinComponent extends BaseTemplateComponent {
       
     
     
-    <p>Dmvboardgames.com is looking for volunteer help in the following areas. To join, email gulu@createhirdplaces.com</p>
+    <p>Dmvboardgames.com looking for volunteer help to spread word about the site and find contributers.
+    The site does not have a social media presence and relies on word of mouth.
+     There are two fliers:
+      <ul>
+        <li><a href="/assets/docs/Website_User_Flier.pdf">Site information flier</a></li>
+        <li> <a href="/assets/docs/Website_Developer_Flier.pdf">Development help flier</a></li>
+</ul>
+       
+    
+    
+    
+    <p> The site is also looking for help in the following areas. Email gulu@createthirdplaces.com if you are 
+    interested.</p>
     
     
     <ul>

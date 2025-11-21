@@ -75,6 +75,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
+      
         h1 {
           margin-top:0rem;
         }   

@@ -73,8 +73,9 @@ export class CodeComponent extends BaseTemplateComponent {
         data fetching logic. They use a base data store class in the places.js framework located <a href="https://github.com/gatherspiel/places-js/blob/main/src/state/update/DataStore.ts">here</a>
         <li>ui: Interactive web components. It also contains static content that is inside web 
         component shadow DOM to make it more difficult for bots to scrape this website. The components here are built
-        using a custom framework places.js I developed for asynchronous data fetching, state management, and webcomponents. Source
-        code for places.js is <a href="https://github.com/gatherspiel/places-js">here </a></li>
+        using a custom framework places.js I developed for asynchronous data fetching, state management, and webcomponents. Documentation for the
+        framework is <a href="/html/static/tech/placesJS.html">here</a>
+ 
         <li>shared: Web components and other utilities used for project that don't have logic specific to a page
          on dmvboardgames.com. All files in this folder  have zero dependencies.</li>
         <li> html: html for the user facing web pages. Most of these pages will have content with their associated 

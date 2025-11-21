@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <style
+    inline-source
+    src="../public/styles/sharedHtmlOnlyStyles.css"
+  ></style>
+  <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>places.js framework documentation</title>
+</head>
+<body>
+<div id="container">
+  {{>navbar}}
+  <script type="module">
+    class PlacesJSComponent extends HTMLElement {
+      connectedCallback(){
+
+        const templateStyle = `
+            <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlOnlyStyles.css"/>
+            <style></style>
+          `
+        const templateHtml = `
+            <h1>Documentation for places.js framework</h1>
+            <p> Code for places.js is <a href="https://github.com/gatherspiel/places-js">here </a></p>
+          `
+        this.attachShadow({ mode: "open" });
+        const template = document.createElement("template");
+
+        template.innerHTML = templateStyle + templateHtml;
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+      }
+    }
+    customElements.define('places-js-component',PlacesJSComponent)
+  </script>
+  <places-js-component></places-js-component>
+</div>
+
+<div id="bot-container"></div>
+{{>footer}}
+</body>
+</html>
