@@ -14,12 +14,14 @@ import { CITY_LIST_STORE } from "../../data/list/CityListStore.js";
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
 
 import { getDisplayName } from "../../shared/DisplayNameConversion.js";
+import {LOGIN_STORE} from "../../data/user/LoginStore.js";
 
 const DEFAULT_PARAMETER_KEY = "defaultParameter";
 const DEFAULT_PARAMETER_DISPLAY_KEY = "defaultParameterDisplay";
 const ENABLE_SEARCH_TOGGLE_KEY = "enableSearchButton";
 const SEARCH_BUTTON_ID = "search-button-id";
 const SEARCH_DISTANCE_ID = "search-distance-id";
+const SEARCH_USER_GROUPS_BUTTON_ID= "search-joined-id";
 const SEARCH_CITY_ID = "search-cities";
 const SEARCH_FORM_ID = "search-form";
 const SHOW_DAY_SELECT = "show-day-select";
@@ -34,6 +36,8 @@ const DISTANCE_OPTIONS = [
 ];
 
 export class SearchComponent extends BaseDynamicComponent {
+
+
   constructor() {
     super([
       {
@@ -44,35 +48,36 @@ export class SearchComponent extends BaseDynamicComponent {
           });
           copy.sort();
           copy.unshift(DEFAULT_SEARCH_PARAMETER);
-          const params = new URLSearchParams(document.location.search);
-          const defaultSearchParams = {
-            location: params.get("location"),
-            days: generateCheckedStateFromUrlParamArray(params.get("days")),
-            distance: params.get("distance")?.replaceAll("_", " "),
-          };
-          return {
-            cityList: copy,
-            [ENABLE_SEARCH_TOGGLE_KEY]: params.size === 0,
-            ...defaultSearchParams,
-          };
+          return copy
         },
         dataStore: CITY_LIST_STORE,
+        fieldName: "cityList"
       },
+      {
+        dataStore: LOGIN_STORE,
+        fieldName: "loginState"
+      }
     ]);
 
-    const params = new URLSearchParams(document.location.search);
+    this.initialParams = new URLSearchParams(document.location.search);
 
-    const defaultSearchParams = {
-      location: params.get("location"),
+    this.defaultSearchParams = {
+      location: this.initialParams.get("location"),
       apiUrl: this.getAttribute("api-url"),
-      days: params.get("days"),
-      distance: params.get("distance")?.replaceAll("_", " "),
+      days: this.initialParams.get("days"),
+      distance: this.initialParams.get("distance")?.replaceAll("_", " "),
     };
-    if (params.size > 0) {
-      SEARCH_RESULTS_LIST_STORE.fetchData(defaultSearchParams);
+    if (this.initialParams .size > 0) {
+      SEARCH_RESULTS_LIST_STORE.fetchData(this.defaultSearchParams);
     }
   }
 
+  connectedCallback(){
+    this.updateData({
+    ...{[ENABLE_SEARCH_TOGGLE_KEY]: this.initialParams.size === 0},
+      ...this.defaultSearchParams,
+    })
+  }
   getTemplateStyle() {
     return `
      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
@@ -171,7 +176,7 @@ export class SearchComponent extends BaseDynamicComponent {
               : null,
         });
       }
-      if (event.target.id === SEARCH_BUTTON_ID) {
+      if (event.target.id === SEARCH_BUTTON_ID || event.target.id === SEARCH_USER_GROUPS_BUTTON_ID) {
         const searchParams = {
           location: self.componentStore.location ?? "",
           days: self.componentStore.days
@@ -179,6 +184,11 @@ export class SearchComponent extends BaseDynamicComponent {
             : "",
           distance: self.componentStore.distance,
         };
+
+        console.log(event.target.id +":"+SEARCH_USER_GROUPS_BUTTON_ID)
+        if(event.target.id === SEARCH_USER_GROUPS_BUTTON_ID){
+          searchParams['userGroupEvents'] = "true";
+        }
 
         self.updateData({
           [ENABLE_SEARCH_TOGGLE_KEY]: false,
@@ -205,6 +215,9 @@ export class SearchComponent extends BaseDynamicComponent {
   }
 
   render(store) {
+
+    const searchAllText = store.loginState?.loggedIn === true ?
+       "Search all events" : "Search"
     const searchInputsClass =
       store.location && store.location !== DEFAULT_SEARCH_PARAMETER
         ? "search-form-three-inputs"
@@ -266,12 +279,29 @@ export class SearchComponent extends BaseDynamicComponent {
               store[ENABLE_SEARCH_TOGGLE_KEY]
                 ? `${generateButton({
                     id: SEARCH_BUTTON_ID,
-                    text: "Search",
+                    text: `${searchAllText}`,
                   })}`
                 : `${generateDisabledButton({
                     id: "disabled-search-button",
-                    text: "Search",
+                    text: `${searchAllText}`,
                   })}`
+            }
+            ${store.loginState?.loggedIn ? 
+              `
+                ${
+                  store[ENABLE_SEARCH_TOGGLE_KEY]
+                  ? `${generateButton({
+                    id: SEARCH_USER_GROUPS_BUTTON_ID,
+                    text: "Search joined groups",
+                  })}`
+                  : `${generateDisabledButton({
+                    id: "disabled-search-button-joined",
+                    text: "Search joined groups",
+                  })}`
+                }
+
+              ` 
+              :``
             }
           </div>
         </div>
