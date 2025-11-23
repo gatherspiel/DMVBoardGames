@@ -1,6 +1,5 @@
 import {
   DEFAULT_SEARCH_PARAMETER,
-  generateCheckedStateFromUrlParamArray,
   getDaysOfWeekSelectHtml,
   getDaysOfWeekSelectedState,
   getDropdownHtml,
@@ -11,10 +10,10 @@ import {
 } from "../../shared/html/ButtonGenerator.js";
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import { CITY_LIST_STORE } from "../../data/list/CityListStore.js";
+import {LOGIN_STORE} from "../../data/user/LoginStore.js";
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
 
 import { getDisplayName } from "../../shared/DisplayNameConversion.js";
-import {LOGIN_STORE} from "../../data/user/LoginStore.js";
 
 const DEFAULT_PARAMETER_KEY = "defaultParameter";
 const DEFAULT_PARAMETER_DISPLAY_KEY = "defaultParameterDisplay";
