@@ -6,7 +6,6 @@ import { DEFAULT_SEARCH_PARAMETER } from "../../shared/html/SelectGenerator.js";
 function getSearchResultsQueryConfig(searchParams) {
   const paramMap = {};
 
-  console.log(searchParams)
   if (searchParams.days && searchParams.days !== DEFAULT_SEARCH_PARAMETER) {
     paramMap["days"] = searchParams.days;
   }
