@@ -61,10 +61,12 @@ export class SearchComponent extends BaseDynamicComponent {
     this.initialParams = new URLSearchParams(document.location.search);
 
     this.defaultSearchParams = {
-      location: this.initialParams.get("location"),
       apiUrl: this.getAttribute("api-url"),
+      cityList:[DEFAULT_SEARCH_PARAMETER],
       days: this.initialParams.get("days"),
       distance: this.initialParams.get("distance")?.replaceAll("_", " "),
+      location: this.initialParams.get("location"),
+
     };
     if (this.initialParams .size > 0) {
       SEARCH_RESULTS_LIST_STORE.fetchData(this.defaultSearchParams);
@@ -185,7 +187,6 @@ export class SearchComponent extends BaseDynamicComponent {
           distance: self.componentStore.distance,
         };
 
-        console.log(event.target.id +":"+SEARCH_USER_GROUPS_BUTTON_ID)
         if(event.target.id === SEARCH_USER_GROUPS_BUTTON_ID){
           searchParams['userGroupEvents'] = "true";
         }
