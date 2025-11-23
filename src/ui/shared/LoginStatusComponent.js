@@ -72,14 +72,21 @@ class LoginStatusComponentInner extends BaseDynamicComponent {
           height:3rem;
         }
         @media not screen and (width < 32em) {
-           a {
+          a {
             margin-left:0.75rem;
           }
           p {
             display: inline-block;
           }
+          #edit-profile-div {
+            float:right;
+            margin-right:1rem;
+          }
           #links-container div{
             display: inline-block;
+          }
+          #signout-link {
+            float:right;
           }
           #user-text-container {
             margin-top:0.5rem;
@@ -105,6 +112,7 @@ class LoginStatusComponentInner extends BaseDynamicComponent {
           .raised {
             display: inline-block;
           }
+  
         }
         @media screen and (width < 32em) {
           p {
@@ -144,7 +152,9 @@ class LoginStatusComponentInner extends BaseDynamicComponent {
     return `
       <div id="login-status-container">
         <div id="links-container">
+          <div></div>
           <div id="${SIGN_OUT_LINK_ID}">Sign out</div>
+
           <div id="edit-profile-div"><a href="/html/user/editProfile.html">Edit profile</a></div>
         </div>
         <div id="user-text-container">
