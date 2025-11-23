@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <style
+    inline-source
+    src="../public/styles/sharedHtmlOnlyStyles.css"
+  ></style>
+  <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>places.js framework documentation</title>
+  <script type="module">
+    import {CodeDisplayComponent} from "../../../shared/components/CodeDisplayComponent.js";
+    customElements.define('code-display-component',CodeDisplayComponent)
+  </script>
+</head>
+<body>
+<div id="container">
+  {{>navbar}}
+
+
+  <h1>Documentation for places.js framework</h1>
+  <p> Code for places.js is <a href="https://github.com/gatherspiel/places-js">here </a></p>
+
+  <h2>Classes</h2>
+
+  <h3>BaseDynamicComponent</h3>
+
+  <p>This is the base class represents a state based UI component with support for asynchronous data fetching. It also
+  has styles scoped to the ShadowDOM.</p>
+
+  <p>Constructor paramaeters </p>
+
+  <ul>
+    <li><b>dataStoreSubscriptions(default [])</b>: An array of subscription configurations the component will subscribe to. Each configuration can have the following parameters</li>
+    <ul>
+      <li><b>dataStore</b>: The <a href="#data-store-class-guide"> Data Store</a> that that will load and store state. </li>
+      <li><b>fieldName</b>: The name that the subscribed data should be stored under. This is an optional field unless the component is subscribed to multiple stores.</li>
+      <li><b><a href="#component-reducer-function-guide">componentReducer</a>(optional)</b>Describes any transformations that should be made to state data being sent to a component</li>
+    </ul>
+    <li><b>loadingIndicatorConfig(default={})</b>: Configuration settings for a loading indicator. If this parameter is empty, a loading indicator will not be shown. Each
+    load configuration should have the following parameters</li>
+    <ul>
+      <li><b>generateLoadingIndicatorHtml</b>: A function returning the HTML that should be shown.</li>
+      <li><b>minTimeMs(optional)</b>: The minimum amount of time in miliseconds that the loading indicator will be shown for, regardless of
+          how quickly data is loaded for store subscriptions.  If this value is not specified, then the loading indicator
+          will be shown until the data has loaded.</li>
+    </ul>
+
+    <h4>Example</h4>
+    <code-display-component>
+      export const LOADING_INDICATOR_CONFIG = {
+        generateLoadingIndicatorHtml: () => {
+          return `<p>Loading</p>`;
+        },
+        minTimeMs: 500,
+      };
+    </code-display-component>
+
+    <p>Detailed example</p>
+
+  </ul>
+
+  <p>Functions </p>
+  <ul>
+    <li>connectedCallback: Standard web component lifecycle method. Use for initializing component state if it does not rely on an external store.</li>
+  </ul>
+  Note: The BaseDynamicComponent object uses the disconnectedCallback function to make sure store subscriptions are up to date when a component is disconnected.Overriding
+  this method could lead to unpredicatable rendering behavior.
+  <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements">More information</a> about web component lifecycle methods</p>
+  <h3>BaseTemplateComponent</h3>
+
+  <div id = "data-store-class-guide">
+
+    <h3>DataStore</h3>
+    <p>This class is responsible for storing state and fetching data from an external source</p>
+      <ul>
+        <li><a href="#data-store-load-action-class-guide">loadAction: </a>An instance of DataStoreLoadAction describing how data should be loaded</li>
+      </ul>
+    <p>DataStore example</p>
+    <pre>
+      import { ApiLoadAction, DataStore } from "@bponnaluri/places-js";
+      import { API_ROOT } from "../../ui/shared/Params.js";
+
+      function getUserQueryConfig() {
+        return {
+          url: API_ROOT + "/user",
+        };
+      }
+
+      export const USER_DATA_STORE = new DataStore(
+        new ApiLoadAction(getUserQueryConfig),
+      );
+
+    </pre>
+  </div>
+
+  <h2>Objects</h2>
+
+  <h3>ApiActionType</h3>
+  <div id = "data-store-load-action-class-guide">
+    <h3>DataStoreLoadAction</h3>
+    <p>This class defines an action used to load data into a store. Places.js includes two types of actions</p>
+    <ul>
+      <li><a href="#api-load-action-class-guide">APILoadAction</a></li>
+      <li><a href="#custom-load-action-class-guide">CustomLoadAction</a></li>
+    </ul>
+    <div id="api-load-action-class-guide">
+      <h3>ApiLoadAction</h3>
+      <p>Class to define a data store load action through an API call.</p>
+    </div>
+
+    <div id="custom-load-action-class-guide">
+      <h3>CustomLoadAction</h3>
+      <p>Class to define a custom data store load action with direct control over any async calls that are made.
+        It is intended for use when additional processing needs to be done after an async call, or if a store needs
+        to combine data from multiple sources.</p>
+    </div>
+  </div>
+
+  <h2>Functions</h2>
+
+    <h3>clearSessionStorage</h3>
+
+    <p>Example to clear session storage </p>
+    <pre>
+      clearSessionStorage();
+    </pre>
+
+    <div id="component-reducer-function-guide">
+      <h3>componentStoreReducer</h3>
+      <code>
+        componentReducer: (groupData) => {
+            return {
+            ...groupData,
+            [SUCCESS_MESSAGE_KEY]: "",
+          };
+        },
+      </code>
+    </div>
+
+   <h3>Add localStorageData</h3>
+   <h3>Delete localStorageData</h3>
+   <h3>getLocalStorageDataIfPresent</h3>
+
+  <div id="loading-indicator-component-detailed">
+
+    <h3>Detailed example of using loading indicator config with a custom image</h3>
+
+    <h4>Loading config</h4>
+    <code-display-component>
+      export class LoadingIndicatorComponent extends HTMLElement {
+        constructor() {
+          super();
+          this.imagePath = this.getAttribute("image-path");
+        }
+        connectedCallback() {
+        this.attachShadow({ mode: "open" });
+        const templateStyle = `
+          <style>
+              #meeple-one {
+                  position: absolute;
+                  height:4px;
+                  width:4px;
+                  top:50px;
+                  left:25px;
+              }
+              #meeple-two {
+                  position: absolute;
+                  top:43px;
+                  left:43px;
+              }
+              #meeple-three {
+                  position: absolute;
+                  top:25px;
+                  left:50px;
+              }
+              #meeple-four {
+                  position: absolute;
+                  top:7px;
+                  left:43px;
+              }
+              #meeple-five {
+                  position: absolute;
+                  top:0;
+                  left:25px;
+              }
+              #meeple-six {
+                  position: absolute;
+                  top:7px;
+                  left:7px;
+              }
+              #meeple-seven {
+                  position: absolute;
+                  top:25px;
+                  left:0;
+              }
+              #meeple-seven img {
+                  height:3px;
+                  width:3px;
+              }
+              #meeple-six img {
+                  height:5px;
+                  width:5px;
+              }
+              #meeple-five img {
+                  height:7px;
+                  width:7px;
+              }
+              #meeple-four img {
+                  height:9px;
+                  width:9px;
+              }
+              #meeple-three img {
+                  height:11px;
+                  width:11px;
+              }
+              #meeple-two img {
+                  height:13px;
+                  width:13px;
+              }
+              #meeple-one img {
+                  height:15px;
+                  width:15px;
+              }
+              .loader {
+                  animation: l27 1s infinite steps(8);
+                  height: 65px;
+                  margin-left:auto;
+                  margin-right:auto;
+                  margin-top:2rem;
+                  width: 65px;
+              }
+              @keyframes l27 {
+                  100% {
+                      transform-origin: 32.5px 32.5px;
+                      transform: rotate(1turn)
+                  }
+              }
+              .meeple {
+                  width:15px;
+                  height:15px;
+                  animation: l28 1s infinite steps(8);
+              }
+              @keyframes l28 {
+                  100% {
+                      transform-origin: 7.5px 7.5px;
+                      transform: rotate(-1turn)
+                  }
+              }</style>`;
+
+        const template = document.createElement("template");
+        template.innerHTML =
+        templateStyle +
+        `
+        <div class="loader">
+
+          <div class="meeple" id="meeple-one">
+            <img src="${this.imagePath}">
+          </div>
+
+          <div class="meeple"  id="meeple-two">
+            <img src="${this.imagePath}">
+          </div>
+
+          <div class="meeple"  id="meeple-three">
+            <img src="${this.imagePath}">
+          </div>
+
+          <div class="meeple"  id="meeple-four" >
+            <img src="${this.imagePath}">
+          </div>
+
+          <div class="meeple"  id="meeple-five" >
+            <img src="${this.imagePath}">
+          </div>
+
+          <div class="meeple"  id="meeple-six" >
+            <img src="${this.imagePath}">
+          </div>
+          <div class="meeple"  id="meeple-seven" >
+            <img src="${this.imagePath}">
+          </div>
+        </div>
+        `;
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+        }
+      }
+      customElements.define(
+      "loading-indicator-component",
+      LoadingIndicatorComponent,
+      );
+    </code-display-component>
+
+    <code-display-component>
+      export const LOADING_INDICATOR_CONFIG = {
+      generateLoadingIndicatorHtml: () => {
+      return `
+      <loading-indicator-component
+        image-path="/assets/images/meeple_small.png"
+      >
+      </loading-indicator-component>
+      `;
+      },
+      minTimeMs: 500,
+      };
+
+    </code-display-component>
+
+  </div>
+
+</div>
+
+<div id="bot-container"></div>
+{{>footer}}
+</body>
+</html>

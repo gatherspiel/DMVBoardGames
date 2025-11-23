@@ -6,6 +6,7 @@ import { DEFAULT_SEARCH_PARAMETER } from "../../shared/html/SelectGenerator.js";
 function getSearchResultsQueryConfig(searchParams) {
   const paramMap = {};
 
+  console.log(searchParams)
   if (searchParams.days && searchParams.days !== DEFAULT_SEARCH_PARAMETER) {
     paramMap["days"] = searchParams.days;
   }
@@ -18,8 +19,13 @@ function getSearchResultsQueryConfig(searchParams) {
     if (searchParams.distance) {
       paramMap["distance"] = searchParams.distance.split(" ")[0];
     }
+
   }
 
+  if(searchParams.userGroupEvents){
+    paramMap["userGroupEvents"] = searchParams.userGroupEvents;
+  }
+  
   if (!searchParams.apiUrl.startsWith("/")) {
     console.error("Invalid url:" + searchParams.apiUrl);
   }

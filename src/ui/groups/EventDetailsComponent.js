@@ -75,6 +75,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
+      
         h1 {
           margin-top:0rem;
         }   
@@ -303,6 +304,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       return `<h1>Loading</h1>`;
     }
     let html = `
+      <div class="fade-in-animation">
       <div id = "user-actions-menu">
         ${
           !data.isEditing && !data.isDeleting && data?.permissions?.userCanEdit
@@ -340,6 +342,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         text: "Back to group",
         url: `${window.location.origin}/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}`,
       })}
+      </div>
       </div>
     `;
     return html;

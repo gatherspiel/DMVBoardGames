@@ -21,6 +21,7 @@ export default defineConfig({
     outDir: "../dist",
     rollupOptions: {
       input: {
+        code: resolve(__dirname, "src/html/static/code.html"),
         conventions: resolve(__dirname, "src/html/list/conventions.html"),
         create_account: resolve(__dirname, "src/html/user/createAccount.html"),
         create_groups: resolve(__dirname, "src/html/groups/create.html"),
@@ -44,13 +45,16 @@ export default defineConfig({
 
         join: resolve(__dirname, "src/html/static/join.html"),
 
-        main: resolve(__dirname, "src/index.html"),
-
         landing: resolve(__dirname, "src/html/static/landing.html"),
         links: resolve(__dirname, "src/html/static/links.html"),
         login: resolve(__dirname, "src/html/user/login.html"),
 
+
+        main: resolve(__dirname, "src/index.html"),
+        manualTesting: resolve(__dirname, "src/html/static/tech/manualTesting.html"),
         memberData: resolve(__dirname, "src/html/user/memberData.html"),
+
+        placesJS: resolve(__dirname, "src/html/user/placesjs.html"),
 
         searchGroups: resolve(__dirname, "src/html/list/searchGroups.html"),
         siteRules: resolve(__dirname, "src/html/static/siteRules.html"),
