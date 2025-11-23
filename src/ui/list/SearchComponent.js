@@ -116,7 +116,7 @@ export class SearchComponent extends BaseDynamicComponent {
           #search-form .form-item {
             display: inline-block;
           }
-          #searchInputDiv {
+          #search-input-div {
             margin-top:0.5rem;
           }
         }     
@@ -126,8 +126,6 @@ export class SearchComponent extends BaseDynamicComponent {
           }
           #search-cities {
             margin-bottom: 0.5rem;
-          }
-          #search-distance-id {
           }
           .searchDropdownLabel {
             width: 11rem;
@@ -139,6 +137,9 @@ export class SearchComponent extends BaseDynamicComponent {
           .search-form-three-inputs {
             display: inline-block;
             height:7.5rem;
+          }
+          #search-input-div > button {
+            margin-bottom: 0.5rem;
           }
         }
       </style>   
@@ -273,7 +274,7 @@ export class SearchComponent extends BaseDynamicComponent {
                 : ``
             }     
           </div>  
-          <div id="searchInputDiv"> 
+          <div id="search-input-div"> 
             ${
               store[ENABLE_SEARCH_TOGGLE_KEY]
                 ? `${generateButton({

@@ -54,7 +54,7 @@ export class CodeComponent extends BaseTemplateComponent {
         as usuablity in addition to correctness.  Automated UI tests will not have the context necessary to
         understand subjective critiera, and maintaining them is a cost.  Finally, bots are blocked from scraping the site 
         and adding support for UI tests is likely to effect bot blocking measures. Additional thoughts are
-        <a href="/html/static/tech/manualTesting">here</a></p> </li>
+        <a href="/html/static/tech/manualtesting">here</a></p> </li>
         
         <p>On the other hand, the backend relies on automated database integration tests. With the backend, the expected output 
         can be clearly defined with objective criteria, the tests are not affected by UI changes, and code from the tests
@@ -74,7 +74,7 @@ export class CodeComponent extends BaseTemplateComponent {
         <li>ui: Interactive web components. It also contains static content that is inside web 
         component shadow DOM to make it more difficult for bots to scrape this website. The components here are built
         using a custom framework places.js I developed for asynchronous data fetching, state management, and webcomponents. Documentation for the
-        framework is <a href="/html/static/tech/placesJS.html">here</a>
+        framework is <a href="/html/static/tech/placesjs.html">here</a>
  
         <li>shared: Web components and other utilities used for project that don't have logic specific to a page
          on dmvboardgames.com. All files in this folder  have zero dependencies.</li>
