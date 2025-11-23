@@ -21,6 +21,8 @@ export default defineConfig({
     outDir: "../dist",
     rollupOptions: {
       input: {
+        about: resolve(__dirname, "src/html/static/about.html"),
+
         code: resolve(__dirname, "src/html/static/code.html"),
         conventions: resolve(__dirname, "src/html/list/conventions.html"),
         create_account: resolve(__dirname, "src/html/user/createAccount.html"),
@@ -51,7 +53,7 @@ export default defineConfig({
 
 
         main: resolve(__dirname, "src/index.html"),
-        manualTesting: resolve(__dirname, "src/html/static/tech/manualTesting.html"),
+        manualTesting: resolve(__dirname, "src/html/static/tech/manualtesting.html"),
         memberData: resolve(__dirname, "src/html/user/memberData.html"),
 
         placesJS: resolve(__dirname, "src/html/static/tech/placesjs.html"),
