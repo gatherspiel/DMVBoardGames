@@ -54,7 +54,7 @@ export default defineConfig({
         manualTesting: resolve(__dirname, "src/html/static/tech/manualTesting.html"),
         memberData: resolve(__dirname, "src/html/user/memberData.html"),
 
-        placesJS: resolve(__dirname, "src/html/user/placesjs.html"),
+        placesJS: resolve(__dirname, "src/html/static/tech/placesjs.html"),
 
         searchGroups: resolve(__dirname, "src/html/list/searchGroups.html"),
         siteRules: resolve(__dirname, "src/html/static/siteRules.html"),
