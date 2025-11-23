@@ -1,5 +1,8 @@
 /* Styles that are shared with components */
 
+
+
+
 b,
 h2,
 label,
@@ -120,6 +123,17 @@ a:hover {
   color: darkred;
   display: block;
   font-weight: 600;
+}
+
+.fade-in-animation {
+  opacity:0;
+  animation: fadeIn 100ms forwards
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
 
 .front {

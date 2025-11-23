@@ -196,6 +196,8 @@ footer {
   will-change: transform;
   transform: translateY(-4px);
 }
+
+
 .page-section h3 {
   color: var(--clr-dark-blue);
   font-size: 1.5rem;

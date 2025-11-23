@@ -21,7 +21,7 @@ export class LoginStatusComponent extends BaseDynamicComponent {
       }
       @media not screen and (width < 32em) {
         a {
-          margin-left:2rem;
+          margin-left:0.5rem;
         }
       }
       @media screen and (width < 32em) {
@@ -73,7 +73,7 @@ class LoginStatusComponentInner extends BaseDynamicComponent {
         }
         @media not screen and (width < 32em) {
            a {
-            margin-left:2rem;
+            margin-left:0.75rem;
           }
           p {
             display: inline-block;

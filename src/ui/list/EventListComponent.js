@@ -13,7 +13,7 @@ export class EventListComponent extends BaseDynamicComponent {
           fieldName: "data",
         },
       ],
-      LOADING_INDICATOR_CONFIG,
+      LOADING_INDICATOR_CONFIG
     );
   }
 
@@ -21,7 +21,6 @@ export class EventListComponent extends BaseDynamicComponent {
     return `
       <link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
       <style>
-  
        li {
           padding-bottom: 1rem;
           padding-top:1rem;
@@ -37,6 +36,11 @@ export class EventListComponent extends BaseDynamicComponent {
        .button-div {
           display: flex;
         }
+        #container {
+          opacity:0;
+          animation: fadeIn 100ms forwards
+        }
+  
         #event-location,#event-time {
           margin-top:0.5rem;
         }
@@ -107,6 +111,8 @@ export class EventListComponent extends BaseDynamicComponent {
         `;
     }
     let html = `
+      <div class="fade-in-animation">
+
       <h1 id="search-results-header">Search results</h1>
       <ul>`;
     for (let i = 0; i < state.data.eventData.length; i++) {
@@ -115,6 +121,6 @@ export class EventListComponent extends BaseDynamicComponent {
           <div class="section-separator-small"></div> 
       `;
     }
-    return html + `</ul>`;
+    return html + `</ul></div>`;
   }
 }
