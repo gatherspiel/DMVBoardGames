@@ -63,6 +63,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             if (data.startDate) {
               data.startDate = data.startDate.join("-");
             }
+            data.hostText = data.moderators.length > 1 ? "Hosts:" : "Host:";
             return data;
           },
         },
@@ -81,7 +82,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         }   
         #delete-event-form {
           margin-top:1rem;
-          padding-left:1.5rem;
         }
         #event-description b, #event-description h1, #event-description h2,#event-description h3,#event-description h4,#event-description li, #event-description p {
           color: var(--clr-darker-blue);
@@ -306,22 +306,17 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     let html = `
       <div class="fade-in-animation">
       <div id = "user-actions-menu">
-        ${
-          !data.isEditing && !data.isDeleting && data?.permissions?.userCanEdit
-            ? `
-          <nav id="user-actions-menu-raised" class="raised">
-            <span class="shadow"></span>
-            <span class="edge"></span>
-            <span class="front" id="user-actions-front">
-                <div class="top-nav-secondary">
-                  <span id="${EDIT_EVENT_BUTTON_ID}">Edit event</span>
-                  <span id="${DELETE_EVENT_BUTTON_ID}">Delete event</span>
-                </div>
-            </span>
-          </nav>
-        `
-            : ""
-        }
+        <nav id="user-actions-menu-raised" class="raised" 
+             style="${!data.isEditing && !data.isDeleting && data?.permissions?.userCanEdit ? `` : `display:none`}">
+          <span class="shadow"></span>
+          <span class="edge"></span>
+          <span class="front" id="user-actions-front">
+              <div class="top-nav-secondary">
+                <span id="${EDIT_EVENT_BUTTON_ID}">Edit event</span>
+                <span id="${DELETE_EVENT_BUTTON_ID}">Delete event</span>
+              </div>
+          </span>
+        </nav>
       </div>
       
       <div id="form-status-success">
@@ -349,12 +344,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   }
 
   renderDeleteMode(data) {
-    if (data[SUCCESS_MESSAGE_KEY]) {
-      return `
-      `;
-    }
     return `
-      <div class="ui-section">
+      <div class="ui-section" style="${!data[SUCCESS_MESSAGE_KEY] ? `` : `display:none`}" >
         <h1>Are you sure you want to delete event ${data.name} ${data.isRecurring ? "" : `on ${data.startTime}`}</h1>
         <div id="delete-event-form">
             ${generateButton({
@@ -372,7 +363,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   }
 
   renderEditMode(data) {
-    console.log(data.startTime);
     return `
       <div class="ui-section">
       <h1>Editing Event:${data.name}</h1>
@@ -411,25 +401,21 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             image-path="${data.imageFilePath}"
           ></image-upload-component>
         </div>  
-        ${
-          data.isRecurring
-            ? `
-            <div class="form-section">
-              <label class=" required-field">Day of week</label>
-              ${getDayOfWeekSelectHtml(data.day)}
-            </div>
-          `
-            : `
-            <div class="form-section">
-              <label class=" required-field">Start date</label>
-              <input
-                name=${START_DATE_INPUT}
-                type="date"
-                value=${data.startDate}
-              />
-            </div>
-          `
-        }   
+   
+        <div class="form-section" style="${data.isRecurring ? `` : `display:none`}">
+          <label class=" required-field">Day of week</label>
+          ${getDayOfWeekSelectHtml(data.day)}
+        </div>
+ 
+        <div class="form-section" style="${!data.isRecurring ? `` : `display:none`}">
+          <label class=" required-field">Start date</label>
+          <input
+            name=${START_DATE_INPUT}
+            type="date"
+            value=${data.startDate}
+          />
+        </div>
+      
         <div class="form-section">
           <label class=" required-field">Start time</label>
           <input
@@ -496,7 +482,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     }
 
     let html = ``;
-    const hostText = data.moderators.length > 1 ? "Hosts:" : "Host:";
     data.moderators.forEach((moderator) => {
       html += `
         <div class ="user-data-container">
@@ -506,7 +491,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
               ${moderator.userData.imageFilePath ? `<img class="user-image-icon" src="${moderator.userData.imageFilePath}"></img>` : ``}
             </div>
             <div class="username-container">
-              <span><b>${hostText}</b> ${moderator.userData.username}</span>
+              <span><b>${data.hostText}</b> ${moderator.userData.username}</span>
             </div>
           </div>
         </div>

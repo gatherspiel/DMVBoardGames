@@ -12,14 +12,17 @@
   <title>places.js framework documentation</title>
   <script type="module">
     import {CodeDisplayComponent} from "../../../shared/components/CodeDisplayComponent.js";
+    import {ShadowDomComponent} from "../../../shared/components/ShadowDomComponent.js";
+
     customElements.define('code-display-component',CodeDisplayComponent)
+    customElements.define('shadow-dom-component',ShadowDomComponent)
   </script>
 </head>
 <body>
 <div id="container">
   {{>navbar}}
 
-
+  <shadow-dom-component>
   <h1>Documentation for places.js framework</h1>
   <p> Code for places.js is <a href="https://github.com/gatherspiel/places-js">here </a></p>
 
@@ -132,14 +135,14 @@
 
     <div id="component-reducer-function-guide">
       <h3>componentStoreReducer</h3>
-      <code>
+      <code-display-component>
         componentReducer: (groupData) => {
             return {
             ...groupData,
             [SUCCESS_MESSAGE_KEY]: "",
           };
         },
-      </code>
+      </code-display-component>
     </div>
 
    <h3>Add localStorageData</h3>
@@ -311,7 +314,7 @@
     </code-display-component>
 
   </div>
-
+  </shadow-dom-component>
 </div>
 
 <div id="bot-container"></div>
