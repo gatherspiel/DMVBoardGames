@@ -97,13 +97,12 @@ export class EventListComponent extends BaseDynamicComponent {
   }
 
   render(state) {
-    if (state?.status === "Waiting for user input" || !state.data.eventData) {
+    if (state?.status === "Waiting for user input" ||
+      !state.data.eventData  ||
+      !state.data) {
       return ``;
     }
 
-    if (!state.data) {
-      return ``;
-    }
     if (state.data.eventData.length === 0) {
       return `
           <p>No events found</p>

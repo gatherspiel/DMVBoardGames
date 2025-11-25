@@ -310,11 +310,8 @@ export class GroupComponent extends BaseDynamicComponent {
       return `<h1>Loading</h1>`;
     }
     const self = this;
-    let html = ``;
-
-    if (groupData.permissions.userCanUpdateGroupMembership) {
-      html = `
-        <div id="user-actions-menu">
+    return `
+        <div id="user-actions-menu" style="${groupData.permissions.userCanUpdateGroupMembership ? `` : `display:none`}">>
           <nav  id="user-actions-menu-raised" class="raised">
             <span class="shadow"></span>
               <span class="edge"></span>
@@ -325,12 +322,7 @@ export class GroupComponent extends BaseDynamicComponent {
             </span>
           </nav>
         </div>
-      `;
-    }
 
-    return (
-      html +
-      `
   
       <div class="fade-in-animation ui-section">
       <h1 id="group-name-header">${groupData.name}</h1>
@@ -363,7 +355,7 @@ export class GroupComponent extends BaseDynamicComponent {
       groupData.weeklyEventData.length === 0
         ? ``
         : `
-        <h2>Upcoming recurring events</h2>
+        <h2>Upcoming events</h2>
       `
     }
     ${
@@ -399,7 +391,7 @@ export class GroupComponent extends BaseDynamicComponent {
       `
     }
     </div>`
-    );
+
   }
 
   renderEditMode(groupData) {

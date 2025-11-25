@@ -176,11 +176,9 @@ export class CreateGroupComponent extends BaseDynamicComponent {
     return `
       <div id="create-group-container">
         <h1>Create group</h1>
-        <div class="section-separator-small"></div>  
-        ${
-          data.loggedIn
-            ? `
-              <form id="create-group-form" onsubmit="return false">
+        <div class="section-separator-small" ></div>  
+
+              <form id="create-group-form" onsubmit="return false" style="${data.loggedIn ? `` : `display:none`}">
                 <div id="form-status-div">
                   ${generateSuccessMessage(data?.[SUCCESS_MESSAGE_KEY])}
                   ${generateErrorMessage(data?.errorMessage)}           
@@ -238,9 +236,9 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                 <faq-component></faq-component>
               </form>
               ${generateErrorMessage(data.errorMessage)}
-            `
-            : `<p>You must log in to create a group </p>`
-        }    
+            
+            <p style="${!data.loggedIn ? `` : `display:none`}">You must log in to create a group </p>
+            
      </div> 
      `;
   }

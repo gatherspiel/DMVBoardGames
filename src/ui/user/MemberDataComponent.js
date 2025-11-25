@@ -29,11 +29,7 @@ export class MemberDataComponent extends BaseDynamicComponent {
       </style>
     `;
   }
-
-  connectedCallback() {
-
-  }
-
+  
   render(data) {
     const html = `
       <h1>MemberData</h1>
