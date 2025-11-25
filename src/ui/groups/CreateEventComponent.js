@@ -39,13 +39,16 @@ customElements.define("login-status-component", LoginStatusComponent);
 
 const CREATE_EVENT_BUTTON_ID = "create-event-button";
 const RECURRING_EVENT_INPUT = "is-recurring";
+
 export class CreateEventComponent extends BaseDynamicComponent {
   constructor() {
     super();
   }
   connectedCallback() {
+    document.title = `Add event for group ${new URLSearchParams(document.location.search).get("name") ?? ""}`;
     this.updateData({
       name: "",
+      groupName: new URLSearchParams(document.location.search).get("name") ?? ""
     });
   }
   getTemplateStyle() {
@@ -153,19 +156,15 @@ export class CreateEventComponent extends BaseDynamicComponent {
   }
 
   render(data) {
-    const title = `Add event for group ${new URLSearchParams(document.location.search).get("name") ?? ""}`;
-    document.title = title;
-    const groupName =
-      new URLSearchParams(document.location.search).get("name") ?? "";
-    return `   
 
-        <div class="ui-section">
-        <form id="create-event-form" onsubmit="return false">   
-          <h1>${title}</h1> 
-          <div id="form-status-div">
+    return `   
+      <div class="ui-section">
+      <form id="create-event-form" onsubmit="return false">   
+        <h1>${document.title}</h1> 
+        <div id="form-status-div">
             ${generateErrorMessage(data.errorMessage)}
             ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}      
-          </div>
+        </div>
           <div class = "form-section">
             <label class=""> Recurring event</label>
             <input 
@@ -175,18 +174,15 @@ export class CreateEventComponent extends BaseDynamicComponent {
               ${data.isRecurring ? "checked" : ""}
             />
           </div>  
-          ${
-            !IS_PRODUCTION
-              ? `<div class = "form-section">
+          
+          <div class = "form-section">
             <label>Enable RSVPs. Enable if you want to use this site to manage RSVPs instead of another website 
             such as Meetup.com</label>
             <input
               type="checkbox"
             >
-            </input>
-          </div>`
-              : ``
-          }
+          </div>
+         
           <div class="form-section">
             <label class="required-field">Name</label>
             <input
@@ -218,17 +214,14 @@ export class CreateEventComponent extends BaseDynamicComponent {
               value="${data.url ?? ""}"
             />
           </div>
-          ${
-            data.isRecurring
-              ? `
-            <div class="form-section">
+      
+            <div class="form-section" style="${data.isRecurring ? `` : `display:none`}">
               <label class=" required-field">Day of week</label>
               ${getDayOfWeekSelectHtml(data.day)}
               ${generateErrorMessage(data.formValidationErrors?.[DAY_OF_WEEK_INPUT])}
             </div>
-           `
-              : `
-            <div class="form-section">
+    
+            <div class="form-section" style="${!data.isRecurring ? `` : `display:none`}">
               <label class=" required-field">Start date</label>
               <input
                 name=${START_DATE_INPUT}
@@ -236,8 +229,8 @@ export class CreateEventComponent extends BaseDynamicComponent {
                 value="${data[START_DATE_INPUT]}"
               />  
             ${generateErrorMessage(data.formValidationErrors?.[START_DATE_INPUT])} 
-            </div>`
-          }
+            </div>
+          
           <div class="form-section">
             <label class=" required-field">Start time</label>
             <input
@@ -272,7 +265,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
                 
           ${generateLinkButton({
             text: "Back to group",
-            url: `/html/groups/groups.html?name=${encodeURIComponent(groupName)}`,
+            url: `/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}`,
           })}
         </form>
       </div>
