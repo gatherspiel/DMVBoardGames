@@ -241,50 +241,128 @@
           <h3>DataStore</h3>
           <p>This class is responsible for storing state and fetching data from an external source</p>
           <h4>Parameters</h4>
-            <ul>
-              <li><a href="#data-store-load-action-class-guide">loadAction: </a>An instance of DataStoreLoadAction describing how data should be loaded</li>
-            </ul>
+          <ul>
+            <li><a href="#data-store-load-action-class-guide">loadAction: </a>An instance of DataStoreLoadAction describing how data should be loaded</li>
+          </ul>
           <h4>Functions</h4>
           <ul>
             <li><b>updateStoreData(storeUpdates)</b>: Update data in teh store and trigger a render of components
-            subscribed to the store. Only fields specified by the store updates paraemter will be modified.</li>
+              subscribed to the store. Only fields specified by the store updates paraemter will be modified.</li>
             <li><b>getStoreData</b>: Returns data from the store. The data is read-only and must be modified using
-            updateStoreData.</li>
+              updateStoreData.</li>
             <li><b>isWaitingForData</b>: Returns false if the data in the store is null or undefined and is
-            not in a loading state, and returns false otherwise.</li>
+              not in a loading state, and returns false otherwise.</li>
             <li><b>fetchData(params,dataStore)</b>:This function retries data from an external source and then upgrades
-            any subscribed stores.</li>
+              any subscribed stores.</li>
             <h5>Parameters</h5>
             <ul>
-              <li><b>params:</b>Parameters for this request</li>
+              <li><b>params:</b>Parameters for this request.</li>
               <li><b>dataStore:</b>An optional data store that will be subscribed to updates from this store.</li>
             </ul>
           </ul>
           <details>
             <summary>Example</summary>
-          <code-display-component>
-            import { ApiLoadAction, DataStore } from "@bponnaluri/places-js";
-            import { API_ROOT } from "../../ui/shared/Params.js";
+            <code-display-component>
+              import { ApiLoadAction, DataStore } from "@bponnaluri/places-js";
+              import { API_ROOT } from "../../ui/shared/Params.js";
 
-            function getUserQueryConfig() {
+              function getUserQueryConfig() {
               return {
-                url: API_ROOT + "/user",
+              url: API_ROOT + "/user",
               };
-            }
+              }
 
-            export const USER_DATA_STORE = new DataStore(
+              export const USER_DATA_STORE = new DataStore(
               new ApiLoadAction(getUserQueryConfig),
-            );
+              );
 
-          </code-display-component>
+            </code-display-component>
           </details>
         </div>
       </div>
+        <div id="api-load-action-class-guide">
+          <h3>ApiLoadAction</h3>
+          <p>Class to define a data store load action through an API call.</p>
 
-      <div class="section-1">
-        <h2>Objects</h2>
+          <h4>Constructor parameters</h4>
+          <ul>
+            <li><b>getRequestConfig</b>: Function that returns a JSON configuration for the request which can
+              have the following fields:
+              <ul>
+                <li><b>url</b>: Required field representing the URL for the API request</li>
+                <li><b>headers</b>: A list of headers included with the request.</li>
+                <li><b>method</b>: The API request method, GET, PUST, POUT, ...etc. GET will be used by default if
+                  no value is specified for this field.</li>
+                <li><b>body</b>: Data that should be sent as part of the request body.</li>
+              </ul>
+            </li>
+          </ul>
 
-        <h3>ApiActionType</h3>
+          <h4>Implementation notes</h4>
+          <ul>
+            <li>Auth token data sorted in session storage is automatically included if it is in the field
+              "authToken.accessToken".</li>
+            <li>Data retrieved with a GET request is cached based on the URL and request body. Cached API response
+              data is automatically cleared when any other equest type is used.</li>
+          </ul>
+
+          <details>
+            <summary>Example</summary>
+            <code-display-component>
+                function getCitiesQueryConfig() {
+                return {
+                  url: API_ROOT + "/listCities?area=dmv",
+                };
+              }
+
+              export const CITY_LIST_STORE = new DataStore(
+               new ApiLoadAction(getCitiesQueryConfig),
+              );
+
+            </code-display-component>
+          </details>
+        </div>
+
+
+      <div id="custom-load-action-class-guide">
+        <h3>CustomLoadAction</h3>
+        <p>Class to define a custom data store load action with direct control over any async calls that are made.
+          It is intended for use when additional processing needs to be done after an async call, or if a store needs
+          to combine data from multiple sources.</p>
+
+        <details>
+          <summary>Example</summary>
+          <code-display-component>
+            async function retrieveData() {
+              const data = await fetch(
+                `${LOGIN_CLIENT_URL}/auth/v1/logout?scope=global`,
+                {
+                  method: "POST",
+                  headers: {
+                    apiKey: SUPABASE_CLIENT_KEY,
+                    authorization:
+                    "bearer " +
+                    (await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY))?.access_token,
+                  },
+                },
+              );
+              if (data.ok) {
+                deleteLocalStoreData(AUTH_TOKEN_KEY);
+                window.location.assign("/index.html");
+                return new AuthResponse(false);
+              } else {
+                return new AuthResponse(
+                  true,
+                  {},
+                  "Failed to logout:" + JSON.stringify(data),
+                );
+              }
+            }
+
+            export const LOGOUT_STORE = new DataStore(new CustomLoadAction(retrieveData));
+
+          </code-display-component>
+        </details>
         <div id = "data-store-load-action-class-guide">
           <h3>DataStoreLoadAction</h3>
           <p>This class defines an action used to load data into a store. Places.js includes two types of actions</p>
@@ -292,18 +370,19 @@
             <li><a href="#api-load-action-class-guide">APILoadAction</a></li>
             <li><a href="#custom-load-action-class-guide">CustomLoadAction</a></li>
           </ul>
-          <div id="api-load-action-class-guide">
-            <h3>ApiLoadAction</h3>
-            <p>Class to define a data store load action through an API call.</p>
-          </div>
 
-          <div id="custom-load-action-class-guide">
-            <h3>CustomLoadAction</h3>
-            <p>Class to define a custom data store load action with direct control over any async calls that are made.
-              It is intended for use when additional processing needs to be done after an async call, or if a store needs
-              to combine data from multiple sources.</p>
-          </div>
+
         </div>
+      </div>
+
+      <div class="section-1">
+        <h2>Objects</h2>
+
+        <h3>ApiActionType</h3>
+        <p>Stores string representations for DELETE, GET, POST, and PUT API actions. </p>
+
+
+        <p>Params</p>
       </div>
 
       <div class="section-1">
@@ -328,10 +407,11 @@
             </code-display-component>
           </div>
 
-         <h3>Add localStorageData</h3>
-         <h3>Delete localStorageData</h3>
-         <h3>getLocalStorageDataIfPresent</h3>
-        <h3>fetchData</h3>
+         <h3>addLocalStorageData(key,data)</h3>
+         <h3>deleteLocalStorageData(key)</h3>
+         <h3>getLocalStorageDataIfPresent(key)</h3>
+          <h3>getResponseData</h3>
+        </div>
         <div id="loading-indicator-component-detailed">
 
           <h3>Detailed example of using loading indicator config with a custom image</h3>
