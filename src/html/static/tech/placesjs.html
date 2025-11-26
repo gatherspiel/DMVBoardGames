@@ -85,7 +85,7 @@
         <!-- Make it clear that this is part of the BaseDynamicComponent class -->
         <h4>Functions </h4>
         <ul>
-          <li>render(data): Required function used to render HTML for the component.
+          <li><b>render(data)</b>: Required function used to render HTML for the component.
               <details>
                 <summary>Example:</summary>
                 <code-display-component>
@@ -115,7 +115,7 @@
                 </code-display-component>
               </details>
           </li>
-          <li>getTemplateStyle: Required function for defining a component's style. It can also load external
+          <li><b>getTemplateStyle</b>: Required function for defining a component's style. It can also load external
           stylesheets.
             <details>
               <summary>Example:</summary>
@@ -135,8 +135,37 @@
               </code-display-component>
             </details>
           </li>
-          <li> attachHandlersToShadowRoot(shadowRoot): Add description and example</li>
-          <li>connectedCallback: Standard web component lifecycle method. Use for initializing component state if it does not rely on an external store.</li>
+          <li><b>attachHandlersToShadowRoot(shadowRoot)</b>: Use this function to define event handlers on a component.
+            <details>
+              <summary>Example</summary>
+              <code-display-component>
+                attachHandlersToShadowRoot(shadowRoot) {
+                  shadowRoot.addEventListener("click", (event) => {
+                    if (event.target.id === SIGN_OUT_LINK_ID) {
+                      LOGOUT_STORE.fetchData({}, LOGIN_STORE);
+                    }
+                  });
+                }
+
+              </code-display-component>
+            </details>
+          </li>
+          <li><b>connectedCallback</b>: Standard web component lifecycle method. Use for initializing component state if it
+            does not rely on an external store.
+            <details>
+              <summary>Example</summary>
+                <code-display-component>
+                  connectedCallback() {
+                    document.title = `Add event for group ${new URLSearchParams(document.location.search).get("name") ?? ""}`;
+                    this.updateData({
+                      name: "",
+                      groupName: new URLSearchParams(document.location.search).get("name") ?? ""
+                    });
+                  }
+                </code-display-component>
+            </details>
+          </li>
+          <li><b>updateData(data)</b>: Add documentation</li>
         </ul>
 
         <h4>Other notes</h4>
@@ -226,7 +255,7 @@
          <h3>Add localStorageData</h3>
          <h3>Delete localStorageData</h3>
          <h3>getLocalStorageDataIfPresent</h3>
-
+        <h3>fetchData</h3>
         <div id="loading-indicator-component-detailed">
 
           <h3>Detailed example of using loading indicator config with a custom image</h3>
