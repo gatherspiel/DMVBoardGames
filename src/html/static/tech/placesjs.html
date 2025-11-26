@@ -28,12 +28,11 @@
     <table-of-contents-component>
 
       <div class="section-1">
-        <h2>Overview of framework</h2>
-        <p> places.js is a lightweight framework for creating interactive UIs that support websites promoting
-          in person interactions. It includes functionality for state management, asycnronous data fetching with zero
+        <h2>Overview</h2>
+        <p> Places.js is a lightweight Javascript framework for creating interactive websites promoting
+          in person interactions. It includes functionality for state management and asynchronous data fetching with zero
           dependencies. Places.js is also designed to support shadow dom to encapsulate styles and deter bot scraping.
-
-          Code for places.js is <a href="https://github.com/gatherspiel/places-js">here </a></p>
+          Source code is <a href="https://github.com/gatherspiel/places-js">here </a></p>
       </div>
 
       <div class="section-1">
@@ -42,29 +41,34 @@
 
         <h3>BaseDynamicComponent</h3>
 
-        <p>This is the base class represents a state based UI component with support for asynchronous data fetching. It also
-        has styles scoped to the ShadowDOM.</p>
+        <p>This is the base class for a state based UI component with support for asynchronous data fetching. It also
+        has styles scoped to the ShadowDOM. All state based UI components using places.js should estend this class.</p>
 
         <!-- Format header -->
-        <p>Constructor paramaeters </p>
+        <h4>Constructor paramaeters </h4>
 
         <ul>
-          <li><b>dataStoreSubscriptions(default [])</b>: An array of subscription configurations the component will subscribe to. Each configuration can have the following parameters</li>
+          <li><b>dataStoreSubscriptions</b>: An optional array of subscription configurations the component will subscribe to.
+            <h5>Parameters</h5>
+          </li>
           <ul>
             <li><b>dataStore</b>: The <a href="#data-store-class-guide"> Data Store</a> that that will load and store state. </li>
             <li><b>fieldName</b>: The name that the subscribed data should be stored under. This is an optional field unless the component is subscribed to multiple stores.</li>
-            <li><b><a href="#component-reducer-function-guide">componentReducer</a>(optional)</b>Describes any transformations that should be made to state data being sent to a component</li>
+            <li><b><a href="#component-reducer-function-guide">componentReducer</a>:</b>Optional reducer
+              function that defines any transformations that should be made to state data being sent to a component</li>
           </ul>
-          <li><b>loadingIndicatorConfig(default={})</b>: Configuration settings for a loading indicator. If this parameter is empty, a loading indicator will not be shown. Each
-          load configuration should have the following parameters</li>
+          <li><b>loadingIndicatorConfig</b>: Optional configuration settings for a loading indicator. When
+            defined a loading indicator will be displayed when the component needs to load data from an external store.
+            <h5>Parameters</h5>
+          </li>
           <ul>
             <li><b>generateLoadingIndicatorHtml</b>: A function returning the HTML that should be shown.</li>
-            <li><b>minTimeMs(optional)</b>: The minimum amount of time in miliseconds that the loading indicator will be shown for, regardless of
+            <li><b>minTimeMs</b>: Optional setting minimum amount of time in miliseconds that the loading indicator will be shown for, regardless of
                 how quickly data is loaded for store subscriptions.  If this value is not specified, then the loading indicator
                 will be shown until the data has loaded.</li>
           </ul>
 
-          <h4>Example</h4>
+          <h5>Example</h5>
           <code-display-component>
             export const LOADING_INDICATOR_CONFIG = {
               generateLoadingIndicatorHtml: () => {
@@ -74,20 +78,78 @@
             };
           </code-display-component>
 
-          <p>Detailed example</p>
+          <h5><a href="#loading-indicator-component-detailed">Detailed example</a></h5>
 
         </ul>
 
         <!-- Make it clear that this is part of the BaseDynamicComponent class -->
-        <p>Functions </p>
+        <h4>Functions </h4>
         <ul>
+          <li>render(data): Required function used to render HTML for the component.
+              <details>
+                <summary>Example:</summary>
+                <code-display-component>
+                  render(userData) {
+                    return `
+                    <div id="login-status-container">
+                      <div id="links-container">
+                        <div></div>
+                        <div id="${SIGN_OUT_LINK_ID}">Sign out</div>
+
+                        <div id="edit-profile-div"><a href="/html/user/editProfile.html">Edit profile</a></div>
+                      </div>
+                      <div id="user-text-container">
+                        <div id="user-text-container-inner">
+                          <div id="user-text-container-filler"></div>
+                          <div id="user-image-container">
+                            ${userData.imageFilePath ? `<img id="user-image-icon" src="${userData.imageFilePath}"/>` : ``}
+                          </div>
+                          <div id="username-container">
+                            <span>${userData.username || this.getAttribute("email")}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                  }
+                </code-display-component>
+              </details>
+          </li>
+          <li>getTemplateStyle: Required function for defining a component's style. It can also load external
+          stylesheets.
+            <details>
+              <summary>Example:</summary>
+              <code-display-component>
+                getTemplateStyle() {
+                  return `
+                  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+
+                  <style>
+                    a {
+                      color: white;
+                      text-decoration: none;;
+                    }
+                  </style>
+                  `;
+                }
+              </code-display-component>
+            </details>
+          </li>
+          <li> attachHandlersToShadowRoot(shadowRoot): Add description and example</li>
           <li>connectedCallback: Standard web component lifecycle method. Use for initializing component state if it does not rely on an external store.</li>
         </ul>
-        Note: The BaseDynamicComponent object uses the disconnectedCallback function to make sure store subscriptions are up to date when a component is disconnected.Overriding
-        this method could lead to unpredicatable rendering behavior.
-        <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements">More information</a> about web component lifecycle methods</p>
+
+        <h4>Other notes</h4>
+        <ul>
+          <li>Note: The BaseDynamicComponent object uses the disconnectedCallback function to make sure store subscriptions are up to date when a component is disconnected.Overriding
+          this method could lead to unpredicatable rendering behavior.</li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements">
+            More information</a> about web component lifecycle methods.</li>
+        </ul>
+
         <h3>BaseTemplateComponent</h3>
 
+        This is a base class for rendering a component using the shadowDom without managing state-based UI with places.js.
         <div id = "data-store-class-guide">
 
           <h3>DataStore</h3>
