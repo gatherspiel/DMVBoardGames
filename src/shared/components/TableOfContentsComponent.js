@@ -14,7 +14,7 @@ export class TableOfContentsComponent extends HTMLElement{
       let sectionCount = 0;
       element.querySelectorAll("h3").forEach(sectionElement=>{
 
-        sectionElement.id = "section-header-" + sectionCount;
+        sectionElement.id = "section-header-" + sectionCount +"-"+count;
 
         sectionHtml+=`
           <li>

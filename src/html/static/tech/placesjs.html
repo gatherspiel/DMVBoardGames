@@ -55,7 +55,17 @@
             <li><b>dataStore</b>: The <a href="#data-store-class-guide"> Data Store</a> that that will load and store state. </li>
             <li><b>fieldName</b>: The name that the subscribed data should be stored under. This is an optional field unless the component is subscribed to multiple stores.</li>
             <li><b><a href="#component-reducer-function-guide">componentReducer</a>:</b>Optional reducer
-              function that defines any transformations that should be made to state data being sent to a component</li>
+              function that defines any transformations that should be made to state data being sent to a component
+              <code-display-component>
+                componentReducer: (groupData) => {
+                  return {
+                    ...groupData,
+                    [SUCCESS_MESSAGE_KEY]: "",
+                  };
+                },
+              </code-display-component>
+
+            </li>
           </ul>
           <li><b>loadingIndicatorConfig</b>: Optional configuration settings for a loading indicator. When
             defined a loading indicator will be displayed when the component needs to load data from an external store.
@@ -382,7 +392,6 @@
         <p>Stores string representations for DELETE, GET, POST, and PUT API actions. </p>
 
 
-        <p>Params</p>
       </div>
 
       <div class="section-1">
@@ -390,26 +399,15 @@
 
           <h3>clearSessionStorage</h3>
 
-          <p>Example to clear session storage </p>
-          <pre>
-            clearSessionStorage();
-          </pre>
+        <p>Clear GET API request cache and other data in session storage.</p>
 
-          <div id="component-reducer-function-guide">
-            <h3>componentStoreReducer</h3>
-            <code-display-component>
-              componentReducer: (groupData) => {
-                  return {
-                  ...groupData,
-                  [SUCCESS_MESSAGE_KEY]: "",
-                };
-              },
-            </code-display-component>
-          </div>
-
-         <h3>addLocalStorageData(key,data)</h3>
+        <h3>addLocalStorageData()</h3>
+        <p>Adds auth data to session storage. This allows the data to be used in API requests. The access token
+        should be stored with the field "accessToken".</p>
          <h3>deleteLocalStorageData(key)</h3>
+        <p>Deletes data from local storage</p>
          <h3>getLocalStorageDataIfPresent(key)</h3>
+        <p>Retrieves data from local storage if present.</p>
           <h3>getResponseData</h3>
         </div>
         <div id="loading-indicator-component-detailed">
