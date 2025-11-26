@@ -1,4 +1,4 @@
-+export class ImageUploadComponent extends HTMLElement {
+export class ImageUploadComponent extends HTMLElement {
   constructor() {
     super();
 
