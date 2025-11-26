@@ -85,7 +85,8 @@
         <!-- Make it clear that this is part of the BaseDynamicComponent class -->
         <h4>Functions </h4>
         <ul>
-          <li><b>render(data)</b>: Required function used to render HTML for the component.
+          <li><b>render(data)</b>: Required function used to render HTML for the component. The data parameter
+            is a read-only representation of the component's store data.
               <details>
                 <summary>Example:</summary>
                 <code-display-component>
@@ -165,7 +166,28 @@
                 </code-display-component>
             </details>
           </li>
-          <li><b>updateData(data)</b>: Add documentation</li>
+          <li><b>updateData(data)</b>Use this function to update the state of a component inside an event handler or
+            connectedCallback. <b>Calling this method from another other location can lead to infinite rendering loops
+            or other unpredictable effects.</b>
+            <details>
+              <summary>Example from event handler</summary>
+              <code-display-component>
+                const attachHandlersToShadowRoot = function (shadowRoot) {
+                  const self = this;
+
+                  queryForServerStatus();
+                  shadowRoot.addEventListener("click", (event) => {
+                  const targetId = event.target.id;
+                    if (targetId === RECURRING_EVENT_INPUT) {
+                      self.updateData({
+                        isRecurring: shadowRoot.getElementById(RECURRING_EVENT_INPUT)?.checked,
+                      });
+                  }
+                }
+              </code-display-component>
+            </details>
+
+          </li>
         </ul>
 
         <h4>Other notes</h4>
@@ -177,17 +199,70 @@
         </ul>
 
         <h3>BaseTemplateComponent</h3>
+        <p>This is a base class for rendering a component using the shadowDom without managing state-based UI with
+          places.js.</p>
+        <h4>Functions </h4>
+        <ul>
+          <li><b>render(data)</b>: Required function used to render HTML for the component.
+            <details>
+              <summary>Example:</summary>
+              <code-display-component>
+                render(userData) {
+                  return `
+                    <h2>A component</h2>
+                  `;
+                  }
+              </code-display-component>
+            </details>
+          </li>
+          <li><b>getTemplateStyle</b>: Required function for defining a component's style. It can also load external
+            stylesheets.
+            <details>
+              <summary>Example:</summary>
+              <code-display-component>
+                getTemplateStyle() {
+                  return `
+                    <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
 
-        This is a base class for rendering a component using the shadowDom without managing state-based UI with places.js.
+                    <style>
+                      a {
+                        color: white;
+                        text-decoration: none;;
+                      }
+                    </style>
+                  `;
+                }
+              </code-display-component>
+            </details>
+          </li>
+        </ul>
         <div id = "data-store-class-guide">
 
           <h3>DataStore</h3>
           <p>This class is responsible for storing state and fetching data from an external source</p>
+          <h4>Parameters</h4>
             <ul>
               <li><a href="#data-store-load-action-class-guide">loadAction: </a>An instance of DataStoreLoadAction describing how data should be loaded</li>
             </ul>
-          <p>DataStore example</p>
-          <pre>
+          <h4>Functions</h4>
+          <ul>
+            <li><b>updateStoreData(storeUpdates)</b>: Update data in teh store and trigger a render of components
+            subscribed to the store. Only fields specified by the store updates paraemter will be modified.</li>
+            <li><b>getStoreData</b>: Returns data from the store. The data is read-only and must be modified using
+            updateStoreData.</li>
+            <li><b>isWaitingForData</b>: Returns false if the data in the store is null or undefined and is
+            not in a loading state, and returns false otherwise.</li>
+            <li><b>fetchData(params,dataStore)</b>:This function retries data from an external source and then upgrades
+            any subscribed stores.</li>
+            <h5>Parameters</h5>
+            <ul>
+              <li><b>params:</b>Parameters for this request</li>
+              <li><b>dataStore:</b>An optional data store that will be subscribed to updates from this store.</li>
+            </ul>
+          </ul>
+          <details>
+            <summary>Example</summary>
+          <code-display-component>
             import { ApiLoadAction, DataStore } from "@bponnaluri/places-js";
             import { API_ROOT } from "../../ui/shared/Params.js";
 
@@ -201,7 +276,8 @@
               new ApiLoadAction(getUserQueryConfig),
             );
 
-          </pre>
+          </code-display-component>
+          </details>
         </div>
       </div>
 
