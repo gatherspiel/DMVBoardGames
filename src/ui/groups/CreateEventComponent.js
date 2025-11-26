@@ -1,4 +1,3 @@
-import { API_ROOT, IS_PRODUCTION } from "../shared/Params.js";
 
 import {
   ApiActionType,
@@ -30,6 +29,7 @@ import {
   generateLinkButton,
 } from "../../shared/html/ButtonGenerator.js";
 import { getEventDetailsFromForm, validate } from "./EventDetailsHandler.js";
+import { API_ROOT } from "../shared/Params.js";
 
 import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
 import { LoginStatusComponent } from "../shared/LoginStatusComponent.js";

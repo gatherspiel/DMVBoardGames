@@ -25,30 +25,30 @@
   {{>navbar}}
 
   <shadow-dom-component>
-  <h1>Thoughts on manual testing</h1>
-    <a href="/html/static/code.html">Back to technical details</a>
-    <h3>This page contains some thoughts on manual testing and why I think it is important when automated testing
-    is another option</h3>
+      <h1>Thoughts on manual testing</h1>
+        <a href="/html/static/code.html">Back to technical details</a>
+        <h3>This page contains some thoughts on manual testing and why I think it is important when automated testing
+        is another option</h3>
 
-    <ul>
-      <li>Manual testing is straightforward, as a tester just needs to access the site like a regular user. When there
-      is an issue, the tester gets immediate feedback in the form of something not working and can look at the browser
-      console fo more information. For example, in the screenshot below, an event search was attempted and search results
-      did not show up on the screen, which indicated that there was a bug. From looking at the browser console, there
-      is an error message indicating an error with parsing the max distance parameter.</li>
+        <ul>
+          <li>Manual testing is straightforward, as a tester just needs to access the site like a regular user. When there
+          is an issue, the tester gets immediate feedback in the form of something not working and can look at the browser
+          console fo more information. For example, in the screenshot below, an event search was attempted and search results
+          did not show up on the screen, which indicated that there was a bug. From looking at the browser console, there
+          is an error message indicating an error with parsing the max distance parameter.</li>
 
-      <image-hover-component src="/assets/tech/Example_Bug_1.png"></image-hover-component>
+          <image-hover-component src="/assets/tech/Example_Bug_1.png"></image-hover-component>
 
-      <li>When an error occurs, it is clear that the error is from something related to the website and not an issue with
-      the test. For example, in the screenshot below, event searching failed because of an issue connecting to the server.
-      At the time, the backend was not running in the test environment.</li>
-      <image-hover-component src="/assets/tech/Example_Bug_2.png"></image-hover-component>
+          <li>When an error occurs, it is clear that the error is from something related to the website and not an issue with
+          the test. For example, in the screenshot below, event searching failed because of an issue connecting to the server.
+          At the time, the backend was not running in the test environment.</li>
+          <image-hover-component src="/assets/tech/Example_Bug_2.png"></image-hover-component>
 
-      <li>Manual tests encourge testing to be done in a manner similar to how users will use the site. As a result,
-        testers will notice usability issues in addition to bugs.</li>
-      </li>
+          <li>Manual tests encourge testing to be done in a manner similar to how users will use the site. As a result,
+            testers will notice usability issues in addition to bugs.</li>
+          </li>
 
-    </ul>
+        </ul>
   </shadow-dom-component>
 </div>
 
