@@ -7,16 +7,32 @@
     inline-source
     src="../public/styles/sharedHtmlOnlyStyles.css"
   ></style>
+  <style>
+    .summary-header {
+      color: black;
+    }
+    li a {
+      color: black;
+    }
+    p a {
+      color: black;
+      color: black;
+    }
+    a {
+      color:black;
+    }
+    details a {
+      color:black;
+    }
+  </style>
   <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>places.js framework documentation</title>
   <script type="module">
     import {CodeDisplayComponent} from "../../../shared/components/CodeDisplayComponent.js";
-    import {ShadowDomComponent} from "../../../shared/components/ShadowDomComponent.js";
     import {TableOfContentsComponent} from "../../../shared/components/TableOfContentsComponent.js";
 
     customElements.define('code-display-component',CodeDisplayComponent)
-    customElements.define('shadow-dom-component',ShadowDomComponent)
     customElements.define('table-of-contents-component',TableOfContentsComponent)
   </script>
 </head>
@@ -57,12 +73,12 @@
             <li><b><a href="#component-reducer-function-guide">componentReducer</a>:</b>Optional reducer
               function that defines any transformations that should be made to state data being sent to a component
               <code-display-component>
-                componentReducer: (groupData) => {
-                  return {
-                    ...groupData,
-                    [SUCCESS_MESSAGE_KEY]: "",
-                  };
-                },
+  export const componentReducer: (groupData) => {
+    return {
+      ...groupData,
+      [SUCCESS_MESSAGE_KEY]: "",
+    };
+  },
               </code-display-component>
 
             </li>
@@ -80,12 +96,12 @@
 
           <h5>Example</h5>
           <code-display-component>
-            export const LOADING_INDICATOR_CONFIG = {
-              generateLoadingIndicatorHtml: () => {
-                return `<p>Loading</p>`;
-              },
-              minTimeMs: 500,
-            };
+  export const LOADING_INDICATOR_CONFIG = {
+    generateLoadingIndicatorHtml: () => {
+      return `<p>Loading</p>`;
+    },
+    minTimeMs: 500,
+  };
           </code-display-component>
 
           <h5><a href="#loading-indicator-component-detailed">Detailed example</a></h5>
@@ -100,29 +116,29 @@
               <details>
                 <summary>Example:</summary>
                 <code-display-component>
-                  render(userData) {
-                    return `
-                    <div id="login-status-container">
-                      <div id="links-container">
-                        <div></div>
-                        <div id="${SIGN_OUT_LINK_ID}">Sign out</div>
+  render(userData) {
+    return `
+    <div id="login-status-container">
+      <div id="links-container">
+        <div></div>
+        <div id="${SIGN_OUT_LINK_ID}">Sign out</div>
 
-                        <div id="edit-profile-div"><a href="/html/user/editProfile.html">Edit profile</a></div>
-                      </div>
-                      <div id="user-text-container">
-                        <div id="user-text-container-inner">
-                          <div id="user-text-container-filler"></div>
-                          <div id="user-image-container">
-                            ${userData.imageFilePath ? `<img id="user-image-icon" src="${userData.imageFilePath}"/>` : ``}
-                          </div>
-                          <div id="username-container">
-                            <span>${userData.username || this.getAttribute("email")}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  `;
-                  }
+        <div id="edit-profile-div"><a href="/html/user/editProfile.html">Edit profile</a></div>
+      </div>
+      <div id="user-text-container">
+        <div id="user-text-container-inner">
+          <div id="user-text-container-filler"></div>
+          <div id="user-image-container">
+            ${userData.imageFilePath ? `<img id="user-image-icon" src="${userData.imageFilePath}"/>` : ``}
+          </div>
+          <div id="username-container">
+            <span>${userData.username || this.getAttribute("email")}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  }
                 </code-display-component>
               </details>
           </li>
@@ -131,18 +147,18 @@
             <details>
               <summary>Example:</summary>
               <code-display-component>
-                getTemplateStyle() {
-                  return `
-                  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+  getTemplateStyle() {
+    return `
+    <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
 
-                  <style>
-                    a {
-                      color: white;
-                      text-decoration: none;;
-                    }
-                  </style>
-                  `;
-                }
+    <style>
+      a {
+        color: white;
+        text-decoration: none;;
+      }
+    </style>
+    `;
+  }
               </code-display-component>
             </details>
           </li>
@@ -150,13 +166,13 @@
             <details>
               <summary>Example</summary>
               <code-display-component>
-                attachHandlersToShadowRoot(shadowRoot) {
-                  shadowRoot.addEventListener("click", (event) => {
-                    if (event.target.id === SIGN_OUT_LINK_ID) {
-                      LOGOUT_STORE.fetchData({}, LOGIN_STORE);
-                    }
-                  });
-                }
+  attachHandlersToShadowRoot(shadowRoot) {
+    shadowRoot.addEventListener("click", (event) => {
+      if (event.target.id === SIGN_OUT_LINK_ID) {
+        LOGOUT_STORE.fetchData({}, LOGIN_STORE);
+      }
+    });
+  }
 
               </code-display-component>
             </details>
@@ -166,13 +182,13 @@
             <details>
               <summary>Example</summary>
                 <code-display-component>
-                  connectedCallback() {
-                    document.title = `Add event for group ${new URLSearchParams(document.location.search).get("name") ?? ""}`;
-                    this.updateData({
-                      name: "",
-                      groupName: new URLSearchParams(document.location.search).get("name") ?? ""
-                    });
-                  }
+  connectedCallback() {
+    document.title = `Add event for group ${new URLSearchParams(document.location.search).get("name") ?? ""}`;
+    this.updateData({
+      name: "",
+      groupName: new URLSearchParams(document.location.search).get("name") ?? ""
+    });
+  }
                 </code-display-component>
             </details>
           </li>
@@ -182,18 +198,18 @@
             <details>
               <summary>Example from event handler</summary>
               <code-display-component>
-                const attachHandlersToShadowRoot = function (shadowRoot) {
-                  const self = this;
+  const attachHandlersToShadowRoot = function (shadowRoot) {
+    const self = this;
 
-                  queryForServerStatus();
-                  shadowRoot.addEventListener("click", (event) => {
-                  const targetId = event.target.id;
-                    if (targetId === RECURRING_EVENT_INPUT) {
-                      self.updateData({
-                        isRecurring: shadowRoot.getElementById(RECURRING_EVENT_INPUT)?.checked,
-                      });
-                  }
-                }
+    queryForServerStatus();
+    shadowRoot.addEventListener("click", (event) => {
+    const targetId = event.target.id;
+      if (targetId === RECURRING_EVENT_INPUT) {
+        self.updateData({
+          isRecurring: shadowRoot.getElementById(RECURRING_EVENT_INPUT)?.checked,
+        });
+    }
+  }
               </code-display-component>
             </details>
 
@@ -217,11 +233,11 @@
             <details>
               <summary>Example:</summary>
               <code-display-component>
-                render(userData) {
-                  return `
-                    <h2>A component</h2>
-                  `;
-                  }
+render(userData) {
+  return `
+    <h2>A component</h2>
+  `;
+  }
               </code-display-component>
             </details>
           </li>
@@ -230,18 +246,18 @@
             <details>
               <summary>Example:</summary>
               <code-display-component>
-                getTemplateStyle() {
-                  return `
-                    <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+  getTemplateStyle() {
+    return `
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
 
-                    <style>
-                      a {
-                        color: white;
-                        text-decoration: none;;
-                      }
-                    </style>
-                  `;
-                }
+      <style>
+        a {
+          color: white;
+          text-decoration: none;;
+        }
+      </style>
+    `;
+  }
               </code-display-component>
             </details>
           </li>
@@ -256,8 +272,8 @@
           </ul>
           <h4>Functions</h4>
           <ul>
-            <li><b>updateStoreData(storeUpdates)</b>: Update data in teh store and trigger a render of components
-              subscribed to the store. Only fields specified by the store updates paraemter will be modified.</li>
+            <li><b>updateStoreData(storeUpdates)</b>: Update data in the store and trigger a render of components
+              subscribed to the store. Only fields specified by the store updates parameter will be modified.</li>
             <li><b>getStoreData</b>: Returns data from the store. The data is read-only and must be modified using
               updateStoreData.</li>
             <li><b>isWaitingForData</b>: Returns false if the data in the store is null or undefined and is
@@ -273,18 +289,18 @@
           <details>
             <summary>Example</summary>
             <code-display-component>
-              import { ApiLoadAction, DataStore } from "@bponnaluri/places-js";
-              import { API_ROOT } from "../../ui/shared/Params.js";
+  import { ApiLoadAction, DataStore } from "@bponnaluri/places-js";
+  import { API_ROOT } from "../../ui/shared/Params.js";
 
-              function getUserQueryConfig() {
-              return {
-              url: API_ROOT + "/user",
-              };
-              }
+  function getUserQueryConfig() {
+    return {
+      url: API_ROOT + "/user",
+    };
+  }
 
-              export const USER_DATA_STORE = new DataStore(
-              new ApiLoadAction(getUserQueryConfig),
-              );
+  export const USER_DATA_STORE = new DataStore(
+    new ApiLoadAction(getUserQueryConfig);
+  );
 
             </code-display-component>
           </details>
@@ -296,15 +312,8 @@
 
           <h4>Constructor parameters</h4>
           <ul>
-            <li><b>getRequestConfig</b>: Function that returns a JSON configuration for the request which can
-              have the following fields:
-              <ul>
-                <li><b>url</b>: Required field representing the URL for the API request</li>
-                <li><b>headers</b>: A list of headers included with the request.</li>
-                <li><b>method</b>: The API request method, GET, PUST, POUT, ...etc. GET will be used by default if
-                  no value is specified for this field.</li>
-                <li><b>body</b>: Data that should be sent as part of the request body.</li>
-              </ul>
+            <li><b>getRequestConfig</b>: Function that returns a JSON configuration.
+              <a href="#data-store-load-config-info">More information about configuration fields</a>
             </li>
           </ul>
 
@@ -319,15 +328,15 @@
           <details>
             <summary>Example</summary>
             <code-display-component>
-                function getCitiesQueryConfig() {
-                return {
-                  url: API_ROOT + "/listCities?area=dmv",
-                };
-              }
+  function getCitiesQueryConfig() {
+    return {
+      url: API_ROOT + "/listCities?area=dmv",
+    };
+  }
 
-              export const CITY_LIST_STORE = new DataStore(
-               new ApiLoadAction(getCitiesQueryConfig),
-              );
+  export const CITY_LIST_STORE = new DataStore(
+   new ApiLoadAction(getCitiesQueryConfig),
+  );
 
             </code-display-component>
           </details>
@@ -343,33 +352,33 @@
         <details>
           <summary>Example</summary>
           <code-display-component>
-            async function retrieveData() {
-              const data = await fetch(
-                `${LOGIN_CLIENT_URL}/auth/v1/logout?scope=global`,
-                {
-                  method: "POST",
-                  headers: {
-                    apiKey: SUPABASE_CLIENT_KEY,
-                    authorization:
-                    "bearer " +
-                    (await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY))?.access_token,
-                  },
-                },
-              );
-              if (data.ok) {
-                deleteLocalStoreData(AUTH_TOKEN_KEY);
-                window.location.assign("/index.html");
-                return new AuthResponse(false);
-              } else {
-                return new AuthResponse(
-                  true,
-                  {},
-                  "Failed to logout:" + JSON.stringify(data),
-                );
-              }
-            }
+  async function retrieveData() {
+    const data = await fetch(
+      `${LOGIN_CLIENT_URL}/auth/v1/logout?scope=global`,
+      {
+        method: "POST",
+        headers: {
+          apiKey: SUPABASE_CLIENT_KEY,
+          authorization:
+          "bearer " +
+          (await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY))?.access_token,
+        },
+      },
+    );
+    if (data.ok) {
+      deleteLocalStoreData(AUTH_TOKEN_KEY);
+      window.location.assign("/index.html");
+      return new AuthResponse(false);
+    } else {
+      return new AuthResponse(
+        true,
+        {},
+        "Failed to logout:" + JSON.stringify(data),
+      );
+    }
+  }
 
-            export const LOGOUT_STORE = new DataStore(new CustomLoadAction(retrieveData));
+  export const LOGOUT_STORE = new DataStore(new CustomLoadAction(retrieveData));
 
           </code-display-component>
         </details>
@@ -391,6 +400,17 @@
         <h3>ApiActionType</h3>
         <p>Stores string representations for DELETE, GET, POST, and PUT API actions. </p>
 
+        <h3>DataStoreLoadConfig</h3>
+        <div id="data-store-load-config-info">
+          <p>Configuration settings describing how a data store can be loaded from an API.</p>
+          <ul>
+            <li><b>url</b>: Required field representing the URL for the API request</li>
+            <li><b>headers</b>: A list of headers included with the request.</li>
+            <li><b>method</b>: The API request method, GET, PUST, POUT, ...etc. GET will be used by default if
+              no value is specified for this field.</li>
+            <li><b>body</b>: Data that should be sent as part of the request body.</li>
+          </ul>
+        </div>
 
       </div>
 
@@ -404,11 +424,17 @@
         <h3>addLocalStorageData()</h3>
         <p>Adds auth data to session storage. This allows the data to be used in API requests. The access token
         should be stored with the field "accessToken".</p>
-         <h3>deleteLocalStorageData(key)</h3>
+
+        <h3>deleteLocalStorageData(key)</h3>
         <p>Deletes data from local storage</p>
-         <h3>getLocalStorageDataIfPresent(key)</h3>
+
+        <h3>getLocalStorageDataIfPresent(key)</h3>
         <p>Retrieves data from local storage if present.</p>
-          <h3>getResponseData</h3>
+
+        <h3>getResponseData(DataStoreLoadConfig></h3>
+        <p>Retrieves data from an API. See <a href="#data-store-load-config-info">DataStoreLoadConfig info</a>
+        for more information about the parameters</p>
+
         </div>
         <div id="loading-indicator-component-detailed">
 
@@ -416,155 +442,155 @@
 
           <h4>Loading config</h4>
           <code-display-component>
-            export class LoadingIndicatorComponent extends HTMLElement {
-              constructor() {
-                super();
-                this.imagePath = this.getAttribute("image-path");
-              }
-              connectedCallback() {
-              this.attachShadow({ mode: "open" });
-              const templateStyle = `
-                <style>
-                  #meeple-one {
-                    position: absolute;
-                    height:4px;
-                    width:4px;
-                    top:50px;
-                    left:25px;
-                  }
-                  #meeple-two {
-                    position: absolute;
-                    top:43px;
-                    left:43px;
-                  }
-                  #meeple-three {
-                    position: absolute;
-                    top:25px;
-                    left:50px;
-                  }
-                  #meeple-four {
-                    position: absolute;
-                    top:7px;
-                    left:43px;
-                  }
-                  #meeple-five {
-                    position: absolute;
-                    top:0;
-                    left:25px;
-                  }
-                  #meeple-six {
-                    position: absolute;
-                    top:7px;
-                    left:7px;
-                  }
-                  #meeple-seven {
-                    position: absolute;
-                    top:25px;
-                    left:0;
-                  }
-                  #meeple-seven img {
-                    height:3px;
-                    width:3px;
-                  }
-                  #meeple-six img {
-                    height:5px;
-                    width:5px;
-                  }
-                  #meeple-five img {
-                    height:7px;
-                    width:7px;
-                  }
-                  #meeple-four img {
-                    height:9px;
-                    width:9px;
-                  }
-                  #meeple-three img {
-                    height:11px;
-                    width:11px;
-                  }
-                  #meeple-two img {
-                    height:13px;
-                    width:13px;
-                  }
-                  #meeple-one img {
-                    height:15px;
-                    width:15px;
-                  }
-                  .loader {
-                    animation: l27 1s infinite steps(8);
-                    height: 65px;
-                    margin-left:auto;
-                    margin-right:auto;
-                    margin-top:2rem;
-                    width: 65px;
-                  }
-                  @keyframes l27 {
-                    100% {
-                      transform-origin: 32.5px 32.5px;
-                      transform: rotate(1turn);
-                    }
-                  }
-                  .meeple {
-                    width:15px;
-                    height:15px;
-                    animation: l28 1s infinite steps(8);
-                  }
-                  @keyframes l28 {
-                    100% {
-                      transform-origin: 7.5px 7.5px;
-                      transform: rotate(-1turn)
-                    }
-                  }
-                </style>`;
-
-              const template = document.createElement("template");
-              template.innerHTML =
-                templateStyle + `
-                  <div class="loader">
-                    <div class="meeple" id="meeple-one">
-                      <img src="${this.imagePath}">
-                    </div>
-                    <div class="meeple"  id="meeple-two">
-                      <img src="${this.imagePath}">
-                    </div>
-                    <div class="meeple"  id="meeple-three">
-                      <img src="${this.imagePath}">
-                    </div>
-                    <div class="meeple"  id="meeple-four" >
-                      <img src="${this.imagePath}">
-                    </div>
-                    <div class="meeple"  id="meeple-five" >
-                      <img src="${this.imagePath}">
-                    </div>
-                    <div class="meeple"  id="meeple-six" >
-                      <img src="${this.imagePath}">
-                    </div>
-                    <div class="meeple"  id="meeple-seven" >
-                      <img src="${this.imagePath}">
-                    </div>
-                  </div>
-              `;
-              this.shadowRoot.appendChild(template.content.cloneNode(true));
-              }
+  export class LoadingIndicatorComponent extends HTMLElement {
+    constructor() {
+      super();
+      this.imagePath = this.getAttribute("image-path");
+    }
+    connectedCallback() {
+      this.attachShadow({ mode: "open" });
+      const templateStyle = `
+        <style>
+          #meeple-one {
+            position: absolute;
+            height:4px;
+            width:4px;
+            top:50px;
+            left:25px;
+          }
+          #meeple-two {
+            position: absolute;
+            top:43px;
+            left:43px;
+          }
+          #meeple-three {
+            position: absolute;
+            top:25px;
+            left:50px;
+          }
+          #meeple-four {
+            position: absolute;
+            top:7px;
+            left:43px;
+          }
+          #meeple-five {
+            position: absolute;
+            top:0;
+            left:25px;
+          }
+          #meeple-six {
+            position: absolute;
+            top:7px;
+            left:7px;
+          }
+          #meeple-seven {
+            position: absolute;
+            top:25px;
+            left:0;
+          }
+          #meeple-seven img {
+            height:3px;
+            width:3px;
+          }
+          #meeple-six img {
+            height:5px;
+            width:5px;
+          }
+          #meeple-five img {
+            height:7px;
+            width:7px;
+          }
+          #meeple-four img {
+            height:9px;
+            width:9px;
+          }
+          #meeple-three img {
+            height:11px;
+            width:11px;
+          }
+          #meeple-two img {
+            height:13px;
+            width:13px;
+          }
+          #meeple-one img {
+            height:15px;
+            width:15px;
+          }
+          .loader {
+            animation: l27 1s infinite steps(8);
+            height: 65px;
+            margin-left:auto;
+            margin-right:auto;
+            margin-top:2rem;
+            width: 65px;
+          }
+          @keyframes l27 {
+            100% {
+              transform-origin: 32.5px 32.5px;
+              transform: rotate(1turn);
             }
-            customElements.define(
-              "loading-indicator-component",
-              LoadingIndicatorComponent,
-            );
-          </code-display-component>
+          }
+          .meeple {
+            width:15px;
+            height:15px;
+            animation: l28 1s infinite steps(8);
+          }
+          @keyframes l28 {
+            100% {
+              transform-origin: 7.5px 7.5px;
+              transform: rotate(-1turn)
+            }
+          }
+        </style>`;
 
-          <code-display-component>
-            export const LOADING_INDICATOR_CONFIG = {
-              generateLoadingIndicatorHtml: () => {
-                return `
-                  <loading-indicator-component
-                    image-path="/assets/images/meeple_small.png"
-                  >
-                  </loading-indicator-component>
-                `;
-                },
-              minTimeMs: 500,
-            };
+      const template = document.createElement("template");
+      template.innerHTML =
+        templateStyle + `
+          <div class="loader">
+            <div class="meeple" id="meeple-one">
+              <img src="${this.imagePath}">
+            </div>
+            <div class="meeple"  id="meeple-two">
+              <img src="${this.imagePath}">
+            </div>
+            <div class="meeple"  id="meeple-three">
+              <img src="${this.imagePath}">
+            </div>
+            <div class="meeple"  id="meeple-four" >
+              <img src="${this.imagePath}">
+            </div>
+            <div class="meeple"  id="meeple-five" >
+              <img src="${this.imagePath}">
+            </div>
+            <div class="meeple"  id="meeple-six" >
+              <img src="${this.imagePath}">
+            </div>
+            <div class="meeple"  id="meeple-seven" >
+              <img src="${this.imagePath}">
+            </div>
+          </div>
+      `;
+      this.shadowRoot.appendChild(template.content.cloneNode(true));
+      }
+  }
+  customElements.define(
+    "loading-indicator-component",
+    LoadingIndicatorComponent,
+  );
+</code-display-component>
+
+<code-display-component>
+  export const LOADING_INDICATOR_CONFIG = {
+    generateLoadingIndicatorHtml: () => {
+      return `
+        <loading-indicator-component
+          image-path="/assets/images/meeple_small.png"
+        >
+        </loading-indicator-component>
+      `;
+      },
+    minTimeMs: 500,
+  };
 
           </code-display-component>
 
@@ -604,36 +630,36 @@
             a hover style using CSS is sufficient to provide interactivity.
 
             <code-display-component>
-              export class ImageHoverComponent extends HTMLElement {
-                constructor() {
-                  super();
-                  this.imagePath = this.getAttribute("src");
-                }
-                connectedCallback() {
-                this.attachShadow({ mode: "open" });
-                const templateStyle = `
-                  <style>
-                      .image-preview {
-                          height:500px;
-                          z-index: 9999;
-                      }
-                      .image-preview:hover{
-                          position: absolute;
-                          z-index: 9999;
-                          height:100%;
-                          width:100%;
-                      }
-                  </style>`;
+  export class ImageHoverComponent extends HTMLElement {
+    constructor() {
+      super();
+      this.imagePath = this.getAttribute("src");
+    }
+    connectedCallback() {
+    this.attachShadow({ mode: "open" });
+    const templateStyle = `
+      <style>
+          .image-preview {
+              height:500px;
+              z-index: 9999;
+          }
+          .image-preview:hover{
+              position: absolute;
+              z-index: 9999;
+              height:100%;
+              width:100%;
+          }
+      </style>`;
 
-                const template = document.createElement("template");
-                template.innerHTML =
-                  templateStyle +
-                  `
-                    <img class="image-preview" src="${this.imagePath}">
-                  `;
-                  this.shadowRoot.appendChild(template.content.cloneNode(true));
-                }
-              }
+    const template = document.createElement("template");
+    template.innerHTML =
+      templateStyle +
+      `
+        <img class="image-preview" src="${this.imagePath}">
+      `;
+      this.shadowRoot.appendChild(template.content.cloneNode(true));
+    }
+  }
             </code-display-component>
 
             On the other hand, a component that is responsible for querying a backend API to update a user's event
@@ -642,6 +668,8 @@
           </li>
         </ul>
       </div>
+</div>
+
     </table-of-contents-component>
 </div>
 

@@ -1,5 +1,13 @@
-export class CodeDisplayComponent extends HTMLElement{
+import {BaseTemplateComponent} from "@bponnaluri/places-js";
+import hljs from 'https://unpkg.com/@highlightjs/cdn-assets@11.11.1/es/highlight.min.js';
 
+export class CodeDisplayComponent extends BaseTemplateComponent{
+
+  constructor() {
+    super();
+    this.content = this.innerHTML.replaceAll("&gt;",">")
+        .replaceAll("&lt;","<");
+  }
   //Code is from https://css-tricks.com/snippets/javascript/htmlentities-for-javascript/
   htmlEntities(str) {
     return String(str)
@@ -9,24 +17,26 @@ export class CodeDisplayComponent extends HTMLElement{
       .replaceAll(/"/g, "&quot;");
   }
 
-  connectedCallback(){
+  getTemplateStyle(){
+    return `
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
 
-    /*
-      If the component is nested inside another web component, then it will be recreated with the text
-     */
-    if(this.innerHTML.startsWith("<code><pre>")){
-      return;
-    }
+      <style>
+        pre {
+          background-color:#f6f8fa;
+        }
+      </style>
+    `
+  }
 
-    this.innerHTML = `<code><pre>
-      ${
-        this.htmlEntities(
-          this.innerHTML
-            .replaceAll("&gt;",">")
-            .replaceAll("&lt;","<")
+  render(){
+    return `
+    <code>
+      <pre>
+          ${hljs.highlightAuto(this.content).value}
 
-        )
-      }
-    </pre></code>`;
+      </pre>
+    </code>
+    `
   }
 }
