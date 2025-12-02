@@ -365,7 +365,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   renderEditMode(data) {
     return `
       <div class="ui-section">
-      <h1>Editing Event:${data.name}</h1>
+      <h1>Editing Event: ${data.name}</h1>
       <form id="event-details-form" onsubmit="return false">
         <div id="form-status-div">
           ${generateErrorMessage(data.errorMessage)}
@@ -430,7 +430,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           <input
             name=${END_TIME_INPUT}
             type="time"
-            value=${data.endTime}
+            value=${convertTimeTo24Hours(data.endTime)}
           />
           </input>
         </div>
@@ -447,7 +447,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           <label class="">
               Event organizer email(optional). Use if you want to make a site user an event organizer. They will
               have permissions to edit the event. If this field is left blank, existing moderator settings will be used.</label>
-      
           <input
             id=${EVENT_ORGANIZER_INPUT}
             name=${EVENT_ORGANIZER_INPUT}
