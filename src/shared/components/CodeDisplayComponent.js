@@ -7,6 +7,8 @@ export class CodeDisplayComponent extends BaseTemplateComponent{
     super();
     this.content = this.innerHTML.replaceAll("&gt;",">")
         .replaceAll("&lt;","<");
+
+    this.innerHTML = "";
   }
   //Code is from https://css-tricks.com/snippets/javascript/htmlentities-for-javascript/
   htmlEntities(str) {
@@ -17,6 +19,9 @@ export class CodeDisplayComponent extends BaseTemplateComponent{
       .replaceAll(/"/g, "&quot;");
   }
 
+  disconnectedCallback(){
+    this.innerHTML = `<p>Potato</p>`
+  }
   getTemplateStyle(){
     return `
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
@@ -30,6 +35,8 @@ export class CodeDisplayComponent extends BaseTemplateComponent{
   }
 
   render(){
+
+
     return `
     <code>
       <pre>

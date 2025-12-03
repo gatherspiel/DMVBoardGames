@@ -40,6 +40,6 @@ export class TableOfContentsComponent extends HTMLElement{
 
       count++;
     })
-    this.innerHTML = tableOfContents + this.innerHTML;
+    this.insertAdjacentHTML("afterbegin", tableOfContents);
   }
 }

@@ -6,672 +6,73 @@
   <style
     inline-source
     src="../public/styles/sharedHtmlOnlyStyles.css"
-  ></style>
+  >
+  </style>
+
+
+  <style
+    inline-source
+    src="../public/styles/sharedHtmlAndComponentStyles.css"
+  >
+  </style>
+
   <style>
-    .summary-header {
-      color: black;
-    }
-    li a {
-      color: black;
-    }
-    p a {
-      color: black;
-      color: black;
-    }
-    a {
-      color:black;
-    }
-    details a {
-      color:black;
-    }
+
+
+
   </style>
   <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>places.js framework documentation</title>
   <script type="module">
+    import {ApiLoadActionDoc} from "./sections/ApiLoadActionDoc.js";
+    import {BaseDynamicComponentDoc} from "./sections/BaseDynamicComponentDoc.js";
+    import {BaseTemplateComponentDoc} from "./sections/BaseTemplateComponentDoc.js";
     import {CodeDisplayComponent} from "../../../shared/components/CodeDisplayComponent.js";
+    import {CustomLoadActionDoc} from "./sections/CustomLoadActionDoc.js";
+    import {DataStoreDoc} from "./sections/DataStoreDoc.js";
+    import {ImageHoverComponentGuide} from "./codeGuides/ImageHoverComponentGuide.js";
+    import {LoadingIndicatorComponentGuide} from "./codeGuides/LoadingIndicatorComponentGuide.js";
+    import {MainComponent} from "./sections/MainComponent.js";
+    import {ShowHideComponentGuide} from "./codeGuides/ShowHideComponentGuide.js";
     import {TableOfContentsComponent} from "../../../shared/components/TableOfContentsComponent.js";
+    import {GuidelinesComponent} from "./codeGuides/GuidelinesComponent.js";
 
-    customElements.define('code-display-component',CodeDisplayComponent)
-    customElements.define('table-of-contents-component',TableOfContentsComponent)
+    customElements.define('api-load-action-doc',ApiLoadActionDoc);
+    customElements.define('base-dynamic-component-doc', BaseDynamicComponentDoc);
+    customElements.define('base-template-component-doc', BaseTemplateComponentDoc);
+    customElements.define('code-display-component',CodeDisplayComponent);
+    customElements.define('custom-load-action-doc',CustomLoadActionDoc);
+    customElements.define('data-store-doc',DataStoreDoc);
+    customElements.define('image-hover-component-guide',ImageHoverComponentGuide)
+    customElements.define('loading-indicator-component-guide',LoadingIndicatorComponentGuide);
+    customElements.define('main-component',MainComponent);
+    customElements.define('show-hide-component-guide', ShowHideComponentGuide);
+    customElements.define('table-of-contents-component',TableOfContentsComponent);
+    customElements.define('guidelines-component',GuidelinesComponent);
   </script>
 </head>
 <body>
 <div id="container">
   {{>navbar}}
+
+
   <h1>Documentation for places.js framework</h1>
 
-    <table-of-contents-component>
+  <h2>Overview</h2>
 
-      <div class="section-1">
-        <h2>Overview</h2>
-        <p> Places.js is a lightweight Javascript framework for creating interactive websites promoting
-          in person interactions. It includes functionality for state management and asynchronous data fetching with zero
-          dependencies. Places.js is also designed to support shadow dom to encapsulate styles and deter bot scraping.
-          Source code is <a href="https://github.com/gatherspiel/places-js">here </a></p>
-      </div>
+  <p> Places.js is a lightweight Javascript framework for creating interactive websites promoting
+    in person interaction. It includes functionality for state management and asynchronous data fetching with zero
+    dependencies. Places.js is also designed to support shadow dom to encapsulate styles and deter bot scraping.
+    Source code is <a href="https://github.com/gatherspiel/places-js">here </a></p>
 
-      <div class="section-1">
-      <h2>Classes</h2>
+  <main-component></main-component>
 
 
-        <h3>BaseDynamicComponent</h3>
-
-        <p>This is the base class for a state based UI component with support for asynchronous data fetching. It also
-        has styles scoped to the ShadowDOM. All state based UI components using places.js should estend this class.</p>
-
-        <!-- Format header -->
-        <h4>Constructor paramaeters </h4>
-
-        <ul>
-          <li><b>dataStoreSubscriptions</b>: An optional array of subscription configurations the component will subscribe to.
-            <h5>Parameters</h5>
-          </li>
-          <ul>
-            <li><b>dataStore</b>: The <a href="#data-store-class-guide"> Data Store</a> that that will load and store state. </li>
-            <li><b>fieldName</b>: The name that the subscribed data should be stored under. This is an optional field unless the component is subscribed to multiple stores.</li>
-            <li><b><a href="#component-reducer-function-guide">componentReducer</a>:</b>Optional reducer
-              function that defines any transformations that should be made to state data being sent to a component
-              <code-display-component>
-  export const componentReducer: (groupData) => {
-    return {
-      ...groupData,
-      [SUCCESS_MESSAGE_KEY]: "",
-    };
-  },
-              </code-display-component>
-
-            </li>
-          </ul>
-          <li><b>loadingIndicatorConfig</b>: Optional configuration settings for a loading indicator. When
-            defined a loading indicator will be displayed when the component needs to load data from an external store.
-            <h5>Parameters</h5>
-          </li>
-          <ul>
-            <li><b>generateLoadingIndicatorHtml</b>: A function returning the HTML that should be shown.</li>
-            <li><b>minTimeMs</b>: Optional setting minimum amount of time in miliseconds that the loading indicator will be shown for, regardless of
-                how quickly data is loaded for store subscriptions.  If this value is not specified, then the loading indicator
-                will be shown until the data has loaded.</li>
-          </ul>
-
-          <h5>Example</h5>
-          <code-display-component>
-  export const LOADING_INDICATOR_CONFIG = {
-    generateLoadingIndicatorHtml: () => {
-      return `<p>Loading</p>`;
-    },
-    minTimeMs: 500,
-  };
-          </code-display-component>
-
-          <h5><a href="#loading-indicator-component-detailed">Detailed example</a></h5>
-
-        </ul>
-
-        <!-- Make it clear that this is part of the BaseDynamicComponent class -->
-        <h4>Functions </h4>
-        <ul>
-          <li><b>render(data)</b>: Required function used to render HTML for the component. The data parameter
-            is a read-only representation of the component's store data.
-              <details>
-                <summary>Example:</summary>
-                <code-display-component>
-  render(userData) {
-    return `
-    <div id="login-status-container">
-      <div id="links-container">
-        <div></div>
-        <div id="${SIGN_OUT_LINK_ID}">Sign out</div>
-
-        <div id="edit-profile-div"><a href="/html/user/editProfile.html">Edit profile</a></div>
-      </div>
-      <div id="user-text-container">
-        <div id="user-text-container-inner">
-          <div id="user-text-container-filler"></div>
-          <div id="user-image-container">
-            ${userData.imageFilePath ? `<img id="user-image-icon" src="${userData.imageFilePath}"/>` : ``}
-          </div>
-          <div id="username-container">
-            <span>${userData.username || this.getAttribute("email")}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-  }
-                </code-display-component>
-              </details>
-          </li>
-          <li><b>getTemplateStyle</b>: Required function for defining a component's style. It can also load external
-          stylesheets.
-            <details>
-              <summary>Example:</summary>
-              <code-display-component>
-  getTemplateStyle() {
-    return `
-    <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-
-    <style>
-      a {
-        color: white;
-        text-decoration: none;;
-      }
-    </style>
-    `;
-  }
-              </code-display-component>
-            </details>
-          </li>
-          <li><b>attachHandlersToShadowRoot(shadowRoot)</b>: Use this function to define event handlers on a component.
-            <details>
-              <summary>Example</summary>
-              <code-display-component>
-  attachHandlersToShadowRoot(shadowRoot) {
-    shadowRoot.addEventListener("click", (event) => {
-      if (event.target.id === SIGN_OUT_LINK_ID) {
-        LOGOUT_STORE.fetchData({}, LOGIN_STORE);
-      }
-    });
-  }
-
-              </code-display-component>
-            </details>
-          </li>
-          <li><b>connectedCallback</b>: Standard web component lifecycle method. Use for initializing component state if it
-            does not rely on an external store.
-            <details>
-              <summary>Example</summary>
-                <code-display-component>
-  connectedCallback() {
-    document.title = `Add event for group ${new URLSearchParams(document.location.search).get("name") ?? ""}`;
-    this.updateData({
-      name: "",
-      groupName: new URLSearchParams(document.location.search).get("name") ?? ""
-    });
-  }
-                </code-display-component>
-            </details>
-          </li>
-          <li><b>updateData(data)</b>Use this function to update the state of a component inside an event handler or
-            connectedCallback. <b>Calling this method from another other location can lead to infinite rendering loops
-            or other unpredictable effects.</b>
-            <details>
-              <summary>Example from event handler</summary>
-              <code-display-component>
-  const attachHandlersToShadowRoot = function (shadowRoot) {
-    const self = this;
-
-    queryForServerStatus();
-    shadowRoot.addEventListener("click", (event) => {
-    const targetId = event.target.id;
-      if (targetId === RECURRING_EVENT_INPUT) {
-        self.updateData({
-          isRecurring: shadowRoot.getElementById(RECURRING_EVENT_INPUT)?.checked,
-        });
-    }
-  }
-              </code-display-component>
-            </details>
-
-          </li>
-        </ul>
-
-        <h4>Other notes</h4>
-        <ul>
-          <li>Note: The BaseDynamicComponent object uses the disconnectedCallback function to make sure store subscriptions are up to date when a component is disconnected.Overriding
-          this method could lead to unpredicatable rendering behavior.</li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements">
-            More information</a> about web component lifecycle methods.</li>
-        </ul>
-
-        <h3>BaseTemplateComponent</h3>
-        <p>This is a base class for rendering a component using the shadowDom without managing state-based UI with
-          places.js.</p>
-        <h4>Functions </h4>
-        <ul>
-          <li><b>render(data)</b>: Required function used to render HTML for the component.
-            <details>
-              <summary>Example:</summary>
-              <code-display-component>
-render(userData) {
-  return `
-    <h2>A component</h2>
-  `;
-  }
-              </code-display-component>
-            </details>
-          </li>
-          <li><b>getTemplateStyle</b>: Required function for defining a component's style. It can also load external
-            stylesheets.
-            <details>
-              <summary>Example:</summary>
-              <code-display-component>
-  getTemplateStyle() {
-    return `
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-
-      <style>
-        a {
-          color: white;
-          text-decoration: none;;
-        }
-      </style>
-    `;
-  }
-              </code-display-component>
-            </details>
-          </li>
-        </ul>
-        <div id = "data-store-class-guide">
-
-          <h3>DataStore</h3>
-          <p>This class is responsible for storing state and fetching data from an external source</p>
-          <h4>Parameters</h4>
-          <ul>
-            <li><a href="#data-store-load-action-class-guide">loadAction: </a>An instance of DataStoreLoadAction describing how data should be loaded</li>
-          </ul>
-          <h4>Functions</h4>
-          <ul>
-            <li><b>updateStoreData(storeUpdates)</b>: Update data in the store and trigger a render of components
-              subscribed to the store. Only fields specified by the store updates parameter will be modified.</li>
-            <li><b>getStoreData</b>: Returns data from the store. The data is read-only and must be modified using
-              updateStoreData.</li>
-            <li><b>isWaitingForData</b>: Returns false if the data in the store is null or undefined and is
-              not in a loading state, and returns false otherwise.</li>
-            <li><b>fetchData(params,dataStore)</b>:This function retries data from an external source and then upgrades
-              any subscribed stores.</li>
-            <h5>Parameters</h5>
-            <ul>
-              <li><b>params:</b>Parameters for this request.</li>
-              <li><b>dataStore:</b>An optional data store that will be subscribed to updates from this store.</li>
-            </ul>
-          </ul>
-          <details>
-            <summary>Example</summary>
-            <code-display-component>
-  import { ApiLoadAction, DataStore } from "@bponnaluri/places-js";
-  import { API_ROOT } from "../../ui/shared/Params.js";
-
-  function getUserQueryConfig() {
-    return {
-      url: API_ROOT + "/user",
-    };
-  }
-
-  export const USER_DATA_STORE = new DataStore(
-    new ApiLoadAction(getUserQueryConfig);
-  );
-
-            </code-display-component>
-          </details>
-        </div>
-      </div>
-        <div id="api-load-action-class-guide">
-          <h3>ApiLoadAction</h3>
-          <p>Class to define a data store load action through an API call.</p>
-
-          <h4>Constructor parameters</h4>
-          <ul>
-            <li><b>getRequestConfig</b>: Function that returns a JSON configuration.
-              <a href="#data-store-load-config-info">More information about configuration fields</a>
-            </li>
-          </ul>
-
-          <h4>Implementation notes</h4>
-          <ul>
-            <li>Auth token data sorted in session storage is automatically included if it is in the field
-              "authToken.accessToken".</li>
-            <li>Data retrieved with a GET request is cached based on the URL and request body. Cached API response
-              data is automatically cleared when any other equest type is used.</li>
-          </ul>
-
-          <details>
-            <summary>Example</summary>
-            <code-display-component>
-  function getCitiesQueryConfig() {
-    return {
-      url: API_ROOT + "/listCities?area=dmv",
-    };
-  }
-
-  export const CITY_LIST_STORE = new DataStore(
-   new ApiLoadAction(getCitiesQueryConfig),
-  );
-
-            </code-display-component>
-          </details>
-        </div>
 
 
-      <div id="custom-load-action-class-guide">
-        <h3>CustomLoadAction</h3>
-        <p>Class to define a custom data store load action with direct control over any async calls that are made.
-          It is intended for use when additional processing needs to be done after an async call, or if a store needs
-          to combine data from multiple sources.</p>
-
-        <details>
-          <summary>Example</summary>
-          <code-display-component>
-  async function retrieveData() {
-    const data = await fetch(
-      `${LOGIN_CLIENT_URL}/auth/v1/logout?scope=global`,
-      {
-        method: "POST",
-        headers: {
-          apiKey: SUPABASE_CLIENT_KEY,
-          authorization:
-          "bearer " +
-          (await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY))?.access_token,
-        },
-      },
-    );
-    if (data.ok) {
-      deleteLocalStoreData(AUTH_TOKEN_KEY);
-      window.location.assign("/index.html");
-      return new AuthResponse(false);
-    } else {
-      return new AuthResponse(
-        true,
-        {},
-        "Failed to logout:" + JSON.stringify(data),
-      );
-    }
-  }
-
-  export const LOGOUT_STORE = new DataStore(new CustomLoadAction(retrieveData));
-
-          </code-display-component>
-        </details>
-        <div id = "data-store-load-action-class-guide">
-          <h3>DataStoreLoadAction</h3>
-          <p>This class defines an action used to load data into a store. Places.js includes two types of actions</p>
-          <ul>
-            <li><a href="#api-load-action-class-guide">APILoadAction</a></li>
-            <li><a href="#custom-load-action-class-guide">CustomLoadAction</a></li>
-          </ul>
-
-
-        </div>
-      </div>
-
-      <div class="section-1">
-        <h2>Objects</h2>
-
-        <h3>ApiActionType</h3>
-        <p>Stores string representations for DELETE, GET, POST, and PUT API actions. </p>
-
-        <h3>DataStoreLoadConfig</h3>
-        <div id="data-store-load-config-info">
-          <p>Configuration settings describing how a data store can be loaded from an API.</p>
-          <ul>
-            <li><b>url</b>: Required field representing the URL for the API request</li>
-            <li><b>headers</b>: A list of headers included with the request.</li>
-            <li><b>method</b>: The API request method, GET, PUST, POUT, ...etc. GET will be used by default if
-              no value is specified for this field.</li>
-            <li><b>body</b>: Data that should be sent as part of the request body.</li>
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="section-1">
-        <h2>Functions</h2>
-
-          <h3>clearSessionStorage</h3>
-
-        <p>Clear GET API request cache and other data in session storage.</p>
-
-        <h3>addLocalStorageData()</h3>
-        <p>Adds auth data to session storage. This allows the data to be used in API requests. The access token
-        should be stored with the field "accessToken".</p>
-
-        <h3>deleteLocalStorageData(key)</h3>
-        <p>Deletes data from local storage</p>
-
-        <h3>getLocalStorageDataIfPresent(key)</h3>
-        <p>Retrieves data from local storage if present.</p>
-
-        <h3>getResponseData(DataStoreLoadConfig></h3>
-        <p>Retrieves data from an API. See <a href="#data-store-load-config-info">DataStoreLoadConfig info</a>
-        for more information about the parameters</p>
-
-        </div>
-        <div id="loading-indicator-component-detailed">
-
-          <h3>Detailed example of using loading indicator config with a custom image</h3>
-
-          <h4>Loading config</h4>
-          <code-display-component>
-  export class LoadingIndicatorComponent extends HTMLElement {
-    constructor() {
-      super();
-      this.imagePath = this.getAttribute("image-path");
-    }
-    connectedCallback() {
-      this.attachShadow({ mode: "open" });
-      const templateStyle = `
-        <style>
-          #meeple-one {
-            position: absolute;
-            height:4px;
-            width:4px;
-            top:50px;
-            left:25px;
-          }
-          #meeple-two {
-            position: absolute;
-            top:43px;
-            left:43px;
-          }
-          #meeple-three {
-            position: absolute;
-            top:25px;
-            left:50px;
-          }
-          #meeple-four {
-            position: absolute;
-            top:7px;
-            left:43px;
-          }
-          #meeple-five {
-            position: absolute;
-            top:0;
-            left:25px;
-          }
-          #meeple-six {
-            position: absolute;
-            top:7px;
-            left:7px;
-          }
-          #meeple-seven {
-            position: absolute;
-            top:25px;
-            left:0;
-          }
-          #meeple-seven img {
-            height:3px;
-            width:3px;
-          }
-          #meeple-six img {
-            height:5px;
-            width:5px;
-          }
-          #meeple-five img {
-            height:7px;
-            width:7px;
-          }
-          #meeple-four img {
-            height:9px;
-            width:9px;
-          }
-          #meeple-three img {
-            height:11px;
-            width:11px;
-          }
-          #meeple-two img {
-            height:13px;
-            width:13px;
-          }
-          #meeple-one img {
-            height:15px;
-            width:15px;
-          }
-          .loader {
-            animation: l27 1s infinite steps(8);
-            height: 65px;
-            margin-left:auto;
-            margin-right:auto;
-            margin-top:2rem;
-            width: 65px;
-          }
-          @keyframes l27 {
-            100% {
-              transform-origin: 32.5px 32.5px;
-              transform: rotate(1turn);
-            }
-          }
-          .meeple {
-            width:15px;
-            height:15px;
-            animation: l28 1s infinite steps(8);
-          }
-          @keyframes l28 {
-            100% {
-              transform-origin: 7.5px 7.5px;
-              transform: rotate(-1turn)
-            }
-          }
-        </style>`;
-
-      const template = document.createElement("template");
-      template.innerHTML =
-        templateStyle + `
-          <div class="loader">
-            <div class="meeple" id="meeple-one">
-              <img src="${this.imagePath}">
-            </div>
-            <div class="meeple"  id="meeple-two">
-              <img src="${this.imagePath}">
-            </div>
-            <div class="meeple"  id="meeple-three">
-              <img src="${this.imagePath}">
-            </div>
-            <div class="meeple"  id="meeple-four" >
-              <img src="${this.imagePath}">
-            </div>
-            <div class="meeple"  id="meeple-five" >
-              <img src="${this.imagePath}">
-            </div>
-            <div class="meeple"  id="meeple-six" >
-              <img src="${this.imagePath}">
-            </div>
-            <div class="meeple"  id="meeple-seven" >
-              <img src="${this.imagePath}">
-            </div>
-          </div>
-      `;
-      this.shadowRoot.appendChild(template.content.cloneNode(true));
-      }
-  }
-  customElements.define(
-    "loading-indicator-component",
-    LoadingIndicatorComponent,
-  );
-</code-display-component>
-
-<code-display-component>
-  export const LOADING_INDICATOR_CONFIG = {
-    generateLoadingIndicatorHtml: () => {
-      return `
-        <loading-indicator-component
-          image-path="/assets/images/meeple_small.png"
-        >
-        </loading-indicator-component>
-      `;
-      },
-    minTimeMs: 500,
-  };
-
-          </code-display-component>
-
-        </div>
-      </div>
-
-      <div class="section-1">
-        <h2>Some guidelines for usage</h2>
-
-        <p>This section contains recommendations for effectively using places.js</p>
-
-        <ul>
-          <li>Use a multi page architecture(MPA) instead of a single page architecture(SPA): Places.js has been designed
-            and optimized around support for an MPA website architecture, and the framework has not been fully tested
-            with a SPA architecture. Second, I think it is very important for software projects to limit complexity
-            in order to minimize long term maintainability, speed up development, and minimize the risk of bugs.
-            An MPA isolates complexity to a specific part of a website, which makes it easier to test and reason about
-            the effects of a change, while helping to reduce the complexity of change.
-          </li>
-          <li>
-            Maintain a simple component hierarchy and minimize nested components: As a general guideline, avoid having more
-            than 3 layers of nested places.js components. This will make it easier to understand and maintain code while
-            making sure the UI isn't complex. A simple UI will help users quickly accomplish what they are looking to do.
-          </li>
-          <li>
-            Consider using standard web components where interactivity needs aren't complex: Sometimes, it will
-            make more sense to use a standard web component on a web page to minimize complexity.  Also, standard web
-            components can be embedded inside places.js web components.
-
-            For example, this documentation page has a dynamically generated HTML table of contents component with
-            no JavaScript.  This saves time when updating the  documentation by removing the need to manually update
-            the table of contents. In the future, the production build could be configured to use the HTML
-            generated by the table of contents component, while keeping the table of contents component for local
-            development. The table  of contents component can also be used on other web pages without other dependencies.
-
-            Another example is a component that resizes an image when a mouse pointer is hovering over an image. Adding
-            a hover style using CSS is sufficient to provide interactivity.
-
-            <code-display-component>
-  export class ImageHoverComponent extends HTMLElement {
-    constructor() {
-      super();
-      this.imagePath = this.getAttribute("src");
-    }
-    connectedCallback() {
-    this.attachShadow({ mode: "open" });
-    const templateStyle = `
-      <style>
-          .image-preview {
-              height:500px;
-              z-index: 9999;
-          }
-          .image-preview:hover{
-              position: absolute;
-              z-index: 9999;
-              height:100%;
-              width:100%;
-          }
-      </style>`;
-
-    const template = document.createElement("template");
-    template.innerHTML =
-      templateStyle +
-      `
-        <img class="image-preview" src="${this.imagePath}">
-      `;
-      this.shadowRoot.appendChild(template.content.cloneNode(true));
-    }
-  }
-            </code-display-component>
-
-            On the other hand, a component that is responsible for querying a backend API to update a user's event
-            RSVP status, show the status of the RSVP API call, and show an updated RSVP count is a good candidate
-            for a places.js component.
-          </li>
-        </ul>
-      </div>
 </div>
 
-    </table-of-contents-component>
-</div>
 
 <div id="bot-container"></div>
 {{>footer}}
