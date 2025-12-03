@@ -1,3 +1,11 @@
+export class ShowHideComponentGuide extends HTMLElement {
+  connectedCallback(){
+    this.innerHTML = `
+      
+      <p>Note: This was only created to demonstrate how a places.js dynamic component can be created. It is recommended
+      that you use the standard html details element instead.</p>
+      <code-display-component>
+      
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 
 const DEFAULT_SHOW_TEXT = "show";
@@ -6,7 +14,8 @@ const DEFAULT_HIDE_TEXT = "hide";
 const SHOW_HIDE_BUTTON_ID = "show-hide-button";
 
 /*
- A show hide component. This uses places.js with Shadow DOM to encapsulate event handlers and have dynamic state.
+ A show hide component. This uses places.js with 
+ shadow DOM to encapsulate event handlers and have dynamic state.
  */
 export class ShowHideComponent extends BaseDynamicComponent {
   constructor() {
@@ -38,7 +47,7 @@ export class ShowHideComponent extends BaseDynamicComponent {
   }
 
   getTemplateStyle() {
-    return `<style></style>`
+    return \`<style></style>\`
   }
 
   connectedCallback() {
@@ -49,12 +58,17 @@ export class ShowHideComponent extends BaseDynamicComponent {
   }
 
   render(state) {
-    let html = `<button id=${SHOW_HIDE_BUTTON_ID}>${state.buttonText}</button>`
+    let html = \`<button id=\${SHOW_HIDE_BUTTON_ID}>\${state.buttonText}</button>\`
 
     if(state.showContent){
       html += this.content;
     }
     return html;
   }
-
+}
+      
+</code-display-component>
+    
+    `
+  }
 }

@@ -24,12 +24,12 @@ export class BaseDynamicComponentDoc extends HTMLElement {
                 <details open="true">
                   <summary>Example</summary>
                 <code-display-component>
-    export const componentReducer: (groupData) => {
-      return {
-        ...groupData,
-        [SUCCESS_MESSAGE_KEY]: "",
-      };
-    },
+export const componentReducer: (groupData) => {
+  return {
+    ...groupData,
+    [SUCCESS_MESSAGE_KEY]: "",
+  };
+},
                 </code-display-component>
                </details>
                 
@@ -47,17 +47,16 @@ export class BaseDynamicComponentDoc extends HTMLElement {
                   will be shown until the data has loaded.</li>
             </ul>
 
-            <h5>Example</h5>
             
             <details open="true">
               <summary>Example</summary>
             <code-display-component>
-    export const LOADING_INDICATOR_CONFIG = {
-      generateLoadingIndicatorHtml: () => {
-        return \`<p>Loading</p>\`;
-      },
-      minTimeMs: 500,
-    };
+export const LOADING_INDICATOR_CONFIG = {
+  generateLoadingIndicatorHtml: () => {
+    return \`<p>Loading</p>\`;
+  },
+  minTimeMs: 500,
+};
             </code-display-component>
             </details>
             <h5><a href="#loading-indicator-component-detailed">Detailed example</a></h5>
@@ -70,71 +69,85 @@ export class BaseDynamicComponentDoc extends HTMLElement {
             <li><b>render(data)</b>: Required function used to render HTML for the component. The data parameter
               is a read-only representation of the component's store data.
                   <code-display-component>
-    render(userData) {
-      return \`
-      <div id="login-status-container">
-        <div id="links-container">
-          <div id="\${SIGN_OUT_LINK_ID}">Sign out</div>
+render(userData) {
+  return \`
+  <div id="login-status-container">
+    <div id="links-container">
+      <div id="\${SIGN_OUT_LINK_ID}">Sign out</div>
 
-          <div id="edit-profile-div"><a href="/html/user/editProfile.html">Edit profile</a></div>
+      <div id="edit-profile-div">
+        <a href="/html/user/editProfile.html">
+          Edit profile
+        </a>
+      
+      </div>
+    </div>
+    <div id="user-text-container">
+      <div id="user-text-container-inner">
+        <div id="user-text-container-filler"></div>
+        <div id="user-image-container">
+          \${userData.imageFilePath ?
+            \`<img 
+                id="user-image-icon" 
+                src="\${userData.imageFilePath}"/>\` 
+            : \`\`
+          
+        }
         </div>
-        <div id="user-text-container">
-          <div id="user-text-container-inner">
-            <div id="user-text-container-filler"></div>
-            <div id="user-image-container">
-              \${userData.imageFilePath ? \`<img id="user-image-icon" src="\${userData.imageFilePath}"/>\` : \`\`}
-            </div>
-            <div id="username-container">
-              <span>\${userData.username || this.getAttribute("email")}</span>
-            </div>
-          </div>
+        <div id="username-container">
+          <span>
+            \${userData.username || 
+             this.getAttribute("email")}
+          </span>
         </div>
       </div>
-    \`;
-    }
+    </div>
+  </div>
+\`;
+}
                   </code-display-component>
             </li>
             <li><b>getTemplateStyle</b>: Required function for defining a component's style. It can also load external
             stylesheets.
                 <code-display-component>
-                  getTemplateStyle() {
-                    return \`
-                    <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+getTemplateStyle() {
+  return \`
+  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
 
-                    <style>
-                      a {
-                        color: white;
-                        text-decoration: none;
-                      }
-                    </style>
-                    \`;
-                  }
+  <style>
+    a {
+      color: white;
+      text-decoration: none;
+    }
+  </style>
+  \`;
+}
                 </code-display-component>
             </li>
             <li><b>attachHandlersToShadowRoot(shadowRoot)</b>: Use this function to define event handlers on a component.
                 <code-display-component>
-    attachHandlersToShadowRoot(shadowRoot) {
-      shadowRoot.addEventListener("click", (event) => {
-        if (event.target.id === SIGN_OUT_LINK_ID) {
-          LOGOUT_STORE.fetchData({}, LOGIN_STORE);
-        }
-      });
+attachHandlersToShadowRoot(shadowRoot) {
+  shadowRoot.addEventListener("click", (event) => {
+    if (event.target.id === SIGN_OUT_LINK_ID) {
+      LOGOUT_STORE.fetchData({}, LOGIN_STORE);
     }
+  });
+}
 
                 </code-display-component>
             </li>
             <li><b>connectedCallback</b>: Standard web component lifecycle method. Use for initializing component state if it
               does not rely on an external store.
-              <details>
+              <details open="true">
                 <summary>Example</summary>
                   <code-display-component>
-    connectedCallback() {
-      document.title = \`Add event for group ${new URLSearchParams(document.location.search).get("name") ?? ""}\`;
-      this.updateData({
-        name: "",
-        groupName: new URLSearchParams(document.location.search).get("name") ?? ""
-      });
-    }
+connectedCallback() {
+  document.title = \`Add event for group ${new URLSearchParams(document.location.search).get("name") ?? ""}\`;
+  this.updateData({
+    name: "",
+    groupName: new URLSearchParams(document.location.search).get("name") ?? ""
+  });
+}
                   </code-display-component>
               </details>
             </li>
@@ -144,18 +157,18 @@ export class BaseDynamicComponentDoc extends HTMLElement {
               <details>
                 <summary>Example from event handler</summary>
                 <code-display-component>
-    const attachHandlersToShadowRoot = function (shadowRoot) {
-      const self = this;
+const attachHandlersToShadowRoot = function (shadowRoot) {
+  const self = this;
 
-      queryForServerStatus();
-      shadowRoot.addEventListener("click", (event) => {
-      const targetId = event.target.id;
-        if (targetId === RECURRING_EVENT_INPUT) {
-          self.updateData({
-            isRecurring: shadowRoot.getElementById(RECURRING_EVENT_INPUT)?.checked,
-          });
-      }
-    }
+  queryForServerStatus();
+  shadowRoot.addEventListener("click", (event) => {
+  const targetId = event.target.id;
+    if (targetId === RECURRING_EVENT_INPUT) {
+      self.updateData({
+        isRecurring: shadowRoot.getElementById(RECURRING_EVENT_INPUT)?.checked,
+      });
+  }
+}
                 </code-display-component>
               </details>
 

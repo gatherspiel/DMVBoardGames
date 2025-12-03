@@ -24,18 +24,21 @@ render(userData) {
             <details open="true">
               <summary>Example:</summary>
               <code-display-component>
-  getTemplateStyle() {
-    return \`
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+getTemplateStyle() {
+  return \`
+    &ltlink 
+      href="/styles/sharedStyles.css"
+      rel="stylesheet" 
+      type="text/css" />
 
-      <style>
-        a {
-          color: white;
-          text-decoration: none;;
-        }
-      </style>
-    \`;
-  }
+    <style>
+      a {
+        color: white;
+        text-decoration: none;;
+      }
+    </style>
+  \`;
+}
               </code-display-component>
             </details>
           </li>
