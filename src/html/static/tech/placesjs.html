@@ -14,13 +14,15 @@
   <title>places.js framework documentation</title>
   <script type="module">
     import {BaseDynamicComponentDoc} from "./sections/BaseDynamicComponentDoc.js";
+    import {BaseTemplateComponentDoc} from "./sections/BaseTemplateComponentDoc.js";
     import {CodeDisplayComponent} from "../../../shared/components/CodeDisplayComponent.js";
-    import {ShowMoreLessComponent} from "../../../shared/components/ShowMoreLessComponent.js";
+    import {ShowHideComponent} from "../../../shared/frameworkComponents/ShowHideComponent.js";
     import {TableOfContentsComponent} from "../../../shared/components/TableOfContentsComponent.js";
 
     customElements.define('base-dynamic-component-doc', BaseDynamicComponentDoc)
+    customElements.define('base-template-component-doc', BaseTemplateComponentDoc)
     customElements.define('code-display-component',CodeDisplayComponent)
-    customElements.define('show-more-less-component', ShowMoreLessComponent);
+    customElements.define('show-hide-component', ShowHideComponent);
     customElements.define('table-of-contents-component',TableOfContentsComponent)
   </script>
 </head>
@@ -31,7 +33,6 @@
 
   <h1>Documentation for places.js framework</h1>
 
-    <table-of-contents-component>
       <div class="section-1">
         <h2>Overview</h2>
 
@@ -42,56 +43,25 @@
       </div>
 
       <div class="section-1">
-      <h2>Classes</h2>
 
 
-        <h3>BaseDynamicComponent</h3>
+        <h2>Classes</h2>
 
-          <show-more-less-component max-start-lines="2">
-          <p>This is the base class for a state based UI component with support for asynchronous data fetching. It also
-          has styles scoped to the ShadowDOM. All state based UI components using places.js should extend this class.</p>
+        <details>
+          <summary>
+            BaseDynamicComponent
+          </summary>
           <base-dynamic-component-doc></base-dynamic-component-doc>
 
-        </show-more-less-component>
+        </details>
 
-        <h3>BaseTemplateComponent</h3>
-        <p>This is a base class for rendering a component using the shadowDom without managing state-based UI with
-          places.js.</p>
-        <h4>Functions </h4>
-        <ul>
-          <li><b>render(data)</b>: Required function used to render HTML for the component.
-            <details>
-              <summary>Example:</summary>
-              <code-display-component>
-render(userData) {
-  return `
-    <h2>A component</h2>
-  `;
-  }
-              </code-display-component>
-            </details>
-          </li>
-          <li><b>getTemplateStyle</b>: Required function for defining a component's style. It can also load external
-            stylesheets.
-            <details>
-              <summary>Example:</summary>
-              <code-display-component>
-  getTemplateStyle() {
-    return `
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+        <details>
+          <summary>
+            BaseTemplateComponent
+          </summary>
+          <base-template-component-doc></base-template-component-doc>
+        </details>
 
-      <style>
-        a {
-          color: white;
-          text-decoration: none;;
-        }
-      </style>
-    `;
-  }
-              </code-display-component>
-            </details>
-          </li>
-        </ul>
         <div id = "data-store-class-guide">
 
           <h3>DataStore</h3>
@@ -223,7 +193,7 @@ render(userData) {
 
         </div>
       </div>
-
+      </details>
       <div class="section-1">
         <h2>Objects</h2>
 
@@ -266,7 +236,67 @@ render(userData) {
         for more information about the parameters</p>
 
         </div>
-        <div id="loading-indicator-component-detailed">
+
+      <div class="section-1">
+      <h2>Examples</h2>
+
+      <h3>Show hide component</h3>
+
+      <p>Note: This was only created to demonstrate how a places.js dynamic component can be created. It is recommended
+      that you use the standard html details element instead.</p>
+      <code-display-component>
+        export class ShowHideComponent extends BaseDynamicComponent {
+          constructor() {
+            super();
+            this.showText = this.getAttribute("show-text") ?? DEFAULT_SHOW_TEXT
+            this.hideText = this.getAttribute("hide-text") ?? DEFAULT_HIDE_TEXT
+            this.content = this.innerHTML;
+          }
+
+          attachHandlersToShadowRoot(shadowRoot) {
+            const self = this;
+
+            shadowRoot.addEventListener("click",(event)=>{
+              if(event.target.localName === "button"){
+                if(!self.componentStore.showContent){
+                  self.updateData({
+                  buttonText: self.hideText,
+                  showContent: true
+                })
+                } else {
+                  self.updateData({
+                  buttonText: self.showText,
+                  showContent: false
+                  })
+                }
+              }
+            })
+          }
+
+          getTemplateStyle() {
+            return `<style></style>`
+          }
+
+          connectedCallback() {
+            this.updateData({
+              buttonText: this.showText,
+              showContent: false
+            })
+          }
+
+          render(state) {
+            let html = `<button id=${SHOW_HIDE_BUTTON_ID}>${state.buttonText}</button>`
+
+            if(state.showContent){
+              html += this.content;
+            }
+            return html;
+          }
+
+        }
+      </code-display-component>
+
+      <div id="loading-indicator-component-detailed">
 
           <h3>Detailed example of using loading indicator config with a custom image</h3>
 
@@ -450,12 +480,26 @@ render(userData) {
             make more sense to use a standard web component on a web page to minimize complexity.  Also, standard web
             components can be embedded inside places.js web components.
 
-            For example, this documentation page has a dynamically generated HTML table of contents component with
-            no JavaScript.  This saves time when updating the  documentation by removing the need to manually update
-            the table of contents. In the future, the production build could be configured to use the HTML
-            generated by the table of contents component, while keeping the table of contents component for local
-            development. The table  of contents component can also be used on other web pages without other dependencies.
+            For example, this documentation page is mostly HTML with native JS web components. The main use of
+            places.js on this documentation page is to create components to show code examples. Places.js
+            components are used to make sure the code examples are inside shadow DOM. This ensures a separation
+            between syntax highlighting styles and the styles for the rest of the page, and it makes sure that
+            CSS inside example code style tags doesn't affect outside styling.
 
+            </br>
+            One example is show hide components. HTML provides a native show hide component that doesn't require
+            JavaScript. Components nested inside such as the "base-dynamic-component-doc" component in the following
+            example can include a native show hide component. To do so, the html should be rendered after
+            connectedCallback is called.
+            <code-display-component>
+              <details>
+                <summary>
+                  BaseDynamicComponent
+                </summary>
+                &ltbase-dynamic-component-doc></base-dynamic-component-doc>
+
+              </details>
+            </code-display-component>
             Another example is a component that resizes an image when a mouse pointer is hovering over an image. Adding
             a hover style using CSS is sufficient to provide interactivity.
 
