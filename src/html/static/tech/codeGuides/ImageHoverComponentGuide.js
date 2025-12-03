@@ -1,8 +1,7 @@
 export class ImageHoverComponentGuide extends HTMLElement {
   connectedCallback(){
     this.innerHTML = `
-           Another example is a component that resizes an image when a mouse pointer is hovering over an image. Adding
-            a hover style using CSS is sufficient to provide interactivity.
+
 
             <code-display-component>
 export class ImageHoverComponent extends HTMLElement {

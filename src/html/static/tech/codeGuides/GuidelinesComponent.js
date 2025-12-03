@@ -3,14 +3,18 @@ export class GuidelinesComponent extends HTMLElement{
     this.innerHTML = `
      <p>This section contains recommendations for effectively using places.js</p>
 
-        <ul>
+        <ul id="guidelines-list">
           <li>Before using places.js, think carefully about your use case and whether or not it makes sense to
           use places.js. There are many instances where using places.js over vanilla JavaScript will add complexity
             such as creating a basic show hide component or an image hover component. If you are unsure about using places.js,
             it is recommended that you try experimenting it on a new project or a small part of an existing project.
-
-            </br>
-            </br>
+            <br>
+            <br>
+            In a website that uses places.js, often it will make sense to create pages using standard web components
+            or not use any JavaScript. Places.js is designed to be used on specific parts of a website with
+            complex interactivity or backend data fetching.
+            <br>
+            <br>
             As a general rule when creating a website, one should make sure to minimize the amount of complexity
             and dependencies. Sometimes, this means using HTML on certain pages or using a non tech solution. For
             example, places.js could theoretically be used to create a coin flipping application to randomly pick
@@ -30,10 +34,6 @@ export class GuidelinesComponent extends HTMLElement{
             making sure the UI isn't complex. A simple UI will help users quickly accomplish what they are looking to do.
           </li>
           <li>
-            In a website that uses places.js, often it will make sense to create pages using standard web components
-            or not use any JavaScript. Places.js is designed to be used on specific parts of a website with
-            complex interactivity or backend data fetching.
-            <br>
             Consider using standard web components where interactivity needs aren't complex: Sometimes, it will
             make more sense to use a standard web component on a web page to minimize complexity.  Also, standard web
             components can be embedded inside places.js web components.
@@ -49,18 +49,24 @@ export class GuidelinesComponent extends HTMLElement{
             JavaScript. Components nested inside such as the "base-dynamic-component-doc" component in the following
             example can include a native show hide component. To do so, the html should be rendered after
             connectedCallback is called.
-            <code-display-component>
-<details>
-  <summary>
-    BaseDynamicComponent
-  </summary>
-  &ltbase-dynamic-component-doc></base-dynamic-component-doc>
-
-</details>
-            </code-display-component>
-
+            <details open>
+              <summary></summary>
+              <code-display-component>
+  <details>
+    <summary>
+      BaseDynamicComponent
+    </summary>
+    &ltbase-dynamic-component-doc></base-dynamic-component-doc>
+  
+  </details>
+              </code-display-component>
+            </details>
+                       Another example is a component that resizes an image when a mouse pointer is hovering over an image. Adding
+            a hover style using CSS is sufficient to provide interactivity.
+            <details open>
+            <summary></summary>
             <image-hover-component-guide></image-hover-component-guide>
-
+</details>
             On the other hand, a component that is responsible for querying a backend API to update a user's event
             RSVP status, show the status of the RSVP API call, and show an updated RSVP count is a good candidate
             for a places.js component.

@@ -68,6 +68,8 @@ export const LOADING_INDICATOR_CONFIG = {
           <ul>
             <li><b>render(data)</b>: Required function used to render HTML for the component. The data parameter
               is a read-only representation of the component's store data.
+            <details open="true">
+            <summary>Example</summary>
                   <code-display-component>
 render(userData) {
   return \`
@@ -106,25 +108,37 @@ render(userData) {
 \`;
 }
                   </code-display-component>
+                  
+               </details>
             </li>
-            <li><b>getTemplateStyle</b>: Required function for defining a component's style. It can also load external
-            stylesheets.
-                <code-display-component>
-getTemplateStyle() {
-  return \`
-  <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+            
+            <li>
+              <b>getTemplateStyle</b>: Required function for defining a component's style. It can also load external
+              stylesheets.
 
-  <style>
-    a {
-      color: white;
-      text-decoration: none;
-    }
-  </style>
-  \`;
-}
-                </code-display-component>
+              <details open="true">
+                <summary>Example</summary>
+                                  <code-display-component>
+  getTemplateStyle() {
+    return \`
+    <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+  
+    <style>
+      a {
+        color: white;
+        text-decoration: none;
+      }
+    </style>
+    \`;
+  }
+                  </code-display-component>
+              </details>
+
             </li>
             <li><b>attachHandlersToShadowRoot(shadowRoot)</b>: Use this function to define event handlers on a component.
+            
+              <details open="true">
+                <summary>Example</summary>
                 <code-display-component>
 attachHandlersToShadowRoot(shadowRoot) {
   shadowRoot.addEventListener("click", (event) => {
@@ -133,6 +147,7 @@ attachHandlersToShadowRoot(shadowRoot) {
     }
   });
 }
+              </details>
 
                 </code-display-component>
             </li>

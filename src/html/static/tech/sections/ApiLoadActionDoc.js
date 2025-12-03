@@ -19,7 +19,7 @@ export class ApiLoadActionDoc extends HTMLElement {
               data is automatically cleared when any other request type is used.</li>
           </ul>
 
-          <details>
+          <details open>
             <summary>Example</summary>
             <code-display-component>
 function getCitiesQueryConfig() {

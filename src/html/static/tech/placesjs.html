@@ -17,24 +17,7 @@
   </style>
 
   <style>
-    #container > details > summary {
-      font-weight: 600;
-    }
 
-    #container > details details > summary {
-      margin-left: 1rem;
-    }
-
-    .summary-level-one {
-      font-size:1.5rem;
-      margin-top:1rem;
-    }
-
-    @media screen and (width < 32em) {
-      ul {
-        padding:0;
-      }
-    }
 
 
   </style>
@@ -50,6 +33,7 @@
     import {DataStoreDoc} from "./sections/DataStoreDoc.js";
     import {ImageHoverComponentGuide} from "./codeGuides/ImageHoverComponentGuide.js";
     import {LoadingIndicatorComponentGuide} from "./codeGuides/LoadingIndicatorComponentGuide.js";
+    import {MainComponent} from "./sections/MainComponent.js";
     import {ShowHideComponentGuide} from "./codeGuides/ShowHideComponentGuide.js";
     import {TableOfContentsComponent} from "../../../shared/components/TableOfContentsComponent.js";
     import {GuidelinesComponent} from "./codeGuides/GuidelinesComponent.js";
@@ -62,7 +46,7 @@
     customElements.define('data-store-doc',DataStoreDoc);
     customElements.define('image-hover-component-guide',ImageHoverComponentGuide)
     customElements.define('loading-indicator-component-guide',LoadingIndicatorComponentGuide);
-
+    customElements.define('main-component',MainComponent);
     customElements.define('show-hide-component-guide', ShowHideComponentGuide);
     customElements.define('table-of-contents-component',TableOfContentsComponent);
     customElements.define('guidelines-component',GuidelinesComponent);
@@ -75,134 +59,20 @@
 
   <h1>Documentation for places.js framework</h1>
 
-      <div class="section-1">
-        <h2>Overview</h2>
+  <h2>Overview</h2>
 
-          <p> Places.js is a lightweight Javascript framework for creating interactive websites promoting
-            in person interaction. It includes functionality for state management and asynchronous data fetching with zero
-            dependencies. Places.js is also designed to support shadow dom to encapsulate styles and deter bot scraping.
-            Source code is <a href="https://github.com/gatherspiel/places-js">here </a></p>
-      </div>
+  <p> Places.js is a lightweight Javascript framework for creating interactive websites promoting
+    in person interaction. It includes functionality for state management and asynchronous data fetching with zero
+    dependencies. Places.js is also designed to support shadow dom to encapsulate styles and deter bot scraping.
+    Source code is <a href="https://github.com/gatherspiel/places-js">here </a></p>
 
-      <h2>Classes</h2>
-
-      <details>
-        <summary class="potato">
-          BaseDynamicComponent
-        </summary>
-        <base-dynamic-component-doc></base-dynamic-component-doc>
-
-      </details>
-
-      <details>
-        <summary>
-          BaseTemplateComponent
-        </summary>
-        <base-template-component-doc></base-template-component-doc>
-      </details>
-
-      <details>
-        <summary>
-          DataStore
-        </summary>
-        <data-store-doc></data-store-doc>
-      </details>
-
-      <details>
-        <summary>
-          ApiLoadAction
-        </summary>
-        <api-load-action-doc></api-load-action-doc>
-      </details>
-
-      <details>
-        <summary>
-          CustomLoadAction
-        </summary>
-        <custom-load-action-doc></custom-load-action-doc>
-      </details>
-
-      <details>
-        <summary>
-          DataStoreLoadAction
-        </summary>
-        <h3>DataStoreLoadAction</h3>
-        <p>This class defines an action used to load data into a store. Places.js includes two types of actions</p>
-        <ul>
-          <li><a href="#api-load-action-class-guide">APILoadAction</a></li>
-          <li><a href="#custom-load-action-class-guide">CustomLoadAction</a></li>
-        </ul>
-      </details>
-
-      <h2>Objects</h2>
-
-      <details>
-        <summary>
-          ApiActionType
-        </summary>
-        <p>Stores string representations for DELETE, GET, POST, and PUT API actions. </p>
-      </details>
-
-      <details>
-        <summary>
-          DataStoreLoadConfig
-        </summary>
-        <div id="data-store-load-config-info">
-          <p>Configuration settings describing how a data store can be loaded from an API.</p>
-          <ul>
-            <li><b>url</b>: Required field representing the URL for the API request</li>
-            <li><b>headers</b>: A list of headers included with the request.</li>
-            <li><b>method</b>: The API request method, GET, PUST, POUT, ...etc. GET will be used by default if
-              no value is specified for this field.</li>
-            <li><b>body</b>: Data that should be sent as part of the request body.</li>
-          </ul>
-        </div>
-      </details>
-
-      <details>
-        <summary class="summary-level-one">Functions</summary>
-        <h3>clearSessionStorage</h3>
-
-        <p>Clear GET API request cache and other data in session storage.</p>
-
-        <h3>addLocalStorageData()</h3>
-        <p>Adds auth data to session storage. This allows the data to be used in API requests. The access token
-          should be stored with the field "accessToken".</p>
-
-        <h3>deleteLocalStorageData(key)</h3>
-        <p>Deletes data from local storage</p>
-
-        <h3>getLocalStorageDataIfPresent(key)</h3>
-        <p>Retrieves data from local storage if present.</p>
-
-        <h3>getResponseData(DataStoreLoadConfig></h3>
-        <p>Retrieves data from an API. See <a href="#data-store-load-config-info">DataStoreLoadConfig info</a>
-          for more information about the parameters</p>
-      </details>
+  <main-component></main-component>
 
 
-      <h2>Examples</h2>
-
-      <details>
-        <summary>Show hide component</summary>
-        <show-hide-component-guide></show-hide-component-guide>
-      </details>
-
-      <details>
-        <summary>Loading indicator component</summary>
-        <loading-indicator-component-guide></loading-indicator-component-guide>
-      </details>
-
-      <details>
-          <summary class="summary-level-one">Guidelines for use</summary>
-        <guidelines-component></guidelines-component>
-      </details>
 
 
-      </div>
 </div>
 
-</div>
 
 <div id="bot-container"></div>
 {{>footer}}

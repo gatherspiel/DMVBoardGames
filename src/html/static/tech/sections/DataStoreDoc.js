@@ -23,7 +23,7 @@ export class DataStoreDoc extends HTMLElement {
               <li><b>dataStore:</b>An optional data store that will be subscribed to updates from this store.</li>
             </ul>
           </ul>
-          <details>
+          <details open>
             <summary>Example</summary>
             <code-display-component>
 import { ApiLoadAction, DataStore } from "@bponnaluri/places-js";

@@ -1,7 +1,6 @@
 export class BaseTemplateComponentDoc extends HTMLElement {
   connectedCallback(){
     this.innerHTML = `
-              <h3>BaseTemplateComponent</h3>
        <p>This is a base class for rendering a component using the shadowDom without managing state-based UI with
           places.js.</p>
         <h4>Functions </h4>

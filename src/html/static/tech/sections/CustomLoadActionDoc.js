@@ -6,7 +6,7 @@ export class CustomLoadActionDoc extends HTMLElement {
           It is intended for use when additional processing needs to be done after an async call, or if a store needs
           to combine data from multiple sources.</p>
 
-        <details>
+        <details open>
           <summary>Example</summary>
           <code-display-component>
 async function retrieveData() {
