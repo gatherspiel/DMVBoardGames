@@ -68,8 +68,32 @@
 
   <main-component></main-component>
 
+  <h2>Notes about the design goals of places.js</h2>
 
+  <ul>
+    <li>Encourage manual testing of UI by people: Places.js is designed around supporting manual testing by humans instead
+    of automated testing. Human testing is helpful for subjective criteria such as usability. Websites built with
+      places.js should have frontends that minimize complexity with most of the complexity on the backend, which
+      will minimize the amount of testing that needs to be done on the UI.
+      <br>
+      <br>
+      Places.js components are also built with shadow DOM to encapsulate styles and make it harder for bots to scrape
+      content. This increases the complexity of writing automated UI tests.
+      <br>
+      <br>
 
+    On the other hand, places.js is also has support for asynchronous data fetching from a backend API, and it is recommended
+      that the automated testing efforts are focused there. API endpoints used by places.js should have clearly defined
+      correct behavior not defined by subjective criteria that can be covered by automated testing on the backend.
+    </li>
+
+    <li>Promote creating websites without the use of generative AI tools such as ChatGPT, GitHub Copilot, or
+      Claude Code. The documentation uses a places.js shadow DOM component and a couple of other measures to
+      make sure bots are less likely to be able to scrape the documentation. Places.js is also new, and
+      generative AI tools aren't likely to have a large amount of training data for the framework that they can
+      use.
+    </li>
+  </ul>
 
 </div>
 

@@ -10,9 +10,11 @@
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <script defer fetchpriority="low" type="module">
       import {CodeDisplayComponent} from "../../shared/components/CodeDisplayComponent.js";
+      import {ImageUploadExampleSection} from "./sections/ImageUploadExampleSection.js";
       import {ShadowDomComponent} from "../../shared/components/ShadowDomComponent.js";
 
-      customElements.define("code-display-component",CodeDisplayComponent)
+      customElements.define("code-display-component",CodeDisplayComponent);
+      customElements.define("image-upload-example-section",ImageUploadExampleSection);
       customElements.define("shadow-dom-component", ShadowDomComponent);
 
       import { GetGameAdvice } from "../../beta/getGameAdvice.js";
@@ -43,23 +45,24 @@
         <h2>Here are some main goals that the architecture and tech stack follows</h2>
 
         <ul>
-          <li><p>Minimize dependencies: Unecessary dependencies add complexity and adds risk because of changes to the dependencies.
+          <li><p>Minimize dependencies: Unnecessary dependencies add complexity and adds risk because of changes to the dependencies.
             Also, it helps make the code easier to follow. I want the code to serve as an example that people can follow to build
             their own interactive websites or contribute changes to this site.</p>
 
-            <p>A key aspect that will be followed here is designing the codebase to be understood by anyone who has a
-              basic understanding of the tech stack here. On the UI, this means not deploying with external
-              frameworks or libraries such as Angular, NextJs, React, or Tailwind CSS. The backend uses a lightweight framework
+            <p>The codebase should be understood by anyone who has a  basic understanding of the tech stack used.
+              On the UI, this means not deploying with external frameworks or libraries such as Angular, Next.js, React,
+              or Tailwind CSS. The backend uses a lightweight framework
               called <a href="https://javalin.io/">Javalin</a> over a more complex framework such as <a href="https://spring.io/">Spring</a>
           </li>
 
           <li>Open source: All code associated with this website is open source and can be seen <a href="https://github.com/gatherspiel">here</a>
-            The goal of dmvboardgames.com is to promote human connection through board games as a way of increasing interest in public spaces.
-            This website is not a profit making entity,
+            The goal of dmvboardgames.com is to promote human connection through board games and increase use of public spaces.
+            This website is not a profit making entity.
           </li>
+
           <li><p>Manual UI testing: UI should primarily be done manually. This allows testing for subjective criteria such
-            as usuablity in addition to correctness.  Automated UI tests will not have the context necessary to
-            understand subjective critiera, and maintaining them is a cost.  Finally, bots are blocked from scraping the site
+            as usability in addition to correctness. Automated UI tests will not have the context necessary to
+            understand subjective criteria, and maintaining them has a cost.  Finally, bots are blocked from scraping the site
             and adding support for UI tests is likely to effect bot blocking measures. Additional thoughts are
             <a href="/html/static/tech/manualtesting">here</a></p> </li>
 
@@ -109,21 +112,8 @@
         <img class="website-screenshot" src="/assets/blog/EditProfile-10-29-2025.png">
 
         </br>
-        <b>HTML for adding image upload component with id and initial state</b>
-        <code-display-component>
-           <image-upload-component
-             id="image-upload-ui"
-             image-path="${data.imageFilePath}"
-           ></image-upload-component>
-       </code-display-component>
 
-        <b>Image upload component code</b>
-        <code-display-component>${this.htmlEntities(ImageUploadComponent.toString())}
-       </code-display-component>
-
-        <h2>Demo component here:</h2>
-        <image-upload-component></image-upload-component>
-        <br>
+        <image-upload-example-section></image-upload-example-section>
 
         <pre>
 
