@@ -92,7 +92,6 @@ export class EditProfileComponent extends BaseDynamicComponent {
   }
 
   render(data) {
-    console.log(data);
     return `
       <h1>Edit profile</h1>
         <form id ="update-user-form" onsubmit="return false">
