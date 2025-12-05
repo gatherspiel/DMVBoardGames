@@ -721,7 +721,6 @@ const attachHandlersToShadowRoot = function (shadowRoot) {
   queryForServerStatus();
 
   a[name] = function (...args) {
-    console.log("Get element by id");
     container.innerHTML = getMonopolyHtml();
   };
 
@@ -729,7 +728,6 @@ const attachHandlersToShadowRoot = function (shadowRoot) {
   queryForServerStatus();
 
   a.addEventListener = function () {
-    console.log("Add event listener");
     container.innerHTML = getMonopolyHtml();
   };
 
