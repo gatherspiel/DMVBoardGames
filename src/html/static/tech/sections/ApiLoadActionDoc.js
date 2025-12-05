@@ -21,7 +21,7 @@ export class ApiLoadActionDoc extends HTMLElement {
 
           <details open>
             <summary>Example</summary>
-            <code-display-component>
+            <base-code-display-component>
 function getCitiesQueryConfig() {
   return {
     url: API_ROOT + "/listCities?area=dmv",
@@ -31,7 +31,7 @@ function getCitiesQueryConfig() {
 export const CITY_LIST_STORE = new DataStore(
  new ApiLoadAction(getCitiesQueryConfig),
 );
-            </code-display-component>
+            </base-code-display-component>
           </details>
     `
   }

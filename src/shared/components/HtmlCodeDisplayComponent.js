@@ -20,10 +20,7 @@ export class HtmlCodeDisplayComponent extends BaseTemplateComponent {
       .replaceAll("&lt;","<");
     return `
     <code>
-      <pre>
-          ${hljs.highlightAuto(code).value}
-
-      </pre>
+      <pre>${hljs.highlightAuto(code).value}</pre>
     </code>
     `
   }

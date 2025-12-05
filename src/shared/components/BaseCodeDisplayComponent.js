@@ -7,7 +7,7 @@ import hljs from 'https://unpkg.com/@highlightjs/cdn-assets@11.11.1/es/highlight
  *
  * Note: If HTML is contained in the code, it should be escaped before adding it to this component for display
  */
-export class JsCodeDisplayComponent extends BaseTemplateComponent{
+export class BaseCodeDisplayComponent extends BaseTemplateComponent{
 
   constructor() {
     super();
@@ -36,12 +36,9 @@ export class JsCodeDisplayComponent extends BaseTemplateComponent{
 
 
     return `
-    <code>
-      <pre>
-          ${hljs.highlightAuto(this.content).value}
-
-      </pre>
-    </code>
+      <code>
+        <pre>${hljs.highlightAuto(this.content).value}</pre>
+      </code>
     `
   }
 }

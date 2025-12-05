@@ -51,7 +51,7 @@ export class GuidelinesComponent extends HTMLElement{
             connectedCallback is called.
             <details open>
               <summary></summary>
-              <code-display-component>
+              <base-code-display-component>
   <details>
     <summary>
       BaseDynamicComponent
@@ -59,7 +59,7 @@ export class GuidelinesComponent extends HTMLElement{
     &ltbase-dynamic-component-doc></base-dynamic-component-doc>
   
   </details>
-              </code-display-component>
+              </base-code-display-component>
             </details>
                        Another example is a component that resizes an image when a mouse pointer is hovering over an image. Adding
             a hover style using CSS is sufficient to provide interactivity.

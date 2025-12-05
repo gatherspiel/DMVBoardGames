@@ -5,7 +5,7 @@ export class LoadingIndicatorComponentGuide extends HTMLElement {
           <h3>Detailed example of using loading indicator config with a custom image</h3>
 
           <h4>Loading config</h4>
-          <code-display-component>
+          <base-code-display-component>
 export class LoadingIndicatorComponent extends HTMLElement {
   constructor() {
     super();
@@ -141,9 +141,9 @@ customElements.define(
   "loading-indicator-component",
   LoadingIndicatorComponent,
 );
-</code-display-component>
+</base-code-display-component>
 
-<code-display-component>
+<base-code-display-component>
 export const LOADING_INDICATOR_CONFIG = {
   generateLoadingIndicatorHtml: () => {
     return \`
@@ -156,7 +156,7 @@ export const LOADING_INDICATOR_CONFIG = {
   minTimeMs: 500,
 };
 
-          </code-display-component>    
+          </base-code-display-component>    
     `
   }
 }

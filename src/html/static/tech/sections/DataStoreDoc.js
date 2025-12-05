@@ -25,7 +25,7 @@ export class DataStoreDoc extends HTMLElement {
           </ul>
           <details open>
             <summary>Example</summary>
-            <code-display-component>
+            <base-code-display-component>
 import { ApiLoadAction, DataStore } from "@bponnaluri/places-js";
 import { API_ROOT } from "../../ui/shared/Params.js";
 
@@ -39,7 +39,7 @@ export const USER_DATA_STORE = new DataStore(
   new ApiLoadAction(getUserQueryConfig);
 );
 
-            </code-display-component>
+            </base-code-display-component>
           </details>
         </div>
     

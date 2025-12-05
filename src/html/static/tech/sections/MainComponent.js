@@ -67,8 +67,18 @@ export class MainComponent extends BaseDynamicComponent {
 
     return `
       <div id="container">
+      
+        <details id="setup-instructions-component-details" ${urlParams.get("setup-instructions-component-details") ? "open" : ''}>
+          <summary class="summary-level-one">
+            Setup Instructions
+          </summary>
+          <setup-instructions-component></setup-instructions-component>
+        </details>
+        
         <h2>Classes</h2>
   
+
+        
         <details id="base-dynamic-component-details" ${urlParams.get("base-dynamic-component-details") ? "open" : ''}>
           <summary>
             BaseDynamicComponent

@@ -3,7 +3,7 @@ export class ImageHoverComponentGuide extends HTMLElement {
     this.innerHTML = `
 
 
-            <code-display-component>
+            <base-code-display-component>
 export class ImageHoverComponent extends HTMLElement {
   constructor() {
     super();
@@ -34,7 +34,7 @@ export class ImageHoverComponent extends HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 }
-            </code-display-component>
+            </base-code-display-component>
     `
   }
 }

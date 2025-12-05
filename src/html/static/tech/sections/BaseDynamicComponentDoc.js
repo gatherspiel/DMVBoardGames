@@ -1,4 +1,4 @@
-import {RenderFunctionExample} from "../codeGuides/BaseDynamicComponent/RenderFunctionExample.js";
+import {RenderFunctionExample} from "../codeGuides/baseDynamicComponent/RenderFunctionExample.js";
 customElements.define('render-function-example',RenderFunctionExample);
 
 export class BaseDynamicComponentDoc extends HTMLElement {
@@ -20,19 +20,17 @@ export class BaseDynamicComponentDoc extends HTMLElement {
               <li><b>fieldName</b>: The name that the subscribed data should be stored under. This is an optional field unless the component is subscribed to multiple stores.</li>
               <li><b><a href="#component-reducer-function-guide">componentReducer</a>:</b>Optional reducer
                 function that defines any transformations that should be made to state data being sent to a component
-                
-    
-                  
+     
                 <details open="true">
                   <summary>Example</summary>
-                <code-display-component>
+                <base-code-display-component>
 export const componentReducer: (groupData) => {
   return {
     ...groupData,
     [SUCCESS_MESSAGE_KEY]: "",
   };
 },
-                </code-display-component>
+                </base-code-display-component>
                </details>
                 
                 Read only state for the component can be accessed inside the component from the componentStore field.
@@ -52,14 +50,14 @@ export const componentReducer: (groupData) => {
             
             <details open="true">
               <summary>Example</summary>
-            <code-display-component>
+            <base-code-display-component>
 export const LOADING_INDICATOR_CONFIG = {
   generateLoadingIndicatorHtml: () => {
     return \`<p>Loading</p>\`;
   },
   minTimeMs: 500,
 };
-            </code-display-component>
+            </base-code-display-component>
             </details>
             <h5><a href="#loading-indicator-component-detailed">Detailed example</a></h5>
 
@@ -83,7 +81,7 @@ export const LOADING_INDICATOR_CONFIG = {
 
               <details open="true">
                 <summary>Example</summary>
-                                  <code-display-component>
+                                  <base-code-display-component>
   getTemplateStyle() {
     return \`
     <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
@@ -96,7 +94,7 @@ export const LOADING_INDICATOR_CONFIG = {
     </style>
     \`;
   }
-                  </code-display-component>
+                  </base-code-display-component>
               </details>
 
             </li>
@@ -104,7 +102,7 @@ export const LOADING_INDICATOR_CONFIG = {
             
               <details open="true">
                 <summary>Example</summary>
-                <code-display-component>
+                <base-code-display-component>
 attachHandlersToShadowRoot(shadowRoot) {
   shadowRoot.addEventListener("click", (event) => {
     if (event.target.id === SIGN_OUT_LINK_ID) {
@@ -114,13 +112,13 @@ attachHandlersToShadowRoot(shadowRoot) {
 }
               </details>
 
-                </code-display-component>
+                </base-code-display-component>
             </li>
             <li><b>connectedCallback</b>: Standard web component lifecycle method. Use for initializing component state if it
               does not rely on an external store.
               <details open="true">
                 <summary>Example</summary>
-                  <code-display-component>
+                  <base-code-display-component>
 connectedCallback() {
   document.title = \`Add event for group ${new URLSearchParams(document.location.search).get("name") ?? ""}\`;
   this.updateData({
@@ -128,7 +126,7 @@ connectedCallback() {
     groupName: new URLSearchParams(document.location.search).get("name") ?? ""
   });
 }
-                  </code-display-component>
+                  </base-code-display-component>
               </details>
             </li>
             <li><b>updateData(data)</b>Use this function to update the state of a component inside an event handler or
@@ -136,7 +134,7 @@ connectedCallback() {
               or other unpredictable effects.</b>
               <details>
                 <summary>Example from event handler</summary>
-                <code-display-component>
+                <base-code-display-component>
 const attachHandlersToShadowRoot = function (shadowRoot) {
   const self = this;
 
@@ -149,7 +147,7 @@ const attachHandlersToShadowRoot = function (shadowRoot) {
       });
   }
 }
-                </code-display-component>
+                </base-code-display-component>
               </details>
 
             </li>

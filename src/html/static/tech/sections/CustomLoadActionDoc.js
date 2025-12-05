@@ -8,7 +8,7 @@ export class CustomLoadActionDoc extends HTMLElement {
 
         <details open>
           <summary>Example</summary>
-          <code-display-component>
+          <base-code-display-component>
 async function retrieveData() {
   const data = await fetch(
     \`\${LOGIN_CLIENT_URL}/auth/v1/logout?scope=global\`,
@@ -36,7 +36,7 @@ async function retrieveData() {
 }
 
 export const LOGOUT_STORE = new DataStore(new CustomLoadAction(retrieveData));
-          </code-display-component>
+          </base-code-display-component>
         </details>
     
     `

@@ -9,20 +9,20 @@ export class BaseTemplateComponentDoc extends HTMLElement {
           
           <details open="true">
               <summary>Example:</summary>
-              <code-display-component>
+              <base-code-display-component>
 render(userData) {
   return \`
     <h2>A component</h2>
   \`;
   }
   </details>
-              </code-display-component>
+              </base-code-display-component>
           </li>
           <li><b>getTemplateStyle</b>: Required function for defining a component's style. It can also load external
             stylesheets.
             <details open="true">
               <summary>Example:</summary>
-              <code-display-component>
+              <base-code-display-component>
 getTemplateStyle() {
   return \`
     &ltlink 
@@ -38,7 +38,7 @@ getTemplateStyle() {
     </style>
   \`;
 }
-              </code-display-component>
+              </base-code-display-component>
             </details>
           </li>
         </ul>

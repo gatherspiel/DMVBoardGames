@@ -4,7 +4,7 @@ export class ShowHideComponentGuide extends HTMLElement {
       
       <p>Note: This was only created to demonstrate how a places.js dynamic component can be created. It is recommended
       that you use the standard html details element instead.</p>
-      <code-display-component>
+      <base-code-display-component>
       
 import {BaseDynamicComponent} from "@bponnaluri/places-js";
 
@@ -67,7 +67,7 @@ export class ShowHideComponent extends BaseDynamicComponent {
   }
 }
       
-</code-display-component>
+</base-code-display-component>
     
     `
   }
