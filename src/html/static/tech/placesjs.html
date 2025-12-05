@@ -17,7 +17,9 @@
   </style>
 
   <style>
-
+    h2 {
+      margin-top:1rem;
+    }
 
 
   </style>
@@ -28,7 +30,7 @@
     import {ApiLoadActionDoc} from "./sections/ApiLoadActionDoc.js";
     import {BaseDynamicComponentDoc} from "./sections/BaseDynamicComponentDoc.js";
     import {BaseTemplateComponentDoc} from "./sections/BaseTemplateComponentDoc.js";
-    import {CodeDisplayComponent} from "../../../shared/components/CodeDisplayComponent.js";
+    import {JsCodeDisplayComponent} from "../../../shared/components/JsCodeDisplayComponent.js";
     import {CustomLoadActionDoc} from "./sections/CustomLoadActionDoc.js";
     import {DataStoreDoc} from "./sections/DataStoreDoc.js";
     import {ImageHoverComponentGuide} from "./codeGuides/ImageHoverComponentGuide.js";
@@ -41,7 +43,7 @@
     customElements.define('api-load-action-doc',ApiLoadActionDoc);
     customElements.define('base-dynamic-component-doc', BaseDynamicComponentDoc);
     customElements.define('base-template-component-doc', BaseTemplateComponentDoc);
-    customElements.define('code-display-component',CodeDisplayComponent);
+    customElements.define('code-display-component',JsCodeDisplayComponent);
     customElements.define('custom-load-action-doc',CustomLoadActionDoc);
     customElements.define('data-store-doc',DataStoreDoc);
     customElements.define('image-hover-component-guide',ImageHoverComponentGuide)

@@ -1,7 +1,13 @@
 import {BaseTemplateComponent} from "@bponnaluri/places-js";
 import hljs from 'https://unpkg.com/@highlightjs/cdn-assets@11.11.1/es/highlight.min.js';
 
-export class CodeDisplayComponent extends BaseTemplateComponent{
+
+/**
+ * This component converts code into a format for display with syntax highlighting
+ *
+ * Note: If HTML is contained in the code, it should be escaped before adding it to this component for display
+ */
+export class JsCodeDisplayComponent extends BaseTemplateComponent{
 
   constructor() {
     super();
@@ -9,14 +15,6 @@ export class CodeDisplayComponent extends BaseTemplateComponent{
         .replaceAll("&lt;","<");
 
     this.innerHTML = "";
-  }
-  //Code is from https://css-tricks.com/snippets/javascript/htmlentities-for-javascript/
-  htmlEntities(str) {
-    return String(str)
-      .replaceAll(/&/g, "&amp;")
-      .replaceAll(/</g, "&lt;")
-      .replaceAll(/>/g, "&gt;")
-      .replaceAll(/"/g, "&quot;");
   }
 
   disconnectedCallback(){

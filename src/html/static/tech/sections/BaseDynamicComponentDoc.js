@@ -1,3 +1,5 @@
+import {RenderFunctionExample} from "../codeGuides/BaseDynamicComponent/RenderFunctionExample.js";
+customElements.define('render-function-example',RenderFunctionExample);
 
 export class BaseDynamicComponentDoc extends HTMLElement {
 
@@ -69,46 +71,9 @@ export const LOADING_INDICATOR_CONFIG = {
             <li><b>render(data)</b>: Required function used to render HTML for the component. The data parameter
               is a read-only representation of the component's store data.
             <details open="true">
-            <summary>Example</summary>
-                  <code-display-component>
-render(userData) {
-  return \`
-  <div id="login-status-container">
-    <div id="links-container">
-      <div id="\${SIGN_OUT_LINK_ID}">Sign out</div>
-
-      <div id="edit-profile-div">
-        <a href="/html/user/editProfile.html">
-          Edit profile
-        </a>
-      
-      </div>
-    </div>
-    <div id="user-text-container">
-      <div id="user-text-container-inner">
-        <div id="user-text-container-filler"></div>
-        <div id="user-image-container">
-          \${userData.imageFilePath ?
-            \`<img 
-                id="user-image-icon" 
-                src="\${userData.imageFilePath}"/>\` 
-            : \`\`
-          
-        }
-        </div>
-        <div id="username-container">
-          <span>
-            \${userData.username || 
-             this.getAttribute("email")}
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-\`;
-}
-                  </code-display-component>
-                  
+              <summary>Example</summary>
+                <render-function-example>
+                </render-function-example>
                </details>
             </li>
             

@@ -11,7 +11,6 @@ export class MainComponent extends BaseDynamicComponent {
 
     let shouldChangeUrl = false;
     shadowRoot.addEventListener("click",()=>{
-      console.log("click");
       shouldChangeUrl = true;
     })
 
@@ -66,7 +65,6 @@ export class MainComponent extends BaseDynamicComponent {
 
     const urlParams = new URLSearchParams(document.location.search);
 
-    console.log(urlParams.get("base-dynamic-component-details"))
     return `
       <div id="container">
         <h2>Classes</h2>
