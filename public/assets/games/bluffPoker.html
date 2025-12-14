@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bluff poker</title>
+  <style>
+      #container {
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+          flex: 1 0 auto;
+          max-width: 65rem;
+          margin-inline: auto;
+      }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Bluff Poker(Creator unknown)</h1>
+    <h2>Overview of game:</h2>
+    <p>Bluff poker is a combination of bluff and poker where players will bet on increasingly strong hands. Every time
+    a player is caught bluffing or incorrectly says that someone is bluffing, they get a point. A player is eliminated
+      from the game when they have too many points.</p>
+    <h2>Setting up the game for the first round</h2>
+    <ul>
+      <li>Agree on the maximum number of points a player can have before they are eliminated.</li>
+      <li>Shuffle a standard 52 card deck and deal 1 card to each player.</li>
+      <li>Pick a random start player.</li>
+    </ul>
+
+
+    <h2>Playing a round:</h2>
+      <ul>
+        <li>The start player picks a poker hand, and names one card in that hand which has the highest value. If a
+          player is claiming a flush is present, they must also name the suit of the highest value card. When naming a hand,
+         a player is claiming that the hand can be made from the cards in everyone's hand.</li>
+        <li>Play continues clockwise. Players can either name a higher value hand or call bluff on the previous claim.</li>
+        <li>If a player calls a bluff, then everyone reveals their hand. If the claimed hand can be made from the
+        revealed cards, then the player who called the bluff gets a point. If not, then the player who made the incorrect
+        claim gets a point.</li>
+      </ul>
+
+    <h2>What to do after a round:</h2>
+
+      <ul>
+        <li>If a player has more points than the maximum, they are eliminated from the game. If only one player remains,
+          they win.</li>
+        <li>Shuffle all 52 cards, Deal one card to each player plus one additional card for each point they have</li>
+        <li>Set the start player to the one who most recently got a point.</li>
+      </ul>
+
+
+      <a href = "https://www.poker.org/poker-hands-ranking-chart/">Here</a> is a detailed explanation of poker hands
+    and their rankings.
+
+    <h2>Advice for playing:</h2>
+      <ul>
+      <li>Consider the number of cards people have when claiming a hand. For example, on the first round of a 4
+      player game, everyone will only have 1 card, which makes it impossible for a straight to be present.</li>
+      <li>Estimate the probabilities of certain hands being present. On the first round of a 5 player game,
+      the chances of a pair being present is approximately 50%. The odds of correctly picking a number of the
+      card in the pair is lower. </li>
+      <li>Later in the game, the probability of higher value hands increases significantly. As a result, opening with
+       a higher value claim such as "Flush, high card ace of spades." becomes a good idea.</li>
+      </ul>
+
+  </div>
+
+</body>
+</html>
