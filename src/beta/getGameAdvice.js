@@ -631,7 +631,6 @@ export function GetGameAdvice() {
 
   queryForServerStatus();
 
-  console.log("HI(");
   a[name] = function (...args) {
     container.innerHTML = getMonopolyHtml();
   };
@@ -677,9 +676,5 @@ export function GetGameAdvice() {
   window.innerWidth = 22;
   window.innerHeight = 33;
   window.devicePixelRatio = 2;
-
-
-  console.log("Hi");
-
 }
 
