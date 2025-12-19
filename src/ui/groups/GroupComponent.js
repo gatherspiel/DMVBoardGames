@@ -311,7 +311,7 @@ export class GroupComponent extends BaseDynamicComponent {
     }
     const self = this;
     return `
-        <div id="user-actions-menu" style="${groupData.permissions.userCanUpdateGroupMembership ? `` : `display:none`}">>
+        <div id="user-actions-menu" style="${groupData.permissions.userCanUpdateGroupMembership ? `` : `display:none`}">
           <nav  id="user-actions-menu-raised" class="raised">
             <span class="shadow"></span>
               <span class="edge"></span>
