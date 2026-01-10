@@ -4,7 +4,7 @@ To see more technical details about the project, go [here](dmvboardgames.com/htm
 
 ## Contribution guidelines
 
-If you find a bug or have a recommendation for an area of improvement, create a GitHub issue or email gulu@createthirdplaces.com.
+If you find a bug or have a recommendation for an area of improvement, create a GitHub issue or email gulu@createthirdplaces.org.
 Go to the following page to view general development guidelines for the project: [here](https://github.com/gatherspiel)
 
 Also, follow the guidelines below:
@@ -34,4 +34,4 @@ Also, follow the guidelines below:
 ### How to run locally with API and database
 
 - Follow the same setup steps as the previous section.
-- See the following instructions for running the API and database: [Backend setup](https://github.com/gatherspiel/backend)
+- See the following instructions for running the API and database: [Backend setup](https://codeberg.org/createthirdplaces/backend)
