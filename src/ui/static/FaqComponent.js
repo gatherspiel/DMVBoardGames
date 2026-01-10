@@ -85,12 +85,12 @@ export class FaqComponent extends BaseTemplateComponent {
     
       <h4>I want to make my own website. Can I use code from dmvboardgames.com?</h4>
       
-      <p>Absolutely! All code for dmvboardgames.com is publicly available under the GPL-3.0 license <a href="https://github.com/gatherspiel">here</a>. The site is
+      <p>Absolutely! All code for dmvboardgames.com is publicly available under the GPL-3.0 license <a href="https://codeberg.org/createthirdplaces">here</a>. The site is
        also being programmed in a way that will enable other developers to use it as a template to build their own website. </p>
       
       <p> The site is built using a zero-dependency Web Components framework created by Gulu with asynchronous data fetching, and state management.
-         See the front-end code <a href="https://github.com/gatherspiel/DMVBoardGames/tree/main">here</a> for an example of how
-         to install and use the framework. Email gulu@createthirdplaces.com for more information or help with using the framework.</p>    
+         See the front-end code <a href="https://codeberg.org/createthirdplaces/DMVBoardGames">here</a> for an example of how
+         to install and use the framework. Email gulu@createthirdplaces.org for more information or help with using the framework.</p>    
          
        <h4>How does dmvboardgames.com use AI?</h4>
        
@@ -103,11 +103,11 @@ export class FaqComponent extends BaseTemplateComponent {
         
       <h3>Other questions</h3>
       <h4>How can I help contribute to dmvboardgames.com?</h4>
-      <p>Email gulu@createthirdplaces.com. dmvboardgames.com is looking for help with development, testing, and web design. More details are 
+      <p>Email gulu@createthirdplaces.org. dmvboardgames.com is looking for help with development, testing, and web design. More details are 
       <a href="/join.html">here</a></p>
          
       <h4>How can I share search results or group information on my own site?</h4>
-      <p>dmvboardgames.com includes an API that can be used to access information.  Email gulu@createthirdplaces.com for more details.</p>
+      <p>dmvboardgames.com includes an API that can be used to access information.  Email gulu@createthirdplaces.org for more details.</p>
     `;
   }
 }

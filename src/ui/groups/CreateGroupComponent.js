@@ -163,7 +163,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
               [NAME_ERROR_TEXT_KEY]: "",
               [SUCCESS_MESSAGE_KEY]: `
               Successfully created group. A site admin will review the group information before the group is visible on
-              dmvboardgames.com. Email gulu@createthirdplaces.com if you have any questions or comments.
+              dmvboardgames.com. Email gulu@createthirdplaces.org if you have any questions or comments.
              `,
             });
           }
