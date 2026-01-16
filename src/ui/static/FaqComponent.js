@@ -17,13 +17,13 @@ export class FaqComponent extends BaseTemplateComponent {
   }
   render() {
     return `
-   <h1>FAQ</h1>
+     <h1>FAQ</h1>
       
     
     
-       <h3>General site information </h3>
+      <h3>General site information </h3>
        
-         <h4>What is the business model of this website?</h4>
+      <h4>What is the business model of this website?</h4>
       
       <p>Dmvboardgames.com is a non-commercial website that is not designed to make a profit.</p>
       
@@ -56,7 +56,7 @@ export class FaqComponent extends BaseTemplateComponent {
         
       <h4>What motivated you to make this website?</h4>
       
-      <p>I reguarly host public board game events in the DC area. Through conversations with people, I noticed that people were having a hard time finding board game events.
+      <p>I regularly host public board game events in the DC area. Through conversations with people, I noticed that people were having a hard time finding board game events.
        Also, the site I used to host events, Meetup.com has been declining in quality, while pushing monetization that is negatively affecting the user experience. I did some 
        research, and was not able to find a better alternative.</p>
        
@@ -64,7 +64,7 @@ export class FaqComponent extends BaseTemplateComponent {
       2024, the Landing in Crystal City removed all the tables and chairs. The Landing was a cornerstone of the DMV board game community, and I used to host events there. This made
       me realize that the decline in public spaces had become a very serious issue, and I wanted to increase interest in public spaces as a way of reversing this decline.</p>
       
-      <p>For more information about my experiences with the Landing in Crystal City, see this <a href="/landing.html">page</a></p>
+      <p>For more information about my experiences with the Landing in Crystal City, see this <a href="/html/static/landing.html">page</a></p>
       
       <h3>Site costs and running the site</h3>
        
