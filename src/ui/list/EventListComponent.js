@@ -78,6 +78,7 @@ export class EventListComponent extends BaseDynamicComponent {
   }
 
   getItemHtml(eventData) {
+    console.log(eventData);
     return `
       <li>
         ${generateLinkButton({

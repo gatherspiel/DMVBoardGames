@@ -60,7 +60,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           dataStore: GROUP_EVENT_REQUEST_STORE,
           componentReducer: (data) => {
             document.title = data.name;
-            if (data.startDate) {
+            console.log(data.startDate);
+            if (data.startDate && Array.isArray(data.startDate)) {
               data.startDate = data.startDate.join("-");
             }
             data.hostText = data.moderators.length > 1 ? "Hosts:" : "Host:";
