@@ -78,7 +78,6 @@ export class EventListComponent extends BaseDynamicComponent {
   }
 
   getItemHtml(eventData) {
-    console.log(eventData);
     return `
       <li>
         ${generateLinkButton({
@@ -87,7 +86,14 @@ export class EventListComponent extends BaseDynamicComponent {
         })}
        
         <div id="event-time">
-          ${eventData.dayOfWeek}s at ${eventData.nextEventTime}
+          ${eventData.isRecurring ? 
+            `
+              ${eventData.dayOfWeek}s at ${eventData.nextEventTime}
+            ` :
+            `
+              ${eventData.nextEventDate} at ${eventData.nextEventTime}
+
+            `}
         </div>
         <div id="event-location">
           ${convertLocationDataForDisplay(eventData.eventLocation)}
