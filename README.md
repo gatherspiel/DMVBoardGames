@@ -23,7 +23,7 @@ Also, follow the guidelines below:
 ### Running in dev mode
 
 - npm run dev
-  -If you want to test local changes to the places-js package used as a framework for this project, publish the package locally using yalc. Then
+  -To test local changes to the places-js package used as a framework for this project, publish the package locally using yalc. Then
   run yalc add @bponnaluri/places-js
 
 ### Creating a preview of a production build
