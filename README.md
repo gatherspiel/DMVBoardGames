@@ -1,10 +1,10 @@
-This repo contains the source code for https://dmvboardgames.com/, a website to find in person public board game events in the DMV area. This repo will also be used a template for other developers who want to make their own local event hosting sites.
+This repo contains source code for https://dmvboardgames.com/, a website to find in person public board game events in the DMV area. This repo will also be used a template for other developers who want to make their own local event hosting sites.
 
 To see more technical details about the project, go [here](dmvboardgames.com/html/static/code.html)
 
 ## Contribution guidelines
 
-If you find a bug or have a recommendation for an area of improvement, create a GitHub issue or email gulu@createthirdplaces.org.
+If you find a bug or have a recommendation for a change, create a GitHub issue or email gulu@createthirdplaces.org.
 Go to the following page to view general development guidelines for the project: [here](https://github.com/gatherspiel)
 
 Also, follow the guidelines below:
@@ -23,7 +23,7 @@ Also, follow the guidelines below:
 ### Running in dev mode
 
 - npm run dev
-  -If you want to test local changes to the places-js package used as a framework for this project, publish the package locally using yalc. Then
+  -To test local changes to the places-js package used as a framework for this project, publish the package locally using yalc. Then
   run yalc add @bponnaluri/places-js
 
 ### Creating a preview of a production build
