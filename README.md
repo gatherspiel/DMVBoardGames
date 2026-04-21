@@ -1,4 +1,4 @@
-This repo contains the source code for https://dmvboardgames.com/, a website to find in person public board game events in the DMV area. This repo will also be used a template for other developers who want to make their own local event hosting sites.
+This repo contains source code for https://dmvboardgames.com/, a website to find in person public board game events in the DMV area. This repo will also be used a template for other developers who want to make their own local event hosting sites.
 
 To see more technical details about the project, go [here](dmvboardgames.com/html/static/code.html)
 
