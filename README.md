@@ -4,7 +4,7 @@ To see more technical details about the project, go [here](dmvboardgames.com/htm
 
 ## Contribution guidelines
 
-If you find a bug or have a recommendation for an area of improvement, create a GitHub issue or email gulu@createthirdplaces.org.
+If you find a bug or have a recommendation for a change, create a GitHub issue or email gulu@createthirdplaces.org.
 Go to the following page to view general development guidelines for the project: [here](https://github.com/gatherspiel)
 
 Also, follow the guidelines below:
