@@ -15,23 +15,7 @@ export class LoginStatusComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `<style>
-       a {
-        color: white;
-        text-decoration: none;;
-      }
-      @media not screen and (width < 32em) {
-        a {
-          margin-left:0.5rem;
-        }
-      }
-      @media screen and (width < 32em) {
-        a {
-          display: block;
-          line-height: 1.25;
-          margin-bottom:0.5rem;
-        }
-      }
-    </style>`;
+         </style>`;
   }
 
   render(authData) {

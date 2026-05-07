@@ -1,16 +1,9 @@
+<link rel="stylesheet" href="styles/kelp.css"/>
+
+
+
 <style>
-  nav a{
-    border: none;
-    background-color: none;
-    color: white;
-    font-weight: 400;
-    font-size: 1.5rem;
-    margin-top: 0.25rem;
-    margin-bottom: 0.25rem;
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-  nav a.active {
+    nav a.active {
     background-color: #04aa6d;
     color: white;
     text-decoration: none;
@@ -191,28 +184,16 @@
 
 </style>
 
-<nav class="raised" id="navbar">
-  <span class="shadow" id="navbar-shadow"></span>
-  <span class="edge" id="navbar-edge"></span>
-  <span class="front" id="navbar-front">
-    <div id="logo-div">
-      <img fetchpriority="high" src="/assets/images/logo.svg">
-    </div>
-    <div id = "main-nav" class="ui-section top-nav">
-      <div class="top-nav">
-        <a class = "top-link" href="/html/list/searchGroups.html" id="main-page-link" >Search groups</a>
-        <div id="other-links-first">
-             <div class="show-mobile show-more-links">Other links</div>
-        </div>
-        <div id="dropdown-triangle" class="show-mobile triangle-down">
-        </div>
-        </a><a class="hide-mobile top-link" href="/html/feedback.html" id="share-feedback-link">Share feedback</a>
+<header class="container-xl margin-end-m">
+	<nav id="main-nav" class="navbar">
+		<a class="logo" href="#">DMV Board Games</a> 
+		<ul>        
+			<li><a href="/html/list/searchGroups.html">Search groups</a></li>
+			<li><a href="/html/feedback.html">Share feedback</a></li>
+			<li><div><login-status-component></login-status-component></div></li>
+		</ul>
 
-      <div id="tertiary-nav" class="dropdown hide-mobile">
-        <div id="other-links-container" class="top-link show-more-links">Other links</div>
-        <div id="dropdown-triangle-secondary" class="show-mobile triangle-down"></div>
-
-          <div id="dropdown-container">
+				<!-- <div id="dropdown-container">
             <div class="dropdown-content">
               <a id="first-dropdown-link" href="/html/static/about.html">About the creator</a>
               <a class="label-border-left"  href="/html/static/siteRules.html">Site rules</a>
@@ -228,12 +209,9 @@
             </div>
         </div>
       </div>
-
-        <div id="login-component-container" class="hide-mobile"><login-status-component></login-status-component></div>
-      </div>
-    </div>
-  </span>
-</nav>
+					-->
+	</nav>
+</header>
 
 
 
