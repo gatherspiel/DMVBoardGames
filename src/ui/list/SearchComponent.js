@@ -149,7 +149,8 @@ export class SearchComponent extends BaseDynamicComponent {
     });
 
     shadowRoot.addEventListener("click", (event) => {
-      event.preventDefault();
+		 console.log("Hi"); 
+		 event.preventDefault();
       if (event.target.type === "checkbox") {
         const selectedDaysState = getDaysOfWeekSelectedState(shadowRoot);
         self.updateData({
