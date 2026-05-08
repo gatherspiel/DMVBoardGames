@@ -22,7 +22,8 @@ export class LoginStatusComponent extends BaseDynamicComponent {
     if (!authData.loggedIn) {
       return `
         <a href="/html/user/login.html">Login</a>
-        <a href="/html/user/createAccount.html">New account</a>
+				&nbsp 
+				<a href="/html/user/createAccount.html">New account</a>
       `;
     }
 

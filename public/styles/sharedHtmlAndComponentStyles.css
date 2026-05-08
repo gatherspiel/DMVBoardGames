@@ -1,7 +1,4 @@
-/* Styles that are shared with components */
-
-
-
+}/* Styles that are shared with components */
 
 b,
 h2,
@@ -12,15 +9,6 @@ li {
   margin-bottom: 0;
 }
 
-h1 {
-  background-color: var(--clr-very-light-blue);
-  border-radius: 12px;
-  color: var(--clr-darker-blue);
-  font-size: 3rem;
-  margin-top: 0;
-  margin-bottom: 0;
-  transform: translateY(2px);
-}
 
 h2 {
   background-color: var(--clr-very-light-blue);
@@ -156,14 +144,6 @@ a:hover {
   font-weight: 600;
 }
 
-.form-select {
-  border-color: var(--clr-light-blue);
-  border-radius: 5px;
-  color: var(--clr-light-blue);
-  cursor: pointer;
-  padding: 0.25rem;
-}
-
 .label-border-left {
   border-left: 1px solid black;
 }
@@ -228,10 +208,6 @@ a:hover {
   font-weight: 600;
 }
 
-.ui-section {
-  padding-left: 1.5rem;
-}
-
 @media not screen and (width < 32em) {
   textarea {
     width: 63.5rem;
@@ -267,7 +243,6 @@ a:hover {
   form {
     margin-right: 1.5rem;
   }
-  input,
   textarea {
     width: 100%;
   }

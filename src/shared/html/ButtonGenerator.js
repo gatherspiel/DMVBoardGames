@@ -13,13 +13,12 @@ export function generateLinkButton(config) {
 export function generateDisabledButton(config) {
   return `
     <button 
-      class="disabled raised${config.class ? ` ${config.class}` : ``}"
+      class="${config.class}"
       name="action"
       value="${config.text}"
       ${config.type ? `type=${config.type}` : ``}
     >  
-      <span class="disabled-edge"></span>
-      <span class="disabled-front" ${config.id ? `id="${config.id}"` : ``}>${config.text}</span>   
+      ${config.text}  
     </button>
   `;
 }
@@ -27,12 +26,11 @@ export function generateDisabledButton(config) {
 export function generateButton(config) {
   return `
     <button 
-      class="raised activeHover${config.class ? ` ${config.class}` : ``}"
+      class="${config.class ? ` ${config.class}` : ``}"
       name="action"
       value="${config.text}"
       ${config.type ? `type=${config.type}` : ``}
     >  
-      <span class="edge"></span>
       <span class="front" ${config.id ? `id="${config.id}"` : ``}>${config.text}</span>   
     </button>
   `;

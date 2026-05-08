@@ -82,48 +82,29 @@ export class SearchComponent extends BaseDynamicComponent {
   getTemplateStyle() {
     return `
      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style>
-          select {
+     <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
+      
+			<style>
+        select {
           width:10rem;
         }
-        #days-of-week-select > :not(:first-child) {
-          padding-left: 0.25rem;
-        }  
-        #search-form {
-          display: flex;
-          flex-wrap: wrap;
-          padding-bottom:0.5rem;
-          padding-left:1.5rem;
-          padding-top:0.5rem;
-        }   
-        #search-form-inputs {
-          padding-top:0.5rem; 
-        } 
+	
         .searchDropdownLabel {
-          color: var(--clr-darker-blue);
-          display: inline-block;
           font-weight:600;
-        }
-        @media not screen and (width < 32em) {
-          select {
-            margin-right: 0.5rem;
-          }
-          #group-search-header {
-            padding-left:1.5rem;
-          }
-          #max-distance-label {
-            margin-top:0.5rem;
-            width: 8rem;
-          }
-          #search-form .form-item {
-            display: inline-block;
-          }
-          #search-input-div {
-            margin-top:0.5rem;
-          }
         }     
-        @media screen and (width < 32em) {
-          #form-div-outer {
+        #search-input-div {
+						margin-top:0.5rem;
+				}
+				
+				@media screen and (width > 32em) {
+					fieldset label {
+						display:inline;
+					}  
+				}
+				
+				@media screen and (width < 32em) {
+     
+					#form-div-outer {
             width: 100%
           }
           #search-cities {
@@ -140,7 +121,8 @@ export class SearchComponent extends BaseDynamicComponent {
             display: inline-block;
             height:7.5rem;
           }
-          #search-input-div > button {
+			
+					#search-input-div > button {
             margin-bottom: 0.5rem;
           }
         }
@@ -225,90 +207,91 @@ export class SearchComponent extends BaseDynamicComponent {
         ? "search-form-three-inputs"
         : "search-form-two-inputs";
     return `
-      <h1 id="group-search-header">${this.getAttribute("search-text")}</h1>
+			<div class="container-xl"> 
+				<h1>${this.getAttribute("search-text")}</h1>
 
-      <form id=${SEARCH_FORM_ID} onsubmit="return false">
-        <div id ="form-div-outer">
-          <label class="searchDropdownLabel">Select event day: </label>
+				<form id=${SEARCH_FORM_ID} onsubmit="return false">
+					<div id ="form-div-outer">		
+						<label class="hide-mobile searchDropdownLabel">Select event day: </label>
+						
+						<div class="show-mobile">
+							<detaiils>
+								<summary>Select event day</summary>
+								<div>
+								${getDaysOfWeekSelectHtml(store.days)}
+							</div>
 
-          ${
-            store.showDaySelectOnMobile
-              ? generateButton({
-                  class: "show-mobile",
-                  id: SHOW_DAY_SELECT,
-                  text: "-",
-                })
-              : generateButton({
-                  class: "show-mobile",
-                  id: SHOW_DAY_SELECT,
-                  text: "+",
-                })
-          }
-          
-          <div class="${store.showDaySelectOnMobile ? `` : `hide-mobile`}">
-              ${getDaysOfWeekSelectHtml(store.days)}
-            </div>
-          <div id="search-form-inputs" class="${searchInputsClass}">
+						</details>
+						</div>	
+					
+						
+						<div class="${store.showDaySelectOnMobile ? `` : `hide-mobile`}">
+								${getDaysOfWeekSelectHtml(store.days)}
+							</div>
+						<div id="search-form-inputs" class="${searchInputsClass}">
 
-            <label class="searchDropdownLabel">Select event city: </label>
-            ${getDropdownHtml({
-              data: store.cityList ?? [{ name: "Any location" }],
-              id: SEARCH_CITY_ID,
-              name: "cities",
-              selected: store.location,
-              [DEFAULT_PARAMETER_KEY]: DEFAULT_SEARCH_PARAMETER,
-              [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
-            })}
-            ${
-              store.location && store.location !== DEFAULT_SEARCH_PARAMETER
-                ? `
-            <br>
-            <label id="max-distance-label" class="searchDropdownLabel">Max distance:</label>
+							<label class="searchDropdownLabel">Select event city: </label>
+							${getDropdownHtml({
+								data: store.cityList ?? [{ name: "Any location" }],
+								id: SEARCH_CITY_ID,
+								name: "cities",
+								selected: store.location,
+								[DEFAULT_PARAMETER_KEY]: DEFAULT_SEARCH_PARAMETER,
+								[DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
+							})}
+							${
+								store.location && store.location !== DEFAULT_SEARCH_PARAMETER
+									? `
+							<label id="max-distance-label" class="searchDropdownLabel">Max distance:</label>
 
-            ${getDropdownHtml({
-              data: DISTANCE_OPTIONS,
-              id: SEARCH_DISTANCE_ID,
-              name: "distance",
-              selected: store.distance ?? "5 miles",
-              [DEFAULT_PARAMETER_KEY]: "5 miles",
-              [DEFAULT_PARAMETER_DISPLAY_KEY]: "5 miles",
-            })}`
-                : ``
-            }     
-          </div>  
-          <div id="search-input-div"> 
-            ${
-              store[ENABLE_SEARCH_TOGGLE_KEY]
-                ? `${generateButton({
-                    id: SEARCH_BUTTON_ID,
-                    text: `${searchAllText}`,
-                  })}`
-                : `${generateDisabledButton({
-                    id: "disabled-search-button",
-                    text: `${searchAllText}`,
-                  })}`
-            }
-            ${store.loginState?.loggedIn && !isGroupSearch ? 
-              `
-                ${
-                  store[ENABLE_SEARCH_TOGGLE_KEY]
-                  ? `${generateButton({
-                    id: SEARCH_USER_GROUPS_BUTTON_ID,
-                    text: "Search joined groups",
-                  })}`
-                  : `${generateDisabledButton({
-                    id: "disabled-search-button-joined",
-                    text: "Search joined groups",
-                  })}`
-                }
+							${getDropdownHtml({
+								data: DISTANCE_OPTIONS,
+								id: SEARCH_DISTANCE_ID,
+								name: "distance",
+								selected: store.distance ?? "5 miles",
+								[DEFAULT_PARAMETER_KEY]: "5 miles",
+								[DEFAULT_PARAMETER_DISPLAY_KEY]: "5 miles",
+							})}`
+									: ``
+							}     
+						</div>  
+						<div id="search-input-div"> 
+							${
+								store[ENABLE_SEARCH_TOGGLE_KEY]
+									? `${generateButton({
+											class:`btn primary`,
+											id: SEARCH_BUTTON_ID,	
+											text: `${searchAllText}`,
+										})}`
+									: `${generateDisabledButton({
+											class:`btn primary`,
+											id: "disabled-search-button",
+											text: `${searchAllText}`,
+										})}`
+							}
+							${store.loginState?.loggedIn && !isGroupSearch ? 
+								`
+									${
+										store[ENABLE_SEARCH_TOGGLE_KEY]
+										? `${generateButton({
+											id: SEARCH_USER_GROUPS_BUTTON_ID,
+											text: "Search joined groups",
+										})}`
+										: `${generateDisabledButton({
+											id: "disabled-search-button-joined",
+											text: "Search joined groups",
+										})}`
+									}
 
-              ` 
-              :``
-            }
-          </div>
-        </div>
-      </form>
-      
-    `;
+								` 
+								:``
+							}
+						</div>
+					</div>
+				</form>
+			<hr>
+			</div>				
+
+`;
   }
 }

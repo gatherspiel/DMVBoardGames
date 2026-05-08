@@ -22,17 +22,28 @@ export class UserActionsComponent extends BaseDynamicComponent {
   getTemplateStyle() {
     return `  
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style>
+      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
+
+			<style>
         a {
           color: white;
           text-decoration: none;
-        }    
+        } 
+				
+				@media screen and (width < 32em) {
+					.container-xl > div {
+						display:flex;
+						justify-content:center;
+						align-items:center;		
+					}
+				}
+				
       </style>`;
   }
 
   getLinks(data) {
     let html = `
-      <a href ="${data.url}">Create group</a>
+      <a class="btn secondary" href="${data.url}">Create group</a>
     `;
 
     if (data[IS_LOGGED_IN_KEY]) {
@@ -44,9 +55,12 @@ export class UserActionsComponent extends BaseDynamicComponent {
 
   render(data) {
     return `
-      <div class="top-nav-secondary">
-        ${this.getLinks(data)}
-      </div>
-    `;
+      <div class="container-xl">
+				<div> 
+				${this.getLinks(data)}  
+				</div>	
+				<hr>
+		 </div>
+		`;
   }
 }
