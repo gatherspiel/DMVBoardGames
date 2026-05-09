@@ -4,10 +4,6 @@ import {
   getDaysOfWeekSelectedState,
   getDropdownHtml,
 } from "../../shared/html/SelectGenerator.js";
-import {
-  generateButton,
-  generateDisabledButton,
-} from "../../shared/html/ButtonGenerator.js";
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import { CITY_LIST_STORE } from "../../data/list/CityListStore.js";
 import {LOGIN_STORE} from "../../data/user/LoginStore.js";
@@ -132,8 +128,10 @@ export class SearchComponent extends BaseDynamicComponent {
 
   attachHandlersToShadowRoot(shadowRoot) {
     const self = this;
-    shadowRoot.addEventListener("change", (event) => {
-      const eventTarget = event.target;
+		
+		shadowRoot.addEventListener("change", (event) => {
+			console.log("Change"); 
+			const eventTarget = event.target;
 
       if (eventTarget.id === SEARCH_CITY_ID) {
         self.updateData({
@@ -148,12 +146,23 @@ export class SearchComponent extends BaseDynamicComponent {
       }
     });
 
-    shadowRoot.addEventListener("click", (event) => {
-		 console.log("Hi"); 
-		 event.preventDefault();
-      if (event.target.type === "checkbox") {
-        const selectedDaysState = getDaysOfWeekSelectedState(shadowRoot);
-        self.updateData({
+    
+		shadowRoot.addEventListener("click", (event) => {
+			
+			if (event.target.type === "checkbox") {
+				console.log(event.target);	
+				const selectedDaysState = getDaysOfWeekSelectedState(shadowRoot);
+			
+				if(event.target.checked){
+					selectedDaysState[event.target.id]="checked";
+				} else {
+					if(event.target.id in selectedDaysState){
+						delete selectedDaysState[event.target.id];
+					}	
+				}
+				
+				console.log("Selected day state:"+JSON.stringify(selectedDaysState)); 
+				self.updateData({
           [ENABLE_SEARCH_TOGGLE_KEY]: true,
           days:
             Object.keys(selectedDaysState).length > 0
@@ -162,7 +171,9 @@ export class SearchComponent extends BaseDynamicComponent {
         });
       }
       if (event.target.id === SEARCH_BUTTON_ID || event.target.id === SEARCH_USER_GROUPS_BUTTON_ID) {
-        const searchParams = {
+			
+			  event.preventDefault();
+			    const searchParams = {
           location: self.componentStore.location ?? "",
           days: self.componentStore.days
             ? Object.keys(self.componentStore.days).join(",")
@@ -259,32 +270,19 @@ export class SearchComponent extends BaseDynamicComponent {
 						<div id="search-input-div"> 
 							${
 								store[ENABLE_SEARCH_TOGGLE_KEY]
-									? `${generateButton({
-											class:`btn primary`,
-											id: SEARCH_BUTTON_ID,	
-											text: `${searchAllText}`,
-										})}`
-									: `${generateDisabledButton({
-											class:`btn primary`,
-											id: "disabled-search-button",
-											text: `${searchAllText}`,
-										})}`
+									? `
+										<button class="btn primary" id="${SEARCH_BUTTON_ID}">${searchAllText}</button>
+									`: `
+										<button class="btn muted" id="disabled-search-button">${searchAllText}</button>
+									`	
 							}
 							${store.loginState?.loggedIn && !isGroupSearch ? 
-								`
-									${
-										store[ENABLE_SEARCH_TOGGLE_KEY]
-										? `${generateButton({
-											id: SEARCH_USER_GROUPS_BUTTON_ID,
-											text: "Search joined groups",
-										})}`
-										: `${generateDisabledButton({
-											id: "disabled-search-button-joined",
-											text: "Search joined groups",
-										})}`
-									}
-
-								` 
+								
+								`${
+									store[EANBLE_SEARCH_TOGGLE_KEY]
+									?	`<button class="btn primary" id="${SEARCH_USER_GROUOPS_BUTTON_ID}">Search joined groups</button>`
+									: `<button class="btn muted" id="disabled-search-button-joined">Search joined groups</button>` 
+								}	`
 								:``
 							}
 						</div>

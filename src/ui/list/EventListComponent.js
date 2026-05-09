@@ -2,7 +2,6 @@ import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js";
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
 import { convertLocationDataForDisplay } from "../../shared/EventDataUtils.js";
-import { generateLinkButton } from "../../shared/html/ButtonGenerator.js";
 
 export class EventListComponent extends BaseDynamicComponent {
   constructor() {
@@ -80,10 +79,10 @@ export class EventListComponent extends BaseDynamicComponent {
   getItemHtml(eventData) {
     return `
       <li>
-        ${generateLinkButton({
-          text: eventData.eventName,
-          url: `/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}`,
-        })}
+				<a 
+					class="btn"
+					href= "url: /html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}",
+				>${eventData.eventName}</a>
        
         <div id="event-time">
           ${eventData.isRecurring ? 
