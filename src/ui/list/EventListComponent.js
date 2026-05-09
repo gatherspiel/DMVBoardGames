@@ -18,14 +18,12 @@ export class EventListComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `
-      <link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
+       <link rel="preload" as="style" href="/styles/kelp.css" onload="this.rel='stylesheet'"/>
+			<link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
       <style>
        li {
           padding-bottom: 1rem;
           padding-top:1rem;
-        }
-        h1 {
-          font-size: 3rem;
         }
         ul {
           list-style:url(/assets/images/meeple_small.png);
@@ -53,25 +51,35 @@ export class EventListComponent extends BaseDynamicComponent {
           }
           .raised {
             display: inline-block;
-          }
-          #search-results-header {
-            padding-left:1.5rem;
-          }
+          } 
         }  
         @media screen and (width < 32em) {
           a {
             margin-top: 1rem;
           }
-          #search-results-header {
+					li {
+						padding-top:0rem;
+						padding-bottom:0rem;
+					}
+					ul {
+						margin-top: -2em;
+					}	
+					#no-events-found {
+						text-align:center;
+					}
+					#search-results-header {
             text-align: center;
           }
-          .ui-section .event-group:not(:first-child) {
-            margin-top: 0.5rem;
-          }
+					.container-xl {
+						margin-top:-3rem;
+					}	
           .raised {
             margin-top: 0.5rem;
           }
-        } 
+        	.ui-section .event-group:not(:first-child) {
+            margin-top: 0.5rem;
+          }
+				} 
       </style>
     `;
   }
@@ -80,8 +88,8 @@ export class EventListComponent extends BaseDynamicComponent {
     return `
       <li>
 				<a 
-					class="btn"
-					href= "url: /html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}",
+					class="btn secondary"
+					href= "/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}",
 				>${eventData.eventName}</a>
        
         <div id="event-time">
@@ -111,12 +119,12 @@ export class EventListComponent extends BaseDynamicComponent {
 
     if (state.data.eventData.length === 0) {
       return `
-          <p>No events found</p>
+          <p id="no-events-found">No events found</p>
           <div class="section-separator-small"></div> 
         `;
     }
     let html = `
-      <div class="fade-in-animation">
+      <div class="container-xl fade-in-animation">
 
       <h1 id="search-results-header">Search results</h1>
       <ul>`;

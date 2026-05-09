@@ -31,6 +31,10 @@ export class UserActionsComponent extends BaseDynamicComponent {
         } 
 				
 				@media screen and (width < 32em) {
+					.container-xl {
+						margin-top: -1.5em;
+					}
+					
 					.container-xl > div {
 						display:flex;
 						justify-content:center;

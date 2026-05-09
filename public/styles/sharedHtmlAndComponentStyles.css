@@ -10,15 +10,6 @@ li {
 }
 
 
-h2 {
-  background-color: var(--clr-very-light-blue);
-  border-radius: 12px;
-  color: var(--clr-darker-blue);
-  font-size: 2rem;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
 a:hover {
   background-color: var(--clr-darker-blue);
 }
@@ -240,9 +231,7 @@ a:hover {
   .show-mobile {
     display: initial;
   }
-  form {
-    margin-right: 1.5rem;
-  }
+ 
   textarea {
     width: 100%;
   }

@@ -32,7 +32,6 @@ const DISTANCE_OPTIONS = [
 
 export class SearchComponent extends BaseDynamicComponent {
 
-
   constructor() {
     super([
       {
@@ -88,8 +87,9 @@ export class SearchComponent extends BaseDynamicComponent {
         .searchDropdownLabel {
           font-weight:600;
         }     
-        #search-input-div {
-						margin-top:0.5rem;
+        
+				#search-input-div {
+					margin-top:0.5rem;
 				}
 				
 				@media screen and (width > 32em) {
@@ -99,28 +99,54 @@ export class SearchComponent extends BaseDynamicComponent {
 				}
 				
 				@media screen and (width < 32em) {
-     
+					fieldset label {
+						justify-content:center;
+					}
+					summary {
+						font-weight:600;
+					}
+					
 					#form-div-outer {
-            width: 100%
+						margin-top: -1rem; 
+						width: 100%
           }
-          #search-cities {
-            margin-bottom: 0.5rem;
-          }
-          .searchDropdownLabel {
-            width: 11rem;
-          }
-          .search-form-two-inputs {
-            display: inline-block;
-            height:4rem;
-          }
-          .search-form-three-inputs {
-            display: inline-block;
-            height:7.5rem;
-          }
-			
+          
+					#search-cities {
+            margin-bottom: 0.5rem; 
+						margin-left:auto;
+						margin-right:auto;	
+					}
+
+					#search-distance-id {
+						margin-right:auto;
+						margin-left:auto;
+					}
+					
 					#search-input-div > button {
             margin-bottom: 0.5rem;
           }
+			
+					#search-form {
+						margin-bottom:-1.5rem;
+					}
+					
+					.container-xl {
+						margin-top: -2.5rem;
+					}
+					
+					.searchDropdownLabel {
+						text-align:center;
+						justify-content:center; 
+          }
+          
+					.search-form-two-inputs {
+            height:4rem;
+          }
+          
+					.search-form-three-inputs {	
+            height:7.5rem;
+          }
+			
         }
       </style>   
     `;
@@ -211,7 +237,7 @@ export class SearchComponent extends BaseDynamicComponent {
 
   render(store) {
 
-    const isGroupSearch = this.getAttribute("search-text") === 'Search for board game groups';
+    const isGroupSearch = this.getAttribute("search-text") === 'Search board game groups';
     const searchAllText = !isGroupSearch && store.loginState?.loggedIn === true ?
        "Search all events" : "Search"
     const searchInputsClass =
@@ -227,22 +253,21 @@ export class SearchComponent extends BaseDynamicComponent {
 						<label class="hide-mobile searchDropdownLabel">Select event day: </label>
 						
 						<div class="show-mobile">
-							<detaiils>
-								<summary>Select event day</summary>
+							<details>
+								<summary>Select event day:</summary>
 								<div>
-								${getDaysOfWeekSelectHtml(store.days)}
-							</div>
-
-						</details>
+									${getDaysOfWeekSelectHtml(store.days)}
+								</div>
+							</details>
 						</div>	
-					
 						
 						<div class="${store.showDaySelectOnMobile ? `` : `hide-mobile`}">
 								${getDaysOfWeekSelectHtml(store.days)}
 							</div>
 						<div id="search-form-inputs" class="${searchInputsClass}">
 
-							<label class="searchDropdownLabel">Select event city: </label>
+							<label class="searchDropdownLabel">Select city: </label>
+							
 							${getDropdownHtml({
 								data: store.cityList ?? [{ name: "Any location" }],
 								id: SEARCH_CITY_ID,

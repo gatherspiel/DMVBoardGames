@@ -26,10 +26,7 @@ body {
   scroll-padding: 1.5rem;
   height: 100%;
 }
-body {
-  display: flex;
-  flex-direction: column;
-}
+
 p {
   color: var(--clr-darker-blue);
 }
