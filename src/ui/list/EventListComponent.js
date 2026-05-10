@@ -45,7 +45,10 @@ export class EventListComponent extends BaseDynamicComponent {
           margin-left:-1rem;
         }
         @media not screen and (width < 32em) {
-          .group-cities {
+          .container-xl {
+						margin-top:-1em;
+					}	
+					.group-cities {
             display: inline-block;
             margin-left: 2rem;
           }
@@ -53,16 +56,13 @@ export class EventListComponent extends BaseDynamicComponent {
             display: inline-block;
           } 
         }  
-        @media screen and (width < 32em) {
-          a {
-            margin-top: 1rem;
-          }
+        @media screen and (width < 32em) { 
 					li {
-						padding-top:0rem;
-						padding-bottom:0rem;
+						padding-top:0.25rem;
+						padding-bottom:0.25rem;
 					}
 					ul {
-						margin-top: -2em;
+						margin-top: -1em;
 					}	
 					#no-events-found {
 						text-align:center;
@@ -73,9 +73,7 @@ export class EventListComponent extends BaseDynamicComponent {
 					.container-xl {
 						margin-top:-3rem;
 					}	
-          .raised {
-            margin-top: 0.5rem;
-          }
+
         	.ui-section .event-group:not(:first-child) {
             margin-top: 0.5rem;
           }

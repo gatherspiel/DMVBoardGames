@@ -29,12 +29,10 @@ export class UserActionsComponent extends BaseDynamicComponent {
           color: white;
           text-decoration: none;
         } 
-				
-				@media screen and (width < 32em) {
-					.container-xl {
-						margin-top: -1.5em;
-					}
-					
+				.container-xl {
+					margin-top: -1.5em;
+				}
+				@media screen and (width < 32em) {	
 					.container-xl > div {
 						display:flex;
 						justify-content:center;

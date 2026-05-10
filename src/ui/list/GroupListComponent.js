@@ -2,7 +2,6 @@ import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
-import { generateLinkButton } from "../../shared/html/ButtonGenerator.js";
 import { getDisplayName } from "../../shared/DisplayNameConversion.js";
 
 export class GroupListComponent extends BaseDynamicComponent {
@@ -24,15 +23,15 @@ export class GroupListComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `
-      <link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
+       <link rel="preload" as="style" href="/styles/kelp.css" onload="this.rel='stylesheet'"/>
+
+			<link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
       <style>
        li {
           padding-bottom: 1rem;
           padding-top:1rem;
         }
-        h1 {
-          font-size: 3rem;
-        }
+      
         ul {
           list-style:url(/assets/images/meeple_small.png);
           margin-top:0;
@@ -55,10 +54,7 @@ export class GroupListComponent extends BaseDynamicComponent {
           }
           .raised {
             display: inline-block;
-          }
-          #group-search-results-header {
-            padding-left:1.5rem;
-          }
+          } 
         }  
         @media screen and (width < 32em) {
           a {
@@ -67,7 +63,10 @@ export class GroupListComponent extends BaseDynamicComponent {
           #group-search-results-header {
             text-align: center;
           }
-          .group-cities {
+					.container-xl {
+						margin-top:-3em;
+					}
+					.group-cities {
             display: none; 
           }
           .ui-section .event-group:not(:first-child) {
@@ -90,14 +89,14 @@ export class GroupListComponent extends BaseDynamicComponent {
 
     const hasRecurringEventDays = group.recurringEventDays.length > 0;
     const hasGameTypeTags = group.gameTypeTags.length > 0;
+		
+		const url = `${hasRecurringEventDays || loggedIn || hasGameTypeTags ? `/html/groups/groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`;
+    
 
     return `
       <li>
-        ${generateLinkButton({
-          text: group.name,
-          url: `${hasRecurringEventDays || loggedIn || hasGameTypeTags ? `/html/groups/groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`,
-        })}
-        <span class="group-cities">${groupCitiesStr}</span>           
+				<a class="btn secondary" href=${url}>${group.name}</a>
+				       
         ${hasRecurringEventDays ? `<span class="group-search-details"><b>Days:</b> ${group.recurringEventDays.join(", ")}</span>` : ``}  
         ${hasGameTypeTags ? `<span class="group-search-details"><b>Game types:</b> ${group.gameTypeTags.join(", ")}</span>` : ``}  
       </li>
@@ -115,7 +114,7 @@ export class GroupListComponent extends BaseDynamicComponent {
         `;
     }
     let html = `
-      <div class="fade-in-animation">
+      <div class="container-xl fade-in-animation">
       <h1 id="group-search-results-header">Search results</h1>
       <ul>`;
     for (let i = 0; i < state.data.groupData.length; i++) {

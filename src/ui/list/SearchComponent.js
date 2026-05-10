@@ -63,9 +63,7 @@ export class SearchComponent extends BaseDynamicComponent {
       location: this.initialParams.get("location"),
 
     };
-    if (this.initialParams .size > 0) {
-      SEARCH_RESULTS_LIST_STORE.fetchData(this.defaultSearchParams);
-    }
+    SEARCH_RESULTS_LIST_STORE.fetchData(this.defaultSearchParams);
   }
 
   connectedCallback(){
@@ -84,7 +82,11 @@ export class SearchComponent extends BaseDynamicComponent {
           width:10rem;
         }
 	
-        .searchDropdownLabel {
+				.container-xl {
+					margin-top:-2em;
+				}
+				
+				.searchDropdownLabel {
           font-weight:600;
         }     
         
@@ -95,7 +97,10 @@ export class SearchComponent extends BaseDynamicComponent {
 				@media screen and (width > 32em) {
 					fieldset label {
 						display:inline;
-					}  
+					}
+					#form-div-outer {
+						margin-top: -1rem;
+					}
 				}
 				
 				@media screen and (width < 32em) {

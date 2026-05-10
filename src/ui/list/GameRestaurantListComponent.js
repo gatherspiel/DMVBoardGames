@@ -1,6 +1,5 @@
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import { GAME_RESTAURANT_STORE } from "../../data/list/LocationsStore.js";
-import { generateLinkButton } from "../../shared/html/ButtonGenerator.js";
 
 export class GameRestaurantListComponent extends BaseDynamicComponent {
   constructor() {
@@ -14,24 +13,18 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
   getTemplateStyle() {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/> 
-      <style>
-        h1,h2 {
-          margin-top:0.5rem;
-          padding-left:1.5rem;
-        }
-        h3 {
-          display: inline-block;
-        }          
-        p {
-          font-size: 1rem;
-        }
+      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/> 
+
+			<style>  
         ul {
           list-style:url(/assets/images/meeple_small.png);
           margin-top:0;
           padding-left:1.5rem;
         }
        .game-resturant-list-item * {
-          display: inline-block;
+					margin-top:0.5em;
+					margin-bottom:0.5em;
+					display: inline-block;
         }
       </style>
     `;
@@ -40,12 +33,9 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
   getItemHtml(gameRestaurant) {
     return `
       <li class="game-resturant-list-item">
-        <h3>
-          ${generateLinkButton({
-            text: gameRestaurant.name,
-            url: gameRestaurant.url,
-          })}
-        </h3>
+        <a class="btn secondary" href=${gameRestaurant.url}>
+					${gameRestaurant.name}
+        </a> 
         <p>Location: ${gameRestaurant.location}</p>
       </li>
       <div class="section-separator-small"></div>
@@ -54,10 +44,11 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
 
   render(data) {
     let html = `
-      <h1>Board Game Bars and Cafés</h1>
-      <div class="section-separator-small"></div>
+			<div class="container-xl"> 
+				<h1>Board Game Bars and Cafés</h1>
+				<div class="section-separator-small"></div>
 
-      <ul>
+				<ul>
     `;
     Object.values(data).forEach((item) => {
       html += this.getItemHtml(item);
