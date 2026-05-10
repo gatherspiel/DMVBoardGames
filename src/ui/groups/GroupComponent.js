@@ -14,11 +14,6 @@ import {
 } from "./Constants.js";
 
 import {
-  generateButton,
-  generateLinkButton,
-} from "../../shared/html/ButtonGenerator.js";
-
-import {
   getGameTypeTagSelectHtml,
   getTagSelectedState,
 } from "../../shared/html/SelectGenerator.js";

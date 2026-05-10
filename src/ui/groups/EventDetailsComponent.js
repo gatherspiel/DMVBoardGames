@@ -26,10 +26,6 @@ import {
   generateSuccessMessage,
 } from "../../shared/html/StatusIndicators.js";
 
-import {
-  generateButton,
-  generateLinkButton,
-} from "../../shared/html/ButtonGenerator.js";
 import { getEventDetailsFromForm, validate } from "./EventDetailsHandler.js";
 
 import { API_ROOT } from "../shared/Params.js";
@@ -60,7 +56,6 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           dataStore: GROUP_EVENT_REQUEST_STORE,
           componentReducer: (data) => {
             document.title = data.name;
-            console.log(data.startDate);
             if (data.startDate && Array.isArray(data.startDate)) {
               data.startDate = data.startDate.join("-");
             }
@@ -75,7 +70,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
+
+<link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
       
         h1 {
@@ -124,9 +121,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           margin-right:0.5rem
         }
         @media not screen and (width < 32em) {
-          h1,h2 {
-            margin-left:-1.5rem;
-          }
+
           input,select,textarea {
             display: block;
           }
@@ -305,7 +300,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       return `<h1>Loading</h1>`;
     }
     let html = `
-      <div class="fade-in-animation">
+      <div class="container-xl fade-in-animation">
       <div id = "user-actions-menu">
         <nav id="user-actions-menu-raised" class="raised" 
              style="${!data.isEditing && !data.isDeleting && data?.permissions?.userCanEdit ? `` : `display:none`}">
@@ -331,13 +326,11 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     } else {
       html += this.renderViewMode(data);
     }
-    html += `
-      <div class="ui-section">
-      ${generateLinkButton({
-        class: "back-to-group-button",
-        text: "Back to group",
-        url: `${window.location.origin}/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}`,
-      })}
+    const url = `${window.location.origin}/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}`
+		
+		html += `
+      <div class="container-xl">
+				<a class="btn secondary" href=${url}>Back to group</a>
       </div>
       </div>
     `;
@@ -504,16 +497,11 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       return `${generateErrorMessage(data.errorMessage)}`;
     }
     return `
-      <div class="ui-section">
         <h1>${data.name}</h1>
         ${
           data.url &&
           !data.url.startsWith("https://dmvobardgames.com/groups/event.html")
-            ? generateLinkButton({
-                class: "event-website-link",
-                text: "Event website",
-                url: data.url,
-              })
+            ? `<a class="btn secondary event-website-link" href=${data.url}>Event website</a>`
             : ""
         } 
 
