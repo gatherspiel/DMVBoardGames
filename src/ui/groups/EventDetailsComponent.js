@@ -100,20 +100,17 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           display: inline-block;
           line-height: 1;
         } 
-        .user-data-container {
-          margin-top: 0.5rem;
-        }
-        .user-data-container-inner {
+        .user-data-div-inner {
           display:flex;
         }
         .user-image-icon {
           clip-path: circle();
           height:2rem;
         }
-        .user-image-container {
+        .user-image-div {
           display: inline-block;
         }
-        .username-container {
+        .username-div {
           display: inline-block;
           margin-top: 0.5rem;
           margin-right:0.5rem
@@ -156,7 +153,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             margin-bottom: 0.5rem;
           }
           
-          .user-data-container {
+          .user-data-div {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -462,13 +459,13 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     let html = ``;
     data.moderators.forEach((moderator) => {
       html += `
-        <div class ="user-data-container">
-          <div class="user-data-container-inner">
+        <div class ="user-data-div">
+          <div class="user-data-div-inner">
       
-            <div class="user-image-container">
+            <div class="user-image-div">
               ${moderator.userData.imageFilePath ? `<img class="user-image-icon" src="${moderator.userData.imageFilePath}"></img>` : ``}
             </div>
-            <div class="username-container">
+            <div class="username-div">
               <span><b>${data.hostText}</b> ${moderator.userData.username}</span>
             </div>
           </div>
