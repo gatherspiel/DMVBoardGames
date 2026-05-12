@@ -96,7 +96,7 @@ export class GroupListComponent extends BaseDynamicComponent {
     return `
       <li>
 				<a class="btn secondary" href=${url}>${group.name}</a>
-				       
+				<span class="group-search-details">${groupCitiesStr}</span>	       
         ${hasRecurringEventDays ? `<span class="group-search-details"><b>Days:</b> ${group.recurringEventDays.join(", ")}</span>` : ``}  
         ${hasGameTypeTags ? `<span class="group-search-details"><b>Game types:</b> ${group.gameTypeTags.join(", ")}</span>` : ``}  
       </li>
