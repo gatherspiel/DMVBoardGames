@@ -309,8 +309,8 @@ export class SearchComponent extends BaseDynamicComponent {
 							${store.loginState?.loggedIn && !isGroupSearch ? 
 								
 								`${
-									store[EANBLE_SEARCH_TOGGLE_KEY]
-									?	`<button class="btn primary" id="${SEARCH_USER_GROUOPS_BUTTON_ID}">Search joined groups</button>`
+									store[ENABLE_SEARCH_TOGGLE_KEY]
+									?	`<button class="btn primary" id="${SEARCH_USER_GROUPS_BUTTON_ID}">Search joined groups</button>`
 									: `<button class="btn muted" id="disabled-search-button-joined">Search joined groups</button>` 
 								}	`
 								:``

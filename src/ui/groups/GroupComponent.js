@@ -67,11 +67,9 @@ export class GroupComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style>
-        button {
-          margin-top:0.5rem;
-        }
+      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
+			<link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style> 
         #edit-group-form {
           margin-top:0.5rem;
           margin-bottom:1rem;
@@ -92,22 +90,13 @@ export class GroupComponent extends BaseDynamicComponent {
         }
         #other-events-header {
           margin-top: 0.5rem;
-        }
-        #recurring-events-separator {
-          margin-left: -1.5rem;
-        }  
+        } 
         .add-event-button {
           margin-top:0.5rem;
         }
         .event {
           padding-top: 1rem;
           padding-bottom: 0.5rem;
-        }
-        .event p {
-          max-width: 65ch;
-          margin-top: 0.5rem;
-          word-wrap: break-word;
-          white-space: normal;
         }
         .${GROUP_DESCRIPTION} a:hover {
           background-color: var(--clr-very-light-blue)
@@ -306,7 +295,8 @@ export class GroupComponent extends BaseDynamicComponent {
     }
     const self = this;
     return `
-        <div id="user-actions-menu" style="${groupData.permissions.userCanUpdateGroupMembership ? `` : `display:none`}">
+			<div class="container-xl"> 
+				<div id="user-actions-menu" style="${groupData.permissions.userCanUpdateGroupMembership ? `` : `display:none`}">
           <nav  id="user-actions-menu-raised" class="raised">
             <span class="shadow"></span>
               <span class="edge"></span>
@@ -328,11 +318,7 @@ export class GroupComponent extends BaseDynamicComponent {
           ? `
           ${
             groupData.url
-              ? generateLinkButton({
-                  class: "group-webpage-link",
-                  text: "Group website",
-                  url: groupData.url,
-                })
+              ? `<a class="secondary btn" href=${groupData.url}">Group website</a>`
               : ""
           }
         ${groupData.imagePath ? `<img id="group-image" src="${groupData.imagePath}"/>` : ``}
@@ -463,13 +449,11 @@ export class GroupComponent extends BaseDynamicComponent {
 
   renderWeeklyEventData(eventData, groupId, key) {
     const dayString = convertDayOfWeekForDisplay(eventData.day);
+		const url = `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`;
 
     return `
       <div id=${key} class="event">
-        ${generateLinkButton({
-          text: eventData.name,
-          url: `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`,
-        })}
+				<a class="btn secondary" href="${url}">${eventData.name}</a> 
         <rsvp-component
           current-user-rsvp=${eventData.userHasRsvp}
           event-id=${eventData.id}
@@ -488,12 +472,10 @@ export class GroupComponent extends BaseDynamicComponent {
   }
 
   renderOneTimeEventData(eventData, groupId, key) {
-    return `
+		const url = `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
+					return `
       <div id=${key} class="event">
-        ${generateLinkButton({
-          text: eventData.name,
-          url: `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`,
-        })}
+				<a class="btn secondary" href=${url}>${eventData.name}</a>   
         <p class = "event-time">${eventData.startDate} ${eventData.startTime}</p>
         <p class = "event-location">Location: ${eventData.location}</p>
       </div>

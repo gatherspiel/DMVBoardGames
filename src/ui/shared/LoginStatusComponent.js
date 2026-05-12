@@ -14,17 +14,19 @@ export class LoginStatusComponent extends BaseDynamicComponent {
   }
 
   getTemplateStyle() {
-    return `<style>
-         </style>`;
+    return `	
+			<link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
+			<style>
+			</style>`;
   }
 
   render(authData) {
     if (!authData.loggedIn) {
       return `
-        <a href="/html/user/login.html">Login</a>
+				<a class="btn secondary" href="/html/user/login.html">Login</a>
 				&nbsp 
-				<a href="/html/user/createAccount.html">New account</a>
-      `;
+				<a class="btn secondary" href="/html/user/createAccount.html">New account</a>
+				`;
     }
 
     return `
@@ -45,33 +47,26 @@ class LoginStatusComponentInner extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-
+      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
+			<link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
-        a {
-          color: white;
-          text-decoration: none;;
-        }
         #user-image-icon {
           clip-path: circle();
-          height:3rem;
+          height:2rem;
         }
-        @media not screen and (width < 32em) {
+				.navbar {
+					padding:0;
+				}
+				@media not screen and (width < 32em) {
           a {
             margin-left:0.75rem;
+						margin-right:0.75rem;
           }
           p {
             display: inline-block;
           }
-          #edit-profile-div {
-            float:right;
-            margin-right:1rem;
-          }
           #links-container div{
             display: inline-block;
-          }
-          #signout-link {
-            float:right;
           }
           #user-text-container {
             margin-top:0.5rem;
@@ -82,6 +77,8 @@ class LoginStatusComponentInner extends BaseDynamicComponent {
           }
           #user-image-container, #username-container {
             display: inline-block;
+						max-height:2rem;	
+						vertical-align:center;
           }
           #username-container {
             font-size:1rem;
@@ -134,25 +131,15 @@ class LoginStatusComponentInner extends BaseDynamicComponent {
   }
 
   render(userData) {
-    return `
+		return `
       <div id="login-status-container">
-        <div id="links-container">
-          <div></div>
-          <div id="${SIGN_OUT_LINK_ID}">Sign out</div>
 
-          <div id="edit-profile-div"><a href="/html/user/editProfile.html">Edit profile</a></div>
-        </div>
-        <div id="user-text-container">
-          <div id="user-text-container-inner">
-              <div id="user-text-container-filler"></div>
-              <div id="user-image-container">
-                ${userData.imageFilePath ? `<img id="user-image-icon" src="${userData.imageFilePath}"/>` : ``}
-              </div>
-              <div id="username-container">
-                <span>${userData.username || this.getAttribute("email")}</span>
-              </div>
-          </div>
-        </div>
+				<div class="btn secondary" id="${SIGN_OUT_LINK_ID}">Sign out</div>
+				<a class="btn secondary" href="/html/user/editProfile.html">Edit profile</a>
+				<span>${userData.username || this.getAttribute("email")}</span>
+			  ${userData.imageFilePath ? `<div id="user-image-container"><img class="avatar" id="user-image-icon" src="${userData.imageFilePath}"/></div>` : ``}
+
+				</div>
       </div>
     `;
   }
