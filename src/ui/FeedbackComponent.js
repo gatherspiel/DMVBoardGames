@@ -10,7 +10,6 @@ import {
 } from "../shared/html/StatusIndicators.js";
 
 import { API_ROOT } from "./shared/Params.js";
-import { generateButton } from "../shared/html/ButtonGenerator.js";
 
 const ENTER_NAME_INPUT_ID = "enter-name-input-id";
 const ENTER_EMAIL_INPUT_ID = "enter-email-input-id";
@@ -44,7 +43,6 @@ export class FeedbackComponent extends BaseDynamicComponent {
             display: inline-block;
           }  
           #feedback-type-select  > :not(:first-child) {
-            border-left: 1px solid black;
             padding-left: 0.25rem;
           } 
         
@@ -184,13 +182,7 @@ export class FeedbackComponent extends BaseDynamicComponent {
 						<input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="feature_enhancement" ${data?.checkedState?.["feature_enhancement"]}>
 						</div>
 					</div>
-			 
-				 ${generateButton({
-					 id: SUBMIT_FEEDBACK_ID,
-					 text: "Submit",
-					 type: "submit",
-				 })}
-					
+					<button class="primary" id=${SUBMIT_FEEDBACK_ID} type="submit">Submit</button> 
 				</form>
 			</div>
     `;
