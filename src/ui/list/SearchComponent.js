@@ -54,7 +54,9 @@ export class SearchComponent extends BaseDynamicComponent {
     ]);
 
     this.initialParams = new URLSearchParams(document.location.search);
-
+		
+		console.log("Searching with url:"+this.getAttribute("api-url"));
+			
     this.defaultSearchParams = {
       apiUrl: this.getAttribute("api-url"),
       cityList:[DEFAULT_SEARCH_PARAMETER],
