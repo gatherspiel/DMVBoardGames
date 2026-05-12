@@ -8,13 +8,6 @@
     <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
 
-    <style>
-      h1,
-      h2 {
-        margin-top: 1rem;
-        margin-bottom: 0.5rem;
-      }
-    </style>
     <script defer fetchpriority="low" type="module">
       import { GetGameAdvice } from "../../beta/getGameAdvice.js";
       import { LoginStatusComponent } from "../../ui/shared/LoginStatusComponent.js";
@@ -23,18 +16,17 @@
     </script>
   </head>
   <body>
-    <div id="container">
-      {{>navbar}}
-      <div>
-        <h1>Vision</h1>
+		{{>navbar}}
+    <div class="container-xl">
+    <h1>Vision</h1>
 
-        <p>
-          <b>
-            The goal of dmvboardgames.com is to promote human connection through
-            board games as a way of increasing interest in public spaces. To
-            promote this goal, these guidelines wil be followed for any changes.
-          </b>
-        </p>
+		<p>
+			<b>
+				The goal of dmvboardgames.com is to promote human connection through
+				board games as a way of increasing interest in public spaces. To
+				promote this goal, these guidelines wil be followed for any changes.
+			</b>
+		</p>
 
         <h2>Support for in person interaction</h2>
 
@@ -86,5 +78,6 @@
       </div>
       <div id="bot-container"></div>
     </div>
-  </body>
+		{{>footer}}
+	</body>
 </html>

@@ -14,11 +14,6 @@ import {
 } from "./Constants.js";
 
 import {
-  generateButton,
-  generateLinkButton,
-} from "../../shared/html/ButtonGenerator.js";
-
-import {
   getGameTypeTagSelectHtml,
   getTagSelectedState,
 } from "../../shared/html/SelectGenerator.js";
@@ -72,17 +67,12 @@ export class GroupComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style>
-        button {
-          margin-top:0.5rem;
-        }
+      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
+			<link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style> 
         #edit-group-form {
           margin-top:0.5rem;
           margin-bottom:1rem;
-        }
-        #game-type-tag-select > :not(:first-child) {
-          padding-left: 0.25rem;
         }
         #group-description-text {
           margin-top:0.5rem;
@@ -97,22 +87,13 @@ export class GroupComponent extends BaseDynamicComponent {
         }
         #other-events-header {
           margin-top: 0.5rem;
-        }
-        #recurring-events-separator {
-          margin-left: -1.5rem;
-        }  
+        } 
         .add-event-button {
           margin-top:0.5rem;
         }
         .event {
           padding-top: 1rem;
           padding-bottom: 0.5rem;
-        }
-        .event p {
-          max-width: 65ch;
-          margin-top: 0.5rem;
-          word-wrap: break-word;
-          white-space: normal;
         }
         .${GROUP_DESCRIPTION} a:hover {
           background-color: var(--clr-very-light-blue)
@@ -172,10 +153,6 @@ export class GroupComponent extends BaseDynamicComponent {
           .delete-button {
             margin-top: 0.5rem;
           }  
-          .label-border-left {
-            border-top:1px solid;
-            border-left:none;
-          }
           .raised {
             margin-left:2rem;
             margin-right:2rem;
@@ -246,7 +223,7 @@ export class GroupComponent extends BaseDynamicComponent {
         });
       } else if (targetId === SAVE_UPDATES_BUTTON_ID) {
         const validationErrorState = { [SUCCESS_MESSAGE_KEY]: "" };
-        const groupName = shadowRoot.getElementById(GROUP_NAME_INPUT);
+        const groupName = shadowRoot.getElementById(GROUP_NAME_INPUT)?.value;
         if (!groupName || groupName.length === 0) {
           validationErrorState[NAME_ERROR_TEXT_KEY] =
             "Name is a required field";
@@ -311,16 +288,11 @@ export class GroupComponent extends BaseDynamicComponent {
     }
     const self = this;
     return `
-        <div id="user-actions-menu" style="${groupData.permissions.userCanUpdateGroupMembership ? `` : `display:none`}">
-          <nav  id="user-actions-menu-raised" class="raised">
-            <span class="shadow"></span>
-              <span class="edge"></span>
-              <span class="front" id="user-actions-front">
-              <div class="top-nav-secondary">
-                ${this.renderUserUi(groupData)}
-              </div>
-            </span>
-          </nav>
+			<div class="container-xl"> 
+				<div id="user-actions-menu" style="${groupData.permissions.userCanUpdateGroupMembership ? `` : `display:none`}">
+					<div> 
+						${this.renderUserUi(groupData)}
+					</div>
         </div>
 
   
@@ -333,11 +305,7 @@ export class GroupComponent extends BaseDynamicComponent {
           ? `
           ${
             groupData.url
-              ? generateLinkButton({
-                  class: "group-webpage-link",
-                  text: "Group website",
-                  url: groupData.url,
-                })
+              ? `<a class="secondary btn" href=${groupData.url}">Group website</a>`
               : ""
           }
         ${groupData.imagePath ? `<img id="group-image" src="${groupData.imagePath}"/>` : ``}
@@ -418,7 +386,7 @@ export class GroupComponent extends BaseDynamicComponent {
         <label class="">Image(optional)</label>
        
         <div class ="form-section" id="image-upload">
-          image-upload-component
+          <image-upload-component
             id="image-upload-ui"
             image-path="${groupData.imagePath}"
           ></image-upload-component>
@@ -432,16 +400,9 @@ export class GroupComponent extends BaseDynamicComponent {
         </div>
     
         ${getGameTypeTagSelectHtml(groupData.gameTypeTags)}
-        
-        ${generateButton({
-          id: SAVE_UPDATES_BUTTON_ID,
-          text: "Submit",
-          type: "submit",
-        })}
-        ${generateButton({
-          id: CANCEL_UPDATES_BUTTON_ID,
-          text: "Cancel",
-        })}
+				<button class="primary" id=${SAVE_UPDATES_BUTTON_ID}>Save</button>
+				<button class="primary" id=${CANCEL_UPDATES_BUTTON_ID}>Cancel</button>
+  
       </form>`;
   }
 
@@ -455,26 +416,24 @@ export class GroupComponent extends BaseDynamicComponent {
       ${
         groupData.permissions.userCanEdit
           ? `
-        <span id="${EDIT_GROUP_BUTTON_ID}">Edit group information</span>
-        <a href="/html/groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}">Add event</a>
-        <a href="/html/groups/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}">Delete group</a>
+        <button class="secondary "id="${EDIT_GROUP_BUTTON_ID}">Edit group information</button>
+        <a class="btn secondary" href="/html/groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}">Add event</a>
+        <a class="btn secondary" href="/html/groups/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}">Delete group</a>
       `
           : ``
       }
-      <span id="${JOIN_GROUP_BUTTON_ID}">${joinGroupText}</span>
+      <button class="secondary" id="${JOIN_GROUP_BUTTON_ID}">${joinGroupText}</span>
 
     `;
   }
 
   renderWeeklyEventData(eventData, groupId, key) {
     const dayString = convertDayOfWeekForDisplay(eventData.day);
+		const url = `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`;
 
     return `
       <div id=${key} class="event">
-        ${generateLinkButton({
-          text: eventData.name,
-          url: `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`,
-        })}
+				<a class="btn secondary" href="${url}">${eventData.name}</a> 
         <rsvp-component
           current-user-rsvp=${eventData.userHasRsvp}
           event-id=${eventData.id}
@@ -493,12 +452,10 @@ export class GroupComponent extends BaseDynamicComponent {
   }
 
   renderOneTimeEventData(eventData, groupId, key) {
-    return `
+		const url = `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
+					return `
       <div id=${key} class="event">
-        ${generateLinkButton({
-          text: eventData.name,
-          url: `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`,
-        })}
+				<a class="btn secondary" href=${url}>${eventData.name}</a>   
         <p class = "event-time">${eventData.startDate} ${eventData.startTime}</p>
         <p class = "event-location">Location: ${eventData.location}</p>
       </div>

@@ -33,18 +33,9 @@
     <title>Search groups</title>
   </head>
   <body>
-    <div id="container">
-      {{>navbar}}
-      <div id="user-actions-menu">
-        <nav class="raised">
-          <span class="shadow"></span>
-          <span class="edge"></span>
-          <span class="front" id="user-actions-front">
-            <user-actions-component> </user-actions-component>
-          </span>
-        </nav>
-      </div>
-      <search-component
+    {{>navbar}}
+     <user-actions-component> </user-actions-component>
+			<search-component
         api-url="/searchGroups"
         class="ui-section"
         search-text="Search for board game groups"

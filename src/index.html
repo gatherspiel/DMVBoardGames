@@ -35,25 +35,15 @@
     <title>DMV Board Games</title>
   </head>
   <body>
-    <div id="container">
       {{>navbar}}
-      <div id="user-actions-menu">
-        <nav class="raised">
-          <span class="shadow"></span>
-          <span class="edge"></span>
-          <span class="front" id="user-actions-front">
-            <user-actions-component> </user-actions-component>
-          </span>
-        </nav>
-      </div>
+      <user-actions-component> </user-actions-component>
       <search-component
         api-url="/searchEvents"
         class="ui-section"
-        search-text="Search for board game events"
+        search-text="Search events"
       >
       </search-component>
       <event-list-component></event-list-component>
-    </div>
 
     <div id="bot-container"></div>
     {{>footer}}

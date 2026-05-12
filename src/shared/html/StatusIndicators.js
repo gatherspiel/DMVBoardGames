@@ -13,7 +13,7 @@ export function generateErrorMessage(message) {
 
 export function generateSuccessMessage(message) {
   return `
-    ${message ? `<span class="success-message">${message}</span>` : ""}
+    ${message ? `<div class="callout success">${message}</div>` : ""}
   `;
 }
 

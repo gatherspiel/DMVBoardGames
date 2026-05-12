@@ -7,17 +7,15 @@ export class FaqComponent extends BaseTemplateComponent {
   getTemplateStyle() {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
 
-      <style>
-        h1 {
-          margin-top:1rem;
-        }
-      </style>
+
     `;
   }
   render() {
     return `
-     <h1>FAQ</h1>
+		 <div class="container-xl"> 
+		 <h1>FAQ</h1>
       
     
     
@@ -108,6 +106,7 @@ export class FaqComponent extends BaseTemplateComponent {
          
       <h4>How can I share search results or group information on my own site?</h4>
       <p>dmvboardgames.com includes an API that can be used to access information.  Email gulu@createthirdplaces.org for more details.</p>
-    `;
+		</div>
+`;
   }
 }
