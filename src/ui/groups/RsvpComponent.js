@@ -41,7 +41,7 @@ export class RsvpComponent extends BaseDynamicComponent {
     const self = this;
 
     shadowRoot.addEventListener("click", (event) => {
-      if (event.target.className == "front") {
+      if (event.target.id == "event-rsvp-button") {
         if (!self.componentStore.userHasRsvp) {
           ApiLoadAction.getResponseData({
             method: ApiActionType.POST,
@@ -98,7 +98,8 @@ export class RsvpComponent extends BaseDynamicComponent {
      ${
        this.getAttribute("user-can-update-rsvp") !== "false"
          ? `<button 
-        class="secondary"
+				id="event-rsvp-button" 
+				class="secondary"
       > ${rsvpButtonText} 
       </button>`
          : ``
