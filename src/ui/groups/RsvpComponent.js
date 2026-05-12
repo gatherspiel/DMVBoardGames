@@ -33,7 +33,8 @@ export class RsvpComponent extends BaseDynamicComponent {
 			<link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
 
       <style>
-      </style>
+      
+			</style>
     `;
   }
 

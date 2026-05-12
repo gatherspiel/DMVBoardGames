@@ -244,8 +244,10 @@ export class SearchComponent extends BaseDynamicComponent {
 
   render(store) {
 
-    const isGroupSearch = this.getAttribute("search-text") === 'Search board game groups';
-    const searchAllText = !isGroupSearch && store.loginState?.loggedIn === true ?
+    const isGroupSearch = this.getAttribute("search-text") === 'Search for board game groups';
+		console.log(this.getAttribute("search-text"));	
+		console.log(isGroupSearch); 
+		const searchAllText = !isGroupSearch && store.loginState?.loggedIn === true ?
        "Search all events" : "Search"
     const searchInputsClass =
       store.location && store.location !== DEFAULT_SEARCH_PARAMETER
