@@ -111,7 +111,7 @@ export function getGameTypeTagSelectHtml(checkState) {
   let i = 0;
   tags.forEach((tagName) => {
     html += `
-      <label for=${tagName} ${i > 0 ? `class="label-border-left" ` : ``}> ${tagName}</label>
+      <label for=${tagName} ${i > 0 ? `class="" ` : ``}> ${tagName}</label>
       <input id="${tagName}" name=${tagName} type="checkbox" ${checkState?.[tagName]}> 
     `;
     i++;

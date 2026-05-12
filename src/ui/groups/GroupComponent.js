@@ -74,9 +74,6 @@ export class GroupComponent extends BaseDynamicComponent {
           margin-top:0.5rem;
           margin-bottom:1rem;
         }
-        #game-type-tag-select > :not(:first-child) {
-          padding-left: 0.25rem;
-        }
         #group-description-text {
           margin-top:0.5rem;
           margin-bottom:1rem;
@@ -156,10 +153,6 @@ export class GroupComponent extends BaseDynamicComponent {
           .delete-button {
             margin-top: 0.5rem;
           }  
-          .label-border-left {
-            border-top:1px solid;
-            border-left:none;
-          }
           .raised {
             margin-left:2rem;
             margin-right:2rem;
@@ -230,7 +223,7 @@ export class GroupComponent extends BaseDynamicComponent {
         });
       } else if (targetId === SAVE_UPDATES_BUTTON_ID) {
         const validationErrorState = { [SUCCESS_MESSAGE_KEY]: "" };
-        const groupName = shadowRoot.getElementById(GROUP_NAME_INPUT);
+        const groupName = shadowRoot.getElementById(GROUP_NAME_INPUT)?.value;
         if (!groupName || groupName.length === 0) {
           validationErrorState[NAME_ERROR_TEXT_KEY] =
             "Name is a required field";
@@ -297,15 +290,9 @@ export class GroupComponent extends BaseDynamicComponent {
     return `
 			<div class="container-xl"> 
 				<div id="user-actions-menu" style="${groupData.permissions.userCanUpdateGroupMembership ? `` : `display:none`}">
-          <nav  id="user-actions-menu-raised" class="raised">
-            <span class="shadow"></span>
-              <span class="edge"></span>
-              <span class="front" id="user-actions-front">
-              <div class="top-nav-secondary">
-                ${this.renderUserUi(groupData)}
-              </div>
-            </span>
-          </nav>
+					<div> 
+						${this.renderUserUi(groupData)}
+					</div>
         </div>
 
   
@@ -399,7 +386,7 @@ export class GroupComponent extends BaseDynamicComponent {
         <label class="">Image(optional)</label>
        
         <div class ="form-section" id="image-upload">
-          image-upload-component
+          <image-upload-component
             id="image-upload-ui"
             image-path="${groupData.imagePath}"
           ></image-upload-component>
@@ -413,16 +400,9 @@ export class GroupComponent extends BaseDynamicComponent {
         </div>
     
         ${getGameTypeTagSelectHtml(groupData.gameTypeTags)}
-        
-        ${generateButton({
-          id: SAVE_UPDATES_BUTTON_ID,
-          text: "Submit",
-          type: "submit",
-        })}
-        ${generateButton({
-          id: CANCEL_UPDATES_BUTTON_ID,
-          text: "Cancel",
-        })}
+				<button class="primary" id=${SAVE_UPDATES_BUTTON_ID}>Save</button>
+				<button class="primary" id=${CANCEL_UPDATES_BUTTON_ID}>Cancel</button>
+  
       </form>`;
   }
 
@@ -436,13 +416,13 @@ export class GroupComponent extends BaseDynamicComponent {
       ${
         groupData.permissions.userCanEdit
           ? `
-        <span id="${EDIT_GROUP_BUTTON_ID}">Edit group information</span>
-        <a href="/html/groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}">Add event</a>
-        <a href="/html/groups/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}">Delete group</a>
+        <button class="secondary "id="${EDIT_GROUP_BUTTON_ID}">Edit group information</button>
+        <a class="btn secondary" href="/html/groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}">Add event</a>
+        <a class="btn secondary" href="/html/groups/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}">Delete group</a>
       `
           : ``
       }
-      <span id="${JOIN_GROUP_BUTTON_ID}">${joinGroupText}</span>
+      <button class="secondary" id="${JOIN_GROUP_BUTTON_ID}">${joinGroupText}</span>
 
     `;
   }

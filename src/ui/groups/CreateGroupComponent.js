@@ -5,10 +5,6 @@ import {
 } from "./Constants.js";
 import { IS_LOGGED_IN_KEY, LOGIN_STORE } from "../../data/user/LoginStore.js";
 import {
-  generateButton,
-  generateDisabledButton,
-} from "../../shared/html/ButtonGenerator.js";
-import {
   generateErrorMessage,
   generateSuccessMessage,
 } from "../../shared/html/StatusIndicators.js";
@@ -56,7 +52,8 @@ export class CreateGroupComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
+			<link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
         button {
           display: block;
@@ -174,9 +171,8 @@ export class CreateGroupComponent extends BaseDynamicComponent {
 
   render(data) {
     return `
-      <div id="create-group-container">
+      <div class="container-xl">
         <h1>Create group</h1>
-        <div class="section-separator-small" ></div>  
 
               <form id="create-group-form" onsubmit="return false" style="${data.loggedIn ? `` : `display:none`}">
                 <div id="form-status-div">
@@ -222,16 +218,9 @@ export class CreateGroupComponent extends BaseDynamicComponent {
                 
                 ${
                   data[AGREE_RULES_ID]
-                    ? generateButton({
-                        id: CREATE_GROUP_BUTTON_ID,
-                        text: "Create group",
-                        type: "submit",
-                      })
-                    : generateDisabledButton({
-                        text: "Create group",
-                      })
+                    ? `<button class="primary" id=${CREATE_GROUP_BUTTON_ID}>Create group</button>`
+										: `<button class="muted">Create group</button>`
                 }
-                <div class="section-separator-medium"></div>
                 <site-rules-component></site-rules-component>
                 <faq-component></faq-component>
               </form>
