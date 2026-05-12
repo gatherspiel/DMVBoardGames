@@ -80,16 +80,14 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         }   
         #delete-event-form {
           margin-top:1rem;
-        }
+					margin-bottom:1em; 
+				}
         #event-description b, #event-description h1, #event-description h2,#event-description h3,#event-description h4,#event-description li, #event-description p {
           color: var(--clr-darker-blue);
           text-align: left;
         }
         #event-details-header {
           margin-top:0.5rem;
-        }
-        #form-status-success {
-          padding-left: 1.5rem;
         }
         .back-to-group-button {
           margin-top: 0.5rem;
@@ -135,7 +133,10 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             margin-top: 0.5rem;
             width:63rem;
           }
-          #user-actions-menu {
+					#${SAVE_EVENT_BUTTON_ID} {
+						margin-bottom:0.5em;
+					}
+					#user-actions-menu {
             margin-bottom: 0.5rem;
           }
         } 
@@ -302,17 +303,11 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     let html = `
       <div class="container-xl fade-in-animation">
       <div id = "user-actions-menu">
-        <nav id="user-actions-menu-raised" class="raised" 
+        <nav id="user-actions-menu-raised"
              style="${!data.isEditing && !data.isDeleting && data?.permissions?.userCanEdit ? `` : `display:none`}">
-          <span class="shadow"></span>
-          <span class="edge"></span>
-          <span class="front" id="user-actions-front">
-              <div class="top-nav-secondary">
-                <span id="${EDIT_EVENT_BUTTON_ID}">Edit event</span>
-                <span id="${DELETE_EVENT_BUTTON_ID}">Delete event</span>
-              </div>
-          </span>
-        </nav>
+					<button class="secondary" id="${EDIT_EVENT_BUTTON_ID}">Edit event</button>
+					<button class="secondary" id="${DELETE_EVENT_BUTTON_ID}">Delete event</button>
+				</nav>
       </div>
       
       <div id="form-status-success">
@@ -342,15 +337,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       <div class="ui-section" style="${!data[SUCCESS_MESSAGE_KEY] ? `` : `display:none`}" >
         <h1>Are you sure you want to delete event ${data.name} ${data.isRecurring ? "" : `on ${data.startTime}`}</h1>
         <div id="delete-event-form">
-            ${generateButton({
-              id: CONFIRM_DELETE_BUTTON_ID,
-              text: "Confirm delete",
-            })}
-          
-          ${generateButton({
-            id: CANCEL_DELETE_BUTTON_ID,
-            text: "Cancel",
-          })}     
+					<button id=${CONFIRM_DELETE_BUTTON_ID}>Confirm delete</button>       
+					<button id=${CANCEL_DELETE_BUTTON_ID}>Cancel</button>       
         </div>
       </div>
     `;
@@ -449,10 +437,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           />
           </input>  
         </div> 
-        ${generateButton({
-          id: SAVE_EVENT_BUTTON_ID,
-          text: "Save event",
-        })}
+				<button class="primary" id=${SAVE_EVENT_BUTTON_ID}>Save event</button>   
       </form>
     </div>
    `;

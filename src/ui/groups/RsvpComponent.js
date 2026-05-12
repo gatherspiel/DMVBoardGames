@@ -29,7 +29,8 @@ export class RsvpComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
+			<link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
 
       <style>
       </style>
@@ -97,10 +98,8 @@ export class RsvpComponent extends BaseDynamicComponent {
      ${
        this.getAttribute("user-can-update-rsvp") !== "false"
          ? `<button 
-        class="raised activeHover"
-      >  
-        <span class="edge"></span>
-        <span class="front">${rsvpButtonText}</span>   
+        class="secondary"
+      > ${rsvpButtonText} 
       </button>`
          : ``
      }
