@@ -11,11 +11,9 @@
     <script defer fetchpriority="low" type="module">
       import {BaseCodeDisplayComponent} from "../../shared/components/BaseCodeDisplayComponent.js";
       import {ImageUploadExampleSection} from "./sections/ImageUploadExampleSection.js";
-      import {ShadowDomComponent} from "../../shared/components/ShadowDomComponent.js";
 
       customElements.define("base-code-display-component",BaseCodeDisplayComponent);
       customElements.define("image-upload-example-section",ImageUploadExampleSection);
-      customElements.define("shadow-dom-component", ShadowDomComponent);
 
       import { GetGameAdvice } from "../../beta/getGameAdvice.js";
 
@@ -25,9 +23,8 @@
     </script>
   </head>
   <body>
-    <div id="container">
-      {{>navbar}}
-
+    {{>navbar}}
+		<div class="container-xl">
         <style>
             .website-screenshot {
                 border: 1px solid black;
@@ -116,9 +113,6 @@
 
         <image-upload-example-section></image-upload-example-section>
 
-        <pre>
-
-        </pre>
       <div id="bot-container"></div>
     </div>
   </body>

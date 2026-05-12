@@ -12,19 +12,15 @@
 
   <script type="module">
     import {ImageHoverComponent} from '../../../shared/components/ImageHoverComponent.js'
-    import {ShadowDomComponent} from "../../../shared/components/ShadowDomComponent.js";
 
     customElements.define('image-hover-component', ImageHoverComponent);
-    customElements.define('shadow-dom-component', ShadowDomComponent);
 
   </script>
   <title>Manual Testing</title>
 </head>
 <body>
-<div id="container">
   {{>navbar}}
-
-  <shadow-dom-component>
+	<div class="container-xl">
       <h1>Thoughts on manual testing</h1>
         <a href="/html/static/code.html">Back to technical details</a>
         <h3>This page contains some thoughts on manual testing and why I think it is important when automated testing
