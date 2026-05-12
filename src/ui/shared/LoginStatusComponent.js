@@ -108,7 +108,11 @@ class LoginStatusComponentInner extends BaseDynamicComponent {
           #edit-profile-div {
             margin-top:0.5rem;
           }
-          #user-text-container {
+					#signout-link {
+						margin-top:0.5rem;
+						margin-bottom:0.5rem;	
+					}
+					#user-text-container {
             margin-bottom:1.5rem;
           }
           #user-text {
