@@ -30,6 +30,8 @@ export class RsvpComponent extends BaseDynamicComponent {
   getTemplateStyle() {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
+
 
       <style>
       </style>
@@ -40,7 +42,7 @@ export class RsvpComponent extends BaseDynamicComponent {
     const self = this;
 
     shadowRoot.addEventListener("click", (event) => {
-      if (event.target.className == "front") {
+      if (event.target.className == "primary") {
         if (!self.componentStore.userHasRsvp) {
           ApiLoadAction.getResponseData({
             method: ApiActionType.POST,
@@ -97,10 +99,9 @@ export class RsvpComponent extends BaseDynamicComponent {
      ${
        this.getAttribute("user-can-update-rsvp") !== "false"
          ? `<button 
-        class="raised activeHover"
+        class="primary"
       >  
-        <span class="edge"></span>
-        <span class="front">${rsvpButtonText}</span>   
+        ${rsvpButtonText}
       </button>`
          : ``
      }
