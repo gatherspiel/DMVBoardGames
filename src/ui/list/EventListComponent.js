@@ -52,9 +52,6 @@ export class EventListComponent extends BaseDynamicComponent {
             display: inline-block;
             margin-left: 2rem;
           }
-          .raised {
-            display: inline-block;
-          } 
         }  
         @media screen and (width < 32em) { 
 					li {

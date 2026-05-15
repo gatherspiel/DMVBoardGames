@@ -91,10 +91,6 @@ class LoginStatusComponentInner extends BaseDynamicComponent {
           #user-text-container-inner {
             display: flex;
           }
-          .raised {
-            display: inline-block;
-          }
-  
         }
         @media screen and (width < 32em) {
           p {
@@ -117,9 +113,6 @@ class LoginStatusComponentInner extends BaseDynamicComponent {
           }
           #user-text {
             margin-top:1rem;
-          }
-          .raised {
-            margin-top:0.5rem;
           }
         }  
       </style>

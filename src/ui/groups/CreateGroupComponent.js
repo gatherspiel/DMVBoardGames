@@ -80,9 +80,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
         #rules-content {
           margin-top:1rem;
         }
-        .raised {
-          margin-top:0.5rem;
-        }
+ 
         @media screen and (width < 32em) {
           #group-description-input {
             width:330px;

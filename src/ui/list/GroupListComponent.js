@@ -28,17 +28,13 @@ export class GroupListComponent extends BaseDynamicComponent {
 			<link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
       <style>
        li {
-          padding-bottom: 1rem;
-          padding-top:1rem;
+          padding-bottom: 0.25rem;
+          padding-top:0.25rem;
         }
       
         ul {
           list-style:url(/assets/images/meeple_small.png);
-          margin-top:0;
           padding-left:1.5rem;
-        }
-        .button-div {
-          display: flex;
         }
         .group-search-details {
           display:block;
@@ -52,14 +48,11 @@ export class GroupListComponent extends BaseDynamicComponent {
             display: inline-block;
             margin-left: 2rem;
           }
-          .raised {
-            display: inline-block;
-          } 
         }  
         @media screen and (width < 32em) {
-          a {
-            margin-top: 1rem;
-          }
+					ul {
+						margin-top: -1em;
+					}
           #group-search-results-header {
             text-align: center;
           }
@@ -69,13 +62,7 @@ export class GroupListComponent extends BaseDynamicComponent {
 					.group-cities {
             display: none; 
           }
-          .ui-section .event-group:not(:first-child) {
-            margin-top: 0.5rem;
-          }
-          .raised {
-            margin-top: 0.5rem;
 
-          }
         } 
       </style>
     `;

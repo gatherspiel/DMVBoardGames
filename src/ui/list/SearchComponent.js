@@ -50,7 +50,21 @@ export class SearchComponent extends BaseDynamicComponent {
       {
         dataStore: LOGIN_STORE,
         fieldName: "loginState"
-      }
+      },
+			{
+				componentReducer:(data)=> {
+					
+					if(data.eventData && data.eventData.length > 0){
+						return false;
+					}	
+					if(data.groupData && data.groupData.length > 0){
+						return false;
+					}
+					return true;
+				},
+				dataStore: SEARCH_RESULTS_LIST_STORE,
+				fieldName: "showSearchUiMobile"
+			}
     ]);
 
     this.initialParams = new URLSearchParams(document.location.search);
@@ -133,12 +147,10 @@ export class SearchComponent extends BaseDynamicComponent {
             margin-bottom: 0.5rem;
           }
 			
-					#search-form {
-						margin-bottom:-1.5rem;
-					}
 					
 					.container-xl {
 						margin-top: -2.5rem;
+						margin-bottom: 1.5rem;	
 					}
 					
 					.searchDropdownLabel {
@@ -163,7 +175,6 @@ export class SearchComponent extends BaseDynamicComponent {
     const self = this;
 		
 		shadowRoot.addEventListener("change", (event) => {
-			console.log("Change"); 
 			const eventTarget = event.target;
 
       if (eventTarget.id === SEARCH_CITY_ID) {
@@ -175,7 +186,8 @@ export class SearchComponent extends BaseDynamicComponent {
         self.updateData({
           [ENABLE_SEARCH_TOGGLE_KEY]: true,
           distance: eventTarget.value,
-        });
+					showSearchUiMobile: true 
+				});
       }
     });
 
@@ -183,7 +195,6 @@ export class SearchComponent extends BaseDynamicComponent {
 		shadowRoot.addEventListener("click", (event) => {
 			
 			if (event.target.type === "checkbox") {
-				console.log(event.target);	
 				const selectedDaysState = getDaysOfWeekSelectedState(shadowRoot);
 			
 				if(event.target.checked){
@@ -194,13 +205,13 @@ export class SearchComponent extends BaseDynamicComponent {
 					}	
 				}
 				
-				console.log("Selected day state:"+JSON.stringify(selectedDaysState)); 
 				self.updateData({
           [ENABLE_SEARCH_TOGGLE_KEY]: true,
           days:
             Object.keys(selectedDaysState).length > 0
               ? selectedDaysState
               : null,
+					showSearchUiMobile: true
         });
       }
       if (event.target.id === SEARCH_BUTTON_ID || event.target.id === SEARCH_USER_GROUPS_BUTTON_ID) {
@@ -220,6 +231,7 @@ export class SearchComponent extends BaseDynamicComponent {
 
         self.updateData({
           [ENABLE_SEARCH_TOGGLE_KEY]: false,
+					showSearchUiMObile: false
         });
 
         const baseUrl = window.location.origin.split("?");
@@ -233,46 +245,48 @@ export class SearchComponent extends BaseDynamicComponent {
           ...searchParams,
           ...{ apiUrl: self.getAttribute("api-url") ?? "" },
         });
-      }
-      if (event.target.id === SHOW_DAY_SELECT) {
-        self.updateData({
-          showDaySelectOnMobile: !self.componentStore.showDaySelectOnMobile,
-        });
-      }
+      } 
     });
   }
 
   render(store) {
 
+		if(window.matchMedia("(max-width: 32em)").matches){
+			return `
+				<div class="container-xl">
+					<details ${store.showSearchUiMobile ? "open":""}>
+						<summary class="size-5xl">${this.getAttribute("search-text")}</summary>
+						${this.renderSearchForm(store)}
+						</hr>	
+					</details>
+				</div>`
+		}
+		return `
+			<div class="container-xl"> 
+				<div class="hide-mobile"><h1>${this.getAttribute("search-text")}</h1></div>
+					${this.renderSearchForm(store)}
+				<hr>
+			</div>				
+
+		`;
+  }
+
+	renderSearchForm(store) {
+		
     const isGroupSearch = this.getAttribute("search-text") === 'Search for board game groups';
-		console.log(this.getAttribute("search-text"));	
-		console.log(isGroupSearch); 
-		const searchAllText = !isGroupSearch && store.loginState?.loggedIn === true ?
-       "Search all events" : "Search"
-    const searchInputsClass =
+		
+		const searchInputsClass =
       store.location && store.location !== DEFAULT_SEARCH_PARAMETER
         ? "search-form-three-inputs"
         : "search-form-two-inputs";
-    return `
-			<div class="container-xl"> 
-				<h1>${this.getAttribute("search-text")}</h1>
-
-				<form id=${SEARCH_FORM_ID} onsubmit="return false">
+    
+		const searchAllText = !isGroupSearch && store.loginState?.loggedIn === true ?
+       "Search all events" : "Search"
+   	
+		return `<form id=${SEARCH_FORM_ID} onsubmit="return false">
 					<div id ="form-div-outer">		
-						<label class="hide-mobile searchDropdownLabel">Select event day: </label>
-						
-						<div class="show-mobile">
-							<details>
-								<summary>Select event day:</summary>
-								<div>
-									${getDaysOfWeekSelectHtml(store.days)}
-								</div>
-							</details>
-						</div>	
-						
-						<div class="${store.showDaySelectOnMobile ? `` : `hide-mobile`}">
-								${getDaysOfWeekSelectHtml(store.days)}
-							</div>
+						<label class="searchDropdownLabel">Select event day: </label>			
+						${getDaysOfWeekSelectHtml(store.days)}
 						<div id="search-form-inputs" class="${searchInputsClass}">
 
 							<label class="searchDropdownLabel">Select city: </label>
@@ -321,10 +335,6 @@ export class SearchComponent extends BaseDynamicComponent {
 							}
 						</div>
 					</div>
-				</form>
-			<hr>
-			</div>				
-
-`;
-  }
+				</form>`;
+	}
 }

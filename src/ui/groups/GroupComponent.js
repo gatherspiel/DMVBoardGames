@@ -132,11 +132,7 @@ export class GroupComponent extends BaseDynamicComponent {
           }
           .${GROUP_DESCRIPTION} {
             margin-top: 1rem;
-          }
-          .raised {
-            display: inline-block;
-            line-height: 1;
-          }  
+          } 
         }   
         @media screen and (width < 32em) {
           #${GROUP_DESCRIPTION_INPUT} {
@@ -153,10 +149,6 @@ export class GroupComponent extends BaseDynamicComponent {
           .delete-button {
             margin-top: 0.5rem;
           }  
-          .raised {
-            margin-left:2rem;
-            margin-right:2rem;
-          }
         }    
       </style>
     `;
