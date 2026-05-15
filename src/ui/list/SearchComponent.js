@@ -19,7 +19,6 @@ const SEARCH_DISTANCE_ID = "search-distance-id";
 const SEARCH_USER_GROUPS_BUTTON_ID= "search-joined-id";
 const SEARCH_CITY_ID = "search-cities";
 const SEARCH_FORM_ID = "search-form";
-const SHOW_DAY_SELECT = "show-day-select";
 
 const DISTANCE_OPTIONS = [
   "0 miles",
