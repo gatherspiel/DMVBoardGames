@@ -46,7 +46,7 @@ export class GameStoreListComponent extends BaseDynamicComponent {
     return `
       <li class="game-store-list-item">
 				<a class="btn secondary" href=${gameStore.url}">
-					${gameStore.url}
+					${gameStore.name}
 				</a>
         <p>Location: ${gameStore.location}</p>
       </li>
