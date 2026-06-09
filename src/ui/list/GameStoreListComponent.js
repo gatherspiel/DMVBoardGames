@@ -1,6 +1,5 @@
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import { GAME_STORE_DATA } from "../../data/list/LocationsStore.js";
-import { generateLinkButton } from "../../shared/html/ButtonGenerator.js";
 
 export class GameStoreListComponent extends BaseDynamicComponent {
   constructor() {
@@ -13,7 +12,9 @@ export class GameStoreListComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
+
+			<link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
         h1 {
           margin-top:1rem;
@@ -28,6 +29,8 @@ export class GameStoreListComponent extends BaseDynamicComponent {
         }
         .game-store-list-item * {
           display: inline-block;
+					margin-top:0.5em;
+					margin-bottom:0.5em;
         }
         @media not screen and (width < 32em) {
           h1 {
@@ -42,12 +45,9 @@ export class GameStoreListComponent extends BaseDynamicComponent {
   getItemHtml(gameStore) {
     return `
       <li class="game-store-list-item">
-        <h3>
-          ${generateLinkButton({
-            text: gameStore.name,
-            url: gameStore.url,
-          })}
-        </h3>
+				<a class="btn secondary" href=${gameStore.url}">
+					${gameStore.name}
+				</a>
         <p>Location: ${gameStore.location}</p>
       </li>
     `;
@@ -55,10 +55,10 @@ export class GameStoreListComponent extends BaseDynamicComponent {
 
   render(data) {
     let html = `
-      <div class="ui-section">
-      <h1>Game Stores</h1>
-      <div class="section-separator-small"></div>
-      <ul>
+      <div class="container-xl ui-section">
+				<h1>Game Stores</h1>
+				<div class="section-separator-small"></div>
+				<ul>
     `;
     Object.values(data).forEach((item) => {
       html +=

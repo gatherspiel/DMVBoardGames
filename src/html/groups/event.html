@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Loading event</title>
 
-    <style
-      inline-source
-      src="../public/styles/sharedHtmlOnlyStyles.css"
-    ></style>
-    <style
-      inline-source
-      src="../public/styles/sharedHtmlAndComponentStyles.css"
-    ></style>
+    <link
+			rel="stylesheet"
+      href="/styles/sharedHtmlOnlyStyles.css"
+		/>
+    <link
+			rel="stylesheet" 
+			href="/styles/sharedHtmlAndComponentStyles.css"
+    />
 
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,9 +29,8 @@
     </script>
   </head>
   <body>
-    <div id="container">
-      {{>navbar}}
-      <event-details-component> </event-details-component>
-    </div>
-  </body>
+		{{>navbar}}
+		<event-details-component> </event-details-component>
+		{{>footer}} 
+	</body>
 </html>

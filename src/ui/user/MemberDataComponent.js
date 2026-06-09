@@ -15,28 +15,22 @@ export class MemberDataComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `
-      <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
+     <link rel="stylesheet" type="text/css"  href="/styles/kelp.css"/> 
+		 <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
-        a {
-          margin-right: 0.5rem;
-        }
-        h1 {
-          margin-top:1.5rem;
-        }
-        h2 {
-          margin-top:0.5rem;
-        }
       </style>
     `;
   }
   
   render(data) {
     const html = `
-      <h1>MemberData</h1>
-      ${this.getModeratingGroupsHtml(data.moderatingGroups)}
-      ${this.getModeratingEventsHtml(data.moderatingEvents)}
-      ${this.getJoinedGroupsHtml(data.joinedGroups)}
-      ${this.getAttendingEventsHtml(data.attendingEvents)}
+			<div class="container-xl"> 
+				<h1>MemberData</h1>
+				${this.getModeratingGroupsHtml(data.moderatingGroups)}
+				${this.getModeratingEventsHtml(data.moderatingEvents)}
+				${this.getJoinedGroupsHtml(data.joinedGroups)}
+				${this.getAttendingEventsHtml(data.attendingEvents)}
+			</div>
     `;
     return html;
   }

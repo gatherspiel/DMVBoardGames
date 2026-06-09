@@ -2,7 +2,6 @@ import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js";
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
 import { convertLocationDataForDisplay } from "../../shared/EventDataUtils.js";
-import { generateLinkButton } from "../../shared/html/ButtonGenerator.js";
 
 export class EventListComponent extends BaseDynamicComponent {
   constructor() {
@@ -19,14 +18,12 @@ export class EventListComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `
-      <link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
+       <link rel="preload" as="style" href="/styles/kelp.css" onload="this.rel='stylesheet'"/>
+			<link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
       <style>
        li {
           padding-bottom: 1rem;
           padding-top:1rem;
-        }
-        h1 {
-          font-size: 3rem;
         }
         ul {
           list-style:url(/assets/images/meeple_small.png);
@@ -48,31 +45,36 @@ export class EventListComponent extends BaseDynamicComponent {
           margin-left:-1rem;
         }
         @media not screen and (width < 32em) {
-          .group-cities {
+          .container-xl {
+						margin-top:-1em;
+					}	
+					.group-cities {
             display: inline-block;
             margin-left: 2rem;
           }
-          .raised {
-            display: inline-block;
-          }
-          #search-results-header {
-            padding-left:1.5rem;
-          }
         }  
-        @media screen and (width < 32em) {
-          a {
-            margin-top: 1rem;
-          }
-          #search-results-header {
+        @media screen and (width < 32em) { 
+					li {
+						padding-top:0.25rem;
+						padding-bottom:0.25rem;
+					}
+					ul {
+						margin-top: -1em;
+					}	
+					#no-events-found {
+						text-align:center;
+					}
+					#search-results-header {
             text-align: center;
           }
-          .ui-section .event-group:not(:first-child) {
+					.container-xl {
+						margin-top:-3rem;
+					}	
+
+        	.ui-section .event-group:not(:first-child) {
             margin-top: 0.5rem;
           }
-          .raised {
-            margin-top: 0.5rem;
-          }
-        } 
+				} 
       </style>
     `;
   }
@@ -80,13 +82,20 @@ export class EventListComponent extends BaseDynamicComponent {
   getItemHtml(eventData) {
     return `
       <li>
-        ${generateLinkButton({
-          text: eventData.eventName,
-          url: `/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}`,
-        })}
+				<a 
+					class="btn secondary"
+					href= "/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}",
+				>${eventData.eventName}</a>
        
         <div id="event-time">
-          ${eventData.dayOfWeek}s at ${eventData.nextEventTime}
+          ${eventData.isRecurring ? 
+            `
+              ${eventData.dayOfWeek}s at ${eventData.nextEventTime}
+            ` :
+            `
+              ${eventData.nextEventDate} at ${eventData.nextEventTime}
+
+            `}
         </div>
         <div id="event-location">
           ${convertLocationDataForDisplay(eventData.eventLocation)}
@@ -105,12 +114,12 @@ export class EventListComponent extends BaseDynamicComponent {
 
     if (state.data.eventData.length === 0) {
       return `
-          <p>No events found</p>
+          <p id="no-events-found">No events found</p>
           <div class="section-separator-small"></div> 
         `;
     }
     let html = `
-      <div class="fade-in-animation">
+      <div class="container-xl fade-in-animation">
 
       <h1 id="search-results-header">Search results</h1>
       <ul>`;

@@ -5,10 +5,6 @@ import {
   generateErrorMessage,
   generateSuccessMessage,
 } from "../../shared/html/StatusIndicators.js";
-import {
-  generateButton,
-  generateDisabledButton,
-} from "../../shared/html/ButtonGenerator.js";
 
 import { API_ROOT } from "../shared/Params.js";
 import { FaqComponent } from "../static/FaqComponent.js";
@@ -52,18 +48,21 @@ export class CreateAccountComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `  
-      <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css"  href="/styles/kelp.css"/>
+			<link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
-
-        #email {
+				#username-input,#password-input,#confirm-password-input {
+					width:20rem;
+				}
+				#{AGREE_RULES_ID} {
+					font-weight:600;
+				}
+				#email {
           display: inline-block;
         }
         #component-buttons {
           padding-top:0.5rem;
-        }  
-        #login-component-container {
-          padding-top: 0.25rem;
-        }  
+        }   
         #ui-input input {
           display: block;
         }
@@ -72,18 +71,14 @@ export class CreateAccountComponent extends BaseDynamicComponent {
         }
         #${CREATE_ACCOUNT_ID}{
           display:block;
-        }
-        
+        } 
         #${CREATE_ACCOUNT_ID_DISABLED} .front {
           background: gray;
         }
         .ui-input {
           display: block;
         }  
-        @media not screen and (width < 32em) {
-          h1 {
-            margin-left: 1.5rem;
-          }
+        @media not screen and (width < 32em) { 
           #email {
             display: inline-block;
           }
@@ -103,7 +98,8 @@ export class CreateAccountComponent extends BaseDynamicComponent {
     const self = this;
     shadowRoot.addEventListener("click", (event) => {
       event.preventDefault();
-
+			
+			console.log("Hi");
       const targetId = event.target?.id;
       if (targetId === AGREE_RULES_ID) {
         self.updateData({
@@ -122,7 +118,7 @@ export class CreateAccountComponent extends BaseDynamicComponent {
           confirmPassword: shadowRoot.getElementById(CONFIRM_PASSWORD_INPUT)
             ?.value,
         };
-
+				console.log(formData);
         if (
           !formData.username ||
           (!formData.password && !formData.confirmPassword)
@@ -171,9 +167,9 @@ export class CreateAccountComponent extends BaseDynamicComponent {
 
   render(data) {
     return `
-      <h1>Create account</h1>
-      <div class="ui-section" id="login-component-container">
-        <form id=${LOGIN_FORM_ID}>
+      <div class="container-xl" id="login-component-container"> 
+				<h1>Create account</h1>
+				<form id=${LOGIN_FORM_ID}>
           <div id="ui-input">
             <div class="form-section">
               <label class="required-field" id="email">Email</label>
@@ -206,21 +202,14 @@ export class CreateAccountComponent extends BaseDynamicComponent {
    
          </div>
   
-          ${generateErrorMessage(data.errorMessage)}
-          ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
+          ${generateErrorMessage(data.errorMessage)}	 
+					${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
 
           ${
             data[AGREE_RULES_ID]
-              ? generateButton({
-                  class: CREATE_ACCOUNT_ID,
-                  id: CREATE_ACCOUNT_ID,
-                  text: "Create account",
-                })
-              : generateDisabledButton({
-                  class: CREATE_ACCOUNT_ID_DISABLED,
-                  id: CREATE_ACCOUNT_ID_DISABLED,
-                  text: "Create account",
-                })
+              ?
+								`<button id=${CREATE_ACCOUNT_ID} class="primary">Create account</button>` : `<button class="neutral">Create account</button>`
+
           }
           
           <div id="agree-rules-input">

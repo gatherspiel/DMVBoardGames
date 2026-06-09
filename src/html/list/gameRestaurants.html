@@ -4,11 +4,9 @@
     <meta charset="UTF-8" />
     <title>Game restaurants</title>
     <style
-      inline-source
       src="../public/styles/sharedHtmlOnlyStyles.css"
     ></style>
     <style
-      inline-source
       src="../public/styles/sharedHtmlAndComponentStyles.css"
     ></style>
 
@@ -28,10 +26,9 @@
     <title>DMV Board Games</title>
   </head>
   <body>
-    <div id="container">
-      {{>navbar}}
+		{{>navbar}}
 
-      <game-restaurant-list-component> </game-restaurant-list-component>
-    </div>
-  </body>
+		<game-restaurant-list-component> </game-restaurant-list-component>
+		{{>footer}} 
+	</body>
 </html>

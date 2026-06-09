@@ -4,11 +4,9 @@
     <meta charset="UTF-8" />
     <title>Game stores</title>
     <style
-      inline-source
       src="../public/styles/sharedHtmlOnlyStyles.css"
     ></style>
     <style
-      inline-source
       src="../public/styles/sharedHtmlAndComponentStyles.css"
     ></style>
 
@@ -28,10 +26,9 @@
     <title>DMV Board Games</title>
   </head>
   <body>
-    <div id="container">
-      {{>navbar}}
+		{{>navbar}}
 
-      <game-store-list-component> </game-store-list-component>
-    </div>
-  </body>
+		<game-store-list-component> </game-store-list-component>
+		{{>footer}} 
+	</body>
 </html>

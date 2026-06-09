@@ -2,8 +2,6 @@ import { LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT } from "./Constants.js";
 
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
-import { generateButton } from "../../shared/html/ButtonGenerator.js";
-import { generateErrorMessage } from "../../shared/html/StatusIndicators.js";
 
 const LOGIN_BUTTON_ID = "login-button";
 
@@ -28,7 +26,8 @@ export class LoginComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `  
-      <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css"  href="/styles/kelp.css"/>
+			<link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
         #login-component-container {
           padding-top: 0.25rem;
@@ -108,40 +107,37 @@ export class LoginComponent extends BaseDynamicComponent {
     );
 
     return `
-      <div class="ui-section" id="login-component-container">
-      <form id=${LOGIN_FORM_ID}>
-      ${isNewUser ? `<h2 class="success-message">Account successfully confirmed. Use this page to login. </h2>` : ``}
+      <div class="container-xl" id="login-component-container">
 
-        <div class="ui-input">
-          <div class="form-section">
-            <label class="required-field" id="email">Email</label>
-          <input        
-            id=${USERNAME_INPUT}
-            type="email"
-          />     
-          </input>    
-        </div>
-        <div class="form-section">
-        <label class="required-field">Password</label>
-          <input        
-            id=${PASSWORD_INPUT}
-            type="password"
-          />
-          </input> 
-        </div>
-      </div>       
-      <div id="component-buttons">
-          ${generateButton({
-            class: "login-element",
-            id: LOGIN_BUTTON_ID,
-            text: "Login",
-            type: "submit",
-          })}  
-      
-        </div>
-          ${this.loginAttempted || this.registerAttempted ? generateErrorMessage(data.errorMessage) : ""}
-        </form>
-      </div>
+				<form id=${LOGIN_FORM_ID}>
+				${isNewUser ? `<h2 class="success-message">Account successfully confirmed. Use this page to login. </h2>` : ``}
+
+					<div class="ui-input">
+						<div class="form-section">
+							<label class="required-field" id="email">Email</label>
+						<input        
+							id=${USERNAME_INPUT}
+							type="email"
+						/>     
+						</input>    
+					</div>
+					<div class="form-section">
+					<label class="required-field">Password</label>
+						<input        
+							id=${PASSWORD_INPUT}
+							type="password"
+						/>
+						</input> 
+					</div>
+				</div>       
+				<div id="component-buttons">
+					<button class="primary" type="submit" id=${LOGIN_BUTTON_ID}>Login</button>	
+
+				
+					</div>
+						${this.loginAttempted || this.registerAttempted ? `<div class="validation-error">${data.errorMessage}</div>`: ""}
+					</form>
+				</div>
     `;
   }
 }

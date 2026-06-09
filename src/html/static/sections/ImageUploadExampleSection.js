@@ -5,11 +5,11 @@ export class ImageUploadExampleSection extends HTMLElement {
     this.innerHTML = `
      <b>HTML for adding image upload component with id and initial state</b>
         <base-code-display-component>
-           <image-upload-component
-             id="image-upload-ui"
-             image-path="\${data.imageFilePath}"
-           ></image-upload-component>
-       </base-code-display-component>
+<image-upload-component
+ id="image-upload-ui"
+ image-path="\${data.imageFilePath}"
+></image-upload-component>
+				</base-code-display-component>
 
         <b>Image upload component code</b>
         <base-code-display-component>\${this.htmlEntities(ImageUploadComponent.toString())}

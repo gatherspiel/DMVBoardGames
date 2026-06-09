@@ -6,16 +6,16 @@
 
     <title>Add new event</title>
 
-    <style
-      inline-source
-      src="../public/styles/sharedHtmlOnlyStyles.css"
-    ></style>
-    <style
-      inline-source
-      src="../public/styles/sharedHtmlAndComponentStyles.css"
-    ></style>
+    <link
+			rel="stylesheet"
+      href="/styles/sharedHtmlOnlyStyles.css"
+		/>
+    <link
+			rel="stylesheet" 
+			href="/styles/sharedHtmlAndComponentStyles.css"
+    />
 
-    <script type="module">
+		<script type="module">
       import { CreateEventComponent } from "../../ui/groups/CreateEventComponent.js";
       customElements.define("create-event-component", CreateEventComponent);
     </script>

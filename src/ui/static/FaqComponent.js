@@ -7,23 +7,21 @@ export class FaqComponent extends BaseTemplateComponent {
   getTemplateStyle() {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
 
-      <style>
-        h1 {
-          margin-top:1rem;
-        }
-      </style>
+
     `;
   }
   render() {
     return `
-   <h1>FAQ</h1>
+		 <div class="container-xl"> 
+		 <h1>FAQ</h1>
       
     
     
-       <h3>General site information </h3>
+      <h3>General site information </h3>
        
-         <h4>What is the business model of this website?</h4>
+      <h4>What is the business model of this website?</h4>
       
       <p>Dmvboardgames.com is a non-commercial website that is not designed to make a profit.</p>
       
@@ -56,7 +54,7 @@ export class FaqComponent extends BaseTemplateComponent {
         
       <h4>What motivated you to make this website?</h4>
       
-      <p>I reguarly host public board game events in the DC area. Through conversations with people, I noticed that people were having a hard time finding board game events.
+      <p>I regularly host public board game events in the DC area. Through conversations with people, I noticed that people were having a hard time finding board game events.
        Also, the site I used to host events, Meetup.com has been declining in quality, while pushing monetization that is negatively affecting the user experience. I did some 
        research, and was not able to find a better alternative.</p>
        
@@ -64,7 +62,7 @@ export class FaqComponent extends BaseTemplateComponent {
       2024, the Landing in Crystal City removed all the tables and chairs. The Landing was a cornerstone of the DMV board game community, and I used to host events there. This made
       me realize that the decline in public spaces had become a very serious issue, and I wanted to increase interest in public spaces as a way of reversing this decline.</p>
       
-      <p>For more information about my experiences with the Landing in Crystal City, see this <a href="/landing.html">page</a></p>
+      <p>For more information about my experiences with the Landing in Crystal City, see this <a href="/html/static/landing.html">page</a></p>
       
       <h3>Site costs and running the site</h3>
        
@@ -85,12 +83,12 @@ export class FaqComponent extends BaseTemplateComponent {
     
       <h4>I want to make my own website. Can I use code from dmvboardgames.com?</h4>
       
-      <p>Absolutely! All code for dmvboardgames.com is publicly available under the GPL-3.0 license <a href="https://github.com/gatherspiel">here</a>. The site is
+      <p>Absolutely! All code for dmvboardgames.com is publicly available under the GPL-3.0 license <a href="https://codeberg.org/createthirdplaces">here</a>. The site is
        also being programmed in a way that will enable other developers to use it as a template to build their own website. </p>
       
       <p> The site is built using a zero-dependency Web Components framework created by Gulu with asynchronous data fetching, and state management.
-         See the front-end code <a href="https://github.com/gatherspiel/DMVBoardGames/tree/main">here</a> for an example of how
-         to install and use the framework. Email gulu@createthirdplaces.com for more information or help with using the framework.</p>    
+         See the front-end code <a href="https://codeberg.org/createthirdplaces/DMVBoardGames">here</a> for an example of how
+         to install and use the framework. Email gulu@createthirdplaces.org for more information or help with using the framework.</p>    
          
        <h4>How does dmvboardgames.com use AI?</h4>
        
@@ -103,11 +101,12 @@ export class FaqComponent extends BaseTemplateComponent {
         
       <h3>Other questions</h3>
       <h4>How can I help contribute to dmvboardgames.com?</h4>
-      <p>Email gulu@createthirdplaces.com. dmvboardgames.com is looking for help with development, testing, and web design. More details are 
+      <p>Email gulu@createthirdplaces.org. dmvboardgames.com is looking for help with development, testing, and web design. More details are 
       <a href="/join.html">here</a></p>
          
       <h4>How can I share search results or group information on my own site?</h4>
-      <p>dmvboardgames.com includes an API that can be used to access information.  Email gulu@createthirdplaces.com for more details.</p>
-    `;
+      <p>dmvboardgames.com includes an API that can be used to access information.  Email gulu@createthirdplaces.org for more details.</p>
+		</div>
+`;
   }
 }

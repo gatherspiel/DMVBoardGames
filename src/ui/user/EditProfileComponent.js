@@ -13,8 +13,6 @@ import { API_ROOT } from "../shared/Params.js";
 import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
 import { USER_DATA_STORE } from "../../data/user/UserDataStore.js";
 
-import { generateButton } from "../../shared/html/ButtonGenerator.js";
-
 customElements.define("image-upload-component", ImageUploadComponent);
 
 const UPDATE_USER_DATA_ID = "update-user-data";
@@ -32,11 +30,9 @@ export class EditProfileComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `
-      <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style>
-        form {
-          margin-top:1rem;
-        }
+      <link rel="stylesheet" type="text/css"  href="/styles/kelp.css"/>
+			<link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <style> 
       </style>      
     `;
   }
@@ -93,34 +89,31 @@ export class EditProfileComponent extends BaseDynamicComponent {
 
   render(data) {
     return `
-      <h1>Edit profile</h1>
-        <form id ="update-user-form" onsubmit="return false">
-          <div class="form-section">
-              ${generateSuccessMessage(data?.[SUCCESS_MESSAGE_KEY])}
-              ${generateErrorMessage(data?.errorMessage)}      
-            <label class=" required-field">Name</label>
-              <input
-                id=${USERNAME_INPUT}
-                name=${USERNAME_INPUT}
-                value="${data.username}"
-              >
-              ${generateErrorMessage(data[USERNAME_ERROR_TEXT_KEY])}
-            </div>      
-          </div>
-          <div class ="form-section" id="image-upload">
-            <image-upload-component
-              id="image-upload-ui"
-              image-path="${data.imageFilePath}"
-            ></image-upload-component>
-          </div>  
-          
-          ${generateButton({
-            id: UPDATE_USER_DATA_ID,
-            text: "Submit",
-            type: "submit",
-          })}
-      </form>
-    </div>
-    `;
+			<div class="container-xl"> 
+				<h1>Edit profile</h1>
+				<form id ="update-user-form" onsubmit="return false">
+					<div class="form-section">
+						${generateSuccessMessage(data?.[SUCCESS_MESSAGE_KEY])}
+						${generateErrorMessage(data?.errorMessage)}      
+						<label class=" required-field">Name</label>
+								<input
+									id=${USERNAME_INPUT}
+									name=${USERNAME_INPUT}
+									value="${data.username}"
+								>
+								${generateErrorMessage(data[USERNAME_ERROR_TEXT_KEY])}
+					</div>      
+					<div class ="form-section" id="image-upload">
+						<image-upload-component
+							id="image-upload-ui"
+							image-path="${data.imageFilePath}"
+						></image-upload-component>
+					</div>  
+					<button class="primary" id=${UPDATE_USER_DATA_ID} type="submit">
+						Submit
+					</button>
+				</form>
+			</div>
+		`;
   }
 }

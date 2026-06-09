@@ -6,25 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About</title>
   <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlOnlyStyles.css"/>
+	<link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
 
-  <script type="module">
-    import {ShadowDomComponent} from "../../shared/components/ShadowDomComponent.js";
-    customElements.define('shadow-dom-component',ShadowDomComponent);
-  </script>
-</head>
+	<style>
+		#main-image {
+			margin-bottom: 1rem;
+		}
+  </style>
+ </head>
 <body>
-  <div id="container">
-    {{>navbar}}
-    <shadow-dom-component>
-
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlOnlyStyles.css"/>
-      <style>
-        #main-image {
-          margin-bottom: 1rem;
-        }
-      </style>
-      <h2>Hi, I'm Gulu(Bharat Ponnaluri), a software engineer and board gamer living in Washington DC </h2>
-      <img id="main-image" src="/assets/images/Bharat_Picture.jpg"></img>
+  {{>navbar}}
+	<div class="container-xl margin-end-m">
+		<h2>Hi, I'm Gulu(Bharat Ponnaluri), a board gamer living in Washington DC </h2>
+		<img id="main-image" src="/assets/images/Bharat_Picture.jpg"></img>
       <p>Growing up, I enjoyed classic board games, especially Chess, Monopoly, and Risk. In college, I
         learned Catan, and then joined
       <a href="https://www.illinimetagamers.net/programs/game-night">gaming </a>
@@ -61,9 +55,8 @@
       </p>
       <br>
 
-      <p>My email is gulu@createthirdplaces.com, and I'm active on <a href="https://github.com/UnknownOrange">Github</a>
-      and <a href="https://www.meetup.com/members/155887982/">Meetup.</a> I do not use any other social media websites.</p>
-    </shadow-dom-component>
+      <p>My email is gulu@createthirdplaces.org, and I'm active on <a href="https://codeberg.org/Gulu">Codeberg.org</a>
+      and <a href="https://www.meetup.com/members/155887982/">Meetup.</a> I do not use Facebook, Instagram, or any other social media websites.</p>
   </div>
 
   <div id="bot-container"></div>

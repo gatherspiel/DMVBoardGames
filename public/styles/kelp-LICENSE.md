@@ -1,8 +1,6 @@
-# DMV Board Games Source Code License.
+# Kelp Commons License
 
-This license has been copied from the the Kelp Commons
-License <https://github.com/cferdinandi/kelp/blob/main/LICENSE.md> by Go Make
-Things, LLC.
+Copyright (c) Go Make Things, LLC.
 
 This software is licensed under a [Fair-Code license](https://faircode.io). By using the software, you agree 
 to all of the terms and conditions below.
@@ -110,4 +108,4 @@ management and policies by vote, contract, or otherwise. Control can be direct o
 
 "Use" means anything you do with the software requiring your license.
 
-"Trademark" means trademarks, service marks, and similar rights.      
+"Trademark" means trademarks, service marks, and similar rights.

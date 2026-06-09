@@ -2,14 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <style
-      inline-source
-      src="../public/styles/sharedHtmlOnlyStyles.css"
-    ></style>
-    <style
-      inline-source
-      src="../public/styles/sharedHtmlAndComponentStyles.css"
-    ></style>
+    <link
+			rel="stylesheet"
+      href="/styles/sharedHtmlOnlyStyles.css"
+    />
+    <link
+			rel="stylesheet" 
+			href="/styles/sharedHtmlAndComponentStyles.css"
+			/>
 
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,11 +27,9 @@
     </script>
   </head>
   <body>
-    <div id="container">
       {{>navbar}}
 
       <login-component> </login-component>
-    </div>
     <div id="bot-container"></div>
   </body>
 </html>
