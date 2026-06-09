@@ -31,7 +31,7 @@ export class EditProfileComponent extends BaseDynamicComponent {
   getTemplateStyle() {
     return `
       <link rel="stylesheet" type="text/css"  href="/styles/kelp.css"/>
-			<link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style> 
       </style>      
     `;
@@ -89,31 +89,31 @@ export class EditProfileComponent extends BaseDynamicComponent {
 
   render(data) {
     return `
-			<div class="container-xl"> 
-				<h1>Edit profile</h1>
-				<form id ="update-user-form" onsubmit="return false">
-					<div class="form-section">
-						${generateSuccessMessage(data?.[SUCCESS_MESSAGE_KEY])}
-						${generateErrorMessage(data?.errorMessage)}      
-						<label class=" required-field">Name</label>
-								<input
-									id=${USERNAME_INPUT}
-									name=${USERNAME_INPUT}
-									value="${data.username}"
-								>
-								${generateErrorMessage(data[USERNAME_ERROR_TEXT_KEY])}
-					</div>      
-					<div class ="form-section" id="image-upload">
-						<image-upload-component
-							id="image-upload-ui"
-							image-path="${data.imageFilePath}"
-						></image-upload-component>
-					</div>  
-					<button class="primary" id=${UPDATE_USER_DATA_ID} type="submit">
-						Submit
-					</button>
-				</form>
-			</div>
-		`;
+      <div class="container-xl"> 
+        <h1>Edit profile</h1>
+        <form id ="update-user-form" onsubmit="return false">
+          <div class="form-section">
+            ${generateSuccessMessage(data?.[SUCCESS_MESSAGE_KEY])}
+            ${generateErrorMessage(data?.errorMessage)}      
+            <label class=" required-field">Name</label>
+              <input
+                id=${USERNAME_INPUT}
+                name=${USERNAME_INPUT}
+                value="${data.username}"
+              >
+              ${generateErrorMessage(data[USERNAME_ERROR_TEXT_KEY])}
+          </div>      
+          <div class ="form-section" id="image-upload">
+            <image-upload-component
+              id="image-upload-ui"
+              image-path="${data.imageFilePath}"
+            ></image-upload-component>
+          </div>  
+          <button class="primary" id=${UPDATE_USER_DATA_ID} type="submit">
+            Submit
+          </button>
+        </form>
+      </div>
+    `;
   }
 }

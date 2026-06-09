@@ -23,7 +23,6 @@ export class UserActionsComponent extends BaseDynamicComponent {
     return `  
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-
 			<style>
         a {
           color: white;
@@ -38,8 +37,7 @@ export class UserActionsComponent extends BaseDynamicComponent {
 						justify-content:center;
 						align-items:center;		
 					}
-				}
-				
+				}	
       </style>`;
   }
 

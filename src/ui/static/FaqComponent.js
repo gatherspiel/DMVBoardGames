@@ -8,21 +8,15 @@ export class FaqComponent extends BaseTemplateComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-
-
     `;
   }
   render() {
     return `
-		 <div class="container-xl"> 
-		 <h1>FAQ</h1>
-      
-    
-    
+     <div class="container-xl"> 
+      <h1>FAQ</h1>
       <h3>General site information </h3>
-       
-      <h4>What is the business model of this website?</h4>
       
+      <h4>What is the business model of this website?</h4> 
       <p>Dmvboardgames.com is a non-commercial website that is not designed to make a profit.</p>
       
       <h4>How will dmvboardgames.com make money?</h4>
@@ -106,7 +100,7 @@ export class FaqComponent extends BaseTemplateComponent {
          
       <h4>How can I share search results or group information on my own site?</h4>
       <p>dmvboardgames.com includes an API that can be used to access information.  Email gulu@createthirdplaces.org for more details.</p>
-		</div>
-`;
+    </div>
+    `;
   }
 }

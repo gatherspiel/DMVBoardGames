@@ -14,17 +14,16 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/> 
       <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/> 
-
-			<style>  
+      <style>  
         ul {
           list-style:url(/assets/images/meeple_small.png);
           margin-top:0;
           padding-left:1.5rem;
         }
        .game-resturant-list-item * {
-					margin-top:0.5em;
-					margin-bottom:0.5em;
-					display: inline-block;
+          margin-top:0.5em;
+          margin-bottom:0.5em;
+          display: inline-block;
         }
       </style>
     `;
@@ -34,7 +33,7 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
     return `
       <li class="game-resturant-list-item">
         <a class="btn secondary" href=${gameRestaurant.url}>
-					${gameRestaurant.name}
+          ${gameRestaurant.name}
         </a> 
         <p>Location: ${gameRestaurant.location}</p>
       </li>
@@ -44,11 +43,10 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
 
   render(data) {
     let html = `
-			<div class="container-xl"> 
-				<h1>Board Game Bars and Cafés</h1>
-				<div class="section-separator-small"></div>
-
-				<ul>
+      <div class="container-xl"> 
+        <h1>Board Game Bars and Cafés</h1>
+        <div class="section-separator-small"></div>
+        <ul>
     `;
     Object.values(data).forEach((item) => {
       html += this.getItemHtml(item);

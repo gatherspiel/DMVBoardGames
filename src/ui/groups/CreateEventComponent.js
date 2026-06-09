@@ -49,7 +49,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
   }
   getTemplateStyle() {
     return `
-       <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style> 
         input,select,textarea {
@@ -245,7 +245,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
             Back to group
           </a>
         </form>
-    </div>
+      </div>
     `;
   }
 }

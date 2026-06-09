@@ -1,7 +1,5 @@
 import { BaseDynamicComponent } from "@bponnaluri/places-js";
-
 import { CONVENTIONS_STORE } from "../../data/list/LocationsStore.js";
-
 import { convertDateListToRange } from "../../shared/EventDataUtils.js";
 
 export class ConventionListComponent extends BaseDynamicComponent {
@@ -16,8 +14,7 @@ export class ConventionListComponent extends BaseDynamicComponent {
   getTemplateStyle() {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-
-			<link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style> 
         ul {
           list-style:url(/assets/images/meeple_small.png);
@@ -26,8 +23,8 @@ export class ConventionListComponent extends BaseDynamicComponent {
         }
         .conv-list-item > * {
           display: inline-block;
-					margin-bottom:0.5em; 
-				}  
+          margin-bottom:0.5em; 
+        }  
         .date-info {
           padding-left: 0.5rem;
         } 
@@ -37,12 +34,11 @@ export class ConventionListComponent extends BaseDynamicComponent {
 
   getItemHtml(convention) {
     return `
-    <li class="conv-list-item">
-			<a class="btn secondary" href=${convention.name}>${convention.url}</a> 
-      <span class="date-info">${convertDateListToRange(convention.days)}</span>
-    </li>
-
-  `;
+      <li class="conv-list-item">
+        <a class="btn secondary" href=${convention.name}>${convention.url}</a> 
+        <span class="date-info">${convertDateListToRange(convention.days)}</span>
+      </li>
+    `;
   }
 
   render(data) {
@@ -63,8 +59,7 @@ export class ConventionListComponent extends BaseDynamicComponent {
 
     return (
       html +
-      `</ul></div>
-    `
+      `</ul></div>`
     );
   }
 }
