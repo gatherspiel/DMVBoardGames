@@ -53,7 +53,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
   getTemplateStyle() {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-			<link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
         button {
           display: block;
@@ -80,9 +80,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
         #rules-content {
           margin-top:1rem;
         }
-        .raised {
-          margin-top:0.5rem;
-        }
+ 
         @media screen and (width < 32em) {
           #group-description-input {
             width:330px;
@@ -173,61 +171,56 @@ export class CreateGroupComponent extends BaseDynamicComponent {
     return `
       <div class="container-xl">
         <h1>Create group</h1>
-
-              <form id="create-group-form" onsubmit="return false" style="${data.loggedIn ? `` : `display:none`}">
-                <div id="form-status-div">
-                  ${generateSuccessMessage(data?.[SUCCESS_MESSAGE_KEY])}
-                  ${generateErrorMessage(data?.errorMessage)}           
-                </div>
-                <div class="form-section"> 
-                  <label class=" required-field">Name</label>
-                  <input
-                    id=${GROUP_NAME_INPUT}
-                    name=${GROUP_NAME_INPUT}
-                    value="${data.name}"
-                    >
-                    ${generateErrorMessage(data[NAME_ERROR_TEXT_KEY])}
-                </div>  
-                <div class="form-section">
-                  <label class=" required-field">Description</label>
-                  <textarea
-                    id=${GROUP_DESCRIPTION_INPUT}
-                    name=${GROUP_DESCRIPTION_INPUT}
-                    >${data.description}</textarea>
-                  ${generateErrorMessage(data[DESCRIPTION_ERROR_TEXT_KEY])}
-                </div>
-                
-                <div id="image-upload-container">
-                  <image-upload-component
-                  id="image-upload-ui"
-                  image-path="${data.imagePath}"
-                ></image-upload-component>              
-                </div>
-
-                <div class="form-section">
-                  <label class="">Url(optional)</label>
-                  <input
-                    id=${GROUP_URL_INPUT}
-                    name=${GROUP_URL_INPUT}
-                    value=${data.url}
-                    >
-                </div>
-                ${getGameTypeTagSelectHtml(data.gameTypeTags)}
-                <label class=" required-field" for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
-                <input type="checkbox" id="${AGREE_RULES_ID}" ${data[AGREE_RULES_ID] ? "checked" : ""}>
-                
-                ${
-                  data[AGREE_RULES_ID]
-                    ? `<button class="primary" id=${CREATE_GROUP_BUTTON_ID}>Create group</button>`
-										: `<button class="muted">Create group</button>`
-                }
-                <site-rules-component></site-rules-component>
-                <faq-component></faq-component>
-              </form>
-              ${generateErrorMessage(data.errorMessage)}
-            
-            <p style="${!data.loggedIn ? `` : `display:none`}">You must log in to create a group </p>
-            
+        <form id="create-group-form" onsubmit="return false" style="${data.loggedIn ? `` : `display:none`}">
+          <div id="form-status-div">
+            ${generateSuccessMessage(data?.[SUCCESS_MESSAGE_KEY])}
+            ${generateErrorMessage(data?.errorMessage)}           
+          </div>
+          <div class="form-section"> 
+            <label class=" required-field">Name</label>
+            <input
+              id=${GROUP_NAME_INPUT}
+              name=${GROUP_NAME_INPUT}
+              value="${data.name}"
+              >
+              ${generateErrorMessage(data[NAME_ERROR_TEXT_KEY])}
+          </div>  
+          <div class="form-section">
+            <label class=" required-field">Description</label>
+            <textarea
+              id=${GROUP_DESCRIPTION_INPUT}
+              name=${GROUP_DESCRIPTION_INPUT}
+              >${data.description}</textarea>
+            ${generateErrorMessage(data[DESCRIPTION_ERROR_TEXT_KEY])}
+          </div>    
+          <div id="image-upload-container">
+            <image-upload-component
+              id="image-upload-ui"
+              image-path="${data.imagePath}"
+            ></image-upload-component>              
+          </div>
+          <div class="form-section">
+            <label class="">Url(optional)</label>
+            <input
+              id=${GROUP_URL_INPUT}
+              name=${GROUP_URL_INPUT}
+              value=${data.url}
+              >
+          </div>
+          ${getGameTypeTagSelectHtml(data.gameTypeTags)}
+          <label class=" required-field" for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
+          <input type="checkbox" id="${AGREE_RULES_ID}" ${data[AGREE_RULES_ID] ? "checked" : ""}>
+          
+          ${
+            data[AGREE_RULES_ID]
+              ? `<button class="primary" id=${CREATE_GROUP_BUTTON_ID}>Create group</button>`
+              : `<button class="muted">Create group</button>`
+          }
+          <site-rules-component></site-rules-component>
+          <faq-component></faq-component>
+        </form>
+         ${generateErrorMessage(data.errorMessage)}   
+        <p style="${!data.loggedIn ? `` : `display:none`}">You must log in to create a group </p> 
      </div> 
      `;
   }

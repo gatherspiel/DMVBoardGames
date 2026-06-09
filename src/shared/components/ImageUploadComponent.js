@@ -80,8 +80,8 @@ export class ImageUploadComponent extends HTMLElement {
       }
       <img id="image-preview" 
         src="${this.getAttribute("image-path")}"
-          style="width:400px"
-          alt="">
+        style="width:400px"
+        alt="">
       `;
   }
 }

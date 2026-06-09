@@ -13,11 +13,13 @@
  * All logic is inside the connectedCallback method to optimize for performance.
  */
 export class LoadingIndicatorComponent extends HTMLElement {
-  constructor() {
+  
+	constructor() {
     super();
     this.imagePath = this.getAttribute("image-path");
   }
-  connectedCallback() {
+  
+	connectedCallback() {
     this.attachShadow({ mode: "open" });
     const templateStyle = `      
       <style>
@@ -114,37 +116,30 @@ export class LoadingIndicatorComponent extends HTMLElement {
 
     const template = document.createElement("template");
     template.innerHTML =
-      templateStyle +
-      `     
-     <div class="loader">
-   
-        <div class="meeple" id="meeple-one">  
-          <img src="${this.imagePath}">
-        </div>
-        
-        <div class="meeple"  id="meeple-two">
-          <img src="${this.imagePath}">
-        </div>
-        
+      templateStyle + `     
+				<div class="loader"> 
+					<div class="meeple" id="meeple-one">  
+						<img src="${this.imagePath}">
+					</div>	
+					<div class="meeple"  id="meeple-two">
+						<img src="${this.imagePath}">
+					</div> 
         <div class="meeple"  id="meeple-three">
           <img src="${this.imagePath}">
-        </div>
-        
+        </div> 
         <div class="meeple"  id="meeple-four" >
           <img src="${this.imagePath}">
-        </div>
-        
+        </div> 
         <div class="meeple"  id="meeple-five" >
           <img src="${this.imagePath}">
-        </div>
-        
+        </div> 
         <div class="meeple"  id="meeple-six" >
-            <img src="${this.imagePath}">
+          <img src="${this.imagePath}">
         </div>
         <div class="meeple"  id="meeple-seven" >
           <img src="${this.imagePath}">
         </div>
-    </div>
+			</div>
     `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }

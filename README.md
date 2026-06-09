@@ -26,7 +26,7 @@ Also, follow the guidelines below:
   -To test local changes to the places-js package used as a framework for this project, publish the package locally using yalc. Then
   run yalc add @bponnaluri/places-js
 
-### Creating a preview of a production build
+### Creating a production build preview
 
 - npm run build
 - npm run preview

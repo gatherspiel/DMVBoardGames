@@ -18,10 +18,10 @@ export class EventListComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `
-       <link rel="preload" as="style" href="/styles/kelp.css" onload="this.rel='stylesheet'"/>
-			<link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
+      <link rel="preload" as="style" href="/styles/kelp.css" onload="this.rel='stylesheet'"/>
+      <link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
       <style>
-       li {
+        li {
           padding-bottom: 1rem;
           padding-top:1rem;
         }
@@ -36,8 +36,7 @@ export class EventListComponent extends BaseDynamicComponent {
         #container {
           opacity:0;
           animation: fadeIn 100ms forwards
-        }
-  
+        } 
         #event-location,#event-time {
           margin-top:0.5rem;
         }
@@ -46,38 +45,34 @@ export class EventListComponent extends BaseDynamicComponent {
         }
         @media not screen and (width < 32em) {
           .container-xl {
-						margin-top:-1em;
-					}	
-					.group-cities {
+            margin-top:-1em;
+          } 
+          .group-cities {
             display: inline-block;
             margin-left: 2rem;
           }
-          .raised {
-            display: inline-block;
-          } 
         }  
         @media screen and (width < 32em) { 
-					li {
-						padding-top:0.25rem;
-						padding-bottom:0.25rem;
-					}
-					ul {
-						margin-top: -1em;
-					}	
-					#no-events-found {
-						text-align:center;
-					}
-					#search-results-header {
+          li {
+            padding-top:0.25rem;
+            padding-bottom:0.25rem;
+          }
+          ul {
+            margin-top: -1em;
+          } 
+          #no-events-found {
+            text-align:center;
+          }
+          #search-results-header {
             text-align: center;
           }
-					.container-xl {
-						margin-top:-3rem;
-					}	
-
-        	.ui-section .event-group:not(:first-child) {
+          .container-xl {
+            margin-top:-3rem;
+          } 
+          .ui-section .event-group:not(:first-child) {
             margin-top: 0.5rem;
           }
-				} 
+        } 
       </style>
     `;
   }
@@ -85,11 +80,10 @@ export class EventListComponent extends BaseDynamicComponent {
   getItemHtml(eventData) {
     return `
       <li>
-				<a 
-					class="btn secondary"
-					href= "/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}",
-				>${eventData.eventName}</a>
-       
+        <a 
+          class="btn secondary"
+          href= "/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}",
+        >${eventData.eventName}</a> 
         <div id="event-time">
           ${eventData.isRecurring ? 
             `
@@ -98,12 +92,11 @@ export class EventListComponent extends BaseDynamicComponent {
             `
               ${eventData.nextEventDate} at ${eventData.nextEventTime}
 
-            `}
+          `}
         </div>
         <div id="event-location">
           ${convertLocationDataForDisplay(eventData.eventLocation)}
-        </div>
-  
+        </div> 
       </li>
     `;
   }
@@ -117,19 +110,18 @@ export class EventListComponent extends BaseDynamicComponent {
 
     if (state.data.eventData.length === 0) {
       return `
-          <p id="no-events-found">No events found</p>
-          <div class="section-separator-small"></div> 
-        `;
+        <p id="no-events-found">No events found</p>
+        <div class="section-separator-small"></div> 
+      `;
     }
     let html = `
       <div class="container-xl fade-in-animation">
-
       <h1 id="search-results-header">Search results</h1>
       <ul>`;
     for (let i = 0; i < state.data.eventData.length; i++) {
       html += `
-          ${this.getItemHtml(state.data.eventData[i])}
-          <div class="section-separator-small"></div> 
+        ${this.getItemHtml(state.data.eventData[i])}
+        <div class="section-separator-small"></div> 
       `;
     }
     return html + `</ul></div>`;
