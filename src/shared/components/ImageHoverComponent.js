@@ -6,7 +6,8 @@ export class ImageHoverComponent extends HTMLElement {
     super();
     this.imagePath = this.getAttribute("src");
   }
-  connectedCallback() {
+ 
+	connectedCallback() {
     this.attachShadow({ mode: "open" });
     const templateStyle = `      
       <style>
@@ -26,7 +27,7 @@ export class ImageHoverComponent extends HTMLElement {
     template.innerHTML =
       templateStyle +
       `     
-          <img class="image-preview" src="${this.imagePath}">
+        <img class="image-preview" src="${this.imagePath}">
       `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }

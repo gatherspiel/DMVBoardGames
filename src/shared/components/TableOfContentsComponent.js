@@ -6,16 +6,16 @@ export class TableOfContentsComponent extends HTMLElement{
 
     let count = 0;
     this.querySelectorAll(".section-1").forEach(element=>{
-      element.id = "header-"+count;
+      
+			element.id = "header-"+count;
 
       const title = element.querySelector("h2").textContent;
 
       let sectionHtml = ``;
-       let sectionCount = 0;
+      let sectionCount = 0;
       element.querySelectorAll("h3").forEach(sectionElement=>{
 
         sectionElement.id = "section-header-" + sectionCount +"-"+count;
-
         sectionHtml+=`
           <li>
             <a class="summary-header" href="#${sectionElement.id}">${sectionElement.textContent}</a></br>
@@ -23,7 +23,6 @@ export class TableOfContentsComponent extends HTMLElement{
         `
         sectionCount ++;
       })
-
 
       if(sectionHtml.length !==0){
         tableOfContents += `
@@ -39,7 +38,7 @@ export class TableOfContentsComponent extends HTMLElement{
       }
 
       count++;
-    })
+    });
     this.insertAdjacentHTML("afterbegin", tableOfContents);
   }
 }

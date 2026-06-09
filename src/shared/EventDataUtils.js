@@ -12,6 +12,7 @@ const months = [
   "November",
   "December",
 ];
+
 const validStates = ["DC", "MD", "VA"];
 
 export function convertDateListToRange(dates) {
