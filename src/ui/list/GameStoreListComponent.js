@@ -35,7 +35,6 @@ export class GameStoreListComponent extends BaseDynamicComponent {
           h1 {
             padding-left:1.5rem;
           }
-        
         }
       </style> 
     `;
@@ -65,7 +64,7 @@ export class GameStoreListComponent extends BaseDynamicComponent {
     });
     return (
       html +
-      `</ul></div>`;
+      `</ul></div>`
     );
   }
 }

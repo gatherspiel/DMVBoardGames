@@ -280,7 +280,6 @@ export class SearchComponent extends BaseDynamicComponent {
             store.location && store.location !== DEFAULT_SEARCH_PARAMETER
               ? `
                 <label id="max-distance-label" class="searchDropdownLabel">Max distance:</label>
-
                 ${getDropdownHtml({
                   data: DISTANCE_OPTIONS,
                   id: SEARCH_DISTANCE_ID,
@@ -302,7 +301,6 @@ export class SearchComponent extends BaseDynamicComponent {
                 ` 
             }
             ${store.loginState?.loggedIn && !isGroupSearch ? 
-              
               `${
                 store[ENABLE_SEARCH_TOGGLE_KEY]
                 ? `<button class="btn primary" id="${SEARCH_USER_GROUPS_BUTTON_ID}">Search joined groups</button>`
