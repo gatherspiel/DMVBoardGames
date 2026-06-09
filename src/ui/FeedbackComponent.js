@@ -36,16 +36,13 @@ export class FeedbackComponent extends BaseDynamicComponent {
         #${ENTER_NAME_INPUT_ID},#${ENTER_EMAIL_INPUT_ID} {
           display: block;
         }   
-      
-        @media not screen and (width < 32em) {
-         
+        @media not screen and (width < 32em) {  
           #feedback-type-select div {
             display: inline-block;
           }  
           #feedback-type-select  > :not(:first-child) {
             padding-left: 0.25rem;
-          } 
-        
+          }  
           #${FEEDBACK_TEXT_INPUT_ID} {
             display: block;
             height: 10rem;
@@ -99,7 +96,8 @@ export class FeedbackComponent extends BaseDynamicComponent {
           });
           return;
         }
-        if (!feedbackText || feedbackText.length === 0) {
+        
+				if (!feedbackText || feedbackText.length === 0) {
           self.updateData({
             errorMessage: "Feedback text cannot be blank",
           });
@@ -163,23 +161,20 @@ export class FeedbackComponent extends BaseDynamicComponent {
 					<label class="section-label" id="feedback-type-label">Feedback type:</label>  
 					<div id="feedback-type-select">
 						<div>
-						<label>General feedback</label> 
-						<input type="radio" name=${FEEDBACK_TYPE_INPUT_ID} value="general_feedback" ${data.checkedState?.["general_feedback"]}>
-						</div>
-						
+							<label>General feedback</label> 
+							<input type="radio" name=${FEEDBACK_TYPE_INPUT_ID} value="general_feedback" ${data.checkedState?.["general_feedback"]}>
+						</div>	
 						<div>
-						<label for="javascript">Bug report</label> 
-						<input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="bug_report" ${data?.checkedState?.["bug_report"]}>
-						</div>
-						
+							<label for="javascript">Bug report</label> 
+							<input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="bug_report" ${data?.checkedState?.["bug_report"]}>
+						</div>	
 						<div>
-						<label>New feature</label>
-						<input type="radio" name=${FEEDBACK_TYPE_INPUT_ID} value="new_feature" ${data?.checkedState?.["new_feature"]}>
-						</div>
-						
+							<label>New feature</label>
+							<input type="radio" name=${FEEDBACK_TYPE_INPUT_ID} value="new_feature" ${data?.checkedState?.["new_feature"]}>
+						</div>	
 						<div>
-						<label>Feature enhancement</label>
-						<input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="feature_enhancement" ${data?.checkedState?.["feature_enhancement"]}>
+							<label>Feature enhancement</label>
+							<input type="radio" name="${FEEDBACK_TYPE_INPUT_ID} value="feature_enhancement" ${data?.checkedState?.["feature_enhancement"]}>
 						</div>
 					</div>
 					<button class="primary" id=${SUBMIT_FEEDBACK_ID} type="submit">Submit</button> 
