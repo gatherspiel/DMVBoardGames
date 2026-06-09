@@ -27,7 +27,7 @@ export class DeleteGroupComponent extends BaseDynamicComponent {
   getTemplateStyle() {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-		 <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
         #delete-group-error-message {
           color:darkred;
@@ -94,24 +94,23 @@ export class DeleteGroupComponent extends BaseDynamicComponent {
 
   render(data) {
     return `
-			<div class="container-xl"> 
-				<h1>${document.title}</h1>
-				<form onsubmit="return false">
-					<div id="form-status-div">
-						${generateErrorMessage(data.errorMessage)}
-						${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}      
-					</div>
-					
-					<div class = "form-section">
-						<label class="required-field">Enter group name to confirm deleting</label>
-						<input
-								id=${GROUP_NAME_INPUT}
-								value="${data.groupInput ?? ""}"
-						 />
-					 </div>
-					 <button id=${CONFIRM_DELETE_BUTTON_ID}>Confirm delete</button>
-				</form>       
-			</div> 
-		`;
+      <div class="container-xl"> 
+        <h1>${document.title}</h1>
+        <form onsubmit="return false">
+          <div id="form-status-div">
+            ${generateErrorMessage(data.errorMessage)}
+            ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}      
+          </div>     
+          <div class = "form-section">
+            <label class="required-field">Enter group name to confirm deleting</label>
+            <input
+                id=${GROUP_NAME_INPUT}
+                value="${data.groupInput ?? ""}"
+             />
+           </div>
+           <button id=${CONFIRM_DELETE_BUTTON_ID}>Confirm delete</button>
+        </form>       
+      </div> 
+    `;
   }
 }

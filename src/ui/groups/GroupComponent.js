@@ -24,13 +24,13 @@ import { BaseDynamicComponent } from "@bponnaluri/places-js";
 import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
 import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js";
 import { LoginStatusComponent } from "../shared/LoginStatusComponent.js";
-
 import { RsvpComponent } from "./RsvpComponent.js";
 import { convertDayOfWeekForDisplay } from "../../shared/DisplayNameConversion.js";
 
 customElements.define("image-upload-component", ImageUploadComponent);
 customElements.define("login-status-component", LoginStatusComponent);
 customElements.define("rsvp-component", RsvpComponent);
+
 const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
 const EDIT_GROUP_BUTTON_ID = "edit-group-button";
 const JOIN_GROUP_BUTTON_ID = "join-group-button";
@@ -68,7 +68,7 @@ export class GroupComponent extends BaseDynamicComponent {
   getTemplateStyle() {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-			<link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style> 
         #edit-group-form {
           margin-top:0.5rem;
@@ -280,84 +280,80 @@ export class GroupComponent extends BaseDynamicComponent {
     }
     const self = this;
     return `
-			<div class="container-xl"> 
-				<div id="user-actions-menu" style="${groupData.permissions.userCanUpdateGroupMembership ? `` : `display:none`}">
-					<div> 
-						${this.renderUserUi(groupData)}
-					</div>
-        </div>
-
-  
-      <div class="fade-in-animation ui-section">
-      <h1 id="group-name-header">${groupData.name}</h1>
-      ${generateErrorMessage(groupData[ERROR_MESSAGE_KEY])}
-      ${generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY])}
-      ${
-        !groupData.isEditing
-          ? `
-          ${
-            groupData.url
-              ? `<a class="secondary btn" href=${groupData.url}">Group website</a>`
-              : ""
-          }
-        ${groupData.imagePath ? `<img id="group-image" src="${groupData.imagePath}"/>` : ``}
-        <div class="${GROUP_DESCRIPTION}">
-          <h2>Group description</h2>
-          <div id="group-description-text">
-            <span>${groupData.description}</span> 
+      <div class="container-xl"> 
+        <div id="user-actions-menu" style="${groupData.permissions.userCanUpdateGroupMembership ? `` : `display:none`}">
+          <div> 
+            ${this.renderUserUi(groupData)}
           </div>
-        </div>
+        </div>  
+        <div class="fade-in-animation ui-section">
+        <h1 id="group-name-header">${groupData.name}</h1>
+        ${generateErrorMessage(groupData[ERROR_MESSAGE_KEY])}
+        ${generateSuccessMessage(groupData[SUCCESS_MESSAGE_KEY])}
+        ${
+          !groupData.isEditing
+            ? `
+            ${
+              groupData.url
+                ? `<a class="secondary btn" href=${groupData.url}">Group website</a>`
+                : ""
+            }
+          ${groupData.imagePath ? `<img id="group-image" src="${groupData.imagePath}"/>` : ``}
+          <div class="${GROUP_DESCRIPTION}">
+            <h2>Group description</h2>
+            <div id="group-description-text">
+              <span>${groupData.description}</span> 
+            </div>
+          </div>
         `
           : this.renderEditMode(groupData)
-      }
-    ${
-      groupData.oneTimeEventData.length === 0 &&
-      groupData.weeklyEventData.length === 0
-        ? ``
-        : `
-        <h2>Upcoming events</h2>
-      `
-    }
-    ${
-      groupData.weeklyEventData.length === 0
-        ? ``
-        : `  
-          ${groupData.weeklyEventData
-            .map((event) => {
-              return self.renderWeeklyEventData(
-                event,
-                groupData.id,
-                groupData.id + "-event-" + event.id,
-              );
-            })
-            .join(" ")}
-        `
-    }
-    ${
-      groupData.oneTimeEventData.length === 0
-        ? ``
-        : `
-          <h2 id="other-events-header">Other events</h2> 
-          ${groupData.oneTimeEventData
-            .map((event) => {
-              return self.renderOneTimeEventData(
-                event,
-                groupData.id,
-                groupData.id + "event-" + event.id,
-              );
-            })
-            .join(" ")}
-          <p>Only events for the next 30 days will be visible.</p>
-      `
-    }
-    </div>`
-
+        }
+        ${
+          groupData.oneTimeEventData.length === 0 &&
+          groupData.weeklyEventData.length === 0
+            ? ``
+            : `
+              <h2>Upcoming events</h2>
+            `
+        }
+        ${
+          groupData.weeklyEventData.length === 0
+            ? ``
+            : `  
+            ${groupData.weeklyEventData
+              .map((event) => {
+                return self.renderWeeklyEventData(
+                  event,
+                  groupData.id,
+                  groupData.id + "-event-" + event.id,
+                );
+              })
+              .join(" ")}
+              `
+        }
+        ${
+          groupData.oneTimeEventData.length === 0
+            ? ``
+            : `
+              <h2 id="other-events-header">Other events</h2> 
+              ${groupData.oneTimeEventData
+                .map((event) => {
+                  return self.renderOneTimeEventData(
+                    event,
+                    groupData.id,
+                    groupData.id + "event-" + event.id,
+                  );
+                })
+                .join(" ")}
+              <p>Only events for the next 30 days will be visible.</p>
+          `
+        }
+      </div>`
   }
 
   renderEditMode(groupData) {
     return `
-      <h2>Edit group information</h2>
-  
+      <h2>Edit group information</h2> 
       <form id="edit-group-form">
         <div class="form-section">
           <label class=" required-field">Name</label>
@@ -375,8 +371,7 @@ export class GroupComponent extends BaseDynamicComponent {
           ${generateErrorMessage(groupData[DESCRIPTION_ERROR_TEXT_KEY])}
         </div>
   
-        <label class="">Image(optional)</label>
-       
+        <label class="">Image(optional)</label> 
         <div class ="form-section" id="image-upload">
           <image-upload-component
             id="image-upload-ui"
@@ -392,9 +387,8 @@ export class GroupComponent extends BaseDynamicComponent {
         </div>
     
         ${getGameTypeTagSelectHtml(groupData.gameTypeTags)}
-				<button class="primary" id=${SAVE_UPDATES_BUTTON_ID}>Save</button>
-				<button class="primary" id=${CANCEL_UPDATES_BUTTON_ID}>Cancel</button>
-  
+        <button class="primary" id=${SAVE_UPDATES_BUTTON_ID}>Save</button>
+        <button class="primary" id=${CANCEL_UPDATES_BUTTON_ID}>Cancel</button> 
       </form>`;
   }
 
@@ -411,21 +405,20 @@ export class GroupComponent extends BaseDynamicComponent {
         <button class="secondary "id="${EDIT_GROUP_BUTTON_ID}">Edit group information</button>
         <a class="btn secondary" href="/html/groups/addEvent.html?name=${encodeURIComponent(groupData.name)}&groupId=${encodeURIComponent(groupData.id)}">Add event</a>
         <a class="btn secondary" href="/html/groups/delete.html?name=${encodeURIComponent(groupData.name)}&id=${encodeURIComponent(groupData.id)}">Delete group</a>
-      `
+            `
           : ``
       }
       <button class="secondary" id="${JOIN_GROUP_BUTTON_ID}">${joinGroupText}</span>
-
     `;
   }
 
   renderWeeklyEventData(eventData, groupId, key) {
     const dayString = convertDayOfWeekForDisplay(eventData.day);
-		const url = `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`;
+    const url = `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`;
 
     return `
       <div id=${key} class="event">
-				<a class="btn secondary" href="${url}">${eventData.name}</a> 
+        <a class="btn secondary" href="${url}">${eventData.name}</a> 
         <rsvp-component
           current-user-rsvp=${eventData.userHasRsvp}
           event-id=${eventData.id}
@@ -444,10 +437,10 @@ export class GroupComponent extends BaseDynamicComponent {
   }
 
   renderOneTimeEventData(eventData, groupId, key) {
-		const url = `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
-					return `
+    const url = `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
+    return `
       <div id=${key} class="event">
-				<a class="btn secondary" href=${url}>${eventData.name}</a>   
+        <a class="btn secondary" href=${url}>${eventData.name}</a>   
         <p class = "event-time">${eventData.startDate} ${eventData.startTime}</p>
         <p class = "event-location">Location: ${eventData.location}</p>
       </div>

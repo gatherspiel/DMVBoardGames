@@ -71,8 +71,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   getTemplateStyle() {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-
-<link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
       
         h1 {
@@ -80,8 +79,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         }   
         #delete-event-form {
           margin-top:1rem;
-					margin-bottom:1em; 
-				}
+          margin-bottom:1em; 
+        }
         #event-description b, #event-description h1, #event-description h2,#event-description h3,#event-description h4,#event-description li, #event-description p {
           color: var(--clr-darker-blue);
           text-align: left;
@@ -112,8 +111,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           margin-right:0.5rem
         }
         @media not screen and (width < 32em) {
-
-          input,select,textarea {
+          input, select, textarea {
             display: block;
           }
           #${EVENT_NAME_INPUT} {
@@ -126,10 +124,10 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             margin-top: 0.5rem;
             width:63rem;
           }
-					#${SAVE_EVENT_BUTTON_ID} {
-						margin-bottom:0.5em;
-					}
-					#user-actions-menu {
+          #${SAVE_EVENT_BUTTON_ID} {
+            margin-bottom:0.5em;
+          }
+          #user-actions-menu {
             margin-bottom: 0.5rem;
           }
         } 
@@ -147,8 +145,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           #user-actions-menu-raised {
             display:inherit;
             margin-bottom: 0.5rem;
-          }
-          
+          } 
           .user-data-div {
             display: flex;
             flex-direction: column;
@@ -227,25 +224,19 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           isRecurring: self.componentStore.isRecurring,
         };
         if (self.componentStore.isRecurring) {
-          // @ts-ignore
           formData[DAY_OF_WEEK_INPUT] =
             data.namedItem(DAY_OF_WEEK_INPUT)?.value;
         } else {
-          // @ts-ignore
           formData[START_DATE_INPUT] = data.namedItem(START_DATE_INPUT)?.value;
         }
 
-        //@ts-ignore
         const validationErrors = validate(formData);
         if (Object.keys(validationErrors.formValidationErrors).length !== 0) {
           self.updateData({ ...validationErrors, ...formData });
         } else {
-          //@ts-ignore
           const eventDetails = getEventDetailsFromForm(formData);
-
           const moderatorEmail = data.namedItem(EVENT_ORGANIZER_INPUT)?.value;
           if (moderatorEmail) {
-            //@ts-ignore
             eventDetails["moderators"] = [
               {
                 email: moderatorEmail,
@@ -297,11 +288,10 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       <div id = "user-actions-menu">
         <nav id="user-actions-menu-raised"
              style="${!data.isEditing && !data.isDeleting && data?.permissions?.userCanEdit ? `` : `display:none`}">
-					<button class="secondary" id="${EDIT_EVENT_BUTTON_ID}">Edit event</button>
-					<button class="secondary" id="${DELETE_EVENT_BUTTON_ID}">Delete event</button>
-				</nav>
-      </div>
-      
+          <button class="secondary" id="${EDIT_EVENT_BUTTON_ID}">Edit event</button>
+          <button class="secondary" id="${DELETE_EVENT_BUTTON_ID}">Delete event</button>
+        </nav>
+      </div> 
       <div id="form-status-success">
         ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
       </div>
@@ -314,11 +304,11 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       html += this.renderViewMode(data);
     }
     const url = `${window.location.origin}/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}`
-		
-		html += `
-      <div class="container-xl">
-				<a class="btn secondary" href=${url}>Back to group</a>
-      </div>
+    
+    html += `
+        <div class="container-xl">
+          <a class="btn secondary" href=${url}>Back to group</a>
+        </div>
       </div>
     `;
     return html;
@@ -329,8 +319,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       <div class="ui-section" style="${!data[SUCCESS_MESSAGE_KEY] ? `` : `display:none`}" >
         <h1>Are you sure you want to delete event ${data.name} ${data.isRecurring ? "" : `on ${data.startTime}`}</h1>
         <div id="delete-event-form">
-					<button id=${CONFIRM_DELETE_BUTTON_ID}>Confirm delete</button>       
-					<button id=${CANCEL_DELETE_BUTTON_ID}>Cancel</button>       
+          <button id=${CONFIRM_DELETE_BUTTON_ID}>Confirm delete</button>       
+          <button id=${CANCEL_DELETE_BUTTON_ID}>Cancel</button>       
         </div>
       </div>
     `;
@@ -388,8 +378,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             type="date"
             value=${data.startDate}
           />
-        </div>
-      
+        </div> 
         <div class="form-section">
           <label class=" required-field">Start time</label>
           <input
@@ -429,7 +418,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           />
           </input>  
         </div> 
-				<button class="primary" id=${SAVE_EVENT_BUTTON_ID}>Save event</button>   
+        <button class="primary" id=${SAVE_EVENT_BUTTON_ID}>Save event</button>   
       </form>
     </div>
    `;
@@ -455,8 +444,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     data.moderators.forEach((moderator) => {
       html += `
         <div class ="user-data-div">
-          <div class="user-data-div-inner">
-      
+          <div class="user-data-div-inner"> 
             <div class="user-image-div">
               ${moderator.userData.imageFilePath ? `<img class="user-image-icon" src="${moderator.userData.imageFilePath}"></img>` : ``}
             </div>

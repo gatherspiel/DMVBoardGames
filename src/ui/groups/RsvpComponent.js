@@ -31,8 +31,6 @@ export class RsvpComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-
-
       <style>
       </style>
     `;
@@ -95,21 +93,17 @@ export class RsvpComponent extends BaseDynamicComponent {
 
     const rsvpButtonText = data.userHasRsvp ? "Cancel RSVP" : "RSVP";
     return `
-
-     ${
-       this.getAttribute("user-can-update-rsvp") !== "false"
-         ? `<button 
-        class="primary"
-      >  
-        ${rsvpButtonText}
-      </button>`
-         : ``
-     }
-      
+      ${
+        this.getAttribute("user-can-update-rsvp") !== "false"
+        ? `
+          <button class="primary">  
+            ${rsvpButtonText}
+          </button>`
+        : ``
+      } 
       <p>${rsvpStr}</p>
       ${generateErrorMessage(data.errorMessage)}
       ${generateSuccessMessage(data.successMessage)}
-
     `;
   }
 }
