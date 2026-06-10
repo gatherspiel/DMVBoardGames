@@ -72,8 +72,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style>
-      
+      <style> 
         h1 {
           margin-top:0rem;
         }   
@@ -84,10 +83,10 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         #event-description b, #event-description h1, #event-description h2,#event-description h3,#event-description h4,#event-description li, #event-description p {
           color: var(--clr-darker-blue);
           text-align: left;
-        }
+        } 
         #event-details-header {
           margin-top:0.5rem;
-        }
+        } 
         .back-to-group-button {
           margin-top: 0.5rem;
         }
@@ -149,8 +148,56 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           .user-data-div {
             display: flex;
             flex-direction: column;
+          }  
+        }
+
+        #print-container {
+          position:relative;
+        }
+        #print-container #event-title,#event-time,#event-details {
+          text-align:center;
+        }
+        #print-container #event-image-container {
+          padding-left:50px;
+          padding-right:50px;
+        }
+        #event-image-container img {
+          width:100%;
+        }
+        #event-image-container-outer {
+          position: absolute;
+          bottom: 0;
+          display:inline;
+        }
+        @media not print {
+          #print-container {
+            background-color:white;
+            height:1056px;
+            max-width:816px;
           }
-        }   
+          #print-container #event-image-container {
+            max-width: 816px;  
+          }
+
+          #event-image-container-outer {
+            height:400px; 
+            width:816px;
+          }
+        }
+        @media print {
+          #print-container {
+            width:100%;
+            height:100%;
+          }
+          #event-image-container-outer {
+            bottom:50px; 
+            height:400px;
+            width:816px;
+          }
+          #print-container #event-image-container {
+            max-width:816px;
+          }
+        } 
       </style>     
     `;
   }
@@ -280,21 +327,25 @@ export class EventDetailsComponent extends BaseDynamicComponent {
   }
 
   render(data) {
+    if(window.location.href.includes("print=true")){
+      return this.generateFlier(data);
+    }
     if (!data || !data.name) {
       return `<h1>Loading</h1>`;
     }
     let html = `
       <div class="container-xl fade-in-animation">
-      <div id = "user-actions-menu">
-        <nav id="user-actions-menu-raised"
-             style="${!data.isEditing && !data.isDeleting && data?.permissions?.userCanEdit ? `` : `display:none`}">
-          <button class="secondary" id="${EDIT_EVENT_BUTTON_ID}">Edit event</button>
-          <button class="secondary" id="${DELETE_EVENT_BUTTON_ID}">Delete event</button>
-        </nav>
-      </div> 
-      <div id="form-status-success">
-        ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
-      </div>
+        <div id = "user-actions-menu">
+          <nav id="user-actions-menu-raised"
+               style="${!data.isEditing && !data.isDeleting && data?.permissions?.userCanEdit ? `` : `display:none`}">
+            <button class="secondary" id="${EDIT_EVENT_BUTTON_ID}">Edit event</button>
+            <button class="secondary" id="${DELETE_EVENT_BUTTON_ID}">Delete event</button>
+            <a class="btn secondary" href="${window.location.href}&print=true">Printable flier</a>
+          </nav>
+        </div> 
+        <div id="form-status-success">
+          ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
+        </div>
     `;
     if (data.isEditing) {
       html += this.renderEditMode(data);
@@ -314,6 +365,33 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     return html;
   }
 
+  generateFlier(data){
+    const imagePath = data.imageFilePath && data.imageFilePath.length > 0 ?
+      data.imageFilePath 
+      : `https://gatherspiel.nyc3.cdn.digitaloceanspaces.com/groups/events/20406/imageb192bdf2-f00c-4af2-8d04-cbd90b7c3f4a.jpg`
+      
+
+    console.log(imagePath);
+    return `
+      <div class="container-xl" id="print-container">
+        <h1 id="event-title">${data.name}</h1>
+        <h1 id="event-time">
+          ${data.isRecurring
+              ? `${data.day}s at ${data.startTime}`
+              : ``
+            }
+        </h1>
+        <div id="event-details">
+          ${data.description}
+        </div>
+        <div id="event-image-container-outer"> 
+        <div id="event-image-container">
+          <img src="${imagePath}"></img>
+        </div>
+        </div>
+      </div>
+    `
+  }
   renderDeleteMode(data) {
     return `
       <div class="ui-section" style="${!data[SUCCESS_MESSAGE_KEY] ? `` : `display:none`}" >
@@ -457,6 +535,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     });
     return html;
   }
+  
   renderViewMode(data) {
     if (data.errorMessage) {
       return `${generateErrorMessage(data.errorMessage)}`;

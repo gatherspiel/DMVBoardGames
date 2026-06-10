@@ -1,7 +1,5 @@
 }/* Styles that are shared with components */
 
-
-
 #form-status-div {
   height: 2.5rem;
 }
@@ -120,4 +118,11 @@
   .top-nav-secondary span {
     padding-top: 1rem;
   }
+}
+
+@media print {
+  header,footer {
+    display:none;
+  }
+
 }
