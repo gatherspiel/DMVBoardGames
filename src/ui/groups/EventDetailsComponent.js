@@ -93,6 +93,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         .back-to-group-button {
           margin-top: 0.5rem;
         }
+        .event-info {
+          display:block;
+        }
         .event-website-link {
           margin-bottom: 0.5rem;
           margin-top: 1rem;
@@ -567,9 +570,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         ${data.imageFilePath ? `<img id="event-image" src="${data.imageFilePath}"/>` : ``}
 
         ${this.displayModerators(data)}
-        <br>
-        <span class="event-info"><b>Location:</b> ${data.location}</h3>
-        <br> 
+        <span class="event-info"><b>Location:</b> ${data.location}</span>
         <span class="event-info">
           <b>Time:</b>${
             data.isRecurring
@@ -580,7 +581,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
               ${data.startDate}, ${data.startTime}
            `
           }
-        </p>  
+        </span>  
         <rsvp-component
           current-user-rsvp="${data.userHasRsvp}"
           event-id=${data.id}
