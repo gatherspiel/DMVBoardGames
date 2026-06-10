@@ -566,11 +566,11 @@ export class EventDetailsComponent extends BaseDynamicComponent {
 
         ${data.imageFilePath ? `<img id="event-image" src="${data.imageFilePath}"/>` : ``}
 
-        <h2 id="event-details-header">Event details</h2>
         ${this.displayModerators(data)}
-        <p><b>Location:</b> ${data.location}</p>
-
-        <p>
+        <br>
+        <span class="event-info"><b>Location:</b> ${data.location}</h3>
+        <br> 
+        <span class="event-info">
           <b>Time:</b>${
             data.isRecurring
               ? `
