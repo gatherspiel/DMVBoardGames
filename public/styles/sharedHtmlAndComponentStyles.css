@@ -124,5 +124,12 @@
   header,footer {
     display:none;
   }
-
+  body{
+    margin:0px;
+  }
+  @page{
+    margin:0mm;
+  }
 }
+
+

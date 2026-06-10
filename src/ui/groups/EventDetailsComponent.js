@@ -80,6 +80,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           margin-top:1rem;
           margin-bottom:1em; 
         }
+        #event-description {
+          margin-bottom:0.5em;
+        }
         #event-description b, #event-description h1, #event-description h2,#event-description h3,#event-description h4,#event-description li, #event-description p {
           color: var(--clr-darker-blue);
           text-align: left;
@@ -150,54 +153,67 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             flex-direction: column;
           }  
         }
-
         #print-container {
           position:relative;
+        }
+        #event-title {
+          color: hsl(199, 100%, 33%);
+          font-size:54px;
+          margin-left:50px;
+          margin-right:5px;
+        }
+        #event-time {
+          color: hsl(199, 100%, 20%);
+          font-size:48px;
+          margin-top: -1em;
+        }
+        #event-details {
+          font-size:48px;
+          margin-left: 60px;
+          margin-right: 60px;
         }
         #print-container #event-title,#event-time,#event-details {
           text-align:center;
         }
         #print-container #event-image-container {
-          padding-left:50px;
-          padding-right:50px;
+          width:100%;
         }
         #event-image-container img {
           width:100%;
         }
         #event-image-container-outer {
-          position: absolute;
-          bottom: 0;
           display:inline;
         }
-        @media not print {
-          #print-container {
-            background-color:white;
-            height:1056px;
-            max-width:816px;
-          }
-          #print-container #event-image-container {
-            max-width: 816px;  
-          }
-
-          #event-image-container-outer {
-            height:400px; 
-            width:816px;
-          }
-        }
-        @media print {
-          #print-container {
+        #print-container #event-image-container {
+            max-width:1016px;
+        } 
+        #print-container {
             width:100%;
             height:100%;
           }
-          #event-image-container-outer {
-            bottom:50px; 
-            height:400px;
-            width:816px;
+        #event-image-container-outer {
+          bottom:100px; 
+          height:400px;
+          margin-left:60px;
+          margin-right:60px;
+          display:flex;
+          width:auto;
+        }
+        
+        @media not print {
+          #print-container {
+            background-color:white;
           }
-          #print-container #event-image-container {
-            max-width:816px;
+           #event-image-container-outer {
+            height:400px; 
           }
-        } 
+        }
+         
+        @page {
+			    size: 8.5in 11in;
+			    margin-top:0;
+		    }
+
       </style>     
     `;
   }
@@ -371,10 +387,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       : `https://gatherspiel.nyc3.cdn.digitaloceanspaces.com/groups/events/20406/imageb192bdf2-f00c-4af2-8d04-cbd90b7c3f4a.jpg`
       
 
-    console.log(imagePath);
     return `
       <div class="container-xl" id="print-container">
-        <h1 id="event-title">${data.name}</h1>
+        <h1 id="event-title">${data.name.toUpperCase()}</h1>
         <h1 id="event-time">
           ${data.isRecurring
               ? `${data.day}s at ${data.startTime}`
