@@ -15,8 +15,8 @@ export class MemberDataComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `
-     <link rel="stylesheet" type="text/css"  href="/styles/kelp.css"/> 
-		 <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css"  href="/styles/kelp.css"/> 
+      <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
       </style>
     `;
@@ -24,13 +24,13 @@ export class MemberDataComponent extends BaseDynamicComponent {
   
   render(data) {
     const html = `
-			<div class="container-xl"> 
-				<h1>MemberData</h1>
-				${this.getModeratingGroupsHtml(data.moderatingGroups)}
-				${this.getModeratingEventsHtml(data.moderatingEvents)}
-				${this.getJoinedGroupsHtml(data.joinedGroups)}
-				${this.getAttendingEventsHtml(data.attendingEvents)}
-			</div>
+      <div class="container-xl"> 
+        <h1>MemberData</h1>
+        ${this.getModeratingGroupsHtml(data.moderatingGroups)}
+        ${this.getModeratingEventsHtml(data.moderatingEvents)}
+        ${this.getJoinedGroupsHtml(data.joinedGroups)}
+        ${this.getAttendingEventsHtml(data.attendingEvents)}
+      </div>
     `;
     return html;
   }

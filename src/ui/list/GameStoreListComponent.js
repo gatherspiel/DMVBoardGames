@@ -13,8 +13,7 @@ export class GameStoreListComponent extends BaseDynamicComponent {
   getTemplateStyle() {
     return `
       <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-
-			<link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
         h1 {
           margin-top:1rem;
@@ -29,14 +28,13 @@ export class GameStoreListComponent extends BaseDynamicComponent {
         }
         .game-store-list-item * {
           display: inline-block;
-					margin-top:0.5em;
-					margin-bottom:0.5em;
+          margin-top:0.5em;
+          margin-bottom:0.5em;
         }
         @media not screen and (width < 32em) {
           h1 {
             padding-left:1.5rem;
           }
-        
         }
       </style> 
     `;
@@ -45,9 +43,9 @@ export class GameStoreListComponent extends BaseDynamicComponent {
   getItemHtml(gameStore) {
     return `
       <li class="game-store-list-item">
-				<a class="btn secondary" href=${gameStore.url}">
-					${gameStore.name}
-				</a>
+        <a class="btn secondary" href=${gameStore.url}">
+          ${gameStore.name}
+        </a>
         <p>Location: ${gameStore.location}</p>
       </li>
     `;
@@ -56,19 +54,17 @@ export class GameStoreListComponent extends BaseDynamicComponent {
   render(data) {
     let html = `
       <div class="container-xl ui-section">
-				<h1>Game Stores</h1>
-				<div class="section-separator-small"></div>
-				<ul>
+        <h1>Game Stores</h1>
+        <div class="section-separator-small"></div>
+        <ul>
     `;
     Object.values(data).forEach((item) => {
-      html +=
-        this.getItemHtml(item) +
-        `      <div class="section-separator-small"></div>`;
+      html +=this.getItemHtml(item) +
+        `<div class="section-separator-small"></div>`;
     });
     return (
       html +
-      `</ul></div>
-    `
+      `</ul></div>`
     );
   }
 }

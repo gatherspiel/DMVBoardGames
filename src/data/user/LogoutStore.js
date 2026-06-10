@@ -23,7 +23,8 @@ async function retrieveData() {
       },
     },
   );
-  if (data.ok) {
+  
+	if (data.ok) {
     deleteLocalStoreData(AUTH_TOKEN_KEY);
     window.location.assign("/index.html");
     return new AuthResponse(false);

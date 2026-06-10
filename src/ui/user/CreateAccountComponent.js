@@ -49,15 +49,18 @@ export class CreateAccountComponent extends BaseDynamicComponent {
   getTemplateStyle() {
     return `  
       <link rel="stylesheet" type="text/css"  href="/styles/kelp.css"/>
-			<link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style>
-				#username-input,#password-input,#confirm-password-input {
-					width:20rem;
-				}
-				#{AGREE_RULES_ID} {
-					font-weight:600;
-				}
-				#email {
+       #{AGREE_RULES_ID} {
+          font-weight:600;
+        }
+         #${CREATE_ACCOUNT_ID}{
+          display:block;
+        } 
+        #${CREATE_ACCOUNT_ID_DISABLED} .front {
+          background: gray;
+        }
+        #email {
           display: inline-block;
         }
         #component-buttons {
@@ -66,23 +69,23 @@ export class CreateAccountComponent extends BaseDynamicComponent {
         #ui-input input {
           display: block;
         }
+        #username-input,#password-input,#confirm-password-input {
+          width:20rem;
+        }
+ 
         .${CREATE_ACCOUNT_ID},.${CREATE_ACCOUNT_ID_DISABLED}{
           margin-top:0.5rem;
-        }
-        #${CREATE_ACCOUNT_ID}{
-          display:block;
-        } 
-        #${CREATE_ACCOUNT_ID_DISABLED} .front {
-          background: gray;
         }
         .ui-input {
           display: block;
         }  
-        @media not screen and (width < 32em) { 
+       
+       @media not screen and (width < 32em) { 
           #email {
             display: inline-block;
           }
         }
+        
         @media screen and (width < 32em) {
           #login-component-container {
             text-align: center;
@@ -98,8 +101,7 @@ export class CreateAccountComponent extends BaseDynamicComponent {
     const self = this;
     shadowRoot.addEventListener("click", (event) => {
       event.preventDefault();
-			
-			console.log("Hi");
+      
       const targetId = event.target?.id;
       if (targetId === AGREE_RULES_ID) {
         self.updateData({
@@ -118,7 +120,7 @@ export class CreateAccountComponent extends BaseDynamicComponent {
           confirmPassword: shadowRoot.getElementById(CONFIRM_PASSWORD_INPUT)
             ?.value,
         };
-				console.log(formData);
+        console.log(formData);
         if (
           !formData.username ||
           (!formData.password && !formData.confirmPassword)
@@ -168,8 +170,8 @@ export class CreateAccountComponent extends BaseDynamicComponent {
   render(data) {
     return `
       <div class="container-xl" id="login-component-container"> 
-				<h1>Create account</h1>
-				<form id=${LOGIN_FORM_ID}>
+        <h1>Create account</h1>
+        <form id=${LOGIN_FORM_ID}>
           <div id="ui-input">
             <div class="form-section">
               <label class="required-field" id="email">Email</label>
@@ -179,39 +181,35 @@ export class CreateAccountComponent extends BaseDynamicComponent {
                 value="${data.username}"
               />
              </input>   
-          </div> 
-          <div class="form-section">
-            <label class="required-field">Password</label>
-            <input        
-              id=${PASSWORD_INPUT}
-              type="password"
-              value="${data.password}"
-            />   
-            </input>
+            </div> 
+            <div class="form-section">
+              <label class="required-field">Password</label>
+              <input        
+                id=${PASSWORD_INPUT}
+                type="password"
+                value="${data.password}"
+              />   
+              </input>
+            </div>
+       
+            <div class="form-section">
+              <label class="required-field">Confirm password</label>
+              <input        
+                id=${CONFIRM_PASSWORD_INPUT}
+                type="password"
+                value="${data.confirmPassword}"
+              />
+            </input>          
+            </div> 
           </div>
-     
-          <div class="form-section">
-            <label class="required-field">Confirm password</label>
-            <input        
-              id=${CONFIRM_PASSWORD_INPUT}
-              type="password"
-              value="${data.confirmPassword}"
-            />
-          </input>          
-          </div>
-   
-         </div>
-  
-          ${generateErrorMessage(data.errorMessage)}	 
-					${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
-
+          ${generateErrorMessage(data.errorMessage)}   
+          ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
           ${
             data[AGREE_RULES_ID]
               ?
-								`<button id=${CREATE_ACCOUNT_ID} class="primary">Create account</button>` : `<button class="neutral">Create account</button>`
+                `<button id=${CREATE_ACCOUNT_ID} class="primary">Create account</button>` : `<button class="neutral">Create account</button>`
 
-          }
-          
+          } 
           <div id="agree-rules-input">
             <label for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
             <input type="checkbox" id="${AGREE_RULES_ID}" ${data[AGREE_RULES_ID] ? "checked" : ""}>         

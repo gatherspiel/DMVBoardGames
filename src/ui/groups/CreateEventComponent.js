@@ -49,8 +49,8 @@ export class CreateEventComponent extends BaseDynamicComponent {
   }
   getTemplateStyle() {
     return `
-       <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-			<link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
+      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style> 
         input,select,textarea {
           display: block;
@@ -102,14 +102,10 @@ export class CreateEventComponent extends BaseDynamicComponent {
           [EVENT_LOCATION_INPUT]: data.namedItem(EVENT_LOCATION_INPUT)?.value,
         };
         if (self.componentStore.isRecurring) {
-          // @ts-ignore
           formData[DAY_OF_WEEK_INPUT] = data.namedItem(DAY_OF_WEEK_INPUT).value;
         } else {
-          // @ts-ignore
           formData[START_DATE_INPUT] = data.namedItem(START_DATE_INPUT).value;
         }
-
-        //@ts-ignore
         const validationErrors = validate(formData);
         if (Object.keys(validationErrors.formValidationErrors).length !== 0) {
           self.updateData({ ...validationErrors, ...formData });
@@ -117,8 +113,6 @@ export class CreateEventComponent extends BaseDynamicComponent {
           const groupId = new URLSearchParams(document.location.search).get(
             "groupId",
           );
-
-          //@ts-ignore
           const eventDetails = getEventDetailsFromForm(formData);
           ApiLoadAction.getResponseData({
             body: JSON.stringify(eventDetails),
@@ -149,113 +143,108 @@ export class CreateEventComponent extends BaseDynamicComponent {
 
     return `   
       <div class="container-xl">
-				<form id="create-event-form" onsubmit="return false">   
-					<h1>${document.title}</h1> 
-					<div id="form-status-div">
-							${generateErrorMessage(data.errorMessage)}
-							${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}      
-					</div>
-						<div class = "form-section">
-							<label class=""> Recurring event</label>
-							<input 
-								id=${RECURRING_EVENT_INPUT}
-								name=${RECURRING_EVENT_INPUT}
-								type="checkbox"
-								${data.isRecurring ? "checked" : ""}
-							/>
-						</div>  
-						
-						<div class = "form-section">
-							<label>Enable RSVPs. Enable if you want to use this site to manage RSVPs instead of another website 
-							such as Meetup.com</label>
-							<input
-								type="checkbox"
-							>
-						</div>
-					 
-						<div class="form-section">
-							<label class="required-field">Name</label>
-							<input
-								id=${EVENT_NAME_INPUT}
-								name=${EVENT_NAME_INPUT}
-								value="${data.name}"
-							 />
-							 ${generateErrorMessage(data.formValidationErrors?.[EVENT_NAME_INPUT])}
-						 </div>
-						<div class="form-section">
-							<label class=" required-field">Description</label>
-							<textarea
-								id=${EVENT_DESCRIPTION_INPUT}
-								name=${EVENT_DESCRIPTION_INPUT}
-							/>${data.description ?? ""}</textarea>
-							${generateErrorMessage(data.formValidationErrors?.[EVENT_DESCRIPTION_INPUT])}
-						</div>   
-						
-						<image-upload-component
-							id="image-upload-ui"
-						>
-						
-						</image-upload-component>
-						<div class="form-section">
-							<label class="">Event URL(optional)</label>
-							<input
-								name=${EVENT_URL_INPUT}
-								type="url"
-								value="${data.url ?? ""}"
-							/>
-						</div>
-				
-							<div class="form-section" style="${data.isRecurring ? `` : `display:none`}">
-								<label class=" required-field">Day of week</label>
-								${getDayOfWeekSelectHtml(data.day)}
-								${generateErrorMessage(data.formValidationErrors?.[DAY_OF_WEEK_INPUT])}
-							</div>
-			
-							<div class="form-section" style="${!data.isRecurring ? `` : `display:none`}">
-								<label class=" required-field">Start date</label>
-								<input
-									name=${START_DATE_INPUT}
-									type="date"
-									value="${data[START_DATE_INPUT]}"
-								/>  
-							${generateErrorMessage(data.formValidationErrors?.[START_DATE_INPUT])} 
-							</div>
-						
-						<div class="form-section">
-							<label class=" required-field">Start time</label>
-							<input
-								name=${START_TIME_INPUT}
-								type="time"
-								value="${data[START_TIME_INPUT]}"
-							/>
-							${generateErrorMessage(data.formValidationErrors?.[START_TIME_INPUT])} 
-						</div>
-						<div class="form-section">
-							<label class=" required-field">End time</label>
-							<input
-								name=${END_TIME_INPUT}
-								type="time"
-								value="${data[END_TIME_INPUT]}"
-							/>
-							${generateErrorMessage(data.formValidationErrors?.[END_TIME_INPUT])} 
-						</div>
-						<div class="form-section">
-							<label class=" required-field">Event address</label>
-							<input
-								name=${EVENT_LOCATION_INPUT}
-								value="${data.location ?? ""}"
-							/>
-							${generateErrorMessage(data.formValidationErrors?.[EVENT_LOCATION_INPUT])} 
-						</div>
-						<button class="primary" id=${CREATE_EVENT_BUTTON_ID} type="Submit">
-							Submit
-						</button>
-						<a
-							class="btn secondary"
-							href="/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}">
-							Back to group
-						</a>
-					</form>
+        <form id="create-event-form" onsubmit="return false">   
+          <h1>${document.title}</h1> 
+          <div id="form-status-div">
+              ${generateErrorMessage(data.errorMessage)}
+              ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}      
+          </div>
+          <div class = "form-section">
+            <label class=""> Recurring event</label>
+            <input 
+              id=${RECURRING_EVENT_INPUT}
+              name=${RECURRING_EVENT_INPUT}
+              type="checkbox"
+              ${data.isRecurring ? "checked" : ""}
+            />
+          </div>  
+          
+          <div class = "form-section">
+            <label>Enable RSVPs. Enable if you want to use this site to manage RSVPs instead of another website 
+            such as Meetup.com</label>
+            <input
+            type="checkbox"
+          >
+          </div> 
+          <div class="form-section">
+            <label class="required-field">Name</label>
+            <input
+              id=${EVENT_NAME_INPUT}
+              name=${EVENT_NAME_INPUT}
+              value="${data.name}"
+             />
+             ${generateErrorMessage(data.formValidationErrors?.[EVENT_NAME_INPUT])}
+           </div>
+          <div class="form-section">
+            <label class=" required-field">Description</label>
+            <textarea
+              id=${EVENT_DESCRIPTION_INPUT}
+              name=${EVENT_DESCRIPTION_INPUT}
+            />${data.description ?? ""}</textarea>
+            ${generateErrorMessage(data.formValidationErrors?.[EVENT_DESCRIPTION_INPUT])}
+          </div>   
+          
+          <image-upload-component
+            id="image-upload-ui"
+          >   
+          </image-upload-component>
+          <div class="form-section">
+            <label class="">Event URL(optional)</label>
+            <input
+              name=${EVENT_URL_INPUT}
+              type="url"
+              value="${data.url ?? ""}"
+            />
+          </div> 
+          <div class="form-section" style="${data.isRecurring ? `` : `display:none`}">
+            <label class=" required-field">Day of week</label>
+            ${getDayOfWeekSelectHtml(data.day)}
+            ${generateErrorMessage(data.formValidationErrors?.[DAY_OF_WEEK_INPUT])}
+          </div>
+          <div class="form-section" style="${!data.isRecurring ? `` : `display:none`}">
+            <label class=" required-field">Start date</label>
+            <input
+              name=${START_DATE_INPUT}
+              type="date"
+              value="${data[START_DATE_INPUT]}"
+            />  
+          ${generateErrorMessage(data.formValidationErrors?.[START_DATE_INPUT])} 
+          </div> 
+          <div class="form-section">
+            <label class=" required-field">Start time</label>
+            <input
+              name=${START_TIME_INPUT}
+              type="time"
+              value="${data[START_TIME_INPUT]}"
+            />
+            ${generateErrorMessage(data.formValidationErrors?.[START_TIME_INPUT])} 
+          </div>
+          <div class="form-section">
+            <label class=" required-field">End time</label>
+            <input
+              name=${END_TIME_INPUT}
+              type="time"
+              value="${data[END_TIME_INPUT]}"
+            />
+            ${generateErrorMessage(data.formValidationErrors?.[END_TIME_INPUT])} 
+          </div>
+          <div class="form-section">
+            <label class=" required-field">Event address</label>
+            <input
+              name=${EVENT_LOCATION_INPUT}
+              value="${data.location ?? ""}"
+            />
+            ${generateErrorMessage(data.formValidationErrors?.[EVENT_LOCATION_INPUT])} 
+          </div>
+          <button class="primary" id=${CREATE_EVENT_BUTTON_ID} type="Submit">
+            Submit
+          </button>
+          <a
+            class="btn secondary"
+            href="/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}">
+            Back to group
+          </a>
+        </form>
       </div>
     `;
   }

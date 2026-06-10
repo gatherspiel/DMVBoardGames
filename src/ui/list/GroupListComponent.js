@@ -23,15 +23,13 @@ export class GroupListComponent extends BaseDynamicComponent {
 
   getTemplateStyle() {
     return `
-       <link rel="preload" as="style" href="/styles/kelp.css" onload="this.rel='stylesheet'"/>
-
-			<link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
+      <link rel="preload" as="style" href="/styles/kelp.css" onload="this.rel='stylesheet'"/>
+      <link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
       <style>
-       li {
+        li {
           padding-bottom: 0.25rem;
           padding-top:0.25rem;
-        }
-      
+        } 
         ul {
           list-style:url(/assets/images/meeple_small.png);
           padding-left:1.5rem;
@@ -50,19 +48,18 @@ export class GroupListComponent extends BaseDynamicComponent {
           }
         }  
         @media screen and (width < 32em) {
-					ul {
-						margin-top: -1em;
-					}
+          ul {
+            margin-top: -1em;
+          }
           #group-search-results-header {
             text-align: center;
           }
-					.container-xl {
-						margin-top:-3em;
-					}
-					.group-cities {
+          .container-xl {
+            margin-top:-3em;
+          }
+          .group-cities {
             display: none; 
           }
-
         } 
       </style>
     `;
@@ -76,14 +73,13 @@ export class GroupListComponent extends BaseDynamicComponent {
 
     const hasRecurringEventDays = group.recurringEventDays.length > 0;
     const hasGameTypeTags = group.gameTypeTags.length > 0;
-		
-		const url = `${hasRecurringEventDays || loggedIn || hasGameTypeTags ? `/html/groups/groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`;
     
-
+    const url = `${hasRecurringEventDays || loggedIn || hasGameTypeTags ? `/html/groups/groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`;
+    
     return `
       <li>
-				<a class="btn secondary" href=${url}>${group.name}</a>
-				<span class="group-search-details">${groupCitiesStr}</span>	       
+        <a class="btn secondary" href=${url}>${group.name}</a>
+        <span class="group-search-details">${groupCitiesStr}</span>        
         ${hasRecurringEventDays ? `<span class="group-search-details"><b>Days:</b> ${group.recurringEventDays.join(", ")}</span>` : ``}  
         ${hasGameTypeTags ? `<span class="group-search-details"><b>Game types:</b> ${group.gameTypeTags.join(", ")}</span>` : ``}  
       </li>
@@ -96,9 +92,9 @@ export class GroupListComponent extends BaseDynamicComponent {
 
     if (state.data.groupData.length === 0) {
       return `
-          <p>No groups found</p>
-          <div class="section-separator-small"></div> 
-        `;
+        <p>No groups found</p>
+        <div class="section-separator-small"></div> 
+      `;
     }
     let html = `
       <div class="container-xl fade-in-animation">
