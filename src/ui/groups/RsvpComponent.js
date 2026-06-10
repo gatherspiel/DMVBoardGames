@@ -101,7 +101,7 @@ export class RsvpComponent extends BaseDynamicComponent {
           </button>`
         : ``
       } 
-      <p>${rsvpStr}</p>
+      <p><b>${rsvpStr}</b></p>
       ${generateErrorMessage(data.errorMessage)}
       ${generateSuccessMessage(data.successMessage)}
     `;
