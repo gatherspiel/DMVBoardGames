@@ -234,7 +234,7 @@ export class SearchComponent extends BaseDynamicComponent {
       return `
         <div class="container-xl">
           <details ${store.showSearchUiMobile ? "open":""}>
-            <summary class="size-5xl">${this.getAttribute("search-text")}</summary>
+            <summary class="size-3xl">${this.getAttribute("search-text")}</summary>
             ${this.renderSearchForm(store)}
             </hr> 
           </details>

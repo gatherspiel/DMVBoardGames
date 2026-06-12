@@ -42,18 +42,16 @@ export class UserActionsComponent extends BaseDynamicComponent {
   }
 
   getLinks(data) {
-    let html = `
+    return `
       <a class="btn secondary" href="${data.url}">Create group</a>
+      <a href="/html/user/memberData.html">View my groups and events</a>
     `;
-
-    if (data[IS_LOGGED_IN_KEY]) {
-      html += `<a href="/html/user/memberData.html">View my groups and events</a>`;
-    }
-
-    return html;
   }
 
   render(data) {
+    if (!data[IS_LOGGED_IN_KEY]){
+      return ``;
+    }
     return `
       <div class="container-xl">
 				<div> 

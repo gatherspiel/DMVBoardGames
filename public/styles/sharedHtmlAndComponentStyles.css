@@ -8,11 +8,6 @@
   padding-top: 1.5rem;
 }
 
-#user-actions-front {
-  padding-left: 1.5rem;
-}
-
-
 .error-message {
   color: darkred;
   display: block;
@@ -39,20 +34,9 @@
   font-weight: 600;
 }
 
-.label-border-left {
-  border-left: 1px solid black;
-}
-
 .required-field::after {
   color: darkred;
   content: "*";
-}
-
-.section-separator-medium {
-  border-bottom: 20px solid;
-  border-image-source: url(/assets/images/Section_Border_Medium.png);
-  border-image-slice: 20 20;
-  border-image-repeat: round;
 }
 
 .section-separator-small {
@@ -61,7 +45,6 @@
   border-image-slice: 5 5;
   border-image-repeat: round;
 }
-
 
 .success-message {
   color: #00bb51;
@@ -77,46 +60,29 @@
   #user-actions-menu-raised {
     display: inherit;
   }
-  .show-mobile {
-    display: none;
-  }
-  .top-nav-secondary a {
-    display: inline-block;
-    margin-right: 2rem;
-  }
-  .top-nav-secondary span {
-    margin-right: 2rem;
-  }
 }
 
-@media screen and (width < 32em) {
-  .ui-section {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    text-align: center;
-  }
-  .hide-mobile {
-    display: none;
-  }
-  .show-mobile {
-    display: initial;
-  }
- 
+@media screen and (width < 32em) {  
   textarea {
     width: 100%;
   }
-
+  .hide-mobile {
+    display: none;
+  } 
   .top-nav-secondary {
     display: grid;
     text-align: center;
   }
-
   .top-nav-secondary > :not(:first-child) {
     padding-top: 0.5rem;
   }
-
   .top-nav-secondary span {
     padding-top: 1rem;
+  }
+  .ui-section {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    text-align: center;
   }
 }
 
