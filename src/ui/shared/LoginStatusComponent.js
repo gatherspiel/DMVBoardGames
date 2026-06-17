@@ -97,8 +97,7 @@ class LoginStatusComponentInner extends BaseDynamicComponent {
             margin-top:0;
           }
           a {
-            display: block;
-            line-height: 1.25;
+            display: none;
             margin-bottom:0.5rem;
           }
           #edit-profile-div {
