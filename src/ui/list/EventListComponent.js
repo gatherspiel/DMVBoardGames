@@ -67,7 +67,7 @@ export class EventListComponent extends BaseDynamicComponent {
             text-align: center;
           }
           .container-xl {
-            margin-top:-3rem;
+            margin-top:-2rem;
           } 
           .ui-section .event-group:not(:first-child) {
             margin-top: 0.5rem;
