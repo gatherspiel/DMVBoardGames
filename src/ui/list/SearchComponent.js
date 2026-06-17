@@ -95,9 +95,6 @@ export class SearchComponent extends BaseDynamicComponent {
         select {
           width:10rem;
         } 
-        .container-xl {
-          margin-top:-2em;
-        } 
         .searchDropdownLabel {
           font-weight:600;
         }      
@@ -107,9 +104,6 @@ export class SearchComponent extends BaseDynamicComponent {
         @media screen and (width > 32em) {
           fieldset label {
             display:inline;
-          }
-          #form-div-outer {
-            margin-top: -1rem;
           }
         } 
         @media screen and (width < 32em) {
@@ -134,10 +128,6 @@ export class SearchComponent extends BaseDynamicComponent {
           } 
           #search-input-div > button {
             margin-bottom: 0.5rem;
-          } 
-          .container-xl {
-            margin-top: -2.5rem;
-            margin-bottom: 1.5rem;  
           } 
           .searchDropdownLabel {
             text-align:center;
