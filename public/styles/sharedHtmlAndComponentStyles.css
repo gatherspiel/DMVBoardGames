@@ -63,6 +63,9 @@
 }
 
 @media screen and (width < 32em) {  
+  header {
+    min-height: 8em;
+  }
   textarea {
     width: 100%;
   }
