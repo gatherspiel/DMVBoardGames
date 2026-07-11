@@ -22,9 +22,10 @@ export class SiteRulesComponent extends BaseTemplateComponent {
       <h3>General guidelines</h3>
       <ul>
         <li>All groups and events must have board games as a primary focus.</li>
-        <li>All events must be in person at a location within the DMV area.</li>
+        <li>All events must be in person at a location within the DMV area as defined by <a href="https://www.bls.gov/oes/current/msa_def.htm#DC">this page</a>.</li>
         <li>Any links must be content relevant to an event. Content must also be visible without logging in or entering personal information.</li>
         <li>All information must be manually entered by a human without the use of bots or generative AI.</li>
+        <li>An event organizer can post an email or phone number. Otherwise, no contact information can be directly posted on event descriptions.</li>
       </ul>
       
       <h3>Prohibited content</h3>
@@ -38,7 +39,6 @@ export class SiteRulesComponent extends BaseTemplateComponent {
         <h4>Other prohibited content</h4>
         <ul>
           <li>Content created with the use of generative AI tools such as ChatGPT.</li>
-          <li>Contact information including email addresses, group chat information, or phone numbers.</li>
           <li>Information related to exchanging money or products not related to necessary costs for the event.</li>
           <li>Groups or events that are focused on people of specific demographics not directly related to board games.</li>
           <li>Excluding people based on demographics not directly related to board games.</li>
