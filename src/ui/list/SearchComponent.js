@@ -67,7 +67,6 @@ export class SearchComponent extends BaseDynamicComponent {
     ]);
 
     this.initialParams = new URLSearchParams(document.location.search);
-    
     console.log("Searching with url:"+this.getAttribute("api-url"));
       
     this.defaultSearchParams = {
@@ -153,6 +152,7 @@ export class SearchComponent extends BaseDynamicComponent {
         self.updateData({
           [ENABLE_SEARCH_TOGGLE_KEY]: true,
           location: eventTarget.value,
+          showSearchUiMobile: true
         });
       } else if (eventTarget.id === SEARCH_DISTANCE_ID) {
         self.updateData({
@@ -164,6 +164,8 @@ export class SearchComponent extends BaseDynamicComponent {
     });
  
     shadowRoot.addEventListener("click", (event) => {      
+      
+      
       if (event.target.type === "checkbox") {
         const selectedDaysState = getDaysOfWeekSelectedState(shadowRoot); 
         if(event.target.checked){

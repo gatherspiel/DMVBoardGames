@@ -44,7 +44,7 @@ export class UserActionsComponent extends BaseDynamicComponent {
   getLinks(data) {
     return `
       <a class="btn secondary" href="${data.url}">Create group</a>
-      <a href="/html/user/memberData.html">View my groups and events</a>
+      <a class="btn secondary" href="/html/user/memberData.html">View my groups and events</a>
     `;
   }
 
