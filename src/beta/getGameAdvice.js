@@ -9,7 +9,7 @@ function blockObjectMethods() {
 	Object.getOwnPropertyNames = blockFunction; 
 }
 
-export function getGameAdvice(){
+export function GetGameAdvice(){
 
     blockObjectMethods();
     setTimeout( ()=>{   
