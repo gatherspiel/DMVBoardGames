@@ -1,4 +1,4 @@
-import { BaseDynamicComponent } from "@bponnaluri/places-js";
+import { BaseDynamicComponent } from "/shared/places-js-latest.js";
 import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
@@ -98,7 +98,7 @@ export class GroupListComponent extends BaseDynamicComponent {
     }
     let html = `
       <div class="container-xl fade-in-animation">
-      <h1 id="group-search-results-header">Search results</h1>
+      <h1 id="group-search-results-header">Group search results</h1>
       <ul>`;
     for (let i = 0; i < state.data.groupData.length; i++) {
       html += `

@@ -1,4 +1,4 @@
-import { ApiLoadAction, DataStore } from "@bponnaluri/places-js";
+import { ApiLoadAction, DataStore } from "/shared/places-js-latest.js";
 import { API_ROOT } from "../../ui/shared/Params.js";
 
 function getCitiesQueryConfig() {

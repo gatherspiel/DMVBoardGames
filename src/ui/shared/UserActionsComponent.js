@@ -1,5 +1,5 @@
 import { IS_LOGGED_IN_KEY, LOGIN_STORE } from "../../data/user/LoginStore.js";
-import { BaseDynamicComponent } from "@bponnaluri/places-js";
+import { BaseDynamicComponent } from "../../shared/places-js-latest.js";
 
 export class UserActionsComponent extends BaseDynamicComponent {
   constructor() {

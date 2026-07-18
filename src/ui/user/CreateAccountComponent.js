@@ -1,4 +1,4 @@
-import { ApiLoadAction, BaseDynamicComponent } from "@bponnaluri/places-js";
+import { ApiLoadAction, BaseDynamicComponent } from "./shared/places-js-latest.js";
 import { LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT } from "./Constants.js";
 import {
   SUCCESS_MESSAGE_KEY,

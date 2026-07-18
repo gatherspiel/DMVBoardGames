@@ -1,4 +1,4 @@
-import { BaseTemplateComponent } from "@bponnaluri/places-js";
+import { BaseTemplateComponent } from "./shared/places-js-latest.js";
 export class FaqComponent extends BaseTemplateComponent {
   constructor() {
     super();

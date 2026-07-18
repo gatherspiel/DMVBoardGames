@@ -1,4 +1,4 @@
-import { BaseTemplateComponent } from "@bponnaluri/places-js";
+import { BaseTemplateComponent } from "./shared/places-js-latest.js";
 export class SiteRulesComponent extends BaseTemplateComponent {
   constructor() {
     super();

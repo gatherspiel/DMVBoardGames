@@ -1,4 +1,4 @@
-import { BaseDynamicComponent } from "@bponnaluri/places-js";
+import { BaseDynamicComponent } from "/shared/places-js-latest.js";
 import { GAME_STORE_DATA } from "../../data/list/LocationsStore.js";
 
 export class GameStoreListComponent extends BaseDynamicComponent {

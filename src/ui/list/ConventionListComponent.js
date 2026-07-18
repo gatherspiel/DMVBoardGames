@@ -1,4 +1,4 @@
-import { BaseDynamicComponent } from "@bponnaluri/places-js";
+import { BaseDynamicComponent } from "/shared/places-js-latest.js";
 import { CONVENTIONS_STORE } from "../../data/list/LocationsStore.js";
 import { convertDateListToRange } from "../../shared/EventDataUtils.js";
 

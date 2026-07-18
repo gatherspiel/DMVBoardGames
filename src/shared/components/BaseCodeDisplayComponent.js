@@ -1,4 +1,4 @@
-import {BaseTemplateComponent} from "@bponnaluri/places-js";
+import {BaseTemplateComponent} from "./shared/places-js-latest.js";
 import hljs from 'https://unpkg.com/@highlightjs/cdn-assets@11.11.1/es/highlight.min.js';
 
 /**

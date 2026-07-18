@@ -4,7 +4,7 @@ import {
   getDaysOfWeekSelectedState,
   getDropdownHtml,
 } from "../../shared/html/SelectGenerator.js";
-import { BaseDynamicComponent } from "@bponnaluri/places-js";
+import { BaseDynamicComponent } from "/shared/places-js-latest.js";
 import { CITY_LIST_STORE } from "../../data/list/CityListStore.js";
 import {LOGIN_STORE} from "../../data/user/LoginStore.js";
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
@@ -108,12 +108,8 @@ export class SearchComponent extends BaseDynamicComponent {
         @media screen and (width < 32em) {
           fieldset label {
             justify-content:center;
-          }
-          summary {
-            font-weight:600;
           }   
           #form-div-outer {
-            margin-top: -1rem; 
             width: 100%
           } 
           #search-cities {
@@ -226,7 +222,7 @@ export class SearchComponent extends BaseDynamicComponent {
       return `
         <div class="container-xl">
           <details ${store.showSearchUiMobile ? "open":""}>
-            <summary class="size-3xl">${this.getAttribute("search-text")}</summary>
+            <summary class="btn secondary">Modify search parameters</summary>
             ${this.renderSearchForm(store)}
             </hr> 
           </details>
