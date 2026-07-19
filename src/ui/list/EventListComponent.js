@@ -1,4 +1,4 @@
-import { BaseDynamicComponent } from "@bponnaluri/places-js";
+import { BaseDynamicComponent } from "/lib/places-js-latest.js";
 import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js";
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
 import { convertLocationDataForDisplay } from "../../shared/EventDataUtils.js";
@@ -116,7 +116,7 @@ export class EventListComponent extends BaseDynamicComponent {
     }
     let html = `
       <div class="container-xl fade-in-animation">
-      <h1 id="search-results-header">Search results</h1>
+      <h1 id="search-results-header">Event search results</h1>
       <ul>`;
     for (let i = 0; i < state.data.eventData.length; i++) {
       html += `

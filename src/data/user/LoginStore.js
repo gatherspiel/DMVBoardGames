@@ -10,7 +10,7 @@ import {
   addLocalStorageData,
   clearSessionStorage,
   getLocalStorageDataIfPresent,
-} from "@bponnaluri/places-js";
+} from "/lib/places-js-latest.js";
 
 import { AuthResponse } from "../../ui/user/AuthResponse.js";
 

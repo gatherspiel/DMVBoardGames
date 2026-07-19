@@ -1,4 +1,4 @@
-import { ApiLoadAction, DataStore } from "@bponnaluri/places-js";
+import { ApiLoadAction, DataStore } from "/lib/places-js-latest.js";
 
 import { API_ROOT } from "../../ui/shared/Params.js";
 import { DEFAULT_SEARCH_PARAMETER } from "../../shared/html/SelectGenerator.js";

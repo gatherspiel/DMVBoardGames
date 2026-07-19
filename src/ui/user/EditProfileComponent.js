@@ -2,7 +2,7 @@ import {
   ApiActionType,
   ApiLoadAction,
   BaseDynamicComponent,
-} from "@bponnaluri/places-js";
+} from "/lib/places-js-latest.js";
 import {
   SUCCESS_MESSAGE_KEY,
   generateErrorMessage,

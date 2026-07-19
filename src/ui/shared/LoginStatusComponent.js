@@ -1,4 +1,4 @@
-import { BaseDynamicComponent } from "@bponnaluri/places-js";
+import { BaseDynamicComponent } from "/lib/places-js-latest.js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
 import { LOGOUT_STORE } from "../../data/user/LogoutStore.js";
 import { USER_DATA_STORE } from "../../data/user/UserDataStore.js";

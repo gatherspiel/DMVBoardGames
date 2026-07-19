@@ -2,7 +2,7 @@ import {
   ApiActionType,
   ApiLoadAction,
   BaseDynamicComponent,
-} from "@bponnaluri/places-js";
+} from "/lib/places-js-latest.js";
 
 import {
   DAY_OF_WEEK_INPUT,

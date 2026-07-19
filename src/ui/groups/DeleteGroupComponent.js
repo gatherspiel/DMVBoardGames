@@ -1,4 +1,4 @@
-import { ApiLoadAction, BaseDynamicComponent } from "@bponnaluri/places-js";
+import { ApiLoadAction, BaseDynamicComponent } from "/lib/places-js-latest.js";
 import {
   SUCCESS_MESSAGE_KEY,
   generateErrorMessage,
@@ -7,7 +7,7 @@ import {
 
 import { API_ROOT } from "../shared/Params.js";
 
-import { ApiActionType } from "@bponnaluri/places-js";
+import { ApiActionType } from "/lib/places-js-latest.js";
 
 import { GROUP_NAME_INPUT } from "./Constants.js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
