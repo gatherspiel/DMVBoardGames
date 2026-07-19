@@ -3,11 +3,11 @@ import {
   SUPABASE_CLIENT_KEY,
   SUPABASE_CLIENT_URL,
 } from "../../ui/shared/Params.js";
-import { CustomLoadAction, DataStore } from "/shared/places-js-latest.js";
+import { CustomLoadAction, DataStore } from "/lib/places-js-latest.js";
 import {
   deleteLocalStoreData,
   getLocalStorageDataIfPresent,
-} from "/shared/places-js-latest.js";
+} from "/lib/places-js-latest.js";
 import { AuthResponse } from "../../ui/user/AuthResponse.js";
 
 async function retrieveData() {

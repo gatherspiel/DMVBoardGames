@@ -1,4 +1,4 @@
-import { ApiActionType, ApiLoadAction, DataStore } from "./shared/places-js-latest.js";
+import { ApiActionType, ApiLoadAction, BaseDynamicComponent,DataStore } from "/lib/places-js-latest.js";
 import {
   ERROR_MESSAGE_KEY,
   SUCCESS_MESSAGE_KEY,
@@ -20,7 +20,6 @@ import {
 
 import { API_ROOT } from "../shared/Params.js";
 
-import { BaseDynamicComponent } from "./shared/places-js-latest.js";
 import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
 import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js";
 import { LoginStatusComponent } from "../shared/LoginStatusComponent.js";

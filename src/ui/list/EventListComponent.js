@@ -1,4 +1,4 @@
-import { BaseDynamicComponent } from "/shared/places-js-latest.js";
+import { BaseDynamicComponent } from "/lib/places-js-latest.js";
 import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js";
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
 import { convertLocationDataForDisplay } from "../../shared/EventDataUtils.js";

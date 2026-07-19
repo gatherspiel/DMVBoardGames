@@ -1,4 +1,4 @@
-import { ApiLoadAction, DataStore } from "/shared/places-js.latest.js";
+import { ApiLoadAction, DataStore } from "/lib/places-js-latest.js";
 import { API_ROOT } from "../../ui/shared/Params.js";
 
 export const CONVENTIONS_STORE = new DataStore(

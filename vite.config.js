@@ -12,7 +12,7 @@ export default defineConfig({
       partialDirectory: resolve(__dirname, "src/html/partials"),
     }),
     inlineSource(),
-  ],
+  ], 
   root: "src/",
   publicDir: "../public",
   build: {

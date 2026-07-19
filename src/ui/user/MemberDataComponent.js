@@ -1,4 +1,4 @@
-import { BaseDynamicComponent } from "./shared/places-js-latest.js";
+import { BaseDynamicComponent } from "/lib/places-js-latest.js";
 import {LOADING_INDICATOR_CONFIG} from "../../shared/LoadingIndicatorConfig.js";
 import { USER_MEMBER_STORE } from "../../data/user/UserMemberStore.js";
 import { convertDateAndDayToDisplayString } from "../../shared/EventDataUtils.js";

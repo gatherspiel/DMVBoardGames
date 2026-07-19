@@ -1,3 +1,5 @@
+
+import {  ApiActionType,ApiLoadAction, BaseDynamicComponent } from "/lib/places-js-latest.js";
 import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
@@ -14,9 +16,6 @@ import {
   getTagSelectedState,
 } from "../../shared/html/SelectGenerator.js";
 import { API_ROOT } from "../shared/Params.js";
-import { ApiActionType,ApiLoadAction } from "./shared/places-js-latest.js";
-
-import { BaseDynamicComponent } from "./shared/places-js-latest.js";
 import { FaqComponent } from "../static/FaqComponent.js";
 import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
 import { SUCCESS_MESSAGE_KEY } from "../../shared/html/StatusIndicators.js";

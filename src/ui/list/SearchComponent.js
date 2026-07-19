@@ -4,7 +4,7 @@ import {
   getDaysOfWeekSelectedState,
   getDropdownHtml,
 } from "../../shared/html/SelectGenerator.js";
-import { BaseDynamicComponent } from "/shared/places-js-latest.js";
+import { BaseDynamicComponent } from "/lib/places-js-latest.js";
 import { CITY_LIST_STORE } from "../../data/list/CityListStore.js";
 import {LOGIN_STORE} from "../../data/user/LoginStore.js";
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
