@@ -8,11 +8,13 @@
       import { LoadingIndicatorComponent } from "./shared/components/LoadingIndicatorComponent.js";
       import { LoginStatusComponent } from "./ui/shared/LoginStatusComponent.js";
       import { SearchComponent } from "./ui/list/SearchComponent.js";
-      import { UserActionsComponent } from "./ui/shared/UserActionsComponent.js";
+
+
+			import { UserActionsComponent } from "./ui/shared/UserActionsComponent.js";
 
       customElements.define("event-list-component", EventListComponent);
       customElements.define("search-component", SearchComponent);
-      customElements.define(
+			customElements.define(
         "loading-indicator-component",
         LoadingIndicatorComponent,
       );
@@ -29,7 +31,15 @@
 			rel="stylesheet" 
 			href="/styles/sharedHtmlOnlyStyles.css"
     />
-    <link rel="preconnect" href="api.gatherspiel.com" />
+		<link
+			rel="stylesheet"
+			href="/styles/ui/list/searchStyles.css"
+		/>
+    <link
+			rel="stylesheet"
+			href="/styles/ui/list/eventListStyles.css"
+		/>
+		<link rel="preconnect" href="api.gatherspiel.com" />
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
