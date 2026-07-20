@@ -1,0 +1,37 @@
+@scope(group-list-component) {
+	li {
+		padding-bottom: 0.25rem;
+		padding-top:0.25rem;
+	} 
+	ul {
+		list-style:url(/assets/images/meeple_small.png);
+		padding-left:1.5rem;
+	}
+	.group-search-details {
+		display:block;
+		padding-top:0.5rem;
+	}
+	.section-separator-small {
+		margin-left:-1rem;
+	}
+	@media not screen and (width < 32em) {
+		.group-cities {
+			display: inline-block;
+			margin-left: 2rem;
+		}
+	}  
+	@media screen and (width < 32em) {
+		ul {
+			margin-top: -1em;
+		}
+		#group-search-results-header {
+			text-align: center;
+		}
+		.container-xl {
+			margin-top:-3em;
+		}
+		.group-cities {
+			display: none; 
+		}
+	} 
+} 
