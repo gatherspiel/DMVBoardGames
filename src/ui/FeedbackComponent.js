@@ -20,72 +20,17 @@ const SUBMIT_FEEDBACK_ID = "submit-feedback-id";
 export class FeedbackComponent extends BaseDynamicComponent {
   constructor() {
     super();
-  }
+    
+		const self = this;
 
-  getTemplateStyle() {
-    return `
-      <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/> 
-      <style>
-        button {
-          margin-top:0.5rem;
-        }
-        .section-label {
-          font-weight: 600;
-        }
-        #${ENTER_NAME_INPUT_ID},#${ENTER_EMAIL_INPUT_ID} {
-          display: block;
-        }   
-        @media not screen and (width < 32em) {  
-          #feedback-type-select div {
-            display: inline-block;
-          }  
-          #feedback-type-select  > :not(:first-child) {
-            padding-left: 0.25rem;
-          }  
-          #${FEEDBACK_TEXT_INPUT_ID} {
-            display: block;
-            height: 10rem;
-            width: 50rem;
-          }
-        } 
-        @media  screen and (width < 32em) {
-          #feedback-type-select div {
-            display: inline-block;
-          }  
-          #feedback-type-select  > :not(:first-child) {
-            border-left: 1px solid black;
-            padding-left: 0.25rem;
-          } 
-          #feedback-type-select input {
-            padding-right: 0.25rem; 
-          }  
-          #${FEEDBACK_TEXT_INPUT_ID} {
-            display: block;
-            height: 10rem;
-            width: 20rem;
-          }
-        }
-      </style>
-    `;
-  }
+		//getElementById is disabled.
+		const rootNode = self.getRootNode();
+		rootNode.findForm = rootNode.getElementById;
 
-  connectedCallback() {
-    this.updateData({
-      checkedState: { general_feedback: "checked" },
-      email: "",
-      feedbackText: "",
-      name: "",
-    });
-  }
-
-  attachHandlersToShadowRoot(shadowRoot) {
-    const self = this;
-
-    shadowRoot.addEventListener("click", (event) => {
+    this.addEventListener("click", (event) => {
       const targetId = event.target?.id;
       if (targetId === SUBMIT_FEEDBACK_ID) {
-        const elements = shadowRoot.getElementById(
+        const elements = rootNode.findForm(
           "submit-feedback-form",
         )?.elements;
         const feedbackText = elements.namedItem(FEEDBACK_TEXT_INPUT_ID)?.value;
@@ -128,7 +73,18 @@ export class FeedbackComponent extends BaseDynamicComponent {
         });
       }
     });
+
   }
+
+  connectedCallback() {
+    this.updateData({
+      checkedState: { general_feedback: "checked" },
+      email: "",
+      feedbackText: "",
+      name: "",
+    });
+  }
+
 
   render(data) {
     return `

@@ -15,10 +15,12 @@ export function GetGameAdvice(){
     };
     
     document.getElementById = function (...args) {
-      consol
+      console.log(args);
+			console.log(document);
         e.error("Unauthorized");   
     };
-    document.elementFromPoint = function (...args) {
+    
+		document.elementFromPoint = function (...args) {
       console.error("Unauthorized");  
     };
   
