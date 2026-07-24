@@ -46,61 +46,19 @@ export class CreateGroupComponent extends BaseDynamicComponent {
         dataStore: LOGIN_STORE,
       },
     ]);
-  }
-
-  getTemplateStyle() {
-    return `
-      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style>
-        button {
-          display: block;
-
-        }
-        #${GROUP_NAME_INPUT},#${GROUP_DESCRIPTION_INPUT},#${GROUP_URL_INPUT} {
-          display: block;
-        } 
-        #create-group-container {
-          padding-left: 1rem;
-        }
-        #game-type-tag-select {
-          margin-bottom:1rem;
-        }  
-        #image-upload-container {
-          margin-bottom: 1rem;
-        }
-        #game-type-tag-select input {
-          display: inline-block;
-        }      
-        #game-type-tag-select label {
-          padding-left: 0.25rem;
-        }  
-        #rules-content {
-          margin-top:1rem;
-        }
- 
-        @media screen and (width < 32em) {
-          #group-description-input {
-            width:330px;
-          }
-        }
-      </style>
-    `;
-  }
-
-  attachHandlersToShadowRoot(shadowRoot) {
+   
     const self = this;
 
-    shadowRoot.addEventListener("click", (event) => {
+    this.addEventListener("click", (event) => {
       const targetId = event.target?.id;
-      const elements = shadowRoot.getElementById("create-group-form")?.elements;
+      const elements = self.getRootNode().getElementById("create-group-form")?.elements;
 
       if (targetId === AGREE_RULES_ID) {
         self.updateData({
           [AGREE_RULES_ID]: event.target.checked,
           description: elements.namedItem(GROUP_DESCRIPTION_INPUT)?.value,
-          gameTypeTags: getTagSelectedState(shadowRoot),
-          imagePath: shadowRoot
+          gameTypeTags: getTagSelectedState(self.getRootNode()),
+          imagePath: self.getRootNode()
             .getElementById("image-upload-ui")
             .getAttribute("image-path"),
           name: elements.namedItem(GROUP_NAME_INPUT)?.value,
@@ -133,11 +91,11 @@ export class CreateGroupComponent extends BaseDynamicComponent {
             id: self.componentStore.id,
             name: groupName,
             description: groupDescription,
-            image: shadowRoot
+            image: self.getRootNode()
               .getElementById("image-upload-ui")
               .getAttribute("image-path"),
             url: elements.namedItem(GROUP_URL_INPUT)?.value,
-            gameTypeTags: Object.keys(getTagSelectedState(shadowRoot)),
+            gameTypeTags: Object.keys(getTagSelectedState(self.getRootNode())),
           }),
           method: ApiActionType.POST,
           url: API_ROOT + `/groups/`,
@@ -163,7 +121,9 @@ export class CreateGroupComponent extends BaseDynamicComponent {
         });
       }
     });
+
   }
+  
 
   render(data) {
     return `

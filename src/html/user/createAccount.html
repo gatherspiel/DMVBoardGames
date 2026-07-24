@@ -17,7 +17,12 @@
 
     <script defer fetchpriority="low" type="module">
       import { CreateAccountComponent } from "../../ui/user/CreateAccountComponent.js";
+      import { CreateAccountTemplateComponent } from
+      "../../ui/user/CreateAccountTemplateComponent.js";
+ 
       customElements.define("create-account-component", CreateAccountComponent);
+      customElements.define("create-account-template-component",
+      CreateAccountTemplateComponent);
 
       import { GetGameAdvice } from "../../beta/getGameAdvice.js";
       GetGameAdvice();
