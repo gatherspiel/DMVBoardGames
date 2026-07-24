@@ -14,11 +14,6 @@ export function GetGameAdvice(){
       console.error("Unauthorized");
     };
     
-    document.getElementById = function (...args) {
-      console.log(args);
-			console.log(document);
-        e.error("Unauthorized");   
-    };
     
 		document.elementFromPoint = function (...args) {
       console.error("Unauthorized");  

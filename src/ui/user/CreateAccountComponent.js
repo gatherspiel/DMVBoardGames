@@ -44,83 +44,29 @@ export class CreateAccountComponent extends BaseDynamicComponent {
         dataStore: LOGIN_STORE,
       },
     ]);
-  }
 
-  getTemplateStyle() {
-    return `  
-      <link rel="stylesheet" type="text/css"  href="/styles/kelp.css"/>
-      <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style>
-       #{AGREE_RULES_ID} {
-          font-weight:600;
-        }
-         #${CREATE_ACCOUNT_ID}{
-          display:block;
-        } 
-        #${CREATE_ACCOUNT_ID_DISABLED} .front {
-          background: gray;
-        }
-        #email {
-          display: inline-block;
-        }
-        #component-buttons {
-          padding-top:0.5rem;
-        }   
-        #ui-input input {
-          display: block;
-        }
-        #username-input,#password-input,#confirm-password-input {
-          width:20rem;
-        }
- 
-        .${CREATE_ACCOUNT_ID},.${CREATE_ACCOUNT_ID_DISABLED}{
-          margin-top:0.5rem;
-        }
-        .ui-input {
-          display: block;
-        }  
-       
-       @media not screen and (width < 32em) { 
-          #email {
-            display: inline-block;
-          }
-        }
-        
-        @media screen and (width < 32em) {
-          #login-component-container {
-            text-align: center;
-          }
-          .login-element {
-            font-size:1rem;
-          }
-        }
-      </style>`;
-  }
-
-  attachHandlersToShadowRoot(shadowRoot) {
     const self = this;
-    shadowRoot.addEventListener("click", (event) => {
+    this.addEventListener("click", (event) => {
       event.preventDefault();
       
       const targetId = event.target?.id;
       if (targetId === AGREE_RULES_ID) {
         self.updateData({
           [AGREE_RULES_ID]: event.target.checked,
-          confirmPassword: shadowRoot.getElementById(CONFIRM_PASSWORD_INPUT)
+          confirmPassword: self.getRootNode().getElementById(CONFIRM_PASSWORD_INPUT)
             ?.value,
-          password: shadowRoot.getElementById(PASSWORD_INPUT)?.value,
-          username: shadowRoot.getElementById(USERNAME_INPUT)?.value,
+          password: self.getRootNode().getElementById(PASSWORD_INPUT)?.value,
+          username: self.getRootNode().getElementById(USERNAME_INPUT)?.value,
         });
       }
 
       if (targetId === CREATE_ACCOUNT_ID) {
         const formData = {
-          username: shadowRoot.getElementById(USERNAME_INPUT)?.value,
-          password: shadowRoot.getElementById(PASSWORD_INPUT)?.value,
-          confirmPassword: shadowRoot.getElementById(CONFIRM_PASSWORD_INPUT)
+          username: self.getRootNode().getElementById(USERNAME_INPUT)?.value,
+          password: self.getRootNode().getElementById(PASSWORD_INPUT)?.value,
+          confirmPassword: self.getRootNode().getElementById(CONFIRM_PASSWORD_INPUT)
             ?.value,
         };
-        console.log(formData);
         if (
           !formData.username ||
           (!formData.password && !formData.confirmPassword)
@@ -164,9 +110,9 @@ export class CreateAccountComponent extends BaseDynamicComponent {
           }
         });
       }
-    });
+    }); 
   }
-
+  
   render(data) {
     return `
       <div class="container-xl" id="login-component-container"> 
