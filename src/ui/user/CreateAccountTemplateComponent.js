@@ -1,8 +1,5 @@
 import { BaseTemplateComponent } from "/lib/places-js-latest.js";
 
-
-const CONFIRM_PASSWORD_INPUT = "confirm-password-input";
-const AGREE_RULES_ID = "agree-rules";
 const CREATE_ACCOUNT_ID = "complete-registration";
 const CREATE_ACCOUNT_ID_DISABLED = "complete-registration-disabled";
 

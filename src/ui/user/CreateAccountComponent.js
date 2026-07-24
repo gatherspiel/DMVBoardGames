@@ -19,7 +19,7 @@ customElements.define("faq-component", FaqComponent);
 const CONFIRM_PASSWORD_INPUT = "confirm-password-input";
 const AGREE_RULES_ID = "agree-rules";
 const CREATE_ACCOUNT_ID = "complete-registration";
-const CREATE_ACCOUNT_ID_DISABLED = "complete-registration-disabled";
+
 export class CreateAccountComponent extends BaseDynamicComponent {
   constructor() {
     super([
