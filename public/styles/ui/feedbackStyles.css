@@ -1,0 +1,42 @@
+@scope (feedback-component)
+	button {
+		margin-top:0.5rem;
+	}
+	#enter-name-input-id,#enter-email-input-id {
+		display: block;
+	}   
+	.section-label {
+		font-weight: 600;
+	}
+	@media not screen and (width < 32em) {  
+		#feedback-type-select div {
+			display: inline-block;
+		}  
+		#feedback-type-select  > :not(:first-child) {
+			padding-left: 0.25rem;
+		}  
+		#feedback-text-input-id{
+			display: block;
+			height: 10rem;
+			width: 50rem;
+		}
+	} 
+	@media  screen and (width < 32em) {
+		#feedback-type-select div {
+			display: inline-block;
+		}  
+		#feedback-type-select  > :not(:first-child) {
+			border-left: 1px solid black;
+			padding-left: 0.25rem;
+		} 
+		#feedback-type-select input {
+			padding-right: 0.25rem; 
+		}  
+		#feedback-text-input-id {
+			display: block;
+			height: 10rem;
+			width: 20rem;
+		}
+	}
+}
+

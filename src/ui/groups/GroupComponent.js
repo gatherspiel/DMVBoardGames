@@ -62,116 +62,17 @@ export class GroupComponent extends BaseDynamicComponent {
       ],
       LOADING_INDICATOR_CONFIG,
     );
-  }
 
-  getTemplateStyle() {
-    return `
-      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style> 
-        #edit-group-form {
-          margin-top:0.5rem;
-          margin-bottom:1rem;
-        }
-        #group-description-text {
-          margin-top:0.5rem;
-          margin-bottom:1rem;
-        }  
-        #group-name-header {
-          margin-bottom:0.5rem;
-          margin-top: 0.5rem;
-        }
-        #image-preview {
-          display:block;
-        }
-        #other-events-header {
-          margin-top: 0.5rem;
-        } 
-        .add-event-button {
-          margin-top:0.5rem;
-        }
-        .event {
-          padding-top: 1rem;
-          padding-bottom: 0.5rem;
-        }
-        .${GROUP_DESCRIPTION} a:hover {
-          background-color: var(--clr-very-light-blue)
-        }
-       .group-webpage-link {
-          display: inline-block;
-          margin-top: 0.5rem;
-        }  
-        .${GROUP_DESCRIPTION} {
-          margin-bottom:0.5rem;
-        }  
-        @media not screen and (width < 32em) {
-          h2 {
-            margin-left:-1.5rem;
-            padding-left: 1.5rem;
-          }
-          #${GROUP_DESCRIPTION_INPUT} {
-            display: block;
-          }
-          #${GROUP_NAME_INPUT} {
-            display:block;
-            width: 600px;
-          }
-          #${GROUP_URL_INPUT} {
-            display: block;
-            width: 600px;
-          }
-          #group-image {
-            width:63rem;
-          }
-          #group-name-header {
-            margin-bottom:0.5rem;
-            margin-left:-1.5rem;
-            margin-top: 0.5rem;
-            padding-left:1.5rem;
-          }
-          .${GROUP_DESCRIPTION} {
-            margin-top: 1rem;
-          } 
-        }   
-        @media screen and (width < 32em) {
-          #${GROUP_DESCRIPTION_INPUT} {
-            height:10rem;
-          }
-          #group-image{
-            width:20rem;
-          }
-          .${GROUP_DESCRIPTION} {
-            font-size:1rem;
-            margin-top: 1rem;
-            padding: 0.5rem;
-          }
-          .delete-button {
-            margin-top: 0.5rem;
-          }  
-        }    
-      </style>
-    `;
-  }
-
-  attachHandlersToShadowRoot(shadowRoot) {
     const self = this;
 
-    shadowRoot.addEventListener("click", (event) => {
-      let useDefault = false;
+    this.addEventListener("click", (event) => {
       const targetId = event.target?.id;
 
-      if (event.target.type === "checkbox") {
-        self.updateData({
-          description: shadowRoot.getElementById(GROUP_DESCRIPTION_INPUT)
-            ?.value,
-          gameTypeTags: getTagSelectedState(shadowRoot),
-          imagePath: shadowRoot
-            .getElementById("image-upload-ui")
-            .getAttribute("image-path"),
-          name: shadowRoot.getElementById(GROUP_NAME_INPUT)?.value,
-          url: shadowRoot.getElementById(GROUP_URL_INPUT)?.value,
-        });
-      } else if (targetId === JOIN_GROUP_BUTTON_ID) {
+      if (!event.target.type === "checkbox") {
+        event.preventDefault();
+      }
+
+      if (targetId === JOIN_GROUP_BUTTON_ID) {
         const userIsMember = self.componentStore.permissions?.userIsMember;
         const apiMethod = userIsMember
           ? ApiActionType.DELETE
@@ -214,12 +115,12 @@ export class GroupComponent extends BaseDynamicComponent {
         });
       } else if (targetId === SAVE_UPDATES_BUTTON_ID) {
         const validationErrorState = { [SUCCESS_MESSAGE_KEY]: "" };
-        const groupName = shadowRoot.getElementById(GROUP_NAME_INPUT)?.value;
+        const groupName = self.getRootNode().getElementById(GROUP_NAME_INPUT)?.value;
         if (!groupName || groupName.length === 0) {
           validationErrorState[NAME_ERROR_TEXT_KEY] =
             "Name is a required field";
         }
-        const groupDescription = shadowRoot.getElementById(
+        const groupDescription = self.getRootNode().getElementById(
           GROUP_DESCRIPTION_INPUT,
         )?.value;
         if (!groupDescription || groupDescription.length === 0) {
@@ -227,15 +128,15 @@ export class GroupComponent extends BaseDynamicComponent {
             "Description is a required field";
         }
 
-        const imageForm = shadowRoot.getElementById("image-upload-ui");
+        const imageForm = self.getRootNode().getElementById("image-upload-ui");
         const params = {
           description: groupDescription,
-          gameTypeTags: Object.keys(getTagSelectedState(shadowRoot)),
+          gameTypeTags: Object.keys(getTagSelectedState(self.getRootNode())),
           image: imageForm.getImage(),
           imageFilePath: imageForm.getImageFilePath(),
           id: self.componentStore.id,
           name: groupName,
-          url: shadowRoot.getElementById(GROUP_URL_INPUT)?.value,
+          url: self.getRootNode().getElementById(GROUP_URL_INPUT)?.value,
         };
         if (Object.keys(validationErrorState).length > 1) {
           self.updateData({ ...validationErrorState, ...params });
@@ -264,13 +165,9 @@ export class GroupComponent extends BaseDynamicComponent {
             });
           }
         });
-      } else {
-        useDefault = true;
-      }
-      if (!useDefault) {
-        event.preventDefault();
-      }
+      } 
     });
+
   }
 
   render(groupData) {

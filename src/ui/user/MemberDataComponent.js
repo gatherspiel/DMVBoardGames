@@ -12,16 +12,7 @@ export class MemberDataComponent extends BaseDynamicComponent {
     ],
     LOADING_INDICATOR_CONFIG);
   }
-
-  getTemplateStyle() {
-    return `
-      <link rel="stylesheet" type="text/css"  href="/styles/kelp.css"/> 
-      <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style>
-      </style>
-    `;
-  }
-  
+ 
   render(data) {
     const html = `
       <div class="container-xl"> 

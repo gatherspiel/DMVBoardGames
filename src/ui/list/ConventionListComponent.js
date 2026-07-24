@@ -16,19 +16,7 @@ export class ConventionListComponent extends BaseDynamicComponent {
       <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
       <style> 
-        ul {
-          list-style:url(/assets/images/meeple_small.png);
-          margin-top:0;
-          padding-left:1.5rem;
-        }
-        .conv-list-item > * {
-          display: inline-block;
-          margin-bottom:0.5em; 
-        }  
-        .date-info {
-          padding-left: 0.5rem;
-        } 
-      </style>
+     </style>
     `;
   }
 

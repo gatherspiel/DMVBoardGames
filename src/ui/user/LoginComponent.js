@@ -1,5 +1,4 @@
 import { LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT } from "./Constants.js";
-
 import { BaseDynamicComponent } from "/lib/places-js-latest.js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
 
@@ -22,69 +21,16 @@ export class LoginComponent extends BaseDynamicComponent {
     ]);
     this.loginAttempted = false;
     this.registerAttempted = false;
-  }
 
-  getTemplateStyle() {
-    return `  
-      <link rel="stylesheet" type="text/css"  href="/styles/kelp.css"/>
-      <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style>
-        #login-component-container {
-          padding-top: 0.25rem;
-        }
-        input {
-          display: block;
-        }
-        #component-buttons {
-          padding-top:0.5rem;
-        }   
-        .ui-input {
-          display: inline-block;
-        }
-        #email {
-          display: inline-block;
-        }          
-        @media not screen and (width < 32em) {
-          #email {
-          display: inline-block;
-          margin-right:2.85rem;
-          }  
-        }
-        @media screen and (width < 32em) {
-          #login-component-container {
-            text-align: center;
-          }
-          .login-element {
-            font-size:1rem;
-          }
-        }
-      </style>`;
-  }
-
-  retrieveAndValidateFormInputs(shadowRoot) {
-    const username = shadowRoot.getElementById(USERNAME_INPUT)?.value;
-    const password = shadowRoot.getElementById(PASSWORD_INPUT)?.value;
-    if (!username || !password) {
-      return {
-        errorMessage: "Enter a valid username and password",
-      };
-    }
-    return {
-      username: username,
-      password: password,
-    };
-  }
-
-  attachHandlersToShadowRoot(shadowRoot) {
     const self = this;
-    shadowRoot.addEventListener("click", (event) => {
+    this.addEventListener("click", (event) => {
       event.preventDefault();
 
       try {
         const targetId = event.target?.id;
         if (targetId === LOGIN_BUTTON_ID) {
           self.loginAttempted = true;
-          const formInputs = self.retrieveAndValidateFormInputs(shadowRoot);
+          const formInputs = self.retrieveAndValidateFormInputs(self.getRootNode());
           if (formInputs.errorMessage) {
             self.updateData(formInputs);
           } else {
@@ -99,6 +45,22 @@ export class LoginComponent extends BaseDynamicComponent {
         }
       }
     });
+
+
+  }
+
+  retrieveAndValidateFormInputs(rootNode) {
+    const username = rootNode.getElementById(USERNAME_INPUT)?.value;
+    const password = rootNode.getElementById(PASSWORD_INPUT)?.value;
+    if (!username || !password) {
+      return {
+        errorMessage: "Enter a valid username and password",
+      };
+    }
+    return {
+      username: username,
+      password: password,
+    };
   }
 
   render(data) {

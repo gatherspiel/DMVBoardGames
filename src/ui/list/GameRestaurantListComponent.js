@@ -15,17 +15,7 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
       <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/> 
       <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/> 
       <style>  
-        ul {
-          list-style:url(/assets/images/meeple_small.png);
-          margin-top:0;
-          padding-left:1.5rem;
-        }
-       .game-resturant-list-item * {
-          margin-top:0.5em;
-          margin-bottom:0.5em;
-          display: inline-block;
-        }
-      </style>
+     </style>
     `;
   }
 

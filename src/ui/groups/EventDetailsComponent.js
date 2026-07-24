@@ -66,164 +66,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       ],
       LOADING_INDICATOR_CONFIG,
     );
-  }
 
-  getTemplateStyle() {
-    return `
-      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style> 
-        h1 {
-          margin-top:0rem;
-        }   
-        #delete-event-form {
-          margin-top:1rem;
-          margin-bottom:1em; 
-        }
-        #event-description {
-          margin-bottom:0.5em;
-        }
-        #event-description b, #event-description h1, #event-description h2,#event-description h3,#event-description h4,#event-description li, #event-description p {
-          color: var(--clr-darker-blue);
-          text-align: left;
-        } 
-        #event-details-header {
-          margin-top:0.5rem;
-        } 
-        .back-to-group-button {
-          margin-top: 0.5rem;
-        }
-        .event-info {
-          display:block;
-        }
-        .event-website-link {
-          margin-bottom: 0.5rem;
-          margin-top: 1rem;
-        }
-        .user-data-div-inner {
-          display:flex;
-        }
-        .user-image-icon {
-          clip-path: circle();
-          height:2rem;
-        }
-        .user-image-div {
-          display: inline-block;
-        }
-        .username-div {
-          display: inline-block;
-          margin-top: 0.5rem;
-          margin-right:0.5rem
-        }
-        @media not screen and (width < 32em) {
-          input, select, textarea {
-            display: block;
-          }
-          #${EVENT_NAME_INPUT} {
-            width: 50rem;
-          }
-          #${EVENT_LOCATION_INPUT} {
-            width: 50rem;
-          } 
-          #event-image {
-            margin-top: 0.5rem;
-            width:63rem;
-          }
-          #${SAVE_EVENT_BUTTON_ID} {
-            margin-bottom:0.5em;
-          }
-          #user-actions-menu {
-            margin-bottom: 0.5rem;
-          }
-        } 
-        @media screen and (width < 32em) {
-          #${EVENT_DESCRIPTION_INPUT}{
-            height: 10rem;
-          }
-          #event-details-form {
-            margin-right:1.5rem;
-          }
-          #event-image {
-            margin-top: 0.5rem;
-            width:20rem;
-          }
-          #user-actions-menu-raised {
-            display:inherit;
-            margin-bottom: 0.5rem;
-          } 
-          .user-data-div {
-            display: flex;
-            flex-direction: column;
-          }  
-        }
-        #print-container {
-          position:relative;
-        }
-        #event-title {
-          color: hsl(199, 100%, 33%);
-          font-size:54px;
-          margin-left:50px;
-          margin-right:5px;
-        }
-        #event-time {
-          color: hsl(199, 100%, 20%);
-          font-size:48px;
-          margin-top: -1em;
-        }
-        #event-details {
-          font-size:48px;
-          margin-left: 60px;
-          margin-right: 60px;
-        }
-        #print-container #event-title,#event-time,#event-details {
-          text-align:center;
-        }
-        #print-container #event-image-container {
-          width:100%;
-        }
-        #event-image-container img {
-          width:100%;
-        }
-        #event-image-container-outer {
-          display:inline;
-        }
-        #print-container #event-image-container {
-            max-width:1016px;
-        } 
-        #print-container {
-            width:100%;
-            height:100%;
-          }
-        #event-image-container-outer {
-          bottom:100px; 
-          height:400px;
-          margin-left:60px;
-          margin-right:60px;
-          display:flex;
-          width:auto;
-        }
-        
-        @media not print {
-          #print-container {
-            background-color:white;
-          }
-           #event-image-container-outer {
-            height:400px; 
-          }
-        }
-         
-        @page {
-			    size: 8.5in 11in;
-			    margin-top:0;
-		    }
-
-      </style>     
-    `;
-  }
-
-  attachHandlersToShadowRoot(shadowRoot) {
     const self = this;
-    shadowRoot.addEventListener("click", (event) => {
+    this.addEventListener("click", (event) => {
       if (event.target.id === CANCEL_EDIT_BUTTON_ID) {
         self.updateData({ isEditing: false, [SUCCESS_MESSAGE_KEY]: "" });
       }
@@ -270,8 +115,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         });
       }
       if (event.target.id === SAVE_EVENT_BUTTON_ID) {
-        const data = shadowRoot.getElementById("event-details-form")?.elements;
-        const imageForm = shadowRoot.getElementById("image-upload-ui");
+        const data = this.getRootNode().getElementById("event-details-form")?.elements;
+        const imageForm = this.getRootNode().getElementById("image-upload-ui");
         const formData = {
           id: self.componentStore.id,
           [EVENT_NAME_INPUT]: data.namedItem(EVENT_NAME_INPUT).value,
@@ -343,6 +188,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         }
       }
     });
+
   }
 
   render(data) {

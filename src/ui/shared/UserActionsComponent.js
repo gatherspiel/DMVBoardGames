@@ -19,27 +19,6 @@ export class UserActionsComponent extends BaseDynamicComponent {
     ]);
   }
 
-  getTemplateStyle() {
-    return `  
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-			<style>
-        a {
-          color: white;
-          text-decoration: none;
-        } 
-				.container-xl {
-					margin-top: -1.5em;
-				}
-				@media screen and (width < 32em) {	
-					.container-xl > div {
-						display:flex;
-						justify-content:center;
-						align-items:center;		
-					}
-				}	
-      </style>`;
-  }
 
   getLinks(data) {
     return `

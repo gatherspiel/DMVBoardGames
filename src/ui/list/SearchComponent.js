@@ -78,71 +78,9 @@ export class SearchComponent extends BaseDynamicComponent {
 
     };
     SEARCH_RESULTS_LIST_STORE.fetchData(this.defaultSearchParams);
-  }
-
-  connectedCallback(){
-    this.updateData({
-    ...{[ENABLE_SEARCH_TOGGLE_KEY]: this.initialParams.size === 0},
-      ...this.defaultSearchParams,
-    })
-  }
-  getTemplateStyle() {
-    return `
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/> 
-      <style>
-        select {
-          width:10rem;
-        } 
-        .searchDropdownLabel {
-          font-weight:600;
-        }      
-        #search-input-div {
-          margin-top:0.5rem;
-        } 
-        @media screen and (width > 32em) {
-          fieldset label {
-            display:inline;
-          }
-        } 
-        @media screen and (width < 32em) {
-          fieldset label {
-            justify-content:center;
-          }   
-          #form-div-outer {
-            width: 100%
-          } 
-          #search-cities {
-            margin-bottom: 0.5rem; 
-            margin-left:auto;
-            margin-right:auto;  
-          }
-          #search-distance-id {
-            margin-right:auto;
-            margin-left:auto;
-          } 
-          #search-input-div > button {
-            margin-bottom: 0.5rem;
-          } 
-          .searchDropdownLabel {
-            text-align:center;
-            justify-content:center; 
-          } 
-          .search-form-two-inputs {
-            height:4rem;
-          } 
-          .search-form-three-inputs { 
-            height:7.5rem;
-          } 
-        }
-      </style>   
-    `;
-  }
-
-  attachHandlersToShadowRoot(shadowRoot) {
-    const self = this;
-    
-    shadowRoot.addEventListener("change", (event) => {
+  
+		const self = this; 
+    this.addEventListener("change", (event) => {
       const eventTarget = event.target;
       if (eventTarget.id === SEARCH_CITY_ID) {
         self.updateData({
@@ -158,12 +96,12 @@ export class SearchComponent extends BaseDynamicComponent {
         });
       }
     });
- 
-    shadowRoot.addEventListener("click", (event) => {      
+
+		this.addEventListener("click", (event) => {      
       
       
       if (event.target.type === "checkbox") {
-        const selectedDaysState = getDaysOfWeekSelectedState(shadowRoot); 
+        const selectedDaysState = getDaysOfWeekSelectedState(self.getRootNode()); 
         if(event.target.checked){
           selectedDaysState[event.target.id]="checked";
         } else {
@@ -214,7 +152,16 @@ export class SearchComponent extends BaseDynamicComponent {
         });
       } 
     });
+
+	}
+
+  connectedCallback(){
+    this.updateData({
+    ...{[ENABLE_SEARCH_TOGGLE_KEY]: this.initialParams.size === 0},
+      ...this.defaultSearchParams,
+    })
   }
+  
 
   render(store) {
 
