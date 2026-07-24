@@ -1,0 +1,11 @@
+#delete-group-error-message {
+  color:darkred;
+}
+#group-name-input {
+  display: block;
+  margin-bottom: 1rem;
+}
+#openGroupEditPageButton {
+  padding: 2rem;
+}
+

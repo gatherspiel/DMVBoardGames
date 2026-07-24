@@ -39,54 +39,21 @@ const RECURRING_EVENT_INPUT = "is-recurring";
 export class CreateEventComponent extends BaseDynamicComponent {
   constructor() {
     super();
-  }
-  connectedCallback() {
-    document.title = `Add event for group ${new URLSearchParams(document.location.search).get("name") ?? ""}`;
-    this.updateData({
-      name: "",
-      groupName: new URLSearchParams(document.location.search).get("name") ?? ""
-    });
-  }
-  getTemplateStyle() {
-    return `
-      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style> 
-        input,select,textarea {
-          display: block;
-        {  
-        @media not screen and (width < 32em) {
-          #${EVENT_NAME_INPUT} {
-            width: 50rem;
-          }
-          #${EVENT_LOCATION_INPUT} {
-            width: 50rem;
-          }        
-        }
-        @media screen and (width < 32em) {
-          #${EVENT_DESCRIPTION_INPUT} {
-            height: 10rem;
-          }        
-        }
-      </style>
-    `;
-  }
-
-  attachHandlersToShadowRoot(shadowRoot) {
+   
     const self = this;
 
-    shadowRoot.addEventListener("click", (event) => {
+    this.addEventListener("click", (event) => {
       const targetId = event.target.id;
       if (targetId === RECURRING_EVENT_INPUT) {
         self.updateData({
-          isRecurring: shadowRoot.getElementById(RECURRING_EVENT_INPUT)
+          isRecurring: self.getRootNode().getElementById(RECURRING_EVENT_INPUT)
             ?.checked,
         });
       }
 
       if (targetId === "create-event-button") {
-        const data = shadowRoot.getElementById("create-event-form")?.elements;
-        const imageForm = shadowRoot.getElementById("image-upload-ui");
+        const data = self.getRootNode().getElementById("create-event-form")?.elements;
+        const imageForm = self.getRootNode().getElementById("image-upload-ui");
 
         const formData = {
           id: self.componentStore.id,
@@ -137,8 +104,17 @@ export class CreateEventComponent extends BaseDynamicComponent {
         }
       }
     });
+
   }
 
+  connectedCallback() {
+    document.title = `Add event for group ${new URLSearchParams(document.location.search).get("name") ?? ""}`;
+    this.updateData({
+      name: "",
+      groupName: new URLSearchParams(document.location.search).get("name") ?? ""
+    });
+  }
+  
   render(data) {
 
     return `   

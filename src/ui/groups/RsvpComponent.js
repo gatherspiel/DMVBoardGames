@@ -12,34 +12,18 @@ import {
 import { API_ROOT } from "../shared/Params.js";
 
 export class RsvpComponent extends BaseDynamicComponent {
+  
   #rsvpUrl;
+
   constructor() {
     super([]);
 
     const eventId = parseInt(this.getAttribute("event-id") ?? "0");
     this.#rsvpUrl = `/groups/events/${eventId}/rsvp`;
-  }
 
-  connectedCallback() {
-    this.updateData({
-      rsvpCount: parseInt(this.getAttribute("rsvp-count") ?? "0"),
-      userHasRsvp: this.getAttribute("current-user-rsvp") === "true",
-    });
-  }
-
-  getTemplateStyle() {
-    return `
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-      <style>
-      </style>
-    `;
-  }
-
-  attachHandlersToShadowRoot(shadowRoot) {
     const self = this;
 
-    shadowRoot.addEventListener("click", (event) => {
+    this.addEventListener("click", (event) => {
       if (event.target.className == "primary") {
         if (!self.componentStore.userHasRsvp) {
           ApiLoadAction.getResponseData({
@@ -82,6 +66,14 @@ export class RsvpComponent extends BaseDynamicComponent {
           });
         }
       }
+    });
+
+  }
+
+  connectedCallback() {
+    this.updateData({
+      rsvpCount: parseInt(this.getAttribute("rsvp-count") ?? "0"),
+      userHasRsvp: this.getAttribute("current-user-rsvp") === "true",
     });
   }
 
