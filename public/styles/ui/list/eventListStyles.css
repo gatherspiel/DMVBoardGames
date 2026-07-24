@@ -1,0 +1,55 @@
+@scope (event-list-component)
+{
+	li {
+		padding-bottom: 1rem;
+		padding-top:1rem;
+	}
+	ul {
+		list-style:url(/assets/images/meeple_small.png);
+		margin-top:0;
+		padding-left:1.5rem;
+	}
+	.button-div {
+		display: flex;
+	}
+#container {
+		opacity:0;
+		animation: fadeIn 100ms forwards
+	} 
+#event-location,#event-time {
+		margin-top:0.5rem;
+	}
+	.section-separator-small {
+		margin-left:-1rem;
+	}
+	@media not screen and (width < 32em) {
+		.container-xl {
+			margin-top:-1em;
+		} 
+		.group-cities {
+			display: inline-block;
+			margin-left: 2rem;
+		}
+	}  
+	@media screen and (width < 32em) { 
+		li {
+			padding-top:0.25rem;
+			padding-bottom:0.25rem;
+		}
+		ul {
+			margin-top: -1em;
+		} 
+		#no-events-found {
+			text-align:center;
+		}
+		#search-results-header {
+			text-align: center;
+		}
+		.container-xl {
+			margin-top:-2rem;
+		} 
+		.ui-section .event-group:not(:first-child) {
+			margin-top: 0.5rem;
+		}
+	} 
+}

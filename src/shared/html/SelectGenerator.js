@@ -105,7 +105,7 @@ export function getDaysOfWeekSelectHtml(checkState) {
 export function getGameTypeTagSelectHtml(checkState) {
   let html = `
     <div id="game-type-tag-select">
-    <label class="">Tags(optional)</label>
+    <label id="game-type-tag-select-label">Tags(optional)</label>
   `;
 
   let i = 0;

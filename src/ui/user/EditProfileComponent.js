@@ -17,7 +17,7 @@ customElements.define("image-upload-component", ImageUploadComponent);
 
 const UPDATE_USER_DATA_ID = "update-user-data";
 const USERNAME_INPUT = "username-input";
-const USERNAME_ERROR_TEXT_KEY = "username-error-text"; /**/
+const USERNAME_ERROR_TEXT_KEY = "username-error-text";
 
 export class EditProfileComponent extends BaseDynamicComponent {
   constructor() {
@@ -26,20 +26,9 @@ export class EditProfileComponent extends BaseDynamicComponent {
         dataStore: USER_DATA_STORE,
       },
     ]);
-  }
 
-  getTemplateStyle() {
-    return `
-      <link rel="stylesheet" type="text/css"  href="/styles/kelp.css"/>
-      <link rel="stylesheet" type="text/css"  href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style> 
-      </style>      
-    `;
-  }
-
-  attachHandlersToShadowRoot(shadowRoot) {
-    let self = this;
-    shadowRoot.addEventListener("click", (event) => {
+    const self = this;
+    this.addEventListener("click", (event) => {
       const targetId = event.target?.id;
 
       if (targetId === UPDATE_USER_DATA_ID) {
@@ -47,8 +36,8 @@ export class EditProfileComponent extends BaseDynamicComponent {
 
         const validationErrors = {};
         const elements =
-          shadowRoot.getElementById("update-user-form")?.elements;
-        const imageForm = shadowRoot.getElementById("image-upload-ui");
+          self.getRootNode().getElementById("update-user-form")?.elements;
+        const imageForm = self.getRootNode().getElementById("image-upload-ui");
 
         const username = elements.namedItem(USERNAME_INPUT)?.value;
         if (!username || username.length === 0) {
