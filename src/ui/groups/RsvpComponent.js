@@ -11,7 +11,7 @@ import {
 import { API_ROOT } from "../shared/Params.js";
 
 export class RsvpComponent extends BaseDynamicComponent {
-  
+
   #rsvpUrl;
 
   constructor() {
@@ -51,7 +51,7 @@ export class RsvpComponent extends BaseDynamicComponent {
             if (response.errorMessage) {
               self.updateData({
                 [ERROR_MESSAGE_KEY]:
-                  "Failed to cancel RSVP:" + response.errorMessage,
+                "Failed to cancel RSVP:" + response.errorMessage,
                 [SUCCESS_MESSAGE_KEY]: "",
               });
             } else {
@@ -86,11 +86,11 @@ export class RsvpComponent extends BaseDynamicComponent {
     return `
       ${
         this.getAttribute("user-can-update-rsvp") !== "false"
-        ? `
+          ? `
           <button class="primary">  
             ${rsvpButtonText}
           </button>`
-        : ``
+          : ``
       } 
       <p><b>${rsvpStr}</b></p>
       ${generateErrorMessage(data.errorMessage)}

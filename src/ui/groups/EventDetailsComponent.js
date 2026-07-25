@@ -120,7 +120,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           id: self.componentStore.id,
           [EVENT_NAME_INPUT]: data.namedItem(EVENT_NAME_INPUT).value,
           [EVENT_DESCRIPTION_INPUT]: data.namedItem(EVENT_DESCRIPTION_INPUT)
-            ?.value,
+          ?.value,
           [EVENT_URL_INPUT]: data.namedItem(EVENT_URL_INPUT)?.value,
           [START_TIME_INPUT]: convertTimeTo24Hours(
             data.namedItem(START_TIME_INPUT)?.value,
@@ -162,8 +162,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             body: JSON.stringify(eventDetails),
             method: "PUT",
             url:
-              API_ROOT +
-              `/groups/${groupId}/events/?id=${encodeURIComponent(eventDetails.id)}`,
+            API_ROOT +
+            `/groups/${groupId}/events/?id=${encodeURIComponent(eventDetails.id)}`,
           }).then((response) => {
             window.scrollTo({
               top: 0,
@@ -219,7 +219,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       html += this.renderViewMode(data);
     }
     const url = `${window.location.origin}/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}`
-    
+
     html += `
         <div class="container-xl">
           <a class="btn secondary" href=${url}>Back to group</a>
@@ -233,7 +233,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     const imagePath = data.imageFilePath && data.imageFilePath.length > 0 ?
       data.imageFilePath 
       : `https://gatherspiel.nyc3.cdn.digitaloceanspaces.com/groups/events/20406/imageb192bdf2-f00c-4af2-8d04-cbd90b7c3f4a.jpg`
-      
+
 
     return `
       <div class="container-xl" id="print-container">
@@ -242,7 +242,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
           ${data.isRecurring
               ? `${data.day}s at ${data.startTime}`
               : ``
-            }
+          }
         </h1>
         <div id="event-details">
           ${data.description}
@@ -306,12 +306,12 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             image-path="${data.imageFilePath}"
           ></image-upload-component>
         </div>  
-   
+
         <div class="form-section" style="${data.isRecurring ? `` : `display:none`}">
           <label class=" required-field">Day of week</label>
           ${getDayOfWeekSelectHtml(data.day)}
         </div>
- 
+
         <div class="form-section" style="${!data.isRecurring ? `` : `display:none`}">
           <label class=" required-field">Start date</label>
           <input
@@ -398,7 +398,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     });
     return html;
   }
-  
+
   renderViewMode(data) {
     if (data.errorMessage) {
       return `${generateErrorMessage(data.errorMessage)}`;
@@ -407,7 +407,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         <h1>${data.name}</h1>
         ${
           data.url &&
-          !data.url.startsWith("https://dmvobardgames.com/groups/event.html")
+            !data.url.startsWith("https://dmvobardgames.com/groups/event.html")
             ? `<a class="btn secondary event-website-link" href=${data.url}>Event website</a>`
             : ""
         } 

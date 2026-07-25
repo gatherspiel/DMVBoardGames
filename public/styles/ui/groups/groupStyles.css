@@ -30,32 +30,32 @@
   display: inline-block;
   margin-top: 0.5rem;
 }  
-  
+
 @media not screen and (width < 32em) {
   h2 {
     margin-left:-1.5rem;
     padding-left: 1.5rem;
   }
-  #group-description-input} {
-    display: block;
-  }
-  #group-name-input{
-    display:block;
-    width: 600px;
-  }
-  #group-url-input {
-    display: block;
-    width: 600px;
-  }
-  #group-image {
-    width:63rem;
-  }
-  #group-name-header {
-    margin-bottom:0.5rem;
-    margin-left:-1.5rem;
-    margin-top: 0.5rem;
-    padding-left:1.5rem;
-  }
+#group-description-input} {
+  display: block;
+}
+#group-name-input{
+  display:block;
+  width: 600px;
+}
+#group-url-input {
+  display: block;
+  width: 600px;
+}
+#group-image {
+  width:63rem;
+}
+#group-name-header {
+  margin-bottom:0.5rem;
+  margin-left:-1.5rem;
+  margin-top: 0.5rem;
+  padding-left:1.5rem;
+}
 
 }   
 @media screen and (width < 32em) {

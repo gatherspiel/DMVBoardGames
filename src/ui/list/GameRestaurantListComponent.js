@@ -10,15 +10,6 @@ export class GameRestaurantListComponent extends BaseDynamicComponent {
     ]);
   }
 
-  getTemplateStyle() {
-    return `
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/> 
-      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/> 
-      <style>  
-     </style>
-    `;
-  }
-
   getItemHtml(gameRestaurant) {
     return `
       <li class="game-resturant-list-item">

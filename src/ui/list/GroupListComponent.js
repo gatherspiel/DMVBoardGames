@@ -24,14 +24,14 @@ export class GroupListComponent extends BaseDynamicComponent {
   getItemHtml(group, loggedIn) {
     const groupCitiesStr =
       group.cities && group.cities.length > 0
-        ? group.cities.map((name) => getDisplayName(name))?.join(", ")
-        : "DMV Area";
+      ? group.cities.map((name) => getDisplayName(name))?.join(", ")
+      : "DMV Area";
 
     const hasRecurringEventDays = group.recurringEventDays.length > 0;
     const hasGameTypeTags = group.gameTypeTags.length > 0;
-    
+
     const url = `${hasRecurringEventDays || loggedIn || hasGameTypeTags ? `/html/groups/groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`;
-    
+
     return `
       <li>
         <a class="btn secondary" href=${url}>${group.name}</a>

@@ -25,10 +25,10 @@ export class EventListComponent extends BaseDynamicComponent {
         >${eventData.eventName}</a> 
         <div id="event-time">
           ${eventData.isRecurring ? 
-            `
+              `
               ${eventData.dayOfWeek}s at ${eventData.nextEventTime}
             ` :
-            `
+              `
               ${eventData.nextEventDate} at ${eventData.nextEventTime}
 
           `}

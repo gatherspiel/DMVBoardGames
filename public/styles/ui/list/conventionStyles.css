@@ -1,14 +1,14 @@
 @scope (convention-list-component) {
-	ul {
-		list-style:url(/assets/images/meeple_small.png);
-		margin-top:0;
-		padding-left:1.5rem;
-	}
-	.conv-list-item > * {
-		display: inline-block;
-		margin-bottom:0.5em; 
-	}  
-	.date-info {
-		padding-left: 0.5rem;
-	} 
+  ul {
+    list-style:url(/assets/images/meeple_small.png);
+    margin-top:0;
+    padding-left:1.5rem;
+  }
+  .conv-list-item > * {
+    display: inline-block;
+    margin-bottom:0.5em; 
+  }  
+  .date-info {
+    padding-left: 0.5rem;
+  } 
 }

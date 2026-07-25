@@ -18,7 +18,7 @@ export class DeleteGroupComponent extends BaseDynamicComponent {
         dataStore: LOGIN_STORE,
       },
     ]);
-  
+
     const self = this;
     this.addEventListener("click", (event) => {
       if (event.target.id === CONFIRM_DELETE_BUTTON_ID) {
