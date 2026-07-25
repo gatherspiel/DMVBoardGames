@@ -1,5 +1,4 @@
 import {
-  ApiActionType,
   ApiLoadAction,
   BaseDynamicComponent,
 } from "/lib/places-js-latest.js";
@@ -56,7 +55,7 @@ export class FeedbackComponent extends BaseDynamicComponent {
             feedbackType: elements.namedItem(FEEDBACK_TYPE_INPUT_ID)?.value,
             name: elements.namedItem(ENTER_NAME_INPUT_ID)?.value,
           }),
-          method: ApiActionType.POST,
+          method: "POST",
           url: API_ROOT + "/feedback",
         }).then((data) => {
           if (data.errorMessage) {

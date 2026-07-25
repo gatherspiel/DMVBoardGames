@@ -1,6 +1,4 @@
-
 import {
-  ApiActionType,
   ApiLoadAction,
   BaseDynamicComponent,
 } from "/lib/places-js-latest.js";
@@ -83,7 +81,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
           const eventDetails = getEventDetailsFromForm(formData);
           ApiLoadAction.getResponseData({
             body: JSON.stringify(eventDetails),
-            method: ApiActionType.POST,
+            method: "POST",
             url: API_ROOT + `/groups/${groupId}/events/`,
           }).then((response) => {
             if (!response.errorMessage) {

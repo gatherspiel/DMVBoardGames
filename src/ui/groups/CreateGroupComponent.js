@@ -1,5 +1,4 @@
-
-import {  ApiActionType,ApiLoadAction, BaseDynamicComponent } from "/lib/places-js-latest.js";
+import {ApiLoadAction, BaseDynamicComponent } from "/lib/places-js-latest.js";
 import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
@@ -97,7 +96,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
             url: elements.namedItem(GROUP_URL_INPUT)?.value,
             gameTypeTags: Object.keys(getTagSelectedState(self.getRootNode())),
           }),
-          method: ApiActionType.POST,
+          method: "POST",
           url: API_ROOT + `/groups/`,
         }).then((data) => {
           if (data.errorMessage) {
