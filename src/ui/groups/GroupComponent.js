@@ -1,4 +1,4 @@
-import { ApiActionType, ApiLoadAction, BaseDynamicComponent,DataStore } from "/lib/places-js-latest.js";
+import {  ApiLoadAction, BaseDynamicComponent,DataStore } from "/lib/places-js-latest.js";
 import {
   ERROR_MESSAGE_KEY,
   SUCCESS_MESSAGE_KEY,
@@ -75,8 +75,8 @@ export class GroupComponent extends BaseDynamicComponent {
       if (targetId === JOIN_GROUP_BUTTON_ID) {
         const userIsMember = self.componentStore.permissions?.userIsMember;
         const apiMethod = userIsMember
-          ? ApiActionType.DELETE
-          : ApiActionType.POST;
+          ? "DELETE"
+          : "POST";
 
         ApiLoadAction.getResponseData({
           method: apiMethod,
@@ -144,7 +144,7 @@ export class GroupComponent extends BaseDynamicComponent {
         }
         ApiLoadAction.getResponseData({
           body: JSON.stringify(params),
-          method: ApiActionType.PUT,
+          method: "PUT",
           url: API_ROOT + `/groups/?name=${encodeURIComponent(params.name)}`,
         }).then((data) => {
           if (!data.errorMessage) {

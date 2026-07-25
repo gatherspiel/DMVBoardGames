@@ -1,5 +1,4 @@
 import {
-  ApiActionType,
   ApiLoadAction,
   BaseDynamicComponent,
 } from "/lib/places-js-latest.js";
@@ -27,7 +26,7 @@ export class RsvpComponent extends BaseDynamicComponent {
       if (event.target.className == "primary") {
         if (!self.componentStore.userHasRsvp) {
           ApiLoadAction.getResponseData({
-            method: ApiActionType.POST,
+            method: "POST",
             url: API_ROOT + this.#rsvpUrl,
           }).then((response) => {
             if (response.errorMessage) {
@@ -46,7 +45,7 @@ export class RsvpComponent extends BaseDynamicComponent {
           });
         } else {
           ApiLoadAction.getResponseData({
-            method: ApiActionType.DELETE,
+            method: "DELETE",
             url: API_ROOT + this.#rsvpUrl,
           }).then((response) => {
             if (response.errorMessage) {

@@ -6,9 +6,6 @@ import {
 } from "../../shared/html/StatusIndicators.js";
 
 import { API_ROOT } from "../shared/Params.js";
-
-import { ApiActionType } from "/lib/places-js-latest.js";
-
 import { GROUP_NAME_INPUT } from "./Constants.js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
 
@@ -38,7 +35,7 @@ export class DeleteGroupComponent extends BaseDynamicComponent {
           const id =
             new URLSearchParams(document.location.search).get("id") ?? "";
           const params = {
-            method: ApiActionType.DELETE,
+            method: "DELETE",
             url: `${API_ROOT}/groups/?id=${id}`,
           };
 
