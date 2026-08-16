@@ -33,11 +33,11 @@ export class UserActionsComponent extends BaseDynamicComponent {
     }
     return `
       <div class="container-xl">
-				<div> 
-				${this.getLinks(data)}  
-				</div>	
-				<hr>
-		 </div>
-		`;
+        <div> 
+        ${this.getLinks(data)}  
+        </div>	
+        <hr>
+     </div>
+    `;
   }
 }

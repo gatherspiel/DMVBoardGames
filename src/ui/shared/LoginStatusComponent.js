@@ -13,13 +13,6 @@ export class LoginStatusComponent extends BaseDynamicComponent {
     ]);
   }
 
-  getTemplateStyle() {
-    return `  
-      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-      <style>
-      </style>`;
-  }
-
   render(authData) {
     if (!authData.loggedIn) {
       return `
@@ -50,7 +43,7 @@ class LoginStatusComponentInner extends BaseDynamicComponent {
     });
   }
 
-  
+
   render(userData) {
     return `
       <div id="login-status-container">

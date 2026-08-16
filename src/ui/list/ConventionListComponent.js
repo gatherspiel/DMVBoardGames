@@ -11,15 +11,6 @@ export class ConventionListComponent extends BaseDynamicComponent {
     ]);
   }
 
-  getTemplateStyle() {
-    return `
-      <link rel="stylesheet" type="text/css" href="/styles/kelp.css"/>
-      <link rel="stylesheet" type="text/css" href="/styles/sharedHtmlAndComponentStyles.css"/>
-      <style> 
-     </style>
-    `;
-  }
-
   getItemHtml(convention) {
     return `
       <li class="conv-list-item">

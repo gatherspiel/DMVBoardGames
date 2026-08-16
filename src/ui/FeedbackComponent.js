@@ -19,12 +19,12 @@ const SUBMIT_FEEDBACK_ID = "submit-feedback-id";
 export class FeedbackComponent extends BaseDynamicComponent {
   constructor() {
     super();
-    
-		const self = this;
 
-		//getElementById is disabled.
-		const rootNode = self.getRootNode();
-		rootNode.findForm = rootNode.getElementById;
+    const self = this;
+
+    //getElementById is disabled.
+    const rootNode = self.getRootNode();
+    rootNode.findForm = rootNode.getElementById;
 
     this.addEventListener("click", (event) => {
       const targetId = event.target?.id;
@@ -40,7 +40,7 @@ export class FeedbackComponent extends BaseDynamicComponent {
           });
           return;
         }
-        
+
         if (!feedbackText || feedbackText.length === 0) {
           self.updateData({
             errorMessage: "Feedback text cannot be blank",
@@ -98,21 +98,21 @@ export class FeedbackComponent extends BaseDynamicComponent {
             id=${FEEDBACK_TEXT_INPUT_ID}
             name=${FEEDBACK_TEXT_INPUT_ID}
             >${data.feedbackText}</textarea>
-            
+
           <label class="section-label">(Optional)Enter name:</label>
           <input
             id=${ENTER_NAME_INPUT_ID}
             name=${ENTER_NAME_INPUT_ID}
             value="${data.name}"
           >
-            
+
           <label class="section-label">(Optional)Enter email:</label>
           <input
             id=${ENTER_EMAIL_INPUT_ID}
             name=${ENTER_EMAIL_INPUT_ID}
             value=${data.email}
           >     
-            
+
           <label class="section-label" id="feedback-type-label">Feedback type:</label>  
           <div id="feedback-type-select">
             <div>

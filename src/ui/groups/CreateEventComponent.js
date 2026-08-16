@@ -37,7 +37,7 @@ const RECURRING_EVENT_INPUT = "is-recurring";
 export class CreateEventComponent extends BaseDynamicComponent {
   constructor() {
     super();
-   
+
     const self = this;
 
     this.addEventListener("click", (event) => {
@@ -45,7 +45,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
       if (targetId === RECURRING_EVENT_INPUT) {
         self.updateData({
           isRecurring: self.getRootNode().getElementById(RECURRING_EVENT_INPUT)
-            ?.checked,
+          ?.checked,
         });
       }
 
@@ -59,8 +59,8 @@ export class CreateEventComponent extends BaseDynamicComponent {
           isRecurring: self.componentStore.isRecurring,
           [EVENT_NAME_INPUT]: data.namedItem(EVENT_NAME_INPUT)?.value,
           [EVENT_DESCRIPTION_INPUT]: data
-            .namedItem(EVENT_DESCRIPTION_INPUT)
-            ?.value.trim(),
+          .namedItem(EVENT_DESCRIPTION_INPUT)
+          ?.value.trim(),
           [EVENT_URL_INPUT]: data.namedItem(EVENT_URL_INPUT)?.value,
           [START_TIME_INPUT]: data.namedItem(START_TIME_INPUT)?.value ?? "",
           [END_TIME_INPUT]: data.namedItem(END_TIME_INPUT)?.value ?? "",
@@ -112,7 +112,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
       groupName: new URLSearchParams(document.location.search).get("name") ?? ""
     });
   }
-  
+
   render(data) {
 
     return `   
@@ -132,7 +132,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
               ${data.isRecurring ? "checked" : ""}
             />
           </div>  
-          
+
           <div class = "form-section">
             <label>Enable RSVPs. Enable if you want to use this site to manage RSVPs instead of another website 
             such as Meetup.com</label>
@@ -157,7 +157,7 @@ export class CreateEventComponent extends BaseDynamicComponent {
             />${data.description ?? ""}</textarea>
             ${generateErrorMessage(data.formValidationErrors?.[EVENT_DESCRIPTION_INPUT])}
           </div>   
-          
+
           <image-upload-component
             id="image-upload-ui"
           >   

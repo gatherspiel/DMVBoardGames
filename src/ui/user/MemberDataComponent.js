@@ -10,9 +10,9 @@ export class MemberDataComponent extends BaseDynamicComponent {
         dataStore: USER_MEMBER_STORE,
       },
     ],
-    LOADING_INDICATOR_CONFIG);
+      LOADING_INDICATOR_CONFIG);
   }
- 
+
   render(data) {
     const html = `
       <div class="container-xl"> 

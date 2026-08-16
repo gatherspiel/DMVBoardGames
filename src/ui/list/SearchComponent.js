@@ -51,8 +51,7 @@ export class SearchComponent extends BaseDynamicComponent {
         fieldName: "loginState"
       },
       {
-        componentReducer:(data)=> {
-          
+        componentReducer:(data)=> {          
           if(data.eventData && data.eventData.length > 0){
             return false;
           } 
@@ -68,7 +67,7 @@ export class SearchComponent extends BaseDynamicComponent {
 
     this.initialParams = new URLSearchParams(document.location.search);
     console.log("Searching with url:"+this.getAttribute("api-url"));
-      
+
     this.defaultSearchParams = {
       apiUrl: this.getAttribute("api-url"),
       cityList:[DEFAULT_SEARCH_PARAMETER],
@@ -78,8 +77,8 @@ export class SearchComponent extends BaseDynamicComponent {
 
     };
     SEARCH_RESULTS_LIST_STORE.fetchData(this.defaultSearchParams);
-  
-		const self = this; 
+
+    const self = this; 
     this.addEventListener("change", (event) => {
       const eventTarget = event.target;
       if (eventTarget.id === SEARCH_CITY_ID) {
@@ -97,9 +96,9 @@ export class SearchComponent extends BaseDynamicComponent {
       }
     });
 
-		this.addEventListener("click", (event) => {      
-      
-      
+    this.addEventListener("click", (event) => {      
+
+
       if (event.target.type === "checkbox") {
         const selectedDaysState = getDaysOfWeekSelectedState(self.getRootNode()); 
         if(event.target.checked){
@@ -109,24 +108,24 @@ export class SearchComponent extends BaseDynamicComponent {
             delete selectedDaysState[event.target.id];
           } 
         }
-        
+
         self.updateData({
           [ENABLE_SEARCH_TOGGLE_KEY]: true,
           days:
-            Object.keys(selectedDaysState).length > 0
-              ? selectedDaysState
-              : null,
+          Object.keys(selectedDaysState).length > 0
+          ? selectedDaysState
+          : null,
           showSearchUiMobile: true
         });
       }
       if (event.target.id === SEARCH_BUTTON_ID || event.target.id === SEARCH_USER_GROUPS_BUTTON_ID) {
-      
+
         event.preventDefault();
-          const searchParams = {
+        const searchParams = {
           location: self.componentStore.location ?? "",
           days: self.componentStore.days
-            ? Object.keys(self.componentStore.days).join(",")
-            : "",
+          ? Object.keys(self.componentStore.days).join(",")
+          : "",
           distance: self.componentStore.distance,
         };
 
@@ -153,15 +152,15 @@ export class SearchComponent extends BaseDynamicComponent {
       } 
     });
 
-	}
+  }
 
   connectedCallback(){
     this.updateData({
-    ...{[ENABLE_SEARCH_TOGGLE_KEY]: this.initialParams.size === 0},
+      ...{[ENABLE_SEARCH_TOGGLE_KEY]: this.initialParams.size === 0},
       ...this.defaultSearchParams,
     })
   }
-  
+
 
   render(store) {
 
@@ -185,17 +184,17 @@ export class SearchComponent extends BaseDynamicComponent {
   }
 
   renderSearchForm(store) {
-    
+
     const isGroupSearch = this.getAttribute("search-text") === 'Search for board game groups';
-    
+
     const searchInputsClass =
       store.location && store.location !== DEFAULT_SEARCH_PARAMETER
-        ? "search-form-three-inputs"
-        : "search-form-two-inputs";
-    
+      ? "search-form-three-inputs"
+      : "search-form-two-inputs";
+
     const searchAllText = !isGroupSearch && store.loginState?.loggedIn === true ?
-       "Search all events" : "Search"
-    
+      "Search all events" : "Search"
+
     return `
       <form id=${SEARCH_FORM_ID} onsubmit="return false">
       <div id ="form-div-outer">    
@@ -223,8 +222,8 @@ export class SearchComponent extends BaseDynamicComponent {
                   [DEFAULT_PARAMETER_KEY]: "5 miles",
                   [DEFAULT_PARAMETER_DISPLAY_KEY]: "5 miles",
                 })}`
-              : ``
-          }     
+                  : ``
+                }     
           </div>  
           <div id="search-input-div"> 
             ${
@@ -236,15 +235,15 @@ export class SearchComponent extends BaseDynamicComponent {
                 ` 
             }
             ${store.loginState?.loggedIn && !isGroupSearch ? 
-              `${
-                store[ENABLE_SEARCH_TOGGLE_KEY]
-                ? `<button class="btn primary" id="${SEARCH_USER_GROUPS_BUTTON_ID}">Search joined groups</button>`
-                : `<button class="btn muted" id="disabled-search-button-joined">Search joined groups</button>` 
-              } `
-              :``
+                `${
+                  store[ENABLE_SEARCH_TOGGLE_KEY]
+                    ? `<button class="btn primary" id="${SEARCH_USER_GROUPS_BUTTON_ID}">Search joined groups</button>`
+                    : `<button class="btn muted" id="disabled-search-button-joined">Search joined groups</button>` 
+                } `
+                :``
             }
           </div>
         </div>
       </form>`;
-  }
-}
+          }
+          }
