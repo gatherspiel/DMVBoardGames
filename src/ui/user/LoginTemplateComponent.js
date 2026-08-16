@@ -7,7 +7,7 @@ export class LoginTemplateComponent extends BaseTemplateComponent{
       <link
         rel="stylesheet" 
         href="/styles/kelp.css"
-			/>
+      />
       <link
         rel="stylesheet"
         href="/styles/sharedHtmlOnlyStyles.css"
@@ -15,7 +15,7 @@ export class LoginTemplateComponent extends BaseTemplateComponent{
       <link
         rel="stylesheet" 
         href="/styles/sharedHtmlAndComponentStyles.css"
-			/>
+      />
       <style>
         #login-component-container {
           padding-top: 0.25rem;

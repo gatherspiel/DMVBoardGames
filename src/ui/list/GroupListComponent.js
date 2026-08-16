@@ -21,26 +21,17 @@ export class GroupListComponent extends BaseDynamicComponent {
     );
   }
 
-  getTemplateStyle() {
-    return `
-      <link rel="preload" as="style" href="/styles/kelp.css" onload="this.rel='stylesheet'"/>
-      <link rel="preload" as="style" href="/styles/sharedHtmlAndComponentStyles.css" onload="this.rel='stylesheet'"/>
-      <style>
-     </style>
-    `;
-  }
-
   getItemHtml(group, loggedIn) {
     const groupCitiesStr =
       group.cities && group.cities.length > 0
-        ? group.cities.map((name) => getDisplayName(name))?.join(", ")
-        : "DMV Area";
+      ? group.cities.map((name) => getDisplayName(name))?.join(", ")
+      : "DMV Area";
 
     const hasRecurringEventDays = group.recurringEventDays.length > 0;
     const hasGameTypeTags = group.gameTypeTags.length > 0;
-    
+
     const url = `${hasRecurringEventDays || loggedIn || hasGameTypeTags ? `/html/groups/groups.html?name=${encodeURIComponent(group.name)}` : `${group.url}`}`;
-    
+
     return `
       <li>
         <a class="btn secondary" href=${url}>${group.name}</a>
@@ -57,9 +48,11 @@ export class GroupListComponent extends BaseDynamicComponent {
 
     if (state.data.groupData.length === 0) {
       return `
-        <p>No groups found</p>
-        <div class="section-separator-small"></div> 
-      `;
+        <div class="container-xl fade-in-animation">
+          <p>No groups found</p>
+          <div class="section-separator-small"></div> 
+        </div>
+        `;
     }
     let html = `
       <div class="container-xl fade-in-animation">

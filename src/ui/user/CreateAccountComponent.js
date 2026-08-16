@@ -30,8 +30,8 @@ export class CreateAccountComponent extends BaseDynamicComponent {
           }
           const errorMessage =
             new URLSearchParams(document.location.search)
-              ?.get("message")
-              ?.replaceAll("_", " ") ?? "";
+            ?.get("message")
+            ?.replaceAll("_", " ") ?? "";
 
           return {
             ...loginState,
@@ -48,13 +48,13 @@ export class CreateAccountComponent extends BaseDynamicComponent {
     const self = this;
     this.addEventListener("click", (event) => {
       event.preventDefault();
-      
+
       const targetId = event.target?.id;
       if (targetId === AGREE_RULES_ID) {
         self.updateData({
           [AGREE_RULES_ID]: event.target.checked,
           confirmPassword: self.getRootNode().getElementById(CONFIRM_PASSWORD_INPUT)
-            ?.value,
+          ?.value,
           password: self.getRootNode().getElementById(PASSWORD_INPUT)?.value,
           username: self.getRootNode().getElementById(USERNAME_INPUT)?.value,
         });
@@ -65,7 +65,7 @@ export class CreateAccountComponent extends BaseDynamicComponent {
           username: self.getRootNode().getElementById(USERNAME_INPUT)?.value,
           password: self.getRootNode().getElementById(PASSWORD_INPUT)?.value,
           confirmPassword: self.getRootNode().getElementById(CONFIRM_PASSWORD_INPUT)
-            ?.value,
+          ?.value,
         };
         if (
           !formData.username ||
@@ -112,7 +112,7 @@ export class CreateAccountComponent extends BaseDynamicComponent {
       }
     }); 
   }
-  
+
   render(data) {
     return `
       <div class="container-xl" id="login-component-container"> 
@@ -137,7 +137,7 @@ export class CreateAccountComponent extends BaseDynamicComponent {
               />   
               </input>
             </div>
-       
+
             <div class="form-section">
               <label class="required-field">Confirm password</label>
               <input        
@@ -153,7 +153,7 @@ export class CreateAccountComponent extends BaseDynamicComponent {
           ${
             data[AGREE_RULES_ID]
               ?
-                `<button id=${CREATE_ACCOUNT_ID} class="primary">Create account</button>` : `<button class="neutral">Create account</button>`
+              `<button id=${CREATE_ACCOUNT_ID} class="primary">Create account</button>` : `<button class="neutral">Create account</button>`
 
           } 
           <div id="agree-rules-input">

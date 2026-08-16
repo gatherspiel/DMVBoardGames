@@ -4,12 +4,8 @@ import {
   SUPABASE_CLIENT_URL,
 } from "../../ui/shared/Params.js";
 import {
-  ApiActionType,
   CustomLoadAction,
   DataStore,
-  addLocalStorageData,
-  clearSessionStorage,
-  getLocalStorageDataIfPresent,
 } from "/lib/places-js-latest.js";
 
 import { AuthResponse } from "../../ui/user/AuthResponse.js";
@@ -18,7 +14,11 @@ export const IS_LOGGED_IN_KEY = "loggedIn";
 
 async function retrieveData(params) {
   try {
-    const authData = await getLocalStorageDataIfPresent(AUTH_TOKEN_KEY);
+    let authData = null;
+    const authToken = window.localStorage["authToken"];
+    if(authToken){
+      authData = JSON.parse(authToken);
+    }
     if (authData && authData.expires_at * 1000 > new Date().getTime()) {
       return new AuthResponse(true, authData);
     }
@@ -26,7 +26,7 @@ async function retrieveData(params) {
     const data = await fetch(
       `${SUPABASE_CLIENT_URL}/auth/v1/token?grant_type=password`,
       {
-        method: ApiActionType.POST,
+        method: "POST",
         headers: {
           apiKey: SUPABASE_CLIENT_KEY,
         },
@@ -38,9 +38,12 @@ async function retrieveData(params) {
     );
 
     if (data.ok) {
-      clearSessionStorage();
+     for(let i = 0; i< sessionStorage.length; i++){
+        const key = sessionStorage.key(i);
+        sessionStorage.setItem(key, JSON.stringify({}))
+      } 
       const authTokenData = await data.json();
-      addLocalStorageData(AUTH_TOKEN_KEY, JSON.stringify(authTokenData));
+      window.localStorage.setItem(AUTH_TOKEN_KEY, JSON.stringify(authTokenData));
       return new AuthResponse(true, {
         ...authTokenData,
         username: authData?.username,

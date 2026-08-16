@@ -1,5 +1,4 @@
 import {
-  ApiActionType,
   ApiLoadAction,
   BaseDynamicComponent,
 } from "/lib/places-js-latest.js";
@@ -55,7 +54,7 @@ export class EditProfileComponent extends BaseDynamicComponent {
         };
         ApiLoadAction.getResponseData({
           body: JSON.stringify(formData),
-          method: ApiActionType.PUT,
+          method: "PUT",
           url: API_ROOT + "/user",
         }).then((response) => {
           if (response.errorMessage) {

@@ -25,10 +25,10 @@ export class EventListComponent extends BaseDynamicComponent {
         >${eventData.eventName}</a> 
         <div id="event-time">
           ${eventData.isRecurring ? 
-            `
+              `
               ${eventData.dayOfWeek}s at ${eventData.nextEventTime}
             ` :
-            `
+              `
               ${eventData.nextEventDate} at ${eventData.nextEventTime}
 
           `}
@@ -49,8 +49,10 @@ export class EventListComponent extends BaseDynamicComponent {
 
     if (state.data.eventData.length === 0) {
       return `
-        <p id="no-events-found">No events found</p>
-        <div class="section-separator-small"></div> 
+        <div class="container-xl fade-in-animation">
+          <p id="no-events-found">No events found</p>
+          <div class="section-separator-small"></div> 
+        </div>
       `;
     }
     let html = `

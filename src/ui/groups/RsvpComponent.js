@@ -1,5 +1,4 @@
 import {
-  ApiActionType,
   ApiLoadAction,
   BaseDynamicComponent,
 } from "/lib/places-js-latest.js";
@@ -12,7 +11,7 @@ import {
 import { API_ROOT } from "../shared/Params.js";
 
 export class RsvpComponent extends BaseDynamicComponent {
-  
+
   #rsvpUrl;
 
   constructor() {
@@ -27,7 +26,7 @@ export class RsvpComponent extends BaseDynamicComponent {
       if (event.target.className == "primary") {
         if (!self.componentStore.userHasRsvp) {
           ApiLoadAction.getResponseData({
-            method: ApiActionType.POST,
+            method: "POST",
             url: API_ROOT + this.#rsvpUrl,
           }).then((response) => {
             if (response.errorMessage) {
@@ -46,13 +45,13 @@ export class RsvpComponent extends BaseDynamicComponent {
           });
         } else {
           ApiLoadAction.getResponseData({
-            method: ApiActionType.DELETE,
+            method: "DELETE",
             url: API_ROOT + this.#rsvpUrl,
           }).then((response) => {
             if (response.errorMessage) {
               self.updateData({
                 [ERROR_MESSAGE_KEY]:
-                  "Failed to cancel RSVP:" + response.errorMessage,
+                "Failed to cancel RSVP:" + response.errorMessage,
                 [SUCCESS_MESSAGE_KEY]: "",
               });
             } else {
@@ -87,11 +86,11 @@ export class RsvpComponent extends BaseDynamicComponent {
     return `
       ${
         this.getAttribute("user-can-update-rsvp") !== "false"
-        ? `
+          ? `
           <button class="primary">  
             ${rsvpButtonText}
           </button>`
-        : ``
+          : ``
       } 
       <p><b>${rsvpStr}</b></p>
       ${generateErrorMessage(data.errorMessage)}

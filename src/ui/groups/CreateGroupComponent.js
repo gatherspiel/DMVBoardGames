@@ -1,5 +1,4 @@
-
-import {  ApiActionType,ApiLoadAction, BaseDynamicComponent } from "/lib/places-js-latest.js";
+import {ApiLoadAction, BaseDynamicComponent } from "/lib/places-js-latest.js";
 import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
@@ -46,7 +45,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
         dataStore: LOGIN_STORE,
       },
     ]);
-   
+
     const self = this;
 
     this.addEventListener("click", (event) => {
@@ -59,8 +58,8 @@ export class CreateGroupComponent extends BaseDynamicComponent {
           description: elements.namedItem(GROUP_DESCRIPTION_INPUT)?.value,
           gameTypeTags: getTagSelectedState(self.getRootNode()),
           imagePath: self.getRootNode()
-            .getElementById("image-upload-ui")
-            .getAttribute("image-path"),
+          .getElementById("image-upload-ui")
+          .getAttribute("image-path"),
           name: elements.namedItem(GROUP_NAME_INPUT)?.value,
           url: elements.namedItem(GROUP_URL_INPUT)?.value,
         });
@@ -92,12 +91,12 @@ export class CreateGroupComponent extends BaseDynamicComponent {
             name: groupName,
             description: groupDescription,
             image: self.getRootNode()
-              .getElementById("image-upload-ui")
-              .getAttribute("image-path"),
+            .getElementById("image-upload-ui")
+            .getAttribute("image-path"),
             url: elements.namedItem(GROUP_URL_INPUT)?.value,
             gameTypeTags: Object.keys(getTagSelectedState(self.getRootNode())),
           }),
-          method: ApiActionType.POST,
+          method: "POST",
           url: API_ROOT + `/groups/`,
         }).then((data) => {
           if (data.errorMessage) {
@@ -123,7 +122,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
     });
 
   }
-  
+
 
   render(data) {
     return `
@@ -168,7 +167,7 @@ export class CreateGroupComponent extends BaseDynamicComponent {
           ${getGameTypeTagSelectHtml(data.gameTypeTags)}
           <label class=" required-field" for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>
           <input type="checkbox" id="${AGREE_RULES_ID}" ${data[AGREE_RULES_ID] ? "checked" : ""}>
-          
+
           ${
             data[AGREE_RULES_ID]
               ? `<button class="primary" id=${CREATE_GROUP_BUTTON_ID}>Create group</button>`

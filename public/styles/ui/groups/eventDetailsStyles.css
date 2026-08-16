@@ -113,12 +113,12 @@ h1 {
   display:inline;
 }
 #print-container #event-image-container {
-    max-width:1016px;
+  max-width:1016px;
 } 
 #print-container {
-    width:100%;
-    height:100%;
-  }
+  width:100%;
+  height:100%;
+}
 #event-image-container-outer {
   bottom:100px; 
   height:400px;
@@ -132,11 +132,11 @@ h1 {
   #print-container {
     background-color:white;
   }
-   #event-image-container-outer {
+  #event-image-container-outer {
     height:400px; 
   }
 }
- 
+
 @page {
   size: 8.5in 11in;
   margin-top:0;
