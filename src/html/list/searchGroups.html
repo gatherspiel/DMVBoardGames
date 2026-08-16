@@ -39,12 +39,18 @@
 		<link rel="preconnect" href="api.gatherspiel.com" />
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      @media screen and (width < 32em){
+        header {
+          margin-bottom: -2em;
+        }
+      }
+    </style>
     <title>Search groups</title>
   </head>
   <body>
     {{>navbar}}
-     <user-actions-component> </user-actions-component>
-			<search-component
+     	<search-component
         api-url="/searchGroups"
         class="ui-section"
         search-text="Search for board game groups"
