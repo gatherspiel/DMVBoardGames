@@ -3,51 +3,72 @@ import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
 import { convertLocationDataForDisplay } from "../../shared/EventDataUtils.js";
 
+const EventItem = () => {
+
+		EventItem.eventTime = (eventData) =>{
+			if(eventData.isRecurring){
+				return `${eventData.dayOfWeek}s at ${eventData.nextEventTime}`;
+			}
+			return `${eventData.nextEventDate} at ${eventData.nextEventTime}`
+		}
+
+		EventItem.url = (eventData) => {
+			return `/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}`
+		}
+		
+		EventItem.location = (eventData)=>{
+			return `${convertLocationDataForDisplay(eventData.eventLocation)}`
+		}
+		 
+		return `<li>
+        <a 
+          class="btn secondary"
+					{{href=url}}
+					{{textContent=eventName}}
+        />
+        <div 
+					class="event-time" 
+					{{textContent=eventTime}}>
+        </div>
+        <div
+					class="event-location"
+					{{textContent=location}}	
+				>
+        </div> 
+      </li>
+  `;
+}
+
+BaseDynamicComponent.defineTemplate(EventItem,"EventItem");
+
 export class EventListComponent extends BaseDynamicComponent {
   constructor() {
     super(
       [
         {
-          dataStore: SEARCH_RESULTS_LIST_STORE,
-          fieldName: "data",
+					componentReducer: (data)=>{
+						console.log(data);
+						for(let i=0;i<data.eventData.length;i++)						{
+							data.eventData[i].id = "item-"+i;
+						}
+						return {"data":data.eventData};
+					},
+					dataStore: SEARCH_RESULTS_LIST_STORE,
         },
       ],
-      LOADING_INDICATOR_CONFIG
+      //LOADING_INDICATOR_CONFIG
     );
   }
 
-  getItemHtml(eventData) {
-    return `
-      <li>
-        <a 
-          class="btn secondary"
-          href= "/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}",
-        >${eventData.eventName}</a> 
-        <div id="event-time">
-          ${eventData.isRecurring ? 
-              `
-              ${eventData.dayOfWeek}s at ${eventData.nextEventTime}
-            ` :
-              `
-              ${eventData.nextEventDate} at ${eventData.nextEventTime}
-
-          `}
-        </div>
-        <div id="event-location">
-          ${convertLocationDataForDisplay(eventData.eventLocation)}
-        </div> 
-      </li>
-    `;
-  }
-
+	
   render(state) {
+		
     if (state?.status === "Waiting for user input" ||
-      !state.data.eventData  ||
       !state.data) {
       return ``;
     }
 
-    if (state.data.eventData.length === 0) {
+    if (state.data.length === 0) {
       return `
         <div class="container-xl fade-in-animation">
           <p id="no-events-found">No events found</p>
@@ -58,13 +79,12 @@ export class EventListComponent extends BaseDynamicComponent {
     let html = `
       <div class="container-xl fade-in-animation">
       <h1 id="search-results-header">Event search results</h1>
-      <ul>`;
-    for (let i = 0; i < state.data.eventData.length; i++) {
-      html += `
-        ${this.getItemHtml(state.data.eventData[i])}
-        <div class="section-separator-small"></div> 
-      `;
-    }
-    return html + `</ul></div>`;
+      <ul
+				data-array=data
+				data-template-name=EventItem
+			>
+			</ul>`;
+    
+    return html + `</div>`;
   }
 }

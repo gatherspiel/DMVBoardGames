@@ -120,7 +120,6 @@ onfig:signal;
 }
 
 
-
 class BaseDynamicComponent extends HTMLElement {
 
   #attachedEventsToShadowRoot = false;
@@ -133,7 +132,6 @@ class BaseDynamicComponent extends HTMLElement {
   #templateContainers = null;
   #subscribedStores = [];
 
-	//Stores state for the component.
   componentStore = {};
   #templateLoaded = false;
 
@@ -160,8 +158,6 @@ class BaseDynamicComponent extends HTMLElement {
     BaseDynamicComponent.computedProps[templateName.toUpperCase()] = [];   
     BaseDynamicComponent.eventHandlers[templateName.toUpperCase()]= templateFunc.setupClickEventHandlers;
  
-    //firstTagEnd = -1;
-    //TOOD: Optimize peformance. 
     const start = Date.now();
     let i = 0;
     while(true){
@@ -292,7 +288,10 @@ class BaseDynamicComponent extends HTMLElement {
     else {    
       element = elementRoot.querySelector(`[data-signal-id-${signalId}]`);
     }
-  
+
+		console.log(element);  
+		console.log(signalId);
+		console.log(elementRoot.innerHTML);
     if(updated === '') {
       element.removeAttribute(attr);
     }
@@ -303,6 +302,8 @@ class BaseDynamicComponent extends HTMLElement {
         element.setAttribute(attr,`${updated}`);
       }
     }
+		console.log(elementRoot.innerHTML);
+		console.log("************");
   }
 
   addClickEventListeners(eventListeners){
@@ -391,8 +392,10 @@ class BaseDynamicComponent extends HTMLElement {
   #renderTemplates(data,content) {
 
     this.#renderTemplates.templateIds = []; 
-    
-    if(!this.#templateData){
+   
+		////console.log("Hi:"+this.nodeName);
+		//console.log(this.#templateData);
+    if(!this.#templateData || this.#templateData.length === 0){
 
       const templates = content.querySelectorAll("[data-template-name]");
      
@@ -400,8 +403,10 @@ class BaseDynamicComponent extends HTMLElement {
           this.#templateData = [];
         }
 
+			//console.log(`${this.nodeName} : ${templates.length}`);
       for(let i=0;i<templates.length;i++){
 
+				console.log("Updating");
         let attrs = [];
         const attrNames = templates[i].getAttributeNames();
         const dataFieldName = templates[i].getAttribute("data-array");
@@ -440,7 +445,8 @@ class BaseDynamicComponent extends HTMLElement {
     }
     
     for(let i = 0; i < this.#templateData.length;i++){
-              
+			//console.log("Potato:"+this.nodeName); 
+			console.log(data);
       const templateName = 
         this.#templateData[i]
           .dataTemplateName
@@ -448,7 +454,8 @@ class BaseDynamicComponent extends HTMLElement {
           .toUpperCase();  
       
       const state = data[this.#templateData[i].dataFieldName] || []; 
-     
+    
+			console.log(state); 
       const attrs = this.#templateData[i].attributes; 
       const attrData = [];
       for(let j=0;j<attrs.length;j++){
@@ -488,6 +495,7 @@ class BaseDynamicComponent extends HTMLElement {
       const removed = sameLocs ? new Set() : prevIds.difference(newIds);
       const added = sameLocs ? new Set() : newIds.difference(prevIds);
 
+			console.log(added.size);
       let hasReplaced = false;
       if(added.size > 0){
 
@@ -520,7 +528,8 @@ class BaseDynamicComponent extends HTMLElement {
 						const signalData =  {...computedProps,...itemState}
 
 						signalsToRun.forEach((signal)=>{ 
-             
+								
+								console.log(addNode); 
                 this.#generateSignal(
                   {
                     signalConfig:signal,
@@ -551,7 +560,8 @@ class BaseDynamicComponent extends HTMLElement {
             }
           }
         }
-      
+     
+				console.log(addFragment); 
         if(addFragment !== null){
 
           if(added.size < newIds.size - removed.size) { 
@@ -562,6 +572,7 @@ class BaseDynamicComponent extends HTMLElement {
               lastNode.parentNode.appendChild(add);
             });
           } else{
+						console.log("Adding");
             requestAnimationFrame(()=>{
 							this.getRootNode()
 								.getElementById(this.#templateData[i].dataTemplateName)
@@ -715,7 +726,7 @@ class BaseDynamicComponent extends HTMLElement {
     }
   }
 
-  #generateAndSaveHTML(data) {
+	#generateAndSaveHTML(data) {
 
     //Don't re-render static HTML if templates are being used.
     if(!this.#templateLoaded){
@@ -734,10 +745,10 @@ class BaseDynamicComponent extends HTMLElement {
           const self = this;
           if(remainingTime > 0){
             setTimeout(()=>{
+							console.log("Load");
               template.innerHTML = this.render(data);
 							this.innerHTML = template.innerHTML;
             },remainingTime);
-						console.log("Hi");
           } else {
             template.innerHTML = this.render(data);
           }
@@ -749,7 +760,6 @@ class BaseDynamicComponent extends HTMLElement {
         template.innerHTML = this.render(data);
       }
 
-			console.log(this.nodeName);
       this.innerHTML = "";
       this.#renderTemplates(data,template.content);
       this.innerHTML = template.innerHTML;
@@ -767,6 +777,7 @@ class BaseDynamicComponent extends HTMLElement {
         this.#setupClickEventListeners(this.getRootNode(),this.clickEventListeners);  
       }
     } else {
+			console.log("Rendering tempmlate");
       this.#renderTemplates(data,this);
     }
   }
