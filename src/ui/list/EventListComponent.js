@@ -5,6 +5,9 @@ import { convertLocationDataForDisplay } from "../../shared/EventDataUtils.js";
 
 const EventItem = () => {
 
+		EventItem.empty = () => {
+			return ``;
+		}
 		EventItem.eventTime = (eventData) =>{
 			if(eventData.isRecurring){
 				return `${eventData.dayOfWeek}s at ${eventData.nextEventTime}`;
@@ -62,31 +65,28 @@ export class EventListComponent extends BaseDynamicComponent {
     );
   }
 
-	
-  render(state) {
-		
-    if (state?.status === "Waiting for user input" ||
-      !state.data) {
-      return ``;
-    }
-
-    if (state.data.length === 0) {
-      return `
-        <div class="container-xl fade-in-animation">
+	hasData(){
+		return {
+			showIf: (state)=>{return state?.status === "Waiting for user input" ||
+      !state.data || state.data.length === 0},
+			fallback: `
+				<div class="container-xl fade-in-animation">
           <p id="no-events-found">No events found</p>
           <div class="section-separator-small"></div> 
-        </div>
-      `;
-    }
-    let html = `
-      <div class="container-xl fade-in-animation">
+				</div>`
+		}
+	}
+  
+	render(state) {
+	
+    return `
+      <div data-show-if="hasData" class="container-xl fade-in-animation">
       <h1 id="search-results-header">Event search results</h1>
-      <ul
-				data-array=data
-				data-template-name=EventItem
-			>
-			</ul>`;
-    
-    return html + `</div>`;
+				<ul
+					data-array=data
+					data-template-name=EventItem
+				>
+				</ul>
+			</div>`;  
   }
 }
