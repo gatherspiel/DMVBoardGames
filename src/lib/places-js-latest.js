@@ -211,14 +211,6 @@ class BaseDynamicComponent extends HTMLElement {
     
     const split = templateStr.split("\n");
     for(let i=0;i<split.length;i++){
-      const tagStart = split[i].indexOf("<");
-      if(tagStart > 0 && split[i].charAt(tagStart -1) !== "/"){
-        split[i]=split[i].substring(tagStart);
-      }
-      const tagEnd = split[i].indexOf(">");
-      if(tagEnd > 0 && tagEnd < split[i].length - 1 && split[i].charAt(tagEnd-1) !== "/"){
-        split[i]=split[i].substring(0,tagEnd+1);
-      }
       split[i]=split[i].trim();
       //Insert space for attributes
       if(!split[i].endsWith(">")) {
@@ -272,7 +264,8 @@ class BaseDynamicComponent extends HTMLElement {
 			fieldName,
 			attr,
 			isOuter,
-			signalId } = params.signalConfig
+			signalId
+		} = params.signalConfig
     
 		const{ 
       signalData,
@@ -289,9 +282,6 @@ class BaseDynamicComponent extends HTMLElement {
       element = elementRoot.querySelector(`[data-signal-id-${signalId}]`);
     }
 
-		console.log(element);  
-		console.log(signalId);
-		console.log(elementRoot.innerHTML);
     if(updated === '') {
       element.removeAttribute(attr);
     }
@@ -302,8 +292,6 @@ class BaseDynamicComponent extends HTMLElement {
         element.setAttribute(attr,`${updated}`);
       }
     }
-		console.log(elementRoot.innerHTML);
-		console.log("************");
   }
 
   addClickEventListeners(eventListeners){
@@ -393,8 +381,6 @@ class BaseDynamicComponent extends HTMLElement {
 
     this.#renderTemplates.templateIds = []; 
    
-		////console.log("Hi:"+this.nodeName);
-		//console.log(this.#templateData);
     if(!this.#templateData || this.#templateData.length === 0){
 
       const templates = content.querySelectorAll("[data-template-name]");
@@ -403,10 +389,8 @@ class BaseDynamicComponent extends HTMLElement {
           this.#templateData = [];
         }
 
-			//console.log(`${this.nodeName} : ${templates.length}`);
       for(let i=0;i<templates.length;i++){
 
-				console.log("Updating");
         let attrs = [];
         const attrNames = templates[i].getAttributeNames();
         const dataFieldName = templates[i].getAttribute("data-array");
@@ -445,8 +429,6 @@ class BaseDynamicComponent extends HTMLElement {
     }
     
     for(let i = 0; i < this.#templateData.length;i++){
-			//console.log("Potato:"+this.nodeName); 
-			console.log(data);
       const templateName = 
         this.#templateData[i]
           .dataTemplateName
@@ -455,7 +437,6 @@ class BaseDynamicComponent extends HTMLElement {
       
       const state = data[this.#templateData[i].dataFieldName] || []; 
     
-			console.log(state); 
       const attrs = this.#templateData[i].attributes; 
       const attrData = [];
       for(let j=0;j<attrs.length;j++){
@@ -495,7 +476,6 @@ class BaseDynamicComponent extends HTMLElement {
       const removed = sameLocs ? new Set() : prevIds.difference(newIds);
       const added = sameLocs ? new Set() : newIds.difference(prevIds);
 
-			console.log(added.size);
       let hasReplaced = false;
       if(added.size > 0){
 
@@ -527,19 +507,20 @@ class BaseDynamicComponent extends HTMLElement {
             let addNode = BaseDynamicComponent.templates[templateName].cloneNode(true);
 						const signalData =  {...computedProps,...itemState}
 
-						signalsToRun.forEach((signal)=>{ 
-								
-								console.log(addNode); 
-                this.#generateSignal(
-                  {
-                    signalConfig:signal,
-                    updateData:{
-                      "signalData":signalData,
-                      "elementRoot":addNode,
-                    }
-                  }
-                );
+						console.log(signalData);
+						signalsToRun.forEach((signal)=>{ 	
+              this.#generateSignal(
+								{
+									signalConfig:signal,
+									updateData:{
+										"signalData":signalData,
+										"elementRoot":addNode,
+									}
+								}
+							);
             })
+						
+						addNode.id = signalData.id;
            
             BaseDynamicComponent.prevState[templateName][updateData] = computedProps;
             const eventHandlers = BaseDynamicComponent.eventHandlers[templateName];
@@ -561,9 +542,11 @@ class BaseDynamicComponent extends HTMLElement {
           }
         }
      
-				console.log(addFragment); 
         if(addFragment !== null){
 
+					console.log(added.size);
+					console.log(newIds.size);
+					console.log(removed.size);
           if(added.size < newIds.size - removed.size) { 
             const lastNode = this.getRootNode().getElementById(""+lastId);
             const add = document.createDocumentFragment();
@@ -572,7 +555,6 @@ class BaseDynamicComponent extends HTMLElement {
               lastNode.parentNode.appendChild(add);
             });
           } else{
-						console.log("Adding");
             requestAnimationFrame(()=>{
 							this.getRootNode()
 								.getElementById(this.#templateData[i].dataTemplateName)
@@ -604,6 +586,7 @@ class BaseDynamicComponent extends HTMLElement {
           if(newIds.size > 0) {
             const self = this;
             removed.forEach((id)=>{ 
+							console.log(id);
               const node = self.getRootNode().getElementById(""+id);
               node.parentNode.removeChild(node);
               const idx = BaseDynamicComponent.prevOrdering[templateName].findIndex((elem)=>elem === id);

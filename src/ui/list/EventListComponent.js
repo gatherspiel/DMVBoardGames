@@ -25,7 +25,7 @@ const EventItem = () => {
           class="btn secondary"
 					{{href=url}}
 					{{textContent=eventName}}
-        />
+        ></a>
         <div 
 					class="event-time" 
 					{{textContent=eventTime}}>
@@ -48,8 +48,10 @@ export class EventListComponent extends BaseDynamicComponent {
         {
 					componentReducer: (data)=>{
 						console.log(data);
-						for(let i=0;i<data.eventData.length;i++)						{
-							data.eventData[i].id = "item-"+i;
+						if(data?.eventData?.length){	
+							for(let i=0;i<data.eventData.length;i++)						{
+								data.eventData[i].id = data.eventData[i].eventId;
+							}
 						}
 						return {"data":data.eventData};
 					},
