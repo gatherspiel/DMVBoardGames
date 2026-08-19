@@ -4,10 +4,7 @@ import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
 import { convertLocationDataForDisplay } from "../../shared/EventDataUtils.js";
 
 const EventItem = () => {
-
-		EventItem.empty = () => {
-			return ``;
-		}
+	
 		EventItem.eventTime = (eventData) =>{
 			if(eventData.isRecurring){
 				return `${eventData.dayOfWeek}s at ${eventData.nextEventTime}`;
@@ -28,10 +25,12 @@ const EventItem = () => {
           class="btn secondary"
 					{{href=url}}
 					{{textContent=eventName}}
-        ></a>
+        >
+				</a>
         <div 
 					class="event-time" 
-					{{textContent=eventTime}}>
+					{{textContent=eventTime}}
+				>
         </div>
         <div
 					class="event-location"
@@ -50,9 +49,8 @@ export class EventListComponent extends BaseDynamicComponent {
       [
         {
 					componentReducer: (data)=>{
-						console.log(data);
 						if(data?.eventData?.length){	
-							for(let i=0;i<data.eventData.length;i++)						{
+							for(let i=0;i<data.eventData.length;i++) {
 								data.eventData[i].id = data.eventData[i].eventId;
 							}
 						}
@@ -67,26 +65,32 @@ export class EventListComponent extends BaseDynamicComponent {
 
 	hasData(){
 		return {
-			showIf: (state)=>{return state?.status === "Waiting for user input" ||
-      !state.data || state.data.length === 0},
+			showIf: (state)=>{
+				return state?.status === "Waiting for user input" ||
+					!state.data || state.data.length > 0
+			},
 			fallback: `
 				<div class="container-xl fade-in-animation">
           <p id="no-events-found">No events found</p>
           <div class="section-separator-small"></div> 
-				</div>`
-		}
-	}
-  
-	render(state) {
-	
-    return `
-      <div data-show-if="hasData" class="container-xl fade-in-animation">
-      <h1 id="search-results-header">Event search results</h1>
+				</div>
+			`,
+			isVisible: `
+				<h1 id="search-results-header">Event search results</h1>
 				<ul
 					data-array=data
 					data-template-name=EventItem
-				>
-				</ul>
-			</div>`;  
+				></ul>
+			`
+		}
+	}
+  
+	render(state) {	
+    return `
+			<div
+				data-show-if="hasData" 
+				class="container-xl fade-in-animation">
+      </div>
+		`;  
   }
 }

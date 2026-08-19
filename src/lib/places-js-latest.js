@@ -383,18 +383,17 @@ class BaseDynamicComponent extends HTMLElement {
 	}
   
 	#renderTemplates(data,content) {
-	
+
     this.#renderTemplates.templateIds = []; 
-   
     if(!this.#templateData || this.#templateData.length === 0){
 
       const templates = content.querySelectorAll("[data-template-name]");
-     
 			if(!this.#templateData){
           this.#templateData = [];
         }
 
       for(let i=0;i<templates.length;i++){
+
 
         let attrs = [];
         const attrNames = templates[i].getAttributeNames();
@@ -412,9 +411,9 @@ class BaseDynamicComponent extends HTMLElement {
             value:attrValue
           });
         }   
-       
+				
         templates[i].id = `template-${BaseDynamicComponent.templateCount}-${dataTemplateName}`;
- 
+
         this.#renderTemplates.templateIds.push({
           "id":templates[i].id,
           "templateName":dataTemplateName
@@ -432,7 +431,7 @@ class BaseDynamicComponent extends HTMLElement {
 				this.#templateLoaded = true;
 			}
     }
-   
+ 
     for(let i = 0; i < this.#templateData.length;i++){
 			const templateName = 
         this.#templateData[i]
@@ -463,7 +462,7 @@ class BaseDynamicComponent extends HTMLElement {
       const prevIds = new Set();
       const newIds = new Set();
 
-      let sameLocs = true;
+			let sameLocs = true;
       for(let num=0;num<Math.max(state.length,prevStateLen);num++){
         if(num<state.length){
           updatedOrdering.push(state[num].id);
@@ -480,7 +479,8 @@ class BaseDynamicComponent extends HTMLElement {
       const removed = sameLocs ? new Set() : prevIds.difference(newIds);
       const added = sameLocs ? new Set() : newIds.difference(prevIds);
 
-      let hasReplaced = false;
+
+      let hasReplaced = (removed.size === prevIds.size);
       if(added.size > 0){
 
         const lastId = BaseDynamicComponent.prevOrdering[templateName][prevStateLen-1];
@@ -493,7 +493,7 @@ class BaseDynamicComponent extends HTMLElement {
 				let addFragment = null; 
         for(let num = 0; num < updatedOrdering.length; num++){
           const updateData = updatedOrdering[num]; 
-         
+        
           if(added.has(updateData)){
             if(addFragment === null){
                 addFragment = document.createDocumentFragment();
@@ -536,9 +536,7 @@ class BaseDynamicComponent extends HTMLElement {
           }else {
             if(addFragment !== null){
               const curNode = this.getRootNode().getElementById(""+updateData); 
-              requestAnimationFrame(()=>{ 
-                curNode.parent.insertBefore(addFragment,curNode); 
-              });
+							curNode.parentNode.insertBefore(addFragment,curNode); 
               addFragment = null;
             }
           }
@@ -550,16 +548,12 @@ class BaseDynamicComponent extends HTMLElement {
             const lastNode = this.getRootNode().getElementById(""+lastId);
             const add = document.createDocumentFragment();
             add.replaceChildren(addFragment); 
-            requestAnimationFrame(()=>{
-              lastNode.parentNode.appendChild(add);
-            });
+            lastNode.parentNode.appendChild(add);
           } else{
-            requestAnimationFrame(()=>{
 							this.getRootNode()
 								.getElementById(this.#templateData[i].dataTemplateName)
 								.replaceChildren(addFragment);
-							hasReplaced = true;
-						});
+								hasReplaced = true;
           }          
         }
         BaseDynamicComponent.prevOrdering[templateName] = updatedOrdering;
@@ -567,14 +561,13 @@ class BaseDynamicComponent extends HTMLElement {
 
       
       if(removed.size > 0) { 
-        if(removed.size === prevIds.size && !hasReplaced){
+				if(removed.size === prevIds.size && !hasReplaced){
 						
 						const templateElem = this.getRootNode()
                 .getElementById(this.#templateData[i].dataTemplateName)
-            templateElem.replaceChildren([]);
+						templateElem.replaceChildren([]);
             BaseDynamicComponent.prevState[templateName] = {};
 
-					console.log(templateName);
 					const templateFunc = BaseDynamicComponent.templateFunctions[templateName];	
 					break; 
         }
@@ -587,13 +580,13 @@ class BaseDynamicComponent extends HTMLElement {
           if(newIds.size > 0) {
             const self = this;
             removed.forEach((id)=>{ 
-              const node = self.getRootNode().getElementById(""+id);
-              node.parentNode.removeChild(node);
+							const searchId = `[id="${id}"]`;
+              const node = self.querySelector(searchId);
+							node.parentNode.removeChild(node);
               const idx = BaseDynamicComponent.prevOrdering[templateName].findIndex((elem)=>elem === id);
               BaseDynamicComponent.prevOrdering[templateName].splice(idx,1); 
             });
-          }
-        }
+          } }
       }
 
       let sameNumber = false;
@@ -618,7 +611,6 @@ class BaseDynamicComponent extends HTMLElement {
         
         if(moveNodes.length > 0){
 
-          requestAnimationFrame(()=>{
             for(let mNum=moveNodes.length-1;mNum>=0;mNum--){
              
               const moveData = moveNodes[mNum];
@@ -632,20 +624,16 @@ class BaseDynamicComponent extends HTMLElement {
                 nodeToMove.parentNode.appendChild(nodeToMove);
               }
             }
-          });
         }
         BaseDynamicComponent.prevOrdering[templateName] = updatedOrdering; 
       }
     	
       if(hasReplaced){
-				console.log("Template functions????");
-				console.log("Clear");
         break;
       }
 
       if(sameNumber){
 				let start = Date.now();
-				requestAnimationFrame(()=>{
       	
 					const sharedData = {};
 					for(let j=0;j<attrData.length;j++){
@@ -685,7 +673,6 @@ class BaseDynamicComponent extends HTMLElement {
 						
 						BaseDynamicComponent.prevState[templateName][id] = computedPropValues;
           }
-				});
       }	
     }
   }
@@ -714,7 +701,7 @@ class BaseDynamicComponent extends HTMLElement {
 
     //Don't re-render static HTML if templates are being used.
     if(!this.#templateLoaded){
-      const template = document.createElement("template");
+      //const template = document.createElement("template");
       if(this.#loadingStarted > 0){
         const current = Date.now();
         const loadTime = current - this.#loadingStarted;
@@ -729,25 +716,23 @@ class BaseDynamicComponent extends HTMLElement {
           const self = this;
           if(remainingTime > 0){
             setTimeout(()=>{
-							console.log("Load");
               template.innerHTML = this.render(data);
 							this.innerHTML = template.innerHTML;
             },remainingTime);
           } else {
-            template.innerHTML = this.render(data);
+            this.innerHTML = this.render(data);
           }
         } else {
-          template.innerHTML = this.render(data);
+          this.innerHTML = this.render(data);
         }
       }
       else {
-        template.innerHTML = this.render(data);
+        this.innerHTML = this.render(data);
       }
 
-      this.innerHTML = "";
-      this.#renderTemplates(data,template.content);
-      this.innerHTML = template.innerHTML;
-	
+			this.runDirectives(this.getRootNode(),data);     	
+			this.#renderTemplates(data,this.getRootNode());
+
       this.#renderTemplates.templateIds.forEach((templateId)=>{
         
         const func = BaseDynamicComponent.templateFunctions[templateId.templateName.toUpperCase()];
@@ -763,9 +748,9 @@ class BaseDynamicComponent extends HTMLElement {
         this.#setupClickEventListeners(this.getRootNode(),this.clickEventListeners);  
       }
     } else {
-			console.log("Rendering tempmlate");
-      this.#renderTemplates(data,this);
 			this.runDirectives(this.getRootNode(),data);
+			
+			this.#renderTemplates(data,this);
     }		
   }
 
@@ -777,10 +762,34 @@ class BaseDynamicComponent extends HTMLElement {
 		const self = this;
 		showIfNodes.forEach((node)=>{
 			const func = node.getAttribute("data-show-if");
-			console.log(func);
 
 			if(self[func]){
-				console.log("Running directive");
+
+				const config = self[func](data);
+			
+				const showIf = config.showIf(data);	
+				if(!showIf){
+					self[func].showHTML = node.innerHTML;
+
+					this.#templateData.forEach((item)=>{
+						//Only clear template state inside conditional
+						if(node.querySelector(`#${item.dataTemplateName}`)){
+							const prevStateKey = item.dataTemplateName.split("-")[2];	
+							BaseDynamicComponent.prevState[prevStateKey.toUpperCase()] = {};
+						}
+
+					});	
+					node.innerHTML = config.fallback;
+					
+				} else {
+					if(self[func].showIf !== true){
+						node.innerHTML = config.isVisible;
+						this.#templateData = null;	
+	//					this.#renderTemplates(data,root);
+					}
+				}
+
+				self[func].showIf = showIf;
 			}
 		});
 	}
