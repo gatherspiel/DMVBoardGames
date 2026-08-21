@@ -101,7 +101,7 @@ export function getDaysOfWeekSelect(checkState) {
       
     `;
   });
-	return htmll;
+	return html;
 }
 
 //Deprecated

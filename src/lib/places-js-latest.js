@@ -1,6 +1,3 @@
-/**
- * Class to define a data store load action through an API call.
- */
 class ApiLoadAction{
 
   constructor(getRequestConfig) {
@@ -127,7 +124,10 @@ class BaseDynamicComponent extends HTMLElement {
   #loadingFromStores = new Set();
   #loadingStarted = 0;
   #loadingIndicatorConfig;
-  
+ 
+  #changeEventListeners;
+  #clickEventListeners;
+
   #templateData = null;
   #templateContainers = null;
   #subscribedStores = [];
@@ -266,7 +266,7 @@ class BaseDynamicComponent extends HTMLElement {
     this.updateFromSubscribedStores();
   }
 
- #generateSignal(params){
+  #generateSignal(params){
 
 		const {
 			fieldName,
@@ -354,7 +354,6 @@ class BaseDynamicComponent extends HTMLElement {
       this.#componentIsRendering = false;
     }
   }
-
   updateFromSubscribedStores() {
 
     let allSubscribedStoresHaveData = true;
@@ -391,9 +390,8 @@ class BaseDynamicComponent extends HTMLElement {
 
 	#runDirectives(data) {
 		this.#templateData = null;
-
 	}
- 
+
   #updateSingleItemTemplate(templateData,state){
     const id = templateData;
     const templateName = templateData.name; 
@@ -436,8 +434,9 @@ class BaseDynamicComponent extends HTMLElement {
 				}
     });
     BaseDynamicComponent.prevState[templateName] = computedPropValues;
+    
   }
-	
+  
   #renderTemplates(data,content) {
 
     this.#renderTemplates.templateIds = []; 
@@ -511,6 +510,7 @@ class BaseDynamicComponent extends HTMLElement {
           }
         } else {
           isArray = true;
+        }
       }
 
       //template is a single item.
@@ -591,7 +591,7 @@ class BaseDynamicComponent extends HTMLElement {
             BaseDynamicComponent.prevState[templateName][updateData] = computedProps;
             const eventHandlers = BaseDynamicComponent.eventHandlers[templateName];
             if(eventHandlers){
-              this.#setupClickEventListeners(
+              this.setupClickEventListeners(
                 addNode,
                 eventHandlers,
                 rowProps);
@@ -741,9 +741,10 @@ class BaseDynamicComponent extends HTMLElement {
     }
   }
 
-  #setupChangeEventListeners(){
+  
+  setupChangeEventListeners(){
     const rootNode = this.getRootNode();
-    const selectors = this.#changeEventListeners && Object.keys(this.#changeEventListeners) ?? [];
+    const selectors = (this.#changeEventListeners && Object.keys(this.changeEventListeners)) ?? [];
     if(selectors.length > 0) {
       selectors.forEach(selector=>{
         const element = rootNode.querySelector(selector);
@@ -760,9 +761,9 @@ class BaseDynamicComponent extends HTMLElement {
     }
   }
   
-  #setupClickEventListeners() {
+  setupClickEventListeners() {
     const rootNode = this.getRootNode(); 
-    const selectors = this.#clickEventListeners && Object.keys(clickEventListeners) || [];
+    const selectors = (this.#clickEventListeners && Object.keys(clickEventListeners)) || [];
     if(selectors.length > 0) {
       selectors.forEach(selector=>{
         const element = rootNode.querySelector(selector);
@@ -780,7 +781,8 @@ class BaseDynamicComponent extends HTMLElement {
       });
     }
   }
-
+  
+  
 	#generateAndSaveHTML(data) {
 
     //Don't re-render static HTML if templates are being used.
@@ -827,14 +829,14 @@ class BaseDynamicComponent extends HTMLElement {
             .addEventListener("click",func.clickHandler);
         }
       });
-      this.#setupClickEventListeners();  
-      this.#setupChangeEventListeners();
+      this.setupClickEventListeners();  
+      this.setupChangeEventListeners();
     } else {
 			this.runDirectives(this.getRootNode(),data);	
 			this.#renderTemplates(data,this);
     }		
   }
-	
+  
 	runDirectives(root, data){
 
 		const showIfNodes = root.querySelectorAll("[data-show-if]");

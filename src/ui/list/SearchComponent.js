@@ -1,8 +1,7 @@
 import {
   DEFAULT_SEARCH_PARAMETER,
-  getDaysofWeekSelect,
+  getDaysOfWeekSelect,
   getDaysOfWeekSelectHtml,
-  getDaysOfWeekSelectedState,
   getDropdownHtml,
 } from "../../shared/html/SelectGenerator.js";
 import { BaseDynamicComponent } from "/lib/places-js-latest.js";
@@ -78,6 +77,7 @@ export class SearchComponent extends BaseDynamicComponent {
 
     const self = this; 
 
+    const searchSelector = `${SEARCH_BUTTON_ID}, ${SEARCH_USER_GROUPS_BUTTON_ID}`
     this.addChangeEventListeners({
       SEARCH_CITY_ID: () => {
         self.updateData({
@@ -85,7 +85,7 @@ export class SearchComponent extends BaseDynamicComponent {
           location: eventTarget.value,
           showSearchUiMobile: true
         });
-      } 
+      }, 
       SEARCH_DISTANCE_ID: ()=>{
         self.updateData({
           [ENABLE_SEARCH_TOGGLE_KEY]: true,
@@ -101,8 +101,8 @@ export class SearchComponent extends BaseDynamicComponent {
           enableSearchButtonKey: true,
           showSearchUiMobile: true
         });
-      }
-      `${SEARCH_BUTTON_ID}, ${SEARCH_USER_GROUPS_BUTTON_ID}`: (event)=>{
+      },
+      [searchSelector]: (event)=>{
         const searchParams = {
           location: self.componentStore.location ?? "",
           days: getDaysOfWeekSelectedState, 
@@ -148,10 +148,12 @@ export class SearchComponent extends BaseDynamicComponent {
       </div>
     `;
   }
-
+ 
   isMobile(state){
     return {
-      showIf: ()=window.matchMedia("(max-width: 32em)").matches),
+      showIf: ()=>{
+        return window.matchMedia("(max-width: 32em)").matches;
+      },
       fallback: 
         `<div class="hide-mobile"><h1>${this.getAttribute("search-text")}</h1></div>
           <form
@@ -173,9 +175,9 @@ export class SearchComponent extends BaseDynamicComponent {
       </details>`
     }
   }
-  
-  SearchFormTemplate() {
  
+  SearchFormTemplate() {
+
     SearchFormTemplate.searchInputClass = (state) => {
       if(state.location && state.location !== DEFAULT_SEARCH_PARAMETER){
         return "search-form-three-inputs";
@@ -229,7 +231,7 @@ export class SearchComponent extends BaseDynamicComponent {
     }
    
     searchFormTemplate.searchBtnCls = (state)=>{
-      if(state[ENABLE_SEARCH_TOGGLE_KEY){
+      if(state[ENABLE_SEARCH_TOGGLE_KEY]){
         return "btn primary"
       } else {
         return "btn muted"
@@ -237,7 +239,7 @@ export class SearchComponent extends BaseDynamicComponent {
     }
 
     searchFormTemplate.searchBtnId = (state)=>{
-      if(state[ENABLE_SEARCH_TOGGLE_KEY){
+      if(state[ENABLE_SEARCH_TOGGLE_KEY]){
         return "search-button-id";
       } else {
         return "disabled-search-button";
@@ -245,7 +247,7 @@ export class SearchComponent extends BaseDynamicComponent {
     }
  
     searchFormTemplate.searchBtnIdUser = (state)=>{
-      if(state[ENABLE_SEARCH_TOGGLE_KEY){
+      if(state[ENABLE_SEARCH_TOGGLE_KEY]){
         return "search-user-groups-button-id"
       } else {
         return "disabled-search-button-joined"
@@ -253,14 +255,12 @@ export class SearchComponent extends BaseDynamicComponent {
     } 
     
     searchFormTemplate.userLoggedIn = (state)=>{
-      if(
-        state.loginState?.loggedIn &&
-        !this.getAttribute("search-text") === 'Search for board game groups'){
+      if(state?.loginState?.loggedIn){
         return "";
       }
       return "none";
     }
-    
+   
     return `
       <div id ="form-div-outer">    
         <label class="searchDropdownLabel">Select event day: </label>     
