@@ -16,7 +16,21 @@ const tags = [
 ];
 
 export const DEFAULT_SEARCH_PARAMETER = "any";
+export function getDropdown(dropdownConfig) {
+  return ` 
+      ${dropdownConfig.data?.map(
+        (item) =>
+          `<option value="${item}" ${item === dropdownConfig.selected ? "selected" : ""}>
+            ${
+              item === DEFAULT_SEARCH_PARAMETER
+                ? dropdownConfig.defaultParameterDisplay
+                : item
+            }
+          </option>`,
+      )}`;
+}
 
+//Deprecated
 export function getDropdownHtml(dropdownConfig) {
   return ` 
     <select class="form-select" id=${dropdownConfig.id}>
@@ -75,17 +89,22 @@ export function getTagSelectedState(shadowRoot) {
   return selectedTags;
 }
 
-export function getDaysOfWeekSelectedState(shadowRoot) {
-  const selectedDays = {};
 
+export function getDaysOfWeekSelect(checkState) {
+	let html = ''
   daysOfWeek.forEach((day) => {
-    if (shadowRoot.getElementById(day)?.checked) {
-      selectedDays[day] = "checked";
-    }
+		html += `
+      <label for=${day}> 
+				<input id="${day}" name=${day} type="checkbox"  ${checkState?.[day]}> 
+				${day}
+			</label>
+      
+    `;
   });
-	return selectedDays;
+	return htmll;
 }
 
+//Deprecated
 export function getDaysOfWeekSelectHtml(checkState) {
 	let html = `
     <fieldset>

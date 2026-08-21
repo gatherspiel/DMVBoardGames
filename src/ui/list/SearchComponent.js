@@ -1,5 +1,6 @@
 import {
   DEFAULT_SEARCH_PARAMETER,
+  getDaysofWeekSelect,
   getDaysOfWeekSelectHtml,
   getDaysOfWeekSelectedState,
   getDropdownHtml,
@@ -13,8 +14,6 @@ import { getDisplayName } from "../../shared/DisplayNameConversion.js";
 
 const DEFAULT_PARAMETER_KEY = "defaultParameter";
 const DEFAULT_PARAMETER_DISPLAY_KEY = "defaultParameterDisplay";
-const ENABLE_SEARCH_TOGGLE_KEY = "enableSearchButton";
-const SEARCH_BUTTON_ID = "search-button-id";
 const SEARCH_DISTANCE_ID = "search-distance-id";
 const SEARCH_USER_GROUPS_BUTTON_ID= "search-joined-id";
 const SEARCH_CITY_ID = "search-cities";
@@ -74,20 +73,20 @@ export class SearchComponent extends BaseDynamicComponent {
       days: this.initialParams.get("days"),
       distance: this.initialParams.get("distance")?.replaceAll("_", " "),
       location: this.initialParams.get("location"),
-
     };
     SEARCH_RESULTS_LIST_STORE.fetchData(this.defaultSearchParams);
 
     const self = this; 
-    this.addEventListener("change", (event) => {
-      const eventTarget = event.target;
-      if (eventTarget.id === SEARCH_CITY_ID) {
+
+    this.addChangeEventListeners({
+      SEARCH_CITY_ID: () => {
         self.updateData({
           [ENABLE_SEARCH_TOGGLE_KEY]: true,
           location: eventTarget.value,
           showSearchUiMobile: true
         });
-      } else if (eventTarget.id === SEARCH_DISTANCE_ID) {
+      } 
+      SEARCH_DISTANCE_ID: ()=>{
         self.updateData({
           [ENABLE_SEARCH_TOGGLE_KEY]: true,
           distance: eventTarget.value,
@@ -96,48 +95,28 @@ export class SearchComponent extends BaseDynamicComponent {
       }
     });
 
-    this.addEventListener("click", (event) => {      
-
-
-      if (event.target.type === "checkbox") {
-        const selectedDaysState = getDaysOfWeekSelectedState(self.getRootNode()); 
-        if(event.target.checked){
-          selectedDaysState[event.target.id]="checked";
-        } else {
-          if(event.target.id in selectedDaysState){
-            delete selectedDaysState[event.target.id];
-          } 
-        }
-
-        self.updateData({
-          [ENABLE_SEARCH_TOGGLE_KEY]: true,
-          days:
-          Object.keys(selectedDaysState).length > 0
-          ? selectedDaysState
-          : null,
+    this.addClickEventListeners({
+      "fieldset": ()=>{   
+        this.updateData({
+          enableSearchButtonKey: true,
           showSearchUiMobile: true
         });
       }
-      if (event.target.id === SEARCH_BUTTON_ID || event.target.id === SEARCH_USER_GROUPS_BUTTON_ID) {
-
-        event.preventDefault();
+      `${SEARCH_BUTTON_ID}, ${SEARCH_USER_GROUPS_BUTTON_ID}`: (event)=>{
         const searchParams = {
           location: self.componentStore.location ?? "",
-          days: self.componentStore.days
-          ? Object.keys(self.componentStore.days).join(",")
-          : "",
+          days: getDaysOfWeekSelectedState, 
           distance: self.componentStore.distance,
         };
 
         if(event.target.id === SEARCH_USER_GROUPS_BUTTON_ID){
           searchParams['userGroupEvents'] = "true";
         }
-
         self.updateData({
           [ENABLE_SEARCH_TOGGLE_KEY]: false,
           showSearchUiMObile: false
         });
-
+        
         const baseUrl = window.location.origin.split("?");
         let updatedUrl = `${baseUrl}?`;
         updatedUrl += `location=${searchParams.location.replaceAll(" ", "_")}&`;
@@ -149,9 +128,11 @@ export class SearchComponent extends BaseDynamicComponent {
           ...searchParams,
           ...{ apiUrl: self.getAttribute("api-url") ?? "" },
         });
-      } 
+      }
     });
-
+ 
+    BaseDynamicComponent.defineTemplate(this.searchFormTemplate,"SearchFormTemplate");
+  
   }
 
   connectedCallback(){
@@ -161,89 +142,156 @@ export class SearchComponent extends BaseDynamicComponent {
     })
   }
 
-
-  render(store) {
-
-    if(window.matchMedia("(max-width: 32em)").matches){
-      return `
-        <div class="container-xl">
-          <details ${store.showSearchUiMobile ? "open":""}>
-            <summary class="btn secondary">Modify search parameters</summary>
-            ${this.renderSearchForm(store)}
-            </hr> 
-          </details>
-        </div>`
-    }
+  render(state) {  
     return `
-      <div class="container-xl"> 
-        <div class="hide-mobile"><h1>${this.getAttribute("search-text")}</h1></div>
-          ${this.renderSearchForm(store)}
-        <hr>
-      </div>        
+      <div class="container-xl" data-show-if="isMobile">
+      </div>
     `;
   }
 
-  renderSearchForm(store) {
+  isMobile(state){
+    return {
+      showIf: ()=window.matchMedia("(max-width: 32em)").matches),
+      fallback: 
+        `<div class="hide-mobile"><h1>${this.getAttribute("search-text")}</h1></div>
+          <form
+            data-template-name=SearchFormTemplate
+            id=${SEARCH_FORM_ID}
+            onsubmit="return false"
+          >
+        </div>
+      `,
+      isVisible: `
+        <details ${state.showSearchUiMobile ? "open":""}>
+        <summary class="btn secondary">Modify search parameters</summary>
+        <form
+          data-template-name=SearchFormTemplate
+          id=${SEARCH_FORM_ID}
+          onsubmit="return false"
+        >
+        </hr> 
+      </details>`
+    }
+  }
+  
+  SearchFormTemplate() {
+ 
+    SearchFormTemplate.searchInputClass = (state) => {
+      if(state.location && state.location !== DEFAULT_SEARCH_PARAMETER){
+        return "search-form-three-inputs";
+      } else {
+        return "search-form-two-inputs";
+      }
+    }
 
-    const isGroupSearch = this.getAttribute("search-text") === 'Search for board game groups';
+    SearchFormTemplate.searchAllText = (state) => {
+      if(!isGroupSearch && store.loginState?.loggedIn) {
+        return "Search all events";
+      } else {
+        return "Search"
+      }
+    }
+   
+    SearchFormTemplate.getDaysSelect = () => {
+      return getDaysofWeekSelect
+    }
+   
+    SearchFormTemplate.getCitySelect = (state) => {
+      return `
+        ${getDropdown({
+          state: state.cityList ?? [{ name: "Any location" }],
+          id: SEARCH_CITY_ID,
+          name: "cities",
+          selected: store.location,
+          [DEFAULT_PARAMETER_KEY]: DEFAULT_SEARCH_PARAMETER,
+          [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
+        })}`
+    }
+  
+    searchFormTemplate.getDistanceSelect = (state) => {
+      return `
+        <label id="max-distance-label" class="searchDropdownLabel">Max distance:</label>
+         ${getDropdown({
+          data: DISTANCE_OPTIONS,
+          id: SEARCH_DISTANCE_ID,
+          name: "distance",
+          selected: store.distance ?? "5 miles",
+          [DEFAULT_PARAMETER_KEY]: "5 miles",
+          [DEFAULT_PARAMETER_DISPLAY_KEY]: "5 miles",
+        })}`
+    }
+    
+    searchFormTemplate.distanceSelectVisible = (state) => {
+      if(state.location && state.location !== DEFAULT_SEARCH_PARAMETER){
+        return "";
+      }
+      return "none";
+    }
+   
+    searchFormTemplate.searchBtnCls = (state)=>{
+      if(state[ENABLE_SEARCH_TOGGLE_KEY){
+        return "btn primary"
+      } else {
+        return "btn muted"
+      }
+    }
 
-    const searchInputsClass =
-      store.location && store.location !== DEFAULT_SEARCH_PARAMETER
-      ? "search-form-three-inputs"
-      : "search-form-two-inputs";
-
-    const searchAllText = !isGroupSearch && store.loginState?.loggedIn === true ?
-      "Search all events" : "Search"
-
+    searchFormTemplate.searchBtnId = (state)=>{
+      if(state[ENABLE_SEARCH_TOGGLE_KEY){
+        return "search-button-id";
+      } else {
+        return "disabled-search-button";
+      }
+    }
+ 
+    searchFormTemplate.searchBtnIdUser = (state)=>{
+      if(state[ENABLE_SEARCH_TOGGLE_KEY){
+        return "search-user-groups-button-id"
+      } else {
+        return "disabled-search-button-joined"
+      }
+    } 
+    
+    searchFormTemplate.userLoggedIn = (state)=>{
+      if(
+        state.loginState?.loggedIn &&
+        !this.getAttribute("search-text") === 'Search for board game groups'){
+        return "";
+      }
+      return "none";
+    }
+    
     return `
-      <form id=${SEARCH_FORM_ID} onsubmit="return false">
       <div id ="form-div-outer">    
         <label class="searchDropdownLabel">Select event day: </label>     
-        ${getDaysOfWeekSelectHtml(store.days)}
-        <div id="search-form-inputs" class="${searchInputsClass}">
+        <div  
+          {{class=searchInputsClass}}"
+          id="search-form-inputs" 
+        >
           <label class="searchDropdownLabel">Select city: </label> 
-          ${getDropdownHtml({
-            data: store.cityList ?? [{ name: "Any location" }],
-            id: SEARCH_CITY_ID,
-            name: "cities",
-            selected: store.location,
-            [DEFAULT_PARAMETER_KEY]: DEFAULT_SEARCH_PARAMETER,
-            [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
-          })}
-          ${
-            store.location && store.location !== DEFAULT_SEARCH_PARAMETER
-              ? `
-                <label id="max-distance-label" class="searchDropdownLabel">Max distance:</label>
-                ${getDropdownHtml({
-                  data: DISTANCE_OPTIONS,
-                  id: SEARCH_DISTANCE_ID,
-                  name: "distance",
-                  selected: store.distance ?? "5 miles",
-                  [DEFAULT_PARAMETER_KEY]: "5 miles",
-                  [DEFAULT_PARAMETER_DISPLAY_KEY]: "5 miles",
-                })}`
-                  : ``
-                }     
-          </div>  
-          <div id="search-input-div"> 
-            ${
-              store[ENABLE_SEARCH_TOGGLE_KEY]
-                ? `
-                  <button class="btn primary" id="${SEARCH_BUTTON_ID}">${searchAllText}</button>
-                `: `
-                  <button class="btn muted" id="disabled-search-button">${searchAllText}</button>
-                ` 
-            }
-            ${store.loginState?.loggedIn && !isGroupSearch ? 
-                `${
-                  store[ENABLE_SEARCH_TOGGLE_KEY]
-                    ? `<button class="btn primary" id="${SEARCH_USER_GROUPS_BUTTON_ID}">Search joined groups</button>`
-                    : `<button class="btn muted" id="disabled-search-button-joined">Search joined groups</button>` 
-                } `
-                :``
-            }
-          </div>
-        </div>
-      </form>`;
-          }
-          }
+          <fieldset
+            {{getDaysSelect}}
+          ></fieldset>
+          <select 
+            {{display=distanceSelectVisible}}
+            {{getDistanceSelect}} 
+          ></select>
+        </div>  
+        <div 
+          id = "search-input-div"
+        >
+          <button
+            class={{searchBtnCls}}
+            id={{searchBtnId}}
+            {{searchAllText}}
+          ></button>
+          <button 
+            class={{searchBtnClass}}
+            id={{searchBtnIdUser}}
+            {{display=userLoggedIn}}
+          >
+            Search joined groups
+          </button> 
+        </div>` 
+  }
+}

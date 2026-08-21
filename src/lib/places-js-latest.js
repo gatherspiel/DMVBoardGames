@@ -170,10 +170,18 @@ class BaseDynamicComponent extends HTMLElement {
       
       const endPos = templateStr.indexOf("}}");
       const signalStr = templateStr.substring(stateVarPos+2, endPos);
-      const data = signalStr.split("=");
-      const attr = data[0];
-      const fieldName = data[1];
 
+      let attr, fieldName;
+
+      if(signalStr.indexOf("=") > -1){
+        const data = signalStr.split("=");
+        attr = data[0];
+        fieldName = data[1];
+      } else {
+        attr = "innerHTML"
+        fieldName = data;
+      }
+      
       let newStr=`data-signal-id-${i}`;
       if(endPos < firstTagEnd){
         newStr = "";
@@ -294,8 +302,12 @@ class BaseDynamicComponent extends HTMLElement {
     }
   }
 
+  addChangeEventListeners(eventListeners){
+    this.#changeEventListeners = eventListeners;
+  }
+  
   addClickEventListeners(eventListeners){
-    this.clickEventListeners = eventListeners;
+    this.#clickEventListeners = eventListeners;
   }
 	
   /**
@@ -381,8 +393,52 @@ class BaseDynamicComponent extends HTMLElement {
 		this.#templateData = null;
 
 	}
-  
-	#renderTemplates(data,content) {
+ 
+  #updateSingleItemTemplate(templateData,state){
+    const id = templateData;
+    const templateName = templateData.name; 
+
+    const prevProps = BaseDynamicComponent.prevState[templateName]
+		const computedPropValues = {}; 
+
+   	const computedPropsValues = {}; 
+ 
+    //Calculate computed values.
+    BaseDynamicComponent.computedProps[templateName].forEach((computedConfig)=>{
+      computedPropValues[computedConfig.field] = computedConfig.func(state);
+    });
+
+    if(!prevProps){
+      const signalsToRun = BaseDynamicComponent.signals[templateName];
+      signalsToRun.forEach((signalConfig)=>{
+        this.#generateSignal(
+          { 
+            signalConfig: signalConfig,
+            updateData: {
+              "signalData":computedPropValues,
+              "elementRoot": document.getElementById(""+id),
+            }
+          });
+      });
+    }
+
+    const signalsToRun = BaseDynamicComponent.dynamicSignals[templateName];
+		signalsToRun.forEach((signalConfig)=>{
+		  if(prevProps[signalConfig.fieldName] !== computedPropValues[signalConfig.fieldName]){
+			    this.#generateSignal(
+          { 
+            signalConfig: signalConfig,
+            updateData: {
+              "signalData":computedPropValues,
+              "elementRoot": document.getElementById(""+id),
+            }
+          });	
+				}
+    });
+    BaseDynamicComponent.prevState[templateName] = computedPropValues;
+  }
+	
+  #renderTemplates(data,content) {
 
     this.#renderTemplates.templateIds = []; 
     if(!this.#templateData || this.#templateData.length === 0){
@@ -438,7 +494,8 @@ class BaseDynamicComponent extends HTMLElement {
           .dataTemplateName
           .split("-")[2]
           .toUpperCase();  
-      
+     
+      let isArray = false;
       const state = data[this.#templateData[i].dataFieldName] || []; 
     
       const attrs = this.#templateData[i].attributes; 
@@ -452,9 +509,16 @@ class BaseDynamicComponent extends HTMLElement {
               "itemKey":itemKey
             });
           }
-        }
+        } else {
+          isArray = true;
       }
 
+      //template is a single item.
+      if(!isArray){ 
+        this.#updateSingleItemTemplate(this.#templateData[i], data);  
+        continue;
+      }
+      
       const prevStateLen = Object.keys(BaseDynamicComponent.prevState[templateName]).length;
     
       const updatedOrdering = [];
@@ -676,9 +740,29 @@ class BaseDynamicComponent extends HTMLElement {
       }	
     }
   }
- 
-  #setupClickEventListeners(rootNode,clickEventListeners,params) {
-    const selectors = Object.keys(clickEventListeners);
+
+  #setupChangeEventListeners(){
+    const rootNode = this.getRootNode();
+    const selectors = this.#changeEventListeners && Object.keys(this.#changeEventListeners) ?? [];
+    if(selectors.length > 0) {
+      selectors.forEach(selector=>{
+        const element = rootNode.querySelector(selector);
+        if(!element){
+          console.error(`Invalid selector ${selector} for click event handler`);
+        }
+        else {  
+          element.addEventListener("change",(e)=>{
+            e.preventDefault();
+            this.#changeEventListeners[selector]();
+          });
+        }
+      });
+    }
+  }
+  
+  #setupClickEventListeners() {
+    const rootNode = this.getRootNode(); 
+    const selectors = this.#clickEventListeners && Object.keys(clickEventListeners) || [];
     if(selectors.length > 0) {
       selectors.forEach(selector=>{
         const element = rootNode.querySelector(selector);
@@ -689,7 +773,7 @@ class BaseDynamicComponent extends HTMLElement {
           element.onclick = (e)=>{
             e.preventDefault();
 						requestAnimationFrame(()=>{
-							clickEventListeners[selector](params);
+							clickEventListeners[selector]();
 						});
           };
         }
@@ -743,17 +827,13 @@ class BaseDynamicComponent extends HTMLElement {
             .addEventListener("click",func.clickHandler);
         }
       });
-
-      if(this.clickEventListeners){
-        this.#setupClickEventListeners(this.getRootNode(),this.clickEventListeners);  
-      }
+      this.#setupClickEventListeners();  
+      this.#setupChangeEventListeners();
     } else {
-			this.runDirectives(this.getRootNode(),data);
-			
+			this.runDirectives(this.getRootNode(),data);	
 			this.#renderTemplates(data,this);
     }		
   }
-
 	
 	runDirectives(root, data){
 
