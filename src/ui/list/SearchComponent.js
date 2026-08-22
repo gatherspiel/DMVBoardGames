@@ -90,15 +90,12 @@ export class SearchComponent extends BaseDynamicComponent {
 
 
   render(state) {  
-    const potato = (data) =>{
-      console.log("Hi");
-    }
+   
     
     return `
       <div 
         class="container-xl" 
         data-show-if="isMobile"
-        onClick={{${()=>potato},"Test"}}
       >
       </div>
     `;
@@ -134,7 +131,7 @@ const SearchFormTemplate = ()=>{
 
   SearchFormTemplate.searchEvents = (e,component, state, searchGroups=false)=>{
     const searchParams = {
-      location: data.location ?? "",
+      location: state.location ?? "",
       days: getDaysOfWeekSelectedState, 
       distance: data.distance,
     };
@@ -277,7 +274,9 @@ const SearchFormTemplate = ()=>{
       > 
         <label 
           class="searchDropdownLabel"
-        >Select event day: </label>     
+        >
+          Select event day: 
+        </label>     
         <fieldset
           onClick={{checkboxUpdated}}
         >
@@ -285,7 +284,9 @@ const SearchFormTemplate = ()=>{
         </fieldset>
         <label 
           class="searchDropdownLabel"
-        >Select city: </label> 
+        >
+          Select city: 
+        </label> 
         <select> 
           {{getCitySelect}}
         </select>
@@ -313,5 +314,6 @@ const SearchFormTemplate = ()=>{
         >
           Search joined groups
         </button> 
-      </div>` 
+      </div>
+    </div>` 
   }
