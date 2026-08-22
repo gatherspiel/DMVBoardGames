@@ -141,11 +141,14 @@ class BaseDynamicComponent extends HTMLElement {
   static dynamicSignals = {};
   static prevState = {}; 
   static prevOrdering = {};
-  static eventHandlers = {};
+  static templateClickEvents = {};
+  static templateChangeEvents = {};
 
   static templateFunctions = {};
   static templateCount = 0;
   templateIds = [];
+
+  static eventHandlerCount = 0;
 
   static #isAttributeChar(str){
     const code = str.charCodeAt(0);
@@ -161,7 +164,12 @@ class BaseDynamicComponent extends HTMLElement {
     let dynamicSignals = [];
 
     BaseDynamicComponent.computedProps[templateName.toUpperCase()] = [];   
-    BaseDynamicComponent.eventHandlers[templateName.toUpperCase()]= templateFunc.setupClickEventHandlers;
+     
+    const clickEvents = [];
+    const changeEvents = [];
+
+    const clickHandlers = {};
+    const changeHandlers = {};
 
     const start = Date.now();
     let i = 0;
@@ -171,7 +179,39 @@ class BaseDynamicComponent extends HTMLElement {
      * n is the number of template items and m is the length of the template string.
      * This logic should run in O(m*n) time or better.
      */
-    
+   
+    const clickEventsStr = templateStr.split("onClick={{");
+    const changeEventsStr = templateStr.split("onChange={{");
+    if(clickEventsStr.length > 1){
+      for(let i=1;i<clickEventsStr.length;i++){
+        const j = clickEventsStr[i].indexOf("}}");
+        
+        const splitStr = clickEventsStr[i].slice(0,j);
+        clickEvents.push(splitStr);
+        clickEventsStr[i] = `data-click-handler-${i}` + clickEventsStr[i].slice(j+2);
+      }
+
+      templateStr = clickEventsStr.join();
+    }
+
+    if(changeEventsStr.length > 1){
+      for(let i=1;i<changeEventsStr.length;i++){
+        
+        const j = changeEventsStr[i].indexOf("}}"); 
+        const splitStr = changeEventsStr[i].slice(0,j);
+        changeEvents.push(splitStr);
+
+        changeEventsStr[i] = `data-change-handler-${i}` + changeEventsStr[i].slice(j+2);
+      }
+
+      templateStr = changeEventsStr.join();
+    }
+
+
+    BaseDynamicComponent.templateChangeEvents[templateName] = changeEvents;
+    BaseDynamicComponent.templateClickEvents[templateName] = clickEvents;
+
+    console.log(templateStr);
     while(true){
       let stateVarPos = templateStr.indexOf("{{");
       if(stateVarPos === -1){
@@ -514,6 +554,53 @@ class BaseDynamicComponent extends HTMLElement {
     BaseDynamicComponent.prevState[templateName] = computedPropValues;
     
   }
+
+  #setupEventListeners(
+    addNode,
+    eventType,
+    props,
+    templateName
+  ){
+
+    const eventFieldName = `template${eventType}Events`
+    const events = BaseDynamicComponent[eventFieldName][templateName]; 
+    
+    const templateFunction = BaseDynamicComponent.templateFunctions[templateName.toUpperCase()];
+
+    if(events && events.length > 0){
+      for(let i=0;i<events.length;i++){
+
+        const oldEventName = `data-${eventType}-handler-${i}`;
+
+        const elem = addNode.querySelector(oldEventName); 
+        elem.removeAttribute(oldEventName);
+
+        const newAttr = `data-${eventType}-handler`;
+        
+        elem.setAttribute(newAttr,BaseDynamicComponent.eventHandlerCount);
+        eventMap[BaseDynamicComponent.eventHandlerCount]=templateFunction[events[i]];
+        
+        const handlerFieldName = `${eventType}eventHandlers`;
+        
+        this[handlerFieldName][i] = {
+          "props": props,
+          "templateFunction":templateFunction[events[i]],
+        }
+        
+        BaseDynamicComponent.eventHandlerCount++; 
+      }
+    }
+  }
+  
+  #setupTemplateEventListeners(
+    addNode,
+    props,
+    templateName  
+  ){
+
+    this.#setupEventListeners(addNode,"click",props,templateName);
+    this.#setupEventListeners(addNode,"change",props,templateName);
+  }
   
   #renderTemplates(data,content) {
 
@@ -665,13 +752,11 @@ class BaseDynamicComponent extends HTMLElement {
 						addNode.id = signalData.id;
            
             BaseDynamicComponent.prevState[templateName][updateData] = computedProps;
-            const eventHandlers = BaseDynamicComponent.eventHandlers[templateName];
-            if(eventHandlers){
-              this.setupClickEventListeners(
-                addNode,
-                eventHandlers,
-                rowProps);
-            }
+            this.#setupTemplateEventListeners(
+              addNode,
+              signalData,
+              templateName  
+            );
             addFragment.appendChild(addNode);
           }else {
             if(addFragment !== null){
@@ -811,12 +896,15 @@ class BaseDynamicComponent extends HTMLElement {
 						});
 						
 						BaseDynamicComponent.prevState[templateName][id] = computedPropValues;
-          }
+        }
       }	
     }
   }
 
-  
+  /*
+   * TODO: Setup to use single event with event delegation method
+   *  used by templates. 
+   */
   setupChangeEventListeners(){
     const rootNode = this.getRootNode();
     const selectors = (this.#changeEventListeners && Object.keys(this.#changeEventListeners)) ?? [];
@@ -856,8 +944,7 @@ class BaseDynamicComponent extends HTMLElement {
       });
     }
   }
-  
-  
+   
 	#generateAndSaveHTML(data) {
 
     //Don't re-render static HTML if templates are being used.
@@ -895,20 +982,38 @@ class BaseDynamicComponent extends HTMLElement {
 			this.#renderTemplates(data,this.getRootNode());
 
       this.#renderTemplates.templateIds.forEach((templateId)=>{
+    
+        const changeHandlers = BaseDynamicComponent.changeHandlers[templateId.templateName]
+
+        if(changeHandlers){
+          this.getRootNode().getElementById(templateId.id)
+            .addEventListener("change",(e)=>{
+              
+              const id = e.target.getAttribute("data-change-id");
+
+              this.changeEventHandlers[id].handler(
+                e,
+                this,
+                this.changeEventHandlers[id].props
+              )
+          });
+        }
         
-        const func = BaseDynamicComponent.templateFunctions[templateId.templateName.toUpperCase()];
-				
-				if(func.clickHandler){ 	
+        if(BaseDynamicComponent.changeHandlers[templateId.templateName]){
           this.getRootNode().getElementById(templateId.id)
             .addEventListener("click",(e)=>{
-              func.clickHandler(e,data)
+              
+              const id = e.target.getAttribute("data-click-id");
 
-            });
+              this.clickEventHandlers[id].handler(
+                e,
+                this,
+                this.clickEventHandlers[id].props
+              )
+          });
         }
-				if(func.changeHandler){ 	
-          this.getRootNode().getElementById(templateId.id)
-            .addEventListener("change",func.changeHandler);
-        }
+       				
+          
       });
       this.setupClickEventListeners();  
       this.setupChangeEventListeners();

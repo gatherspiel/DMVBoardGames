@@ -2,6 +2,7 @@ import {
   DEFAULT_SEARCH_PARAMETER,
   getDaysOfWeekSelect,
   getDaysOfWeekSelectHtml,
+  getDaysOfWeekSelectState,
   getDropdown,
   getDropdownHtml,
 } from "../../shared/html/SelectGenerator.js";
@@ -87,9 +88,18 @@ export class SearchComponent extends BaseDynamicComponent {
     })
   }
 
+
   render(state) {  
+    const potato = (data) =>{
+      console.log("Hi");
+    }
+    
     return `
-      <div class="container-xl" data-show-if="isMobile">
+      <div 
+        class="container-xl" 
+        data-show-if="isMobile"
+        onClick={{${()=>potato},"Test"}}
+      >
       </div>
     `;
   }
@@ -122,61 +132,58 @@ export class SearchComponent extends BaseDynamicComponent {
 
 const SearchFormTemplate = ()=>{
 
-  SearchFormTemplate.clickHandler = (e,data)=>{ 
-    if(e.target.nodeName === "fieldset"){
-      this.updateData({
-        enableSearchButtonKey: true,
-        showSearchUiMobile: true
-      });
-    }
+  SearchFormTemplate.searchEvents = (e,component,searchGroups=false)=>{
+    const searchParams = {
+      location: data.location ?? "",
+      days: getDaysOfWeekSelectedState, 
+      distance: data.distance,
+    };
 
-    if(e.target.id="search-button-id" || e.target.id === "search-joined-id"){
+    searchParams['userGroupEvents'] = `${searchGroups}`
+    
+    component.updateData({
+      [ENABLE_SEARCH_TOGGLE_KEY]: false,
+      showSearchUiMObile: false
+    });
+    
+    const baseUrl = window.location.origin.split("?");
+    let updatedUrl = `${baseUrl}?`;
+    updatedUrl += `location=${searchParams.location.replaceAll(" ", "_")}&`;
+    updatedUrl += `days=${searchParams.days.replaceAll(" ", "_")}&`;
+    updatedUrl += `distance=${searchParams?.distance?.replaceAll(" ", "_") ?? ``}`;
 
-      console.log(this);
-      const searchParams = {
-        location: data.location ?? "",
-        days: getDaysOfWeekSelectedState, 
-        distance: data.distance,
-      };
+    window.history.replaceState({}, "", updatedUrl);
+    SEARCH_RESULTS_LIST_STORE.fetchData({
+      ...searchParams,
+      ...{ apiUrl: component.getAttribute("api-url") ?? "" },
+    });
+  }
+  
+  SearchFormTemplate.searchGroups = (e,component) =>{
+    SearchFormTemplate.searchEvents(e,component, true);
+  }
+ 
+  SearchFormTemplate.checkboxUpdated = (e,component)=>{
+    component.updateData({
+      enableSearchButtonKey: true,
+      showSearchUiMobile: true
+    });
+  }
 
-      if(event.target.id === SEARCH_USER_GROUPS_BUTTON_ID){
-        searchParams['userGroupEvents'] = "true";
-      }
-      self.updateData({
-        [ENABLE_SEARCH_TOGGLE_KEY]: false,
-        showSearchUiMObile: false
-      });
-      
-      const baseUrl = window.location.origin.split("?");
-      let updatedUrl = `${baseUrl}?`;
-      updatedUrl += `location=${searchParams.location.replaceAll(" ", "_")}&`;
-      updatedUrl += `days=${searchParams.days.replaceAll(" ", "_")}&`;
-      updatedUrl += `distance=${searchParams?.distance?.replaceAll(" ", "_") ?? ``}`;
-
-      window.history.replaceState({}, "", updatedUrl);
-      SEARCH_RESULTS_LIST_STORE.fetchData({
-        ...searchParams,
-        ...{ apiUrl: self.getAttribute("api-url") ?? "" },
-      });
-    }
-  };
-
-  SearchFormTemplate.changeHandler = (e) => {
-
-    if(e.target.id === 'search-cities-id'){
-      self.updateData({
+  SearchFormTemplate.citiesUpdated = (e,component)=>{
+    component.updateData({
         [ENABLE_SEARCH_TOGGLE_KEY]: true,
         location: eventTarget.value,
         showSearchUiMobile: true
       });
     }
-    if(e.target.id === 'search-distance-id'){
-      self.updateData({
-        [ENABLE_SEARCH_TOGGLE_KEY]: true,
-        distance: eventTarget.value,
-        showSearchUiMobile: true 
-      });
-    }
+
+  SearchFormTemplate.distanceUpdated = () => {
+    self.updateData({
+      [ENABLE_SEARCH_TOGGLE_KEY]: true,
+      distance: eventTarget.value,
+      showSearchUiMobile: true 
+    });
   }
   
   SearchFormTemplate.searchInputClass = (state) => {
@@ -271,7 +278,9 @@ const SearchFormTemplate = ()=>{
         <label 
           class="searchDropdownLabel"
         >Select event day: </label>     
-        <fieldset>
+        <fieldset
+          onClick={{checkboxUpdated}}
+        >
           {{getDaysSelect}}
         </fieldset>
         <label 
@@ -292,6 +301,7 @@ const SearchFormTemplate = ()=>{
         <button
           class={{searchBtnCls}}
           id={{searchBtnId}}
+          onClick={{searchEvents}}
         >
           {{searchAllText}}
         </button>
@@ -299,6 +309,7 @@ const SearchFormTemplate = ()=>{
           class={{searchBtnClass}}
           hidden={{notLoggedIn}}
           id={{searchBtnIdUser}}
+          onClick={{searchGroups}}
         >
           Search joined groups
         </button> 

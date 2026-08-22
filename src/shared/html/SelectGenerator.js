@@ -104,6 +104,16 @@ export function getDaysOfWeekSelect(checkState) {
 	return html;
 }
 
+export function getDaysOfWeekSelectState(selectId) {
+  const selectedDays = {};
+
+  document.querySelector(`#${selectId}`).forEach((item)=>{
+    console.log(item)
+  })
+
+	return selectedDays;
+}
+
 //Deprecated
 export function getDaysOfWeekSelectHtml(checkState) {
 	let html = `
