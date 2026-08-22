@@ -18,16 +18,16 @@ const tags = [
 export const DEFAULT_SEARCH_PARAMETER = "any";
 export function getDropdown(dropdownConfig) {
   return ` 
-      ${dropdownConfig.data?.map(
-        (item) =>
-          `<option value="${item}" ${item === dropdownConfig.selected ? "selected" : ""}>
-            ${
-              item === DEFAULT_SEARCH_PARAMETER
-                ? dropdownConfig.defaultParameterDisplay
-                : item
-            }
-          </option>`,
-      )}`;
+    ${dropdownConfig.state.map(
+      (item) =>
+        `<option value="${item}" ${item === dropdownConfig.selected ? "selected" : ""}>
+          ${
+            item === DEFAULT_SEARCH_PARAMETER
+              ? dropdownConfig.defaultParameterDisplay
+              : item
+          }
+        </option>`,
+    )}`;
 }
 
 //Deprecated

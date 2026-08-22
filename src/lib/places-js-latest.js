@@ -147,6 +147,11 @@ class BaseDynamicComponent extends HTMLElement {
   static templateCount = 0;
   templateIds = [];
 
+  static #isAttributeChar(str){
+    const code = str.charCodeAt(0);
+    return (code > 64 && code < 91) || (code > 96 && code < 123)
+  }
+
   static defineTemplate(templateFunc, templateName){
 
     let template = document.createElement("template");
@@ -160,8 +165,15 @@ class BaseDynamicComponent extends HTMLElement {
 
     const start = Date.now();
     let i = 0;
+
+    /* TOOD: Optimize. 
+     * This logic is running in O(m*n^2) time with repetitive iteration.
+     * n is the number of template items and m is the length of the template string.
+     * This logic should run in O(m*n) time or better.
+     */
+    
     while(true){
-      const stateVarPos = templateStr.indexOf("{{");
+      let stateVarPos = templateStr.indexOf("{{");
       if(stateVarPos === -1){
         break;
       }
@@ -173,15 +185,38 @@ class BaseDynamicComponent extends HTMLElement {
 
       let attr, fieldName;
 
-      if(signalStr.indexOf("=") > -1){
-        const data = signalStr.split("=");
-        attr = data[0];
-        fieldName = data[1];
+      if(templateStr.charAt(stateVarPos-1) === "="){
+        attr = "";
+        for(let j = stateVarPos-2; j > 0; j--){
+          const nameChar = templateStr.charAt(j);
+          if(BaseDynamicComponent.#isAttributeChar(nameChar)){
+            attr = nameChar + attr;
+          } else {
+            stateVarPos = j;
+            break;
+          }
+        }
+        fieldName = signalStr;
       } else {
         attr = "innerHTML"
         fieldName = signalStr;
       }
-      
+
+      //Set signal for HTML and text template strings.
+      let isHTML = false;
+      let endTagPos = -1;
+
+      if(attr === "innerHTML"){
+        for(let j = stateVarPos -1; j >= 0; j--){
+          if(templateStr.charAt(j) === ">"){
+
+            endTagPos = j;
+            isHTML = true;
+            break;
+          } 
+        }
+      }
+        
       let newStr=`data-signal-id-${i}`;
       if(endPos < firstTagEnd){
         newStr = "";
@@ -202,12 +237,21 @@ class BaseDynamicComponent extends HTMLElement {
         isOuter: endPos < firstTagEnd
       } 
 
-      if(newStr.length > 0 ){
-        templateStr = templateStr.substring(0,stateVarPos) +
-          newStr + templateStr.substring(endPos+2);
+      if(!isHTML){
+        if(newStr.length > 0 ){
+          templateStr = templateStr.substring(0,stateVarPos) +
+            newStr + templateStr.substring(endPos+2);
+        } else {
+          templateStr = templateStr.substring(0,stateVarPos-1) +
+            newStr + templateStr.substring(endPos+2);
+        }
       } else {
-        templateStr = templateStr.substring(0,stateVarPos-1) +
-          newStr + templateStr.substring(endPos+2);
+        templateStr =
+          templateStr.substring(0,endTagPos) +
+          " " +
+          newStr +
+          ">" +
+          templateStr.substring(endPos+2);
       }
 
       signals.push(signalData);
@@ -216,7 +260,7 @@ class BaseDynamicComponent extends HTMLElement {
       }
       i++;
     } 
-    
+
     const split = templateStr.split("\n");
 
     const linesToAdd = [];
@@ -245,6 +289,13 @@ class BaseDynamicComponent extends HTMLElement {
     BaseDynamicComponent.templates[templateName.toUpperCase()] = template.content.firstChild;
     BaseDynamicComponent.prevState[templateName.toUpperCase()]={};
     BaseDynamicComponent.prevOrdering[templateName.toUpperCase()]=[];
+   
+    //Tenplate parsing needs to be optimized for performance.
+    //This is to display the overhead of the current logic.
+    const parseTime = Date.now() - start;
+    if(parseTime > 0){
+      console.warn(`Slow template parse time of ${parseTime} miliseconds`);
+    }
   }
 
 	/**
@@ -302,7 +353,9 @@ class BaseDynamicComponent extends HTMLElement {
       element.removeAttribute(attr);
     }
     else {
-      if(attr==="textContent"){
+      if (attr === "innerHTML"){
+        element.innerHTML = updated;
+      } else if(attr==="textContent"){
         element.textContent = updated;
       } else {
         element.setAttribute(attr,`${updated}`);
@@ -429,7 +482,6 @@ class BaseDynamicComponent extends HTMLElement {
             }
           });
       });
-      console.log("Finished initializing");
     } else {
 
       const templateId = templateData.dataTemplateName;
@@ -495,7 +547,6 @@ class BaseDynamicComponent extends HTMLElement {
 				
         templates[i].id = `template-${BaseDynamicComponent.templateCount}-${dataTemplateName}`;
 
-        console.log(templates[i].id);
         this.#renderTemplates.templateIds.push({
           "id":templates[i].id,
           "templateName":dataTemplateName
@@ -887,7 +938,6 @@ class BaseDynamicComponent extends HTMLElement {
             this.#templateData.forEach((item)=>{
               //Only clear template state inside conditional
               if(!node.querySelector(`#${item.dataTemplateName}`)){
-                console.log("Clear prev");
                 const prevStateKey = item.dataTemplateName.split("-")[2];	
 
                 if(self[func].showIf !== false) {
@@ -897,13 +947,11 @@ class BaseDynamicComponent extends HTMLElement {
 
             });
           }
-          console.log(self[func].showIf);
 
           if(self[func].showIf !== false){
 					  node.innerHTML = config.fallback;
           }
 
-          console.log("Setting innerHTML");
 					
 				} else {
 					if(self[func].showIf !== true){

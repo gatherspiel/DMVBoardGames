@@ -23,19 +23,19 @@ const EventItem = () => {
 		return `<li>
         <a 
           class="btn secondary"
-					{{href=url}}
-					{{textContent=eventName}}
+					href={{url}}
         >
+          {{eventName}}
 				</a>
         <div 
 					class="event-time" 
-					{{textContent=eventTime}}
-				>
+				> 
+					{{eventTime}}
         </div>
         <div
 					class="event-location"
-					{{textContent=location}}	
-				>
+				> 
+					{{location}}	
         </div> 
       </li>
   `;

@@ -200,21 +200,22 @@ const SearchFormTemplate = ()=>{
   }
  
   SearchFormTemplate.getCitySelect = (state) => {
-    return getDropdown({
-        state: state.cityList ?? [{ name: "Any location" }],
-        id: "search-cities-id",
-        name: "cities",
-        selected: state.location,
-        [DEFAULT_PARAMETER_KEY]: DEFAULT_SEARCH_PARAMETER,
-        [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
-      })
+    const cityList = getDropdown({
+      state: state.cityList ?? [{ name: "Any location" }],
+      id: "search-cities-id",
+      name: "cities",
+      selected: state.location,
+      [DEFAULT_PARAMETER_KEY]: DEFAULT_SEARCH_PARAMETER,
+      [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
+    });
+    return cityList;
   }
 
   SearchFormTemplate.getDistanceSelect = (state) => {
     return `
       <label id="max-distance-label" class="searchDropdownLabel">Max distance:</label>
-       ${getDropdown({
-        data: DISTANCE_OPTIONS,
+      ${getDropdown({
+        state: DISTANCE_OPTIONS,
         id: "search-distance-id",
         name: "distance",
         selected: state.distance ?? "5 miles",
@@ -254,44 +255,50 @@ const SearchFormTemplate = ()=>{
     }
   } 
   
-  SearchFormTemplate.userLoggedIn = (state)=>{
-    if(state?.loginState?.loggedIn){
-      return "";
+  SearchFormTemplate.notLoggedIn = (state)=>{
+    if(state?.loginState?.loggedIn === true){
+      return false;
     }
-    return "none";
+    return true;
   }
  
   return `
     <div id="form-div-outer">    
       <div  
-        {{class=searchInputClass}}
+        class={{searchInputClass}}
         id="search-form-inputs" 
       > 
-        <label class="searchDropdownLabel">Select event day: </label>     
-        <fieldset
+        <label 
+          class="searchDropdownLabel"
+        >Select event day: </label>     
+        <fieldset>
           {{getDaysSelect}}
-        ></fieldset>
-        <label class="searchDropdownLabel">Select city: </label> 
-        <fieldset
+        </fieldset>
+        <label 
+          class="searchDropdownLabel"
+        >Select city: </label> 
+        <select> 
           {{getCitySelect}}
-        ></fieldset>
+        </select>
         <select 
-          {{display=distanceSelectVisible}}
+          display={{distanceSelectVisible}}
+        >
           {{getDistanceSelect}} 
-        ></select>
+        </select>
       </div>  
       <div 
         id = "search-input-div"
       >
         <button
-          {{class=searchBtnCls}}
-          {{id=searchBtnId}}
+          class={{searchBtnCls}}
+          id={{searchBtnId}}
+        >
           {{searchAllText}}
-        ></button>
+        </button>
         <button 
-          {{class=searchBtnClass}}
-          {{id=searchBtnIdUser}}
-          {{display=userLoggedIn}}
+          class={{searchBtnClass}}
+          hidden={{notLoggedIn}}
+          id={{searchBtnIdUser}}
         >
           Search joined groups
         </button> 
