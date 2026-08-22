@@ -132,7 +132,7 @@ export class SearchComponent extends BaseDynamicComponent {
 
 const SearchFormTemplate = ()=>{
 
-  SearchFormTemplate.searchEvents = (e,component,searchGroups=false)=>{
+  SearchFormTemplate.searchEvents = (e,component, state, searchGroups=false)=>{
     const searchParams = {
       location: data.location ?? "",
       days: getDaysOfWeekSelectedState, 
@@ -159,7 +159,7 @@ const SearchFormTemplate = ()=>{
     });
   }
   
-  SearchFormTemplate.searchGroups = (e,component) =>{
+  SearchFormTemplate.searchGroups = (e,component, state) =>{
     SearchFormTemplate.searchEvents(e,component, true);
   }
  

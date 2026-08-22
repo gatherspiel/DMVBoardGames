@@ -522,6 +522,14 @@ class BaseDynamicComponent extends HTMLElement {
             }
           });
       });
+
+      const stateSlice = (state)=>{return state};
+      this.#setupTemplateEventListeners(
+        elementRoot,
+        stateSlice,
+        templateName  
+      );
+
     } else {
 
       const templateId = templateData.dataTemplateName;
@@ -558,7 +566,7 @@ class BaseDynamicComponent extends HTMLElement {
   #setupEventListeners(
     addNode,
     eventType,
-    props,
+    stateSlice,
     templateName
   ){
 
@@ -583,7 +591,7 @@ class BaseDynamicComponent extends HTMLElement {
         const handlerFieldName = `${eventType}eventHandlers`;
         
         this[handlerFieldName][i] = {
-          "props": props,
+          "stateSlice":stateSlice,
           "templateFunction":templateFunction[events[i]],
         }
         
@@ -594,12 +602,12 @@ class BaseDynamicComponent extends HTMLElement {
   
   #setupTemplateEventListeners(
     addNode,
-    props,
+    stateSlice,
     templateName  
   ){
 
-    this.#setupEventListeners(addNode,"click",props,templateName);
-    this.#setupEventListeners(addNode,"change",props,templateName);
+    this.#setupEventListeners(addNode,"click",stateSlice,templateName);
+    this.#setupEventListeners(addNode,"change",stateSlice,templateName);
   }
   
   #renderTemplates(data,content) {
@@ -752,9 +760,17 @@ class BaseDynamicComponent extends HTMLElement {
 						addNode.id = signalData.id;
            
             BaseDynamicComponent.prevState[templateName][updateData] = computedProps;
+
+
+            data[this.#templateData[i].dataFieldName] 
+            
+            const stateSlice = (state) =>{
+              return state[this.#templateData[i].dataFieldName][num]
+            }
+            
             this.#setupTemplateEventListeners(
               addNode,
-              signalData,
+              stateSlice,
               templateName  
             );
             addFragment.appendChild(addNode);
@@ -990,11 +1006,11 @@ class BaseDynamicComponent extends HTMLElement {
             .addEventListener("change",(e)=>{
               
               const id = e.target.getAttribute("data-change-id");
-
+              f:
               this.changeEventHandlers[id].handler(
                 e,
                 this,
-                this.changeEventHandlers[id].props
+                this.changeEventHandlers[id].stateSlice(this.componentStore)
               )
           });
         }
@@ -1008,7 +1024,8 @@ class BaseDynamicComponent extends HTMLElement {
               this.clickEventHandlers[id].handler(
                 e,
                 this,
-                this.clickEventHandlers[id].props
+                this.changeEventHandlers[id].stateSlice(this.componentStore)
+  
               )
           });
         }
