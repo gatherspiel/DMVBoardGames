@@ -6,7 +6,7 @@ import {
   getDropdown,
   getDropdownHtml,
 } from "../../shared/html/SelectGenerator.js";
-import { ContainerComponent } from "/lib/places-js-latest.js";
+import { ContainerComponent, PresentationComponent } from "/lib/places-js-latest.js";
 import { CITY_LIST_STORE } from "../../data/list/CityListStore.js";
 import {LOGIN_STORE} from "../../data/user/LoginStore.js";
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
@@ -78,7 +78,7 @@ export class SearchComponent extends ContainerComponent {
     };
     SEARCH_RESULTS_LIST_STORE.fetchData(this.defaultSearchParams);
     
-    ContainerComponent.definePresentationComponent(SearchFormTemplate,"SearchFormComponent");  
+    PresentationCompnent.init(SearchForm);  
   }
 
   connectedCallback(){
@@ -117,7 +117,7 @@ export class SearchComponent extends ContainerComponent {
       isVisible: `<details ${state.showSearchUiMobile ? "open":""}>
         <summary class="btn secondary">Modify search parameters</summary>
         <form
-          data-template-name=SearchFormTemplate
+          data-presentation-compnent=SearchForm
           id=${SEARCH_FORM_ID}
           onsubmit="return false"
         >
@@ -127,145 +127,163 @@ export class SearchComponent extends ContainerComponent {
   } 
 }
 
-const SearchFormTemplate = ()=>{
+class SearchForm extends PresentationComponent{
 
-  SearchFormTemplate.searchEvents = (e,component, state, searchGroups=false)=>{
-    const searchParams = {
-      location: state.location ?? "",
-      days: getDaysOfWeekSelectedState, 
-      distance: data.distance,
-    };
+  defineComputedState(){
+    const searchEvents = (e,component, state, searchGroups=false)=>{
+      const searchParams = {
+        location: state.location ?? "",
+        days: getDaysOfWeekSelectedState, 
+        distance: data.distance,
+      };
 
-    searchParams['userGroupEvents'] = `${searchGroups}`
-    
-    component.updateData({
-      [ENABLE_SEARCH_TOGGLE_KEY]: false,
-      showSearchUiMObile: false
-    });
-    
-    const baseUrl = window.location.origin.split("?");
-    let updatedUrl = `${baseUrl}?`;
-    updatedUrl += `location=${searchParams.location.replaceAll(" ", "_")}&`;
-    updatedUrl += `days=${searchParams.days.replaceAll(" ", "_")}&`;
-    updatedUrl += `distance=${searchParams?.distance?.replaceAll(" ", "_") ?? ``}`;
+      searchParams['userGroupEvents'] = `${searchGroups}`
+      
+      component.updateData({
+        [ENABLE_SEARCH_TOGGLE_KEY]: false,
+        showSearchUiMObile: false
+      });
+      
+      const baseUrl = window.location.origin.split("?");
+      let updatedUrl = `${baseUrl}?`;
+      updatedUrl += `location=${searchParams.location.replaceAll(" ", "_")}&`;
+      updatedUrl += `days=${searchParams.days.replaceAll(" ", "_")}&`;
+      updatedUrl += `distance=${searchParams?.distance?.replaceAll(" ", "_") ?? ``}`;
 
-    window.history.replaceState({}, "", updatedUrl);
-    SEARCH_RESULTS_LIST_STORE.fetchData({
-      ...searchParams,
-      ...{ apiUrl: component.getAttribute("api-url") ?? "" },
-    });
-  }
+      window.history.replaceState({}, "", updatedUrl);
+      SEARCH_RESULTS_LIST_STORE.fetchData({
+        ...searchParams,
+        ...{ apiUrl: component.getAttribute("api-url") ?? "" },
+      });
+    }
   
-  SearchFormTemplate.searchGroups = (e,component, state) =>{
-    SearchFormTemplate.searchEvents(e,component, true);
-  }
+    const searchGroups = (e,component, state) =>{
+      SearchFormTemplate.searchEvents(e,component, true);
+    }
  
-  SearchFormTemplate.checkboxUpdated = (e,component)=>{
-    component.updateData({
-      enableSearchButtonKey: true,
-      showSearchUiMobile: true
-    });
-  }
-
-  SearchFormTemplate.citiesUpdated = (e,component)=>{
-    component.updateData({
-        [ENABLE_SEARCH_TOGGLE_KEY]: true,
-        location: eventTarget.value,
+    const checkboxUpdated = (e,component)=>{
+      component.updateData({
+        enableSearchButtonKey: true,
         showSearchUiMobile: true
       });
     }
 
-  SearchFormTemplate.distanceUpdated = () => {
-    self.updateData({
-      [ENABLE_SEARCH_TOGGLE_KEY]: true,
-      distance: eventTarget.value,
-      showSearchUiMobile: true 
-    });
+    const citiesUpdated = (e,component)=>{
+      component.updateData({
+          [ENABLE_SEARCH_TOGGLE_KEY]: true,
+          location: eventTarget.value,
+          showSearchUiMobile: true
+        });
+      }
+
+    const distanceUpdated = () => {
+      self.updateData({
+        [ENABLE_SEARCH_TOGGLE_KEY]: true,
+        distance: eventTarget.value,
+        showSearchUiMobile: true 
+      });
+    }
+  
+    const searchInputClass = (state) => {
+      if(state.location && state.location !== DEFAULT_SEARCH_PARAMETER){
+        return "search-form-three-inputs";
+      } else {
+        return "search-form-two-inputs";
+      }
+    }
+
+    const searchAllText = (state) => {
+      if(state.apiUrl==="/searchEvents" && state.loginState?.loggedIn) {
+        return "Search all events";
+      } else {
+        return "Search"
+      }
+    }
+ 
+    const getDaysSelect = () => {
+      return getDaysOfWeekSelect();
+    }
+ 
+    const getCitySelect = (state) => {
+      const cityList = getDropdown({
+        state: state.cityList ?? [{ name: "Any location" }],
+        id: "search-cities-id",
+        name: "cities",
+        selected: state.location,
+        [DEFAULT_PARAMETER_KEY]: DEFAULT_SEARCH_PARAMETER,
+        [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
+      });
+      return cityList;
+    }
+
+    const getDistanceSelect = (state) => {
+      return `
+        <label id="max-distance-label" class="searchDropdownLabel">Max distance:</label>
+        ${getDropdown({
+          state: DISTANCE_OPTIONS,
+          id: "search-distance-id",
+          name: "distance",
+          selected: state.distance ?? "5 miles",
+          [DEFAULT_PARAMETER_KEY]: "5 miles",
+          [DEFAULT_PARAMETER_DISPLAY_KEY]: "5 miles",
+        })}`
+    }
+    
+    const distanceSelectVisible = (state) => {
+      if(state.location && state.location !== DEFAULT_SEARCH_PARAMETER){
+        return "";
+      }
+      return "none";
+    }
+ 
+    const searchBtnCls = (state)=>{
+      if(state[ENABLE_SEARCH_TOGGLE_KEY]){
+        return "btn primary"
+      } else {
+        return "btn muted"
+      }
+    }
+
+    const searchBtnId = (state)=>{
+      if(state[ENABLE_SEARCH_TOGGLE_KEY]){
+        return "search-button-id";
+      } else {
+        return "disabled-search-button";
+      }
+    }
+
+    const searchBtnIdUser = (state)=>{
+      if(state[ENABLE_SEARCH_TOGGLE_KEY]){
+        return "search-joined-id"
+      } else {
+        return "disabled-search-joined"
+      }
+    } 
+  
+    const notLoggedIn = (state)=>{
+      if(state?.loginState?.loggedIn === true){
+        return false;
+      }
+      return true;
+    }
+
+    console.log("notLoggedIn");
+    return {
+      "searchInputClass":searchInputClass,
+      "getDaysSelect":getDaysSelect,
+      "getCitySelect":getCitySelect,
+      "distanceSelectVisible":distanceSelectVisible,
+      "getDistanceSelect":getDistanceSelect,
+      "searchBtnCls":searchBtnCls,
+      "searchBtnId":searchBtnId,
+      "searchAllText":searchAllText,
+      "notLoggedIn":notLoggedIn,
+      "searchBtnIdUser":searchBtnIdUser
+    }
   }
   
-  SearchFormTemplate.searchInputClass = (state) => {
-    if(state.location && state.location !== DEFAULT_SEARCH_PARAMETER){
-      return "search-form-three-inputs";
-    } else {
-      return "search-form-two-inputs";
-    }
-  }
-
-  SearchFormTemplate.searchAllText = (state) => {
-    if(state.apiUrl==="/searchEvents" && state.loginState?.loggedIn) {
-      return "Search all events";
-    } else {
-      return "Search"
-    }
-  }
- 
-  SearchFormTemplate.getDaysSelect = () => {
-    return getDaysOfWeekSelect();
-  }
- 
-  SearchFormTemplate.getCitySelect = (state) => {
-    const cityList = getDropdown({
-      state: state.cityList ?? [{ name: "Any location" }],
-      id: "search-cities-id",
-      name: "cities",
-      selected: state.location,
-      [DEFAULT_PARAMETER_KEY]: DEFAULT_SEARCH_PARAMETER,
-      [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
-    });
-    return cityList;
-  }
-
-  SearchFormTemplate.getDistanceSelect = (state) => {
-    return `
-      <label id="max-distance-label" class="searchDropdownLabel">Max distance:</label>
-      ${getDropdown({
-        state: DISTANCE_OPTIONS,
-        id: "search-distance-id",
-        name: "distance",
-        selected: state.distance ?? "5 miles",
-        [DEFAULT_PARAMETER_KEY]: "5 miles",
-        [DEFAULT_PARAMETER_DISPLAY_KEY]: "5 miles",
-      })}`
-  }
   
-  SearchFormTemplate.distanceSelectVisible = (state) => {
-    if(state.location && state.location !== DEFAULT_SEARCH_PARAMETER){
-      return "";
-    }
-    return "none";
-  }
- 
-  SearchFormTemplate.searchBtnCls = (state)=>{
-    if(state[ENABLE_SEARCH_TOGGLE_KEY]){
-      return "btn primary"
-    } else {
-      return "btn muted"
-    }
-  }
-
-  SearchFormTemplate.searchBtnId = (state)=>{
-    if(state[ENABLE_SEARCH_TOGGLE_KEY]){
-      return "search-button-id";
-    } else {
-      return "disabled-search-button";
-    }
-  }
-
-  SearchFormTemplate.searchBtnIdUser = (state)=>{
-    if(state[ENABLE_SEARCH_TOGGLE_KEY]){
-      return "search-joined-id"
-    } else {
-      return "disabled-search-joined"
-    }
-  } 
-  
-  SearchFormTemplate.notLoggedIn = (state)=>{
-    if(state?.loginState?.loggedIn === true){
-      return false;
-    }
-    return true;
-  }
- 
+  defineTemplate(){ 
   return `
     <div id="form-div-outer">    
       <div  
@@ -316,4 +334,5 @@ const SearchFormTemplate = ()=>{
         </button> 
       </div>
     </div>` 
+  }
   }

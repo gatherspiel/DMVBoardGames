@@ -3,52 +3,6 @@ import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
 import { convertLocationDataForDisplay } from "../../shared/EventDataUtils.js";
 
-class EventItem {
-    #computedState = {};
-  
-    defineComputedState(){
-      /*
-      return {
-        eventTime: (eventData) =>{
-          if(eventData.isRecurring){
-            return `${eventData.dayOfWeek}s at ${eventData.nextEventTime}`;
-          }
-          return `${eventData.nextEventDate} at ${eventData.nextEventTime}`
-        },
-        location = (eventData)=>{
-          return `${convertLocationDataForDisplay(eventData.eventLocation)}`
-        }
-
-        url: (eventData) => {
-          return `/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}`
-      }*/
-    }
-
-    defineTemplate(){
-      return `<li>
-        <a 
-          class="btn secondary"
-					href={{url}}
-        >
-          {{eventName}}
-				</a>
-        <div 
-					class="event-time" 
-				> 
-					{{eventTime}}
-        </div>
-        <div
-					class="event-location"
-				> 
-					{{location}}	
-        </div> 
-      </li>
-    `;
-  }
-}
-
-PresentationComponent.init(EventItem);
-
 export class EventListComponent extends ContainerComponent {
   constructor() {
     super(
@@ -100,3 +54,50 @@ export class EventListComponent extends ContainerComponent {
 		`;  
   }
 }
+
+class EventItem extends PresentationComponent {
+  
+    defineComputedState(){
+      return {
+        eventTime: (eventData) =>{
+          if(eventData.isRecurring){
+            return `${eventData.dayOfWeek}s at ${eventData.nextEventTime}`;
+          }
+          return `${eventData.nextEventDate} at ${eventData.nextEventTime}`
+        },
+        location:(eventData)=>{
+          return `${convertLocationDataForDisplay(eventData.eventLocation)}`
+        },
+
+        url: (eventData) => {
+          return `/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}`
+        } 
+      }
+    }
+
+    defineTemplate(){
+      return `<li>
+        <a 
+          class="btn secondary"
+					href={{url}}
+        >
+          {{eventName}}
+				</a>
+        <div 
+					class="event-time" 
+				> 
+					{{eventTime}}
+        </div>
+        <div
+					class="event-location"
+				> 
+					{{location}}	
+        </div> 
+      </li>
+    `;
+  }
+}
+
+PresentationComponent.init(EventItem);
+
+

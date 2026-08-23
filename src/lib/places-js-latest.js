@@ -118,66 +118,28 @@ onfig:signal;
 
 
 class PresentationComponent {
-  static init(item){
-    console.log(item);
-    console.log("Setting up");
-  }
-  
-  defineTemplate(){
-    console.error("No template defined");
-  }
-}
-class ContainerComponent extends HTMLElement {
-
-  #attachedEventsToShadowRoot = false;
-  #componentIsRendering = false;
-  #loadingFromStores = new Set();
-  #loadingStarted = 0;
-  #loadingIndicatorConfig;
  
-  #changeEventListeners;
-  #clickEventListeners;
+  static #presentationComponents = {};
 
-  #templateData = null;
-  #templateContainers = null;
-  #subscribedStores = [];
+  clickTemplateEvents;
+  changeTemplateEvents;
+  computedProps;
+ 
+  dynamicSignals;
+  templateSignals;
 
-  componentStore = {};
-  #templateLoaded = false;
+  templateNode;
 
-  static computedProps = {};
-  static templates = {};
-  static templateSignals = {};
-  static dynamicSignals = {};
-  static prevState = {}; 
-  static prevOrdering = {};
+  #defineComponent(){
 
-  static changeTemplateEvents = {};
-  static clickTemplateEvents = {};
-
-  static changeTemplateItemHandlers = {};
-  static clickTemplateItemHandlers = {};
-
-  static templateFunctions = {};
-  static templateCount = 0;
-  templateIds = [];
-
-  static eventHandlerCount = 0;
-
-  static #isAttributeChar(str){
-    const code = str.charCodeAt(0);
-    return (code > 64 && code < 91) || (code > 96 && code < 123)
-  }
-
-  static definePresentationComponent(templateFunc, templateName){
-
+    let computedState = this.defineComputedState() || {};
     let template = document.createElement("template");
-    let templateStr = templateFunc();
+    let templateStr = this.defineTemplate();
 
-    let signals = [];
-    let dynamicSignals = [];
+    this.templateSignals = [];
+    this.dynamicSignals = [];
 
-    ContainerComponent.computedProps[templateName.toUpperCase()] = [];   
+    this.computedProps = [];   
      
     const clickEvents = [];
     const changeEvents = [];
@@ -222,8 +184,8 @@ class ContainerComponent extends HTMLElement {
     }
 
 
-    ContainerComponent.changeTemplateEvents[templateName.toUpperCase()] = changeEvents;
-    ContainerComponent.clickTemplateEvents[templateName.toUpperCase()] = clickEvents;
+    this.changeTemplateEvents = changeEvents;
+    this.clickTemplateEvents = clickEvents;
 
     while(true){
       let stateVarPos = templateStr.indexOf("{{");
@@ -242,7 +204,8 @@ class ContainerComponent extends HTMLElement {
         attr = "";
         for(let j = stateVarPos-2; j > 0; j--){
           const nameChar = templateStr.charAt(j);
-          if(ContainerComponent.#isAttributeChar(nameChar)){
+          console.log(this);
+          if(this.isAttributeChar(nameChar)){
             attr = nameChar + attr;
           } else {
             stateVarPos = j;
@@ -274,12 +237,15 @@ class ContainerComponent extends HTMLElement {
       if(endPos < firstTagEnd){
         newStr = "";
       }
-      const templateFuncType = typeof templateFunc[fieldName];
-      if(templateFuncType === 'function'){
-        ContainerComponent.computedProps[templateName.toUpperCase()].push(
+      
+      let templateFuncType = "";
+      if(computedState[fieldName]){
+
+        templateFuncType = "function";
+        this.computedProps.push(
           {
             "field": fieldName,
-            "func": templateFunc[fieldName]
+            "func": computedState[fieldName]
           });
       }
      
@@ -307,9 +273,9 @@ class ContainerComponent extends HTMLElement {
           templateStr.substring(endPos+2);
       }
 
-      signals.push(signalData);
+      this.templateSignals.push(signalData);
       if(templateFuncType === 'function'){
-        dynamicSignals.push(signalData);
+        this.dynamicSignals.push(signalData);
       }
       i++;
     } 
@@ -331,18 +297,10 @@ class ContainerComponent extends HTMLElement {
       }
     }
     templateStr = linesToAdd.join("");
-
-    ContainerComponent.templateSignals[templateName.toUpperCase()] = signals;
-    ContainerComponent.dynamicSignals[templateName.toUpperCase()] = dynamicSignals;
-
     template.innerHTML = templateStr;
-    ContainerComponent.templateFunctions[templateName.toUpperCase()] = templateFunc;
     
-    
-    ContainerComponent.templates[templateName.toUpperCase()] = template.content.firstChild;
-    ContainerComponent.prevState[templateName.toUpperCase()]={};
-    ContainerComponent.prevOrdering[templateName.toUpperCase()]=[];
-   
+    this.templateNode = template.content.firstChild;
+
     //Tenplate parsing needs to be optimized for performance.
     //This is to display the overhead of the current logic.
     const parseTime = Date.now() - start;
@@ -351,6 +309,65 @@ class ContainerComponent extends HTMLElement {
     }
   }
 
+  isAttributeChar(str){
+    const code = str.charCodeAt(0);
+    return (code > 64 && code < 91) || (code > 96 && code < 123)
+  }
+  
+  static init(item){
+
+    const obj = new item.prototype.constructor(); 
+    obj.#defineComponent();
+
+    PresentationComponent
+      .#presentationComponents[obj.constructor.name.toUpperCase()] = obj;
+  }
+  
+  defineTemplate(){
+    console.error("No template defined");
+  } 
+}
+
+class PresentationStateItem {
+  
+}
+
+class ContainerComponent extends HTMLElement {
+
+  //TODO: Remove variables here that aren't being used. 
+  #componentIsRendering = false;
+  #loadingFromStores = new Set();
+  #loadingStarted = 0;
+  #loadingIndicatorConfig;
+ 
+  #changeEventListeners;
+  #clickEventListeners;
+
+  #templateData = null;
+  #templateContainers = null;
+  #subscribedStores = [];
+
+  componentStore = {};
+  #templateLoaded = false;
+
+  prevState = {};
+  static computedProps = {};
+  //static prevState = {}; 
+  static prevOrdering = {};
+
+  static changeTemplateEvents = {};
+  static clickTemplateEvents = {};
+
+  static changeTemplateItemHandlers = {};
+  static clickTemplateItemHandlers = {};
+
+  static templateFunctions = {};
+  static templateCount = 0;
+  templateIds = [];
+
+  static eventHandlerCount = 0;
+
+  #presentationItems = [];
 	/**
 	 * @param dataStoreSubscriptions - An array of data stores the component should
 	 * subscribe to.
@@ -502,10 +519,6 @@ class ContainerComponent extends HTMLElement {
     }
   }
 
-	#runDirectives(data) {
-		this.#templateData = null;
-	}
-
   #updateSingleItemTemplate(templateName,templateData,state){
    
     let id = templateData.dataTemplateName;
@@ -627,11 +640,11 @@ class ContainerComponent extends HTMLElement {
   #renderTemplates(data,content) {
 
     this.#renderTemplates.templateIds = []; 
-    if(!this.#templateData || this.#templateData.length === 0){
+    if(!this.#presentationItems || Object.keys(this.#presentationItems).length === 0){
 
       const templates = content.querySelectorAll("[data-presentation-component]");
-			if(!this.#templateData){
-          this.#templateData = [];
+			if(!this.#presentationItems){
+          this.#presentationItems = {};;
         }
 
       for(let i=0;i<templates.length;i++){
@@ -704,7 +717,8 @@ class ContainerComponent extends HTMLElement {
         this.#updateSingleItemTemplate(templateName,this.#templateData[i], data);  
         continue;
       }
-      
+     
+      console.log(templateName);
       const prevStateLen = Object.keys(ContainerComponent.prevState[templateName]).length;
     
       const updatedOrdering = [];
