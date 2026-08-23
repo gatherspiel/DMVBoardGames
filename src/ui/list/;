@@ -78,7 +78,7 @@ export class SearchComponent extends ContainerComponent {
     };
     SEARCH_RESULTS_LIST_STORE.fetchData(this.defaultSearchParams);
     
-    PresentationComponent.init(SearchForm);  
+    PresentationCompnent.init(SearchForm);  
   }
 
   connectedCallback(){
@@ -90,6 +90,7 @@ export class SearchComponent extends ContainerComponent {
 
 
   render(state) {  
+   
     
     return `
       <div 
@@ -108,7 +109,7 @@ export class SearchComponent extends ContainerComponent {
       fallback: 
         `<div class="hide-mobile"><h1>${this.getAttribute("search-text")}</h1></div>
           <form
-            data-presentation-component=SearchForm
+            data-presentation-component=SearchFormComponent
             onsubmit="return false"
           >
         </div>

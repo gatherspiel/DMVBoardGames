@@ -100,4 +100,3 @@ class EventItem extends PresentationComponent {
 
 PresentationComponent.init(EventItem);
 
-

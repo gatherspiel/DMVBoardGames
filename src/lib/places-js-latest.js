@@ -119,7 +119,7 @@ onfig:signal;
 
 class PresentationComponent {
  
-  static #presentationComponents = {};
+  static presentationComponents = {};
 
   clickTemplateEvents;
   changeTemplateEvents;
@@ -204,7 +204,6 @@ class PresentationComponent {
         attr = "";
         for(let j = stateVarPos-2; j > 0; j--){
           const nameChar = templateStr.charAt(j);
-          console.log(this);
           if(this.isAttributeChar(nameChar)){
             attr = nameChar + attr;
           } else {
@@ -320,7 +319,7 @@ class PresentationComponent {
     obj.#defineComponent();
 
     PresentationComponent
-      .#presentationComponents[obj.constructor.name.toUpperCase()] = obj;
+      .presentationComponents[obj.constructor.name.toUpperCase()] = obj;
   }
   
   defineTemplate(){
@@ -328,8 +327,41 @@ class PresentationComponent {
   } 
 }
 
-class PresentationStateItem {
+class PresentationItem {
+ 
+  prevOrdering = [];
+  prevState = {};
+
+  prevStateLen(){
+    return Object.keys(this.prevState).length;
+  }
+
+  setTemplateName(templateName){
+    this.templateName = templateName.toUpperCase();
+  }
   
+  computePropValuesForNode(state){
+    let computedPropValues = {};
+
+    console.log(PresentationComponent.presentationComponents);
+    console.log(this.templateName);
+    PresentationComponent
+      .presentationComponents[this.templateName]
+      .computedProps
+      .forEach((computedConfig)=>{
+        computedPropValues[computedConfig.field] = computedConfig.func(state);
+      });
+    return computedPropValues;
+  }
+  
+  createTemplateNode(){
+    return  PresentationComponent
+      .presentationComponents[this.templateName]
+      .templateNode
+      .cloneNode(true)
+  }
+      
+
 }
 
 class ContainerComponent extends HTMLElement {
@@ -519,25 +551,22 @@ class ContainerComponent extends HTMLElement {
     }
   }
 
-  #updateSingleItemTemplate(templateName,templateData,state){
+  #updateSingleItemTemplate(presentationItem,state){
    
-    let id = templateData.dataTemplateName;
+    const templateName = presentationItem.templateName;
 
-    const prevProps = ContainerComponent.prevState[templateName]
-		const computedPropValues = {}; 
+    const prevProps = presentationItem.prevState;
+		const computedPropValues = 
+      presentationItem.computePropValuesForNode(state);
 
-    //Calculate computed values.
-    ContainerComponent.computedProps[templateName].forEach((computedConfig)=>{
-      computedPropValues[computedConfig.field] = computedConfig.func(state);
-    });
-
-    let elementRoot;
+        let elementRoot;
 
     if(Object.keys(prevProps).length === 0){
 
-      elementRoot = ContainerComponent.templates[templateName].cloneNode(true);
+      elementRoot = presentationItem.createTemplateNode();
       
-      const signalsToRun = ContainerComponent.templateSignals[templateName];
+      const signalsToRun = PresentationComponent.presentationComponents[templateName].templateSignals;
+
       signalsToRun.forEach((signalConfig)=>{
         this.#generateSignal(
           { 
@@ -558,15 +587,15 @@ class ContainerComponent extends HTMLElement {
 
     } else {
 
-      const templateId = templateData.dataTemplateName;
-      elementRoot = document.getElementById(templateId);
+      elementRoot = document.getElementById(presentationItem.id);
         
       if(!elementRoot){
         console.error("No id set for template");
       }   
     }
 
-    const signalsToRun = ContainerComponent.dynamicSignals[templateName];
+    const signalsToRun = PresentationComponent.presentationComponents[templateName].dynamicSignals;
+
 		signalsToRun.forEach((signalConfig)=>{
 		  if(prevProps[signalConfig.fieldName] !== computedPropValues[signalConfig.fieldName]){
 			 
@@ -582,10 +611,10 @@ class ContainerComponent extends HTMLElement {
     });
 
     if(Object.keys(prevProps).length === 0){
-      document.getElementById(id).replaceChildren(elementRoot);
+      document.getElementById(presentationItem.id).replaceChildren(elementRoot);
     }
    
-    ContainerComponent.prevState[templateName] = computedPropValues;
+    presentationItem.prevState = computedPropValues;
     
   }
 
@@ -672,31 +701,31 @@ class ContainerComponent extends HTMLElement {
           "id":templates[i].id,
           "templateName":dataTemplateName
         });
-        
-        this.#templateData.push({
-          attributes:attrs,
-          dataFieldName:dataFieldName,
-          dataTemplateName: templates[i].id
-        });
+      
+        let presentationItem = new PresentationItem(); 
+        presentationItem.id = templates[i].id;
+        presentationItem.setTemplateName(dataTemplateName);
+        presentationItem.attributes = attrs;
+
+        presentationItem.dataFieldName = dataFieldName;
+
+        this.#presentationItems.push(presentationItem);
+
         ContainerComponent.templateCount++;
       }
 
-			if(templates.length > 0 ){
+			if(this.#presentationItems.length > 0 ){
 				this.#templateLoaded = true;
 			}
     }
  
-    for(let i = 0; i < this.#templateData.length;i++){
-			const templateName = 
-        this.#templateData[i]
-          .dataTemplateName
-          .split("-")[2]
-          .toUpperCase();  
-     
+    for(let i = 0; i < this.#presentationItems.length;i++){
+	
       let isArray = false;
-      const state = data[this.#templateData[i].dataFieldName] || []; 
+      const presentationItem = this.#presentationItems[i];
+      const state = data[this.#presentationItems[i].dataFieldName] || []; 
     
-      const attrs = this.#templateData[i].attributes; 
+      const attrs = this.#presentationItems[i].attributes; 
       const attrData = [];
       for(let j=0;j<attrs.length;j++){
         if(attrs[j].name !== "data-array"){
@@ -714,12 +743,11 @@ class ContainerComponent extends HTMLElement {
 
       //template is a single item.
       if(!isArray){ 
-        this.#updateSingleItemTemplate(templateName,this.#templateData[i], data);  
+        this.#updateSingleItemTemplate(this.#presentationItems[i], data);  
         continue;
       }
      
-      console.log(templateName);
-      const prevStateLen = Object.keys(ContainerComponent.prevState[templateName]).length;
+      const prevStateLen = this.#presentationItems[i].prevStateLen();
     
       const updatedOrdering = [];
       
@@ -733,19 +761,22 @@ class ContainerComponent extends HTMLElement {
           newIds.add(state[num].id);
         }
         if(num < prevStateLen){
-          prevIds.add(ContainerComponent.prevOrdering[templateName][num]);
+          prevIds.add(this.#presentationItems[i].prevOrdering[num]);
         }
-        if(!state[num] || state[num].id !== ContainerComponent.prevOrdering[templateName][num]){
+        if(!state[num] || state[num].id !== presentationItem.prevOrdering[num]){
           sameLocs = false; 
         }
       }
-    
+   
+      const presentationComponent = PresentationComponent.presentationComponents[presentationItem.templateName];
+
       const removed = sameLocs ? new Set() : prevIds.difference(newIds);
       const added = sameLocs ? new Set() : newIds.difference(prevIds);
       let hasReplaced = (removed.size === prevIds.size);
       if(added.size > 0){
 
-        const lastId = ContainerComponent.prevOrdering[templateName][prevStateLen-1];
+        const lastId = presentationItem
+          .prevOrdering[prevStateLen-1];
         
 				const sharedData = {};
 				for(let j=0;j<attrData.length;j++){
@@ -763,13 +794,13 @@ class ContainerComponent extends HTMLElement {
            
             const itemState = state[num];        
 						const computedProps = {}; 
-            ContainerComponent.computedProps[templateName].forEach((computedConfig)=>{
+            presentationComponent.computedProps.forEach((computedConfig)=>{
               computedProps[computedConfig.field] = computedConfig.func(itemState,sharedData);
             });
             
-            const signalsToRun = ContainerComponent.templateSignals[templateName];
+            const signalsToRun = presentationComponent.templateSignals;
 
-            let addNode = ContainerComponent.templates[templateName].cloneNode(true);
+            let addNode = presentationItem.createTemplateNode();
 						const signalData =  {...computedProps,...itemState}
 
 						signalsToRun.forEach((signal)=>{ 	
@@ -786,11 +817,8 @@ class ContainerComponent extends HTMLElement {
 						
 						addNode.id = signalData.id;
            
-            ContainerComponent.prevState[templateName][updateData] = computedProps;
+            presentationItem.prevState[updateData] = computedProps;
 
-
-            data[this.#templateData[i].dataFieldName] 
-            
             const stateSlice = (state) =>{
               return state[this.#templateData[i].dataFieldName][num]
             }
@@ -798,7 +826,7 @@ class ContainerComponent extends HTMLElement {
             this.#setupTemplateEventListeners(
               addNode,
               stateSlice,
-              templateName  
+              presentationItem.templateName
             );
             addFragment.appendChild(addNode);
           }else {
@@ -819,12 +847,12 @@ class ContainerComponent extends HTMLElement {
             lastNode.parentNode.appendChild(add);
           } else{
 							this.getRootNode()
-								.getElementById(this.#templateData[i].dataTemplateName)
+								.getElementById(presentationItem.id)
 								.replaceChildren(addFragment);
 								hasReplaced = true;
           }          
         }
-        ContainerComponent.prevOrdering[templateName] = updatedOrdering;
+        presentationItem.prevOrdering[presentationItem.templateName] = updatedOrdering;
       }
 
       
