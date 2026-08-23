@@ -6,7 +6,7 @@ import {
   getDropdown,
   getDropdownHtml,
 } from "../../shared/html/SelectGenerator.js";
-import { BaseDynamicComponent } from "/lib/places-js-latest.js";
+import { ContainerComponent } from "/lib/places-js-latest.js";
 import { CITY_LIST_STORE } from "../../data/list/CityListStore.js";
 import {LOGIN_STORE} from "../../data/user/LoginStore.js";
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
@@ -30,7 +30,7 @@ const DISTANCE_OPTIONS = [
   "50 miles",
 ];
 
-export class SearchComponent extends BaseDynamicComponent {
+export class SearchComponent extends ContainerComponent {
 
   constructor() {
     super([
@@ -78,7 +78,7 @@ export class SearchComponent extends BaseDynamicComponent {
     };
     SEARCH_RESULTS_LIST_STORE.fetchData(this.defaultSearchParams);
     
-    BaseDynamicComponent.defineTemplate(SearchFormTemplate,"SearchFormTemplate");  
+    ContainerComponent.definePresentationComponent(SearchFormTemplate,"SearchFormComponent");  
   }
 
   connectedCallback(){
@@ -109,7 +109,7 @@ export class SearchComponent extends BaseDynamicComponent {
       fallback: 
         `<div class="hide-mobile"><h1>${this.getAttribute("search-text")}</h1></div>
           <form
-            data-template-name=SearchFormTemplate
+            data-presentation-component=SearchFormComponent
             onsubmit="return false"
           >
         </div>

@@ -1,26 +1,31 @@
-import { BaseDynamicComponent } from "/lib/places-js-latest.js";
+import { ContainerComponent, PresentationComponent} from "/lib/places-js-latest.js";
 import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js";
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
 import { convertLocationDataForDisplay } from "../../shared/EventDataUtils.js";
 
-const EventItem = () => {
-	
-		EventItem.eventTime = (eventData) =>{
-			if(eventData.isRecurring){
-				return `${eventData.dayOfWeek}s at ${eventData.nextEventTime}`;
-			}
-			return `${eventData.nextEventDate} at ${eventData.nextEventTime}`
-		}
+class EventItem {
+    #computedState = {};
+  
+    defineComputedState(){
+      /*
+      return {
+        eventTime: (eventData) =>{
+          if(eventData.isRecurring){
+            return `${eventData.dayOfWeek}s at ${eventData.nextEventTime}`;
+          }
+          return `${eventData.nextEventDate} at ${eventData.nextEventTime}`
+        },
+        location = (eventData)=>{
+          return `${convertLocationDataForDisplay(eventData.eventLocation)}`
+        }
 
-		EventItem.url = (eventData) => {
-			return `/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}`
-		}
-		
-		EventItem.location = (eventData)=>{
-			return `${convertLocationDataForDisplay(eventData.eventLocation)}`
-		}
-		 
-		return `<li>
+        url: (eventData) => {
+          return `/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}`
+      }*/
+    }
+
+    defineTemplate(){
+      return `<li>
         <a 
           class="btn secondary"
 					href={{url}}
@@ -38,12 +43,13 @@ const EventItem = () => {
 					{{location}}	
         </div> 
       </li>
-  `;
+    `;
+  }
 }
 
-BaseDynamicComponent.defineTemplate(EventItem,"EventItem");
+PresentationComponent.init(EventItem);
 
-export class EventListComponent extends BaseDynamicComponent {
+export class EventListComponent extends ContainerComponent {
   constructor() {
     super(
       [
@@ -79,7 +85,7 @@ export class EventListComponent extends BaseDynamicComponent {
 				<h1 id="search-results-header">Event search results</h1>
 				<ul
 					data-array=data
-					data-template-name=EventItem
+					data-presentation-component=EventItem
 				></ul>
 			`
 		}

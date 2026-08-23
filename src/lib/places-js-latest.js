@@ -117,7 +117,17 @@ onfig:signal;
 }
 
 
-class BaseDynamicComponent extends HTMLElement {
+class PresentationComponent {
+  static init(item){
+    console.log(item);
+    console.log("Setting up");
+  }
+  
+  defineTemplate(){
+    console.error("No template defined");
+  }
+}
+class ContainerComponent extends HTMLElement {
 
   #attachedEventsToShadowRoot = false;
   #componentIsRendering = false;
@@ -159,7 +169,7 @@ class BaseDynamicComponent extends HTMLElement {
     return (code > 64 && code < 91) || (code > 96 && code < 123)
   }
 
-  static defineTemplate(templateFunc, templateName){
+  static definePresentationComponent(templateFunc, templateName){
 
     let template = document.createElement("template");
     let templateStr = templateFunc();
@@ -167,7 +177,7 @@ class BaseDynamicComponent extends HTMLElement {
     let signals = [];
     let dynamicSignals = [];
 
-    BaseDynamicComponent.computedProps[templateName.toUpperCase()] = [];   
+    ContainerComponent.computedProps[templateName.toUpperCase()] = [];   
      
     const clickEvents = [];
     const changeEvents = [];
@@ -212,8 +222,8 @@ class BaseDynamicComponent extends HTMLElement {
     }
 
 
-    BaseDynamicComponent.changeTemplateEvents[templateName.toUpperCase()] = changeEvents;
-    BaseDynamicComponent.clickTemplateEvents[templateName.toUpperCase()] = clickEvents;
+    ContainerComponent.changeTemplateEvents[templateName.toUpperCase()] = changeEvents;
+    ContainerComponent.clickTemplateEvents[templateName.toUpperCase()] = clickEvents;
 
     while(true){
       let stateVarPos = templateStr.indexOf("{{");
@@ -232,7 +242,7 @@ class BaseDynamicComponent extends HTMLElement {
         attr = "";
         for(let j = stateVarPos-2; j > 0; j--){
           const nameChar = templateStr.charAt(j);
-          if(BaseDynamicComponent.#isAttributeChar(nameChar)){
+          if(ContainerComponent.#isAttributeChar(nameChar)){
             attr = nameChar + attr;
           } else {
             stateVarPos = j;
@@ -266,7 +276,7 @@ class BaseDynamicComponent extends HTMLElement {
       }
       const templateFuncType = typeof templateFunc[fieldName];
       if(templateFuncType === 'function'){
-        BaseDynamicComponent.computedProps[templateName.toUpperCase()].push(
+        ContainerComponent.computedProps[templateName.toUpperCase()].push(
           {
             "field": fieldName,
             "func": templateFunc[fieldName]
@@ -322,16 +332,16 @@ class BaseDynamicComponent extends HTMLElement {
     }
     templateStr = linesToAdd.join("");
 
-    BaseDynamicComponent.templateSignals[templateName.toUpperCase()] = signals;
-    BaseDynamicComponent.dynamicSignals[templateName.toUpperCase()] = dynamicSignals;
+    ContainerComponent.templateSignals[templateName.toUpperCase()] = signals;
+    ContainerComponent.dynamicSignals[templateName.toUpperCase()] = dynamicSignals;
 
     template.innerHTML = templateStr;
-    BaseDynamicComponent.templateFunctions[templateName.toUpperCase()] = templateFunc;
+    ContainerComponent.templateFunctions[templateName.toUpperCase()] = templateFunc;
     
     
-    BaseDynamicComponent.templates[templateName.toUpperCase()] = template.content.firstChild;
-    BaseDynamicComponent.prevState[templateName.toUpperCase()]={};
-    BaseDynamicComponent.prevOrdering[templateName.toUpperCase()]=[];
+    ContainerComponent.templates[templateName.toUpperCase()] = template.content.firstChild;
+    ContainerComponent.prevState[templateName.toUpperCase()]={};
+    ContainerComponent.prevOrdering[templateName.toUpperCase()]=[];
    
     //Tenplate parsing needs to be optimized for performance.
     //This is to display the overhead of the current logic.
@@ -500,11 +510,11 @@ class BaseDynamicComponent extends HTMLElement {
    
     let id = templateData.dataTemplateName;
 
-    const prevProps = BaseDynamicComponent.prevState[templateName]
+    const prevProps = ContainerComponent.prevState[templateName]
 		const computedPropValues = {}; 
 
     //Calculate computed values.
-    BaseDynamicComponent.computedProps[templateName].forEach((computedConfig)=>{
+    ContainerComponent.computedProps[templateName].forEach((computedConfig)=>{
       computedPropValues[computedConfig.field] = computedConfig.func(state);
     });
 
@@ -512,9 +522,9 @@ class BaseDynamicComponent extends HTMLElement {
 
     if(Object.keys(prevProps).length === 0){
 
-      elementRoot = BaseDynamicComponent.templates[templateName].cloneNode(true);
+      elementRoot = ContainerComponent.templates[templateName].cloneNode(true);
       
-      const signalsToRun = BaseDynamicComponent.templateSignals[templateName];
+      const signalsToRun = ContainerComponent.templateSignals[templateName];
       signalsToRun.forEach((signalConfig)=>{
         this.#generateSignal(
           { 
@@ -543,7 +553,7 @@ class BaseDynamicComponent extends HTMLElement {
       }   
     }
 
-    const signalsToRun = BaseDynamicComponent.dynamicSignals[templateName];
+    const signalsToRun = ContainerComponent.dynamicSignals[templateName];
 		signalsToRun.forEach((signalConfig)=>{
 		  if(prevProps[signalConfig.fieldName] !== computedPropValues[signalConfig.fieldName]){
 			 
@@ -562,7 +572,7 @@ class BaseDynamicComponent extends HTMLElement {
       document.getElementById(id).replaceChildren(elementRoot);
     }
    
-    BaseDynamicComponent.prevState[templateName] = computedPropValues;
+    ContainerComponent.prevState[templateName] = computedPropValues;
     
   }
 
@@ -574,8 +584,8 @@ class BaseDynamicComponent extends HTMLElement {
   ){
 
     const eventFieldName = `${eventType}TemplateEvents` 
-    const events = BaseDynamicComponent[eventFieldName][templateName];  
-    const templateFunction = BaseDynamicComponent.templateFunctions[templateName.toUpperCase()];
+    const events = ContainerComponent[eventFieldName][templateName];  
+    const templateFunction = ContainerComponent.templateFunctions[templateName.toUpperCase()];
 
     if(this.nodeName === "SEARCH-COMPONENT"){
     }
@@ -590,17 +600,17 @@ class BaseDynamicComponent extends HTMLElement {
 
         const newAttr = `data-${eventType}-id`;
         
-        elem.setAttribute(newAttr,BaseDynamicComponent.eventHandlerCount);
+        elem.setAttribute(newAttr,ContainerComponent.eventHandlerCount);
         
         const handlerFieldName = `${eventType}TemplateItemHandlers`;
        
         console.log(handlerFieldName);
-        BaseDynamicComponent[handlerFieldName][i] = {
+        ContainerComponent[handlerFieldName][i] = {
           "stateSlice":stateSlice,
           "templateFunction":templateFunction[events[i]],
         }
         
-        BaseDynamicComponent.eventHandlerCount++; 
+        ContainerComponent.eventHandlerCount++; 
       }
     }
   }
@@ -610,7 +620,6 @@ class BaseDynamicComponent extends HTMLElement {
     stateSlice,
     templateName  
   ){
-
     this.#setupEventListeners(addNode,"click",stateSlice,templateName);
     this.#setupEventListeners(addNode,"change",stateSlice,templateName);
   }
@@ -620,18 +629,17 @@ class BaseDynamicComponent extends HTMLElement {
     this.#renderTemplates.templateIds = []; 
     if(!this.#templateData || this.#templateData.length === 0){
 
-      const templates = content.querySelectorAll("[data-template-name]");
+      const templates = content.querySelectorAll("[data-presentation-component]");
 			if(!this.#templateData){
           this.#templateData = [];
         }
 
       for(let i=0;i<templates.length;i++){
 
-
         let attrs = [];
         const attrNames = templates[i].getAttributeNames();
         const dataFieldName = templates[i].getAttribute("data-array");
-        const dataTemplateName = templates[i].getAttribute("data-template-name");
+        const dataTemplateName = templates[i].getAttribute("data-presentation-component");
 
         for(let j=0;j<attrNames.length;j++){
           const attrName = attrNames[j]; 
@@ -645,7 +653,7 @@ class BaseDynamicComponent extends HTMLElement {
           });
         }   
 				
-        templates[i].id = `template-${BaseDynamicComponent.templateCount}-${dataTemplateName}`;
+        templates[i].id = `template-${ContainerComponent.templateCount}-${dataTemplateName}`;
 
         this.#renderTemplates.templateIds.push({
           "id":templates[i].id,
@@ -657,7 +665,7 @@ class BaseDynamicComponent extends HTMLElement {
           dataFieldName:dataFieldName,
           dataTemplateName: templates[i].id
         });
-        BaseDynamicComponent.templateCount++;
+        ContainerComponent.templateCount++;
       }
 
 			if(templates.length > 0 ){
@@ -697,7 +705,7 @@ class BaseDynamicComponent extends HTMLElement {
         continue;
       }
       
-      const prevStateLen = Object.keys(BaseDynamicComponent.prevState[templateName]).length;
+      const prevStateLen = Object.keys(ContainerComponent.prevState[templateName]).length;
     
       const updatedOrdering = [];
       
@@ -711,9 +719,9 @@ class BaseDynamicComponent extends HTMLElement {
           newIds.add(state[num].id);
         }
         if(num < prevStateLen){
-          prevIds.add(BaseDynamicComponent.prevOrdering[templateName][num]);
+          prevIds.add(ContainerComponent.prevOrdering[templateName][num]);
         }
-        if(!state[num] || state[num].id !== BaseDynamicComponent.prevOrdering[templateName][num]){
+        if(!state[num] || state[num].id !== ContainerComponent.prevOrdering[templateName][num]){
           sameLocs = false; 
         }
       }
@@ -723,7 +731,7 @@ class BaseDynamicComponent extends HTMLElement {
       let hasReplaced = (removed.size === prevIds.size);
       if(added.size > 0){
 
-        const lastId = BaseDynamicComponent.prevOrdering[templateName][prevStateLen-1];
+        const lastId = ContainerComponent.prevOrdering[templateName][prevStateLen-1];
         
 				const sharedData = {};
 				for(let j=0;j<attrData.length;j++){
@@ -741,13 +749,13 @@ class BaseDynamicComponent extends HTMLElement {
            
             const itemState = state[num];        
 						const computedProps = {}; 
-            BaseDynamicComponent.computedProps[templateName].forEach((computedConfig)=>{
+            ContainerComponent.computedProps[templateName].forEach((computedConfig)=>{
               computedProps[computedConfig.field] = computedConfig.func(itemState,sharedData);
             });
             
-            const signalsToRun = BaseDynamicComponent.templateSignals[templateName];
+            const signalsToRun = ContainerComponent.templateSignals[templateName];
 
-            let addNode = BaseDynamicComponent.templates[templateName].cloneNode(true);
+            let addNode = ContainerComponent.templates[templateName].cloneNode(true);
 						const signalData =  {...computedProps,...itemState}
 
 						signalsToRun.forEach((signal)=>{ 	
@@ -764,7 +772,7 @@ class BaseDynamicComponent extends HTMLElement {
 						
 						addNode.id = signalData.id;
            
-            BaseDynamicComponent.prevState[templateName][updateData] = computedProps;
+            ContainerComponent.prevState[templateName][updateData] = computedProps;
 
 
             data[this.#templateData[i].dataFieldName] 
@@ -802,7 +810,7 @@ class BaseDynamicComponent extends HTMLElement {
 								hasReplaced = true;
           }          
         }
-        BaseDynamicComponent.prevOrdering[templateName] = updatedOrdering;
+        ContainerComponent.prevOrdering[templateName] = updatedOrdering;
       }
 
       
@@ -811,14 +819,14 @@ class BaseDynamicComponent extends HTMLElement {
 						const templateElem = this.getRootNode()
                 .getElementById(this.#templateData[i].dataTemplateName)
 						templateElem.replaceChildren([]);
-            BaseDynamicComponent.prevState[templateName] = {};
+            ContainerComponent.prevState[templateName] = {};
 
-					const templateFunc = BaseDynamicComponent.templateFunctions[templateName];	
+					const templateFunc = ContainerComponent.templateFunctions[templateName];	
 					break; 
         }
 
         removed.forEach((id)=>{
-            delete BaseDynamicComponent.prevState[templateName][id] 
+            delete ContainerComponent.prevState[templateName][id] 
         });
 
         if(!hasReplaced){ 
@@ -828,18 +836,18 @@ class BaseDynamicComponent extends HTMLElement {
 							const searchId = `[id="${id}"]`;
               const node = self.querySelector(searchId);
 							node.parentNode.removeChild(node);
-              const idx = BaseDynamicComponent.prevOrdering[templateName].findIndex((elem)=>elem === id);
-              BaseDynamicComponent.prevOrdering[templateName].splice(idx,1); 
+              const idx = ContainerComponent.prevOrdering[templateName].findIndex((elem)=>elem === id);
+              ContainerComponent.prevOrdering[templateName].splice(idx,1); 
             });
           } }
       }
 
       let sameNumber = false;
-      if(!hasReplaced && updatedOrdering.length === BaseDynamicComponent.prevOrdering[templateName].length){
+      if(!hasReplaced && updatedOrdering.length === ContainerComponent.prevOrdering[templateName].length){
         sameNumber = true; 
         let moveNodes = [];
         for(let num=0;num<updatedOrdering.length;num++){
-          if(updatedOrdering[num] !== BaseDynamicComponent.prevOrdering[templateName][num]){
+          if(updatedOrdering[num] !== ContainerComponent.prevOrdering[templateName][num]){
           
             let insertBefore = null;
             if (num < updatedOrdering.length -1){
@@ -855,22 +863,20 @@ class BaseDynamicComponent extends HTMLElement {
         }
         
         if(moveNodes.length > 0){
-
-            for(let mNum=moveNodes.length-1;mNum>=0;mNum--){
-             
-              const moveData = moveNodes[mNum];
-
-              const nodeToMove = this.getRootNode().getElementById(
-                moveData.moveId);
-            
-              if(moveData.prevNode !== null){
-                moveData.prevNode.parentNode.insertBefore(nodeToMove,moveData.prevNode);
-              } else {
-                nodeToMove.parentNode.appendChild(nodeToMove);
-              }
+          for(let mNum=moveNodes.length-1;mNum>=0;mNum--){
+           
+            const moveData = moveNodes[mNum];
+            const nodeToMove = this.getRootNode().getElementById(
+              moveData.moveId);
+          
+            if(moveData.prevNode !== null){
+              moveData.prevNode.parentNode.insertBefore(nodeToMove,moveData.prevNode);
+            } else {
+              nodeToMove.parentNode.appendChild(nodeToMove);
             }
+          }
         }
-        BaseDynamicComponent.prevOrdering[templateName] = updatedOrdering; 
+        ContainerComponent.prevOrdering[templateName] = updatedOrdering; 
       }
     	
       if(hasReplaced){
@@ -890,18 +896,18 @@ class BaseDynamicComponent extends HTMLElement {
             const id = state[num].id;
             const itemState = state[num];        
            
-            const prevProps = BaseDynamicComponent.prevState[templateName][""+id]                   
+            const prevProps = ContainerComponent.prevState[templateName][""+id]                   
 						const computedPropValues = {}; 
 						//Calculate computed values.
-            BaseDynamicComponent.computedProps[templateName].forEach((computedConfig)=>{
+            ContainerComponent.computedProps[templateName].forEach((computedConfig)=>{
               computedPropValues[computedConfig.field] = computedConfig.func(itemState, sharedData);
             });
 
                   
             let updatedNode;
-            const signalsToRun = BaseDynamicComponent.dynamicSignals[templateName];
+            const signalsToRun = ContainerComponent.dynamicSignals[templateName];
 						signalsToRun.forEach((signalConfig)=>{
-							if(BaseDynamicComponent.prevState[templateName][id][signalConfig.fieldName] !== computedPropValues[signalConfig.fieldName]){
+							if(ContainerComponent.prevState[templateName][id][signalConfig.fieldName] !== computedPropValues[signalConfig.fieldName]){
 							
 								this.#generateSignal(
 									{ 
@@ -916,7 +922,7 @@ class BaseDynamicComponent extends HTMLElement {
 
 						});
 						
-						BaseDynamicComponent.prevState[templateName][id] = computedPropValues;
+						ContainerComponent.prevState[templateName][id] = computedPropValues;
         }
       }	
     }
@@ -1005,7 +1011,7 @@ class BaseDynamicComponent extends HTMLElement {
 
       this.#renderTemplates.templateIds.forEach((templateId)=>{
     
-        const changeHandlers = BaseDynamicComponent.changeTemplateEvents[templateId.templateName.toUpperCase()]
+        const changeHandlers = ContainerComponent.changeTemplateEvents[templateId.templateName.toUpperCase()]
 
         if(changeHandlers){
           this.getRootNode().getElementById(templateId.id)
@@ -1016,22 +1022,22 @@ class BaseDynamicComponent extends HTMLElement {
               this.changeEventHandlers[id].templateFunction(
                 e,
                 this,
-                BaseDynamicComponent.changeTemplateItemHandlers[id].stateSlice(this.componentStore)
+                ContainerComponent.changeTemplateItemHandlers[id].stateSlice(this.componentStore)
               )
           });
         }
        
-        if(BaseDynamicComponent.clickTemplateEvents[templateId.templateName.toUpperCase()]){
+        if(ContainerComponent.clickTemplateEvents[templateId.templateName.toUpperCase()]){
           console.log("Adding events?");
           this.getRootNode().getElementById(templateId.id)
             .addEventListener("click",(e)=>{
               e.preventDefault(); 
               const id = e.target.getAttribute("data-click-id");
               console.log("Id:"+id);
-              BaseDynamicComponent.clickTemplateItemHandlers[id].templateFunction(
+              ContainerComponent.clickTemplateItemHandlers[id].templateFunction(
                 e,
                 this,
-                BaseDynamicComponent.clickTemplateItemHandlers[id].stateSlice(this.componentStore)
+                ContainerComponent.clickTemplateItemHandlers[id].stateSlice(this.componentStore)
   
               )
           });
@@ -1069,18 +1075,15 @@ class BaseDynamicComponent extends HTMLElement {
                 const prevStateKey = item.dataTemplateName.split("-")[2];	
 
                 if(self[func].showIf !== false) {
-                  BaseDynamicComponent.prevState[prevStateKey.toUpperCase()] = {};
+                  ContainerComponent.prevState[prevStateKey.toUpperCase()] = {};
                 } 
               }
-
             });
           }
 
           if(self[func].showIf !== false){
 					  node.innerHTML = config.fallback;
           }
-
-					
 				} else {
 					if(self[func].showIf !== true){
 						node.innerHTML = config.isVisible;
@@ -1091,10 +1094,9 @@ class BaseDynamicComponent extends HTMLElement {
 			}
 		});
 	}
-
 }
 
-class BaseTemplateComponent extends HTMLElement {
+class ShadowDomComponent extends HTMLElement {
   connectedCallback() {
     this.attachShadow({ mode: "open" });
 
@@ -1119,7 +1121,6 @@ class CustomLoadAction {
     };
   }
 }
-
 
 class DataStore {
 
@@ -1256,4 +1257,4 @@ class DataStore {
   }
 }
 
-export { ApiLoadAction, BaseDynamicComponent, BaseTemplateComponent, CustomLoadAction, DataStore };
+export { ApiLoadAction, ContainerComponent, ShadowDomComponent, CustomLoadAction, DataStore, PresentationComponent};

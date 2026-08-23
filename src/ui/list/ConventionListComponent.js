@@ -1,8 +1,8 @@
-import { BaseDynamicComponent } from "/lib/places-js-latest.js";
+import { ContainerComponent } from "/lib/places-js-latest.js";
 import { CONVENTIONS_STORE } from "../../data/list/LocationsStore.js";
 import { convertDateListToRange } from "../../shared/EventDataUtils.js";
 
-export class ConventionListComponent extends BaseDynamicComponent {
+export class ConventionListComponent extends ContainerComponent {
   constructor() {
     super([
       {
