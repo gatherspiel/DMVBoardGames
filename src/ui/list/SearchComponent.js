@@ -128,8 +128,41 @@ export class SearchComponent extends ContainerComponent {
 
 class SearchForm extends PresentationComponent{
 
-  defineComputedState(){
+  changeHandlers() {
+    const checkboxUpdated = (e,component)=>{
+      component.updateData({
+        enableSearchButtonKey: true,
+        showSearchUiMobile: true
+      });
+    }
+
+    const citiesUpdated = (e,component)=>{
+      component.updateData({
+          [ENABLE_SEARCH_TOGGLE_KEY]: true,
+          location: eventTarget.value,
+          showSearchUiMobile: true
+        });
+      }
+
+    const distanceUpdated = () => {
+      self.updateData({
+        [ENABLE_SEARCH_TOGGLE_KEY]: true,
+        distance: eventTarget.value,
+        showSearchUiMobile: true 
+      });
+    }
+    
+    return {
+      "checkboxUpdated":checkboxUpdated,
+      "citiesUpdated": citeisUpdated,
+      "distanceUpdated": distanceUpdated
+    }
+  }
+  
+  clickHandlers() {
+     
     const searchEvents = (e,component, state, searchGroups=false)=>{
+
       const searchParams = {
         location: state.location ?? "",
         days: getDaysOfWeekSelectedState, 
@@ -155,34 +188,19 @@ class SearchForm extends PresentationComponent{
         ...{ apiUrl: component.getAttribute("api-url") ?? "" },
       });
     }
-  
+    
     const searchGroups = (e,component, state) =>{
       SearchFormTemplate.searchEvents(e,component, true);
     }
- 
-    const checkboxUpdated = (e,component)=>{
-      component.updateData({
-        enableSearchButtonKey: true,
-        showSearchUiMobile: true
-      });
-    }
 
-    const citiesUpdated = (e,component)=>{
-      component.updateData({
-          [ENABLE_SEARCH_TOGGLE_KEY]: true,
-          location: eventTarget.value,
-          showSearchUiMobile: true
-        });
-      }
-
-    const distanceUpdated = () => {
-      self.updateData({
-        [ENABLE_SEARCH_TOGGLE_KEY]: true,
-        distance: eventTarget.value,
-        showSearchUiMobile: true 
-      });
-    }
+    return {
+      "searchEvents": searchEvents, 
+      "searchGroups": searchGroups
+    };
+  }
   
+  defineComputedState(){
+     
     const searchInputClass = (state) => {
       if(state.location && state.location !== DEFAULT_SEARCH_PARAMETER){
         return "search-form-three-inputs";
@@ -266,7 +284,6 @@ class SearchForm extends PresentationComponent{
       return true;
     }
 
-    console.log("notLoggedIn");
     return {
       "searchInputClass":searchInputClass,
       "getDaysSelect":getDaysSelect,
@@ -283,55 +300,55 @@ class SearchForm extends PresentationComponent{
   
   
   defineTemplate(){ 
-  return `
-    <div id="form-div-outer">    
-      <div  
-        class={{searchInputClass}}
-        id="search-form-inputs" 
-      > 
-        <label 
-          class="searchDropdownLabel"
+    return `
+      <div id="form-div-outer">    
+        <div  
+          class={{searchInputClass}}
+          id="search-form-inputs" 
+        > 
+          <label 
+            class="searchDropdownLabel"
+          >
+            Select event day: 
+          </label>     
+          <fieldset
+            onClick={{checkboxUpdated}}
+          >
+            {{getDaysSelect}}
+          </fieldset>
+          <label 
+            class="searchDropdownLabel"
+          >
+            Select city: 
+          </label> 
+          <select> 
+            {{getCitySelect}}
+          </select>
+          <select 
+            display={{distanceSelectVisible}}
+          >
+            {{getDistanceSelect}} 
+          </select>
+        </div>  
+        <div 
+          id = "search-input-div"
         >
-          Select event day: 
-        </label>     
-        <fieldset
-          onClick={{checkboxUpdated}}
-        >
-          {{getDaysSelect}}
-        </fieldset>
-        <label 
-          class="searchDropdownLabel"
-        >
-          Select city: 
-        </label> 
-        <select> 
-          {{getCitySelect}}
-        </select>
-        <select 
-          display={{distanceSelectVisible}}
-        >
-          {{getDistanceSelect}} 
-        </select>
-      </div>  
-      <div 
-        id = "search-input-div"
-      >
-        <button
-          class={{searchBtnCls}}
-          id={{searchBtnId}}
-          onClick={{searchEvents}}
-        >
-          {{searchAllText}}
-        </button>
-        <button 
-          class={{searchBtnClass}}
-          hidden={{notLoggedIn}}
-          id={{searchBtnIdUser}}
-          onClick={{searchGroups}}
-        >
-          Search joined groups
-        </button> 
-      </div>
-    </div>` 
-  }
+          <button
+            class={{searchBtnCls}}
+            id={{searchBtnId}}
+            onClick={{searchEvents}}
+          >
+            {{searchAllText}}
+          </button>
+          <button 
+            class={{searchBtnClass}}
+            hidden={{notLoggedIn}}
+            id={{searchBtnIdUser}}
+            onClick={{searchGroups}}
+          >
+            Search joined groups
+          </button> 
+        </div>
+      </div>` 
+    }
   }

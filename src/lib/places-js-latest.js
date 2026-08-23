@@ -343,8 +343,6 @@ class PresentationItem {
   computePropValuesForNode(state){
     let computedPropValues = {};
 
-    console.log(PresentationComponent.presentationComponents);
-    console.log(this.templateName);
     PresentationComponent
       .presentationComponents[this.templateName]
       .computedProps
@@ -355,13 +353,12 @@ class PresentationItem {
   }
   
   createTemplateNode(){
-    return  PresentationComponent
+    return PresentationComponent
       .presentationComponents[this.templateName]
       .templateNode
       .cloneNode(true)
   }
       
-
 }
 
 class ContainerComponent extends HTMLElement {
@@ -626,12 +623,22 @@ class ContainerComponent extends HTMLElement {
   ){
 
     const eventFieldName = `${eventType}TemplateEvents` 
-    const events = ContainerComponent[eventFieldName][templateName];  
-    const templateFunction = ContainerComponent.templateFunctions[templateName.toUpperCase()];
 
-    if(this.nodeName === "SEARCH-COMPONENT"){
+    const defineName = `${eventType}Handlers`;
+
+    let events = [];
+    let templateFunctions;
+    const presentationComponent = PresentationComponent.presentationComponents[templateName];
+
+    if(presentationComponent[eventFieldName]){
+      events = presentationComponent[eventFieldName];
+
+      if(events.length > 0) { 
+        templateFunctions = presentationComponent[defineName]();
+      }
     }
-
+   
+    
     if(events && events.length > 0){
       for(let i=0;i<events.length;i++){
 
@@ -645,11 +652,9 @@ class ContainerComponent extends HTMLElement {
         elem.setAttribute(newAttr,ContainerComponent.eventHandlerCount);
         
         const handlerFieldName = `${eventType}TemplateItemHandlers`;
-       
-        console.log(handlerFieldName);
         ContainerComponent[handlerFieldName][i] = {
           "stateSlice":stateSlice,
-          "templateFunction":templateFunction[events[i]],
+          "templateFunction":templateFunctions[events[i]],
         }
         
         ContainerComponent.eventHandlerCount++; 
@@ -998,6 +1003,7 @@ class ContainerComponent extends HTMLElement {
     const rootNode = this.getRootNode(); 
     const selectors = (this.#clickEventListeners && Object.keys(this.#clickEventListeners)) || [];
     if(selectors.length > 0) {
+      console.log("Setting up click events");
       selectors.forEach(selector=>{
         const element = this.querySelector(selector);
         if(!element){
@@ -1055,33 +1061,35 @@ class ContainerComponent extends HTMLElement {
     
         const changeHandlers = ContainerComponent.changeTemplateEvents[templateId.templateName.toUpperCase()]
 
-        if(changeHandlers){
+        if(PresentationComponent.presentationComponents[templateId.templateName.toUpperCase()].changeTemplateEvents){
           this.getRootNode().getElementById(templateId.id)
             .addEventListener("change",(e)=>{
               
               const id = e.target.getAttribute("data-change-id");
-            
-              this.changeEventHandlers[id].templateFunction(
-                e,
-                this,
-                ContainerComponent.changeTemplateItemHandlers[id].stateSlice(this.componentStore)
-              )
+           
+              if(id !== null){
+                this.changeEventHandlers[id].templateFunction(
+                  e,
+                  this,
+                  ContainerComponent.changeTemplateItemHandlers[id].stateSlice(this.componentStore)
+                )
+              }
           });
         }
-       
-        if(ContainerComponent.clickTemplateEvents[templateId.templateName.toUpperCase()]){
-          console.log("Adding events?");
+        
+        if(PresentationComponent.presentationComponents[templateId.templateName.toUpperCase()].clickTemplateEvents){
           this.getRootNode().getElementById(templateId.id)
             .addEventListener("click",(e)=>{
               e.preventDefault(); 
               const id = e.target.getAttribute("data-click-id");
-              console.log("Id:"+id);
-              ContainerComponent.clickTemplateItemHandlers[id].templateFunction(
-                e,
-                this,
-                ContainerComponent.clickTemplateItemHandlers[id].stateSlice(this.componentStore)
-  
-              )
+              if(id !== null) {
+                ContainerComponent.clickTemplateItemHandlers[id].templateFunction(
+                  e,
+                  this,
+                  ContainerComponent.clickTemplateItemHandlers[id].stateSlice(this.componentStore)
+    
+                )
+              }
           });
         }
           
