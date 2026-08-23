@@ -1011,6 +1011,7 @@ class ContainerComponent extends HTMLElement {
         }
         else {  
           element.onclick = (e)=>{
+            console.log("Hi");
             e.preventDefault();
 						requestAnimationFrame(()=>{
 							clickEventListeners[selector]();
@@ -1080,9 +1081,10 @@ class ContainerComponent extends HTMLElement {
         if(PresentationComponent.presentationComponents[templateId.templateName.toUpperCase()].clickTemplateEvents){
           this.getRootNode().getElementById(templateId.id)
             .addEventListener("click",(e)=>{
-              e.preventDefault(); 
               const id = e.target.getAttribute("data-click-id");
               if(id !== null) {
+
+                e.preventDefault(); 
                 ContainerComponent.clickTemplateItemHandlers[id].templateFunction(
                   e,
                   this,
