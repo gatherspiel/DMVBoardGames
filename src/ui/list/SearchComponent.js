@@ -116,7 +116,7 @@ export class SearchComponent extends ContainerComponent {
       isVisible: `<details ${state.showSearchUiMobile ? "open":""}>
         <summary class="btn secondary">Modify search parameters</summary>
         <form
-          data-presentation-compnent=SearchForm
+          data-presentation-component=SearchForm
           id=${SEARCH_FORM_ID}
           onsubmit="return false"
         >
@@ -126,7 +126,7 @@ export class SearchComponent extends ContainerComponent {
   } 
 }
 
-class SearchForm extends PresentationComponent{
+class SearchForm extends PresentationComponent {
 
   changeHandlers() {
     const checkboxUpdated = (e,component)=>{
@@ -137,9 +137,11 @@ class SearchForm extends PresentationComponent{
     }
 
     const citiesUpdated = (e,component)=>{
+      console.log("Hi")
+      console.log(e.target.value);
       component.updateData({
           [ENABLE_SEARCH_TOGGLE_KEY]: true,
-          location: eventTarget.value,
+          location: e.target.value,
           showSearchUiMobile: true
         });
       }
@@ -154,7 +156,7 @@ class SearchForm extends PresentationComponent{
     
     return {
       "checkboxUpdated":checkboxUpdated,
-      "citiesUpdated": citeisUpdated,
+      "citiesUpdated": citiesUpdated,
       "distanceUpdated": distanceUpdated
     }
   }
@@ -165,8 +167,8 @@ class SearchForm extends PresentationComponent{
 
       const searchParams = {
         location: state.location ?? "",
-        days: getDaysOfWeekSelectedState, 
-        distance: data.distance,
+        days: getDaysOfWeekSelectState("#select-days").join(","), 
+        distance: state.distance,
       };
 
       searchParams['userGroupEvents'] = `${searchGroups}`
@@ -175,7 +177,7 @@ class SearchForm extends PresentationComponent{
         [ENABLE_SEARCH_TOGGLE_KEY]: false,
         showSearchUiMObile: false
       });
-      
+   
       const baseUrl = window.location.origin.split("?");
       let updatedUrl = `${baseUrl}?`;
       updatedUrl += `location=${searchParams.location.replaceAll(" ", "_")}&`;
@@ -297,8 +299,7 @@ class SearchForm extends PresentationComponent{
       "searchBtnIdUser":searchBtnIdUser
     }
   }
-  
-  
+    
   defineTemplate(){ 
     return `
       <div id="form-div-outer">    
@@ -306,30 +307,32 @@ class SearchForm extends PresentationComponent{
           class={{searchInputClass}}
           id="search-form-inputs" 
         > 
-          <label 
-            class="searchDropdownLabel"
-          >
+          <label class="searchDropdownLabel">
             Select event day: 
           </label>     
+
           <fieldset
-            onClick={{checkboxUpdated}}
-          >
-            {{getDaysSelect}}
+            id = "select-days"
+            onClick={{checkboxUpdated}}>
+              {{getDaysSelect}}
           </fieldset>
-          <label 
-            class="searchDropdownLabel"
-          >
+
+          <label class="searchDropdownLabel">
             Select city: 
-          </label> 
-          <select> 
+          </label>
+
+          <select 
+            id="select-city"
+            onChange={{citiesUpdated}}>
             {{getCitySelect}}
           </select>
+
           <select 
-            display={{distanceSelectVisible}}
-          >
+            display={{distanceSelectVisible}}>
             {{getDistanceSelect}} 
           </select>
         </div>  
+
         <div 
           id = "search-input-div"
         >
@@ -349,6 +352,7 @@ class SearchForm extends PresentationComponent{
             Search joined groups
           </button> 
         </div>
-      </div>` 
-    }
+      </div>
+    `;
   }
+}

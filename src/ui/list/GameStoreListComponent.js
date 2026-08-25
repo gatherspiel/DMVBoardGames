@@ -1,7 +1,7 @@
-import { BaseDynamicComponent } from "/lib/places-js-latest.js";
+import { ContainerComponent} from "/lib/places-js-latest.js";
 import { GAME_STORE_DATA } from "../../data/list/LocationsStore.js";
 
-export class GameStoreListComponent extends BaseDynamicComponent {
+export class GameStoreListComponent extends ContainerComponent {
   constructor() {
     super([
       {

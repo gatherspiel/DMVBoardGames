@@ -1,5 +1,5 @@
-import { BaseTemplateComponent } from "/lib/places-js-latest.js";
-export class FaqComponent extends BaseTemplateComponent {
+import { ShadowDOMComponent } from "/lib/places-js-latest.js";
+export class FaqComponent extends ShadowDOMComponent {
   constructor() {
     super();
   }

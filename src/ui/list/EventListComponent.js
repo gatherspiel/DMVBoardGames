@@ -59,17 +59,16 @@ class EventItem extends PresentationComponent {
   
     defineComputedState(){
       return {
-        eventTime: (eventData) =>{
+        "eventTime": (eventData) =>{
           if(eventData.isRecurring){
             return `${eventData.dayOfWeek}s at ${eventData.nextEventTime}`;
           }
           return `${eventData.nextEventDate} at ${eventData.nextEventTime}`
         },
-        location:(eventData)=>{
+        "location":(eventData)=>{
           return `${convertLocationDataForDisplay(eventData.eventLocation)}`
         },
-
-        url: (eventData) => {
+       "url": (eventData) => {
           return `/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}`
         } 
       }

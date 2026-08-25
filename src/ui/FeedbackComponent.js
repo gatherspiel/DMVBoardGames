@@ -1,6 +1,6 @@
 import {
   ApiLoadAction,
-  BaseDynamicComponent,
+  ContainerComponent,
 } from "/lib/places-js-latest.js";
 import {
   SUCCESS_MESSAGE_KEY,
@@ -16,7 +16,7 @@ const FEEDBACK_TEXT_INPUT_ID = "feedback-text-input-id";
 const FEEDBACK_TYPE_INPUT_ID = "feedback-type-input-id";
 const SUBMIT_FEEDBACK_ID = "submit-feedback-id";
 
-export class FeedbackComponent extends BaseDynamicComponent {
+export class FeedbackComponent extends ContainerComponent {
   constructor() {
     super();
 

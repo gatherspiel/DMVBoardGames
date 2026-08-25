@@ -1,6 +1,6 @@
-import { BaseTemplateComponent } from "/lib/places-js-latest.js";
+import { ShadowDOMComponent } from "/lib/places-js-latest.js";
 
-export class LoginTemplateComponent extends BaseTemplateComponent{
+export class LoginTemplateComponent extends ShadowDOMComponent{
 
   getTemplateStyle(){
     return `

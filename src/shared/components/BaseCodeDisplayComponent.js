@@ -1,4 +1,4 @@
-import {BaseTemplateComponent} from "/lib/places-js-latest.js";
+import {ShadowDOMComponent} from "/lib/places-js-latest.js";
 import hljs from 'https://unpkg.com/@highlightjs/cdn-assets@11.11.1/es/highlight.min.js';
 
 /**
@@ -6,7 +6,7 @@ import hljs from 'https://unpkg.com/@highlightjs/cdn-assets@11.11.1/es/highlight
  *
  * Note: If HTML is contained in the code, it should be escaped before adding it to this component for display
  */
-export class BaseCodeDisplayComponent extends BaseTemplateComponent{
+export class BaseCodeDisplayComponent extends ShadowDOMComponent{
 
   constructor() {
     super();

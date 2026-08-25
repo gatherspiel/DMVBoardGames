@@ -95,7 +95,7 @@ export function getDaysOfWeekSelect(checkState) {
   daysOfWeek.forEach((day) => {
 		html += `
       <label for=${day}> 
-				<input id="${day}" name=${day} type="checkbox"  ${checkState?.[day]}> 
+				<input id="${day}" name=${day} type="checkbox" ${checkState?.[day]}> 
 				${day}
 			</label>
       
@@ -104,11 +104,13 @@ export function getDaysOfWeekSelect(checkState) {
 	return html;
 }
 
-export function getDaysOfWeekSelectState(selectId) {
-  const selectedDays = {};
+export function getDaysOfWeekSelectState(selector) {
+  const selectedDays = [];
 
-  document.querySelector(`#${selectId}`).forEach((item)=>{
-    console.log(item)
+  document.querySelectorAll(`${selector} input`).forEach((item)=>{
+    if(item.checked){
+      selectedDays.push(item.name);
+    }
   })
 
 	return selectedDays;
