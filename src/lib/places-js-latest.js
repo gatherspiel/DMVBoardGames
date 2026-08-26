@@ -411,9 +411,9 @@ class ContainerComponent extends HTMLElement {
       this.#loadingIndicatorConfig = loadingIndicatorConfig;
     }
 
+
     //Performance optimization if component is not subscribed to data stores.
     if(dataStoreSubscriptions.length === 0) {
-      this.updateData({});
       return;
     }
 		
@@ -424,8 +424,14 @@ class ContainerComponent extends HTMLElement {
     }
 
     this.updateFromSubscribedStores();
+
+    this._internals = this.attachInternals();
   }
 
+  init(initialState){
+    this.updateData(initialState);
+  }
+  
   #generateSignal(params){
 
 		const {
@@ -1071,14 +1077,22 @@ class ContainerComponent extends HTMLElement {
           this.getRootNode().getElementById(templateId.id)
             .addEventListener("change",(e)=>{
 
-              const id = e.target.getAttribute("data-change-id");
-           
+              const id = e.target.getAttribute("data-change-id") || 
+                         e.target.parentNode.getAttribute("data-change-id") ||  
+                         e.target.parentNode.parentNode.getAttribute("data-change-id")
+
+
+               
+              console.log(e.target);
+              console.log(e.target.parentNode);
+
+              console.log("Processing change event with id:"+id);
               if(id !== null){
-                ContainerComponent.changeTemplateItemHandlers[id].templateFunction(
-                  e,
-                  this,
-                  ContainerComponent.changeTemplateItemHandlers[id].stateSlice(this.componentStore)
-                )
+                ContainerComponent.changeTemplateItemHandlers[id].templateFunction({
+                  "event":e,
+                  "componentAttrs": this.attributes,
+                  "state":ContainerComponent.changeTemplateItemHandlers[id].stateSlice(this.componentStore)
+                })
               }
           });
         }
@@ -1086,16 +1100,19 @@ class ContainerComponent extends HTMLElement {
         if(PresentationComponent.presentationComponents[templateId.templateName.toUpperCase()].clickTemplateEvents){
           this.getRootNode().getElementById(templateId.id)
             .addEventListener("click",(e)=>{
-              const id = e.target.getAttribute("data-click-id");
+              const id = e.target.getAttribute("data-click-id")
+                      || e.target.parentNode.getAttribute("data-click-id") 
+                      || e.target.parentNode.parentNode.getAttribute("data-click-id") 
+
+
               if(id !== null) {
 
                 e.preventDefault(); 
-                ContainerComponent.clickTemplateItemHandlers[id].templateFunction(
-                  e,
-                  this,
-                  ContainerComponent.clickTemplateItemHandlers[id].stateSlice(this.componentStore)
-    
-                )
+                ContainerComponent.clickTemplateItemHandlers[id].templateFunction({
+                  "event":e,
+                  "componentAttrs":this.attributes,
+                  "state":ContainerComponent.clickTemplateItemHandlers[id].stateSlice(this.componentStore) 
+                })
               }
           });
         }

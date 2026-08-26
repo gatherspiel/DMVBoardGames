@@ -77,106 +77,79 @@ export class SearchComponent extends ContainerComponent {
       location: this.initialParams.get("location"),
     };
     SEARCH_RESULTS_LIST_STORE.fetchData(this.defaultSearchParams);
-    
+   
     PresentationComponent.init(SearchForm);  
+
+    this.setAttribute("search-button-enabled",false);
   }
 
   connectedCallback(){
-    this.updateData({
-      ...{[ENABLE_SEARCH_TOGGLE_KEY]: this.initialParams.size === 0},
-      ...this.defaultSearchParams,
-    })
+    this.init(this.defaultSearchParams);
   }
-
 
   render(state) {  
     
     return `
-      <div 
-        class="container-xl" 
-        data-show-if="isMobile"
-      >
-      </div>
-    `;
-  }
- 
-  isMobile(state){
-    return {
-      showIf: ()=>{
-        return window.matchMedia("(max-width: 32em)").matches;
-      },
-      fallback: 
-        `<div class="hide-mobile"><h1>${this.getAttribute("search-text")}</h1></div>
+      <div class="container-xl" >
+        <div class="hide-mobile"><h1>${this.getAttribute("search-text")}</h1>
           <form
             data-presentation-component=SearchForm
             onsubmit="return false"
-          >
+          ></form>
         </div>
-      `,
-      isVisible: `<details ${state.showSearchUiMobile ? "open":""}>
-        <summary class="btn secondary">Modify search parameters</summary>
-        <form
-          data-presentation-component=SearchForm
-          id=${SEARCH_FORM_ID}
-          onsubmit="return false"
-        >
-        </hr> 
-      </details>`
-    }
-  } 
+        <details class="show-mobile" ${state.showSearchUiMobile ? "open":""}>
+          <summary class="btn secondary">Modify search parameters</summary>
+          <h1>Test</h1>
+          <form
+            data-presentation-component=SearchForm
+            id=${SEARCH_FORM_ID}
+            onsubmit="return false"
+          ></form>
+          </hr> 
+        </details>
+      </div>
+    `;
+  }
 }
 
 class SearchForm extends PresentationComponent {
 
   changeHandlers() {
-    const checkboxUpdated = (e,component)=>{
-      component.updateData({
-        enableSearchButtonKey: true,
-        showSearchUiMobile: true
-      });
+
+    const checkboxUpdated = ({componentAttrs})=>{  
+      componentAttrs["search-button-enabled"].value=true;
     }
 
-    const citiesUpdated = (e,component)=>{
-      console.log("Hi")
-      console.log(e.target.value);
-      component.updateData({
-          [ENABLE_SEARCH_TOGGLE_KEY]: true,
-          location: e.target.value,
-          showSearchUiMobile: true
-        });
-      }
+    const distanceUpdated = ({componentAttrs}) => { 
+      componentAttrs["search-button-enabled"].value=true;
+    }
 
-    const distanceUpdated = () => {
-      self.updateData({
-        [ENABLE_SEARCH_TOGGLE_KEY]: true,
-        distance: eventTarget.value,
-        showSearchUiMobile: true 
-      });
+    const citiesUpdated = ({componentAttrs}) => {
+      componentAttrs["search-button-enabled"].value=true;
     }
     
     return {
-      "checkboxUpdated":checkboxUpdated,
       "citiesUpdated": citiesUpdated,
+      "checkboxUpdated":checkboxUpdated,
       "distanceUpdated": distanceUpdated
     }
   }
   
   clickHandlers() {
      
-    const searchEvents = (e,component, state, searchGroups=false)=>{
+    const searchEvents = ({componentAttrs})=>{
 
+      componentAttrs["search-button-enabled"].value=false;
+
+      console.log(componentAttrs);
       const searchParams = {
-        location: state.location ?? "",
+        location: document.getElementById(`select-city`).value ?? "",
         days: getDaysOfWeekSelectState("#select-days").join(","), 
-        distance: state.distance,
+        distance: document.getElementById(`select-distance`).value ?? ''
       };
 
       searchParams['userGroupEvents'] = `${searchGroups}`
       
-      component.updateData({
-        [ENABLE_SEARCH_TOGGLE_KEY]: false,
-        showSearchUiMObile: false
-      });
    
       const baseUrl = window.location.origin.split("?");
       let updatedUrl = `${baseUrl}?`;
@@ -185,17 +158,23 @@ class SearchForm extends PresentationComponent {
       updatedUrl += `distance=${searchParams?.distance?.replaceAll(" ", "_") ?? ``}`;
 
       window.history.replaceState({}, "", updatedUrl);
+
       SEARCH_RESULTS_LIST_STORE.fetchData({
         ...searchParams,
-        ...{ apiUrl: component.getAttribute("api-url") ?? "" },
+        ...{ apiUrl: componentAttrs.getNamedItem("api-url").value ?? "" },
       });
     }
     
     const searchGroups = (e,component, state) =>{
-      SearchFormTemplate.searchEvents(e,component, true);
+      searchEvents(e,component, true);
+    }
+
+    const testUpdate = ()=>{
+      console.log("Hi");
     }
 
     return {
+      "testUpdate":testUpdate,
       "searchEvents": searchEvents, 
       "searchGroups": searchGroups
     };
@@ -237,7 +216,6 @@ class SearchForm extends PresentationComponent {
 
     const getDistanceSelect = (state) => {
       return `
-        <label id="max-distance-label" class="searchDropdownLabel">Max distance:</label>
         ${getDropdown({
           state: DISTANCE_OPTIONS,
           id: "search-distance-id",
@@ -313,7 +291,7 @@ class SearchForm extends PresentationComponent {
 
           <fieldset
             id = "select-days"
-            onClick={{checkboxUpdated}}>
+            onChange={{checkboxUpdated}}>
               {{getDaysSelect}}
           </fieldset>
 
@@ -323,22 +301,28 @@ class SearchForm extends PresentationComponent {
 
           <select 
             id="select-city"
-            onChange={{citiesUpdated}}>
+            onChange={{citiesUpdated}}
+          >
             {{getCitySelect}}
           </select>
+          
+          <div id="select-distance-outer">
+            <label id="max-distance-label" class="searchDropdownLabel">Max distance:</label>
+            <select
+              id="select-distance"
+              onChange={{distanceUpdated}}
+              >
+              {{getDistanceSelect}} 
+            </select>
+          </div>
 
-          <select 
-            display={{distanceSelectVisible}}>
-            {{getDistanceSelect}} 
-          </select>
-        </div>  
 
         <div 
           id = "search-input-div"
         >
           <button
-            class={{searchBtnCls}}
-            id={{searchBtnId}}
+            class="secondary"
+            id="search-button"
             onClick={{searchEvents}}
           >
             {{searchAllText}}
@@ -352,7 +336,10 @@ class SearchForm extends PresentationComponent {
             Search joined groups
           </button> 
         </div>
+        </div>  
+
       </div>
     `;
   }
 }
+

@@ -7,6 +7,16 @@ select {
 #search-input-div {
   margin-top:0.5rem;
 } 
+
+#select-city:has(> option[value="any"]:checked) + div{
+  display:none;
+}
+
+search-component:not([search-button-enabled=true]) #search-button {
+  opacity: 80%;
+  background-color:gray;
+}
+
 @media screen and (width > 32em) {
   fieldset label {
     display:inline;
