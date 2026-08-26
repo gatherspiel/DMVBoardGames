@@ -67,7 +67,6 @@ export class SearchComponent extends ContainerComponent {
     ]);
 
     this.initialParams = new URLSearchParams(document.location.search);
-    console.log("Searching with url:"+this.getAttribute("api-url"));
 
     this.defaultSearchParams = {
       apiUrl: this.getAttribute("api-url"),
@@ -141,7 +140,6 @@ class SearchForm extends PresentationComponent {
 
       componentAttrs["search-button-enabled"].value=false;
 
-      console.log(componentAttrs);
       const searchParams = {
         location: document.getElementById(`select-city`).value ?? "",
         days: getDaysOfWeekSelectState("#select-days").join(","), 
@@ -169,16 +167,13 @@ class SearchForm extends PresentationComponent {
       searchEvents(e,component, true);
     }
 
-    const testUpdate = ()=>{
-      console.log("Hi");
-    }
-
+  
     return {
-      "testUpdate":testUpdate,
       "searchEvents": searchEvents, 
       "searchGroups": searchGroups
     };
   }
+ 
   
   defineComputedState(){
      
@@ -249,13 +244,12 @@ class SearchForm extends PresentationComponent {
       }
     }
 
+    /*
     const searchBtnIdUser = (state)=>{
       if(state[ENABLE_SEARCH_TOGGLE_KEY]){
         return "search-joined-id"
       } else {
-        return "disabled-search-joined"
-      }
-    } 
+    } */
   
     const notLoggedIn = (state)=>{
       if(state?.loginState?.loggedIn === true){
@@ -274,10 +268,9 @@ class SearchForm extends PresentationComponent {
       "searchBtnId":searchBtnId,
       "searchAllText":searchAllText,
       "notLoggedIn":notLoggedIn,
-      "searchBtnIdUser":searchBtnIdUser
     }
   }
-    
+
   defineTemplate(){ 
     return `
       <div id="form-div-outer">    
@@ -315,8 +308,6 @@ class SearchForm extends PresentationComponent {
               {{getDistanceSelect}} 
             </select>
           </div>
-
-
         <div 
           id = "search-input-div"
         >

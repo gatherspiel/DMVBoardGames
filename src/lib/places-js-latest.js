@@ -1081,12 +1081,6 @@ class ContainerComponent extends HTMLElement {
                          e.target.parentNode.getAttribute("data-change-id") ||  
                          e.target.parentNode.parentNode.getAttribute("data-change-id")
 
-
-               
-              console.log(e.target);
-              console.log(e.target.parentNode);
-
-              console.log("Processing change event with id:"+id);
               if(id !== null){
                 ContainerComponent.changeTemplateItemHandlers[id].templateFunction({
                   "event":e,
