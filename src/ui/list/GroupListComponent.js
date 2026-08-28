@@ -17,7 +17,6 @@ export class GroupListComponent extends ContainerComponent {
           fieldName: "loginStatus",
         },
       ],
-      LOADING_INDICATOR_CONFIG,
     );
   }
 

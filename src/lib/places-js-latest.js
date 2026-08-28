@@ -766,9 +766,6 @@ class ContainerComponent extends HTMLElement {
         continue;
       }
     
-      console.log("Updating list");
-      console.log(this.#presentationItems[i]);
-      console.log(this.#presentationItems[i].prevOrdering); 
       const prevStateLen = this.#presentationItems[i].prevStateLen();
     
       const updatedOrdering = [];
@@ -898,8 +895,8 @@ class ContainerComponent extends HTMLElement {
 							const searchId = `[id="${id}"]`;
               const node = self.querySelector(searchId);
 							node.parentNode.removeChild(node);
-              const idx = ContainerComponent.prevOrdering[templateName].findIndex((elem)=>elem === id);
-              ContainerComponent.prevOrdering[templateName].splice(idx,1); 
+              const idx = presentationItem.prevOrdering.findIndex((elem)=>elem === id);
+              presentationItem.prevOrdering.splice(idx,1); 
             });
           } }
       }
@@ -938,7 +935,7 @@ class ContainerComponent extends HTMLElement {
             }
           }
         }
-        ContainerComponent.prevOrdering[templateName] = updatedOrdering; 
+        presentationItem.prevOrdering = updatedOrdering;
       }
     	
       if(hasReplaced){
@@ -958,18 +955,23 @@ class ContainerComponent extends HTMLElement {
             const id = state[num].id;
             const itemState = state[num];        
            
-            const prevProps = ContainerComponent.prevState[templateName][""+id]                   
+            const prevProps = presentationItem.prevState[""+id]                   
 						const computedPropValues = {}; 
 						//Calculate computed values.
-            ContainerComponent.computedProps[templateName].forEach((computedConfig)=>{
-              computedPropValues[computedConfig.field] = computedConfig.func(itemState, sharedData);
-            });
+           
+            const componentConfig = PresentationComponent
+              .presentationComponents[presentationItem.templateName]
 
+            componentConfig
+              .computedProps
+              .forEach((computedConfig)=>{
+                computedPropValues[computedConfig.field] = computedConfig.func(itemState,sharedData);
+            });
                   
             let updatedNode;
-            const signalsToRun = ContainerComponent.dynamicSignals[templateName];
-						signalsToRun.forEach((signalConfig)=>{
-							if(ContainerComponent.prevState[templateName][id][signalConfig.fieldName] !== computedPropValues[signalConfig.fieldName]){
+						
+            componentConfig.dynamicSignals.forEach((signalConfig)=>{
+							if(presentationItem.prevState[id][signalConfig.fieldName] !== computedPropValues[signalConfig.fieldName]){
 							
 								this.#generateSignal(
 									{ 
@@ -984,7 +986,7 @@ class ContainerComponent extends HTMLElement {
 
 						});
 						
-						ContainerComponent.prevState[templateName][id] = computedPropValues;
+						presentationItem.prevState[id] = computedPropValues;
         }
       }	
     }

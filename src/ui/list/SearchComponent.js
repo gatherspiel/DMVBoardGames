@@ -99,7 +99,6 @@ export class SearchComponent extends ContainerComponent {
         <details class="show-mobile">
           <summary class="btn secondary">Modify search parameters</summary>
           <form
-            data-component=SearchForm
             id=${SEARCH_FORM_ID}
             onsubmit="return false"
           ></form>
