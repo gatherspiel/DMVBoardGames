@@ -19,37 +19,19 @@ export class EventListComponent extends ContainerComponent {
 					dataStore: SEARCH_RESULTS_LIST_STORE,
         },
       ],
-      //LOADING_INDICATOR_CONFIG
     );
   }
-
-	hasData(){
-		return {
-			showIf: (state)=>{
-				return state?.status === "Waiting for user input" ||
-					!state.data || state.data.length > 0
-			},
-			fallback: `
-				<div class="container-xl fade-in-animation">
-          <p id="no-events-found">No events found</p>
-          <div class="section-separator-small"></div> 
-				</div>
-			`,
-			isVisible: `
-				<h1 id="search-results-header">Event search results</h1>
-				<ul
-					data-array=data
-					data-presentation-component=EventItem
-				></ul>
-			`
-		}
-	}
   
 	render(state) {	
     return `
-			<div
-				data-show-if="hasData" 
-				class="container-xl fade-in-animation">
+			<div class="container-xl fade-in-animation"> 
+        <p id="no-events-found">No events found</p>
+        <h1 id="search-results-header">Event search results</h1>
+				<ul
+          data-repeat
+					data-state=data
+					data-component=EventItem
+				></ul>
       </div>
 		`;  
   }

@@ -92,15 +92,14 @@ export class SearchComponent extends ContainerComponent {
       <div class="container-xl" >
         <div class="hide-mobile"><h1>${this.getAttribute("search-text")}</h1>
           <form
-            data-presentation-component=SearchForm
+            data-component=SearchForm
             onsubmit="return false"
           ></form>
         </div>
-        <details class="show-mobile" ${state.showSearchUiMobile ? "open":""}>
+        <details class="show-mobile">
           <summary class="btn secondary">Modify search parameters</summary>
-          <h1>Test</h1>
           <form
-            data-presentation-component=SearchForm
+            data-component=SearchForm
             id=${SEARCH_FORM_ID}
             onsubmit="return false"
           ></form>
@@ -243,13 +242,6 @@ class SearchForm extends PresentationComponent {
         return "disabled-search-button";
       }
     }
-
-    /*
-    const searchBtnIdUser = (state)=>{
-      if(state[ENABLE_SEARCH_TOGGLE_KEY]){
-        return "search-joined-id"
-      } else {
-    } */
   
     const notLoggedIn = (state)=>{
       if(state?.loginState?.loggedIn === true){

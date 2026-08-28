@@ -683,8 +683,8 @@ class ContainerComponent extends HTMLElement {
     
     let attrs = [];
     const attrNames = templateItem.getAttributeNames();
-    const dataFieldName = templateItem.getAttribute("data-array");
-    const dataTemplateName = templateItem.getAttribute("data-presentation-component");
+    const dataFieldName = templateItem.getAttribute("data-state");
+    const dataTemplateName = templateItem.getAttribute("data-component");
 
     for(let j=0;j<attrNames.length;j++){
       const attrName = attrNames[j]; 
@@ -723,7 +723,7 @@ class ContainerComponent extends HTMLElement {
     this.#renderTemplates.templateIds = []; 
     if(!this.#presentationItems || Object.keys(this.#presentationItems).length === 0){
 
-      const templates = content.querySelectorAll("[data-presentation-component]");
+      const templates = content.querySelectorAll("[data-component]");
 			if(!this.#presentationItems){
           this.#presentationItems = {};;
         }
@@ -740,32 +740,35 @@ class ContainerComponent extends HTMLElement {
  
     for(let i = 0; i < this.#presentationItems.length;i++){
 	
-      let isArray = false;
       const presentationItem = this.#presentationItems[i];
-      const state = data[this.#presentationItems[i].dataFieldName] || []; 
-    
+      let state = data[this.#presentationItems[i].dataFieldName] || [];
+     
+      let isArray = false;
+
       const attrs = this.#presentationItems[i].attributes; 
       const attrData = [];
       for(let j=0;j<attrs.length;j++){
-        if(attrs[j].name !== "data-array"){
-          if(attrs[j].value.startsWith("data")){
-            const itemKey = attrs[j].value.split('.')[1];
-            attrData.push({
-              "name":attrs[j].name,
-              "itemKey":itemKey
-            });
-          }
-        } else {
+        if(attrs[j].value.startsWith("data")){
+          const itemKey = attrs[j].value.split('.')[1];
+          attrData.push({
+            "name":attrs[j].name,
+            "itemKey":itemKey
+          });
+        }
+        if(attrs[j].name === "data-repeat"){
           isArray = true;
         }
       }
-
+    
       //template is a single item.
       if(!isArray){ 
         this.#updateSingleItemTemplate(this.#presentationItems[i], data);  
         continue;
       }
-     
+    
+      console.log("Updating list");
+      console.log(this.#presentationItems[i]);
+      console.log(this.#presentationItems[i].prevOrdering); 
       const prevStateLen = this.#presentationItems[i].prevStateLen();
     
       const updatedOrdering = [];
@@ -791,7 +794,7 @@ class ContainerComponent extends HTMLElement {
 
       const removed = sameLocs ? new Set() : prevIds.difference(newIds);
       const added = sameLocs ? new Set() : newIds.difference(prevIds);
-      let hasReplaced = (removed.size === prevIds.size);
+      let hasReplaced = (removed.size === prevIds.size && removed.size === added.size);
       if(added.size > 0){
 
         const lastId = presentationItem
@@ -871,18 +874,16 @@ class ContainerComponent extends HTMLElement {
 								hasReplaced = true;
           }          
         }
-        presentationItem.prevOrdering[presentationItem.templateName] = updatedOrdering;
+        presentationItem.prevOrdering = updatedOrdering;
       }
 
-      
       if(removed.size > 0) { 
 				if(removed.size === prevIds.size && !hasReplaced){
-						const templateElem = this.getRootNode()
-                .getElementById(this.#templateData[i].dataTemplateName)
-						templateElem.replaceChildren([]);
-            ContainerComponent.prevState[templateName] = {};
 
-					const templateFunc = ContainerComponent.templateFunctions[templateName];	
+          const templateElem = this.getRootNode()
+              .getElementById(presentationItem.id)
+          templateElem.replaceChildren([]);
+          
 					break; 
         }
 
@@ -904,11 +905,11 @@ class ContainerComponent extends HTMLElement {
       }
 
       let sameNumber = false;
-      if(!hasReplaced && updatedOrdering.length === ContainerComponent.prevOrdering[templateName].length){
+      if(!hasReplaced && updatedOrdering.length === presentationItem.prevOrdering.length){
         sameNumber = true; 
         let moveNodes = [];
         for(let num=0;num<updatedOrdering.length;num++){
-          if(updatedOrdering[num] !== ContainerComponent.prevOrdering[templateName][num]){
+          if(updatedOrdering[num] !== presentationItem.prevOrdering[num]){
           
             let insertBefore = null;
             if (num < updatedOrdering.length -1){
@@ -1066,7 +1067,6 @@ class ContainerComponent extends HTMLElement {
         this.innerHTML = this.render(data);
       }
 
-			this.runDirectives(this.getRootNode(),data);     	
 			this.#renderTemplates(data,this.getRootNode());
 
       this.#renderTemplates.templateIds.forEach((templateId)=>{
@@ -1115,70 +1115,9 @@ class ContainerComponent extends HTMLElement {
       this.setupClickEventListeners();  
       this.setupChangeEventListeners();
     } else {
-			this.runDirectives(this.getRootNode(),data);	
 			this.#renderTemplates(data,this);
     }		
-  }
- 
-  runDirectives(root, data){
-
-		const showIfNodes = root.querySelectorAll("[data-show-if]");
-
-		const self = this;
-
-		showIfNodes.forEach((node)=>{
-			const func = node.getAttribute("data-show-if");
-			if(self[func]){
-
-				const config = self[func](data);
-			
-				const showIf = config.showIf(data);	
-				if(!showIf){
-
-					self[func].showHTML = node.innerHTML;
-
-        
-          if(this.#presentationItems){
-            this.#presentationItems.forEach((item)=>{
-              //Only clear template state inside conditional
-              if(!node.querySelector(`#${item.templateName}`)){
-                const prevStateKey = item.templateName.split("-")[2];	
-
-                if(self[func].showIf !== false) {
-                  item.prevState = {};
-                } 
-              }
-            });
-          }
-
-          if(self[func].showIf !== false){
-					  node.innerHTML = config.fallback;
-            this.#presentationItems = [];
-          }
-				} else {
-				
-          if(this.#presentationItems){
-            this.#presentationItems.forEach((item)=>{
-              //Only clear template state inside conditional
-              if(!node.querySelector(`#${item.templateName}`)){
-                const prevStateKey = item.templateName.split("-")[2];	
-
-                if(self[func].showIf !==true) {
-                  item.prevState = {};
-                } 
-              }
-            });
-          }
-         
-          if(self[func].showIf !== true){
-						node.innerHTML = config.isVisible; 
-            this.#presentationItems = [];	
-					}
-				}
-				self[func].showIf = showIf;
-			}
-		});
-	}
+  } 
 }
 
 class ShadowDOMComponent extends HTMLElement {

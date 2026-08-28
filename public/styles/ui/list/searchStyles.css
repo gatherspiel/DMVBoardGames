@@ -26,28 +26,49 @@ search-component:not([search-button-enabled=true]) #search-button {
   fieldset label {
     justify-content:center;
   }   
+  
+  form:has(#select-city:has(> option[value="any"]:checked)){
+    height: 20rem;
+  }
+
+  form {
+    height: 26rem;
+  }
+ 
+  select {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+  
   #form-div-outer {
     width: 100%
   } 
+  
   #search-cities {
     margin-bottom: 0.5rem; 
     margin-left:auto;
     margin-right:auto;  
   }
+  
   #search-distance-id {
     margin-right:auto;
     margin-left:auto;
   } 
+  
   #search-input-div > button {
     margin-bottom: 0.5rem;
-  } 
+  }
+
   .searchDropdownLabel {
     text-align:center;
     justify-content:center; 
-  } 
+  }
+
   .search-form-two-inputs {
     height:4rem;
   } 
+
   .search-form-three-inputs { 
     height:7.5rem;
   } 
