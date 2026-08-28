@@ -19,6 +19,7 @@ export class EventListComponent extends ContainerComponent {
 					dataStore: SEARCH_RESULTS_LIST_STORE,
         },
       ],
+      LOADING_INDICATOR_CONFIG,
     );
   }
   

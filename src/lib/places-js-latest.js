@@ -380,6 +380,9 @@ class ContainerComponent extends HTMLElement {
   componentStore = {};
   #templateLoaded = false;
 
+  //HTML before loading animiation.
+  #htmlBeforeLoading;
+
   prevState = {};
   static computedProps = {};
   //static prevState = {}; 
@@ -494,6 +497,8 @@ class ContainerComponent extends HTMLElement {
     }
 
     if(this.#loadingIndicatorConfig){ 
+      
+      this.#htmlBeforeLoading = this.innerHTML;
       this.innerHTML = this.#loadingIndicatorConfig.generateLoadingIndicatorHtml();
     }
   }
@@ -1035,41 +1040,9 @@ class ContainerComponent extends HTMLElement {
       });
     }
   }
-   
-	#generateAndSaveHTML(data) {
-
-    //Don't re-render static HTML if templates are being used.
-    if(!this.#templateLoaded){
-      //const template = document.createElement("template");
-      if(this.#loadingStarted > 0){
-        const current = Date.now();
-        const loadTime = current - this.#loadingStarted;
-
-        this.#loadingStarted = 0;
-        
-        //Handle case where loading indicator is configured to stay visible for a
-        //minimum amount of time.
-        if(this.#loadingIndicatorConfig?.minTimeMs){
-          const remainingTime = this.#loadingIndicatorConfig.minTimeMs - loadTime;
-
-          const self = this;
-          if(remainingTime > 0){
-            setTimeout(()=>{
-              template.innerHTML = this.render(data);
-							this.innerHTML = template.innerHTML;
-            },remainingTime);
-          } else {
-            this.innerHTML = this.render(data);
-          }
-        } else {
-          this.innerHTML = this.render(data);
-        }
-      }
-      else {
-        this.innerHTML = this.render(data);
-      }
-
-			this.#renderTemplates(data,this.getRootNode());
+  
+  #initPresentationComponents(data) {
+    this.#renderTemplates(data,this.getRootNode());
 
       this.#renderTemplates.templateIds.forEach((templateId)=>{
     
@@ -1116,7 +1089,49 @@ class ContainerComponent extends HTMLElement {
       });
       this.setupClickEventListeners();  
       this.setupChangeEventListeners();
-    } else {
+  }
+	
+  #generateAndSaveHTML(data) {
+
+
+    //Don't re-render static HTML if templates are being used.
+    if(!this.#templateLoaded){
+      //const template = document.createElement("template");
+      if(this.#loadingStarted > 0){
+
+        const current = Date.now();
+        const loadTime = current - this.#loadingStarted;
+
+        this.#loadingStarted = 0;
+        
+        //Handle case where loading indicator is configured to stay visible for a
+        //minimum amount of time.
+        if(this.#loadingIndicatorConfig?.minTimeMs){
+          const remainingTime = this.#loadingIndicatorConfig.minTimeMs - loadTime;
+
+          const self = this;
+          if(remainingTime > 0){
+            setTimeout(()=>{
+              //template.innerHTML = this.render(data);
+							this.innerHTML = this.render(data);
+            },remainingTime);
+          } else {
+            this.innerHTML = this.render(data);
+          }
+        } else {
+          this.innerHTML = this.render(data);
+        }
+      }
+      else {
+        this.innerHTML = this.render(data);
+      }
+
+      this.#initPresentationComponents(data);
+		} else {
+
+      if(this.#htmlBeforeLoading){
+        this.innerHTML = this.#htmlBeforeLoading;  
+      }
 			this.#renderTemplates(data,this);
     }		
   } 
