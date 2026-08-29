@@ -261,7 +261,7 @@ class PresentationComponent {
           templateStr = templateStr.substring(0,stateVarPos) +
             newStr + templateStr.substring(endPos+2);
         } else {
-          templateStr = templateStr.substring(0,stateVarPos-1) +
+          templateStr = templateStr.substring(0,stateVarPos) +
             newStr + templateStr.substring(endPos+2);
         }
       } else {
