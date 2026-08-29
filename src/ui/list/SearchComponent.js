@@ -88,22 +88,30 @@ export class SearchComponent extends ContainerComponent {
 
   render(state) {  
     
+
+    if(window.matchMedia("(max-width: 32em)").matches){
+      return `
+        <div class="container-xl">
+          <details class="show-mobile" open>
+            <summary class="btn secondary">Modify search parameters</summary>
+            <form
+              data-component=SearchForm
+              id=${SEARCH_FORM_ID}
+              onsubmit="return false"
+            ></form>
+            </hr> 
+          </details>
+        </div>
+      `
+    }
     return `
-      <div class="container-xl" >
+      <div class="container-xl" > 
         <div class="hide-mobile"><h1>${this.getAttribute("search-text")}</h1>
           <form
             data-component=SearchForm
             onsubmit="return false"
           ></form>
         </div>
-        <details class="show-mobile">
-          <summary class="btn secondary">Modify search parameters</summary>
-          <form
-            id=${SEARCH_FORM_ID}
-            onsubmit="return false"
-          ></form>
-          </hr> 
-        </details>
       </div>
     `;
   }
