@@ -297,6 +297,8 @@ class PresentationComponent {
       }
     }
     templateStr = linesToAdd.join("");
+
+    console.log(templateStr);
     template.innerHTML = templateStr;
     
     this.templateNode = template.content.firstChild;
@@ -464,7 +466,7 @@ class ContainerComponent extends HTMLElement {
     }
     else {
       if (attr === "innerHTML"){
-        element.innerHTML = updated;
+        element.textContent = updated;
       } else if(attr==="textContent"){
         element.textContent = updated;
       } else {
@@ -709,7 +711,11 @@ class ContainerComponent extends HTMLElement {
       "id":templateItem.id,
       "templateName":dataTemplateName
     });
-  
+ 
+    if(!dataFieldName){
+      throw new Error(`No data field defined for template ${dataTemplateName} in component ${this.nodeName}`);
+    }
+   
     let presentationItem = new PresentationItem(); 
     presentationItem.id = templateItem.id;
     presentationItem.setTemplateName(dataTemplateName);
@@ -744,11 +750,12 @@ class ContainerComponent extends HTMLElement {
     }
  
     for(let i = 0; i < this.#presentationItems.length;i++){
-	
+
       const presentationItem = this.#presentationItems[i];
-      let state = data[this.#presentationItems[i].dataFieldName] || [];
+      let state = data[presentationItem.dataFieldName] || [];
      
       let isArray = false;
+
 
       const attrs = this.#presentationItems[i].attributes; 
       const attrData = [];
@@ -767,6 +774,7 @@ class ContainerComponent extends HTMLElement {
     
       //template is a single item.
       if(!isArray){ 
+        console.log("Is single template item");
         this.#updateSingleItemTemplate(this.#presentationItems[i], data);  
         continue;
       }
@@ -1032,9 +1040,7 @@ class ContainerComponent extends HTMLElement {
         else {  
           element.onclick = (e)=>{
             e.preventDefault();
-						requestAnimationFrame(()=>{
-							clickEventListeners[selector]();
-						});
+						this.#clickEventListeners[selector]();
           };
         }
       });
