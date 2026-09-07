@@ -1,7 +1,7 @@
 import { IS_LOGGED_IN_KEY, LOGIN_STORE } from "../../data/user/LoginStore.js";
-import { ContainerComponent } from "/lib/places-js-latest.js";
+import { PresentationComponent } from "/lib/places-js-latest.js";
 
-export class UserActionsComponent extends ContainerComponent {
+export class UserActionsComponent extends PresentationComponent {
   constructor() {
     super([
       {

@@ -61,7 +61,34 @@
         search-text="Search events"
       >
       </search-component>
-      <event-list-component></event-list-component>
+      <event-list-component>
+				<div class="container-xl fade-in-animation"> 
+					<p id="no-events-found">No events found</p>
+					<h1 id="search-results-header">Event search results</h1>
+					<ul
+						data-template=data
+					>
+						<li>
+							<a 
+								class="btn secondary"
+								href={{url}}
+							>
+							{{eventName}}
+							</a>
+							<div 
+								class="event-time" 
+							> 
+								{{eventTime}}
+							</div>
+							<div
+								class="event-location"
+							> 
+								{{location}}	
+							</div> 
+						</li>
+					</ul>
+				</div>
+			</event-list-component>
 
     <div id="bot-container"></div>
     {{>footer}}

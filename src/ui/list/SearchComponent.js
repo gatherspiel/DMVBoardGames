@@ -6,7 +6,7 @@ import {
   getDropdown,
   getDropdownHtml,
 } from "../../shared/html/SelectGenerator.js";
-import { ContainerComponent, PresentationComponent} from "/lib/places-js-latest.js";
+import { PresentationComponent} from "/lib/places-js-latest.js";
 import { CITY_LIST_STORE } from "../../data/list/CityListStore.js";
 import {LOGIN_STORE} from "../../data/user/LoginStore.js";
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
@@ -30,7 +30,7 @@ const DISTANCE_OPTIONS = [
   "50 miles",
 ];
 
-export class SearchComponent extends ContainerComponent {
+export class SearchComponent extends PresentationComponent {
 
   constructor() {
     super([
@@ -68,6 +68,8 @@ export class SearchComponent extends ContainerComponent {
 
     this.initialParams = new URLSearchParams(document.location.search);
 
+		console.log("Beginning search");
+		console.log(this.getAttribute("api-url"));
     this.defaultSearchParams = {
       apiUrl: this.getAttribute("api-url"),
       cityList:[DEFAULT_SEARCH_PARAMETER],
@@ -77,7 +79,6 @@ export class SearchComponent extends ContainerComponent {
     };
     SEARCH_RESULTS_LIST_STORE.fetchData(this.defaultSearchParams);
    
-    PresentationComponent.init(SearchForm);  
 
     this.setAttribute("search-button-enabled",false);
   }

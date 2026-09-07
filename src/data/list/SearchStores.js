@@ -45,4 +45,49 @@ export const SEARCH_RESULTS_LIST_STORE = new DataStore(
   new ApiLoadAction(getSearchResultsQueryConfig),
 );
 
+const presentationSignals = {
+	"data":{
+		"update":{
+			"eventTime":
+				(eventData)=>{
+					if(eventData.isRecurring){
+            return `${eventData.dayOfWeek}s at ${eventData.nextEventTime}`;
+          }
+          return `${eventData.nextEventDate} at ${eventData.nextEventTime}`
+        },
+			 "location":(eventData)=>{
+          return `${convertLocationDataForDisplay(eventData.eventLocation)}`
+        },
+       "url": (eventData) => {
+          return `/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}`
+        } 
+
+			}
+
+		}
+
+	}
+
+
+}
+
+  
+      return {
+        "eventTime": (eventData) =>{
+          if(eventData.isRecurring){
+            return `${eventData.dayOfWeek}s at ${eventData.nextEventTime}`;
+          }
+          return `${eventData.nextEventDate} at ${eventData.nextEventTime}`
+        },
+       
+      }
+    }
+
+	}
+}
+
+
+
+SEARCH_RESULTS_LIST_STORE.setupPresentationSignals(presentationSignals);
+
 SEARCH_RESULTS_LIST_STORE.updateStoreData({ status: "Waiting for user input" });

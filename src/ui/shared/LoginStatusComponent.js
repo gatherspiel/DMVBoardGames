@@ -1,10 +1,10 @@
-import { ContainerComponent } from "/lib/places-js-latest.js";
+import { PresentationComponent } from "/lib/places-js-latest.js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
 import { LOGOUT_STORE } from "../../data/user/LogoutStore.js";
 import { USER_DATA_STORE } from "../../data/user/UserDataStore.js";
 const SIGN_OUT_LINK_ID = "signout-link";
 
-export class LoginStatusComponent extends ContainerComponent {
+export class LoginStatusComponent extends PresentationComponent {
   constructor() {
     super([
       {
@@ -29,7 +29,7 @@ export class LoginStatusComponent extends ContainerComponent {
   }
 }
 
-class LoginStatusComponentInner extends ContainerComponent {
+class LoginStatusComponentInner extends PresentationComponent {
   constructor() {
     super([
       {
