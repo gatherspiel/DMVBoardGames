@@ -201,14 +201,16 @@ class TemplateItem {
   
   #defineComponent(templateStr){
 
+		console.log("Defining template:");
+		console.log(templateStr);
     const changeEvents = [];
     const changeHandlers = {};
     const clickEvents = [];
     const clickHandlers = {};
     const start = Date.now();
 
-    const clickSplitRegex = new RegExp("onclick=\"{{","i");
-    const changeSplitRegex = new RegExp("onchange=\"{{","i");
+    const clickSplitRegex = new RegExp("onclick=\"{","i");
+    const changeSplitRegex = new RegExp("onchange=\"{","i");
     
     this.#templateSignals = [];
     
@@ -223,7 +225,7 @@ class TemplateItem {
     const clickEventsStr = templateStr.split(clickSplitRegex);
     if(clickEventsStr.length > 1){
       for(let i=1;i<clickEventsStr.length;i++){
-        const j = clickEventsStr[i].indexOf("}}\"");
+        const j = clickEventsStr[i].indexOf("}\"");
         
         const splitStr = clickEventsStr[i].slice(0,j);
         clickEvents.push(splitStr);
@@ -237,7 +239,7 @@ class TemplateItem {
     if(changeEventsStr.length > 1){
       console.warn("Change events not implemented yet");
       for(let i=1;i<changeEventsStr.length;i++){ 
-        const j = changeEventsStr[i].indexOf("}}"); 
+        const j = changeEventsStr[i].indexOf("}"); 
         
         const splitStr = changeEventsStr[i].slice(0,j);
         changeEvents.push(splitStr);
@@ -254,24 +256,40 @@ class TemplateItem {
 
     let i = 0;
     while(true){
-      let stateVarPos = templateStr.indexOf("\"{{");
+      let stateVarPos = templateStr.indexOf("\"{");
+
+			if(stateVarPos === -1){
+				stateVarPos = templateStr.indexOf("{");
+			}
+
+			//console.log(templateStr);
+			console.log(stateVarPos);
 
       if(stateVarPos === -1){
         break;
       }
-     
+    
+			console.log(stateVarPos); 
       let firstTagEnd = templateStr.indexOf(">");
-      
-      const endPos = templateStr.indexOf("}}\"");
-
-      const signalStr = templateStr.substring(stateVarPos+3, endPos);
+     
+			let equalDist = 1; 
+      let endPos = templateStr.indexOf("}\"");
+			if(endPos === -1){
+				endPos = templateStr.indexOf("}");
+			}else {
+				stateVarPos++;
+				equalDist = 2;
+			}
+      const signalStr = templateStr.substring(stateVarPos+1, endPos);
 
       let attr, fieldName;
 
-      if(templateStr.charAt(stateVarPos-1) === "="){
+			console.log(templateStr.charAt(stateVarPos-2));	
+      if(templateStr.charAt(stateVarPos-equalDist) === "="){
         attr = "";
-        for(let j = stateVarPos-2; j > 0; j--){
+        for(let j = stateVarPos-equalDist-1; j > 0; j--){
           const nameChar = templateStr.charAt(j);
+					console.log(nameChar);
           if(this.isAttributeChar(nameChar)){
             attr = nameChar + attr;
           } else {
@@ -289,16 +307,19 @@ class TemplateItem {
       let isHtmlAttr = false;
       let endTagPos = -1;
 
+
       if(attr === "innerHTML"){
+				console.log("Inner HTML");
         for(let j = stateVarPos -1; j >= 0; j--){
           if(templateStr.charAt(j) === ">"){
-
+						console.log("Hi");
             endTagPos = j + 1 ;
             isHtmlAttr = true;
             break;
           } 
         }
       }
+			console.log(isHtmlAttr);
         
       let newStr=`data-signal-id-${i}`;
 
@@ -316,24 +337,33 @@ class TemplateItem {
         isOuter: endPos < firstTagEnd
       } 
 
+			console.log(isHtmlAttr);
       if(!isHtmlAttr){
-   
+				
+				console.log("New str:"+newStr); 
         if(newStr.length > 0 ){
           templateStr = templateStr.substring(0,stateVarPos) +
             " " +
-            newStr + templateStr.substring(endPos+3);
+            newStr + templateStr.substring(endPos+2);
+
         } else {
           templateStr = templateStr.substring(0,stateVarPos) +
-            newStr + templateStr.substring(endPos+3);
+            newStr + templateStr.substring(endPos+2);
         }
       } else {
+				console.log("Attr");
+				console.log(templateStr.substring(0,endTagPos));
         templateStr =
-          templateStr.substring(0,endTagPos) +
+          templateStr.substring(0,endTagPos-1) +
           " " +
           newStr +
           ">" +
-          templateStr.substring(endPos+3);
+          templateStr.substring(endPos+1);
+					
+				console.log(newStr);
+				console.log(templateStr.substring(endPos+1));
 
+				console.log("Result:"+templateStr);
       }
 
       this.#templateSignals.push(signalData)
@@ -358,7 +388,11 @@ class TemplateItem {
         linesToAdd.push(split[i]);
       }
     }
+
+		console.log("Template signals:"+this.#templateSignals.length);
+
     templateStr = linesToAdd.join("");
+		console.log("Template str:"+templateStr);
 
     template.innerHTML = templateStr;
     
@@ -588,6 +622,8 @@ class PresentationComponent extends HTMLElement {
 		
     //Light DOM is enabled.
     if(this.innerHTML){
+			console.log("Light dom enabled");
+			console.log(this.innerHTML);
       this.#lightDomHTML = this.innerHTML;
     }
 
@@ -628,7 +664,6 @@ class PresentationComponent extends HTMLElement {
 			}
 			
 			const dataStore = DataStore.getStore(defaultStore);
-			console.log(this.nodeName);	
 			this.#subscribedStores = [{
 				"dataStore":DataStore.getStore(defaultStore)
 			}];
@@ -750,14 +785,12 @@ class PresentationComponent extends HTMLElement {
 		// stores have data 
     if(allSubscribedStoresHaveData){
 
-			console.log("Data is present:"+this.nodeName);
       let dataToUpdate = {};
       for(let i =0; i < this.#subscribedStores.length; i++){
 
         const item = this.#subscribedStores[i];
         let storeData = item.dataStore.getComponentUpdateData();
 
-				console.log(storeData);
         if(item.componentReducer){
           storeData = item.componentReducer(storeData);
         }
@@ -856,14 +889,18 @@ class PresentationComponent extends HTMLElement {
 
     templateNode.innerHTML = ""; this.#templateItem.setTemplateRoot(templateNode);
     this.#templateItem.setDataField(templateNode?.getAttributeNode("data-template").value);
-    this.#templateItem.setId(`template-${PresentationComponent.templateCount}`);
+    this.#templateItem.setId(`template-${PresentationComponent.#templateCount}`);
     this.#templateItem.setTemplateName(this.nodeName);
     this.#templateItem.setupEventHandlers(this.#clickTemplateEvents);
   }
  
  addItems(addFragments){
 
-  const templateNode = this.#templateItem.getTemplateNode();
+	if(!this.#templateItem){
+		this.#setupTemplate()
+	}
+  
+	const templateNode = this.#templateItem.getTemplateNode();
   
 	for(let j=0;j<addFragments.length;j++){
 
@@ -1087,8 +1124,6 @@ class DataStore {
    */
   setupPresentationSignals(presentationSignals){
 
-		console.log("Setting up presentation signals");
-
     this.#presentationSignals = presentationSignals;
     Object.keys(presentationSignals).forEach((key)=>{
       this.#prevOrdering[key]=[];
@@ -1096,24 +1131,29 @@ class DataStore {
 
 		const reactiveUpdates = (storeUpdates)=> {
 
-			console.log("Updating with data:");
-			console.log(storeUpdates);
 			let changeData = {}; 
 			
 			this.#presentationUpdates["removed"] = []
 			this.#presentationUpdates["moved"] = []
 			this.#presentationUpdates["updated"] = []
-
 		
-			
 			Object.keys(storeUpdates).forEach((field)=>{
-						 
+						
 				if(Array.isArray(storeUpdates[field])){
-					
+		
+
+					//Assign id value to items.
+					if(this.#presentationSignals[field].id){
+						for(let j =0;j<storeUpdates[field].length;j++){
+							storeUpdates[field][j].id =
+								this.#presentationSignals[field].id(storeUpdates[field][j])
+						}
+					}
+
 					this.#fieldTypeMapping[field] = "array";
 
 					const dataItem = storeUpdates[field]; 
-					const dataItemOld = this.#prevOrdering[field] ||[] ;
+					const dataItemOld = this.#prevOrdering[field] ||[];
 				 
 					const updatedOrdering = [];
 				
@@ -1135,7 +1175,7 @@ class DataStore {
 							sameLocs = false; 
 						}
 					}
-				 
+				
 					let isReplace = false;
 
 					let added = new Set();
@@ -1147,7 +1187,7 @@ class DataStore {
 							added = sameLocs ? new Set(): newIds.difference(prevIds);
 						}
 					}
-					
+				
 					if(added.size > 0){
 						
 						let addFragments = [];

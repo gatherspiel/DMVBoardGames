@@ -48,9 +48,9 @@ export const SEARCH_RESULTS_LIST_STORE = new DataStore(
 
 
 const presentationSignals = {
-	"data":{
+	"eventData":{
+		"id": (eventData)=>eventData.eventId,
 		"update":{
-			"id": (eventData)=>eventData.event_id,
 			"eventTime":
 				(eventData)=>{
 					if(eventData.isRecurring){
