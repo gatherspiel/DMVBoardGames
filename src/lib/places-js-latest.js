@@ -585,25 +585,60 @@ class PresentationComponent extends HTMLElement {
   constructor(dataStoreSubscriptions = [], loadingIndicatorConfig) {
     super();
 
+		
     //Light DOM is enabled.
     if(this.innerHTML){
       this.#lightDomHTML = this.innerHTML;
     }
-   
+
     //Performance optimization if component is not subscribed to data stores.
     if(dataStoreSubscriptions.length === 0) {
       return;
     }
 		
-    // Make sure component is subscribed to data stores.
-    this.#subscribedStores = dataStoreSubscriptions;
-    for(let i=0;i <this.#subscribedStores.length;i++){
-      this.#subscribedStores[i].dataStore.subscribeComponent(this);
-    }
+    // Make sure component is subscribed to data stores.	
+		this.#subscribedStores = dataStoreSubscriptions;
+	
+	for(let i=0;i <this.#subscribedStores.length;i++){
+			this.#subscribedStores[i].dataStore.subscribeComponent(this);
+		}
 
-    this.updateFromSubscribedStores();
-
+		this.updateFromSubscribedStores();
   }
+
+	connectedCallback(){
+		const defaultStore = this.dataset["store"];
+	
+		if(defaultStore){
+
+			const loadingIndicatorComponent = this.dataset['loadingIndicatorComponent']
+			if(loadingIndicatorComponent){
+		
+				const imagePath = this.dataset['loadingImage'];				
+				const loadingHTML = `<${loadingIndicatorComponent}>
+					${imagePath ? `image-path=${imagePath}` : ``}	
+				</${loadingIndicatorComponent}>`;
+
+				this.#loadingIndicatorConfig = {
+					generateLoadingIndicatorHtml: ()=>{
+						return loadingHTML
+					},
+					minTimeMs: 500
+				}
+			}
+			
+			const dataStore = DataStore.getStore(defaultStore);
+			console.log(this.nodeName);	
+			this.#subscribedStores = [{
+				"dataStore":DataStore.getStore(defaultStore)
+			}];
+			dataStore.subscribeComponent(this);	
+		}
+
+		this.updateFromSubscribedStores();
+		this.#loadingIndicatorConfig
+	}
+
 
   init(initialState){
     this.updateData(initialState);
@@ -702,7 +737,6 @@ class PresentationComponent extends HTMLElement {
     }
   }
  
-
   updateFromSubscribedStores() {
 
     let allSubscribedStoresHaveData = true;
@@ -716,12 +750,14 @@ class PresentationComponent extends HTMLElement {
 		// stores have data 
     if(allSubscribedStoresHaveData){
 
+			console.log("Data is present:"+this.nodeName);
       let dataToUpdate = {};
       for(let i =0; i < this.#subscribedStores.length; i++){
 
         const item = this.#subscribedStores[i];
         let storeData = item.dataStore.getComponentUpdateData();
 
+				console.log(storeData);
         if(item.componentReducer){
           storeData = item.componentReducer(storeData);
         }
@@ -1005,7 +1041,8 @@ class DataStore {
 
   static #storeCount = 0;
 
-
+	static #storeNameMap = new Map();
+	
   #componentSubscriptions = [];
   #isLoading = false; 
   #loadAction;
@@ -1024,7 +1061,13 @@ class DataStore {
     
 	  sessionStorage.setItem(this.#requestStoreId, JSON.stringify({}));
 
-   
+		if(storeName){
+			if(DataStore.#storeNameMap.has(storeName)){
+				throw new Error("Cannot create store with duplicate name:"+storeName);
+			}
+			DataStore.#storeNameMap.set(storeName, this);
+		}
+		
 		this.#loadAction = loadAction;
 
     DataStore.#storeCount++;
@@ -1034,17 +1077,26 @@ class DataStore {
     this.#presentationUpdates["updated"] = []
   }
 
-  /**
+	static getStore(storeName){
+		return this.#storeNameMap.get(storeName);
+	}
+  
+	/**
    * Setup signals to enable fine-grained reactivity on
    * presentation components.
    */
   setupPresentationSignals(presentationSignals){
+
+		console.log("Setting up presentation signals");
+
     this.#presentationSignals = presentationSignals;
     Object.keys(presentationSignals).forEach((key)=>{
       this.#prevOrdering[key]=[];
     });
 
 		const reactiveUpdates = (storeUpdates)=> {
+
+			console.log(storeUpdates);
 			let changeData = {}; 
 			
 			this.#presentationUpdates["removed"] = []
@@ -1254,7 +1306,6 @@ class DataStore {
 				);
 			}
 			
-
 			Object.keys(storeUpdates).forEach((field)=>{
 				this.#storeData[field] = storeUpdates[field]
 			}); 
@@ -1351,8 +1402,8 @@ class DataStore {
 					}else {
 						Object.keys(reactiveFields).forEach((fieldName)=>{
 							changeData.push({
-								"id": id
-								[fieldName]:reactiveFields[fieldName](updateData[`${reactiveFields[j]}`]);
+								"id": id,
+								[fieldName]:reactiveFields[fieldName](updateData[`${reactiveFields[j]}`]),
 
 							})
 						})
@@ -1374,6 +1425,7 @@ class DataStore {
   }
 
   getComponentUpdateData(){
+		console.log("Getting component update data:");
     if(this.#presentationSignals){
       return this.#presentationUpdates;
     }
@@ -1411,9 +1463,6 @@ class DataStore {
     // Do not make a data request if there is an active one in progress. The active one will push data to subscribed components.
     if(!this.#isLoading) {
       this.#isLoading = true;
-
-			console.log(this.#loadAction);
-
       const requestConfig = this.#loadAction.getRequestConfig ? this.#loadAction.getRequestConfig(params) : {};
 
       let response = null;
@@ -1447,7 +1496,10 @@ class DataStore {
         }
         response = await this.#loadAction.fetch(params, this.#requestStoreId,requestKey); 
       } 
-      
+    
+			console.log("Event data:");
+			console.error("Update data for templates is not being calculated here:");
+			console.log(response); 
 	    this.#storeData = response;
       this.#isLoading = false;
 
@@ -1483,9 +1535,13 @@ class DataStore {
     }
     this.#componentSubscriptions.push(component);
 
-    if(!this.hasLatestData()){
+		/*
+		* Consider removing this automatic data fetching
+		*/
+    /*if(!this.hasLatestData()){
+			console.log("Automatically fetching state");
       this.fetchData();
-    }
+    }*/
   }
 }
 
