@@ -1,9 +1,9 @@
-import { ContainerComponent } from "/lib/places-js-latest.js";
+import { PresentationComponent } from "/lib/places-js-latest.js";
 import {LOADING_INDICATOR_CONFIG} from "../../shared/LoadingIndicatorConfig.js";
 import { USER_MEMBER_STORE } from "../../data/user/UserMemberStore.js";
 import { convertDateAndDayToDisplayString } from "../../shared/EventDataUtils.js";
 
-export class MemberDataComponent extends ContainerComponent {
+export class MemberDataComponent extends PresentationComponent {
   constructor() {
     super([
       {

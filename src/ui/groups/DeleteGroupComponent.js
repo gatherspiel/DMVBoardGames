@@ -1,4 +1,4 @@
-import { ApiLoadAction, ContainerComponent } from "/lib/places-js-latest.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
 import {
   SUCCESS_MESSAGE_KEY,
   generateErrorMessage,
@@ -11,7 +11,7 @@ import { LOGIN_STORE } from "../../data/user/LoginStore.js";
 
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 
-export class DeleteGroupComponent extends ContainerComponent {
+export class DeleteGroupComponent extends PresentationComponent {
   constructor() {
     super([
       {

@@ -1,10 +1,10 @@
 import { LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT } from "./Constants.js";
-import { ContainerComponent } from "/lib/places-js-latest.js";
+import { PresentationComponent } from "/lib/places-js-latest.js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
 
 const LOGIN_BUTTON_ID = "login-button";
 
-export class LoginComponent extends ContainerComponent {
+export class LoginComponent extends PresentationComponent {
   loginAttempted;
   registerAttempted;
   constructor() {

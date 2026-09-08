@@ -1,6 +1,6 @@
 import {
   ApiLoadAction,
-  ContainerComponent,
+  PresentationComponent,
 } from "/lib/places-js-latest.js";
 
 import {
@@ -47,7 +47,7 @@ const DELETE_EVENT_BUTTON_ID = "delete-event-button";
 const EDIT_EVENT_BUTTON_ID = "edit-event-button";
 const SAVE_EVENT_BUTTON_ID = "save-event-button";
 
-export class EventDetailsComponent extends ContainerComponent {
+export class EventDetailsComponent extends PresentationComponent {
   constructor() {
     super(
       [

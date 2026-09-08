@@ -1,6 +1,6 @@
 import {
   ApiLoadAction,
-  ContainerComponent,
+  PresentationComponent,
 } from "/lib/places-js-latest.js";
 import {
   SUCCESS_MESSAGE_KEY,
@@ -18,7 +18,7 @@ const UPDATE_USER_DATA_ID = "update-user-data";
 const USERNAME_INPUT = "username-input";
 const USERNAME_ERROR_TEXT_KEY = "username-error-text";
 
-export class EditProfileComponent extends ContainerComponent {
+export class EditProfileComponent extends PresentationComponent {
   constructor() {
     super([
       {

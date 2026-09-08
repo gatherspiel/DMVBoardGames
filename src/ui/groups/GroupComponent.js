@@ -1,4 +1,4 @@
-import {  ApiLoadAction, ContainerComponent,DataStore } from "/lib/places-js-latest.js";
+import {  ApiLoadAction, PresentationComponent,DataStore } from "/lib/places-js-latest.js";
 import {
   ERROR_MESSAGE_KEY,
   SUCCESS_MESSAGE_KEY,
@@ -38,7 +38,7 @@ const SAVE_UPDATES_BUTTON_ID = "save-updates";
 const DESCRIPTION_ERROR_TEXT_KEY = "descriptionErrorText";
 const NAME_ERROR_TEXT_KEY = "nameErrorText";
 
-export class GroupComponent extends ContainerComponent {
+export class GroupComponent extends PresentationComponent {
   constructor() {
     super(
       [

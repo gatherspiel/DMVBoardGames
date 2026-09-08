@@ -1,6 +1,6 @@
 import {
   ApiLoadAction,
-  ContainerComponent,
+  PresentationComponent,
 } from "/lib/places-js-latest.js";
 import {
   ERROR_MESSAGE_KEY,

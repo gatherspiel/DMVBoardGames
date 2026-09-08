@@ -1,7 +1,7 @@
-import { ContainerComponent } from "/lib/places-js-latest.js";
+import { PresentationComponent } from "/lib/places-js-latest.js";
 import { GAME_RESTAURANT_STORE } from "../../data/list/LocationsStore.js";
 
-export class GameRestaurantListComponent extends ContainerComponent {
+export class GameRestaurantListComponent extends PresentationComponent {
   constructor() {
     super([
       {

@@ -1096,6 +1096,7 @@ class DataStore {
 
 		const reactiveUpdates = (storeUpdates)=> {
 
+			console.log("Updating with data:");
 			console.log(storeUpdates);
 			let changeData = {}; 
 			
@@ -1103,6 +1104,7 @@ class DataStore {
 			this.#presentationUpdates["moved"] = []
 			this.#presentationUpdates["updated"] = []
 
+		
 			
 			Object.keys(storeUpdates).forEach((field)=>{
 						 
@@ -1212,6 +1214,7 @@ class DataStore {
 						}
 					}
 
+					console.log(this.#prevOrdering);
 					const movedNodes = {}
 					let sameNumber = false;
 					if(!isReplace && updatedOrdering.length === this.#prevOrdering[field].length){
@@ -1497,12 +1500,10 @@ class DataStore {
         response = await this.#loadAction.fetch(params, this.#requestStoreId,requestKey); 
       } 
     
-			console.log("Event data:");
-			console.error("Update data for templates is not being calculated here:");
-			console.log(response); 
-	    this.#storeData = response;
-      this.#isLoading = false;
-
+	    this.updateStoreData(response);
+      
+			this.#isLoading = false;
+		
       for(let i = 0; i < this.#componentSubscriptions.length; i++){
         this.#componentSubscriptions[i].unlockComponent(this);
         this.#componentSubscriptions[i].updateFromSubscribedStores();

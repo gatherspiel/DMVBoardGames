@@ -1,6 +1,6 @@
 import {
   ApiLoadAction,
-  ContainerComponent,
+	PresentationComponent,
 } from "/lib/places-js-latest.js";
 import {
   DAY_OF_WEEK_INPUT,
@@ -34,7 +34,7 @@ customElements.define("login-status-component", LoginStatusComponent);
 const CREATE_EVENT_BUTTON_ID = "create-event-button";
 const RECURRING_EVENT_INPUT = "is-recurring";
 
-export class CreateEventComponent extends ContainerComponent {
+export class CreateEventComponent extends PresentationComponent {
   constructor() {
     super();
 

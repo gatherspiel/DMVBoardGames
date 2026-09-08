@@ -1,8 +1,8 @@
-import { ContainerComponent } from "/lib/places-js-latest.js";
+import { PresentationComponent } from "/lib/places-js-latest.js";
 import { CONVENTIONS_STORE } from "../../data/list/LocationsStore.js";
 import { convertDateListToRange } from "../../shared/EventDataUtils.js";
 
-export class ConventionListComponent extends ContainerComponent {
+export class ConventionListComponent extends PresentationComponent {
   constructor() {
     super([
       {

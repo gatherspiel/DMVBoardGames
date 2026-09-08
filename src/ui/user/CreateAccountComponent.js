@@ -1,4 +1,4 @@
-import { ApiLoadAction, ContainerComponent } from "/lib/places-js-latest.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
 import { LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT } from "./Constants.js";
 import {
   SUCCESS_MESSAGE_KEY,
@@ -20,7 +20,7 @@ const CONFIRM_PASSWORD_INPUT = "confirm-password-input";
 const AGREE_RULES_ID = "agree-rules";
 const CREATE_ACCOUNT_ID = "complete-registration";
 
-export class CreateAccountComponent extends ContainerComponent {
+export class CreateAccountComponent extends PresentationComponent {
   constructor() {
     super([
       {

@@ -1,4 +1,4 @@
-import {ApiLoadAction, ContainerComponent } from "/lib/places-js-latest.js";
+import {ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
 import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
@@ -30,7 +30,7 @@ const CREATE_GROUP_BUTTON_ID = "create-group-button-id";
 const DESCRIPTION_ERROR_TEXT_KEY = "descriptionErrorText";
 const NAME_ERROR_TEXT_KEY = "nameErrorText";
 
-export class CreateGroupComponent extends ContainerComponent {
+export class CreateGroupComponent extends PresentationComponent {
   constructor() {
     super([
       {

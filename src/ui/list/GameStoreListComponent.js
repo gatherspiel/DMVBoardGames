@@ -1,7 +1,7 @@
-import { ContainerComponent} from "/lib/places-js-latest.js";
+import { PresentationComponent} from "/lib/places-js-latest.js";
 import { GAME_STORE_DATA } from "../../data/list/LocationsStore.js";
 
-export class GameStoreListComponent extends ContainerComponent {
+export class GameStoreListComponent extends PresentationComponent {
   constructor() {
     super([
       {

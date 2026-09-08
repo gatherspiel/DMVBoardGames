@@ -1,10 +1,10 @@
-import { ContainerComponent } from "/lib/places-js-latest.js";
+import { PresentationComponent } from "/lib/places-js-latest.js";
 import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
 import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
 import { getDisplayName } from "../../shared/DisplayNameConversion.js";
 
-export class GroupListComponent extends ContainerComponent {
+export class GroupListComponent extends PresentationComponent {
   constructor() {
     super(
       [
