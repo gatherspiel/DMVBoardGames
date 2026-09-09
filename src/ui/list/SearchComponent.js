@@ -33,7 +33,8 @@ const DISTANCE_OPTIONS = [
 export class SearchComponent extends PresentationComponent {
 
   constructor() {
-		super([
+		super();
+		/*super([
 			{
 				dataStore: CITY_LIST_STORE,
 				fieldName: "cityList"
@@ -42,21 +43,12 @@ export class SearchComponent extends PresentationComponent {
 				dataStore: LOGIN_STORE,
 				fieldName: "loginState"
 			}			
-		]);
+		]);*/
+
+		CITY_LIST_STORE.fetchData();
     this.setAttribute("search-button-enabled",false);
   }
 
-	connectedCallback(){
-		CITY_LIST_STORE.fetchData();
-
-		
-
-		//TODO:  Add conditional check here
-		/*
-			this.addTemplateFunction(showMobile)
-
-		*/
-	}
 
 }
 

@@ -128,19 +128,27 @@ class TemplateItem {
 
   #parentNode;
 
+	static #templateFunctions = new Map();
+
   #templateNode;
   #templateRoot = null;
   #templateSignals;
   #signalMap = new Map();
 
-  constructor(html){
-    this.#defineComponent(html);
-  }
- 
-  static init(componentHtml){
+	static init(componentHtml){
     let template = new TemplateItem(componentHTML)
     const obj = new item.prototype.constructor(); 
     obj.#defineComponent();
+  }
+
+	static addTemplateFunction(name,templateFunction){
+		console.log("Adding");
+		console.log(templateFunction);
+		TemplateItem.#templateFunctions.set(name,templateFunction);
+	}
+  
+	constructor(html){
+    this.#defineComponent(html);
   }
   
   #initSignalMap(){
@@ -151,7 +159,7 @@ class TemplateItem {
 			);
     }
   }
-
+	
   setupEventHandlers(events){
     
     if(events){
@@ -203,6 +211,74 @@ class TemplateItem {
 	}
 
 	#evaluateConditional(templateStr){
+		console.log("Evaluating conditional:");
+
+		const split = templateStr.split("\n");
+			
+		while(true){
+		
+			let depth = 0;
+
+			let firstIfPos;
+			let elsePos;
+			let endPos;
+
+		
+			for(let i=0; i<split.length;i++){
+				
+				if(split[i].includes("{#if")){
+					depth++;
+					if(!firstIfPos){
+						firstIfPos = i;
+					}
+				}
+				
+				if(split[i].includes("{else}")){
+					if(depth === 1){
+						elsePos = i;
+					}
+				}
+
+				if(split[i].includes("{/if}")){
+					depth--;
+					if(depth === 0){
+						endPos = i;
+						break;
+					}
+				}
+			}
+			
+			if(!firstIfPos){
+				break;
+			} else {
+	
+			
+				const ifCheckName = split[firstIfPos].split(" ")[1].split("}")[0];
+				const ifCheck = TemplateItem.#templateFunctions.get(ifCheckName);	
+				
+				if(!ifCheck){
+					throw new Error(`No template function defined for ${ifCheckName}`);
+				}
+				
+				if(ifCheck()){
+					split.splice(endPos,1);
+
+					if(elsePos){
+						split.splice(elsePos,endPos-elsePos);
+					}
+					split.splice(firstIfPos,1);
+				}	
+				else {
+					split.splice(endPos,1);
+					split.splice(firstIfPos,elsePos-firstIfPos+1);	
+				}
+				firstIfPos = null;
+				elsePos = null;
+				endPos = null;
+			
+			}
+		}
+	
 		
 		/*
 			TODO
@@ -212,12 +288,17 @@ class TemplateItem {
 			-Find template function
 
 		*/
-		return templateStr;
+		console.log(split.join("\n"));
+		return split.join("\n");
+		//return templateStr;
 	}
   #defineComponent(templateStr){
 
-		this.#evaluateConditional(templateStr);
+		templateStr = this.#evaluateConditional(templateStr);
 
+		console.log("Template string after conditional evaluation");
+
+		console.log(templateStr);
     const changeEvents = [];
     const changeHandlers = {};
     const clickEvents = [];
@@ -389,8 +470,11 @@ class TemplateItem {
       }
     }
 
-
+		
     templateStr = linesToAdd.join("");
+
+		console.log("Template string after processing");
+		console.log(templateStr);
     template.innerHTML = templateStr;
     
     this.#templateNode = template.content.firstChild;
@@ -400,7 +484,7 @@ class TemplateItem {
     handlerAttrs.forEach((handlerAttr)=>{
      
       const attrSelector = `[${handlerAttr}]`; 
- 
+
       this.#templateNode
         .querySelectorAll(attrSelector)
         .forEach((node)=>{
@@ -527,6 +611,10 @@ class TemplateItem {
     return this.#templateNode.innerHTML;
   }
 }
+
+TemplateItem.addTemplateFunction("isMobile",()=>{
+	return window.matchMedia("(max-width: 32em)").matches;
+});
 
 class StaticComponent extends HTMLElement {
 
@@ -875,9 +963,10 @@ class PresentationComponent extends HTMLElement {
 		console.log("Setup template for:"+this.nodeName);
     
 		let templateNode = this.querySelector("[data-template]");
-  
+ 
 		//Component does not have a temnplate 
 		if(!templateNode){
+			console.log(this.attributes);
 			return;
 		} 
 

@@ -60,32 +60,28 @@
 			id="search-section" 
 			search-text="Search events"
 		>
-			{#if isMobile}
-			<div class="container-xl show-mobile">
-				<details open>
-					<summary class="btn secondary">Modify search parameters</summary>
+
+			<div class="container-xl" data-template>
+				{#if isMobile}
+					<details open>
+						<summary class="btn secondary">Modify search parameters</summary>
+						<form
+							id=${SEARCH_FORM_ID}
+							onsubmit="return false"
+						>		
+							{{>searchTemplate}}
+						</form>
+						</hr> 
+					</details>
+				{else}
+					<h1>Search events</h1>
 					<form
-						data-template
-						id=${SEARCH_FORM_ID}
-						onsubmit="return false"
-					>		
-						{{>searchTemplate}}
-					</form>
-					</hr> 
-				</details>
-			</div>
-			{else}
-			<div class="container-xl" > 
-				<div class="hide-mobile"><h1>${this.getAttribute("search-text")}</h1>
-					<form
-						data-template
 						onsubmit="return false"
 					>	
 						{{>searchTemplate}}
 					</form>
-				</div>
+				{/if}
 			</div>
-			{/if}
 
 		</search-component>
 		
