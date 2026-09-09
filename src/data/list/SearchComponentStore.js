@@ -9,7 +9,7 @@ function getCitiesQueryConfig() {
 
 export const SEARCH_COMPONENT_STORE = new DataStore(
   new ApiLoadAction(getCitiesQueryConfig),
-	"city-list-store"
+	"search-component-store"
 );
 
 const searchInputClass = (state) => {
@@ -100,5 +100,4 @@ const presentationSignals = {
 }
 
 SEARCH_COMPONENT_STORE.setupPresentationSignals(presentationSignals);
-
 

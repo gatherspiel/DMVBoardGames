@@ -32,12 +32,12 @@
 	  <script async type="module">
       console.log("Starting to parse Javascript at:" + Date.now());
 
-			import { PresentationComponent} from "./lib/places-js-latest.js";
+      import { PresentationComponent} from "./lib/places-js-latest.js";
       import { LoadingIndicatorComponent } from "./shared/components/LoadingIndicatorComponent.js";
       import { LoginStatusComponent } from "./ui/shared/LoginStatusComponent.js";
       import { SearchComponent } from "./ui/list/SearchComponent.js";
-			import { UserActionsComponent } from "./ui/shared/UserActionsComponent.js";
-			import {searchWithDefaultParams} from "./data/list/SearchStores.js";
+      import { UserActionsComponent } from "./ui/shared/UserActionsComponent.js";
+      import {searchWithDefaultParams} from "./data/list/SearchStores.js";
 		
       customElements.define("presentation-component", PresentationComponent);
       customElements.define("search-component", SearchComponent);
@@ -56,6 +56,7 @@
 		<user-actions-component> </user-actions-component>
 		<search-component
 			class="ui-section"
+			data-store="search-component-store"
 			id="search-section" 
 			search-text="Search events"
 		>

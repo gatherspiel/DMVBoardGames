@@ -87,10 +87,10 @@ export class SearchComponent extends PresentationComponent {
     }
 
   
-    return {
+    this.setChangeEvents({
       "searchEvents": searchEvents, 
       "searchGroups": searchGroups
-    };
+    });
   }  
 }
 
