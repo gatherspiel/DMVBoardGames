@@ -46,7 +46,6 @@ export const SEARCH_RESULTS_LIST_STORE = new DataStore(
 	'search-results-list-store'
 );
 
-
 const presentationSignals = {
 	"eventData":{
 		"id": (eventData)=>eventData.eventId,
@@ -75,18 +74,15 @@ const presentationSignals = {
 SEARCH_RESULTS_LIST_STORE.setupPresentationSignals(presentationSignals);
 
 export function searchWithDefaultParams(apiUrl){
-	const initialParams = new URLSearchParams(document.location.search);
-	const defaultSearchParams = {
-      apiUrl: apiUrl,
-      cityList:[DEFAULT_SEARCH_PARAMETER],
-      days: initialParams.get("days"),
-      distance: initialParams.get("distance")?.replaceAll("_", " "),
-      location: initialParams.get("location"),
-    };
-	SEARCH_RESULTS_LIST_STORE.fetchData(defaultSearchParams);
-   
+		const initialParams = new URLSearchParams(document.location.search);
+		const defaultSearchParams = {
+	      apiUrl: apiUrl,
+	      cityList:[DEFAULT_SEARCH_PARAMETER],
+	      days: initialParams.get("days"),
+	      distance: initialParams.get("distance")?.replaceAll("_", " "),
+	      location: initialParams.get("location"),
+	    };
+		SEARCH_RESULTS_LIST_STORE.fetchData(defaultSearchParams);
+	   
 }
 
-/*
-	TODO: Add presentation config here
-*/
