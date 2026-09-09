@@ -201,8 +201,22 @@ class TemplateItem {
 	getAllSignals(){
 		return this.#signalMap.values();
 	}
- 
+
+	#evaluateConditional(templateStr){
+		
+		/*
+			TODO
+
+			-Look for {if} statement
+			-Find else block if it exists.
+			-Find template function
+
+		*/
+		return templateStr;
+	}
   #defineComponent(templateStr){
+
+		this.#evaluateConditional(templateStr);
 
     const changeEvents = [];
     const changeHandlers = {};
@@ -216,7 +230,8 @@ class TemplateItem {
     this.#templateSignals = [];
     
     let template = document.createElement("template"); 
-
+		
+			
     /* TOOD: Optimize. 
      * This logic is running in O(m*n^2) time with repetitive iteration.
      * n is the number of template items and m is the length of the template string.
@@ -856,14 +871,17 @@ class PresentationComponent extends HTMLElement {
   }
 
   #setupTemplate(){
-      
-    let templateNode = this.querySelector("[data-template]");
+  
+		console.log("Setup template for:"+this.nodeName);
+    
+		let templateNode = this.querySelector("[data-template]");
   
 		//Component does not have a temnplate 
 		if(!templateNode){
 			return;
 		} 
 
+		console.log("Template running for:"+this.nodeName);
     let templateHTML = templateNode ? templateNode.innerHTML : this.innerHTML;
     this.#templateItem = new TemplateItem(templateHTML); 
 
@@ -878,7 +896,6 @@ class PresentationComponent extends HTMLElement {
 
 	if(!this.#templateItem){
 		this.#setupTemplate()
-		console.log("Setup template for:"+this.nodeName);
 	}
  
 	const templateNode = this.#templateItem.getTemplateNode();
@@ -1117,7 +1134,9 @@ class DataStore {
 
 		const reactiveUpdates = (storeUpdates)=> {
 
-			let changeData = {}; 
+			console.log(storeUpdates);
+				
+			let changeData = new Map();
 			
 			this.#presentationUpdates["removed"] = []
 			this.#presentationUpdates["moved"] = []
@@ -1193,8 +1212,6 @@ class DataStore {
 										
 								}
 							}
-							//console.log(dataItem[num]);		
-							//console.log(this.#presentationSignals);
 							if(added.has(id)){
 
 								if(addFragment === null){
@@ -1302,7 +1319,7 @@ class DataStore {
 						this.#prevOrdering[field] = updatedOrdering;
 					}
 
-
+					console.log(sameNumber);
 					if(sameNumber){
 					 
 						const arrayChanges = [];
@@ -1333,24 +1350,29 @@ class DataStore {
 				} else {
 					this.#fieldTypeMapping[field] = "item";
 					changeData[field] = storeUpdates[field];
-				}
-			
+				}			
 		 });
 
+
 			this.#presentationUpdates["fieldTypeMapping"] = this.#fieldTypeMapping
-			this.#presentationUpdates["updates"] = this.#generatePresentationUpdates(changeData);
+			console.log("Generating updates from change data");	
+			console.log(changeData);
+
+			if(changeData.size > 0) {
+				this.#presentationUpdates["updates"] = this.#generatePresentationUpdates(changeData);
 
 
-			for(let i = 0; i < this.#componentSubscriptions.length; i++){
-				this.#componentSubscriptions[i].updateVisible(
-					this.#presentationUpdates["updates"]
-				);
-			}
+				for(let i = 0; i < this.#componentSubscriptions.length; i++){
+					this.#componentSubscriptions[i].updateVisible(
+						this.#presentationUpdates["updates"]
+					);
+				}
 			
-			Object.keys(storeUpdates).forEach((field)=>{
-				this.#storeData[field] = storeUpdates[field]
-			}); 
-
+				console.log(this.#storeData);	
+				Object.keys(storeUpdates).forEach((field)=>{
+					this.#storeData[field] = storeUpdates[field]
+				}); 
+			}
 			for(let i = 0; i < this.#componentSubscriptions.length; i++){
 				this.#componentSubscriptions[i].updateSingleItem(
 					this.#presentationUpdates["updates"]
@@ -1364,7 +1386,7 @@ class DataStore {
   #generatePresentationUpdates(updates){
 
     const presentationUpdates = {}; 
-
+		
     const keys = Object.keys(this.#presentationSignals);
     for(let i=0;i<keys.length;i++){
 
@@ -1372,8 +1394,10 @@ class DataStore {
 
       const presentationField 
         = this.#presentationSignals[key]["presentationField"] || key;
-      const dataToUpdate = this.#storeData[presentationField];
-
+      
+		
+			const dataToUpdate = this.#storeData[presentationField];
+			
       if(Array.isArray(dataToUpdate)){ 
         presentationUpdates[presentationField] = {};
       } else {
@@ -1393,7 +1417,7 @@ class DataStore {
       if(!Array.isArray(update)){
         let changeData;
 
-        
+				console.log("Change data is:"+changeData); 
         if(update){
           changeData = update({
             "prevState":this.#storeData[stateField],
@@ -1426,7 +1450,6 @@ class DataStore {
       else {
 
         let changeData = [];
-
         for(let i=0;i<updates[stateField].length;i++){
 
           const updateData = updates[stateField][i];
@@ -1536,7 +1559,9 @@ class DataStore {
         }
         response = await this.#loadAction.fetch(params, this.#requestStoreId,requestKey); 
       } 
-    
+  
+			console.log("The response is:"); 
+			console.log(response); 
 	    this.updateStoreData(response);
       
 			this.#isLoading = false;

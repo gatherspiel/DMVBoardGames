@@ -9,4 +9,5 @@ function getCitiesQueryConfig() {
 
 export const CITY_LIST_STORE = new DataStore(
   new ApiLoadAction(getCitiesQueryConfig),
+	"city-list-store"
 );

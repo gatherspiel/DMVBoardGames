@@ -1,27 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head> 
-    <meta charset="UTF-8" />
-    <script async type="module">
-      console.log("Starting to parse Javascript at:" + Date.now());
-
-			import { PresentationComponent} from "./lib/places-js-latest.js";
-      import { LoadingIndicatorComponent } from "./shared/components/LoadingIndicatorComponent.js";
-      import { LoginStatusComponent } from "./ui/shared/LoginStatusComponent.js";
-      import { SearchComponent } from "./ui/list/SearchComponent.js";
-
-			import { UserActionsComponent } from "./ui/shared/UserActionsComponent.js";
-
-      customElements.define("presentation-component", PresentationComponent);
-      customElements.define("search-component", SearchComponent);
-			customElements.define(
-        "loading-indicator-component",
-        LoadingIndicatorComponent,
-      );
-
-      customElements.define("login-status-component", LoginStatusComponent);
-      customElements.define("user-actions-component", UserActionsComponent);
-    </script>
+    <meta charset="UTF-8" /> 
     <link
 			rel="stylesheet"
       href="/styles/sharedHtmlAndComponentStyles.css"
@@ -49,16 +29,64 @@
       }
     </style>
     <title>DMV Board Games</title>
+	  <script async type="module">
+      console.log("Starting to parse Javascript at:" + Date.now());
+
+			import { PresentationComponent} from "./lib/places-js-latest.js";
+      import { LoadingIndicatorComponent } from "./shared/components/LoadingIndicatorComponent.js";
+      import { LoginStatusComponent } from "./ui/shared/LoginStatusComponent.js";
+      import { SearchComponent } from "./ui/list/SearchComponent.js";
+			import { UserActionsComponent } from "./ui/shared/UserActionsComponent.js";
+			import {searchWithDefaultParams} from "./data/list/SearchStores.js";
+		
+      customElements.define("presentation-component", PresentationComponent);
+      customElements.define("search-component", SearchComponent);
+			customElements.define(
+        "loading-indicator-component",
+        LoadingIndicatorComponent,
+      );
+
+		
+      customElements.define("login-status-component", LoginStatusComponent);
+      customElements.define("user-actions-component", UserActionsComponent);	
+	    searchWithDefaultParams("/searchEvents");
+    </script>
   </head>
   <body>
 		{{>navbar}}
 		<user-actions-component> </user-actions-component>
 		<search-component
-			api-url="/searchEvents"
 			class="ui-section"
 			id="search-section" 
 			search-text="Search events"
 		>
+			{#if isMobile}
+			<div class="container-xl show-mobile">
+				<details open>
+					<summary class="btn secondary">Modify search parameters</summary>
+					<form
+						data-template
+						id=${SEARCH_FORM_ID}
+						onsubmit="return false"
+					>		
+						{{>searchTemplate}}
+					</form>
+					</hr> 
+				</details>
+			</div>
+			{else}
+			<div class="container-xl" > 
+				<div class="hide-mobile"><h1>${this.getAttribute("search-text")}</h1>
+					<form
+						data-template
+						onsubmit="return false"
+					>	
+						{{>searchTemplate}}
+					</form>
+				</div>
+			</div>
+			{/if}
+
 		</search-component>
 		
 		<presentation-component

@@ -33,89 +33,31 @@ const DISTANCE_OPTIONS = [
 export class SearchComponent extends PresentationComponent {
 
   constructor() {
-    super([
-      {
-        componentReducer: (cityArray) => {
-          const copy = [];
-          cityArray.forEach((city) => {
-            copy.push(getDisplayName(city));
-          });
-          copy.sort();
-          copy.unshift(DEFAULT_SEARCH_PARAMETER);
-          return copy
-        },
-        dataStore: CITY_LIST_STORE,
-        fieldName: "cityList"
-      },
-      {
-        dataStore: LOGIN_STORE,
-        fieldName: "loginState"
-      },
-      {
-        componentReducer:(data)=> {          
-          if(data.eventData && data.eventData.length > 0){
-            return false;
-          } 
-          if(data.groupData && data.groupData.length > 0){
-            return false;
-          }
-          return true;
-        },
-        dataStore: SEARCH_RESULTS_LIST_STORE,
-        fieldName: "showSearchUiMobile"
-      }
-    ]);
-
-    this.initialParams = new URLSearchParams(document.location.search);
-
-		console.log("Beginning search");
-		console.log(this.getAttribute("api-url"));
-    this.defaultSearchParams = {
-      apiUrl: this.getAttribute("api-url"),
-      cityList:[DEFAULT_SEARCH_PARAMETER],
-      days: this.initialParams.get("days"),
-      distance: this.initialParams.get("distance")?.replaceAll("_", " "),
-      location: this.initialParams.get("location"),
-    };
-    SEARCH_RESULTS_LIST_STORE.fetchData(this.defaultSearchParams);
-   
-
+		super([
+			{
+				dataStore: CITY_LIST_STORE,
+				fieldName: "cityList"
+			},
+			{
+				dataStore: LOGIN_STORE,
+				fieldName: "loginState"
+			}			
+		]);
     this.setAttribute("search-button-enabled",false);
   }
 
-  connectedCallback(){
-    this.init(this.defaultSearchParams);
-  }
+	connectedCallback(){
+		CITY_LIST_STORE.fetchData();
 
-  render(state) {  
-    
+		
 
-    if(window.matchMedia("(max-width: 32em)").matches){
-      return `
-        <div class="container-xl">
-          <details class="show-mobile" open>
-            <summary class="btn secondary">Modify search parameters</summary>
-            <form
-              data-component=SearchForm
-              id=${SEARCH_FORM_ID}
-              onsubmit="return false"
-            ></form>
-            </hr> 
-          </details>
-        </div>
-      `
-    }
-    return `
-      <div class="container-xl" > 
-        <div class="hide-mobile"><h1>${this.getAttribute("search-text")}</h1>
-          <form
-            data-component=SearchForm
-            onsubmit="return false"
-          ></form>
-        </div>
-      </div>
-    `;
-  }
+		//TODO:  Add conditional check here
+		/*
+			this.addTemplateFunction(showMobile)
+
+		*/
+	}
+
 }
 
 class SearchForm extends PresentationComponent {
@@ -271,66 +213,5 @@ class SearchForm extends PresentationComponent {
     }
   }
 
-  defineTemplate(){ 
-    return `
-      <div id="form-div-outer">    
-        <div  
-          class={{searchInputClass}}
-          id="search-form-inputs" 
-        > 
-          <label class="searchDropdownLabel">
-            Select event day: 
-          </label>     
-
-          <fieldset
-            id = "select-days"
-            onChange={{checkboxUpdated}}>
-              {{getDaysSelect}}
-          </fieldset>
-
-          <label class="searchDropdownLabel">
-            Select city: 
-          </label>
-
-          <select 
-            id="select-city"
-            onChange={{citiesUpdated}}
-          >
-            {{getCitySelect}}
-          </select>
-          
-          <div id="select-distance-outer">
-            <label id="max-distance-label" class="searchDropdownLabel">Max distance:</label>
-            <select
-              id="select-distance"
-              onChange={{distanceUpdated}}
-              >
-              {{getDistanceSelect}} 
-            </select>
-          </div>
-        <div 
-          id = "search-input-div"
-        >
-          <button
-            class="secondary"
-            id="search-button"
-            onClick={{searchEvents}}
-          >
-            {{searchAllText}}
-          </button>
-          <button 
-            class={{searchBtnClass}}
-            hidden={{notLoggedIn}}
-            id={{searchBtnIdUser}}
-            onClick={{searchGroups}}
-          >
-            Search joined groups
-          </button> 
-        </div>
-        </div>  
-
-      </div>
-    `;
-  }
 }
 
