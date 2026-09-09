@@ -131,7 +131,7 @@ class TemplateItem {
   #templateNode;
   #templateRoot = null;
   #templateSignals;
-  #signalMap = {}
+  #signalMap = new Map();
 
   constructor(html){
     this.#defineComponent(html);
@@ -145,8 +145,10 @@ class TemplateItem {
   
   #initSignalMap(){
     for(let i=0;i<this.#templateSignals.length;i++){
-      this.#signalMap[this.#templateSignals[i].fieldName] =
-        this.#templateSignals[i];
+			this.#signalMap.set(
+				this.#templateSignals[i].fieldName,
+				this.#templateSignals[i]
+			);
     }
   }
 
@@ -188,21 +190,20 @@ class TemplateItem {
             });
           } 
         });
-      })(this.#templateRoot, this.#handlerDepthMap,this.#clickTemplateEvents, this.#clickTemplateHandlers)
-
-
-     
+      })(this.#templateRoot, this.#handlerDepthMap,this.#clickTemplateEvents, this.#clickTemplateHandlers) 
     }  
   }
 
   getSignalByFieldName(fieldName){
-    return this.#signalMap[fieldName] 
+    return this.#signalMap.get(fieldName);
   }
-  
+
+	getAllSignals(){
+		return this.#signalMap.values();
+	}
+ 
   #defineComponent(templateStr){
 
-		console.log("Defining template:");
-		console.log(templateStr);
     const changeEvents = [];
     const changeHandlers = {};
     const clickEvents = [];
@@ -262,14 +263,11 @@ class TemplateItem {
 				stateVarPos = templateStr.indexOf("{");
 			}
 
-			//console.log(templateStr);
-			console.log(stateVarPos);
 
       if(stateVarPos === -1){
         break;
       }
     
-			console.log(stateVarPos); 
       let firstTagEnd = templateStr.indexOf(">");
      
 			let equalDist = 1; 
@@ -284,12 +282,10 @@ class TemplateItem {
 
       let attr, fieldName;
 
-			console.log(templateStr.charAt(stateVarPos-2));	
       if(templateStr.charAt(stateVarPos-equalDist) === "="){
         attr = "";
         for(let j = stateVarPos-equalDist-1; j > 0; j--){
           const nameChar = templateStr.charAt(j);
-					console.log(nameChar);
           if(this.isAttributeChar(nameChar)){
             attr = nameChar + attr;
           } else {
@@ -309,18 +305,15 @@ class TemplateItem {
 
 
       if(attr === "innerHTML"){
-				console.log("Inner HTML");
         for(let j = stateVarPos -1; j >= 0; j--){
           if(templateStr.charAt(j) === ">"){
-						console.log("Hi");
             endTagPos = j + 1 ;
             isHtmlAttr = true;
             break;
           } 
         }
       }
-			console.log(isHtmlAttr);
-        
+		 
       let newStr=`data-signal-id-${i}`;
 
       if(endPos < firstTagEnd){
@@ -337,10 +330,8 @@ class TemplateItem {
         isOuter: endPos < firstTagEnd
       } 
 
-			console.log(isHtmlAttr);
-      if(!isHtmlAttr){
+			if(!isHtmlAttr){
 				
-				console.log("New str:"+newStr); 
         if(newStr.length > 0 ){
           templateStr = templateStr.substring(0,stateVarPos) +
             " " +
@@ -351,8 +342,6 @@ class TemplateItem {
             newStr + templateStr.substring(endPos+2);
         }
       } else {
-				console.log("Attr");
-				console.log(templateStr.substring(0,endTagPos));
         templateStr =
           templateStr.substring(0,endTagPos-1) +
           " " +
@@ -360,10 +349,6 @@ class TemplateItem {
           ">" +
           templateStr.substring(endPos+1);
 					
-				console.log(newStr);
-				console.log(templateStr.substring(endPos+1));
-
-				console.log("Result:"+templateStr);
       }
 
       this.#templateSignals.push(signalData)
@@ -389,11 +374,8 @@ class TemplateItem {
       }
     }
 
-		console.log("Template signals:"+this.#templateSignals.length);
 
     templateStr = linesToAdd.join("");
-		console.log("Template str:"+templateStr);
-
     template.innerHTML = templateStr;
     
     this.#templateNode = template.content.firstChild;
@@ -622,8 +604,6 @@ class PresentationComponent extends HTMLElement {
 		
     //Light DOM is enabled.
     if(this.innerHTML){
-			console.log("Light dom enabled");
-			console.log(this.innerHTML);
       this.#lightDomHTML = this.innerHTML;
     }
 
@@ -898,17 +878,17 @@ class PresentationComponent extends HTMLElement {
 
 	if(!this.#templateItem){
 		this.#setupTemplate()
+		console.log("Setup template for:"+this.nodeName);
 	}
-  
+ 
 	const templateNode = this.#templateItem.getTemplateNode();
   
 	for(let j=0;j<addFragments.length;j++){
 
 		const {insertBefore,insertData} = addFragments[j];
-
+		
 		let addFragment = document.createDocumentFragment();
-	 
-		const fieldNames = Object.keys(insertData[0]);
+	
 		for(let k=0;k<insertData.length;k++){
 			const addNode = templateNode.cloneNode(true);          
 
@@ -916,11 +896,18 @@ class PresentationComponent extends HTMLElement {
 		 
 			this.#templateItem.addNode(insertData[k].id,addNode);
 
-			for(let a=0;a<fieldNames.length;a++){
-					 
+			const iter = this.#templateItem.getAllSignals();
+
+			while(true){
+				
+				const signalConfig = iter.next().value;
+
+				if(!signalConfig){
+					break;
+				}
 				this.#generateSignal(
 					{
-						signalConfig:this.#templateItem.getSignalByFieldName(fieldNames[a]),
+						signalConfig:signalConfig,
 						updateData:{
 							"signalData":insertData[k],
 							"elementRoot":addNode,
@@ -1254,7 +1241,6 @@ class DataStore {
 						}
 					}
 
-					console.log(this.#prevOrdering);
 					const movedNodes = {}
 					let sameNumber = false;
 					if(!isReplace && updatedOrdering.length === this.#prevOrdering[field].length){
@@ -1468,7 +1454,6 @@ class DataStore {
   }
 
   getComponentUpdateData(){
-		console.log("Getting component update data:");
     if(this.#presentationSignals){
       return this.#presentationUpdates;
     }
@@ -1576,14 +1561,7 @@ class DataStore {
     }
     this.#componentSubscriptions.push(component);
 
-		/*
-		* Consider removing this automatic data fetching
-		*/
-    /*if(!this.hasLatestData()){
-			console.log("Automatically fetching state");
-      this.fetchData();
-    }*/
-  }
+	}
 }
 
 export { ApiLoadAction, PresentationComponent, ShadowDOMComponent, StaticComponent, CustomLoadAction, DataStore};
