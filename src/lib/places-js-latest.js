@@ -972,7 +972,6 @@ class PresentationComponent extends HTMLElement {
 
 	updateVisible(data){
 		
-
 		const updates = data[this.#templateItem.dataField] || [];
 		for(let i=0;i<updates.length;i++){
 
@@ -1176,13 +1175,26 @@ class DataStore {
 					}
 				
 					if(added.size > 0){
-						
+	
 						let addFragments = [];
 						let addFragment = null;
 
+						const addSignals = this.#presentationSignals[field].update;
+						console.log(addSignals);
+						const addSignalKeys = Object.keys(addSignals);
 						for(let num=0; num < updatedOrdering.length; num++){
 							const id = updatedOrdering[num];
 
+							for(let key =0; key<addSignalKeys.length;key++){
+								const signalField = addSignalKeys[key];
+								const signal = addSignals[signalField];
+								if((typeof signal) === "function"){
+									dataItem[num][signalField] = signal(dataItem[num]);	
+										
+								}
+							}
+							//console.log(dataItem[num]);		
+							//console.log(this.#presentationSignals);
 							if(added.has(id)){
 
 								if(addFragment === null){

@@ -2,6 +2,7 @@ import { ApiLoadAction, DataStore } from "/lib/places-js-latest.js";
 
 import { API_ROOT } from "../../ui/shared/Params.js";
 import { DEFAULT_SEARCH_PARAMETER } from "../../shared/html/SelectGenerator.js";
+import { convertLocationDataForDisplay} from "/shared/EventDataUtils.js";
 
 function getSearchResultsQueryConfig(searchParams) {
   const paramMap = {};
@@ -18,7 +19,6 @@ function getSearchResultsQueryConfig(searchParams) {
     if (searchParams.distance) {
       paramMap["distance"] = searchParams.distance.split(" ")[0];
     }
-
   }
 
   if(searchParams.userGroupEvents){
@@ -54,21 +54,22 @@ const presentationSignals = {
 			"eventTime":
 				(eventData)=>{
 					if(eventData.isRecurring){
-            return `${eventData.dayOfWeek}s at ${eventData.nextEventTime}`;
+            return `
+							${eventData.dayOfWeek}s at 
+							${eventData.nextEventTime}`;
           }
-          return `${eventData.nextEventDate} at ${eventData.nextEventTime}`
+          return `
+						${eventData.nextEventDate} at 
+						${eventData.nextEventTime}`
         },
 			 "location":(eventData)=>{
           return `${convertLocationDataForDisplay(eventData.eventLocation)}`
         },
        "url": (eventData) => {
           return `/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}`
-			} 
+				} 
 		}
 	}
-
 }
 
-
 SEARCH_RESULTS_LIST_STORE.setupPresentationSignals(presentationSignals);
-

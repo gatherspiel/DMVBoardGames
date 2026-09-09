@@ -51,47 +51,39 @@
     <title>DMV Board Games</title>
   </head>
   <body>
-      {{>navbar}}
-      <user-actions-component> </user-actions-component>
-      <search-component
-        api-url="/searchEvents"
-        class="ui-section"
-        id="search-section" 
-        search-text="Search events"
-      >
-      </search-component>
-      <presentation-component
-			 data-store = "search-results-list-store"
-			 data-loading-indicator="loading-indicator-component"
-			 data-loading-image="/assets/images/meeple_small.png"
-			>
-				<div class="container-xl fade-in-animation"> 
-					<p id="no-events-found">No events found</p>
-					<h1 id="search-results-header">Event search results</h1>
-					<ul
-						data-template=data
-					>
-						<li>
-							<a 
-								class="btn secondary"
-								href="{url}"
-							>
-							{{eventName}}
-							</a>
-							<div 
-								class="event-time" 
-							> 
-								{eventTime}
-							</div>
-							<div
-								class="event-location"
-							> 
-								{location}
-							</div> 
-						</li>
-					</ul>
-				</div>
-			</presentation-component>
+		{{>navbar}}
+		<user-actions-component> </user-actions-component>
+		<search-component
+			api-url="/searchEvents"
+			class="ui-section"
+			id="search-section" 
+			search-text="Search events"
+		>
+		</search-component>
+		
+		<presentation-component
+		 data-store = "search-results-list-store"
+		 data-loading-indicator="loading-indicator-component"
+		 data-loading-image="/assets/images/meeple_small.png"
+		>
+			<div class="container-xl fade-in-animation"> 
+				<p id="no-events-found">No events found</p>
+				<h1 id="search-results-header">Event search results</h1>
+				<ul data-template=data>
+					<li>
+						<a class="btn secondary" href="{url}">
+							{eventName}
+						</a>
+						<div class="event-time"> 
+							{eventTime}
+						</div>
+						<div class="event-location"> 
+							{location}
+						</div> 
+					</li>
+				</ul>
+			</div>
+		</presentation-component>
 
     <div id="bot-container"></div>
     {{>footer}}
