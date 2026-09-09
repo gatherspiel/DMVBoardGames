@@ -7,9 +7,9 @@ function getCitiesQueryConfig() {
   };
 }
 
-export const SEARCH_COMPONENT_STORE = new DataStore(
+export const CITY_LIST_STORE = new DataStore(
   new ApiLoadAction(getCitiesQueryConfig),
-	"search-component-store"
+	"city-list-store"
 );
 
 const searchInputClass = (state) => {
@@ -85,9 +85,25 @@ const notLoggedIn = (state)=>{
 	}
 	return true;
 }
+
+export const SEARCH_COMPONENT_STORE = new DataStore(
+	new DataStoreLoadAction([
+		{
+			fieldName: "cities",
+			store: CITY_LIST_STORE
+		},
+		{
+			fieldName: "loginStatus",
+			store: LOGIN_STORE
+		}
+	]),
+	"city-list-store"
+)
+
 const presentationSignals = {
+
 	"update":{
-	 "searchInputClass":searchInputClass,
+		"searchInputClass":searchInputClass,
 		"getDaysSelect":getDaysSelect,
 		"getCitySelect":getCitySelect,
 		"distanceSelectVisible":distanceSelectVisible,
