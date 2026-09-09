@@ -45,7 +45,6 @@
         "loading-indicator-component",
         LoadingIndicatorComponent,
       );
-
 		
       customElements.define("login-status-component", LoginStatusComponent);
       customElements.define("user-actions-component", UserActionsComponent);	
@@ -74,10 +73,11 @@
 						</hr> 
 					</details>
 				{else}
-					<h1>Search events</h1>
 					<form
 						onsubmit="return false"
 					>	
+
+						<h1>Search events</h1>
 						{{>searchTemplate}}
 					</form>
 				{/if}
