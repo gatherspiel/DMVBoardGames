@@ -3,7 +3,7 @@ import {
   SUPABASE_CLIENT_KEY,
   SUPABASE_CLIENT_URL,
 } from "../../ui/shared/Params.js";
-import { CustomLoadAction, DataStore } from "/lib/places-js-latest.js";
+import { DataStore } from "/lib/places-js-latest.js";
 import { AuthResponse } from "../../ui/user/AuthResponse.js";
 
 async function retrieveData() {
@@ -39,4 +39,5 @@ async function retrieveData() {
   }
 }
 
-export const LOGOUT_STORE = new DataStore(new CustomLoadAction(retrieveData));
+export const LOGOUT_STORE = 
+  DataStore.createWithCustomLoadSignal(retrieveData);

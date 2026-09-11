@@ -1,4 +1,4 @@
-import { ApiLoadAction, DataStore } from "/lib/places-js-latest.js";
+import { DataStore } from "/lib/places-js-latest.js";
 
 import { API_ROOT } from "../../ui/shared/Params.js";
 import { DEFAULT_SEARCH_PARAMETER } from "../../shared/html/SelectGenerator.js";
@@ -41,11 +41,6 @@ function getSearchResultsQueryConfig(searchParams) {
   };
 }
 
-export const SEARCH_RESULTS_LIST_STORE = new DataStore(
-  new ApiLoadAction(getSearchResultsQueryConfig),
-	'search-results-list-store'
-);
-
 const presentationSignals = {
 	"eventData":{
 		"id": (eventData)=>eventData.eventId,
@@ -71,18 +66,23 @@ const presentationSignals = {
 	}
 }
 
-SEARCH_RESULTS_LIST_STORE.setupPresentationSignals(presentationSignals);
+export const SEARCH_RESULTS_LIST_STORE =
+  DataStore.createWithApiLoadSignal({
+    "queryConfig":getSearchResultsQueryConfig,
+    "presentationSignals":presentationSignals,
+    "storeName":'search-results-list-store'
+});
+
 
 export function searchWithDefaultParams(apiUrl){
-		const initialParams = new URLSearchParams(document.location.search);
-		const defaultSearchParams = {
-	      apiUrl: apiUrl,
-	      cityList:[DEFAULT_SEARCH_PARAMETER],
-	      days: initialParams.get("days"),
-	      distance: initialParams.get("distance")?.replaceAll("_", " "),
-	      location: initialParams.get("location"),
-	    };
-		SEARCH_RESULTS_LIST_STORE.fetchData(defaultSearchParams);
-	   
+  const initialParams = new URLSearchParams(document.location.search);
+  const defaultSearchParams = {
+      apiUrl: apiUrl,
+      cityList:[DEFAULT_SEARCH_PARAMETER],
+      days: initialParams.get("days"),
+      distance: initialParams.get("distance")?.replaceAll("_", " "),
+      location: initialParams.get("location"),
+    };
+  SEARCH_RESULTS_LIST_STORE.fetchData(defaultSearchParams);   
 }
 

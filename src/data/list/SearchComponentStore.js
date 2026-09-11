@@ -1,5 +1,6 @@
 import { ApiLoadAction, DataStore } from "/lib/places-js-latest.js";
 import { API_ROOT } from "../../ui/shared/Params.js";
+import {LOGIN_STORE} from "../user/LoginStore.js";
 
 function getCitiesQueryConfig() {
   return {
@@ -86,34 +87,33 @@ const notLoggedIn = (state)=>{
 	return true;
 }
 
-export const SEARCH_COMPONENT_STORE = new DataStore(
-	new DataStoreLoadAction([
-		{
-			fieldName: "cities",
-			store: CITY_LIST_STORE
-		},
-		{
-			fieldName: "loginStatus",
-			store: LOGIN_STORE
-		}
-	]),
-	"city-list-store"
-)
-
 const presentationSignals = {
-
-	"update":{
-		"searchInputClass":searchInputClass,
-		"getDaysSelect":getDaysSelect,
-		"getCitySelect":getCitySelect,
-		"distanceSelectVisible":distanceSelectVisible,
-		"getDistanceSelect":getDistanceSelect,
-		"searchBtnCls":searchBtnCls,
-		"searchBtnId":searchBtnId,
-		"searchAllText":searchAllText,
-		"notLoggedIn":notLoggedIn,
-	}
+  "update":{
+    "searchInputClass":searchInputClass,
+    "getDaysSelect":getDaysSelect,
+    "getCitySelect":getCitySelect,
+    "distanceSelectVisible":distanceSelectVisible,
+    "getDistanceSelect":getDistanceSelect,
+    "searchBtnCls":searchBtnCls,
+    "searchBtnId":searchBtnId,
+    "searchAllText":searchAllText,
+    "notLoggedIn":notLoggedIn,
+  }
 }
 
-SEARCH_COMPONENT_STORE.setupPresentationSignals(presentationSignals);
+export const SEARCH_COMPONENT_STORE = 
+  DataStore.createWithDataStoreSignals({
+    "presentationSignals": presentationSignals, 
+    "storeName": "search-component-store",
+    "storeSignals": [
+      {
+        fieldName: "cities",
+        store: CITY_LIST_STORE
+      },
+      {
+        fieldName: "loginStatus",
+        store: LOGIN_STORE
+      }
+    ],
+  })
 

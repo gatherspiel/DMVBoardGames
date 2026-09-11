@@ -4,7 +4,6 @@ import {
   SUPABASE_CLIENT_URL,
 } from "../../ui/shared/Params.js";
 import {
-  CustomLoadAction,
   DataStore,
 } from "/lib/places-js-latest.js";
 
@@ -65,4 +64,4 @@ async function retrieveData(params) {
   }
 }
 
-export const LOGIN_STORE = new DataStore(new CustomLoadAction(retrieveData));
+export const LOGIN_STORE = DataStore.createWithCustomLoadSignal(retrieveData);

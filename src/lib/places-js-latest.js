@@ -1,3 +1,7 @@
+/*
+ * Don't iniitalize directly. use DataStore.createApiLoadSignal instead
+ **/
+
 class ApiLoadAction{
 
 	constructor(getRequestConfig) {
@@ -324,8 +328,6 @@ class TemplateItem {
 
 			templateStr = this.#evaluateConditional(templateStr);
 			
-			console.log("Template before signal setup:"+templateStr);
-
 			const changeEvents = [];
 			const changeHandlers = {};
 			const clickEvents = [];
@@ -1175,7 +1177,7 @@ class ShadowDOMComponent extends HTMLElement {
  * It is intended for use when additional processing needs to be done after an async call, or if a store needs
  * to combine data from multiple sources.
  */
-class CustomLoadAction {
+class CustomLoadSignal {
 	constructor(loadFunction) {
 		this.fetch = async (params) => {
 			return await loadFunction(params);
@@ -1186,7 +1188,7 @@ class CustomLoadAction {
 /**
  * Class to determine a custom load action that includes a dependenccy on other stores
  **/
-class DataStoreLoadAction {
+class DataStoreSignal {
 	constructor(stores) {
 
 		//TODO: Make the store also subscribe to updates
@@ -1195,17 +1197,30 @@ class DataStoreLoadAction {
 
 			const promises = [];
 			stores.forEach((storeConfig)=>{
-				
-				const storeFetch = async()=>{
-					await storeConfig.store.fetchData();
-					const data = storeConfig.store.getStoreData();
+			
+        const storeFetch = new Promise((resolve,reject)=>{
+    
+          storeConfig.store.fetchData().then(()=>{
+            const data = storeConfig.store.getStoreData();
+            const resolveState = {
+              [storeConfig.fieldName]:data.storeUpdates
+            }
+            resolve(resolveState);
+          });
+        });
 
-					return {[storeConfig.fieldName],storeConfig.store};
-				}
 				promises.push(storeFetch);
 			});
 
-			const data = await Promoise.all(promises);
+			const data = await Promise.all(promises);
+      const result = {};
+      
+      for(let i=0; i < data.length; i++){
+        Object.assign(result,data[i]);
+      }
+
+      console.log("Results:");
+      console.log(JSON.stringify(data));
 			return data;
 		};
 	}
@@ -1227,7 +1242,6 @@ class DataStore {
 	#reactiveFieldNames = [];
 	#requestStoreId;
 	#storeData = null;
-
 
 	constructor(loadAction, storeName) {
 		this.#componentSubscriptions = [];
@@ -1255,11 +1269,42 @@ class DataStore {
 		return this.#storeNameMap.get(storeName);
 	}
 
+  static createWithApiLoadSignal(
+    {presentationSignals, queryConfig, storeName}){
+    let store = new DataStore(
+      new ApiLoadAction(queryConfig),
+      storeName);
+    if(presentationSignals) {
+      store.#setupPresentationSignals(presentationSignals)
+    }
+
+    return store
+  }
+
+  static createWithDataStoreSignals({
+    presentationSignals,storeSignals, storeName}){
+   
+    if(!storeSignals){
+      throw new Error("storeSignals is undefined");
+    }
+
+    let store = new DataStore(new DataStoreSignal(storeSignals),storeName);
+
+    if(presentationSignals) {
+      store.#setupPresentationSignals(presentationSignals)
+    }
+    return store;
+  }
+
+  static createWithCustomLoadSignal(loadAction,storeName){
+    return new DataStore(new CustomLoadSignal(loadAction),storeName);
+  }
+
 	/**
 	 * Setup signals to enable fine-grained reactivity on
 	 * presentation components.
 	 */
-	setupPresentationSignals(presentationSignals){
+  #setupPresentationSignals(presentationSignals){
 
 		this.#presentationSignals = presentationSignals;
 		Object.keys(presentationSignals).forEach((key)=>{
@@ -1269,20 +1314,16 @@ class DataStore {
 		//Custom update function for reactive updates.
 		const reactiveUpdates = (storeUpdates)=> {
 
-			console.log("Reactive updates");
 			let changeData = new Map();
 
 			this.#presentationUpdates["removed"] = []
 			this.#presentationUpdates["moved"] = []
 			this.#presentationUpdates["updated"] = []
 
-			console.log(storeUpdates);
 			Object.keys(storeUpdates).forEach((field)=>{
-
-				
+	
 				if(Array.isArray(storeUpdates[field])){
 
-					console.log("Is array");
 					//Assign id value to items.
 					if(this.#presentationSignals[field].id){
 						for(let j =0;j<storeUpdates[field].length;j++){
@@ -1441,8 +1482,8 @@ class DataStore {
 
 				}
 			}              
-			}
-			}
+    }
+  }
 
 	for(let a = 0; a < this.#componentSubscriptions.length; a++){
 		this.#componentSubscriptions[a].swapUpdates(this.#presentationUpdates["moved"]);
@@ -1636,6 +1677,7 @@ getComponentUpdateData(){
 	 * @param storeUpdates Updated store data. Fields not specified in storeData will not be updated.
 	 */
 	updateStoreData(storeUpdates){ 
+    this.#storeData = {...this.#storeData, storeUpdates};
 		for(let i = 0; i < this.#componentSubscriptions.length; i++){
 			this.#componentSubscriptions[i].updateFromSubscribedStores();
 		}  
@@ -1651,6 +1693,7 @@ getComponentUpdateData(){
 	 * @param dataStore Optional data store that will be subscribed to updates from this store.
 	 */
 	async fetchData(params = {}, dataStore){
+
 
 		// Do not make a data request if there is an active one in progress. The active one will push data to subscribed components.
 		if(!this.#isLoading) {
@@ -1688,10 +1731,8 @@ getComponentUpdateData(){
 				}
 				response = await this.#loadAction.fetch(params, this.#requestStoreId,requestKey); 
 			} 
-	
-			console.log(response);
-
-			this.updateStoreData(response);
+		
+      this.updateStoreData(response);
 
 			this.#isLoading = false;
 
@@ -1730,4 +1771,4 @@ getComponentUpdateData(){
 	}
 }
 
-export { ApiLoadAction, PresentationComponent, ShadowDOMComponent, StaticComponent, CustomLoadAction, DataStore};
+export { ApiLoadAction, PresentationComponent, ShadowDOMComponent, StaticComponent, DataStore};
