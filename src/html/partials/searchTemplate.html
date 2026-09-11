@@ -1,6 +1,6 @@
 <div id="form-div-outer">    
 	<div  
-		class={{searchInputClass}}
+		class={searchInputClass}
 		id="search-form-inputs" 
 	> 
 		<label class="searchDropdownLabel">
@@ -10,7 +10,7 @@
 		<fieldset
 			id = "select-days"
 			onChange={{checkboxUpdated}}>
-				{{getDaysSelect}}
+				{getDaysSelect}
 		</fieldset>
 
 		<label class="searchDropdownLabel">
@@ -19,9 +19,9 @@
 
 		<select 
 			id="select-city"
-			onChange={{citiesUpdated}}
+			onChange={citiesUpdated}
 		>
-			{{getCitySelect}}
+			{getCitySelect}
 		</select>
 		
 		<div id="select-distance-outer">
@@ -30,7 +30,7 @@
 				id="select-distance"
 				onChange={{distanceUpdated}}
 				>
-				{{getDistanceSelect}} 
+				{getDistanceSelect}
 			</select>
 		</div>
 	<div 
@@ -41,7 +41,7 @@
 			id="search-button"
 			onClick={{searchEvents}}
 		>
-			{{searchAllText}}
+			{searchAllText}
 		</button>
 		<button 
 			class={{searchBtnClass}}

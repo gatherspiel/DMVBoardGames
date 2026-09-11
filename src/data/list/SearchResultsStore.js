@@ -66,11 +66,11 @@ const presentationSignals = {
 	}
 }
 
-export const SEARCH_RESULTS_LIST_STORE =
+export const SEARCH_RESULTS_STORE =
   DataStore.createWithApiLoadSignal({
     "queryConfig":getSearchResultsQueryConfig,
     "presentationSignals":presentationSignals,
-    "storeName":'search-results-list-store'
+    "storeName":'search-results-store'
 });
 
 
@@ -83,6 +83,6 @@ export function searchWithDefaultParams(apiUrl){
       distance: initialParams.get("distance")?.replaceAll("_", " "),
       location: initialParams.get("location"),
     };
-  SEARCH_RESULTS_LIST_STORE.fetchData(defaultSearchParams);   
+  SEARCH_RESULTS_STORE.fetchData(defaultSearchParams);   
 }
 

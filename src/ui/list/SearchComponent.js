@@ -9,7 +9,7 @@ import {
 import { PresentationComponent} from "/lib/places-js-latest.js";
 import { SEARCH_COMPONENT_STORE } from "../../data/list/SearchComponentStore.js";
 import {LOGIN_STORE} from "../../data/user/LoginStore.js";
-import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
+import { SEARCH_RESULTS_STORE } from "../../data/list/SearchResultsStore.js";
 
 import { getDisplayName } from "../../shared/DisplayNameConversion.js";
 
@@ -76,7 +76,7 @@ export class SearchComponent extends PresentationComponent {
 
       window.history.replaceState({}, "", updatedUrl);
 
-      SEARCH_RESULTS_LIST_STORE.fetchData({
+      SEARCH_RESULTS_STORE.fetchData({
         ...searchParams,
         ...{ apiUrl: componentAttrs.getNamedItem("api-url").value ?? "" },
       });
@@ -85,7 +85,6 @@ export class SearchComponent extends PresentationComponent {
     const searchGroups = (e,component, state) =>{
       searchEvents(e,component, true);
     }
-
   
     this.setChangeEvents({
       "searchEvents": searchEvents, 

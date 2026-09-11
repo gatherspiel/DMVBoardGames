@@ -246,191 +246,186 @@ class TemplateItem {
 			}  
 		}
 
-		getSignalByFieldName(fieldName){
-			return this.#signalMap.get(fieldName);
-		}
+  getSignalByFieldName(fieldName){
+    return this.#signalMap.get(fieldName);
+  }
 
-		getAllSignals(){
-			return this.#signalMap.values();
-		}
+  getAllSignals(){
+    return this.#signalMap.values();
+  }
 
-#evaluateConditional(templateStr){
+  #evaluateConditional(templateStr){
 
-			const split = templateStr.split("\n");
+    const split = templateStr.split("\n");
 
-			while(true){
+    while(true){
 
-				let depth = 0;
+      let depth = 0;
 
-				let firstIfPos;
-				let elsePos;
-				let endPos;
-
-
-				for(let i=0; i<split.length;i++){
-
-					if(split[i].includes("{#if")){
-						depth++;
-						if(!firstIfPos){
-							firstIfPos = i;
-						}
-					}
-
-					if(split[i].includes("{else}")){
-						if(depth === 1){
-							elsePos = i;
-						}
-					}
-
-					if(split[i].includes("{/if}")){
-						depth--;
-						if(depth === 0){
-							endPos = i;
-							break;
-						}
-					}
-				}
-
-				if(!firstIfPos){
-					break;
-				} else {
+      let firstIfPos;
+      let elsePos;
+      let endPos;
 
 
-					const ifCheckName = split[firstIfPos].split(" ")[1].split("}")[0];
-					const ifCheck =TemplateItem.#templateFunctions.get(ifCheckName);	
+      for(let i=0; i<split.length;i++){
 
-					if(!ifCheck){
-						throw new Error(`No template function defined for ${ifCheckName}`);
-					}
+        if(split[i].includes("{#if")){
+          depth++;
+          if(!firstIfPos){
+            firstIfPos = i;
+          }
+        }
 
-					if(ifCheck()){
-						split.splice(endPos,1);
+        if(split[i].includes("{else}")){
+          if(depth === 1){
+            elsePos = i;
+          }
+        }
 
-						if(elsePos){
-							split.splice(elsePos,endPos-elsePos);
-						}
-						split.splice(firstIfPos,1);
-					}	
-					else {
-						split.splice(endPos,1);
-						split.splice(firstIfPos,elsePos-firstIfPos+1);	
-					}
-					firstIfPos = null;
-					elsePos = null;
-					endPos = null;
+        if(split[i].includes("{/if}")){
+          depth--;
+          if(depth === 0){
+            endPos = i;
+            break;
+          }
+        }
+      }
 
-				}
-			}
-			return split.join("\n");
-		}
+      if(!firstIfPos){
+        break;
+      } else {
+
+        const ifCheckName = split[firstIfPos].split(" ")[1].split("}")[0];
+        const ifCheck =TemplateItem.#templateFunctions.get(ifCheckName);	
+
+        if(!ifCheck){
+          throw new Error(`No template function defined for ${ifCheckName}`);
+        }
+
+        if(ifCheck()){
+          split.splice(endPos,1);
+
+          if(elsePos){
+            split.splice(elsePos,endPos-elsePos);
+          }
+          split.splice(firstIfPos,1);
+        }	
+        else {
+          split.splice(endPos,1);
+          split.splice(firstIfPos,elsePos-firstIfPos+1);	
+        }
+        firstIfPos = null;
+        elsePos = null;
+        endPos = null;
+
+      }
+    }
+    return split.join("\n");
+  }
 
 	#defineComponent(templateStr){
 
-			templateStr = this.#evaluateConditional(templateStr);
-			
-			const changeEvents = [];
-			const changeHandlers = {};
-			const clickEvents = [];
-			const clickHandlers = {};
-			const start = Date.now();
+    templateStr = this.#evaluateConditional(templateStr);
+    
+    const changeEvents = [];
+    const changeHandlers = {};
+    const clickEvents = [];
+    const clickHandlers = {};
+    const start = Date.now();
 
-			const clickSplitRegex = new RegExp("onclick=\"{","i");
-			const changeSplitRegex = new RegExp("onchange=\"{","i");
+    const changeSplitRegex = new RegExp("onchange=\"{","i");
+    const clickSplitRegex = new RegExp("onclick=\"{","i");
 
-			this.#templateSignals = [];
+    this.#templateSignals = [];
 
-			let template = document.createElement("template"); 
+    let template = document.createElement("template"); 
 
-			const clickEventsStr = templateStr.split(clickSplitRegex);
-			if(clickEventsStr.length > 1){
-				for(let i=1;i<clickEventsStr.length;i++){
-					const j = clickEventsStr[i].indexOf("}\"");
+    const clickEventsStr = templateStr.split(clickSplitRegex);
+    if(clickEventsStr.length > 1){
+      for(let i=1;i<clickEventsStr.length;i++){
+        const j = clickEventsStr[i].indexOf("}\"");
 
-					const splitStr = clickEventsStr[i].slice(0,j);
-					clickEvents.push(splitStr);
-					clickEventsStr[i] = `data-click-id=${i-1}` + clickEventsStr[i].slice(j+3);
-				}
+        const splitStr = clickEventsStr[i].slice(0,j);
+        clickEvents.push(splitStr);
+        clickEventsStr[i] = `data-click-id=${i-1}` + clickEventsStr[i].slice(j+3);
+      }
 
-				templateStr = clickEventsStr.join("");    
-			}
+      templateStr = clickEventsStr.join("");    
+    }
 
-			const changeEventsStr = templateStr.split(changeSplitRegex);
-			if(changeEventsStr.length > 1){
-				console.warn("Change events not implemented yet");
-				for(let i=1;i<changeEventsStr.length;i++){ 
-					const j = changeEventsStr[i].indexOf("}"); 
+    const changeEventsStr = templateStr.split(changeSplitRegex);
+    if(changeEventsStr.length > 1){
+      console.warn("Change events not implemented yet");
+      for(let i=1;i<changeEventsStr.length;i++){ 
+        const j = changeEventsStr[i].indexOf("}"); 
 
-					const splitStr = changeEventsStr[i].slice(0,j);
-					changeEvents.push(splitStr);
-					changeEventsStr[i] = `data-change-id=${i-1}` + changeEventsStr[i].slice(j+2);
-				}
-				templateStr = changeEventsStr.join("");
-			}
+        const splitStr = changeEventsStr[i].slice(0,j);
+        changeEvents.push(splitStr);
+        changeEventsStr[i] = `data-change-id=${i-1}` + changeEventsStr[i].slice(j+2);
+      }
+      templateStr = changeEventsStr.join("");
+    }
 
+    this.#clickTemplateEvents = clickEvents;
+    this.#changeTemplateEvents = changeEvents;
 
-			this.#clickTemplateEvents = clickEvents;
-			this.#changeTemplateEvents = changeEvents;
+    const signalIds = [];
 
-			const signalIds = [];
+    let i = 0;
+    while(true){
+      let stateVarPos = templateStr.indexOf("\"{");
 
-			let i = 0;
-			while(true){
-				let stateVarPos = templateStr.indexOf("\"{");
+      if(stateVarPos === -1){
+        stateVarPos = templateStr.indexOf("{");
+      }
+      if(stateVarPos === -1){
+        break;
+      }
 
-				if(stateVarPos === -1){
-					stateVarPos = templateStr.indexOf("{");
-				}
+      let firstTagEnd = templateStr.indexOf(">");
+      let equalDist = 1; 
+      let endPos = templateStr.indexOf("}\"");
+      if(endPos === -1){
+        endPos = templateStr.indexOf("}");
+      }else {
+        stateVarPos++;
+        equalDist = 2;
+      }
+      const signalStr = templateStr.substring(stateVarPos+1, endPos);
 
+      let attr, fieldName;
 
-				if(stateVarPos === -1){
-					break;
-				}
+      if(templateStr.charAt(stateVarPos-equalDist) === "="){
+        attr = "";
+        for(let j = stateVarPos-equalDist-1; j > 0; j--){
+          const nameChar = templateStr.charAt(j);
+          if(this.isAttributeChar(nameChar)){
+            attr = nameChar + attr;
+          } else {
+            stateVarPos = j;
+            break;
+          }
+        }
+        fieldName = signalStr;
+      } else {
+        attr = "innerHTML"
+          fieldName = signalStr;
+      }
 
-				let firstTagEnd = templateStr.indexOf(">");
-
-				let equalDist = 1; 
-				let endPos = templateStr.indexOf("}\"");
-				if(endPos === -1){
-					endPos = templateStr.indexOf("}");
-				}else {
-					stateVarPos++;
-					equalDist = 2;
-				}
-				const signalStr = templateStr.substring(stateVarPos+1, endPos);
-
-				let attr, fieldName;
-
-				if(templateStr.charAt(stateVarPos-equalDist) === "="){
-					attr = "";
-					for(let j = stateVarPos-equalDist-1; j > 0; j--){
-						const nameChar = templateStr.charAt(j);
-						if(this.isAttributeChar(nameChar)){
-							attr = nameChar + attr;
-						} else {
-							stateVarPos = j;
-							break;
-						}
-					}
-					fieldName = signalStr;
-				} else {
-					attr = "innerHTML"
-						fieldName = signalStr;
-				}
-
-				//Set signal for HTML and text template strings.
-				let isHtmlAttr = false;
-				let endTagPos = -1;
+      //Set signal for HTML and text template strings.
+      let isHtmlAttr = false;
+      let endTagPos = -1;
 
 
-				if(attr === "innerHTML"){
-					for(let j = stateVarPos -1; j >= 0; j--){
-						if(templateStr.charAt(j) === ">"){
-							endTagPos = j + 1 ;
-							isHtmlAttr = true;
-							break;
-						} 
-					}
-				}
+      if(attr === "innerHTML"){
+        for(let j = stateVarPos -1; j >= 0; j--){
+          if(templateStr.charAt(j) === ">"){
+            endTagPos = j + 1 ;
+            isHtmlAttr = true;
+            break;
+          } 
+        }
+      }
 
 				let newStr=`data-signal-id-${i}`;
 
@@ -474,7 +469,6 @@ class TemplateItem {
 			} 
 
 			const split = templateStr.split("\n");
-
 			const linesToAdd = [];
 			for(let i=0;i<split.length;i++){
 
@@ -494,7 +488,6 @@ class TemplateItem {
 
 
 			templateStr = linesToAdd.join("");
-
 			template.innerHTML = templateStr;
 
 			this.#templateNode = template.content.firstChild;
@@ -503,26 +496,25 @@ class TemplateItem {
 
 			handlerAttrs.forEach((handlerAttr)=>{
 
-					const attrSelector = `[${handlerAttr}]`; 
+      const attrSelector = `[${handlerAttr}]`; 
 
-					this.#templateNode
-					.querySelectorAll(attrSelector)
-					.forEach((node)=>{
+      this.#templateNode
+      .querySelectorAll(attrSelector)
+      .forEach((node)=>{
 
-							const clickNum = node.attributes[handlerAttr].value;
+          const clickNum = node.attributes[handlerAttr].value;
 
-							let depth = 0;
-							while(node.parentNode.nodeName !== "#document-fragment"){
-							if(node.parentNode !== null){
-							node = node.parentNode;
-							depth++;
-							} 
-							}
-							const handlerDepthKey = `${handlerAttr}_${clickNum}`;
-							this.#handlerDepthMap[handlerDepthKey] = depth;  
-							});
-					});
-
+          let depth = 0;
+          while(node.parentNode.nodeName !== "#document-fragment"){
+            if(node.parentNode !== null){
+              node = node.parentNode;
+              depth++;
+            } 
+          }
+          const handlerDepthKey = `${handlerAttr}_${clickNum}`;
+          this.#handlerDepthMap[handlerDepthKey] = depth;  
+          });
+      });
 
 			for(let i=0; i<this.#templateSignals.length; i++){
 
@@ -589,6 +581,12 @@ class TemplateItem {
 			this.#templateRoot = root;
 		}
 
+    //TOOD: Fix bug related to this.#templateNode no longer being valid.
+    setSingleNode(node){
+      this.#templateNode = document.querySelector("[data-template]");
+      this.#templateNode.replaceChildren(node);
+    }
+
 		appendNode(node){
 			this.#templateRoot.appendChild(node);
 		}
@@ -609,6 +607,10 @@ class TemplateItem {
 			return this.#nodes[id];
 		}
 
+    getFirstNode(){
+      return this.#nodes[0];
+    }
+
 		removeChild(id){
 			this.#templateRoot.removeChild(this.#nodes[id]);
 		}
@@ -616,11 +618,11 @@ class TemplateItem {
 		clearNodes() { 
 			this.#templateRoot.replaceChildren([]);
 			setTimeout(()=>{
-					Object.keys(this.#nodes).forEach((id)=>{
-							this.#nodes[id] = null;
-							});
-					this.#nodes = {};
-					},0);
+        Object.keys(this.#nodes).forEach((id)=>{
+            this.#nodes[id] = null;
+            });
+        this.#nodes = {};
+      },0);
 		}
 
 		setTemplateHtml(html){
@@ -695,6 +697,7 @@ class PresentationComponent extends HTMLElement {
 
 	#componentStore = {};
 
+  #templateDomNode;
 	#templateItem;
 
 	//HTML before loading animiation.
@@ -758,10 +761,10 @@ class PresentationComponent extends HTMLElement {
 					</${loadingIndicatorComponent}>`;
 
 					this.#loadingIndicatorConfig = {
-generateLoadingIndicatorHtml: ()=>{
-																return loadingHTML
-															},
-minTimeMs: 500
+            generateLoadingIndicatorHtml: ()=>{
+						  return loadingHTML
+						},
+            minTimeMs: 500
 					}
 				}
 
@@ -816,9 +819,11 @@ minTimeMs: 500
 			}
 		}
 
-
-		if (attr === "textcontent" || attr==="innerHTML"){
+    if (attr === "textcontent"){
 			element.textContent = signalData[fieldName];
+		}
+		if (attr==="innerHTML"){
+			element.innerHTML = signalData[fieldName];
 		}  else {
 			element.setAttribute(attr,`${signalData[fieldName]}`);
 		}
@@ -917,68 +922,45 @@ minTimeMs: 500
 	}
 
 	updateSingleItem(data){
-
-
-		if(data?.fieldTypeMapping?.[this.#templateItem.dataFieldName] === "item"){ 
-			this.#updateSingleItemTemplate(this.#templateItem,data);  
-			return;
-
-		}
+    if(!this.#templateItem){
+      this.#setupTemplate();
+    }
+		this.#updateSingleItemTemplate(data);  
 	}
 
-	#updateSingleItemTemplate(templateItem,state){
+	#updateSingleItemTemplate(state){
 
-		const templateName = templateItem.templateName;
-		const prevProps = templateItem.prevState;
+    const node = this.#templateItem.getFirstNode();
+    const templateNode = this.#templateItem.getTemplateNode();
 
-		let elementRoot;
+    if(!node){
+    
+      const addNode = templateNode.cloneNode(true);
+      const iter = this.#templateItem.getAllSignals();
+      while(true){
 
-		if(Object.keys(prevProps).length === 0){
+        const signalConfig = iter.next().value;
 
-			elementRoot = templateItem.getTemplateNode().cloneNode(true);
+        if(!signalConfig){
+          break;
+        }
+        this.#generateSignal({
+          signalConfig:signalConfig,
+          updateData:{
+            "signalData":state,
+            "elementRoot":addNode,
+          }
+        });
+      }
+      //TODO: Refactor. Having addNode and appendNode can
+      // be confusing.
+      this.#templateItem.addNode(0, addNode);
+      this.#templateItem.setSingleNode(addNode);
+    } else {
+      console.error("Logic for updates not implemented");
+    }
+  }
 
-			const signalsToRun = this.#templateItem.templateSignals;
-
-			signalsToRun.forEach((signalConfig)=>{
-					this.#generateSignal(
-							{ 
-	signalConfig: signalConfig,
-	updateData: {
-	"signalData":state,
-	"elementRoot": elementRoot,
-	}
-	});
-					});
-
-	const stateSlice = (state)=>{return state};
-
-	} else {
-
-		elementRoot = this.getRootNode().getElementById(templateItem.id);
-
-		if(!elementRoot){
-			console.error("No id set for template");
-		}   
-	}
-
-	const signalsToRun = this.#templateItem.signals;
-
-	signalsToRun.forEach((signalConfig)=>{
-
-			this.#generateSignal(
-					{ 
-	signalConfig: signalConfig,
-	updateData: {
-	"signalData":state,
-	"elementRoot": elementRoot
-	}
-	});	
-			});
-
-	if(Object.keys(prevProps).length === 0){
-		document.getElementById(templateItem.id).replaceChildren(elementRoot);
-	}  
-	}
 
 	#setupTemplate(){
 		let templateNode = this.querySelector("[data-template]");
@@ -988,8 +970,12 @@ minTimeMs: 500
 			return;
 		} 
 
-		let templateHTML = templateNode ? templateNode.innerHTML : this.innerHTML;
-		this.#templateItem = new TemplateItem(templateHTML); 
+    templateNode.style.visibility = "initial";
+
+		let templateHTML = templateNode.innerHTML;
+	  
+    templateNode.innerHTML = "";
+    this.#templateItem = new TemplateItem(templateHTML); 
 
 		templateNode.innerHTML = ""; this.#templateItem.setTemplateRoot(templateNode);
 		this.#templateItem.setDataField(templateNode?.getAttributeNode("data-template").value);
@@ -1002,161 +988,157 @@ minTimeMs: 500
 
 	addItems(addFragments){
 
-	if(!this.#templateItem){
-		this.#setupTemplate()
-	}
+    if(!this.#templateItem){ 
+      this.#setupTemplate()
+    }
 
-	const templateNode = this.#templateItem.getTemplateNode();
+    const templateNode = this.#templateItem.getTemplateNode();
 
-	for(let j=0;j<addFragments.length;j++){
+    for(let j=0;j<addFragments.length;j++){
 
-		const {insertBefore,insertData} = addFragments[j];
+      const {insertBefore,insertData} = addFragments[j];
+      let addFragment = document.createDocumentFragment();
 
-		let addFragment = document.createDocumentFragment();
+      for(let k=0;k<insertData.length;k++){
+        
+        const addNode = templateNode.cloneNode(true);          
+        const iter = this.#templateItem.getAllSignals();
 
-		for(let k=0;k<insertData.length;k++){
-			const addNode = templateNode.cloneNode(true);          
+        addNode.data_id = insertData[k].id;
+        this.#templateItem.addNode(insertData[k].id,addNode);
 
-			addNode.data_id = insertData[k].id;
+        while(true){
 
-			this.#templateItem.addNode(insertData[k].id,addNode);
+          const signalConfig = iter.next().value;
 
-			const iter = this.#templateItem.getAllSignals();
+          if(!signalConfig){
+            break;
+          }
+          this.#generateSignal({
+            signalConfig:signalConfig,
+            updateData:{
+              "signalData":insertData[k],
+              "elementRoot":addNode,
+            }
+          })
+        } 
+        addFragment.appendChild(addNode);
+      }
 
-			while(true){
+      if(insertBefore !== -1){
+        const lastNode = document.getElementById(""+insertBefore);
+        lastNode.parentNode.insertBefore(addFragment);
+      } else {
+        this.#templateItem.appendChild(addFragment); 
+      }
+    }
+  }
 
-				const signalConfig = iter.next().value;
+  removeItems(removeData,isReplace,isClear){
+    if(isClear && !isReplace){
+      this.#templateItem.clearNodes();
+    }
+    else {
+      removeData.forEach((id)=>{ 
+        this.#templateItem.removeChild(id);
+      });
+    }
 
-				if(!signalConfig){
-					break;
-				}
-				this.#generateSignal(
-						{
-signalConfig:signalConfig,
-updateData:{
-"signalData":insertData[k],
-"elementRoot":addNode,
-}
-}
-)
-				} 
-addFragment.appendChild(addNode);
-}
+    setTimeout(()=>{
 
-if(insertBefore !== -1){
-	const lastNode = document.getElementById(""+insertBefore);
-	lastNode.parentNode.insertBefore(addFragment);
-} else {
-	this.#templateItem.appendChild(addFragment); 
-}
-}
-}
+      if(isClear){
+        this.#selectorCache.clear();
+      } else{ 
+        for(const [key,value] of this.#selectorCache){
+          const nodeId = key.split("-")[0];
+          if(removeData.has(nodeId)){
+            this.#selectorCache.delete(key);
+          }
+        }
+      }
+    },0); 
+  }
 
-removeItems(removeData,isReplace,isClear){
-	if(isClear && !isReplace){
-		this.#templateItem.clearNodes();
-	}
-	else {
-		removeData.forEach((id)=>{ 
-				this.#templateItem.removeChild(id);
-				});
-	}
+  swapUpdates(swapUpdates){
+    for(let m=0; m<swapUpdates.length; m++){
 
-	setTimeout(()=>{
+      const {moveNodeId,moveBeforeId} = swapUpdates[m]
+        const nodeToMove = this.#templateItem.getNode(moveNodeId); 
 
-			if(isClear){
-			this.#selectorCache.clear();
-			} else{ 
-			for(const [key,value] of this.#selectorCache){
-			const nodeId = key.split("-")[0];
-			if(removeData.has(nodeId)){
-			this.#selectorCache.delete(key);
-			}
-			}
-			}
-			},0); 
-}
+      if(moveBeforeId !== null){
 
-swapUpdates(swapUpdates){
-	for(let m=0; m<swapUpdates.length; m++){
+        const moveBefore = this.#templateItem.getNode(moveBeforeId);
+        moveBefore
+          .parentNode
+          .insertBefore(nodeToMove,moveBefore);
+      } else { 
+        nodeToMove.parentNode.appendChild(nodeToMove);
+      }  
+    }
+  }
 
-		const {moveNodeId,moveBeforeId} = swapUpdates[m]
-			const nodeToMove = this.#templateItem.getNode(moveNodeId); 
+  updateVisible(data){
 
-		if(moveBeforeId !== null){
+    const updates = data[this.#templateItem.dataField] || [];
+    for(let i=0;i<updates.length;i++){
 
-			const moveBefore = this.#templateItem.getNode(moveBeforeId);
-			moveBefore
-				.parentNode
-				.insertBefore(nodeToMove,moveBefore);
-		} else { 
-			nodeToMove.parentNode.appendChild(nodeToMove);
-		}  
-	}
-}
+      let attrName,attrValue,id;
 
-updateVisible(data){
+      Object.keys(updates[i]).forEach((key)=>{
+        if(key === "id"){
+          id = updates[i][key];
+        } else {
+          attrName = key;
+          attrValue = updates[i][key];
+        }
+      });
 
-	const updates = data[this.#templateItem.dataField] || [];
-	for(let i=0;i<updates.length;i++){
+      if(id){
 
-		let attrName,attrValue,id;
+        const updateConfig = { 
+          signalConfig: this.#templateItem.getSignalByFieldName(attrName),
+          updateData: {
+            "signalData":{[attrName]:attrValue},
+            "elementRoot": this.#templateItem.getNode(id)
+          }
+        }
 
-		Object.keys(updates[i]).forEach((key)=>{
-				if(key === "id"){
-				id = updates[i][key];
-				} else {
-				attrName = key;
-				attrValue = updates[i][key];
-				}
-				});
+        this.#generateSignal(updateConfig);
+      } 
+    }
+  }
 
-		if(id){
+  #generateAndSaveHTML(data) {
 
-			const updateConfig = { 
-signalConfig: this.#templateItem.getSignalByFieldName(attrName),
-							updateData: {
-								"signalData":{[attrName]:attrValue},
-								"elementRoot": this.#templateItem.getNode(id)
-							}
-			}
+    if(this.#loadingStarted > 0){
 
-			this.#generateSignal(updateConfig);
-		} 
-	}
-}
+      const current = Date.now();
+      const loadTime = current - this.#loadingStarted;
 
-#generateAndSaveHTML(data) {
+      this.#loadingStarted = 0;
 
-	if(this.#loadingStarted > 0){
+      //Handle case where loading indicator is configured to stay visible for
+      //a minimum amount of time.
+      if(this.#loadingIndicatorConfig?.minTimeMs){
+        const remainingTime = this.#loadingIndicatorConfig.minTimeMs - loadTime;
 
-		const current = Date.now();
-		const loadTime = current - this.#loadingStarted;
-
-		this.#loadingStarted = 0;
-
-		//Handle case where loading indicator is configured to stay visible for a
-		//minimum amount of time.
-		if(this.#loadingIndicatorConfig?.minTimeMs){
-			const remainingTime = this.#loadingIndicatorConfig.minTimeMs - loadTime;
-
-			const self = this;
-			if(remainingTime > 0){
-				setTimeout(()=>{ 
-						this.innerHTML = this.render(data);
-						},remainingTime);
-			} else {
-				this.innerHTML = this.render(data);
-			}
-		} else {
-			this.innerHTML = this.render(data);
-		}
-	}
-	else {
-		this.innerHTML =  this.render(data);
-	}
-	this.#setupTemplate();
-} 
+        const self = this;
+        if(remainingTime > 0){
+          setTimeout(()=>{ 
+              this.innerHTML = this.render(data);
+              },remainingTime);
+        } else {
+          this.innerHTML = this.render(data);
+        }
+      } else {
+        this.innerHTML = this.render(data);
+      }
+    }
+    else {
+      this.innerHTML =  this.render(data);
+    }
+    this.#setupTemplate();
+  } 
 }
 
 class ShadowDOMComponent extends HTMLElement {
@@ -1219,9 +1201,7 @@ class DataStoreSignal {
         Object.assign(result,data[i]);
       }
 
-      console.log("Results:");
-      console.log(JSON.stringify(data));
-			return data;
+			return result;
 		};
 	}
 }
@@ -1307,12 +1287,50 @@ class DataStore {
   #setupPresentationSignals(presentationSignals){
 
 		this.#presentationSignals = presentationSignals;
+
+    let isArray = false;
 		Object.keys(presentationSignals).forEach((key)=>{
 			this.#prevOrdering[key]=[];
+      if(key !== "update"){
+        isArray = true;
+      }
 		});
 
-		//Custom update function for reactive updates.
-		const reactiveUpdates = (storeUpdates)=> {
+    let topLevelUpdateFields;
+    if(presentationSignals.update){
+      topLevelUpdateFields = Object.keys(presentationSignals.update);
+    }
+
+		const signalUpdates = (storeUpdates)=> {
+
+      if(!isArray){
+    
+        if(!this.#storeData){
+          this.#storeData = {};
+        }
+        
+        let renderUpdates = {}
+        
+        for(let i =0; i<topLevelUpdateFields.length;i++){
+          const fieldName = topLevelUpdateFields[i];
+          const updateData 
+            = this.#presentationSignals.update[fieldName](storeUpdates);
+
+          if(updateData !== this.#storeData[fieldName]){
+            renderUpdates[fieldName] = updateData;
+          }
+        }
+
+        if(Object.keys(storeUpdates).length > 0) {
+          for(let i = 0; i < this.#componentSubscriptions.length; i++){
+            this.#componentSubscriptions[i].updateSingleItem(
+              renderUpdates
+            );
+          }	  
+        }
+        this.#storeData = storeUpdates;
+        return;
+      }
 
 			let changeData = new Map();
 
@@ -1323,33 +1341,32 @@ class DataStore {
 			Object.keys(storeUpdates).forEach((field)=>{
 	
 				if(Array.isArray(storeUpdates[field])){
-
 					//Assign id value to items.
-					if(this.#presentationSignals[field].id){
+					if(this.#presentationSignals[field]?.id){
 						for(let j =0;j<storeUpdates[field].length;j++){
 							storeUpdates[field][j].id =
 							this.#presentationSignals[field].id(storeUpdates[field][j])
 						}
 					}
 
-						this.#fieldTypeMapping[field] = "array";
+          this.#fieldTypeMapping[field] = "array";
 
-						const dataItem = storeUpdates[field]; 
-						const dataItemOld = this.#prevOrdering[field] ||[];
+          const dataItem = storeUpdates[field]; 
+          const dataItemOld = this.#prevOrdering[field] ||[];
 
-						const updatedOrdering = [];
+          const updatedOrdering = [];
 
-						const prevIds = new Set();
-						const newIds = new Set();
+          const prevIds = new Set();
+          const newIds = new Set();
 
-						this.#presentationUpdates["removed"] = new Set(dataItemOld);        
-						let sameLocs = true;
-						for(let num=0;num<Math.max(dataItem.length,dataItemOld.length);num++){
-							if(num<dataItem.length){
-								updatedOrdering.push(dataItem[num].id);
-								newIds.add(dataItem[num].id);
-								this.#presentationUpdates["removed"].delete(dataItem[num].id);
-							}
+          this.#presentationUpdates["removed"] = new Set(dataItemOld);        
+          let sameLocs = true;
+          for(let num=0;num<Math.max(dataItem.length,dataItemOld.length);num++){
+            if(num<dataItem.length){
+              updatedOrdering.push(dataItem[num].id);
+              newIds.add(dataItem[num].id);
+              this.#presentationUpdates["removed"].delete(dataItem[num].id);
+            }
 							if(num < dataItemOld.length){
 								prevIds.add(dataItemOld[num]);
 							}
@@ -1462,22 +1479,21 @@ class DataStore {
 										insertBefore = updatedOrdering[num+1];
 									}
 
-									this.#presentationUpdates["moved"].push({
-		moveNodeId:updatedOrdering[num],
-			moveBeforeId:insertBefore
-		});
+      this.#presentationUpdates["moved"].push({
+        moveNodeId:updatedOrdering[num],
+        moveBeforeId:insertBefore
+      });
 
 			for(let a =0;a<this.#storeData[field].length;a++){
 				const item = this.#storeData[field][a];
-
 
 				if(a+1===updatedOrdering[num]){
 
 					if(!(updatedOrdering[num]===insertBefore-1)){
 						swapUpdates.push({
-								"updateIndex":num,
-								"updateData":item
-								})
+            "updateIndex":num,
+            "updateData":item
+            })
 					}
 
 				}
@@ -1502,60 +1518,54 @@ class DataStore {
 
 		for(let i=0;i<storeUpdates[field].length;i++){
 
-			let oldStateRow = this.#storeData[field][i];
+        let oldStateRow = this.#storeData[field][i];
 
-			let hasChanged = false;
-			for(let j=0;j<reactiveFields.length;j++){
-				const reactiveName = reactiveFields[j];
+        let hasChanged = false;
+        for(let j=0;j<reactiveFields.length;j++){
+          const reactiveName = reactiveFields[j];
 
-				const oldState = oldStateRow[reactiveName];
-				const newState = storeUpdates[field][i][reactiveName];
+          const oldState = oldStateRow[reactiveName];
+          const newState = storeUpdates[field][i][reactiveName];
 
-				if(oldState !== newState){  
-					hasChanged = true;
-				}
-			}
+          if(oldState !== newState){  
+            hasChanged = true;
+          }
+        }
 
-			if(hasChanged){
-				arrayChanges.push(storeUpdates[field][i]);   
-			}
+        if(hasChanged){
+          arrayChanges.push(storeUpdates[field][i]);   
+        }
+      }
+      changeData[field] = arrayChanges;
+    }
+    } else {
+      this.#fieldTypeMapping[field] = "item";
+      changeData[field] = storeUpdates[field];
+    }			
+    });
+
+
+      this.#presentationUpdates["fieldTypeMapping"] = this.#fieldTypeMapping
+
+      if(changeData.size > 0) {
+        this.#presentationUpdates["updates"] = this.#generatePresentationUpdates(changeData);
+
+
+        for(let i = 0; i < this.#componentSubscriptions.length; i++){
+          this.#componentSubscriptions[i].updateVisible(
+            this.#presentationUpdates["updates"]
+          );
+        }
+
+        Object.keys(storeUpdates).forEach((field)=>{
+          this.#storeData[field] = storeUpdates[field]
+        }); 
+      } 
 		}
-		changeData[field] = arrayChanges;
-	}
-	} else {
-		this.#fieldTypeMapping[field] = "item";
-		changeData[field] = storeUpdates[field];
-	}			
-	});
-
-
-	this.#presentationUpdates["fieldTypeMapping"] = this.#fieldTypeMapping
-
-	if(changeData.size > 0) {
-		this.#presentationUpdates["updates"] = this.#generatePresentationUpdates(changeData);
-
-
-		for(let i = 0; i < this.#componentSubscriptions.length; i++){
-			this.#componentSubscriptions[i].updateVisible(
-					this.#presentationUpdates["updates"]
-					);
-		}
-
-		Object.keys(storeUpdates).forEach((field)=>{
-				this.#storeData[field] = storeUpdates[field]
-				}); 
-	}
-		for(let i = 0; i < this.#componentSubscriptions.length; i++){
-			this.#componentSubscriptions[i].updateSingleItem(
-					this.#presentationUpdates["updates"]
-					);
-		}	
-
-		}
-		this.updateStoreData = reactiveUpdates;
+		this.updateStoreData = signalUpdates;
 	} 
 
-#generatePresentationUpdates(updates){
+  #generatePresentationUpdates(updates){
 
 		const presentationUpdates = {}; 
 
@@ -1736,10 +1746,13 @@ getComponentUpdateData(){
 
 			this.#isLoading = false;
 
-			for(let i = 0; i < this.#componentSubscriptions.length; i++){
-				this.#componentSubscriptions[i].unlockComponent(this);
-				this.#componentSubscriptions[i].updateFromSubscribedStores();
-			}
+      //Should only run if presentation signals are being used.
+      if(Object.keys(this.#presentationSignals).length === 0) {
+        for(let i = 0; i < this.#componentSubscriptions.length; i++){
+          this.#componentSubscriptions[i].unlockComponent(this);
+          this.#componentSubscriptions[i].updateFromSubscribedStores();
+        }
+      }
 
 			if(dataStore){
 				const dataStoreSubscribedComponents = dataStore.getSubscribedComponents();

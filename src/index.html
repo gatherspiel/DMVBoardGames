@@ -22,11 +22,15 @@
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
+      * [data-template] {
+        visibility:hidden;
+      }
       @media screen and (width < 32em) {
         header {
           margin-bottom: -2em;
         }
       }
+
     </style>
     <title>DMV Board Games</title>
 	  <script async type="module">
@@ -37,7 +41,8 @@
       import { LoginStatusComponent } from "./ui/shared/LoginStatusComponent.js";
       import { SearchComponent } from "./ui/list/SearchComponent.js";
       import { UserActionsComponent } from "./ui/shared/UserActionsComponent.js";
-      import {searchWithDefaultParams} from "./data/list/SearchStores.js";
+      import {searchWithDefaultParams} from
+      "./data/list/SearchResultsStore.js";
 		
       customElements.define("presentation-component", PresentationComponent);
       customElements.define("search-component", SearchComponent);
@@ -87,7 +92,7 @@
 		</search-component>
 		
 		<presentation-component
-		 data-store = "search-results-list-store"
+		 data-store = "search-results-store"
 		 data-loading-indicator="loading-indicator-component"
 		 data-loading-image="/assets/images/meeple_small.png"
 		>

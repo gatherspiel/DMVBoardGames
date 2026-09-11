@@ -2,6 +2,27 @@ import { ApiLoadAction, DataStore } from "/lib/places-js-latest.js";
 import { API_ROOT } from "../../ui/shared/Params.js";
 import {LOGIN_STORE} from "../user/LoginStore.js";
 
+import {
+  DEFAULT_SEARCH_PARAMETER,
+  getDaysOfWeekSelect,
+  getDaysOfWeekSelectHtml,
+  getDaysOfWeekSelectState,
+  getDropdown,
+  getDropdownHtml
+} from "/shared/html/SelectGenerator.js"
+
+const DEFAULT_PARAMETER_KEY = "defaultParameter";
+const DEFAULT_PARAMETER_DISPLAY_KEY = "defaultParameterDisplay";
+const DISTANCE_OPTIONS = [
+  "0 miles",
+  "5 miles",
+  "10 miles",
+  "15 miles",
+  "30 miles",
+  "50 miles",
+];
+const ENABLE_SEARCH_TOGGLE_KEY = "enableSearchButton";
+
 function getCitiesQueryConfig() {
   return {
     url: API_ROOT + "/listCities?area=dmv",
@@ -35,7 +56,7 @@ const getDaysSelect = () => {
 
 const getCitySelect = (state) => {
 	const cityList = getDropdown({
-		state: state.cityList ?? [{ name: "Any location" }],
+		state: state.cities?? [{ name: "Any location" }],
 		id: "search-cities-id",
 		name: "cities",
 		selected: state.location,
