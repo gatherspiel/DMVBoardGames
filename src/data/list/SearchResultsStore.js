@@ -42,6 +42,24 @@ function getSearchResultsQueryConfig(searchParams) {
 }
 
 const presentationSignals = {
+  "groupData":{
+    "update":{
+      "recurringEventDays":(groupData)=>{
+        if(groupData.recurringEventDays.length > 0){
+          return `
+<span class="group-search-details"><b>Days:</b> ${groupData.recurringEventDays.join(", ")}</span>`
+        }
+        return ``;
+      },
+      "gameTypeTags":(groupData)=>{
+
+        if(groupData.gameTypeTags.length > 0){
+          return `<span class="group-search-details"><b>Game types:</b> ${groupData.gameTypeTags.join(", ")}</span>`
+        }
+        return ``;
+      }
+    }
+  },
 	"eventData":{
 		"id": (eventData)=>eventData.eventId,
 		"update":{

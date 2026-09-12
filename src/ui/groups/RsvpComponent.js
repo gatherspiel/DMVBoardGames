@@ -10,7 +10,7 @@ import {
 } from "../../shared/html/StatusIndicators.js";
 import { API_ROOT } from "../shared/Params.js";
 
-export class RsvpComponent extends ContainerComponent {
+export class RsvpComponent extends PresentationComponent {
 
   #rsvpUrl;
 

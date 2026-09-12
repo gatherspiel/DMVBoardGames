@@ -58,6 +58,7 @@ export class EventDetailsComponent extends PresentationComponent {
             if (data.startDate && Array.isArray(data.startDate)) {
               data.startDate = data.startDate.join("-");
             }
+            console.log(data);
             data.hostText = data.moderators.length > 1 ? "Hosts:" : "Host:";
             return data;
           },
@@ -66,6 +67,9 @@ export class EventDetailsComponent extends PresentationComponent {
       LOADING_INDICATOR_CONFIG,
     );
 
+    console.log("Hi");
+    GROUP_EVENT_REQUEST_STORE.fetchData();
+    console.log(GROUP_EVENT_REQUEST_STORE);
     const self = this;
     this.addEventListener("click", (event) => {
       if (event.target.id === CANCEL_EDIT_BUTTON_ID) {
@@ -191,6 +195,7 @@ export class EventDetailsComponent extends PresentationComponent {
   }
 
   render(data) {
+    console.log("Render");
     if(window.location.href.includes("print=true")){
       return this.generateFlier(data);
     }

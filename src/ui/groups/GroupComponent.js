@@ -38,6 +38,16 @@ const SAVE_UPDATES_BUTTON_ID = "save-updates";
 const DESCRIPTION_ERROR_TEXT_KEY = "descriptionErrorText";
 const NAME_ERROR_TEXT_KEY = "nameErrorText";
 
+const groupDataStore = 
+  new DataStore(
+    new ApiLoadAction(() => {
+      const name =
+        new URLSearchParams(document.location.search).get("name") ?? "";
+      return {
+        url: API_ROOT + `/groups/?name=${encodeURIComponent(name)}`,
+      };
+    }),
+  )
 export class GroupComponent extends PresentationComponent {
   constructor() {
     super(
@@ -49,20 +59,13 @@ export class GroupComponent extends PresentationComponent {
               [SUCCESS_MESSAGE_KEY]: "",
             };
           },
-          dataStore: new DataStore(
-            new ApiLoadAction(() => {
-              const name =
-                new URLSearchParams(document.location.search).get("name") ?? "";
-              return {
-                url: API_ROOT + `/groups/?name=${encodeURIComponent(name)}`,
-              };
-            }),
-          ),
+          dataStore: groupDataStore
         },
       ],
       LOADING_INDICATOR_CONFIG,
     );
 
+    groupDataStore.fetchData();
     const self = this;
 
     this.addEventListener("click", (event) => {

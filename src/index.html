@@ -41,8 +41,6 @@
       import { LoginStatusComponent } from "./ui/shared/LoginStatusComponent.js";
       import { SearchComponent } from "./ui/list/SearchComponent.js";
       import { UserActionsComponent } from "./ui/shared/UserActionsComponent.js";
-      import {searchWithDefaultParams} from
-      "./data/list/SearchResultsStore.js";
 		
       customElements.define("presentation-component", PresentationComponent);
       customElements.define("search-component", SearchComponent);
@@ -53,14 +51,13 @@
 		
       customElements.define("login-status-component", LoginStatusComponent);
       customElements.define("user-actions-component", UserActionsComponent);	
-	    searchWithDefaultParams("/searchEvents");
     </script>
   </head>
   <body>
 		{{>navbar}}
 		<user-actions-component> </user-actions-component>
 		<search-component
-			class="ui-section"
+      api-url="/searchEvents"
 			data-store="search-component-store"
 			id="search-section" 
 			search-text="Search events"
@@ -88,7 +85,6 @@
 					</form>
 				{/if}
 			</div>
-
 		</search-component>
 		
 		<presentation-component
