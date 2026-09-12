@@ -11,6 +11,8 @@ import {
   getDropdownHtml
 } from "/shared/html/SelectGenerator.js"
 
+import { getDisplayName } from "/shared/DisplayNameConversion.js";
+
 const DEFAULT_PARAMETER_KEY = "defaultParameter";
 const DEFAULT_PARAMETER_DISPLAY_KEY = "defaultParameterDisplay";
 const DISTANCE_OPTIONS = [
@@ -55,8 +57,15 @@ const getDaysSelect = () => {
 }
 
 const getCitySelect = (state) => {
+
+  const displayCities = [];
+  state.cities.forEach((city)=>{
+    displayCities.push(getDisplayName(city));
+  });
+  displayCities.sort();
+  displayCities.unshift(DEFAULT_SEARCH_PARAMETER);
 	const cityList = getDropdown({
-		state: state.cities?? [{ name: "Any location" }],
+		state: displayCities,
 		id: "search-cities-id",
 		name: "cities",
 		selected: state.location,

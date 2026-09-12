@@ -1,4 +1,4 @@
-@scope (event-list-component)
+@scope (#event-list-component)
 {
   li {
     padding-bottom: 1rem;
