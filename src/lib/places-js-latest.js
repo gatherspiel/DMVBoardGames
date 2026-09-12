@@ -89,34 +89,34 @@ status: response.status,
 
 		try {
 
-			//The replace call is a workaround for an issue with url strings containing double quotes.
-			const response = await fetch(queryConfig.url.replace(/"/g, ""), {
-method: queryConfig.method ?? "GET",
-headers: queryConfig.headers,
-body: queryConfig.body,
-});
+        //The replace call is a workaround for an issue with url strings containing double quotes.
+    const response = await fetch(queryConfig.url.replace(/"/g, ""), {
+      method: queryConfig.method ?? "GET",
+      headers: queryConfig.headers,
+      body: queryConfig.body,
+    });
 
-if (response.status !== 200) {
-	return await this.#getErrorData(response,queryConfig.url)
-}
+    if (response.status !== 200) {
+      return await this.#getErrorData(response,queryConfig.url)
+    }
 
-const contentType = response.headers.get("content-type");
-if (contentType === "application/json") {
-	return await response.json();
-}
+    const contentType = response.headers.get("content-type");
+    if (contentType === "application/json") {
+      return await response.json();
+    }
 
-//Cjlear cache because there was a likely data update.
-if(queryConfig.method !== "GET"){
-	for(let i = 0; i< sessionStorage.length; i++){
-		const key = sessionStorage.key(i);
-		sessionStorage.setItem(key, JSON.stringify({}));
-	}
-}
-return { status: 200 };
-} catch (e) {
-	return {errorMessage:e.message};
-}
-}
+    //Cjlear cache because there was a likely data update.
+    if(queryConfig.method !== "GET"){
+      for(let i = 0; i< sessionStorage.length; i++){
+        const key = sessionStorage.key(i);
+        sessionStorage.setItem(key, JSON.stringify({}));
+      }
+    }
+    return { status: 200 };
+    } catch (e) {
+      return {errorMessage:e.message};
+    }
+  }
 }
 
 class TemplateItem {
@@ -337,164 +337,182 @@ class TemplateItem {
     const clickSplitRegex = new RegExp("onclick=\"{","i");
 
     this.#templateSignals = [];
-
-    let template = document.createElement("template"); 
-
-    const clickEventsStr = templateStr.split(clickSplitRegex);
-    if(clickEventsStr.length > 1){
-      for(let i=1;i<clickEventsStr.length;i++){
-        const j = clickEventsStr[i].indexOf("}\"");
-
-        const splitStr = clickEventsStr[i].slice(0,j);
-        clickEvents.push(splitStr);
-        clickEventsStr[i] = `data-click-id=${i-1}` + clickEventsStr[i].slice(j+3);
+ 
+    let tokens = [];
+    
+    let startPos;
+    let isHtmlTagSection;
+ 
+    //Tokenize template string.
+    for(let i=0; i < templateStr.length;i++){
+      const templateChar = templateStr.charAt(i);
+    
+      if(!startPos){
+        startPos = i;
+        isHtmlTagSection = (templateChar === "<") 
       }
+     
+      else if(isHtmlTagSection && templateChar === ">"){
 
-      templateStr = clickEventsStr.join("");    
-    }
+        const token = templateStr.substring(startPos, i+1);
+        
+        const sections = token.split("}");
+        let startSection;
 
-    const changeEventsStr = templateStr.split(changeSplitRegex);
-    if(changeEventsStr.length > 1){
-      console.warn("Change events not implemented yet");
-      for(let i=1;i<changeEventsStr.length;i++){ 
-        const j = changeEventsStr[i].indexOf("}"); 
+        const templateAttrs = [];
+        for(let j=0; j < sections.length; j++){
+          const section = sections[j];
+          const equalPos = section.lastIndexOf("=");
+          const spacePos = section.lastIndexOf(" ", equalPos);
 
-        const splitStr = changeEventsStr[i].slice(0,j);
-        changeEvents.push(splitStr);
-        changeEventsStr[i] = `data-change-id=${i-1}` + changeEventsStr[i].slice(j+2);
-      }
-      templateStr = changeEventsStr.join("");
-    }
+          if(j === 0){
+            startSection = section.substring(0, spacePos+1);
+          }
 
-    this.#clickTemplateEvents = clickEvents;
-    this.#changeTemplateEvents = changeEvents;
-
-    const signalIds = [];
-
-    let i = 0;
-    while(true){
-      let stateVarPos = templateStr.indexOf("\"{");
-
-      if(stateVarPos === -1){
-        stateVarPos = templateStr.indexOf("{");
-      }
-      if(stateVarPos === -1){
-        break;
-      }
-
-      let firstTagEnd = templateStr.indexOf(">");
-      let equalDist = 1; 
-      let endPos = templateStr.indexOf("}\"");
-      if(endPos === -1){
-        endPos = templateStr.indexOf("}");
-      }else {
-        stateVarPos++;
-        equalDist = 2;
-      }
-      const signalStr = templateStr.substring(stateVarPos+1, endPos);
-
-      let attr, fieldName;
-
-      if(templateStr.charAt(stateVarPos-equalDist) === "="){
-        attr = "";
-        for(let j = stateVarPos-equalDist-1; j > 0; j--){
-          const nameChar = templateStr.charAt(j);
-          if(this.isAttributeChar(nameChar)){
-            attr = nameChar + attr;
-          } else {
-            stateVarPos = j;
-            break;
+          if(j < sections.length - 1){
+            templateAttrs.push({
+              "attr":section.substring(spacePos+1, equalPos),
+              "fieldName": section.substring(equalPos+3)
+            });
           }
         }
-        fieldName = signalStr;
+
+
+        let endSection = sections[sections.length - 1];
+        if(templateAttrs.length > 0){
+          if(endSection.startsWith("\">")){
+            endSection = endSection.substring(0, endSection.length-2)+">";
+          }
+        } else {
+          startSection = token.substring(0, token.length - 1);
+          endSection = ">";
+        }
+        tokens.push({
+          "endSection":endSection,
+          "isHtml": true,
+          "startSection":startSection,
+          "templateAttrs": templateAttrs
+        });
+
+        startPos = null;
+        isHtmlTagSection = false;
       } else {
-        attr = "innerHTML"
-          fieldName = signalStr;
-      }
+        if(templateChar === "<"){
+          let token = templateStr.substring(startPos,i)
+            .replaceAll("\t","")
+            .replaceAll("\n","")
+            .trim();
+          if(token.trim().length >0){
+            tokens.push({
+              "isHtml": false,
+              "token": token
+            });
+          }
 
-      //Set signal for HTML and text template strings.
-      let isHtmlAttr = false;
-      let endTagPos = -1;
-
-
-      if(attr === "innerHTML"){
-        for(let j = stateVarPos -1; j >= 0; j--){
-          if(templateStr.charAt(j) === ">"){
-            endTagPos = j + 1 ;
-            isHtmlAttr = true;
-            break;
-          } 
+          startPos = null;
+          i--;
         }
       }
+    }
 
-				let newStr=`data-signal-id-${i}`;
+    //Determine signals and event handlers.
+    for(let i=0; i<tokens.length; i++){
+      const token = tokens[i]; 
+      if(token.isHtml){
+        for(let j=0; j<token.templateAttrs.length; j++){
+ 
+          let attr = token.templateAttrs[j].attr;
+          if(attr.startsWith("on")){
+            if(attr === "onchange" || attr === "onChange"){
+              token.templateAttrs[j].signalRef =
+                `data-change-id=${changeEvents.length}`
+              changeEvents.push(token.templateAttrs[j].fieldName);
+            }
+            if(attr === "onclick" || attr === "onClick"){
+              token.templateAttrs[j].signalRef =
+                `data-click-id=${clickEvents.length}`
+              clickEvents.push(token.templateAttrs[j].fieldName);
+            }
+          }
+          else {
+            const signalId = this.#templateSignals.length;
+            const signalRef = i > 0 ? `data-signal-id-${signalId}` : ``
 
-				if(endPos < firstTagEnd){
-					newStr = "";
-				}
+            if(attr === "innerhtml"){
+              attr = "innerHTML";
+            }
 
-				let templateFuncType = "";
+            const signalData = {
+              "attr": attr,
+              "fieldName": token.templateAttrs[j].fieldName,
+              "isOuter": i === 0,
+              "signalId": i > 0 ? signalId : -1,
+              "signalPath": signalRef
+            }
 
-				const signalData = {
-					fieldName,
-					attr,
-					"signalId":newStr.length > 0 ? i : -1,
-					signalPath: newStr,
-					isOuter: endPos < firstTagEnd
-				} 
+            token.templateAttrs[j].signalRef = signalRef;
+            this.#templateSignals.push(signalData);
+          }
+        }
+      } else {
+        if(tokens[i].token.includes("{")){
+          const nameStart = tokens[i].token.indexOf("{");
+          const nameEnd = tokens[i].token.indexOf("}");
+          const fieldName = tokens[i].token.substring(nameStart+1,nameEnd);
 
-				if(!isHtmlAttr){
+          const signalId = this.#templateSignals.length; 
+          const signalRef = i > 0 ? `data-signal-id-${signalId}` : ``
+ 
+          const signalData = {
+            "attr": "textcontent",
+            "fieldName": fieldName,
+            "isOuter": false,
+            "signalId": signalId,
+            "signalPath":signalRef
+          }
 
-					if(newStr.length > 0 ){
-						templateStr = templateStr.substring(0,stateVarPos) +
-							" " +
-							newStr + templateStr.substring(endPos+2);
+          tokens[i-1].templateAttrs.push({
+            "attr": "textcontent",
+            "fieldName": fieldName,
+            "signalRef": signalRef
+          });
+          this.#templateSignals.push(signalData);
+        } else {
+          tokens[i].textcontent = tokens[i].token;
+        }
+      }
+    }
 
-					} else {
-						templateStr = templateStr.substring(0,stateVarPos) +
-							newStr + templateStr.substring(endPos+2);
-					}
-				} else {
-					templateStr =
-						templateStr.substring(0,endTagPos-1) +
-						" " +
-						newStr +
-						">" +
-						templateStr.substring(endPos+1);
+    // Create new string with references to event handlers and signals.
+    let templateArr = [];
+    for(let i = 0; i<tokens.length;i++){
+      const token = tokens[i];
+      if(token.isHtml){
 
-				}
+        if(token.templateAttrs.length > 0){
+          templateArr.push(token.startSection);
+         
+          for(let j=0; j<token.templateAttrs.length; j++){
+            templateArr.push(token.templateAttrs[j].signalRef + " ");
+          }
+          templateArr.push(token.endSection);  
+        } else {
+          templateArr.push(token.startSection + token.endSection);
+        }
+      } else {
+        if(token.textcontent){
+          templateArr.push(token.textcontent);
+        }
+      }
+    }
+   
+    let template = document.createElement("template"); 
+		template.innerHTML = templateArr.join(""); 
+    this.#templateNode = template.content.firstChild;
 
-				this.#templateSignals.push(signalData)
-					i++;
-			} 
+    const handlerAttrs = ["data-click-id","data-change-id"];
 
-			const split = templateStr.split("\n");
-			const linesToAdd = [];
-			for(let i=0;i<split.length;i++){
-
-
-				split[i]=split[i].trim();
-				///Remove empty lines because they will
-				//be interpreted as empty text noddes.
-				if(split[i].length > 0){
-					//Insert space for attributes
-					if(!split[i].endsWith(">")) {
-						split[i]=split[i]+" ";
-					}
-
-					linesToAdd.push(split[i]);
-				}
-			}
-
-
-			templateStr = linesToAdd.join("");
-			template.innerHTML = templateStr;
-
-			this.#templateNode = template.content.firstChild;
-
-			const handlerAttrs = ["data-click-id","data-change-id"];
-
-			handlerAttrs.forEach((handlerAttr)=>{
+    handlerAttrs.forEach((handlerAttr)=>{
 
       const attrSelector = `[${handlerAttr}]`; 
 
@@ -502,136 +520,135 @@ class TemplateItem {
       .querySelectorAll(attrSelector)
       .forEach((node)=>{
 
-          const clickNum = node.attributes[handlerAttr].value;
+        const clickNum = node.attributes[handlerAttr].value;
 
-          let depth = 0;
-          while(node.parentNode.nodeName !== "#document-fragment"){
-            if(node.parentNode !== null){
-              node = node.parentNode;
-              depth++;
-            } 
-          }
-          const handlerDepthKey = `${handlerAttr}_${clickNum}`;
-          this.#handlerDepthMap[handlerDepthKey] = depth;  
-          });
+        let depth = 0;
+        while(node.parentNode.nodeName !== "#document-fragment"){
+          if(node.parentNode !== null){
+            node = node.parentNode;
+            depth++;
+          } 
+        }
+        const handlerDepthKey = `${handlerAttr}_${clickNum}`;
+        this.#handlerDepthMap[handlerDepthKey] = depth;  
       });
+    });
 
-			for(let i=0; i<this.#templateSignals.length; i++){
+    for(let i=0; i<this.#templateSignals.length; i++){
 
-				const signal = this.#templateSignals[i];
+      const signal = this.#templateSignals[i];
 
-				// A signal id of less than one means that the data is 
-				// at the root.      
-				if(signal.signalId >= 0){
+      // A signal id of less than one means that the data is 
+      // at the root.      
+      if(signal.signalId >= 0){
 
-					const selector = `[${signal.signalPath}]`
+        const selector = `[${signal.signalPath}]`
 
-						let childNodePath = [];
-					let node = template.content.querySelector(selector);
-					let searchNode = node;
+        let childNodePath = [];
+        let node = template.content.querySelector(selector);
+        let searchNode = node;
 
-					while(searchNode.parentNode.nodeName !== "#document-fragment"){ 
-						for(let j=0; j<searchNode.parentNode.childNodes.length; j++){ 
-							if(Object.is(searchNode.parentNode.childNodes[j], searchNode)){
-								childNodePath.push(`:nth-child(${j+1})`);
-							}
-						}
-						searchNode = searchNode.parentNode;
-					}
+        while(searchNode.parentNode.nodeName !== "#document-fragment"){ 
+          for(let j=0; j<searchNode.parentNode.childNodes.length; j++){ 
+            if(Object.is(searchNode.parentNode.childNodes[j], searchNode)){
+              childNodePath.push(`:nth-child(${j+1})`);
+            }
+          }
+          searchNode = searchNode.parentNode;
+        }
 
-					childNodePath = childNodePath.reverse();
-					node.attributes.removeNamedItem(signal.signalPath);
-					signal.signalPath = childNodePath.join(">");
-				}
-			}
-
-			this.#initSignalMap();
-
-			//Tenplate parsing needs to be optimized for performance.
-			//This is to display the overhead of the current logic.
-			const parseTime = Date.now() - start;
-			if(parseTime > 0){
-				console.warn(`Slow template parse time of ${parseTime} miliseconds`);
-			}
-		}
-
-
-		isAttributeChar(str){
-			const code = str.charCodeAt(0);
-			return (code > 64 && code < 91) || (code > 96 && code < 123)
-		}
-
-		setDataField(dataField){
-			this.dataField = dataField;
-		}
-
-		getDataField(){
-			return this.dataField; 
-		}
-
-		setId(id){
-			this.id = id;
-		}
-
-		setTemplateName(templateName){
-			this.templateName = templateName.toUpperCase();
-		}
-
-		setTemplateRoot(root){
-			this.#templateRoot = root;
-		}
-
-    //TOOD: Fix bug related to this.#templateNode no longer being valid.
-    setSingleNode(node){
-      this.#templateNode = document.querySelector("[data-template]");
-      this.#templateNode.replaceChildren(node);
+        childNodePath = childNodePath.reverse();
+        node.attributes.removeNamedItem(signal.signalPath);
+        signal.signalPath = childNodePath.join(">");
+      }
     }
 
-		appendNode(node){
-			this.#templateRoot.appendChild(node);
-		}
+    this.#initSignalMap();
 
-		appendChild(fragment){
-			this.#templateRoot.appendChild(fragment);
-		}
-
-		getTemplateNode(){ 
-			return this.#templateNode
-		} 
-
-		addNode(id,node){
-			this.#nodes[id]=node;
-		}
-
-		getNode(id){
-			return this.#nodes[id];
-		}
-
-    getFirstNode(){
-      return this.#nodes[0];
+    //Tenplate parsing needs to be optimized for performance.
+    //This is to display the overhead of the current logic.
+    const parseTime = Date.now() - start;
+    if(parseTime > 0){
+      console.warn(`Slow template parse time of ${parseTime} miliseconds`);
     }
+  }
 
-		removeChild(id){
-			this.#templateRoot.removeChild(this.#nodes[id]);
-		}
+  isAttributeChar(str){
+    const code = str.charCodeAt(0);
+    return (code > 64 && code < 91) || (code > 96 && code < 123)
+  }
 
-		clearNodes() { 
-			this.#templateRoot.replaceChildren([]);
-			setTimeout(()=>{
-        Object.keys(this.#nodes).forEach((id)=>{
-            this.#nodes[id] = null;
-            });
-        this.#nodes = {};
-      },0);
-		}
+  setDataField(dataField){
+    this.dataField = dataField;
+  }
 
-		setTemplateHtml(html){
-			this.#templateRoot.innerHTML = html;
-		}
+  getDataField(){
+    return this.dataField; 
+  }
 
-		getTemplateHtml(){
-			return this.#templateNode.innerHTML;
-		}
+  setId(id){
+    this.id = id;
+  }
+
+  setTemplateName(templateName){
+    this.templateName = templateName.toUpperCase();
+  }
+
+  setTemplateRoot(root){
+    this.#templateRoot = root;
+  }
+
+  //TOOD: Fix bug related to this.#templateNode no longer being valid.
+  setSingleNode(node){
+    this.#templateNode = document.querySelector("[data-template]");
+    this.#templateNode.replaceChildren(node);
+  }
+
+  appendNode(node){
+    this.#templateRoot.appendChild(node);
+  }
+
+  appendChild(fragment){
+    this.#templateRoot.appendChild(fragment);
+  }
+
+  getTemplateNode(){ 
+    return this.#templateNode
+  } 
+
+  addNode(id,node){
+    this.#nodes[id]=node;
+  }
+
+  getNode(id){
+    return this.#nodes[id];
+  }
+
+  getFirstNode(){
+    return this.#nodes[0];
+  }
+
+  removeChild(id){
+    this.#templateRoot.removeChild(this.#nodes[id]);
+  }
+
+  clearNodes() { 
+    this.#templateRoot.replaceChildren([]);
+    setTimeout(()=>{
+      Object.keys(this.#nodes).forEach((id)=>{
+          this.#nodes[id] = null;
+          });
+      this.#nodes = {};
+    },0);
+  }
+
+  setTemplateHtml(html){
+    this.#templateRoot.innerHTML = html;
+  }
+
+  getTemplateHtml(){
+    return this.#templateNode.innerHTML;
+  }
 }
 
 TemplateItem.addTemplateFunction("isMobile",()=>{
@@ -670,15 +687,15 @@ class StaticComponent extends HTMLElement {
 					node.removeAttribute(clickSelectorName);
 
 					this.#handlerMap[node.id] = handlerConfig[eventHandlerName];
-					});
+			});
 
-		this.addEventListener("click",(e)=>{
+		  this.addEventListener("click",(e)=>{
 				const clickId = e.target?.id;
 
-				if(this.#handlerMap[clickId]){
+			if(this.#handlerMap[clickId]){
 				this.#handlerMap[clickId](e);
-				}
-				});  
+		  }
+	  });  
 	}
 }
 
@@ -943,6 +960,11 @@ class PresentationComponent extends HTMLElement {
 
         if(!signalConfig){
           break;
+        }
+
+        if(state[signalConfig.fieldName] === undefined){
+          console.error(
+            `No state defined for template field ${signalConfig.fieldName}`)
         }
         this.#generateSignal({
           signalConfig:signalConfig,

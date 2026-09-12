@@ -115,8 +115,8 @@ const presentationSignals = {
     "getCitySelect":getCitySelect,
     "distanceSelectVisible":distanceSelectVisible,
     "getDistanceSelect":getDistanceSelect,
-    "searchBtnCls":searchBtnCls,
-    "searchBtnId":searchBtnId,
+    "searchBtnClass":searchBtnCls,
+    "searchBtnIdUser":searchBtnId,
     "searchAllText":searchAllText,
     "notLoggedIn":notLoggedIn,
   }

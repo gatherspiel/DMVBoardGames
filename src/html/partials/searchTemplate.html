@@ -9,8 +9,8 @@
 
 		<fieldset
 			id = "select-days"
-			onChange={{checkboxUpdated}}>
-				{getDaysSelect}
+      innerHTML = {getDaysSelect}
+			onChange={checkboxUpdated}>
 		</fieldset>
 
 		<label class="searchDropdownLabel">
@@ -19,18 +19,18 @@
 
 		<select 
 			id="select-city"
+      innerHTML={getCitySelect}
 			onChange={citiesUpdated}
 		>
-			{getCitySelect}
 		</select>
 		
 		<div id="select-distance-outer">
 			<label id="max-distance-label" class="searchDropdownLabel">Max distance:</label>
 			<select
 				id="select-distance"
-				onChange={{distanceUpdated}}
+        innerHTML={getDistanceSelect}
+				onChange={distanceUpdated}
 				>
-				{getDistanceSelect}
 			</select>
 		</div>
 	<div 
@@ -39,15 +39,15 @@
 		<button
 			class="secondary"
 			id="search-button"
-			onClick={{searchEvents}}
+			onClick={searchEvents}
 		>
 			{searchAllText}
 		</button>
 		<button 
-			class={{searchBtnClass}}
-			hidden={{notLoggedIn}}
-			id={{searchBtnIdUser}}
-			onClick={{searchGroups}}
+			class={searchBtnClass}
+			hidden={notLoggedIn}
+			id={searchBtnIdUser}
+			onClick={searchGroups}
 		>
 			Search joined groups
 		</button> 
