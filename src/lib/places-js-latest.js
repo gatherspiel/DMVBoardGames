@@ -771,7 +771,6 @@ class PresentationComponent extends HTMLElement {
     this.#lightDomHTML = this.innerHTML;
     this.innerHTML = this.#loadingIndicatorConfig.generateLoadingIndicatorHtml();
     this.#loadingAnimationStart = Date.now();
-    console.log("Starting load:");
   }
 
 	connectedCallback(){
@@ -806,7 +805,6 @@ class PresentationComponent extends HTMLElement {
 		}
 
 		this.updateFromSubscribedStores();
-		this.#loadingIndicatorConfig
     if(this.querySelector("[data-template]")){
       this.#setupTemplate()
     }
@@ -848,8 +846,6 @@ class PresentationComponent extends HTMLElement {
 				element=element.querySelector(signalPath);
 				this.#selectorCache.set(cacheId,element);
 			} else {
-        console.log("Cache:"+cacheId);
-        console.log(this.#selectorCache);
 				element = this.#selectorCache.get(cacheId);
 			}
 		}
@@ -879,15 +875,21 @@ class PresentationComponent extends HTMLElement {
 			this.#loadingFromStores.add(dataStore);
 		}
 
-
+    // Deprecated. This is included for backwards compatibility.
 		if(this.#loadingStarted === 0){
 			this.#loadingStarted = Date.now();
 		}
 
-		if(this.#loadingIndicatorConfig){ 
+		if(this.#loadingIndicatorConfig && !this.#loadingAnimationStart){ 
 
+      //Deprecated.
 			this.#htmlBeforeLoading = this.innerHTML;
+      
+      this.#lightDomHTML = this.innerHTML;
+      //this.startLoadingIndicator();
 			this.innerHTML = this.#loadingIndicatorConfig.generateLoadingIndicatorHtml();
+      this.#loadingAnimationStart = Date.now();
+
 		}
 	}
 
@@ -1048,6 +1050,9 @@ class PresentationComponent extends HTMLElement {
 	}
 
   async #completeLoadAnimation() {
+    if(!this.#loadingIndicatorConfig){
+      return;
+    }
     const minTime = this.#loadingIndicatorConfig.minTimeMs;
     const remainTime = (Date.now() - this.#loadingAnimationStart);
 
@@ -1056,6 +1061,7 @@ class PresentationComponent extends HTMLElement {
         resolve();
       },remainTime);
     });
+
 
     await Promise.resolve(promise);
     this.innerHTML = this.#lightDomHTML;
@@ -1084,7 +1090,6 @@ class PresentationComponent extends HTMLElement {
         const iter = this.#templateItem.getAllSignals();
 
         addNode.data_id = insertData[k].id;
-        addNode.id = addNode.data_id;
         this.#templateItem.addNode(insertData[k].id,addNode);
 
         while(true){
@@ -1095,7 +1100,6 @@ class PresentationComponent extends HTMLElement {
             break;
           }
 
-          const htmlA = addNode.innerHTML;
           this.#generateSignal({
             signalConfig:signalConfig,
             updateData:{
@@ -1103,11 +1107,6 @@ class PresentationComponent extends HTMLElement {
               "elementRoot":addNode,
             }
           })
-          const htmlB = addNode.innerHTML;
-          if(htmlA === htmlB){
-            addNode.querySelector("a").textContent="Potato";
-          }
-
         }
         addFragment.appendChild(addNode);
       }
@@ -1122,6 +1121,9 @@ class PresentationComponent extends HTMLElement {
   }
 
   removeItems(removeData,isReplace,isClear){
+    if(this.#loadingAnimationStart !== null){
+      this.#completeLoadAnimation();
+    }
     if(isClear && !isReplace){
       this.#templateItem.clearNodes();
     }
@@ -1169,6 +1171,10 @@ class PresentationComponent extends HTMLElement {
       this.#completeLoadAnimation()
       return;
     }
+    if(this.#loadingAnimationStart !== null){
+      this.#completeLoadAnimation();
+    }
+
 
     const updates = data[this.#templateItem.dataField] || [];
     for(let i=0;i<updates.length;i++){
@@ -1505,7 +1511,6 @@ class DataStore {
                 addFragment.push(dataItem[num]);
               } else {
 
-                //console.log(data
                 if(addFragment !== null){
                   addFragments.push({
                     "insertBefore":dataItem[num].id,
