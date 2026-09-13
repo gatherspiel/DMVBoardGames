@@ -728,6 +728,8 @@ class PresentationComponent extends HTMLElement {
 	#changeTemplateItemHandlers = {};
 	#clickTemplateItemHandlers = {};
 
+  #loadingAnimationStart;
+
 	static clickHandlerCount = 0;
 	static changeHandlerCount = 0;
 
@@ -760,18 +762,26 @@ class PresentationComponent extends HTMLElement {
 		this.updateFromSubscribedStores();
 	}
 
+  startLoadingIndicator(){
+    this.#lightDomHTML = this.innerHTML;
+    this.innerHTML = this.#loadingIndicatorConfig.generateLoadingIndicatorHtml();
+    this.#loadingAnimationStart = Date.now();
+  }
+
 	connectedCallback(){
 		const defaultStore = this.dataset["store"];
 
 		if(defaultStore){
 
-			const loadingIndicatorComponent = this.dataset['loadingIndicatorComponent']
+			const loadingIndicatorComponent = this.dataset['loadingIndicator']
 				if(loadingIndicatorComponent){
 
 					const imagePath = this.dataset['loadingImage'];				
-					const loadingHTML = `<${loadingIndicatorComponent}>
-						${imagePath ? `image-path=${imagePath}` : ``}	
-					</${loadingIndicatorComponent}>`;
+					const loadingHTML = `
+            <${loadingIndicatorComponent}
+						  ${imagePath ? `image-path=${imagePath}` : ``}	
+            >
+					  </${loadingIndicatorComponent}>`;
 
 					this.#loadingIndicatorConfig = {
             generateLoadingIndicatorHtml: ()=>{
@@ -779,6 +789,7 @@ class PresentationComponent extends HTMLElement {
 						},
             minTimeMs: 500
 					}
+          this.startLoadingIndicator();
 				}
 
 			const dataStore = DataStore.getStore(defaultStore);
@@ -1026,8 +1037,26 @@ class PresentationComponent extends HTMLElement {
 		this.#templateItem.setupChangeEventHandlers(this.#changeTemplateEvents);
 	}
 
-	addItems(addFragments){
+  async #completeLoadAnimation() {
+    const minTime = this.#loadingIndicatorConfig.minTimeMs;
+    const remainTime = (Date.now() - this.#loadingAnimationStart);
 
+    const promise = new Promise((resolve, reject)=>{
+      setTimeout(()=>{
+        resolve();
+      },remainTime);
+    });
+
+    await Promise.resolve(promise);
+    this.innerHTML = this.#lightDomHTML;
+    this.#loadingAnimationStart = null;
+  }
+
+	async addItems(addFragments){
+
+    if(this.#loadingAnimationStart){
+      await this.#completeLoadAnimation();
+    }
     if(!this.#templateItem){ 
       this.#setupTemplate()
     }
