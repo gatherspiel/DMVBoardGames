@@ -880,7 +880,7 @@ class PresentationComponent extends HTMLElement {
 			this.#loadingStarted = Date.now();
 		}
 
-		if(this.#loadingIndicatorConfig && !this.#loadingAnimationStart){ 
+		if(false && this.#loadingIndicatorConfig && !this.#loadingAnimationStart){ 
 
       //Deprecated.
 			this.#htmlBeforeLoading = this.innerHTML;

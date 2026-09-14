@@ -69,7 +69,7 @@ export class SearchComponent extends PresentationComponent {
         distance: document.getElementById(`select-distance`).value ?? ''
       };
 
-      searchParams['userGroupEvents'] = `${searchGroups}`
+			console.log(searchParams);
        
       const baseUrl = window.location.origin.split("?");
       let updatedUrl = `${baseUrl}?`;
