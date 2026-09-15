@@ -1,7 +1,4 @@
-import {
-  ApiLoadAction,
-  BaseDynamicComponent,
-} from "/lib/places-js-latest.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
 import {
   SUCCESS_MESSAGE_KEY,
   generateErrorMessage,
@@ -16,7 +13,7 @@ const FEEDBACK_TEXT_INPUT_ID = "feedback-text-input-id";
 const FEEDBACK_TYPE_INPUT_ID = "feedback-type-input-id";
 const SUBMIT_FEEDBACK_ID = "submit-feedback-id";
 
-export class FeedbackComponent extends BaseDynamicComponent {
+export class FeedbackComponent extends PresentationComponent {
   constructor() {
     super();
 
@@ -29,9 +26,7 @@ export class FeedbackComponent extends BaseDynamicComponent {
     this.addEventListener("click", (event) => {
       const targetId = event.target?.id;
       if (targetId === SUBMIT_FEEDBACK_ID) {
-        const elements = rootNode.findForm(
-          "submit-feedback-form",
-        )?.elements;
+        const elements = rootNode.findForm("submit-feedback-form")?.elements;
         const feedbackText = elements.namedItem(FEEDBACK_TEXT_INPUT_ID)?.value;
 
         if (feedbackText && feedbackText.length > 10000) {
@@ -72,7 +67,6 @@ export class FeedbackComponent extends BaseDynamicComponent {
         });
       }
     });
-
   }
 
   connectedCallback() {
@@ -83,7 +77,6 @@ export class FeedbackComponent extends BaseDynamicComponent {
       name: "",
     });
   }
-
 
   render(data) {
     return `

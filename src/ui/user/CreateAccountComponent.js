@@ -1,4 +1,4 @@
-import { ApiLoadAction, BaseDynamicComponent } from "/lib/places-js-latest.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
 import { LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT } from "./Constants.js";
 import {
   SUCCESS_MESSAGE_KEY,
@@ -20,7 +20,7 @@ const CONFIRM_PASSWORD_INPUT = "confirm-password-input";
 const AGREE_RULES_ID = "agree-rules";
 const CREATE_ACCOUNT_ID = "complete-registration";
 
-export class CreateAccountComponent extends BaseDynamicComponent {
+export class CreateAccountComponent extends PresentationComponent {
   constructor() {
     super([
       {
@@ -30,8 +30,8 @@ export class CreateAccountComponent extends BaseDynamicComponent {
           }
           const errorMessage =
             new URLSearchParams(document.location.search)
-            ?.get("message")
-            ?.replaceAll("_", " ") ?? "";
+              ?.get("message")
+              ?.replaceAll("_", " ") ?? "";
 
           return {
             ...loginState,
@@ -53,8 +53,9 @@ export class CreateAccountComponent extends BaseDynamicComponent {
       if (targetId === AGREE_RULES_ID) {
         self.updateData({
           [AGREE_RULES_ID]: event.target.checked,
-          confirmPassword: self.getRootNode().getElementById(CONFIRM_PASSWORD_INPUT)
-          ?.value,
+          confirmPassword: self
+            .getRootNode()
+            .getElementById(CONFIRM_PASSWORD_INPUT)?.value,
           password: self.getRootNode().getElementById(PASSWORD_INPUT)?.value,
           username: self.getRootNode().getElementById(USERNAME_INPUT)?.value,
         });
@@ -64,8 +65,9 @@ export class CreateAccountComponent extends BaseDynamicComponent {
         const formData = {
           username: self.getRootNode().getElementById(USERNAME_INPUT)?.value,
           password: self.getRootNode().getElementById(PASSWORD_INPUT)?.value,
-          confirmPassword: self.getRootNode().getElementById(CONFIRM_PASSWORD_INPUT)
-          ?.value,
+          confirmPassword: self
+            .getRootNode()
+            .getElementById(CONFIRM_PASSWORD_INPUT)?.value,
         };
         if (
           !formData.username ||
@@ -110,7 +112,7 @@ export class CreateAccountComponent extends BaseDynamicComponent {
           }
         });
       }
-    }); 
+    });
   }
 
   render(data) {
@@ -152,9 +154,8 @@ export class CreateAccountComponent extends BaseDynamicComponent {
           ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}
           ${
             data[AGREE_RULES_ID]
-              ?
-              `<button id=${CREATE_ACCOUNT_ID} class="primary">Create account</button>` : `<button class="neutral">Create account</button>`
-
+              ? `<button id=${CREATE_ACCOUNT_ID} class="primary">Create account</button>`
+              : `<button class="neutral">Create account</button>`
           } 
           <div id="agree-rules-input">
             <label for="${AGREE_RULES_ID}">I agree to the site rules listed below</label>

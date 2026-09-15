@@ -1,7 +1,4 @@
-import {
-  ApiLoadAction,
-  BaseDynamicComponent,
-} from "/lib/places-js-latest.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
 
 import {
   DAY_OF_WEEK_INPUT,
@@ -47,7 +44,7 @@ const DELETE_EVENT_BUTTON_ID = "delete-event-button";
 const EDIT_EVENT_BUTTON_ID = "edit-event-button";
 const SAVE_EVENT_BUTTON_ID = "save-event-button";
 
-export class EventDetailsComponent extends BaseDynamicComponent {
+export class EventDetailsComponent extends PresentationComponent {
   constructor() {
     super(
       [
@@ -58,6 +55,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             if (data.startDate && Array.isArray(data.startDate)) {
               data.startDate = data.startDate.join("-");
             }
+            console.log(data);
             data.hostText = data.moderators.length > 1 ? "Hosts:" : "Host:";
             return data;
           },
@@ -66,6 +64,9 @@ export class EventDetailsComponent extends BaseDynamicComponent {
       LOADING_INDICATOR_CONFIG,
     );
 
+    console.log("Hi");
+    GROUP_EVENT_REQUEST_STORE.fetchData();
+    console.log(GROUP_EVENT_REQUEST_STORE);
     const self = this;
     this.addEventListener("click", (event) => {
       if (event.target.id === CANCEL_EDIT_BUTTON_ID) {
@@ -114,13 +115,14 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         });
       }
       if (event.target.id === SAVE_EVENT_BUTTON_ID) {
-        const data = this.getRootNode().getElementById("event-details-form")?.elements;
+        const data =
+          this.getRootNode().getElementById("event-details-form")?.elements;
         const imageForm = this.getRootNode().getElementById("image-upload-ui");
         const formData = {
           id: self.componentStore.id,
           [EVENT_NAME_INPUT]: data.namedItem(EVENT_NAME_INPUT).value,
           [EVENT_DESCRIPTION_INPUT]: data.namedItem(EVENT_DESCRIPTION_INPUT)
-          ?.value,
+            ?.value,
           [EVENT_URL_INPUT]: data.namedItem(EVENT_URL_INPUT)?.value,
           [START_TIME_INPUT]: convertTimeTo24Hours(
             data.namedItem(START_TIME_INPUT)?.value,
@@ -162,8 +164,8 @@ export class EventDetailsComponent extends BaseDynamicComponent {
             body: JSON.stringify(eventDetails),
             method: "PUT",
             url:
-            API_ROOT +
-            `/groups/${groupId}/events/?id=${encodeURIComponent(eventDetails.id)}`,
+              API_ROOT +
+              `/groups/${groupId}/events/?id=${encodeURIComponent(eventDetails.id)}`,
           }).then((response) => {
             window.scrollTo({
               top: 0,
@@ -187,11 +189,11 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         }
       }
     });
-
   }
 
   render(data) {
-    if(window.location.href.includes("print=true")){
+    console.log("Render");
+    if (window.location.href.includes("print=true")) {
       return this.generateFlier(data);
     }
     if (!data || !data.name) {
@@ -218,7 +220,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     } else {
       html += this.renderViewMode(data);
     }
-    const url = `${window.location.origin}/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}`
+    const url = `${window.location.origin}/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}`;
 
     html += `
         <div class="container-xl">
@@ -229,20 +231,17 @@ export class EventDetailsComponent extends BaseDynamicComponent {
     return html;
   }
 
-  generateFlier(data){
-    const imagePath = data.imageFilePath && data.imageFilePath.length > 0 ?
-      data.imageFilePath 
-      : `https://gatherspiel.nyc3.cdn.digitaloceanspaces.com/groups/events/20406/imageb192bdf2-f00c-4af2-8d04-cbd90b7c3f4a.jpg`
-
+  generateFlier(data) {
+    const imagePath =
+      data.imageFilePath && data.imageFilePath.length > 0
+        ? data.imageFilePath
+        : `https://gatherspiel.nyc3.cdn.digitaloceanspaces.com/groups/events/20406/imageb192bdf2-f00c-4af2-8d04-cbd90b7c3f4a.jpg`;
 
     return `
       <div class="container-xl" id="print-container">
         <h1 id="event-title">${data.name.toUpperCase()}</h1>
         <h1 id="event-time">
-          ${data.isRecurring
-              ? `${data.day}s at ${data.startTime}`
-              : ``
-          }
+          ${data.isRecurring ? `${data.day}s at ${data.startTime}` : ``}
         </h1>
         <div id="event-details">
           ${data.description}
@@ -253,7 +252,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         </div>
         </div>
       </div>
-    `
+    `;
   }
   renderDeleteMode(data) {
     return `
@@ -407,7 +406,7 @@ export class EventDetailsComponent extends BaseDynamicComponent {
         <h1>${data.name}</h1>
         ${
           data.url &&
-            !data.url.startsWith("https://dmvobardgames.com/groups/event.html")
+          !data.url.startsWith("https://dmvobardgames.com/groups/event.html")
             ? `<a class="btn secondary event-website-link" href=${data.url}>Event website</a>`
             : ""
         } 

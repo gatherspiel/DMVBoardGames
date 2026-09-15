@@ -1,10 +1,9 @@
-import { BaseTemplateComponent } from "/lib/places-js-latest.js";
+import { ShadowDOMComponent } from "/lib/places-js-latest.js";
 
 const CREATE_ACCOUNT_ID = "complete-registration";
 const CREATE_ACCOUNT_ID_DISABLED = "complete-registration-disabled";
 
-export class CreateAccountTemplateComponent extends BaseTemplateComponent {
-
+export class CreateAccountTemplateComponent extends ShadowDOMComponent {
   getTemplateStyle() {
     return `  
       <link rel="stylesheet" type="text/css"  href="/styles/kelp.css"/>
@@ -55,5 +54,4 @@ export class CreateAccountTemplateComponent extends BaseTemplateComponent {
         }
       </style>`;
   }
-
 }

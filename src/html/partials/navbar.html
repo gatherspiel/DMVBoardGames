@@ -1,23 +1,30 @@
-<link rel="stylesheet" href="/styles/kelp.css"/>
+<link rel="stylesheet" href="/styles/kelp.css" />
 <style>
-	@media screen and (width < 32em) {
-		#search-groups-link {
-			margin-bottom:0.5em;
-		}
-    .hide-mobile {
-      display:none;
+  @media screen and (width < 32em) {
+    #search-groups-link {
+      margin-bottom: 0.5em;
     }
-	}
+    .hide-mobile {
+      display: none;
+    }
+  }
 </style>
 <div id="top-section"></div>
 <header class="container-xl margin-end-m">
-	<nav id="main-nav" class="navbar">
-		<a class="logo" href="/index.html">DMV Board Games</a> 
-		<ul>        
-			<li><a id="search-groups-link" class="btn primary" href="/html/list/searchGroups.html">Search groups</a></li>
-			<login-status-component></login-status-component>
-		</ul>
-	</nav>
+  <nav id="main-nav" class="navbar">
+    <a class="logo" href="/index.html">DMV Board Games</a>
+    <ul>
+      <li>
+        <a
+          id="search-groups-link"
+          class="btn primary"
+          href="/html/list/searchGroups.html"
+          >Search groups</a
+        >
+      </li>
+      <login-status-component></login-status-component>
+    </ul>
+  </nav>
 </header>
 
 <div id="bg-image">
@@ -118,19 +125,20 @@
 </div>
 
 <script>
-  const hexagons = window.innerWidth/240.0;
+  const hexagons = window.innerWidth / 240.0;
 
   //Center based on position of top row of hexagons
-  if((hexagons - Math.floor(hexagons))<0.5) {
-    const totalMargin = window.innerWidth-240*Math.floor(hexagons);
-    document.getElementsByClassName("part-1").item(0).style =`z-index:-100;position: absolute;top: 0;left:${totalMargin/2}px;`
-    document.getElementsByClassName("part-2").item(0).style =`z-index: -100;position: absolute;top: calc(var(--s)*0.86610);left:${120+totalMargin/2}px;`
+  if (hexagons - Math.floor(hexagons) < 0.5) {
+    const totalMargin = window.innerWidth - 240 * Math.floor(hexagons);
+    document.getElementsByClassName("part-1").item(0).style =
+      `z-index:-100;position: absolute;top: 0;left:${totalMargin / 2}px;`;
+    document.getElementsByClassName("part-2").item(0).style =
+      `z-index: -100;position: absolute;top: calc(var(--s)*0.86610);left:${120 + totalMargin / 2}px;`;
+  } else {
+    const totalMargin = window.innerWidth - (240 * Math.floor(hexagons) + 120);
+    document.getElementsByClassName("part-1").item(0).style =
+      `z-index:-100;position: absolute;top: 0;left:${totalMargin / 2}px;`;
+    document.getElementsByClassName("part-2").item(0).style =
+      `z-index: -100;position: absolute;top: calc(var(--s)*0.86610);left:${120 + totalMargin / 2}px;`;
   }
-
-  else {
-    const totalMargin = window.innerWidth-(240*Math.floor(hexagons)+120);
-    document.getElementsByClassName("part-1").item(0).style =`z-index:-100;position: absolute;top: 0;left:${totalMargin/2}px;`
-    document.getElementsByClassName("part-2").item(0).style =`z-index: -100;position: absolute;top: calc(var(--s)*0.86610);left:${120+totalMargin/2}px;`
-  }
-
 </script>

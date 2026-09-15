@@ -1,7 +1,4 @@
-import {
-  ApiLoadAction,
-  BaseDynamicComponent,
-} from "/lib/places-js-latest.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
 import {
   DAY_OF_WEEK_INPUT,
   getDayOfWeekSelectHtml,
@@ -34,7 +31,7 @@ customElements.define("login-status-component", LoginStatusComponent);
 const CREATE_EVENT_BUTTON_ID = "create-event-button";
 const RECURRING_EVENT_INPUT = "is-recurring";
 
-export class CreateEventComponent extends BaseDynamicComponent {
+export class CreateEventComponent extends PresentationComponent {
   constructor() {
     super();
 
@@ -45,12 +42,14 @@ export class CreateEventComponent extends BaseDynamicComponent {
       if (targetId === RECURRING_EVENT_INPUT) {
         self.updateData({
           isRecurring: self.getRootNode().getElementById(RECURRING_EVENT_INPUT)
-          ?.checked,
+            ?.checked,
         });
       }
 
       if (targetId === "create-event-button") {
-        const data = self.getRootNode().getElementById("create-event-form")?.elements;
+        const data = self
+          .getRootNode()
+          .getElementById("create-event-form")?.elements;
         const imageForm = self.getRootNode().getElementById("image-upload-ui");
 
         const formData = {
@@ -59,8 +58,8 @@ export class CreateEventComponent extends BaseDynamicComponent {
           isRecurring: self.componentStore.isRecurring,
           [EVENT_NAME_INPUT]: data.namedItem(EVENT_NAME_INPUT)?.value,
           [EVENT_DESCRIPTION_INPUT]: data
-          .namedItem(EVENT_DESCRIPTION_INPUT)
-          ?.value.trim(),
+            .namedItem(EVENT_DESCRIPTION_INPUT)
+            ?.value.trim(),
           [EVENT_URL_INPUT]: data.namedItem(EVENT_URL_INPUT)?.value,
           [START_TIME_INPUT]: data.namedItem(START_TIME_INPUT)?.value ?? "",
           [END_TIME_INPUT]: data.namedItem(END_TIME_INPUT)?.value ?? "",
@@ -102,19 +101,18 @@ export class CreateEventComponent extends BaseDynamicComponent {
         }
       }
     });
-
   }
 
   connectedCallback() {
     document.title = `Add event for group ${new URLSearchParams(document.location.search).get("name") ?? ""}`;
     this.updateData({
       name: "",
-      groupName: new URLSearchParams(document.location.search).get("name") ?? ""
+      groupName:
+        new URLSearchParams(document.location.search).get("name") ?? "",
     });
   }
 
   render(data) {
-
     return `   
       <div class="container-xl">
         <form id="create-event-form" onsubmit="return false">   

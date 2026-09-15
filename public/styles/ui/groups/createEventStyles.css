@@ -1,14 +1,16 @@
-input,select,textarea {
+input,
+select,
+textarea {
   display: block;
 }
 @media not screen and (width < 32em) {
-  #event-name-input,#event-description-input {
+  #event-name-input,
+  #event-description-input {
     width: 50rem;
   }
 }
 @media screen and (width < 32em) {
-  #event-description-input{
+  #event-description-input {
     height: 10rem;
-  }        
+  }
 }
-

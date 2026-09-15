@@ -6,8 +6,8 @@ export class ImageHoverComponent extends HTMLElement {
     super();
     this.imagePath = this.getAttribute("src");
   }
- 
-	connectedCallback() {
+
+  connectedCallback() {
     this.attachShadow({ mode: "open" });
     const templateStyle = `      
       <style>

@@ -1,10 +1,10 @@
 import { LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT } from "./Constants.js";
-import { BaseDynamicComponent } from "/lib/places-js-latest.js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
+import { PresentationComponent } from "/lib/places-js-latest.js";
 
 const LOGIN_BUTTON_ID = "login-button";
 
-export class LoginComponent extends BaseDynamicComponent {
+export class LoginComponent extends PresentationComponent {
   loginAttempted;
   registerAttempted;
   constructor() {
@@ -30,7 +30,9 @@ export class LoginComponent extends BaseDynamicComponent {
         const targetId = event.target?.id;
         if (targetId === LOGIN_BUTTON_ID) {
           self.loginAttempted = true;
-          const formInputs = self.retrieveAndValidateFormInputs(self.getRootNode());
+          const formInputs = self.retrieveAndValidateFormInputs(
+            self.getRootNode(),
+          );
           if (formInputs.errorMessage) {
             self.updateData(formInputs);
           } else {
@@ -45,8 +47,6 @@ export class LoginComponent extends BaseDynamicComponent {
         }
       }
     });
-
-
   }
 
   retrieveAndValidateFormInputs(rootNode) {
@@ -93,7 +93,7 @@ export class LoginComponent extends BaseDynamicComponent {
         <div id="component-buttons">
           <button class="primary" type="submit" id=${LOGIN_BUTTON_ID}>Login</button>   
           </div>
-            ${this.loginAttempted || this.registerAttempted ? `<div class="validation-error">${data.errorMessage}</div>`: ""}
+            ${this.loginAttempted || this.registerAttempted ? `<div class="validation-error">${data.errorMessage}</div>` : ""}
           </form>
         </div>
     `;

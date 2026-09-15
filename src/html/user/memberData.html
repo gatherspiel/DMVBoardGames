@@ -2,25 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link
-			rel="stylesheet"
-      href="/styles/sharedHtmlOnlyStyles.css"
-    />
-    <link
-			rel="stylesheet"
-      href="/styles/sharedHtmlAndComponentStyles.css"
-    />
+    <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
+    <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
 
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Member data</title>
 
     <script defer fetchpriority="low" type="module">
-      import {LoadingIndicatorComponent} from "../../shared/components/LoadingIndicatorComponent.js";
+      import { LoadingIndicatorComponent } from "../../shared/components/LoadingIndicatorComponent.js";
       import { LoginStatusComponent } from "../../ui/shared/LoginStatusComponent.js";
       import { MemberDataComponent } from "../../ui/user/MemberDataComponent.js";
 
-      customElements.define('loading-indicator-component',LoadingIndicatorComponent)
+      customElements.define(
+        "loading-indicator-component",
+        LoadingIndicatorComponent,
+      );
       customElements.define("login-status-component", LoginStatusComponent);
       customElements.define("member-data-component", MemberDataComponent);
     </script>

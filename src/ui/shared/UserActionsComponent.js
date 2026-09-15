@@ -1,7 +1,7 @@
 import { IS_LOGGED_IN_KEY, LOGIN_STORE } from "../../data/user/LoginStore.js";
-import { BaseDynamicComponent } from "/lib/places-js-latest.js";
+import { PresentationComponent } from "/lib/places-js-latest.js";
 
-export class UserActionsComponent extends BaseDynamicComponent {
+export class UserActionsComponent extends PresentationComponent {
   constructor() {
     super([
       {
@@ -19,7 +19,6 @@ export class UserActionsComponent extends BaseDynamicComponent {
     ]);
   }
 
-
   getLinks(data) {
     return `
       <a class="btn secondary" href="${data.url}">Create group</a>
@@ -28,7 +27,7 @@ export class UserActionsComponent extends BaseDynamicComponent {
   }
 
   render(data) {
-    if (!data[IS_LOGGED_IN_KEY]){
+    if (!data[IS_LOGGED_IN_KEY]) {
       return ``;
     }
     return `

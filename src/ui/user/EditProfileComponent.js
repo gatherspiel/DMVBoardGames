@@ -1,7 +1,4 @@
-import {
-  ApiLoadAction,
-  BaseDynamicComponent,
-} from "/lib/places-js-latest.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
 import {
   SUCCESS_MESSAGE_KEY,
   generateErrorMessage,
@@ -18,7 +15,7 @@ const UPDATE_USER_DATA_ID = "update-user-data";
 const USERNAME_INPUT = "username-input";
 const USERNAME_ERROR_TEXT_KEY = "username-error-text";
 
-export class EditProfileComponent extends BaseDynamicComponent {
+export class EditProfileComponent extends PresentationComponent {
   constructor() {
     super([
       {
@@ -34,8 +31,9 @@ export class EditProfileComponent extends BaseDynamicComponent {
         event.preventDefault();
 
         const validationErrors = {};
-        const elements =
-          self.getRootNode().getElementById("update-user-form")?.elements;
+        const elements = self
+          .getRootNode()
+          .getElementById("update-user-form")?.elements;
         const imageForm = self.getRootNode().getElementById("image-upload-ui");
 
         const username = elements.namedItem(USERNAME_INPUT)?.value;

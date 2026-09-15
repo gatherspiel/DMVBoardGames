@@ -60,6 +60,9 @@
   #user-actions-menu-raised {
     display: inherit;
   }
+  .show-mobile {
+    display:none;
+  }
 }
 
 @media screen and (width < 32em) {   

@@ -2,19 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link
-			rel="stylesheet"
-      href="/styles/sharedHtmlOnlyStyles.css"
-    />
-    <link
-			rel="stylesheet" 
-			href="/styles/sharedHtmlAndComponentStyles.css"
-			/>
-    <link
-			rel="stylesheet" 
-			href="/styles/ui/user/loginStyles.css"
-			/>
-
+    <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
+    <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
+    <link rel="stylesheet" href="/styles/ui/user/loginStyles.css" />
 
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,15 +18,15 @@
       customElements.define("login-status-component", LoginStatusComponent);
       customElements.define("login-component", LoginComponent);
       customElements.define("login-template-component", LoginTemplateComponent);
-      
+
       import { GetGameAdvice } from "../../beta/getGameAdvice.js";
       GetGameAdvice();
     </script>
   </head>
   <body>
-      {{>navbar}}
+    {{>navbar}}
 
-      <login-template-component> </login-template-component>
+    <login-template-component> </login-template-component>
     <div id="bot-container"></div>
   </body>
 </html>

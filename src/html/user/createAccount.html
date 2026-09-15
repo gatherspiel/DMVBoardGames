@@ -2,14 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-		<link 
-			rel="stylesheet"
-      href="/styles/sharedHtmlOnlyStyles.css"
-    />   
-		<link
-			rel="stylesheet"
-      href="/styles/sharedHtmlAndComponentStyles.css"
-    />
+    <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
+    <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
 
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,12 +11,13 @@
 
     <script defer fetchpriority="low" type="module">
       import { CreateAccountComponent } from "../../ui/user/CreateAccountComponent.js";
-      import { CreateAccountTemplateComponent } from
-      "../../ui/user/CreateAccountTemplateComponent.js";
- 
+      import { CreateAccountTemplateComponent } from "../../ui/user/CreateAccountTemplateComponent.js";
+
       customElements.define("create-account-component", CreateAccountComponent);
-      customElements.define("create-account-template-component",
-      CreateAccountTemplateComponent);
+      customElements.define(
+        "create-account-template-component",
+        CreateAccountTemplateComponent,
+      );
 
       import { GetGameAdvice } from "../../beta/getGameAdvice.js";
       GetGameAdvice();
