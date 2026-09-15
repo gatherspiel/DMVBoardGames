@@ -1,5 +1,5 @@
-import { PresentationComponent} from "/lib/places-js-latest.js";
 import { GAME_STORE_DATA } from "../../data/list/LocationsStore.js";
+import { PresentationComponent } from "/lib/places-js-latest.js";
 
 export class GameStoreListComponent extends PresentationComponent {
   constructor() {
@@ -29,12 +29,9 @@ export class GameStoreListComponent extends PresentationComponent {
         <ul>
     `;
     Object.values(data).forEach((item) => {
-      html +=this.getItemHtml(item) +
-        `<div class="section-separator-small"></div>`;
+      html +=
+        this.getItemHtml(item) + `<div class="section-separator-small"></div>`;
     });
-    return (
-      html +
-      `</ul></div>`
-    );
+    return html + `</ul></div>`;
   }
 }

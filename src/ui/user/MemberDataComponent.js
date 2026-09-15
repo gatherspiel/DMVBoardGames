@@ -1,16 +1,18 @@
+import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js";
 import { PresentationComponent } from "/lib/places-js-latest.js";
-import {LOADING_INDICATOR_CONFIG} from "../../shared/LoadingIndicatorConfig.js";
 import { USER_MEMBER_STORE } from "../../data/user/UserMemberStore.js";
 import { convertDateAndDayToDisplayString } from "../../shared/EventDataUtils.js";
 
 export class MemberDataComponent extends PresentationComponent {
   constructor() {
-    super([
-      {
-        dataStore: USER_MEMBER_STORE,
-      },
-    ],
-      LOADING_INDICATOR_CONFIG);
+    super(
+      [
+        {
+          dataStore: USER_MEMBER_STORE,
+        },
+      ],
+      LOADING_INDICATOR_CONFIG,
+    );
   }
 
   render(data) {

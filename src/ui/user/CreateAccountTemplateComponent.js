@@ -4,7 +4,6 @@ const CREATE_ACCOUNT_ID = "complete-registration";
 const CREATE_ACCOUNT_ID_DISABLED = "complete-registration-disabled";
 
 export class CreateAccountTemplateComponent extends ShadowDOMComponent {
-
   getTemplateStyle() {
     return `  
       <link rel="stylesheet" type="text/css"  href="/styles/kelp.css"/>
@@ -55,5 +54,4 @@ export class CreateAccountTemplateComponent extends ShadowDOMComponent {
         }
       </style>`;
   }
-
 }

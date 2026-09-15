@@ -1,6 +1,6 @@
-import { PresentationComponent } from "/lib/places-js-latest.js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
 import { LOGOUT_STORE } from "../../data/user/LogoutStore.js";
+import { PresentationComponent } from "/lib/places-js-latest.js";
 import { USER_DATA_STORE } from "../../data/user/UserDataStore.js";
 const SIGN_OUT_LINK_ID = "signout-link";
 
@@ -42,7 +42,6 @@ class LoginStatusComponentInner extends PresentationComponent {
       }
     });
   }
-
 
   render(userData) {
     return `

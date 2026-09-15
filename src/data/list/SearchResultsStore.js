@@ -1,8 +1,8 @@
-import { DataStore } from "/lib/places-js-latest.js";
-
 import { API_ROOT } from "../../ui/shared/Params.js";
+
 import { DEFAULT_SEARCH_PARAMETER } from "../../shared/html/SelectGenerator.js";
-import { convertLocationDataForDisplay} from "/shared/EventDataUtils.js";
+import { DataStore } from "/lib/places-js-latest.js";
+import { convertLocationDataForDisplay } from "/shared/EventDataUtils.js";
 
 function getSearchResultsQueryConfig(searchParams) {
   const paramMap = {};
@@ -21,10 +21,10 @@ function getSearchResultsQueryConfig(searchParams) {
     }
   }
 
-  if(searchParams.userGroupEvents){
+  if (searchParams.userGroupEvents) {
     paramMap["userGroupEvents"] = searchParams.userGroupEvents;
   }
-  
+
   if (!searchParams.apiUrl.startsWith("/")) {
     console.error("Invalid url:" + searchParams.apiUrl);
   }
@@ -42,65 +42,60 @@ function getSearchResultsQueryConfig(searchParams) {
 }
 
 const presentationSignals = {
-  "groupData":{
-    "update":{
-      "recurringEventDays":(groupData)=>{
-        if(groupData.recurringEventDays.length > 0){
+  groupData: {
+    update: {
+      recurringEventDays: (groupData) => {
+        if (groupData.recurringEventDays.length > 0) {
           return `
-<span class="group-search-details"><b>Days:</b> ${groupData.recurringEventDays.join(", ")}</span>`
+<span class="group-search-details"><b>Days:</b> ${groupData.recurringEventDays.join(", ")}</span>`;
         }
         return ``;
       },
-      "gameTypeTags":(groupData)=>{
-
-        if(groupData.gameTypeTags.length > 0){
-          return `<span class="group-search-details"><b>Game types:</b> ${groupData.gameTypeTags.join(", ")}</span>`
+      gameTypeTags: (groupData) => {
+        if (groupData.gameTypeTags.length > 0) {
+          return `<span class="group-search-details"><b>Game types:</b> ${groupData.gameTypeTags.join(", ")}</span>`;
         }
         return ``;
-      }
-    }
+      },
+    },
   },
-	"eventData":{
-		"id": (eventData)=>eventData.eventId,
-		"update":{
-			"eventTime":
-				(eventData)=>{
-					if(eventData.isRecurring){
-            return `
+  eventData: {
+    id: (eventData) => eventData.eventId,
+    update: {
+      eventTime: (eventData) => {
+        if (eventData.isRecurring) {
+          return `
 							${eventData.dayOfWeek}s at 
 							${eventData.nextEventTime}`;
-          }
-          return `
+        }
+        return `
 						${eventData.nextEventDate} at 
-						${eventData.nextEventTime}`
-        },
-			 "location":(eventData)=>{
-          return `${convertLocationDataForDisplay(eventData.eventLocation)}`
-        },
-       "url": (eventData) => {
-          return `/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}`
-				} 
-		}
-	}
-}
+						${eventData.nextEventTime}`;
+      },
+      location: (eventData) => {
+        return `${convertLocationDataForDisplay(eventData.eventLocation)}`;
+      },
+      url: (eventData) => {
+        return `/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}`;
+      },
+    },
+  },
+};
 
-export const SEARCH_RESULTS_STORE =
-  DataStore.createWithApiLoadSignal({
-    "queryConfig":getSearchResultsQueryConfig,
-    "presentationSignals":presentationSignals,
-    "storeName":'search-results-store'
+export const SEARCH_RESULTS_STORE = DataStore.createWithApiLoadSignal({
+  queryConfig: getSearchResultsQueryConfig,
+  presentationSignals: presentationSignals,
+  storeName: "search-results-store",
 });
 
-
-export function searchWithDefaultParams(apiUrl){
+export function searchWithDefaultParams(apiUrl) {
   const initialParams = new URLSearchParams(document.location.search);
   const defaultSearchParams = {
-      apiUrl: apiUrl,
-      cityList:[DEFAULT_SEARCH_PARAMETER],
-      days: initialParams.get("days"),
-      distance: initialParams.get("distance")?.replaceAll("_", " "),
-      location: initialParams.get("location"),
-    };
-  SEARCH_RESULTS_STORE.fetchData(defaultSearchParams);   
+    apiUrl: apiUrl,
+    cityList: [DEFAULT_SEARCH_PARAMETER],
+    days: initialParams.get("days"),
+    distance: initialParams.get("distance")?.replaceAll("_", " "),
+    location: initialParams.get("location"),
+  };
+  SEARCH_RESULTS_STORE.fetchData(defaultSearchParams);
 }
-

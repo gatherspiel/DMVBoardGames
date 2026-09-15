@@ -1,5 +1,5 @@
-import {ImageUploadComponent} from "../../../shared/components/ImageUploadComponent.js";
-customElements.define("image-upload-component",ImageUploadComponent)
+import { ImageUploadComponent } from "../../../shared/components/ImageUploadComponent.js";
+customElements.define("image-upload-component", ImageUploadComponent);
 export class ImageUploadExampleSection extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
@@ -18,6 +18,6 @@ export class ImageUploadExampleSection extends HTMLElement {
         <h2>Demo component here:</h2>
         <image-upload-component></image-upload-component>
         <br>
-    `
+    `;
   }
 }

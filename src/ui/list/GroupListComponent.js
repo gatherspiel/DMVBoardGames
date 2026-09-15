@@ -1,30 +1,27 @@
-import { PresentationComponent } from "/lib/places-js-latest.js";
-import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
+import { PresentationComponent } from "/lib/places-js-latest.js";
 import { SEARCH_RESULTS_STORE } from "../../data/list/SearchResultsStore.js";
 import { getDisplayName } from "../../shared/DisplayNameConversion.js";
 
 export class GroupListComponent extends PresentationComponent {
   constructor() {
-    super(
-      [
-        {
-          dataStore: SEARCH_RESULTS_STORE,
-          fieldName: "data",
-        },
-        {
-          dataStore: LOGIN_STORE,
-          fieldName: "loginStatus",
-        },
-      ],
-    );
+    super([
+      {
+        dataStore: SEARCH_RESULTS_STORE,
+        fieldName: "data",
+      },
+      {
+        dataStore: LOGIN_STORE,
+        fieldName: "loginStatus",
+      },
+    ]);
   }
 
   getItemHtml(group, loggedIn) {
     const groupCitiesStr =
       group.cities && group.cities.length > 0
-      ? group.cities.map((name) => getDisplayName(name))?.join(", ")
-      : "DMV Area";
+        ? group.cities.map((name) => getDisplayName(name))?.join(", ")
+        : "DMV Area";
 
     const hasRecurringEventDays = group.recurringEventDays.length > 0;
     const hasGameTypeTags = group.gameTypeTags.length > 0;

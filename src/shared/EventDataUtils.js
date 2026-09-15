@@ -112,7 +112,7 @@ export function validateAddress(addressStr) {
 }
 
 export function convertLocationDataForDisplay(location) {
-  if(!location){
+  if (!location) {
     return ``;
   }
   return `${location.streetAddress}, ${location.city}, ${location.state}, ${location.zipCode}`;

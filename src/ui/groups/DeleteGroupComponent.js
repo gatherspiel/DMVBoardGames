@@ -22,7 +22,8 @@ export class DeleteGroupComponent extends PresentationComponent {
     const self = this;
     this.addEventListener("click", (event) => {
       if (event.target.id === CONFIRM_DELETE_BUTTON_ID) {
-        const groupName = self.getRootNode()
+        const groupName = self
+          .getRootNode()
           .getElementById(GROUP_NAME_INPUT)
           ?.value.trim();
 

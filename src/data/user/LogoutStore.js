@@ -3,29 +3,26 @@ import {
   SUPABASE_CLIENT_KEY,
   SUPABASE_CLIENT_URL,
 } from "../../ui/shared/Params.js";
-import { DataStore } from "/lib/places-js-latest.js";
 import { AuthResponse } from "../../ui/user/AuthResponse.js";
+import { DataStore } from "/lib/places-js-latest.js";
 
 async function retrieveData() {
-  
   const authStr = window.localStorage.getItem(AUTH_TOKEN_KEY);
-  const authData = authStr ? JSON.parse(authStr): null;
- 
+  const authData = authStr ? JSON.parse(authStr) : null;
+
   const data = await fetch(
     `${SUPABASE_CLIENT_URL}/auth/v1/logout?scope=global`,
     {
       method: "POST",
       headers: {
         apiKey: SUPABASE_CLIENT_KEY,
-        authorization:
-          "bearer " +
-          authData?.access_token,
+        authorization: "bearer " + authData?.access_token,
       },
     },
   );
-  
-	if (data.ok) {
-    if(window.localStorage.getItem(AUTH_TOKEN_KEY)){
+
+  if (data.ok) {
+    if (window.localStorage.getItem(AUTH_TOKEN_KEY)) {
       window.localStorage.removeItem(AUTH_TOKEN_KEY);
     }
     window.location.assign("/index.html");
@@ -39,5 +36,4 @@ async function retrieveData() {
   }
 }
 
-export const LOGOUT_STORE = 
-  DataStore.createWithCustomLoadSignal(retrieveData);
+export const LOGOUT_STORE = DataStore.createWithCustomLoadSignal(retrieveData);

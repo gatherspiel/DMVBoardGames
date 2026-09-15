@@ -1,4 +1,4 @@
-import {ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
 import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,
@@ -50,16 +50,19 @@ export class CreateGroupComponent extends PresentationComponent {
 
     this.addEventListener("click", (event) => {
       const targetId = event.target?.id;
-      const elements = self.getRootNode().getElementById("create-group-form")?.elements;
+      const elements = self
+        .getRootNode()
+        .getElementById("create-group-form")?.elements;
 
       if (targetId === AGREE_RULES_ID) {
         self.updateData({
           [AGREE_RULES_ID]: event.target.checked,
           description: elements.namedItem(GROUP_DESCRIPTION_INPUT)?.value,
           gameTypeTags: getTagSelectedState(self.getRootNode()),
-          imagePath: self.getRootNode()
-          .getElementById("image-upload-ui")
-          .getAttribute("image-path"),
+          imagePath: self
+            .getRootNode()
+            .getElementById("image-upload-ui")
+            .getAttribute("image-path"),
           name: elements.namedItem(GROUP_NAME_INPUT)?.value,
           url: elements.namedItem(GROUP_URL_INPUT)?.value,
         });
@@ -90,9 +93,10 @@ export class CreateGroupComponent extends PresentationComponent {
             id: self.componentStore.id,
             name: groupName,
             description: groupDescription,
-            image: self.getRootNode()
-            .getElementById("image-upload-ui")
-            .getAttribute("image-path"),
+            image: self
+              .getRootNode()
+              .getElementById("image-upload-ui")
+              .getAttribute("image-path"),
             url: elements.namedItem(GROUP_URL_INPUT)?.value,
             gameTypeTags: Object.keys(getTagSelectedState(self.getRootNode())),
           }),
@@ -120,9 +124,7 @@ export class CreateGroupComponent extends PresentationComponent {
         });
       }
     });
-
   }
-
 
   render(data) {
     return `

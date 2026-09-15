@@ -1,7 +1,4 @@
-import {
-  ApiLoadAction,
-  PresentationComponent,
-} from "/lib/places-js-latest.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
 import {
   SUCCESS_MESSAGE_KEY,
   generateErrorMessage,
@@ -29,9 +26,7 @@ export class FeedbackComponent extends PresentationComponent {
     this.addEventListener("click", (event) => {
       const targetId = event.target?.id;
       if (targetId === SUBMIT_FEEDBACK_ID) {
-        const elements = rootNode.findForm(
-          "submit-feedback-form",
-        )?.elements;
+        const elements = rootNode.findForm("submit-feedback-form")?.elements;
         const feedbackText = elements.namedItem(FEEDBACK_TEXT_INPUT_ID)?.value;
 
         if (feedbackText && feedbackText.length > 10000) {
@@ -72,7 +67,6 @@ export class FeedbackComponent extends PresentationComponent {
         });
       }
     });
-
   }
 
   connectedCallback() {
@@ -83,7 +77,6 @@ export class FeedbackComponent extends PresentationComponent {
       name: "",
     });
   }
-
 
   render(data) {
     return `

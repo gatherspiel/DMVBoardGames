@@ -1,8 +1,7 @@
 import { ShadowDOMComponent } from "/lib/places-js-latest.js";
 
-export class LoginTemplateComponent extends ShadowDOMComponent{
-
-  getTemplateStyle(){
+export class LoginTemplateComponent extends ShadowDOMComponent {
+  getTemplateStyle() {
     return `
       <link
         rel="stylesheet" 
@@ -47,13 +46,12 @@ export class LoginTemplateComponent extends ShadowDOMComponent{
           }
         }
       </style>
-    `
+    `;
   }
 
   render() {
     return `
       <login-component></login-component>
-    `
+    `;
   }
-
 }

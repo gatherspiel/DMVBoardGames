@@ -13,13 +13,12 @@
  * All logic is inside the connectedCallback method to optimize for performance.
  */
 export class LoadingIndicatorComponent extends HTMLElement {
-  
-	constructor() {
+  constructor() {
     super();
     this.imagePath = this.getAttribute("image-path");
   }
-  
-	connectedCallback() {
+
+  connectedCallback() {
     this.attachShadow({ mode: "open" });
     const templateStyle = `      
       <style>
@@ -116,7 +115,8 @@ export class LoadingIndicatorComponent extends HTMLElement {
 
     const template = document.createElement("template");
     template.innerHTML =
-      templateStyle + `     
+      templateStyle +
+      `     
 				<div class="loader"> 
 					<div class="meeple" id="meeple-one">  
 						<img src="${this.imagePath}">

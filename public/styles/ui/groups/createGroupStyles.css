@@ -1,36 +1,37 @@
 button {
   display: block;
 }
-#group-name-input,#group-description-input,#group-url-input {
+#group-name-input,
+#group-description-input,
+#group-url-input {
   display: block;
-} 
+}
 #create-group-container {
   padding-left: 1rem;
 }
 #game-type-tag-select {
-  margin-bottom:1rem;
-}  
+  margin-bottom: 1rem;
+}
 #image-upload-container {
   margin-bottom: 1rem;
 }
 #game-type-tag-select input {
   display: inline-block;
-}      
+}
 #game-type-tag-select label {
   padding-left: 0.25rem;
-}  
+}
 #game-type-tag-select-label {
-  font-weight:600;
+  font-weight: 600;
 }
 #game-type-tag-select input {
   margin-left: 0.25rem;
 }
 #rules-content {
-  margin-top:1rem;
+  margin-top: 1rem;
 }
 @media screen and (width < 32em) {
   #group-description-input {
-    width:330px;
+    width: 330px;
   }
 }
-

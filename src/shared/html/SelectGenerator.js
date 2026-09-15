@@ -89,11 +89,10 @@ export function getTagSelectedState(shadowRoot) {
   return selectedTags;
 }
 
-
 export function getDaysOfWeekSelect(checkState) {
-	let html = ''
+  let html = "";
   daysOfWeek.forEach((day) => {
-		html += `
+    html += `
       <label for=${day}> 
 				<input id="${day}" name=${day} type="checkbox" ${checkState?.[day]}> 
 				${day}
@@ -101,28 +100,28 @@ export function getDaysOfWeekSelect(checkState) {
       
     `;
   });
-	return html;
+  return html;
 }
 
 export function getDaysOfWeekSelectState(selector) {
   const selectedDays = [];
 
-  document.querySelectorAll(`${selector} input`).forEach((item)=>{
-    if(item.checked){
+  document.querySelectorAll(`${selector} input`).forEach((item) => {
+    if (item.checked) {
       selectedDays.push(item.name);
     }
-  })
+  });
 
-	return selectedDays;
+  return selectedDays;
 }
 
 //Deprecated
 export function getDaysOfWeekSelectHtml(checkState) {
-	let html = `
+  let html = `
     <fieldset>
   `;
   daysOfWeek.forEach((day) => {
-		html += `
+    html += `
       <label for=${day}> 
 				<input id="${day}" name=${day} type="checkbox"  ${checkState?.[day]}> 
 				${day}
@@ -130,7 +129,7 @@ export function getDaysOfWeekSelectHtml(checkState) {
       
     `;
   });
-	return html + `</fieldset>`;
+  return html + `</fieldset>`;
 }
 
 export function getGameTypeTagSelectHtml(checkState) {

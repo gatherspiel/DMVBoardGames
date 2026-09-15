@@ -1,5 +1,5 @@
-import { PresentationComponent } from "/lib/places-js-latest.js";
 import { CONVENTIONS_STORE } from "../../data/list/LocationsStore.js";
+import { PresentationComponent } from "/lib/places-js-latest.js";
 import { convertDateListToRange } from "../../shared/EventDataUtils.js";
 
 export class ConventionListComponent extends PresentationComponent {
@@ -36,9 +36,6 @@ export class ConventionListComponent extends PresentationComponent {
       html += `<p>No conventions found</p>`;
     }
 
-    return (
-      html +
-      `</ul></div>`
-    );
+    return html + `</ul></div>`;
   }
 }

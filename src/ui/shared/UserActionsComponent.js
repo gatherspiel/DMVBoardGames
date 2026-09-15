@@ -19,7 +19,6 @@ export class UserActionsComponent extends PresentationComponent {
     ]);
   }
 
-
   getLinks(data) {
     return `
       <a class="btn secondary" href="${data.url}">Create group</a>
@@ -28,7 +27,7 @@ export class UserActionsComponent extends PresentationComponent {
   }
 
   render(data) {
-    if (!data[IS_LOGGED_IN_KEY]){
+    if (!data[IS_LOGGED_IN_KEY]) {
       return ``;
     }
     return `

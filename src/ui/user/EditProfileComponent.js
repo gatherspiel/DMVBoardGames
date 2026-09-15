@@ -1,7 +1,4 @@
-import {
-  ApiLoadAction,
-  PresentationComponent,
-} from "/lib/places-js-latest.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
 import {
   SUCCESS_MESSAGE_KEY,
   generateErrorMessage,
@@ -34,8 +31,9 @@ export class EditProfileComponent extends PresentationComponent {
         event.preventDefault();
 
         const validationErrors = {};
-        const elements =
-          self.getRootNode().getElementById("update-user-form")?.elements;
+        const elements = self
+          .getRootNode()
+          .getElementById("update-user-form")?.elements;
         const imageForm = self.getRootNode().getElementById("image-upload-ui");
 
         const username = elements.namedItem(USERNAME_INPUT)?.value;
