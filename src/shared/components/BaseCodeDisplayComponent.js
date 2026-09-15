@@ -1,24 +1,24 @@
-import {BaseTemplateComponent} from "/lib/places-js-latest.js";
-import hljs from 'https://unpkg.com/@highlightjs/cdn-assets@11.11.1/es/highlight.min.js';
+import { ShadowDOMComponent } from "/lib/places-js-latest.js";
+import hljs from "https://unpkg.com/@highlightjs/cdn-assets@11.11.1/es/highlight.min.js";
 
 /**
  * This component converts code into a format for display with syntax highlighting.
  *
  * Note: If HTML is contained in the code, it should be escaped before adding it to this component for display
  */
-export class BaseCodeDisplayComponent extends BaseTemplateComponent{
-
+export class BaseCodeDisplayComponent extends ShadowDOMComponent {
   constructor() {
     super();
-    this.content = this.innerHTML.replaceAll("&gt;",">")
-        .replaceAll("&lt;","<");
+    this.content = this.innerHTML
+      .replaceAll("&gt;", ">")
+      .replaceAll("&lt;", "<");
     this.innerHTML = "";
   }
 
-  disconnectedCallback(){
-    this.innerHTML = `<p>Disconnected</p>`
+  disconnectedCallback() {
+    this.innerHTML = `<p>Disconnected</p>`;
   }
-  getTemplateStyle(){
+  getTemplateStyle() {
     return `
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
       <style>
@@ -26,14 +26,14 @@ export class BaseCodeDisplayComponent extends BaseTemplateComponent{
           background-color:#f6f8fa;
         }
       </style>
-		`
+		`;
   }
 
-  render(){
+  render() {
     return `
       <code>
         <pre>${hljs.highlightAuto(this.content).value}</pre>
       </code>
-		`
+		`;
   }
 }

@@ -3,12 +3,9 @@ import {
   SUPABASE_CLIENT_KEY,
   SUPABASE_CLIENT_URL,
 } from "../../ui/shared/Params.js";
-import {
-  CustomLoadAction,
-  DataStore,
-} from "/lib/places-js-latest.js";
 
 import { AuthResponse } from "../../ui/user/AuthResponse.js";
+import { DataStore } from "/lib/places-js-latest.js";
 
 export const IS_LOGGED_IN_KEY = "loggedIn";
 
@@ -16,7 +13,7 @@ async function retrieveData(params) {
   try {
     let authData = null;
     const authToken = window.localStorage["authToken"];
-    if(authToken){
+    if (authToken) {
       authData = JSON.parse(authToken);
     }
     if (authData && authData.expires_at * 1000 > new Date().getTime()) {
@@ -38,12 +35,15 @@ async function retrieveData(params) {
     );
 
     if (data.ok) {
-     for(let i = 0; i< sessionStorage.length; i++){
+      for (let i = 0; i < sessionStorage.length; i++) {
         const key = sessionStorage.key(i);
-        sessionStorage.setItem(key, JSON.stringify({}))
-      } 
+        sessionStorage.setItem(key, JSON.stringify({}));
+      }
       const authTokenData = await data.json();
-      window.localStorage.setItem(AUTH_TOKEN_KEY, JSON.stringify(authTokenData));
+      window.localStorage.setItem(
+        AUTH_TOKEN_KEY,
+        JSON.stringify(authTokenData),
+      );
       return new AuthResponse(true, {
         ...authTokenData,
         username: authData?.username,
@@ -65,4 +65,4 @@ async function retrieveData(params) {
   }
 }
 
-export const LOGIN_STORE = new DataStore(new CustomLoadAction(retrieveData));
+export const LOGIN_STORE = DataStore.createWithCustomLoadSignal(retrieveData);

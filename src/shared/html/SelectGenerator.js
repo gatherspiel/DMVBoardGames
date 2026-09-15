@@ -16,7 +16,21 @@ const tags = [
 ];
 
 export const DEFAULT_SEARCH_PARAMETER = "any";
+export function getDropdown(dropdownConfig) {
+  return ` 
+    ${dropdownConfig.state.map(
+      (item) =>
+        `<option value="${item}" ${item === dropdownConfig.selected ? "selected" : ""}>
+          ${
+            item === DEFAULT_SEARCH_PARAMETER
+              ? dropdownConfig.defaultParameterDisplay
+              : item
+          }
+        </option>`,
+    )}`;
+}
 
+//Deprecated
 export function getDropdownHtml(dropdownConfig) {
   return ` 
     <select class="form-select" id=${dropdownConfig.id}>
@@ -75,23 +89,39 @@ export function getTagSelectedState(shadowRoot) {
   return selectedTags;
 }
 
-export function getDaysOfWeekSelectedState(shadowRoot) {
-  const selectedDays = {};
-
+export function getDaysOfWeekSelect(checkState) {
+  let html = "";
   daysOfWeek.forEach((day) => {
-    if (shadowRoot.getElementById(day)?.checked) {
-      selectedDays[day] = "checked";
-    }
+    html += `
+      <label for=${day}> 
+				<input id="${day}" name=${day} type="checkbox" ${checkState?.[day]}> 
+				${day}
+			</label>
+      
+    `;
   });
-	return selectedDays;
+  return html;
 }
 
+export function getDaysOfWeekSelectState(selector) {
+  const selectedDays = [];
+
+  document.querySelectorAll(`${selector} input`).forEach((item) => {
+    if (item.checked) {
+      selectedDays.push(item.name);
+    }
+  });
+
+  return selectedDays;
+}
+
+//Deprecated
 export function getDaysOfWeekSelectHtml(checkState) {
-	let html = `
+  let html = `
     <fieldset>
   `;
   daysOfWeek.forEach((day) => {
-		html += `
+    html += `
       <label for=${day}> 
 				<input id="${day}" name=${day} type="checkbox"  ${checkState?.[day]}> 
 				${day}
@@ -99,7 +129,7 @@ export function getDaysOfWeekSelectHtml(checkState) {
       
     `;
   });
-	return html + `</fieldset>`;
+  return html + `</fieldset>`;
 }
 
 export function getGameTypeTagSelectHtml(checkState) {

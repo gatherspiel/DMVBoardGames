@@ -1,7 +1,4 @@
-import {
-  ApiLoadAction,
-  BaseDynamicComponent,
-} from "/lib/places-js-latest.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
 import {
   ERROR_MESSAGE_KEY,
   SUCCESS_MESSAGE_KEY,
@@ -10,8 +7,7 @@ import {
 } from "../../shared/html/StatusIndicators.js";
 import { API_ROOT } from "../shared/Params.js";
 
-export class RsvpComponent extends BaseDynamicComponent {
-
+export class RsvpComponent extends PresentationComponent {
   #rsvpUrl;
 
   constructor() {
@@ -51,7 +47,7 @@ export class RsvpComponent extends BaseDynamicComponent {
             if (response.errorMessage) {
               self.updateData({
                 [ERROR_MESSAGE_KEY]:
-                "Failed to cancel RSVP:" + response.errorMessage,
+                  "Failed to cancel RSVP:" + response.errorMessage,
                 [SUCCESS_MESSAGE_KEY]: "",
               });
             } else {
@@ -66,7 +62,6 @@ export class RsvpComponent extends BaseDynamicComponent {
         }
       }
     });
-
   }
 
   connectedCallback() {

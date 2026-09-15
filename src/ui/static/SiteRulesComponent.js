@@ -1,5 +1,5 @@
-import { BaseTemplateComponent } from "/lib/places-js-latest.js";
-export class SiteRulesComponent extends BaseTemplateComponent {
+import { ShadowDOMComponent } from "/lib/places-js-latest.js";
+export class SiteRulesComponent extends ShadowDOMComponent {
   constructor() {
     super();
   }

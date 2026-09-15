@@ -1,0 +1,43 @@
+<div id="form-div-outer">
+  <div class="{searchInputClass}" id="search-form-inputs">
+    <label class="searchDropdownLabel"> Select event day: </label>
+
+    <fieldset
+      id="select-days"
+      innerHTML="{getDaysSelect}"
+      onChange="{checkboxUpdated}"
+    ></fieldset>
+
+    <label class="searchDropdownLabel"> Select city: </label>
+
+    <select
+      id="select-city"
+      innerHTML="{getCitySelect}"
+      onChange="{citiesUpdated}"
+    ></select>
+
+    <div id="select-distance-outer">
+      <label id="max-distance-label" class="searchDropdownLabel"
+        >Max distance:</label
+      >
+      <select
+        id="select-distance"
+        innerHTML="{getDistanceSelect}"
+        onChange="{distanceUpdated}"
+      ></select>
+    </div>
+    <div id="search-input-div">
+      <button class="secondary" id="search-button" onClick="{searchEvents}">
+        {searchAllText}
+      </button>
+      <button
+        class="{searchBtnClass}"
+        hidden="{notLoggedIn}"
+        id="{searchBtnIdUser}"
+        onClick="{searchGroups}"
+      >
+        Search joined groups
+      </button>
+    </div>
+  </div>
+</div>

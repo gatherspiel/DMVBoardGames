@@ -40,116 +40,336 @@
 }
 @layer kelp.tokens {
   :where(:root) {
-    --color-red-05: oklch( 18.5% calc(0.08 * var(--color-red-chroma)) var(--color-red-hue) );
-    --color-red-10: oklch( 24% calc(0.1 * var(--color-red-chroma)) var(--color-red-hue) );
-    --color-red-20: oklch( 32.5% calc(0.135 * var(--color-red-chroma)) var(--color-red-hue) );
-    --color-red-30: oklch( 40% calc(0.16 * var(--color-red-chroma)) var(--color-red-hue) );
-    --color-red-40: oklch( 47% calc(0.185 * var(--color-red-chroma)) var(--color-red-hue) );
-    --color-red-50: oklch( 57% calc(0.2 * var(--color-red-chroma)) var(--color-red-hue) );
-    --color-red-60: oklch( 67% calc(0.175 * var(--color-red-chroma)) var(--color-red-hue) );
-    --color-red-70: oklch( 75% calc(0.13 * var(--color-red-chroma)) var(--color-red-hue) );
-    --color-red-80: oklch( 83.5% calc(0.085 * var(--color-red-chroma)) var(--color-red-hue) );
-    --color-red-90: oklch( 92% calc(0.04 * var(--color-red-chroma)) var(--color-red-hue) );
-    --color-red-95: oklch( 96% calc(0.02 * var(--color-red-chroma)) var(--color-red-hue) );
-    --color-orange-05: oklch( 18.5% calc(0.08 * var(--color-orange-chroma)) var(--color-orange-hue) );
-    --color-orange-10: oklch( 24% calc(0.1 * var(--color-orange-chroma)) var(--color-orange-hue) );
-    --color-orange-20: oklch( 32.5% calc(0.135 * var(--color-orange-chroma)) var(--color-orange-hue) );
-    --color-orange-30: oklch( 40% calc(0.16 * var(--color-orange-chroma)) var(--color-orange-hue) );
-    --color-orange-40: oklch( 47% calc(0.185 * var(--color-orange-chroma)) var(--color-orange-hue) );
-    --color-orange-50: oklch( 57% calc(0.2 * var(--color-orange-chroma)) var(--color-orange-hue) );
-    --color-orange-60: oklch( 67% calc(0.175 * var(--color-orange-chroma)) var(--color-orange-hue) );
-    --color-orange-70: oklch( 75% calc(0.13 * var(--color-orange-chroma)) var(--color-orange-hue) );
-    --color-orange-80: oklch( 83.5% calc(0.085 * var(--color-orange-chroma)) var(--color-orange-hue) );
-    --color-orange-90: oklch( 92% calc(0.04 * var(--color-orange-chroma)) var(--color-orange-hue) );
-    --color-orange-95: oklch( 96% calc(0.02 * var(--color-orange-chroma)) var(--color-orange-hue) );
-    --color-yellow-05: oklch( 18.5% calc(0.08 * var(--color-yellow-chroma)) var(--color-yellow-hue) );
-    --color-yellow-10: oklch( 24% calc(0.1 * var(--color-yellow-chroma)) var(--color-yellow-hue) );
-    --color-yellow-20: oklch( 32.5% calc(0.135 * var(--color-yellow-chroma)) var(--color-yellow-hue) );
-    --color-yellow-30: oklch( 40% calc(0.16 * var(--color-yellow-chroma)) var(--color-yellow-hue) );
-    --color-yellow-40: oklch( 47% calc(0.185 * var(--color-yellow-chroma)) var(--color-yellow-hue) );
-    --color-yellow-50: oklch( 57% calc(0.2 * var(--color-yellow-chroma)) var(--color-yellow-hue) );
-    --color-yellow-60: oklch( 67% calc(0.175 * var(--color-yellow-chroma)) var(--color-yellow-hue) );
-    --color-yellow-70: oklch( 75% calc(0.13 * var(--color-yellow-chroma)) var(--color-yellow-hue) );
-    --color-yellow-80: oklch( 83.5% calc(0.085 * var(--color-yellow-chroma)) var(--color-yellow-hue) );
-    --color-yellow-90: oklch( 92% calc(0.04 * var(--color-yellow-chroma)) var(--color-yellow-hue) );
-    --color-yellow-95: oklch( 96% calc(0.02 * var(--color-yellow-chroma)) var(--color-yellow-hue) );
-    --color-green-05: oklch( 18.5% calc(0.08 * var(--color-green-chroma)) var(--color-green-hue) );
-    --color-green-10: oklch( 24% calc(0.1 * var(--color-green-chroma)) var(--color-green-hue) );
-    --color-green-20: oklch( 32.5% calc(0.135 * var(--color-green-chroma)) var(--color-green-hue) );
-    --color-green-30: oklch( 40% calc(0.16 * var(--color-green-chroma)) var(--color-green-hue) );
-    --color-green-40: oklch( 47% calc(0.185 * var(--color-green-chroma)) var(--color-green-hue) );
-    --color-green-50: oklch( 57% calc(0.2 * var(--color-green-chroma)) var(--color-green-hue) );
-    --color-green-60: oklch( 67% calc(0.175 * var(--color-green-chroma)) var(--color-green-hue) );
-    --color-green-70: oklch( 75% calc(0.13 * var(--color-green-chroma)) var(--color-green-hue) );
-    --color-green-80: oklch( 83.5% calc(0.085 * var(--color-green-chroma)) var(--color-green-hue) );
-    --color-green-90: oklch( 92% calc(0.04 * var(--color-green-chroma)) var(--color-green-hue) );
-    --color-green-95: oklch( 96% calc(0.02 * var(--color-green-chroma)) var(--color-green-hue) );
-    --color-cyan-05: oklch( 18.5% calc(0.08 * var(--color-cyan-chroma)) var(--color-cyan-hue) );
-    --color-cyan-10: oklch( 24% calc(0.1 * var(--color-cyan-chroma)) var(--color-cyan-hue) );
-    --color-cyan-20: oklch( 32.5% calc(0.135 * var(--color-cyan-chroma)) var(--color-cyan-hue) );
-    --color-cyan-30: oklch( 40% calc(0.16 * var(--color-cyan-chroma)) var(--color-cyan-hue) );
-    --color-cyan-40: oklch( 47% calc(0.185 * var(--color-cyan-chroma)) var(--color-cyan-hue) );
-    --color-cyan-50: oklch( 57% calc(0.2 * var(--color-cyan-chroma)) var(--color-cyan-hue) );
-    --color-cyan-60: oklch( 67% calc(0.175 * var(--color-cyan-chroma)) var(--color-cyan-hue) );
-    --color-cyan-70: oklch( 75% calc(0.13 * var(--color-cyan-chroma)) var(--color-cyan-hue) );
-    --color-cyan-80: oklch( 83.5% calc(0.085 * var(--color-cyan-chroma)) var(--color-cyan-hue) );
-    --color-cyan-90: oklch( 92% calc(0.04 * var(--color-cyan-chroma)) var(--color-cyan-hue) );
-    --color-cyan-95: oklch( 96% calc(0.02 * var(--color-cyan-chroma)) var(--color-cyan-hue) );
-    --color-blue-05: oklch( 18.5% calc(0.08 * var(--color-blue-chroma)) var(--color-blue-hue) );
-    --color-blue-10: oklch( 24% calc(0.1 * var(--color-blue-chroma)) var(--color-blue-hue) );
-    --color-blue-20: oklch( 32.5% calc(0.135 * var(--color-blue-chroma)) var(--color-blue-hue) );
-    --color-blue-30: oklch( 40% calc(0.16 * var(--color-blue-chroma)) var(--color-blue-hue) );
-    --color-blue-40: oklch( 47% calc(0.185 * var(--color-blue-chroma)) var(--color-blue-hue) );
-    --color-blue-50: oklch( 57% calc(0.2 * var(--color-blue-chroma)) var(--color-blue-hue) );
-    --color-blue-60: oklch( 67% calc(0.175 * var(--color-blue-chroma)) var(--color-blue-hue) );
-    --color-blue-70: oklch( 75% calc(0.13 * var(--color-blue-chroma)) var(--color-blue-hue) );
-    --color-blue-80: oklch( 83.5% calc(0.085 * var(--color-blue-chroma)) var(--color-blue-hue) );
-    --color-blue-90: oklch( 92% calc(0.04 * var(--color-blue-chroma)) var(--color-blue-hue) );
-    --color-blue-95: oklch( 96% calc(0.02 * var(--color-blue-chroma)) var(--color-blue-hue) );
-    --color-indigo-05: oklch( 18.5% calc(0.08 * var(--color-indigo-chroma)) var(--color-indigo-hue) );
-    --color-indigo-10: oklch( 24% calc(0.1 * var(--color-indigo-chroma)) var(--color-indigo-hue) );
-    --color-indigo-20: oklch( 32.5% calc(0.135 * var(--color-indigo-chroma)) var(--color-indigo-hue) );
-    --color-indigo-30: oklch( 40% calc(0.16 * var(--color-indigo-chroma)) var(--color-indigo-hue) );
-    --color-indigo-40: oklch( 47% calc(0.185 * var(--color-indigo-chroma)) var(--color-indigo-hue) );
-    --color-indigo-50: oklch( 57% calc(0.2 * var(--color-indigo-chroma)) var(--color-indigo-hue) );
-    --color-indigo-60: oklch( 67% calc(0.175 * var(--color-indigo-chroma)) var(--color-indigo-hue) );
-    --color-indigo-70: oklch( 75% calc(0.13 * var(--color-indigo-chroma)) var(--color-indigo-hue) );
-    --color-indigo-80: oklch( 83.5% calc(0.085 * var(--color-indigo-chroma)) var(--color-indigo-hue) );
-    --color-indigo-90: oklch( 92% calc(0.04 * var(--color-indigo-chroma)) var(--color-indigo-hue) );
-    --color-indigo-95: oklch( 96% calc(0.02 * var(--color-indigo-chroma)) var(--color-indigo-hue) );
-    --color-purple-05: oklch( 18.5% calc(0.08 * var(--color-purple-chroma)) var(--color-purple-hue) );
-    --color-purple-10: oklch( 24% calc(0.1 * var(--color-purple-chroma)) var(--color-purple-hue) );
-    --color-purple-20: oklch( 32.5% calc(0.135 * var(--color-purple-chroma)) var(--color-purple-hue) );
-    --color-purple-30: oklch( 40% calc(0.16 * var(--color-purple-chroma)) var(--color-purple-hue) );
-    --color-purple-40: oklch( 47% calc(0.185 * var(--color-purple-chroma)) var(--color-purple-hue) );
-    --color-purple-50: oklch( 57% calc(0.2 * var(--color-purple-chroma)) var(--color-purple-hue) );
-    --color-purple-60: oklch( 67% calc(0.175 * var(--color-purple-chroma)) var(--color-purple-hue) );
-    --color-purple-70: oklch( 75% calc(0.13 * var(--color-purple-chroma)) var(--color-purple-hue) );
-    --color-purple-80: oklch( 83.5% calc(0.085 * var(--color-purple-chroma)) var(--color-purple-hue) );
-    --color-purple-90: oklch( 92% calc(0.04 * var(--color-purple-chroma)) var(--color-purple-hue) );
-    --color-purple-95: oklch( 96% calc(0.02 * var(--color-purple-chroma)) var(--color-purple-hue) );
-    --color-pink-05: oklch( 18.5% calc(0.08 * var(--color-pink-chroma)) var(--color-pink-hue) );
-    --color-pink-10: oklch( 24% calc(0.1 * var(--color-pink-chroma)) var(--color-pink-hue) );
-    --color-pink-20: oklch( 32.5% calc(0.135 * var(--color-pink-chroma)) var(--color-pink-hue) );
-    --color-pink-30: oklch( 40% calc(0.16 * var(--color-pink-chroma)) var(--color-pink-hue) );
-    --color-pink-40: oklch( 47% calc(0.185 * var(--color-pink-chroma)) var(--color-pink-hue) );
-    --color-pink-50: oklch( 57% calc(0.2 * var(--color-pink-chroma)) var(--color-pink-hue) );
-    --color-pink-60: oklch( 67% calc(0.175 * var(--color-pink-chroma)) var(--color-pink-hue) );
-    --color-pink-70: oklch( 75% calc(0.13 * var(--color-pink-chroma)) var(--color-pink-hue) );
-    --color-pink-80: oklch( 83.5% calc(0.085 * var(--color-pink-chroma)) var(--color-pink-hue) );
-    --color-pink-90: oklch( 92% calc(0.04 * var(--color-pink-chroma)) var(--color-pink-hue) );
-    --color-pink-95: oklch( 96% calc(0.02 * var(--color-pink-chroma)) var(--color-pink-hue) );
-    --color-gray-05: oklch( 18.5% calc(0.08 * var(--color-gray-chroma)) var(--color-gray-hue) );
-    --color-gray-10: oklch( 24% calc(0.1 * var(--color-gray-chroma)) var(--color-gray-hue) );
-    --color-gray-20: oklch( 32.5% calc(0.135 * var(--color-gray-chroma)) var(--color-gray-hue) );
-    --color-gray-30: oklch( 40% calc(0.16 * var(--color-gray-chroma)) var(--color-gray-hue) );
-    --color-gray-40: oklch( 47% calc(0.185 * var(--color-gray-chroma)) var(--color-gray-hue) );
-    --color-gray-50: oklch( 57% calc(0.2 * var(--color-gray-chroma)) var(--color-gray-hue) );
-    --color-gray-60: oklch( 67% calc(0.175 * var(--color-gray-chroma)) var(--color-gray-hue) );
-    --color-gray-70: oklch( 75% calc(0.13 * var(--color-gray-chroma)) var(--color-gray-hue) );
-    --color-gray-80: oklch( 83.5% calc(0.085 * var(--color-gray-chroma)) var(--color-gray-hue) );
-    --color-gray-90: oklch( 92% calc(0.04 * var(--color-gray-chroma)) var(--color-gray-hue) );
-    --color-gray-95: oklch( 96% calc(0.02 * var(--color-gray-chroma)) var(--color-gray-hue) );
+    --color-red-05: oklch(
+      18.5% calc(0.08 * var(--color-red-chroma)) var(--color-red-hue)
+    );
+    --color-red-10: oklch(
+      24% calc(0.1 * var(--color-red-chroma)) var(--color-red-hue)
+    );
+    --color-red-20: oklch(
+      32.5% calc(0.135 * var(--color-red-chroma)) var(--color-red-hue)
+    );
+    --color-red-30: oklch(
+      40% calc(0.16 * var(--color-red-chroma)) var(--color-red-hue)
+    );
+    --color-red-40: oklch(
+      47% calc(0.185 * var(--color-red-chroma)) var(--color-red-hue)
+    );
+    --color-red-50: oklch(
+      57% calc(0.2 * var(--color-red-chroma)) var(--color-red-hue)
+    );
+    --color-red-60: oklch(
+      67% calc(0.175 * var(--color-red-chroma)) var(--color-red-hue)
+    );
+    --color-red-70: oklch(
+      75% calc(0.13 * var(--color-red-chroma)) var(--color-red-hue)
+    );
+    --color-red-80: oklch(
+      83.5% calc(0.085 * var(--color-red-chroma)) var(--color-red-hue)
+    );
+    --color-red-90: oklch(
+      92% calc(0.04 * var(--color-red-chroma)) var(--color-red-hue)
+    );
+    --color-red-95: oklch(
+      96% calc(0.02 * var(--color-red-chroma)) var(--color-red-hue)
+    );
+    --color-orange-05: oklch(
+      18.5% calc(0.08 * var(--color-orange-chroma)) var(--color-orange-hue)
+    );
+    --color-orange-10: oklch(
+      24% calc(0.1 * var(--color-orange-chroma)) var(--color-orange-hue)
+    );
+    --color-orange-20: oklch(
+      32.5% calc(0.135 * var(--color-orange-chroma)) var(--color-orange-hue)
+    );
+    --color-orange-30: oklch(
+      40% calc(0.16 * var(--color-orange-chroma)) var(--color-orange-hue)
+    );
+    --color-orange-40: oklch(
+      47% calc(0.185 * var(--color-orange-chroma)) var(--color-orange-hue)
+    );
+    --color-orange-50: oklch(
+      57% calc(0.2 * var(--color-orange-chroma)) var(--color-orange-hue)
+    );
+    --color-orange-60: oklch(
+      67% calc(0.175 * var(--color-orange-chroma)) var(--color-orange-hue)
+    );
+    --color-orange-70: oklch(
+      75% calc(0.13 * var(--color-orange-chroma)) var(--color-orange-hue)
+    );
+    --color-orange-80: oklch(
+      83.5% calc(0.085 * var(--color-orange-chroma)) var(--color-orange-hue)
+    );
+    --color-orange-90: oklch(
+      92% calc(0.04 * var(--color-orange-chroma)) var(--color-orange-hue)
+    );
+    --color-orange-95: oklch(
+      96% calc(0.02 * var(--color-orange-chroma)) var(--color-orange-hue)
+    );
+    --color-yellow-05: oklch(
+      18.5% calc(0.08 * var(--color-yellow-chroma)) var(--color-yellow-hue)
+    );
+    --color-yellow-10: oklch(
+      24% calc(0.1 * var(--color-yellow-chroma)) var(--color-yellow-hue)
+    );
+    --color-yellow-20: oklch(
+      32.5% calc(0.135 * var(--color-yellow-chroma)) var(--color-yellow-hue)
+    );
+    --color-yellow-30: oklch(
+      40% calc(0.16 * var(--color-yellow-chroma)) var(--color-yellow-hue)
+    );
+    --color-yellow-40: oklch(
+      47% calc(0.185 * var(--color-yellow-chroma)) var(--color-yellow-hue)
+    );
+    --color-yellow-50: oklch(
+      57% calc(0.2 * var(--color-yellow-chroma)) var(--color-yellow-hue)
+    );
+    --color-yellow-60: oklch(
+      67% calc(0.175 * var(--color-yellow-chroma)) var(--color-yellow-hue)
+    );
+    --color-yellow-70: oklch(
+      75% calc(0.13 * var(--color-yellow-chroma)) var(--color-yellow-hue)
+    );
+    --color-yellow-80: oklch(
+      83.5% calc(0.085 * var(--color-yellow-chroma)) var(--color-yellow-hue)
+    );
+    --color-yellow-90: oklch(
+      92% calc(0.04 * var(--color-yellow-chroma)) var(--color-yellow-hue)
+    );
+    --color-yellow-95: oklch(
+      96% calc(0.02 * var(--color-yellow-chroma)) var(--color-yellow-hue)
+    );
+    --color-green-05: oklch(
+      18.5% calc(0.08 * var(--color-green-chroma)) var(--color-green-hue)
+    );
+    --color-green-10: oklch(
+      24% calc(0.1 * var(--color-green-chroma)) var(--color-green-hue)
+    );
+    --color-green-20: oklch(
+      32.5% calc(0.135 * var(--color-green-chroma)) var(--color-green-hue)
+    );
+    --color-green-30: oklch(
+      40% calc(0.16 * var(--color-green-chroma)) var(--color-green-hue)
+    );
+    --color-green-40: oklch(
+      47% calc(0.185 * var(--color-green-chroma)) var(--color-green-hue)
+    );
+    --color-green-50: oklch(
+      57% calc(0.2 * var(--color-green-chroma)) var(--color-green-hue)
+    );
+    --color-green-60: oklch(
+      67% calc(0.175 * var(--color-green-chroma)) var(--color-green-hue)
+    );
+    --color-green-70: oklch(
+      75% calc(0.13 * var(--color-green-chroma)) var(--color-green-hue)
+    );
+    --color-green-80: oklch(
+      83.5% calc(0.085 * var(--color-green-chroma)) var(--color-green-hue)
+    );
+    --color-green-90: oklch(
+      92% calc(0.04 * var(--color-green-chroma)) var(--color-green-hue)
+    );
+    --color-green-95: oklch(
+      96% calc(0.02 * var(--color-green-chroma)) var(--color-green-hue)
+    );
+    --color-cyan-05: oklch(
+      18.5% calc(0.08 * var(--color-cyan-chroma)) var(--color-cyan-hue)
+    );
+    --color-cyan-10: oklch(
+      24% calc(0.1 * var(--color-cyan-chroma)) var(--color-cyan-hue)
+    );
+    --color-cyan-20: oklch(
+      32.5% calc(0.135 * var(--color-cyan-chroma)) var(--color-cyan-hue)
+    );
+    --color-cyan-30: oklch(
+      40% calc(0.16 * var(--color-cyan-chroma)) var(--color-cyan-hue)
+    );
+    --color-cyan-40: oklch(
+      47% calc(0.185 * var(--color-cyan-chroma)) var(--color-cyan-hue)
+    );
+    --color-cyan-50: oklch(
+      57% calc(0.2 * var(--color-cyan-chroma)) var(--color-cyan-hue)
+    );
+    --color-cyan-60: oklch(
+      67% calc(0.175 * var(--color-cyan-chroma)) var(--color-cyan-hue)
+    );
+    --color-cyan-70: oklch(
+      75% calc(0.13 * var(--color-cyan-chroma)) var(--color-cyan-hue)
+    );
+    --color-cyan-80: oklch(
+      83.5% calc(0.085 * var(--color-cyan-chroma)) var(--color-cyan-hue)
+    );
+    --color-cyan-90: oklch(
+      92% calc(0.04 * var(--color-cyan-chroma)) var(--color-cyan-hue)
+    );
+    --color-cyan-95: oklch(
+      96% calc(0.02 * var(--color-cyan-chroma)) var(--color-cyan-hue)
+    );
+    --color-blue-05: oklch(
+      18.5% calc(0.08 * var(--color-blue-chroma)) var(--color-blue-hue)
+    );
+    --color-blue-10: oklch(
+      24% calc(0.1 * var(--color-blue-chroma)) var(--color-blue-hue)
+    );
+    --color-blue-20: oklch(
+      32.5% calc(0.135 * var(--color-blue-chroma)) var(--color-blue-hue)
+    );
+    --color-blue-30: oklch(
+      40% calc(0.16 * var(--color-blue-chroma)) var(--color-blue-hue)
+    );
+    --color-blue-40: oklch(
+      47% calc(0.185 * var(--color-blue-chroma)) var(--color-blue-hue)
+    );
+    --color-blue-50: oklch(
+      57% calc(0.2 * var(--color-blue-chroma)) var(--color-blue-hue)
+    );
+    --color-blue-60: oklch(
+      67% calc(0.175 * var(--color-blue-chroma)) var(--color-blue-hue)
+    );
+    --color-blue-70: oklch(
+      75% calc(0.13 * var(--color-blue-chroma)) var(--color-blue-hue)
+    );
+    --color-blue-80: oklch(
+      83.5% calc(0.085 * var(--color-blue-chroma)) var(--color-blue-hue)
+    );
+    --color-blue-90: oklch(
+      92% calc(0.04 * var(--color-blue-chroma)) var(--color-blue-hue)
+    );
+    --color-blue-95: oklch(
+      96% calc(0.02 * var(--color-blue-chroma)) var(--color-blue-hue)
+    );
+    --color-indigo-05: oklch(
+      18.5% calc(0.08 * var(--color-indigo-chroma)) var(--color-indigo-hue)
+    );
+    --color-indigo-10: oklch(
+      24% calc(0.1 * var(--color-indigo-chroma)) var(--color-indigo-hue)
+    );
+    --color-indigo-20: oklch(
+      32.5% calc(0.135 * var(--color-indigo-chroma)) var(--color-indigo-hue)
+    );
+    --color-indigo-30: oklch(
+      40% calc(0.16 * var(--color-indigo-chroma)) var(--color-indigo-hue)
+    );
+    --color-indigo-40: oklch(
+      47% calc(0.185 * var(--color-indigo-chroma)) var(--color-indigo-hue)
+    );
+    --color-indigo-50: oklch(
+      57% calc(0.2 * var(--color-indigo-chroma)) var(--color-indigo-hue)
+    );
+    --color-indigo-60: oklch(
+      67% calc(0.175 * var(--color-indigo-chroma)) var(--color-indigo-hue)
+    );
+    --color-indigo-70: oklch(
+      75% calc(0.13 * var(--color-indigo-chroma)) var(--color-indigo-hue)
+    );
+    --color-indigo-80: oklch(
+      83.5% calc(0.085 * var(--color-indigo-chroma)) var(--color-indigo-hue)
+    );
+    --color-indigo-90: oklch(
+      92% calc(0.04 * var(--color-indigo-chroma)) var(--color-indigo-hue)
+    );
+    --color-indigo-95: oklch(
+      96% calc(0.02 * var(--color-indigo-chroma)) var(--color-indigo-hue)
+    );
+    --color-purple-05: oklch(
+      18.5% calc(0.08 * var(--color-purple-chroma)) var(--color-purple-hue)
+    );
+    --color-purple-10: oklch(
+      24% calc(0.1 * var(--color-purple-chroma)) var(--color-purple-hue)
+    );
+    --color-purple-20: oklch(
+      32.5% calc(0.135 * var(--color-purple-chroma)) var(--color-purple-hue)
+    );
+    --color-purple-30: oklch(
+      40% calc(0.16 * var(--color-purple-chroma)) var(--color-purple-hue)
+    );
+    --color-purple-40: oklch(
+      47% calc(0.185 * var(--color-purple-chroma)) var(--color-purple-hue)
+    );
+    --color-purple-50: oklch(
+      57% calc(0.2 * var(--color-purple-chroma)) var(--color-purple-hue)
+    );
+    --color-purple-60: oklch(
+      67% calc(0.175 * var(--color-purple-chroma)) var(--color-purple-hue)
+    );
+    --color-purple-70: oklch(
+      75% calc(0.13 * var(--color-purple-chroma)) var(--color-purple-hue)
+    );
+    --color-purple-80: oklch(
+      83.5% calc(0.085 * var(--color-purple-chroma)) var(--color-purple-hue)
+    );
+    --color-purple-90: oklch(
+      92% calc(0.04 * var(--color-purple-chroma)) var(--color-purple-hue)
+    );
+    --color-purple-95: oklch(
+      96% calc(0.02 * var(--color-purple-chroma)) var(--color-purple-hue)
+    );
+    --color-pink-05: oklch(
+      18.5% calc(0.08 * var(--color-pink-chroma)) var(--color-pink-hue)
+    );
+    --color-pink-10: oklch(
+      24% calc(0.1 * var(--color-pink-chroma)) var(--color-pink-hue)
+    );
+    --color-pink-20: oklch(
+      32.5% calc(0.135 * var(--color-pink-chroma)) var(--color-pink-hue)
+    );
+    --color-pink-30: oklch(
+      40% calc(0.16 * var(--color-pink-chroma)) var(--color-pink-hue)
+    );
+    --color-pink-40: oklch(
+      47% calc(0.185 * var(--color-pink-chroma)) var(--color-pink-hue)
+    );
+    --color-pink-50: oklch(
+      57% calc(0.2 * var(--color-pink-chroma)) var(--color-pink-hue)
+    );
+    --color-pink-60: oklch(
+      67% calc(0.175 * var(--color-pink-chroma)) var(--color-pink-hue)
+    );
+    --color-pink-70: oklch(
+      75% calc(0.13 * var(--color-pink-chroma)) var(--color-pink-hue)
+    );
+    --color-pink-80: oklch(
+      83.5% calc(0.085 * var(--color-pink-chroma)) var(--color-pink-hue)
+    );
+    --color-pink-90: oklch(
+      92% calc(0.04 * var(--color-pink-chroma)) var(--color-pink-hue)
+    );
+    --color-pink-95: oklch(
+      96% calc(0.02 * var(--color-pink-chroma)) var(--color-pink-hue)
+    );
+    --color-gray-05: oklch(
+      18.5% calc(0.08 * var(--color-gray-chroma)) var(--color-gray-hue)
+    );
+    --color-gray-10: oklch(
+      24% calc(0.1 * var(--color-gray-chroma)) var(--color-gray-hue)
+    );
+    --color-gray-20: oklch(
+      32.5% calc(0.135 * var(--color-gray-chroma)) var(--color-gray-hue)
+    );
+    --color-gray-30: oklch(
+      40% calc(0.16 * var(--color-gray-chroma)) var(--color-gray-hue)
+    );
+    --color-gray-40: oklch(
+      47% calc(0.185 * var(--color-gray-chroma)) var(--color-gray-hue)
+    );
+    --color-gray-50: oklch(
+      57% calc(0.2 * var(--color-gray-chroma)) var(--color-gray-hue)
+    );
+    --color-gray-60: oklch(
+      67% calc(0.175 * var(--color-gray-chroma)) var(--color-gray-hue)
+    );
+    --color-gray-70: oklch(
+      75% calc(0.13 * var(--color-gray-chroma)) var(--color-gray-hue)
+    );
+    --color-gray-80: oklch(
+      83.5% calc(0.085 * var(--color-gray-chroma)) var(--color-gray-hue)
+    );
+    --color-gray-90: oklch(
+      92% calc(0.04 * var(--color-gray-chroma)) var(--color-gray-hue)
+    );
+    --color-gray-95: oklch(
+      96% calc(0.02 * var(--color-gray-chroma)) var(--color-gray-hue)
+    );
   }
 }
 
@@ -250,7 +470,11 @@
     --color-text-muted: var(--color-gray-80);
     --color-text-input: var(--color-gray-80);
     --color-text-code: var(--color-pink-80);
-    --color-fill-highlight: color-mix( in oklab, var(--color-highlight), transparent 85% );
+    --color-fill-highlight: color-mix(
+      in oklab,
+      var(--color-highlight),
+      transparent 85%
+    );
     --color-text-link: var(--color-blue-70);
     --color-text-link-hover: var(--color-blue-80);
     --color-checked: var(--color-blue-60);
@@ -308,24 +532,12 @@
 /* src/css/config/fonts.css */
 @layer kelp.base {
   :where(:root) {
-    --font-primary:
-      ui-sans-serif,
-      system-ui,
-      sans-serif;
+    --font-primary: ui-sans-serif, system-ui, sans-serif;
     --font-secondary:
-      Charter,
-      "Bitstream Charter",
-      "Sitka Text",
-      Cambria,
-      serif;
+      Charter, "Bitstream Charter", "Sitka Text", Cambria, serif;
     --font-monospace:
-      ui-monospace,
-      "Cascadia Code",
-      "Source Code Pro",
-      Menlo,
-      Consolas,
-      "DejaVu Sans Mono",
-      monospace;
+      ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
+      "DejaVu Sans Mono", monospace;
   }
 }
 
@@ -388,11 +600,45 @@
     min-height: 100vh;
     overflow-x: clip;
   }
-  :where(p, ol, ul, dl, dd, form, fieldset, audio, video, iframe, blockquote, details, table, pre, figure, address) {
+  :where(
+    p,
+    ol,
+    ul,
+    dl,
+    dd,
+    form,
+    fieldset,
+    audio,
+    video,
+    iframe,
+    blockquote,
+    details,
+    table,
+    pre,
+    figure,
+    address
+  ) {
     margin: 0;
     margin-block-end: var(--space);
   }
-  :where(p, ol, ul, dl, dd, form, fieldset, audio, video, iframe, blockquote, details, table, pre, figure, address):last-child {
+  :where(
+    p,
+    ol,
+    ul,
+    dl,
+    dd,
+    form,
+    fieldset,
+    audio,
+    video,
+    iframe,
+    blockquote,
+    details,
+    table,
+    pre,
+    figure,
+    address
+  ):last-child {
     margin-block-end: 0;
   }
   :where(h1, h2, h3, h4, h5, h6) {
@@ -406,7 +652,15 @@
   }
 }
 @layer kelp.state {
-  :is(button, [href], input, select, textarea, summary, [tabindex]):focus-visible {
+  :is(
+    button,
+    [href],
+    input,
+    select,
+    textarea,
+    summary,
+    [tabindex]
+  ):focus-visible {
     outline-color: var(--focus-ring-color);
     outline-style: var(--focus-ring-style);
     outline-width: var(--focus-ring-width);
@@ -432,7 +686,7 @@
 
 /* src/css/layout/containers.css */
 @layer kelp.core {
-  [class*=container] {
+  [class*="container"] {
     --width: var(--breakpoint-m);
     margin-inline: auto;
     max-width: var(--width);
@@ -464,7 +718,7 @@
 
 /* src/css/layout/grid.css */
 @layer kelp.core {
-  [class*=grid] {
+  [class*="grid"] {
     --gap: var(--size-m);
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: 1fr;
@@ -478,7 +732,10 @@
   }
   .grid-auto {
     --width: 15ch;
-    grid-template-columns: repeat(auto-fit, minmax(min(var(--width), 100%), 1fr));
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(var(--width), 100%), 1fr)
+    );
     grid-template-rows: auto;
   }
   @media (min-width: 28em) {
@@ -501,7 +758,7 @@
       display: grid;
     }
   }
-  [class*=item-] {
+  [class*="item-"] {
     --span: 1;
     grid-column: auto / span var(--span);
   }
@@ -520,7 +777,7 @@
   .item-three-fourths {
     --span: 9;
   }
-  [class*=start-] {
+  [class*="start-"] {
     --start: 1;
     grid-row-start: 1;
     grid-column-start: var(--start);
@@ -590,7 +847,7 @@
 
 /* src/css/layout/sidecar.css */
 @layer kelp.core {
-  [class*=sidecar] {
+  [class*="sidecar"] {
     --gap: var(--size-m);
     --main-size: initial;
     --secondary-size: initial;
@@ -611,7 +868,7 @@
   }
 }
 @layer kelp.utilities {
-  [class*=sidecar] > * {
+  [class*="sidecar"] > * {
     margin: 0;
   }
 }
@@ -815,11 +1072,14 @@
     column-gap: var(--gap);
     width: 100%;
   }
-  label:has(:is(input, select, textarea):not([type=radio], [type=checkbox])) {
+  label:has(
+    :is(input, select, textarea):not([type="radio"], [type="checkbox"])
+  ) {
     display: block;
     margin-block-end: 0;
   }
-  label:has(input, select, textarea) :is(input, select, textarea):not([type=radio], [type=checkbox]) {
+  label:has(input, select, textarea)
+    :is(input, select, textarea):not([type="radio"], [type="checkbox"]) {
     margin-block-start: var(--gap);
   }
   input,
@@ -852,12 +1112,20 @@
     line-height: var(--line-height-m);
     width: 100%;
   }
-  input:not([type=date], [type=time], [type=datetime-local], [type=month], [type=week], [type=checkbox], [type=radio]),
+  input:not(
+    [type="date"],
+    [type="time"],
+    [type="datetime-local"],
+    [type="month"],
+    [type="week"],
+    [type="checkbox"],
+    [type="radio"]
+  ),
   textarea,
   select {
     display: block;
   }
-  :where(input, textarea, select):not(:last-child, [aria-invalid=true]) {
+  :where(input, textarea, select):not(:last-child, [aria-invalid="true"]) {
     margin-block-end: var(--size-xl);
   }
   .validation-error {
@@ -873,17 +1141,17 @@
     overflow: auto;
     resize: vertical;
   }
-  [type=image],
-  [type=checkbox],
-  [type=radio] {
+  [type="image"],
+  [type="checkbox"],
+  [type="radio"] {
     cursor: pointer;
     display: inline-block;
     height: auto;
     width: auto;
     padding: 0;
   }
-  [type=checkbox],
-  [type=radio] {
+  [type="checkbox"],
+  [type="radio"] {
     appearance: none;
     height: var(--size-m);
     width: var(--size-m);
@@ -892,69 +1160,84 @@
     align-items: center;
     justify-content: center;
   }
-  [type=radio] {
+  [type="radio"] {
     border-radius: 50%;
   }
-  [type=color] {
+  [type="color"] {
     height: 3em;
     width: 3em;
   }
 }
 @layer kelp.state {
-  :is(input, textarea, select):not([type=checkbox], [type=radio], [type=range], [type=file]):focus,
-  :is([type=checkbox], [type=radio], [type=range]):focus-visible {
+  :is(input, textarea, select):not(
+      [type="checkbox"],
+      [type="radio"],
+      [type="range"],
+      [type="file"]
+    ):focus,
+  :is([type="checkbox"], [type="radio"], [type="range"]):focus-visible {
     outline-color: var(--focus-ring-color);
     outline-style: var(--focus-ring-style);
     outline-width: var(--focus-ring-width);
     outline-offset: var(--focus-ring-offset);
   }
-  :is(:user-invalid, [aria-invalid=true], [aria-invalid=true] :is([type=radio], [type=checkbox])) {
+  :is(
+    :user-invalid,
+    [aria-invalid="true"],
+    [aria-invalid="true"] :is([type="radio"], [type="checkbox"])
+  ) {
     --border-color: var(--color-invalid);
     --color-checked: var(--color-invalid);
     --focus-ring-color: var(--color-invalid);
   }
-  [type=radio]:checked {
+  [type="radio"]:checked {
     background-color: transparent;
     border-color: var(--color-checked);
   }
-  [type=radio]:checked::after {
+  [type="radio"]:checked::after {
     background-color: var(--color-checked);
     border-radius: 50%;
     content: "";
     width: 0.667em;
     aspect-ratio: 1;
   }
-  [type=checkbox]:not([role=switch]):is(:checked, :indeterminate) {
+  [type="checkbox"]:not([role="switch"]):is(:checked, :indeterminate) {
     background-color: var(--color-checked);
     border-color: var(--color-checked);
     color: var(--color-checked-icon);
   }
-  [type=checkbox]:not([role=switch]):is(:checked, :indeterminate)::after {
+  [type="checkbox"]:not([role="switch"]):is(:checked, :indeterminate)::after {
     content: "";
     height: 0.667em;
     width: 0.667em;
     box-shadow: inset 1em 1em var(--color-checked-icon);
   }
-  [type=checkbox]:not([role=switch]):checked::after {
+  [type="checkbox"]:not([role="switch"]):checked::after {
     clip-path: polygon(20% 100%, 20% 80%, 50% 80%, 50% 0%, 70% 0%, 70% 100%);
     margin-top: -0.0625em;
     rotate: 45deg;
   }
-  [type=checkbox]:not([role=switch]):indeterminate::after {
+  [type="checkbox"]:not([role="switch"]):indeterminate::after {
     clip-path: inset(40% 10% round 50%);
   }
   @media (forced-colors: active) {
-    :is([type=checkbox], [type=radio]):not([role=switch]):is(:checked, :indeterminate)::after {
+    :is([type="checkbox"], [type="radio"]):not([role="switch"]):is(
+        :checked,
+        :indeterminate
+      )::after {
       background-color: CanvasText;
     }
   }
-  :is(input, textarea, select):not([type=checkbox], [type=radio]):is([readonly], [disabled]) {
+  :is(input, textarea, select):not([type="checkbox"], [type="radio"]):is(
+      [readonly],
+      [disabled]
+    ) {
     --background-color: var(--color-fill-muted);
     --color: var(--color-on-muted);
     background-color: var(--background-color);
     color: var(--color);
   }
-  :is([type=checkbox], [type=radio])[disabled] {
+  :is([type="checkbox"], [type="radio"])[disabled] {
     cursor: not-allowed;
     opacity: 0.6;
   }
@@ -988,7 +1271,7 @@
 
 /* src/css/components/color-picker.css */
 @layer kelp.core {
-  [type=color] {
+  [type="color"] {
     height: 3em;
     width: 3em;
   }
@@ -996,13 +1279,21 @@
 
 /* src/css/components/file-picker.css */
 @layer kelp.core {
-  [type=file] {
+  [type="file"] {
     --background-color: var(--color-fill-muted);
     --background-color-hover: var(--color-fill-accent);
-    --background-color-active: color-mix( in oklab, var(--color-fill-muted), var(--color-mix-transparent) );
+    --background-color-active: color-mix(
+      in oklab,
+      var(--color-fill-muted),
+      var(--color-mix-transparent)
+    );
     --border-color: var(--color-border-muted);
     --border-color-hover: var(--color-border-accent);
-    --border-color-active: color-mix( in oklab, var(--color-border-muted), var(--color-mix-transparent) );
+    --border-color-active: color-mix(
+      in oklab,
+      var(--color-border-muted),
+      var(--color-mix-transparent)
+    );
     --color: var(--color-on-muted);
     --color-hover: var(--color-on-accent);
     --color-active: var(--color-on-muted);
@@ -1014,7 +1305,7 @@
     margin-block: calc(-1 * var(--input-padding-block));
     margin-inline: calc(-1 * var(--input-padding-inline));
   }
-  [type=file]::file-selector-button {
+  [type="file"]::file-selector-button {
     background-color: var(--background-color);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-s);
@@ -1026,21 +1317,21 @@
   }
 }
 @layer kelp.state {
-  [type=file]:focus {
+  [type="file"]:focus {
     outline-width: 0;
   }
-  [type=file]:focus::file-selector-button {
+  [type="file"]:focus::file-selector-button {
     outline-color: var(--focus-ring-color);
     outline-style: var(--focus-ring-style);
     outline-width: var(--focus-ring-width);
     outline-offset: var(--focus-ring-offset);
   }
-  [type=file]:hover::file-selector-button {
+  [type="file"]:hover::file-selector-button {
     --background-color: var(--background-color-hover);
     --border-color: var(--border-color-hover);
     --color: var(--color-hover);
   }
-  [type=file]:active::file-selector-button {
+  [type="file"]:active::file-selector-button {
     --background-color: var(--background-color-active);
     --border-color: var(--border-color-active);
     --color: var(--color-active);
@@ -1049,7 +1340,7 @@
 
 /* src/css/components/switch.css */
 @layer kelp.core {
-  [type=checkbox][role=switch] {
+  [type="checkbox"][role="switch"] {
     --color-fill-vivid: var(--color-primary-fill-vivid);
     --height: var(--size-xl);
     --width: 0.8;
@@ -1062,7 +1353,7 @@
     display: inline-block;
     transition: background-color 100ms ease-in-out;
   }
-  [type=checkbox][role=switch]::after {
+  [type="checkbox"][role="switch"]::after {
     content: "";
     aspect-ratio: 1;
     background-color: white;
@@ -1072,18 +1363,18 @@
     display: block;
     transition: translate 100ms ease-in-out;
   }
-  [type=checkbox][role=switch]:checked {
+  [type="checkbox"][role="switch"]:checked {
     background-color: var(--color-fill-vivid);
   }
-  [type=checkbox][role=switch]:checked::after {
+  [type="checkbox"][role="switch"]:checked::after {
     border-color: var(--color-fill-vivid);
     translate: calc(var(--height) * var(--width)) 0;
   }
   @media (forced-colors: active) {
-    [type=checkbox][role=switch] {
+    [type="checkbox"][role="switch"] {
       border: 1px solid CanvasText;
     }
-    [type=checkbox][role=switch]:checked {
+    [type="checkbox"][role="switch"]:checked {
       background-color: CanvasText;
     }
   }
@@ -1093,10 +1384,18 @@
 @layer kelp.core {
   button,
   .btn,
-  input:is([type=button], [type=reset], [type=submit]) {
+  input:is([type="button"], [type="reset"], [type="submit"]) {
     --background-color: var(--color-fill-vivid);
-    --background-color-hover: color-mix( in oklab, var(--color-fill-vivid), var(--color-mix-hover) );
-    --background-color-active: color-mix( in oklab, var(--color-fill-vivid), var(--color-mix-active) );
+    --background-color-hover: color-mix(
+      in oklab,
+      var(--color-fill-vivid),
+      var(--color-mix-hover)
+    );
+    --background-color-active: color-mix(
+      in oklab,
+      var(--color-fill-vivid),
+      var(--color-mix-active)
+    );
     --color: var(--color-on-vivid);
     --color-hover: var(--color-on-vivid);
     --color-active: var(--color-on-vivid);
@@ -1140,17 +1439,25 @@
     -webkit-text-decoration: var(--decoration);
   }
   button,
-  [type=submit] {
+  [type="submit"] {
     appearance: none;
   }
 }
 @layer kelp.state {
-  :where(button, .btn, input:is([type=button], [type=reset], [type=submit])):hover {
+  :where(
+    button,
+    .btn,
+    input:is([type="button"], [type="reset"], [type="submit"])
+  ):hover {
     --background-color: var(--background-color-hover);
     --border-color: var(--border-color-hover);
     --color: var(--color-hover);
   }
-  :where(button, .btn, input:is([type=button], [type=reset], [type=submit])):is(:active, [data-active]) {
+  :where(
+    button,
+    .btn,
+    input:is([type="button"], [type="reset"], [type="submit"])
+  ):is(:active, [data-active]) {
     --background-color: var(--background-color-active);
     --border-color: var(--border-color-active);
     --color: var(--color-active);
@@ -1268,7 +1575,7 @@
     overflow: auto;
     padding-inline: var(--padding);
   }
-  [class*=drawer] {
+  [class*="drawer"] {
     border-radius: 0;
     max-height: 100%;
     max-width: 100%;
@@ -1576,7 +1883,11 @@
       background-color: var(--color-fill-accent);
     }
     50% {
-      background-color: color-mix(in oklab, var(--color-fill-accent), var(--color-mix-hover));
+      background-color: color-mix(
+        in oklab,
+        var(--color-fill-accent),
+        var(--color-mix-hover)
+      );
     }
     100% {
       background-color: var(--color-fill-accent);
@@ -1609,29 +1920,79 @@
     opacity: 0.3;
   }
   .spinner::after {
-    animation: spin-part-1 1.2s infinite linear alternate, spin-part-2 2.4s infinite linear;
+    animation:
+      spin-part-1 1.2s infinite linear alternate,
+      spin-part-2 2.4s infinite linear;
   }
   @keyframes spin-part-1 {
     0% {
       clip-path: polygon(50% 50%, 0 0, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
     }
     12.5% {
-      clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%);
+      clip-path: polygon(
+        50% 50%,
+        0 0,
+        50% 0%,
+        100% 0%,
+        100% 0%,
+        100% 0%,
+        100% 0%
+      );
     }
     25% {
-      clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 100%, 100% 100%, 100% 100%);
+      clip-path: polygon(
+        50% 50%,
+        0 0,
+        50% 0%,
+        100% 0%,
+        100% 100%,
+        100% 100%,
+        100% 100%
+      );
     }
     50% {
-      clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
+      clip-path: polygon(
+        50% 50%,
+        0 0,
+        50% 0%,
+        100% 0%,
+        100% 100%,
+        50% 100%,
+        0% 100%
+      );
     }
     62.5% {
-      clip-path: polygon(50% 50%, 100% 0, 100% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
+      clip-path: polygon(
+        50% 50%,
+        100% 0,
+        100% 0%,
+        100% 0%,
+        100% 100%,
+        50% 100%,
+        0% 100%
+      );
     }
     75% {
-      clip-path: polygon(50% 50%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 50% 100%, 0% 100%);
+      clip-path: polygon(
+        50% 50%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        50% 100%,
+        0% 100%
+      );
     }
     100% {
-      clip-path: polygon(50% 50%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 0% 100%);
+      clip-path: polygon(
+        50% 50%,
+        50% 100%,
+        50% 100%,
+        50% 100%,
+        50% 100%,
+        50% 100%,
+        0% 100%
+      );
     }
   }
   @keyframes spin-part-2 {
@@ -1668,14 +2029,18 @@
   kelp-tabs [tabs] {
     --tab-background-color: var(--color-fill-muted);
     --tab-background-color-hover: var(--color-fill-accent);
-    --tab-background-color-active: color-mix( in oklab, var(--color-fill-muted), var(--color-mix-transparent) );
+    --tab-background-color-active: color-mix(
+      in oklab,
+      var(--color-fill-muted),
+      var(--color-mix-transparent)
+    );
     --tab-background-color-selected: var(--color-fill-vivid);
     --tab-color: var(--color-on-muted);
     --tab-color-hover: var(--color-on-accent);
     --tab-color-active: var(--color-on-muted);
     --tab-color-selected: var(--color-on-vivid);
   }
-  kelp-tabs [role=tab] {
+  kelp-tabs [role="tab"] {
     --background-color: var(--tab-background-color);
     --background-color-hover: var(--tab-background-color-hover);
     --background-color-active: var(--tab-background-color-active);
@@ -1688,12 +2053,12 @@
   }
 }
 @layer kelp.state {
-  kelp-tabs [role=tab][aria-selected=true] {
+  kelp-tabs [role="tab"][aria-selected="true"] {
     background-color: var(--tab-background-color-selected);
     color: var(--tab-color-selected);
   }
   @media (forced-colors: active) {
-    kelp-tabs [role=tab][aria-selected=true] {
+    kelp-tabs [role="tab"][aria-selected="true"] {
       border-width: var(--size-5xs);
     }
   }
@@ -1749,8 +2114,8 @@
   kelp-toggle-pw:not([is-ready]) :is([toggle], label:has([toggle])) {
     display: none;
   }
-  kelp-toggle-pw [aria-pressed=true] [is-hidden],
-  kelp-toggle-pw [aria-pressed=false] [is-visible] {
+  kelp-toggle-pw [aria-pressed="true"] [is-hidden],
+  kelp-toggle-pw [aria-pressed="false"] [is-visible] {
     display: none;
   }
 }
@@ -1824,7 +2189,9 @@
     text-align: start;
     width: 100%;
   }
-  kelp-disclosure[is-dropdown] > ul :is(li:not(:has(a, button)), li :is(a, button)) {
+  kelp-disclosure[is-dropdown]
+    > ul
+    :is(li:not(:has(a, button)), li :is(a, button)) {
     padding-block: var(--size-4xs);
     padding-inline: var(--size-m);
   }
@@ -1875,11 +2242,11 @@
 
 /* src/css/utilities/aspect-ratios.css */
 @layer kelp.utilities {
-  iframe[class*=aspect-ratio] {
+  iframe[class*="aspect-ratio"] {
     height: 100%;
     width: 100%;
   }
-  [class*=aspect-ratio] {
+  [class*="aspect-ratio"] {
     --ratio: auto;
     aspect-ratio: var(--ratio);
     object-fit: cover;
@@ -1942,7 +2309,7 @@
 
 /* src/css/utilities/size.css */
 @layer kelp.utilities {
-  [class*=size-] {
+  [class*="size-"] {
     --font-size: 1em;
     font-size: var(--font-size);
   }
@@ -2351,7 +2718,7 @@
     margin-inline: calc(-1 * var(--buffer));
     padding-inline: var(--buffer);
   }
-  [class*=visually-hidden] {
+  [class*="visually-hidden"] {
     border: 0;
     clip: rect(0 0 0 0);
     height: 1px;
@@ -2378,10 +2745,22 @@
   .outline {
     --background-color: transparent;
     --background-color-hover: var(--color-fill-vivid);
-    --background-color-active: color-mix( in oklab, var(--color-fill-vivid), var(--color-mix-active) );
+    --background-color-active: color-mix(
+      in oklab,
+      var(--color-fill-vivid),
+      var(--color-mix-active)
+    );
     --border-color: var(--color-outline);
-    --border-color-hover: color-mix( in oklab, var(--color-fill-vivid), var(--color-mix-hover) );
-    --border-color-active: color-mix( in oklab, var(--color-fill-vivid), var(--color-mix-active) );
+    --border-color-hover: color-mix(
+      in oklab,
+      var(--color-fill-vivid),
+      var(--color-mix-hover)
+    );
+    --border-color-active: color-mix(
+      in oklab,
+      var(--color-fill-vivid),
+      var(--color-mix-active)
+    );
     --color: var(--color-outline);
     --color-hover: var(--color-on-vivid);
     --color-active: var(--color-on-vivid);
@@ -2400,18 +2779,34 @@
   .muted {
     --background-color: var(--color-fill-muted);
     --background-color-hover: var(--color-fill-accent);
-    --background-color-active: color-mix( in oklab, var(--color-fill-muted), var(--color-mix-transparent) );
+    --background-color-active: color-mix(
+      in oklab,
+      var(--color-fill-muted),
+      var(--color-mix-transparent)
+    );
     --border-color: var(--color-border-muted);
     --border-color-hover: var(--color-border-accent);
-    --border-color-active: color-mix( in oklab, var(--color-border-muted), var(--color-mix-transparent) );
+    --border-color-active: color-mix(
+      in oklab,
+      var(--color-border-muted),
+      var(--color-mix-transparent)
+    );
     --color: var(--color-on-muted);
     --color-hover: var(--color-on-accent);
     --color-active: var(--color-on-muted);
   }
   .vivid {
     --background-color: var(--color-fill-vivid);
-    --background-color-hover: color-mix( in oklab, var(--color-fill-vivid), var(--color-mix-hover) );
-    --background-color-active: color-mix( in oklab, var(--color-fill-vivid), var(--color-mix-active) );
+    --background-color-hover: color-mix(
+      in oklab,
+      var(--color-fill-vivid),
+      var(--color-mix-hover)
+    );
+    --background-color-active: color-mix(
+      in oklab,
+      var(--color-fill-vivid),
+      var(--color-mix-active)
+    );
     --border-color: transparent;
     --border-color-hover: transparent;
     --border-color-active: transparent;
@@ -2423,7 +2818,11 @@
   .dark :is(.muted, .callout, .fill):not(.outline, .plain),
   .vivid {
     --color-text-link: var(--color);
-    --color-text-link-hover: color-mix( in oklab, var(--color), var(--color-mix-hover) );
+    --color-text-link-hover: color-mix(
+      in oklab,
+      var(--color),
+      var(--color-mix-hover)
+    );
   }
 }
 

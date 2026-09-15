@@ -1,4 +1,8 @@
-import {  ApiLoadAction, BaseDynamicComponent,DataStore } from "/lib/places-js-latest.js";
+import {
+  ApiLoadAction,
+  DataStore,
+  PresentationComponent,
+} from "/lib/places-js-latest.js";
 import {
   ERROR_MESSAGE_KEY,
   SUCCESS_MESSAGE_KEY,
@@ -38,7 +42,16 @@ const SAVE_UPDATES_BUTTON_ID = "save-updates";
 const DESCRIPTION_ERROR_TEXT_KEY = "descriptionErrorText";
 const NAME_ERROR_TEXT_KEY = "nameErrorText";
 
-export class GroupComponent extends BaseDynamicComponent {
+const groupDataStore = new DataStore(
+  new ApiLoadAction(() => {
+    const name =
+      new URLSearchParams(document.location.search).get("name") ?? "";
+    return {
+      url: API_ROOT + `/groups/?name=${encodeURIComponent(name)}`,
+    };
+  }),
+);
+export class GroupComponent extends PresentationComponent {
   constructor() {
     super(
       [
@@ -49,20 +62,13 @@ export class GroupComponent extends BaseDynamicComponent {
               [SUCCESS_MESSAGE_KEY]: "",
             };
           },
-          dataStore: new DataStore(
-            new ApiLoadAction(() => {
-              const name =
-                new URLSearchParams(document.location.search).get("name") ?? "";
-              return {
-                url: API_ROOT + `/groups/?name=${encodeURIComponent(name)}`,
-              };
-            }),
-          ),
+          dataStore: groupDataStore,
         },
       ],
       LOADING_INDICATOR_CONFIG,
     );
 
+    groupDataStore.fetchData();
     const self = this;
 
     this.addEventListener("click", (event) => {
@@ -74,9 +80,7 @@ export class GroupComponent extends BaseDynamicComponent {
 
       if (targetId === JOIN_GROUP_BUTTON_ID) {
         const userIsMember = self.componentStore.permissions?.userIsMember;
-        const apiMethod = userIsMember
-          ? "DELETE"
-          : "POST";
+        const apiMethod = userIsMember ? "DELETE" : "POST";
 
         ApiLoadAction.getResponseData({
           method: apiMethod,
@@ -115,14 +119,16 @@ export class GroupComponent extends BaseDynamicComponent {
         });
       } else if (targetId === SAVE_UPDATES_BUTTON_ID) {
         const validationErrorState = { [SUCCESS_MESSAGE_KEY]: "" };
-        const groupName = self.getRootNode().getElementById(GROUP_NAME_INPUT)?.value;
+        const groupName = self
+          .getRootNode()
+          .getElementById(GROUP_NAME_INPUT)?.value;
         if (!groupName || groupName.length === 0) {
           validationErrorState[NAME_ERROR_TEXT_KEY] =
             "Name is a required field";
         }
-        const groupDescription = self.getRootNode().getElementById(
-          GROUP_DESCRIPTION_INPUT,
-        )?.value;
+        const groupDescription = self
+          .getRootNode()
+          .getElementById(GROUP_DESCRIPTION_INPUT)?.value;
         if (!groupDescription || groupDescription.length === 0) {
           validationErrorState[DESCRIPTION_ERROR_TEXT_KEY] =
             "Description is a required field";
@@ -165,9 +171,8 @@ export class GroupComponent extends BaseDynamicComponent {
             });
           }
         });
-      } 
+      }
     });
-
   }
 
   render(groupData) {
@@ -206,7 +211,7 @@ export class GroupComponent extends BaseDynamicComponent {
         }
         ${
           groupData.oneTimeEventData.length === 0 &&
-            groupData.weeklyEventData.length === 0
+          groupData.weeklyEventData.length === 0
             ? ``
             : `
               <h2>Upcoming events</h2>
@@ -217,38 +222,38 @@ export class GroupComponent extends BaseDynamicComponent {
             ? ``
             : `  
             ${groupData.weeklyEventData
-                .map((event) => {
-                  return self.renderWeeklyEventData(
-                    event,
-                    groupData.id,
-                    groupData.id + "-event-" + event.id,
-                  );
-                })
+              .map((event) => {
+                return self.renderWeeklyEventData(
+                  event,
+                  groupData.id,
+                  groupData.id + "-event-" + event.id,
+                );
+              })
               .join(" ")}
               `
-            }
+        }
         ${
           groupData.oneTimeEventData.length === 0
             ? ``
             : `
               <h2 id="other-events-header">Other events</h2> 
               ${groupData.oneTimeEventData
-                  .map((event) => {
-                    return self.renderOneTimeEventData(
-                      event,
-                      groupData.id,
-                      groupData.id + "event-" + event.id,
-                    );
-                  })
+                .map((event) => {
+                  return self.renderOneTimeEventData(
+                    event,
+                    groupData.id,
+                    groupData.id + "event-" + event.id,
+                  );
+                })
                 .join(" ")}
               <p>Only events for the next 30 days will be visible.</p>
           `
-              }
-      </div>`
         }
+      </div>`;
+  }
 
-          renderEditMode(groupData) {
-            return `
+  renderEditMode(groupData) {
+    return `
       <h2>Edit group information</h2> 
       <form id="edit-group-form">
         <div class="form-section">
@@ -286,15 +291,15 @@ export class GroupComponent extends BaseDynamicComponent {
         <button class="primary" id=${SAVE_UPDATES_BUTTON_ID}>Save</button>
         <button class="primary" id=${CANCEL_UPDATES_BUTTON_ID}>Cancel</button> 
       </form>`;
-          }
+  }
 
-          renderUserUi(groupData) {
-            let joinGroupText = "Join group";
-            if (groupData.permissions?.userIsMember) {
-              joinGroupText = "Leave group";
-            }
+  renderUserUi(groupData) {
+    let joinGroupText = "Join group";
+    if (groupData.permissions?.userIsMember) {
+      joinGroupText = "Leave group";
+    }
 
-            return `
+    return `
       ${
         groupData.permissions.userCanEdit
           ? `
@@ -306,13 +311,13 @@ export class GroupComponent extends BaseDynamicComponent {
       }
       <button class="secondary" id="${JOIN_GROUP_BUTTON_ID}">${joinGroupText}</span>
     `;
-          }
+  }
 
-          renderWeeklyEventData(eventData, groupId, key) {
-            const dayString = convertDayOfWeekForDisplay(eventData.day);
-            const url = `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`;
+  renderWeeklyEventData(eventData, groupId, key) {
+    const dayString = convertDayOfWeekForDisplay(eventData.day);
+    const url = `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`;
 
-            return `
+    return `
       <div id=${key} class="event">
         <a class="btn secondary" href="${url}">${eventData.name}</a> 
         <rsvp-component
@@ -330,11 +335,11 @@ export class GroupComponent extends BaseDynamicComponent {
       <div class="section-separator-small"></div>
 
     `;
-          }
+  }
 
-          renderOneTimeEventData(eventData, groupId, key) {
-            const url = `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`
-            return `
+  renderOneTimeEventData(eventData, groupId, key) {
+    const url = `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`;
+    return `
       <div id=${key} class="event">
         <a class="btn secondary" href=${url}>${eventData.name}</a>   
         <p class = "event-time">${eventData.startDate} ${eventData.startTime}</p>
@@ -342,5 +347,5 @@ export class GroupComponent extends BaseDynamicComponent {
       </div>
       <div class="section-separator-small"></div>
     `;
-          }
-        }
+  }
+}

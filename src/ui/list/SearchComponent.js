@@ -1,249 +1,69 @@
-import {
-  DEFAULT_SEARCH_PARAMETER,
-  getDaysOfWeekSelectHtml,
-  getDaysOfWeekSelectedState,
-  getDropdownHtml,
-} from "../../shared/html/SelectGenerator.js";
-import { BaseDynamicComponent } from "/lib/places-js-latest.js";
-import { CITY_LIST_STORE } from "../../data/list/CityListStore.js";
-import {LOGIN_STORE} from "../../data/user/LoginStore.js";
-import { SEARCH_RESULTS_LIST_STORE } from "../../data/list/SearchStores.js";
+import { PresentationComponent } from "/lib/places-js-latest.js";
+import { SEARCH_COMPONENT_STORE } from "../../data/list/SearchComponentStore.js";
+import { SEARCH_RESULTS_STORE } from "../../data/list/SearchResultsStore.js";
 
-import { getDisplayName } from "../../shared/DisplayNameConversion.js";
+import { getDaysOfWeekSelectState } from "../../shared/html/SelectGenerator.js";
 
-const DEFAULT_PARAMETER_KEY = "defaultParameter";
-const DEFAULT_PARAMETER_DISPLAY_KEY = "defaultParameterDisplay";
-const ENABLE_SEARCH_TOGGLE_KEY = "enableSearchButton";
-const SEARCH_BUTTON_ID = "search-button-id";
-const SEARCH_DISTANCE_ID = "search-distance-id";
-const SEARCH_USER_GROUPS_BUTTON_ID= "search-joined-id";
-const SEARCH_CITY_ID = "search-cities";
-const SEARCH_FORM_ID = "search-form";
+import { searchWithDefaultParams } from "../../data/list/SearchResultsStore.js";
 
-const DISTANCE_OPTIONS = [
-  "0 miles",
-  "5 miles",
-  "10 miles",
-  "15 miles",
-  "30 miles",
-  "50 miles",
-];
-
-export class SearchComponent extends BaseDynamicComponent {
-
+export class SearchComponent extends PresentationComponent {
   constructor() {
-    super([
-      {
-        componentReducer: (cityArray) => {
-          const copy = [];
-          cityArray.forEach((city) => {
-            copy.push(getDisplayName(city));
-          });
-          copy.sort();
-          copy.unshift(DEFAULT_SEARCH_PARAMETER);
-          return copy
-        },
-        dataStore: CITY_LIST_STORE,
-        fieldName: "cityList"
-      },
-      {
-        dataStore: LOGIN_STORE,
-        fieldName: "loginState"
-      },
-      {
-        componentReducer:(data)=> {          
-          if(data.eventData && data.eventData.length > 0){
-            return false;
-          } 
-          if(data.groupData && data.groupData.length > 0){
-            return false;
-          }
-          return true;
-        },
-        dataStore: SEARCH_RESULTS_LIST_STORE,
-        fieldName: "showSearchUiMobile"
-      }
-    ]);
+    super();
 
-    this.initialParams = new URLSearchParams(document.location.search);
-    console.log("Searching with url:"+this.getAttribute("api-url"));
+    SEARCH_COMPONENT_STORE.fetchData();
+    searchWithDefaultParams(this.getAttribute("api-url"));
+    this.setAttribute("search-button-enabled", false);
 
-    this.defaultSearchParams = {
-      apiUrl: this.getAttribute("api-url"),
-      cityList:[DEFAULT_SEARCH_PARAMETER],
-      days: this.initialParams.get("days"),
-      distance: this.initialParams.get("distance")?.replaceAll("_", " "),
-      location: this.initialParams.get("location"),
-
+    const checkboxUpdated = () => {
+      this.setAttribute("search-button-enabled", true);
     };
-    SEARCH_RESULTS_LIST_STORE.fetchData(this.defaultSearchParams);
 
-    const self = this; 
-    this.addEventListener("change", (event) => {
-      const eventTarget = event.target;
-      if (eventTarget.id === SEARCH_CITY_ID) {
-        self.updateData({
-          [ENABLE_SEARCH_TOGGLE_KEY]: true,
-          location: eventTarget.value,
-          showSearchUiMobile: true
-        });
-      } else if (eventTarget.id === SEARCH_DISTANCE_ID) {
-        self.updateData({
-          [ENABLE_SEARCH_TOGGLE_KEY]: true,
-          distance: eventTarget.value,
-          showSearchUiMobile: true 
-        });
-      }
+    const distanceUpdated = () => {
+      this.setAttribute("search-button-enabled", true);
+    };
+
+    const citiesUpdated = () => {
+      this.setAttribute("search-button-enabled", true);
+    };
+
+    this.setChangeEvents({
+      citiesUpdated: citiesUpdated,
+      checkboxUpdated: checkboxUpdated,
+      distanceUpdated: distanceUpdated,
     });
 
-    this.addEventListener("click", (event) => {      
+    const searchEvents = () => {
+      this.setAttribute("search-button-enabled", false);
 
+      const searchParams = {
+        location: document.getElementById(`select-city`).value ?? "",
+        days: getDaysOfWeekSelectState("#select-days").join(","),
+        distance: document.getElementById(`select-distance`).value ?? "",
+      };
 
-      if (event.target.type === "checkbox") {
-        const selectedDaysState = getDaysOfWeekSelectedState(self.getRootNode()); 
-        if(event.target.checked){
-          selectedDaysState[event.target.id]="checked";
-        } else {
-          if(event.target.id in selectedDaysState){
-            delete selectedDaysState[event.target.id];
-          } 
-        }
+      console.log(searchParams);
 
-        self.updateData({
-          [ENABLE_SEARCH_TOGGLE_KEY]: true,
-          days:
-          Object.keys(selectedDaysState).length > 0
-          ? selectedDaysState
-          : null,
-          showSearchUiMobile: true
-        });
-      }
-      if (event.target.id === SEARCH_BUTTON_ID || event.target.id === SEARCH_USER_GROUPS_BUTTON_ID) {
+      const baseUrl = window.location.origin.split("?");
+      let updatedUrl = `${baseUrl}?`;
+      updatedUrl += `location=${searchParams.location.replaceAll(" ", "_")}&`;
+      updatedUrl += `days=${searchParams.days.replaceAll(" ", "_")}&`;
+      updatedUrl += `distance=${searchParams?.distance?.replaceAll(" ", "_") ?? ``}`;
 
-        event.preventDefault();
-        const searchParams = {
-          location: self.componentStore.location ?? "",
-          days: self.componentStore.days
-          ? Object.keys(self.componentStore.days).join(",")
-          : "",
-          distance: self.componentStore.distance,
-        };
+      window.history.replaceState({}, "", updatedUrl);
 
-        if(event.target.id === SEARCH_USER_GROUPS_BUTTON_ID){
-          searchParams['userGroupEvents'] = "true";
-        }
+      SEARCH_RESULTS_STORE.fetchData({
+        ...searchParams,
+        ...{ apiUrl: this.getAttribute("api-url") ?? "" },
+      });
+    };
 
-        self.updateData({
-          [ENABLE_SEARCH_TOGGLE_KEY]: false,
-          showSearchUiMObile: false
-        });
+    const searchGroups = (e, component) => {
+      searchEvents(e, component, true);
+    };
 
-        const baseUrl = window.location.origin.split("?");
-        let updatedUrl = `${baseUrl}?`;
-        updatedUrl += `location=${searchParams.location.replaceAll(" ", "_")}&`;
-        updatedUrl += `days=${searchParams.days.replaceAll(" ", "_")}&`;
-        updatedUrl += `distance=${searchParams?.distance?.replaceAll(" ", "_") ?? ``}`;
-
-        window.history.replaceState({}, "", updatedUrl);
-        SEARCH_RESULTS_LIST_STORE.fetchData({
-          ...searchParams,
-          ...{ apiUrl: self.getAttribute("api-url") ?? "" },
-        });
-      } 
+    this.setClickEvents({
+      searchEvents: searchEvents,
+      searchGroups: searchGroups,
     });
-
   }
-
-  connectedCallback(){
-    this.updateData({
-      ...{[ENABLE_SEARCH_TOGGLE_KEY]: this.initialParams.size === 0},
-      ...this.defaultSearchParams,
-    })
-  }
-
-
-  render(store) {
-
-    if(window.matchMedia("(max-width: 32em)").matches){
-      return `
-        <div class="container-xl">
-          <details ${store.showSearchUiMobile ? "open":""}>
-            <summary class="btn secondary">Modify search parameters</summary>
-            ${this.renderSearchForm(store)}
-            </hr> 
-          </details>
-        </div>`
-    }
-    return `
-      <div class="container-xl"> 
-        <div class="hide-mobile"><h1>${this.getAttribute("search-text")}</h1></div>
-          ${this.renderSearchForm(store)}
-        <hr>
-      </div>        
-    `;
-  }
-
-  renderSearchForm(store) {
-
-    const isGroupSearch = this.getAttribute("search-text") === 'Search for board game groups';
-
-    const searchInputsClass =
-      store.location && store.location !== DEFAULT_SEARCH_PARAMETER
-      ? "search-form-three-inputs"
-      : "search-form-two-inputs";
-
-    const searchAllText = !isGroupSearch && store.loginState?.loggedIn === true ?
-      "Search all events" : "Search"
-
-    return `
-      <form id=${SEARCH_FORM_ID} onsubmit="return false">
-      <div id ="form-div-outer">    
-        <label class="searchDropdownLabel">Select event day: </label>     
-        ${getDaysOfWeekSelectHtml(store.days)}
-        <div id="search-form-inputs" class="${searchInputsClass}">
-          <label class="searchDropdownLabel">Select city: </label> 
-          ${getDropdownHtml({
-            data: store.cityList ?? [{ name: "Any location" }],
-            id: SEARCH_CITY_ID,
-            name: "cities",
-            selected: store.location,
-            [DEFAULT_PARAMETER_KEY]: DEFAULT_SEARCH_PARAMETER,
-            [DEFAULT_PARAMETER_DISPLAY_KEY]: "Any location",
-          })}
-          ${
-            store.location && store.location !== DEFAULT_SEARCH_PARAMETER
-              ? `
-                <label id="max-distance-label" class="searchDropdownLabel">Max distance:</label>
-                ${getDropdownHtml({
-                  data: DISTANCE_OPTIONS,
-                  id: SEARCH_DISTANCE_ID,
-                  name: "distance",
-                  selected: store.distance ?? "5 miles",
-                  [DEFAULT_PARAMETER_KEY]: "5 miles",
-                  [DEFAULT_PARAMETER_DISPLAY_KEY]: "5 miles",
-                })}`
-                  : ``
-                }     
-          </div>  
-          <div id="search-input-div"> 
-            ${
-              store[ENABLE_SEARCH_TOGGLE_KEY]
-                ? `
-                  <button class="btn primary" id="${SEARCH_BUTTON_ID}">${searchAllText}</button>
-                `: `
-                  <button class="btn muted" id="disabled-search-button">${searchAllText}</button>
-                ` 
-            }
-            ${store.loginState?.loggedIn && !isGroupSearch ? 
-                `${
-                  store[ENABLE_SEARCH_TOGGLE_KEY]
-                    ? `<button class="btn primary" id="${SEARCH_USER_GROUPS_BUTTON_ID}">Search joined groups</button>`
-                    : `<button class="btn muted" id="disabled-search-button-joined">Search joined groups</button>` 
-                } `
-                :``
-            }
-          </div>
-        </div>
-      </form>`;
-          }
-          }
+}

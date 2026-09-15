@@ -12,7 +12,7 @@ export default defineConfig({
       partialDirectory: resolve(__dirname, "src/html/partials"),
     }),
     inlineSource(),
-  ], 
+  ],
   root: "src/",
   publicDir: "../public",
   build: {
@@ -51,11 +51,12 @@ export default defineConfig({
         links: resolve(__dirname, "src/html/static/links.html"),
         login: resolve(__dirname, "src/html/user/login.html"),
 
-
         main: resolve(__dirname, "src/index.html"),
-        manualTesting: resolve(__dirname, "src/html/static/tech/manualtesting.html"),
+        manualTesting: resolve(
+          __dirname,
+          "src/html/static/tech/manualtesting.html",
+        ),
         memberData: resolve(__dirname, "src/html/user/memberData.html"),
-
 
         searchGroups: resolve(__dirname, "src/html/list/searchGroups.html"),
         siteRules: resolve(__dirname, "src/html/static/siteRules.html"),

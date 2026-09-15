@@ -1,32 +1,29 @@
-const blockFunction = function(...args){
+const blockFunction = function (...args) {
   console.error("Unauthorized");
-}
+};
 
-export function GetGameAdvice(){
-
-  setTimeout( ()=>{   
- 
-    const a = document; 
+export function GetGameAdvice() {
+  setTimeout(() => {
+    const a = document;
     const potato = "querySelector";
     const name = "getElementById";
-  
+
     document.querySelector = function (...args) {
       console.error("Unauthorized");
     };
-    
-    
-		document.elementFromPoint = function (...args) {
-      console.error("Unauthorized");  
+
+    document.elementFromPoint = function (...args) {
+      console.error("Unauthorized");
     };
-  
-    document.appendChild = function (...args) { 
-      console.error("Unauthorized");  
+
+    document.appendChild = function (...args) {
+      console.error("Unauthorized");
     };
-  
+
     document.getElementsByTagName = function (...args) {
-      console.error("Unauthorized");  
+      console.error("Unauthorized");
     };
-  
+
     //Headless browsers.
     navigator.permissions
       .query({ name: "notifications" })
@@ -35,14 +32,12 @@ export function GetGameAdvice(){
           Notification.permission === "denied" &&
           permissionStatus.state === "prompt"
         ) {
-          console.error("Unauthorized");	
+          console.error("Unauthorized");
         }
       });
-  
+
     window.innerWidth = 22;
     window.innerHeight = 33;
     window.devicePixelRatio = 2;
-  },2000)
-
+  }, 2000);
 }
-
