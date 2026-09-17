@@ -1,4 +1,4 @@
-import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-old.js"
 
 import {
   DAY_OF_WEEK_INPUT,

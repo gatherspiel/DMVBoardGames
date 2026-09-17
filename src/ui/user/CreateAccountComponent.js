@@ -1,4 +1,4 @@
-import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-old.js";
 import { LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT } from "./Constants.js";
 import {
   SUCCESS_MESSAGE_KEY,

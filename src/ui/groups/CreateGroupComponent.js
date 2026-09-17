@@ -1,4 +1,4 @@
-import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-old.js";
 import {
   GROUP_DESCRIPTION_INPUT,
   GROUP_NAME_INPUT,

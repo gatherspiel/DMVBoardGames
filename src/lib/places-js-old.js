@@ -1,3 +1,9 @@
+/*(()=>{
+  const sheet = new CSSStyleSheet();
+  sheet.replaceSync(`* [data-template] { visibility:hidden}`);
+  document.adoptedStyleSheets = [sheet];
+})()*/
+
 /*
  * Don't iniitalize directly. use DataStore.createApiLoadSignal instead
  **/
@@ -674,9 +680,30 @@ class StaticComponent extends HTMLElement {
 }
 
 class PresentationComponent extends HTMLElement {
-  
+  #componentIsRendering = false;
+  #loadingFromStores = new Set();
+  #loadingStarted = 0;
+  #loadingIndicatorConfig;
+
   #changeEventListeners;
   #clickEventListeners;
+  #clickEventListenersAdded = false;
+
+  #subscribedStores = [];
+
+  #componentStore = {};
+
+  #templateDomNode;
+  #templateItem;
+
+  //HTML before loading animiation.
+  #htmlBeforeLoading;
+
+  #lightDomHTML = "<p>Use light DOM or render() method to show HTML</p>";
+
+  #selectorCache = new Map();
+
+  static #templateCount = 0;
 
   #changeTemplateEvents = {};
   #clickTemplateEvents = {};
@@ -684,24 +711,17 @@ class PresentationComponent extends HTMLElement {
   #changeTemplateItemHandlers = {};
   #clickTemplateItemHandlers = {};
 
-  #lightDomHTML = "<p>Use light DOM or render() method to show HTML</p>"; 
   #loadingAnimationStart;
-  #loadingIndicatorConfig;
 
-  #selectorCache = new Map();
-  #subscribedStore;
-
-  #templateItem;
-
-  static #templateCount = 0;
   static clickHandlerCount = 0;
   static changeHandlerCount = 0;
 
   /**
-   * @param dataStore The data store a component should subscribe to. 
-   * @param loadingIndicatorConfig Configuration for the loading indicator 
+   * @param dataStoreSubscriptions - An array of data stores the component should
+   * subscribe to.
+   * indicator.
    **/
-  constructor(dataStore, loadingIndicatorConfig) {
+  constructor(dataStoreSubscriptions = [], loadingIndicatorConfig) {
     super();
 
     //Light DOM is enabled.
@@ -710,18 +730,24 @@ class PresentationComponent extends HTMLElement {
     }
 
     //Performance optimization if component is not subscribed to data stores.
-    if (!dataStore) {
+    if (dataStoreSubscriptions.length === 0) {
       return;
     }
 
     // Make sure component is subscribed to data stores.
-    this.#subscribedStore = dataStore;
+    this.#subscribedStores = dataStoreSubscriptions;
+
+    for (let i = 0; i < this.#subscribedStores.length; i++) {
+      this.#subscribedStores[i].dataStore.subscribeComponent(this);
+    }
+
+    this.updateFromSubscribedStores();
   }
 
   startLoadingIndicator() {
     this.#lightDomHTML = this.innerHTML;
     this.innerHTML =
-    this.#loadingIndicatorConfig.generateLoadingIndicatorHtml();
+      this.#loadingIndicatorConfig.generateLoadingIndicatorHtml();
     this.#loadingAnimationStart = Date.now();
   }
 
@@ -748,11 +774,15 @@ class PresentationComponent extends HTMLElement {
       }
 
       const dataStore = DataStore.getStore(defaultStore);
-      this.#subscribedStore = DataStore.getStore(defaultStore)
-       
+      this.#subscribedStores = [
+        {
+          dataStore: DataStore.getStore(defaultStore),
+        },
+      ];
       dataStore.subscribeComponent(this);
     }
 
+    this.updateFromSubscribedStores();
     if (this.querySelector("[data-template]")) {
       this.#setupTemplate();
     }
@@ -804,10 +834,88 @@ class PresentationComponent extends HTMLElement {
   }
 
   /**
+   * Shows custom loading indicator if it exists. This custom loading indicator
+   * replaces UI components and disables any user events.
+   **/
+  lockComponent(dataStore) {
+    if (!this.#loadingFromStores.has(dataStore)) {
+      this.#loadingFromStores.add(dataStore);
+    }
+
+    // Deprecated. This is included for backwards compatibility.
+    if (this.#loadingStarted === 0) {
+      this.#loadingStarted = Date.now();
+    }
+
+    if (false && this.#loadingIndicatorConfig && !this.#loadingAnimationStart) {
+      //Deprecated.
+      this.#htmlBeforeLoading = this.innerHTML;
+
+      this.#lightDomHTML = this.innerHTML;
+      //this.startLoadingIndicator();
+      this.innerHTML =
+        this.#loadingIndicatorConfig.generateLoadingIndicatorHtml();
+      this.#loadingAnimationStart = Date.now();
+    }
+  }
+
+  unlockComponent(dataStore) {
+    this.#loadingFromStores.delete(dataStore);
+  }
+
+  /**
    * Unsubscribe component when it is removed from the UI.
    **/
   disconnectedCallback() {
-    this.#subscribedStore.unsubscribeComponent(this);
+    for (let i = 0; i < this.#subscribedStores.length; i++) {
+      this.#subscribedStores[i].dataStore.unsubscribeComponent(this);
+    }
+  }
+
+  /**
+   * Update component with state data
+   **/
+  updateData(storeUpdates) {
+    if (storeUpdates) {
+      this.#componentIsRendering = true;
+      this.#componentStore = { ...this.#componentStore, ...storeUpdates };
+      this.#generateAndSaveHTML(this.#componentStore);
+      this.#componentIsRendering = false;
+    }
+  }
+
+  updateFromSubscribedStores() {
+    let allSubscribedStoresHaveData = true;
+    for (let i = 0; i < this.#subscribedStores.length; i++) {
+      allSubscribedStoresHaveData =
+        allSubscribedStoresHaveData &&
+        this.#subscribedStores[i].dataStore.hasLatestData();
+    }
+
+    // Make sure a component state is updated only when all the subscribed
+    // stores have data
+    if (allSubscribedStoresHaveData) {
+      let dataToUpdate = {};
+      for (let i = 0; i < this.#subscribedStores.length; i++) {
+        const item = this.#subscribedStores[i];
+        let storeData = item.dataStore.getComponentUpdateData();
+
+        if (item.componentReducer) {
+          storeData = item.componentReducer(storeData);
+        }
+
+        if (item.fieldName) {
+          dataToUpdate[item.fieldName] = storeData;
+        } else {
+          dataToUpdate = storeData;
+        }
+      }
+      this.updateData(dataToUpdate);
+    }
+  }
+
+  render() {
+    return this.#lightDomHTML;
   }
 
   updateSingleItem(data) {
@@ -867,6 +975,8 @@ class PresentationComponent extends HTMLElement {
           });
         }
       }
+
+      console.error("Logic for updates not implemented");
     }
   }
 
@@ -1040,6 +1150,35 @@ class PresentationComponent extends HTMLElement {
       }
     }
   }
+
+  #generateAndSaveHTML(data) {
+    if (this.#loadingStarted > 0) {
+      const current = Date.now();
+      const loadTime = current - this.#loadingStarted;
+
+      this.#loadingStarted = 0;
+
+      //Handle case where loading indicator is configured to stay visible for
+      //a minimum amount of time.
+      if (this.#loadingIndicatorConfig?.minTimeMs) {
+        const remainingTime = this.#loadingIndicatorConfig.minTimeMs - loadTime;
+
+        const self = this;
+        if (remainingTime > 0) {
+          setTimeout(() => {
+            this.innerHTML = this.render(data);
+          }, remainingTime);
+        } else {
+          this.innerHTML = this.render(data);
+        }
+      } else {
+        this.innerHTML = this.render(data);
+      }
+    } else {
+      this.innerHTML = this.render(data);
+    }
+    this.#setupTemplate();
+  }
 }
 
 class ShadowDOMComponent extends HTMLElement {
@@ -1107,6 +1246,7 @@ class DataStore {
   static #storeCount = 0;
   static #storeNameMap = new Map();
 
+  #componentSubscriptions = [];
   #fieldTypeMapping = {};
   #isLoading = false;
   #loadAction;
@@ -1117,10 +1257,9 @@ class DataStore {
   #reactiveFieldNames = [];
   #requestStoreId;
   #storeData = null;
-  #subscribers = [];
 
   constructor(loadAction, storeName) {
-    this.#subscribers = [];
+    this.#componentSubscriptions = [];
     this.#requestStoreId = `store-${DataStore.#storeCount}`;
 
     sessionStorage.setItem(this.#requestStoreId, JSON.stringify({}));
@@ -1217,8 +1356,8 @@ class DataStore {
       }
 
       if (Object.keys(storeUpdates).length > 0) {
-        for (let i = 0; i < this.#subscribers.length; i++) {
-          this.#subscribers[i].updateSingleItem(renderUpdates);
+        for (let i = 0; i < this.#componentSubscriptions.length; i++) {
+          this.#componentSubscriptions[i].updateSingleItem(renderUpdates);
         }
       }
       this.#storeData = storeUpdates;
@@ -1328,8 +1467,8 @@ class DataStore {
             }
             this.#prevOrdering[field] = updatedOrdering;
 
-            for (let i = 0; i < this.#subscribers.length; i++) {
-              this.#subscribers[i].addItems(addFragments);
+            for (let i = 0; i < this.#componentSubscriptions.length; i++) {
+              this.#componentSubscriptions[i].addItems(addFragments);
             }
           }
 
@@ -1351,8 +1490,8 @@ class DataStore {
 
             this.#storeData[field] = updatedPrev;
             this.#prevOrdering[field] = updatedOrdering;
-            for (let i = 0; i < this.#subscribers.length; i++) {
-              this.#subscribers[i].removeItems(
+            for (let i = 0; i < this.#componentSubscriptions.length; i++) {
+              this.#componentSubscriptions[i].removeItems(
                 this.#presentationUpdates["removed"],
                 isReplace,
                 this.#presentationUpdates["isClear"],
@@ -1396,8 +1535,8 @@ class DataStore {
               }
             }
 
-            for (let a = 0; a < this.#subscribers.length; a++) {
-              this.#subscribers[a].swapUpdates(
+            for (let a = 0; a < this.#componentSubscriptions.length; a++) {
+              this.#componentSubscriptions[a].swapUpdates(
                 this.#presentationUpdates["moved"],
               );
             }
@@ -1455,8 +1594,8 @@ class DataStore {
       if (changeData.size > 0) {
         this.#presentationUpdates["updates"] =
           this.#generatePresentationUpdates(changeData);
-          for (let i = 0; i < this.#subscribers.length; i++) {
-          this.#subscribers[i].updateVisible(
+        for (let i = 0; i < this.#componentSubscriptions.length; i++) {
+          this.#componentSubscriptions[i].updateVisible(
             this.#presentationUpdates["updates"],
           );
         }
@@ -1591,13 +1730,13 @@ class DataStore {
    */
   updateStoreData(storeUpdates) {
     this.#storeData = storeUpdates;
-    for (let i = 0; i < this.#subscribers.length; i++) {
-      this.#subscribers[i].updateFromSubscribedStores();
+    for (let i = 0; i < this.#componentSubscriptions.length; i++) {
+      this.#componentSubscriptions[i].updateFromSubscribedStores();
     }
   }
 
   getSubscribedComponents() {
-    return this.#subscribers;
+    return this.#componentSubscriptions;
   }
 
   /**
@@ -1633,7 +1772,9 @@ class DataStore {
       // Make an API call if a cached response does not exist.
       if (response === null) {
         //Replace component with loading indicator if one exists.
-       
+        for (let i = 0; i < this.#componentSubscriptions.length; i++) {
+          this.#componentSubscriptions[i].lockComponent(this);
+        }
         if (dataStore) {
           const dataStoreSubscribedComponents =
             dataStore.getSubscribedComponents();
@@ -1654,9 +1795,9 @@ class DataStore {
 
       //Should only run if presentation signals are being used.
       if (Object.keys(this.#presentationSignals).length === 0) {
-        for (let i = 0; i < this.#subscribers.length; i++) {
-          this.#subscribers[i].unlockComponent(this);
-          this.#subscribers[i].updateFromSubscribedStores();
+        for (let i = 0; i < this.#componentSubscriptions.length; i++) {
+          this.#componentSubscriptions[i].unlockComponent(this);
+          this.#componentSubscriptions[i].updateFromSubscribedStores();
         }
       }
 
@@ -1672,18 +1813,18 @@ class DataStore {
     }
   }
 
-  unsubscribeComponent(subscriber) {
-    this.#subscribers.splice(
-      this.#subscribers.indexOf(subscriber),
+  unsubscribeComponent(component) {
+    this.#componentSubscriptions.splice(
+      this.#componentSubscriptions.indexOf(component),
       1,
     );
   }
 
-  subscribeComponent(subscriber) {
+  subscribeComponent(component) {
     let i = 0;
-    while (i < this.#subscribers.length) {
-      if (this.#subscribers[i] === subscriber) {
-        this.#subscribers = this.#subscribers.splice(
+    while (i < this.#componentSubscriptions.length) {
+      if (this.#componentSubscriptions[i] === component) {
+        this.#componentSubscriptions = this.#componentSubscriptions.splice(
           i,
           1,
         );
@@ -1691,7 +1832,7 @@ class DataStore {
       }
       i++;
     }
-    this.#subscribers.push(subscriber);
+    this.#componentSubscriptions.push(component);
   }
 }
 

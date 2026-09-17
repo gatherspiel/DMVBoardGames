@@ -2,7 +2,7 @@ import {
   ApiLoadAction,
   DataStore,
   PresentationComponent,
-} from "/lib/places-js-latest.js";
+} from "/lib/places-js-old.js";
 import {
   ERROR_MESSAGE_KEY,
   SUCCESS_MESSAGE_KEY,

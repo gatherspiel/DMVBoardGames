@@ -1,4 +1,4 @@
-import { ShadowDOMComponent } from "/lib/places-js-latest.js";
+import { ShadowDOMComponent } from "/lib/places-js-old.js";
 
 const CREATE_ACCOUNT_ID = "complete-registration";
 const CREATE_ACCOUNT_ID_DISABLED = "complete-registration-disabled";

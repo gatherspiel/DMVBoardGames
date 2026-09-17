@@ -1,4 +1,4 @@
-import { ShadowDOMComponent } from "/lib/places-js-latest.js";
+import { ShadowDOMComponent } from "/lib/places-js-old.js";
 export class FaqComponent extends ShadowDOMComponent {
   constructor() {
     super();

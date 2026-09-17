@@ -1,5 +1,5 @@
 import { IS_LOGGED_IN_KEY, LOGIN_STORE } from "../../data/user/LoginStore.js";
-import { PresentationComponent } from "/lib/places-js-latest.js";
+import { PresentationComponent } from "/lib/places-js-old.js";
 
 export class UserActionsComponent extends PresentationComponent {
   constructor() {

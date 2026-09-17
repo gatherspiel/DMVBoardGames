@@ -1,6 +1,6 @@
 import { LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT } from "./Constants.js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
-import { PresentationComponent } from "/lib/places-js-latest.js";
+import { PresentationComponent } from "/lib/places-js-old.js";
 
 const LOGIN_BUTTON_ID = "login-button";
 
