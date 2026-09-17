@@ -111,29 +111,24 @@ class ApiLoadAction {
 }
 
 class TemplateItem {
-  #clickTemplateEvents;
-  #changeTemplateEvents;
 
-  #clickTemplateHandlers;
+  #changeTemplateEvents;
   #changeTemplateHandlers;
 
-  #handlerDepthMap = {};
+  #clickTemplateEvents;
+  #clickTemplateHandlers;
+
+  #handlerDepthMap = new Map();
   #nodes = {};
 
   #parentNode;
-
-  static #templateFunctions = new Map();
 
   #templateNode;
   #templateRoot = null;
   #templateSignals;
   #signalMap = new Map();
 
-  static init(componentHtml) {
-    let template = new TemplateItem(componentHTML);
-    const obj = new item.prototype.constructor();
-    obj.#defineComponent();
-  }
+  static #templateFunctions = new Map();
 
   static addTemplateFunction(name, templateFunction) {
     TemplateItem.#templateFunctions.set(name, templateFunction);
@@ -163,7 +158,7 @@ class TemplateItem {
         changeTemplateHandlers,
       ) {
         const getItemIdForEvent = ({ eventItem, key }) => {
-          const depth = handlerDepthMap[key];
+          const depth = handlerDepthMap.get(key);
           for (let i = 0; i < depth; i++) {
             eventItem = eventItem.parentNode;
           }
@@ -182,6 +177,7 @@ class TemplateItem {
               key: key,
             });
 
+       
             const handlerName = changeTemplateEvents[changeId];
             changeTemplateHandlers[handlerName]({
               componentId: componentId,
@@ -208,7 +204,7 @@ class TemplateItem {
         clickTemplateHandlers,
       ) {
         const getItemIdForEvent = ({ eventItem, key }) => {
-          const depth = handlerDepthMap[key];
+          const depth = handlerDepthMap.get(key);
 
           for (let i = 0; i < depth; i++) {
             eventItem = eventItem.parentNode;
@@ -431,7 +427,6 @@ class TemplateItem {
             const signalData = {
               attr: attr,
               fieldName: token.templateAttrs[j].fieldName,
-              isOuter: i === 0,
               signalId: i > 0 ? signalId : -1,
               signalPath: signalRef,
             };
@@ -452,7 +447,6 @@ class TemplateItem {
           const signalData = {
             attr: "textcontent",
             fieldName: fieldName,
-            isOuter: false,
             signalId: signalId,
             signalPath: signalRef,
           };
@@ -511,7 +505,7 @@ class TemplateItem {
           }
         }
         const handlerDepthKey = `${handlerAttr}_${clickNum}`;
-        this.#handlerDepthMap[handlerDepthKey] = depth;
+        this.#handlerDepthMap.set(handlerDepthKey, depth);
       });
     });
 
@@ -698,30 +692,17 @@ class PresentationComponent extends HTMLElement {
   static changeHandlerCount = 0;
 
   /**
-   * @param dataStore The data store a component should subscribe to. 
+   * @param dataStore The data store a component is subscribed to. 
    * @param loadingIndicatorConfig Configuration for the loading indicator 
    **/
   constructor(dataStore, loadingIndicatorConfig) {
     super();
-
-    //Light DOM is enabled.
-    if (this.innerHTML) {
-      this.#lightDomHTML = this.innerHTML;
-    }
-
-    //Performance optimization if component is not subscribed to data stores.
-    if (!dataStore) {
-      return;
-    }
-
-    // Make sure component is subscribed to data stores.
     this.#subscribedStore = dataStore;
   }
 
   startLoadingIndicator() {
     this.#lightDomHTML = this.innerHTML;
-    this.innerHTML =
-    this.#loadingIndicatorConfig.generateLoadingIndicatorHtml();
+    this.innerHTML = this.#loadingIndicatorConfig.generateLoadingIndicatorHtml();
     this.#loadingAnimationStart = Date.now();
   }
 
@@ -771,14 +752,14 @@ class PresentationComponent extends HTMLElement {
   }
 
   #generateSignal(params) {
-    const { fieldName, attr, isOuter, signalId, signalPath } =
+    const { fieldName, attr, signalId, signalPath } =
       params.signalConfig;
 
     const { signalData, elementRoot } = params.updateData;
 
     let element = elementRoot;
 
-    if (!isOuter) {
+    if (signalPath) {
       const cacheId = `${elementRoot.data_id}-${signalId}`;
 
       if (!this.#selectorCache.has(cacheId)) {
@@ -810,14 +791,57 @@ class PresentationComponent extends HTMLElement {
     this.#subscribedStore.unsubscribeComponent(this);
   }
 
-  updateSingleItem(data) {
+  async #completeLoadAnimation() {
+    if (!this.#loadingIndicatorConfig) {
+      return;
+    }
+    const minTime = this.#loadingIndicatorConfig.minTimeMs;
+    const remainTime = Date.now() - this.#loadingAnimationStart;
+
+    const promise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+      }, remainTime);
+    });
+
+    await Promise.resolve(promise);
+    this.innerHTML = this.#lightDomHTML;
+    this.#loadingAnimationStart = null;
+  }
+
+  #setupTemplate() {
+    let templateNode = this.querySelector("[data-template]");
+
+    //Component does not have a temnplate
+    if (!templateNode) {
+      return;
+    }
+
+    templateNode.style.visibility = "initial";
+
+    let templateHTML = templateNode.innerHTML;
+
+    templateNode.innerHTML = "";
+    this.#templateItem = new TemplateItem(templateHTML);
+
+    templateNode.innerHTML = "";
+    this.#templateItem.setTemplateRoot(templateNode);
+    this.#templateItem.setDataField(
+      templateNode?.getAttributeNode("data-template").value,
+    );
+    this.#templateItem.setId(
+      `template-${PresentationComponent.#templateCount}`,
+    );
+    this.#templateItem.setTemplateName(this.nodeName);
+
+    this.#templateItem.setupClickEventHandlers(this.#clickTemplateEvents);
+    this.#templateItem.setupChangeEventHandlers(this.#changeTemplateEvents);
+  }
+
+  updateSingleItem(state) {
     if (!this.#templateItem) {
       this.#setupTemplate();
     }
-    this.#updateSingleItemTemplate(data);
-  }
-
-  #updateSingleItemTemplate(state) {
     const node = this.#templateItem.getFirstNode();
     const templateNode = this.#templateItem.getTemplateNode();
 
@@ -869,54 +893,7 @@ class PresentationComponent extends HTMLElement {
       }
     }
   }
-
-  #setupTemplate() {
-    let templateNode = this.querySelector("[data-template]");
-
-    //Component does not have a temnplate
-    if (!templateNode) {
-      return;
-    }
-
-    templateNode.style.visibility = "initial";
-
-    let templateHTML = templateNode.innerHTML;
-
-    templateNode.innerHTML = "";
-    this.#templateItem = new TemplateItem(templateHTML);
-
-    templateNode.innerHTML = "";
-    this.#templateItem.setTemplateRoot(templateNode);
-    this.#templateItem.setDataField(
-      templateNode?.getAttributeNode("data-template").value,
-    );
-    this.#templateItem.setId(
-      `template-${PresentationComponent.#templateCount}`,
-    );
-    this.#templateItem.setTemplateName(this.nodeName);
-
-    this.#templateItem.setupClickEventHandlers(this.#clickTemplateEvents);
-    this.#templateItem.setupChangeEventHandlers(this.#changeTemplateEvents);
-  }
-
-  async #completeLoadAnimation() {
-    if (!this.#loadingIndicatorConfig) {
-      return;
-    }
-    const minTime = this.#loadingIndicatorConfig.minTimeMs;
-    const remainTime = Date.now() - this.#loadingAnimationStart;
-
-    const promise = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve();
-      }, remainTime);
-    });
-
-    await Promise.resolve(promise);
-    this.innerHTML = this.#lightDomHTML;
-    this.#loadingAnimationStart = null;
-  }
-
+ 
   async addItems(addFragments) {
     if (this.#loadingAnimationStart) {
       await this.#completeLoadAnimation();
@@ -1154,7 +1131,6 @@ class DataStore {
     if (presentationSignals) {
       store.setupPresentationSignals(presentationSignals);
     }
-
     return store;
   }
 
