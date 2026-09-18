@@ -5,7 +5,7 @@ import {
 } from "../../ui/shared/Params.js";
 
 import { AuthResponse } from "../../ui/user/AuthResponse.js";
-import { DataStore } from "/lib/places-js-latest.js";
+import { CustomLoadSignal,DataStore } from "/lib/places-js-latest.js";
 
 export const IS_LOGGED_IN_KEY = "loggedIn";
 
@@ -65,4 +65,4 @@ async function retrieveData(params) {
   }
 }
 
-export const LOGIN_STORE = DataStore.createWithCustomLoadSignal(retrieveData);
+export const LOGIN_STORE = new DataStore(new CustomLoadSignal(retrieveData));

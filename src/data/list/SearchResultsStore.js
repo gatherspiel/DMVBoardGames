@@ -64,13 +64,9 @@ const presentationSignals = {
     update: {
       eventTime: (eventData) => {
         if (eventData.isRecurring) {
-          return `
-							${eventData.dayOfWeek}s at 
-							${eventData.nextEventTime}`;
+          return `${eventData.dayOfWeek}s at ${eventData.nextEventTime}`;
         }
-        return `
-						${eventData.nextEventDate} at 
-						${eventData.nextEventTime}`;
+        return `${eventData.nextEventDate} at ${eventData.nextEventTime}`;
       },
       location: (eventData) => {
         return `${convertLocationDataForDisplay(eventData.eventLocation)}`;
