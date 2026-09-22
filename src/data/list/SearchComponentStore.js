@@ -55,7 +55,7 @@ const getDaysSelect = () => {
 
 const getCitySelect = (state) => {
   const displayCities = [];
-  state.cities.forEach((city) => {
+  Object.values(state.cities).forEach((city) => {
     displayCities.push(getDisplayName(city));
   });
   displayCities.sort();
