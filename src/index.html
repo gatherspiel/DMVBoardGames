@@ -64,16 +64,17 @@
 
 			<div class="container-xl" data-template>
 				{#if isMobile}
-					<details open>
-						<summary class="btn secondary">Modify search parameters</summary>
-						<form
-							id=${SEARCH_FORM_ID}
-							onsubmit="return false"
-						>		
-							{{>searchTemplate}}
-						</form>
+            <details>
+              <summary id="show-search-parameters" class="btn secondary">Modify search parameters</summary>
+              <form
+                id=${SEARCH_FORM_ID}
+                onsubmit="return false"
+              >		
+                {{>searchTemplate}}
+              </form>
+
 						</hr> 
-					</details>
+            </details>
 				{else}
 					<form
 						onsubmit="return false"

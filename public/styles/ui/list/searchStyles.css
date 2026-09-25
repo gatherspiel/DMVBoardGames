@@ -45,6 +45,12 @@ search-component:not([search-button-enabled="true"]) #search-button {
     width: 100%;
   }
 
+  #search-button,#disabled-search-button {
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
   #search-cities {
     margin-bottom: 0.5rem;
     margin-left: auto;
@@ -58,6 +64,13 @@ search-component:not([search-button-enabled="true"]) #search-button {
 
   #search-input-div > button {
     margin-bottom: 0.5rem;
+  }
+
+  #show-search-parameters {
+    display:block;
+    margin-left:auto;
+    margin-top:1rem;
+    margin-right:auto;
   }
 
   .searchDropdownLabel {
