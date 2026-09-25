@@ -61,9 +61,6 @@
     #search-results-header {
       text-align: center;
     }
-    .container-xl {
-      margin-top: -1rem;
-    }
     .ui-section .event-group:not(:first-child) {
       margin-top: 0.5rem;
     }
