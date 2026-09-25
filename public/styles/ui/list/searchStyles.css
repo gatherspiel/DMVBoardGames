@@ -69,7 +69,7 @@ search-component:not([search-button-enabled="true"]) #search-button {
   #show-search-parameters {
     display:block;
     margin-left:auto;
-    margin-top:1rem;
+    margin-top:1.5rem;
     margin-right:auto;
   }
 
