@@ -45,7 +45,7 @@ search-component:not([search-button-enabled="true"]) #search-button {
     width: 100%;
   }
 
-  #search-button,#disabled-search-button {
+  #search-button {
     display:block;
     margin-left:auto;
     margin-right:auto;
