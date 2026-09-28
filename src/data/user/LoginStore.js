@@ -65,4 +65,31 @@ async function retrieveData(params) {
   }
 }
 
-export const LOGIN_STORE = new DataStore(new CustomLoadSignal(retrieveData));
+const loginStateSignals = {
+	update: {
+		newUserMessage:(state)=>{
+			
+			return `<h2>Test</h2>`;
+			if(state.isNewUser){
+				return `<h2>Account successfully confirmed. Use this page to login</h2>`
+			}
+			return		
+		},
+		loginError:(data)=>{
+			console.log(data);
+			if(data.loginError){
+				console.log("Error");
+				return `<div class="validation-error>${data.loginError}</div>`		
+			}
+			return ""
+		}
+	}
+}
+
+export const LOGIN_STORE =
+	DataStore.createWithCustomLoadSignal({
+		"loadAction":retrieveData,
+		"storeName":"login-store",
+		"presentationSignals":loginStateSignals
+	});
+

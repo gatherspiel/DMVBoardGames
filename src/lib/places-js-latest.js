@@ -169,7 +169,8 @@ class ItemUpdater {
   }
 
   updateStoreData(storeUpdates, subscribers, prevStoreData) {
-    let renderUpdates = {};
+		
+		let renderUpdates = {};
 
     for (let i = 0; i < this.#topLevelUpdateFields.length; i++) {
       const fieldName = this.#topLevelUpdateFields[i];
@@ -181,6 +182,7 @@ class ItemUpdater {
       }
     }
 
+		console.log("Should update?");
     if (Object.keys(storeUpdates).length > 0) {
       for (let i = 0; i < subscribers.length; i++) {
         subscribers[i].updateItem(renderUpdates);
@@ -1194,6 +1196,7 @@ class TemplateItem {
             signalPath: signalRef,
           };
 
+					
           tokens[i - 1].templateAttrs.push({
             attr: "textcontent",
             fieldName: fieldName,
@@ -1238,7 +1241,7 @@ class TemplateItem {
     let template = document.createElement("template");
     template.innerHTML = templateArr.join("");
     this.#templateNode = template.content.firstChild;
- 
+
     const handlerAttrs = ["data-click-id", "data-change-id"];
 
     handlerAttrs.forEach((handlerAttr) => {
@@ -1316,6 +1319,7 @@ class TemplateItem {
 
   //TOOD: Fix bug related to this.#templateNode no longer being valid.
   setSingleNode(node) {
+		
     this.#templateNode = document.querySelector("[data-template]");
     this.#templateNode.replaceChildren(node);
   }
@@ -1433,7 +1437,10 @@ class PresentationComponent extends HTMLElement {
     }
 
     if (this.querySelector("[data-template]")) {
-      this.#setupTemplate();
+			if(this.#templateItem){
+				return;
+			}
+			this.#setupTemplate();
     }
   }
 
@@ -1471,6 +1478,7 @@ class PresentationComponent extends HTMLElement {
       }
     }
 
+		
     if (attr === "textcontent") {
       element.innerText = signalData[fieldName];
     }
@@ -1506,6 +1514,7 @@ class PresentationComponent extends HTMLElement {
   }
 
   #setupTemplate() {
+
     let templateNode = this.querySelector("[data-template]");
 
     //Component does not have a temnplate
@@ -1538,6 +1547,8 @@ class PresentationComponent extends HTMLElement {
     if (!this.#templateItem) {
       this.#setupTemplate();
     }
+
+		console.log("Item update");
     const node = this.#templateItem.getFirstNode();
     const templateNode = this.#templateItem.getTemplateNode();
 
@@ -1561,10 +1572,12 @@ class PresentationComponent extends HTMLElement {
       this.#templateItem.setSingleNode(addNode);
     } else {
 
+			console.log(state);
       const signals = this.#templateItem.getAllSignals();
       for(let i=0;i<signals.length;i++){
         const signalConfig = signals[i];
         if (state[signalConfig.fieldName]) {
+					console.log("generating");
           this.#generateSignal({
             signalConfig: signalConfig,
             updateData: {

@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
     <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
-    <link rel="stylesheet" href="/styles/ui/user/loginStyles.css" />
 
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,16 +16,51 @@
 
       customElements.define("login-status-component", LoginStatusComponent);
       customElements.define("login-component", LoginComponent);
-      customElements.define("login-template-component", LoginTemplateComponent);
 
       import { GetGameAdvice } from "../../beta/getGameAdvice.js";
-      GetGameAdvice();
+      //GetGameAdvice();
     </script>
   </head>
   <body>
     {{>navbar}}
 
-    <login-template-component> </login-template-component>
+			<login-component
+				data-store="login-store"	
+			>
+			  <div class="container-xl" data-template id="login-component-container">
+					<form id="login-form" onsubmit="return false">
+						<div innerHTML={newUserMessage}>
+						</div>
+						<div class="ui-input">
+							<div class="form-section">
+								<label class="required-field" id="email">Email</label>
+							<input        
+								id="username-input"
+								type="email"
+							/>     
+							</input>    
+						</div>
+						<div class="form-section">
+						<label class="required-field">Password</label>
+							<input        
+								id="password-input>
+								type="password"
+							/>
+							</input> 
+						</div>
+					</div>       
+					<div id="component-buttons">
+						<button 
+							class="primary" 
+							onclick="{login}"
+							type="submit" 
+							id="login-button">Login
+						</button>   
+						</div>	
+						<div innerHTML={loginError}></div>
+        </div>
+			</login-component>
+		
     <div id="bot-container"></div>
   </body>
 </html>
