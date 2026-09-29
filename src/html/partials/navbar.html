@@ -22,7 +22,29 @@
           >Search groups</a
         >
       </li>
-			<login-staus-component></login-status-component>
+
+			
+			<login-status-component 
+				data-template
+				store-name = "login-status-store"
+			>
+				<div visibility={notLoggedIn}>
+					<a class="btn secondary" href="/html/user/login.html">Login</a>
+					&nbsp 
+					<a class="btn secondary" href="/html/user/createAccount.html">New account</a>
+				</div>
+				<div id="login-status-container">
+					<div class="btn secondary" id="${SIGN_OUT_LINK_ID}">Sign out
+					</div>
+					<a class="btn secondary" href="/html/user/editProfile.html">Edit profile</a>
+					<span>{username}</span>
+					<div id="user-image-container">
+						<img class="avatar" id="user-image-icon" src="${imageFilePath}"/>
+					</div>
+					
+				</div>
+			</login-status-compnent>				 
+			
     </ul>
   </nav>
 </header>

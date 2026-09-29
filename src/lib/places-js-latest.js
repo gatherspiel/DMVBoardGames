@@ -169,7 +169,6 @@ class ItemUpdater {
   }
 
 	updateWithState(subscriber, state){
-		console.log(subscriber.nodeName);	
 		subscriber.updateItem(state);
 	}
 
@@ -1565,8 +1564,11 @@ class PresentationComponent extends HTMLElement {
   #setupTemplate() {
 
 		
+		console.log("Setting up template for:" +this.nodeName);	
     let templateNode = this.querySelector("[data-template]");
 
+		console.log(templateNode);
+		console.log(templateNode.parentNode);
     //Component does not have a temnplate
     if (!templateNode) {
       return;
@@ -1595,11 +1597,14 @@ class PresentationComponent extends HTMLElement {
 
   updateItem(state) {
 
+		console.log("Updating:"+this.nodeName);
     if (!this.#templateItem) {
       this.#setupTemplate();
     }
     const node = this.#templateItem.getFirstNode();
     const templateNode = this.#templateItem.getTemplateNode();
+
+	
 
     if (!node) {
       const addNode = templateNode.cloneNode(true);
@@ -1619,6 +1624,7 @@ class PresentationComponent extends HTMLElement {
       // be confusing.
       this.#templateItem.addNode(0, addNode);
       this.#templateItem.setSingleNode(addNode);
+			console.log(this.parentNode);
     } else {
 
       const signals = this.#templateItem.getAllSignals();

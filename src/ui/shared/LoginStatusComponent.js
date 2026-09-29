@@ -1,62 +1,61 @@
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
 import { LOGOUT_STORE } from "../../data/user/LogoutStore.js";
-import { PresentationComponent } from "/lib/places-js-old.js";
+import { DataStore,PresentationComponent } from "/lib/places-js-old.js";
 import { USER_DATA_STORE } from "../../data/user/UserDataStore.js";
-const SIGN_OUT_LINK_ID = "signout-link";
 
-export class LoginStatusComponent extends PresentationComponent {
-  constructor() {
-    super([
-      {
-        dataStore: LOGIN_STORE,
-      },
-    ]);
-  }
+const presentationSignals = {
+	update: {
 
-  render(authData) {
-    if (!authData.loggedIn) {
-      return `
-        <a class="btn secondary" href="/html/user/login.html">Login</a>
-        &nbsp 
-        <a class="btn secondary" href="/html/user/createAccount.html">New account</a>
-      `;
-    }
-
-    return `
-      <login-status-component-inner
-        email="${authData.data.user.email}"
-      ></login-status-component-inner>`;
-  }
+		imageFilePath: (state) => {
+			if(state.isLoggedIn){
+				return state.userData.imageFilePath;
+			}
+		},
+		notLoggedIn: (state) =>{
+			return state.isLoggedIn ? visible : hidden;
+		},
+		username: (state) => {
+			return state;
+		}
+	}
 }
 
-class LoginStatusComponentInner extends PresentationComponent {
-  constructor() {
-    super([
-      {
-        dataStore: USER_DATA_STORE,
-      },
-    ]);
-    this.addEventListener("click", (event) => {
-      if (event.target.id === SIGN_OUT_LINK_ID) {
-        LOGOUT_STORE.fetchData({}, LOGIN_STORE);
-      }
-    });
-  }
 
-  render(userData) {
-    return `
-      <div id="login-status-container">
-        <div class="btn secondary" id="${SIGN_OUT_LINK_ID}">Sign out</div>
-        <a class="btn secondary" href="/html/user/editProfile.html">Edit profile</a>
-        <span>${userData.username || this.getAttribute("email")}</span>
-        ${userData.imageFilePath ? `<div id="user-image-container"><img class="avatar" id="user-image-icon" src="${userData.imageFilePath}"/></div>` : ``}
-        </div>
-      </div>
-    `;
-  }
+async function retrieveData(){
+
+	await LOGIN_STORE.fetchData();
+	const loginState = LOGIN_STORE.getStoreData();
+
+	console.log("Login state:");
+	console.log(loginState);
+
+	if(loginState.isLoggedIn){
+
+		await USER_DATA_STORE.fetchData();
+
+		return { 
+			isLoggedIn: true,
+			userData: USER_DATA_STORE.getStoreDataa()
+		}
+	}
+
+	return {
+		isLoggedIn: false
+	}
 }
 
-customElements.define(
-  "login-status-component-inner",
-  LoginStatusComponentInner,
-);
+
+const LOGIN_STATUS_STORE = DataStore.createWithCustomLoadSignal(
+	{
+		"loadAction": retrieveData,
+		"presentationSignals": presentationSignals,
+		"storeName": "login-status-store",
+	
+	}
+)
+
+export class LoginStatusComponent extends HTMLElement {
+	constructor() {
+		super();
+	}
+}	

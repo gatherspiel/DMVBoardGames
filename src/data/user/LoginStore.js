@@ -10,7 +10,6 @@ import { CustomLoadSignal,DataStore } from "/lib/places-js-latest.js";
 export const IS_LOGGED_IN_KEY = "loggedIn";
 
 async function retrieveData(params) {
-	console.log("Hi");
   try {
     let authData = null;
     const authToken = window.localStorage["authToken"];
@@ -18,7 +17,6 @@ async function retrieveData(params) {
       authData = JSON.parse(authToken);
     }
     if (authData && authData.expires_at * 1000 > new Date().getTime()) {
-			console.log("Found data");
 			return {
 				isLoggedIn:true,
 				"authData":authData
@@ -40,7 +38,6 @@ async function retrieveData(params) {
       },
     );
 
-		console.log(data);
     if (data.ok) {
       for (let i = 0; i < sessionStorage.length; i++) {
         const key = sessionStorage.key(i);
@@ -66,7 +63,6 @@ async function retrieveData(params) {
 			}
 		}
   } catch (e) {
-		console.log(e);
     if (e.message instanceof AuthResponse) {
       console.error("Authentication error");
       return new AuthResponse(
@@ -75,7 +71,6 @@ async function retrieveData(params) {
         e.message.getErrorMessage().toString(),
       );
     } else {
-			console.log("Error");
 			return {
 				isLoggedIn: false,
 				loginError: e.message

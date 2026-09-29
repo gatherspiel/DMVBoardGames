@@ -29,6 +29,7 @@ export class LoginComponent extends PresentationComponent {
 			}
 		}
 
+
 		this.setClickEvents({
 			"login":loginHandler
 

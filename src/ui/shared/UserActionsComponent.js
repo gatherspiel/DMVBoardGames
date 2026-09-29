@@ -13,7 +13,6 @@ export class UserActionsComponent extends HTMLElement {
 	
 	update(data){
 
-		console.log(data);
 		if(data?.isLoggedIn){
 			self.innerHTML = `
 				<div class="container-xl">
