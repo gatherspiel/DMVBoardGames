@@ -6,16 +6,21 @@ import { USER_DATA_STORE } from "../../data/user/UserDataStore.js";
 const presentationSignals = {
 	update: {
 
+
 		imageFilePath: (state) => {
 			if(state.isLoggedIn){
 				return state.userData.imageFilePath;
 			}
 		},
-		notLoggedIn: (state) =>{
-			return state.isLoggedIn ? visible : hidden;
+		showIfLoggedOut: (state) =>{
+			return "";
+			return state.isLoggedIn ? "display:none" : "";
+		},
+		showIfLoggedIn: (state) =>{
+			return state.isLoggedIn ? "" : "display:none";
 		},
 		username: (state) => {
-			return state;
+			return state?.userData?.username;
 		}
 	}
 }
@@ -32,7 +37,7 @@ async function retrieveData(){
 
 		return { 
 			isLoggedIn: true,
-			userData: USER_DATA_STORE.getStoreDataa()
+			userData: USER_DATA_STORE.getStoreData()
 		}
 	}
 
@@ -40,7 +45,6 @@ async function retrieveData(){
 		isLoggedIn: false
 	}
 }
-
 
 export const LOGIN_STATUS_STORE = DataStore.createWithCustomLoadSignal(
 	{
@@ -51,4 +55,5 @@ export const LOGIN_STATUS_STORE = DataStore.createWithCustomLoadSignal(
 	}
 )
 
+LOGIN_STATUS_STORE.fetchData();
 	

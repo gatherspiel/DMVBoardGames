@@ -23,25 +23,25 @@
         >
       </li>
 
-			
+			</div>	
 			<presentation-component
 				data-store = "login-status-store"
 				data-template
 			>
-				<div visibility={notLoggedIn}>
-					<a class="btn secondary" href="/html/user/login.html">Login</a>
-					&nbsp 
-					<a class="btn secondary" href="/html/user/createAccount.html">New account</a>
-				</div>
-				<div id="login-status-container">
-					<div class="btn secondary" id="${SIGN_OUT_LINK_ID}">Sign out
+				<div>
+					<div style="{showIfLoggedOut}">
+						<a class="btn secondary" href="/html/user/login.html">Login</a>
+						<a class="btn secondary" href="/html/user/createAccount.html">New account</a>
+					</div>
+				<div id="login-status-container" style="{showIfLoggedIn}">
+					<div class="btn secondary" id="sign-out-link-id">Sign out
 					</div>
 					<a class="btn secondary" href="/html/user/editProfile.html">Edit profile</a>
 					<span>{username}</span>
 					<div id="user-image-container">
 						<img class="avatar" id="user-image-icon" src="${imageFilePath}"/>
 					</div>
-					
+					</div>	
 				</div>
 			</presentation-component>				 
 			

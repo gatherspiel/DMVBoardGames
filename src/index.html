@@ -38,7 +38,7 @@
 
       import { PresentationComponent} from "./lib/places-js-latest.js";
       import { LoadingIndicatorComponent } from "./shared/components/LoadingIndicatorComponent.js";
-      import { LoginStatusComponent } from "./ui/shared/LoginStatusComponent.js";
+      import { LOGIN_STATUS_STORE} from "./data/user/LoginStatusStore.js";
       import { SearchComponent } from "./ui/list/SearchComponent.js";
       import { UserActionsComponent } from "./ui/shared/UserActionsComponent.js";
 		
@@ -49,7 +49,6 @@
         LoadingIndicatorComponent,
       );
 		
-      customElements.define("login-status-component", LoginStatusComponent);
       customElements.define("user-actions-component", UserActionsComponent);	
     </script>
   </head>
