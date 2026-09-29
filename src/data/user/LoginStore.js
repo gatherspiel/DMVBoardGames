@@ -10,6 +10,7 @@ import { CustomLoadSignal,DataStore } from "/lib/places-js-latest.js";
 export const IS_LOGGED_IN_KEY = "loggedIn";
 
 async function retrieveData(params) {
+	console.log("Hi");
   try {
     let authData = null;
     const authToken = window.localStorage["authToken"];
@@ -17,7 +18,12 @@ async function retrieveData(params) {
       authData = JSON.parse(authToken);
     }
     if (authData && authData.expires_at * 1000 > new Date().getTime()) {
-      return new AuthResponse(true, authData);
+			console.log("Found data");
+			return {
+				isLoggedIn:true,
+				"authData":authData
+
+			}
     }
 
     const data = await fetch(
@@ -34,6 +40,7 @@ async function retrieveData(params) {
       },
     );
 
+		console.log(data);
     if (data.ok) {
       for (let i = 0; i < sessionStorage.length; i++) {
         const key = sessionStorage.key(i);
@@ -44,14 +51,22 @@ async function retrieveData(params) {
         AUTH_TOKEN_KEY,
         JSON.stringify(authTokenData),
       );
+
+			window.location.assign("/html/user/memberData.html");
       return new AuthResponse(true, {
         ...authTokenData,
         username: authData?.username,
       });
     }
-
-    throw Error((await data.json())?.msg ?? data.statusText);
+		else {
+			const output = await data.json();
+			return {	
+				isLoggedIn: false,
+				loginError: output.msg
+			}
+		}
   } catch (e) {
+		console.log(e);
     if (e.message instanceof AuthResponse) {
       console.error("Authentication error");
       return new AuthResponse(
@@ -60,7 +75,11 @@ async function retrieveData(params) {
         e.message.getErrorMessage().toString(),
       );
     } else {
-      return new AuthResponse(false, {}, e.message);
+			console.log("Error");
+			return {
+				isLoggedIn: false,
+				loginError: e.message
+			}
     }
   }
 }
@@ -69,17 +88,14 @@ const loginStateSignals = {
 	update: {
 		newUserMessage:(state)=>{
 			
-			return `<h2>Test</h2>`;
 			if(state.isNewUser){
 				return `<h2>Account successfully confirmed. Use this page to login</h2>`
 			}
-			return		
+			return		``;
 		},
 		loginError:(data)=>{
-			console.log(data);
 			if(data.loginError){
-				console.log("Error");
-				return `<div class="validation-error>${data.loginError}</div>`		
+				return data.loginError
 			}
 			return ""
 		}

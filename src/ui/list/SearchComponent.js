@@ -13,7 +13,8 @@ export class SearchComponent extends PresentationComponent {
 		//Performance optimizaiton if the "api-url" attribute is available before connectedCallback is called.
 		const searchUrl = this.getAttribute("api-url") ?? (window.location.href.contains("searchGroups") ? "/searchGroups" : "/searchEvents");
     SEARCH_COMPONENT_STORE.fetchData();
-    searchWithDefaultParams(searchUrl);
+    
+		searchWithDefaultParams(searchUrl);
     
 		this.setAttribute("search-button-enabled", false);
 

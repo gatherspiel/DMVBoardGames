@@ -1,58 +1,47 @@
-import { LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT } from "./Constants.js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
-import { PresentationComponent } from "/lib/places-js-old.js";
+import { PresentationComponent } from "/lib/places-js-latest.js";
 
-const LOGIN_BUTTON_ID = "login-button";
 
 export class LoginComponent extends PresentationComponent {
-  loginAttempted;
-  registerAttempted;
   constructor() {
-    super([
-      {
-        componentReducer: (loginState) => {
-          if (loginState.loggedIn) {
-            window.location.assign("/html/user/memberData.html");
-          }
-          return loginState;
-        },
-        dataStore: LOGIN_STORE,
-      },
-    ]);
-    this.loginAttempted = false;
-    this.registerAttempted = false;
+		super();
 
-    const self = this;
-    this.addEventListener("click", (event) => {
-      event.preventDefault();
+		const loginHandler = () => {
+		 const formInputs = this.retrieveAndValidateFormInputs();
+		 console.log(formInputs);
+			
+			try {
+				if (formInputs.errorMessage) {
+					LOGIN_STORE.updateStoreData({
+						loginError:formInputs.errorMessage
+					})
+				} else {
+					LOGIN_STORE.fetchData({
+						formInputs,
+					}).then((response)=>{
+						console.log(response);
+						//if(response.errorMessage
+						console.log("asfd");
+					});
+				}
+			} catch(e){
+				console.log(e);
+			}
+		}
 
-      try {
-        const targetId = event.target?.id;
-        if (targetId === LOGIN_BUTTON_ID) {
-          self.loginAttempted = true;
-          const formInputs = self.retrieveAndValidateFormInputs(
-            self.getRootNode(),
-          );
-          if (formInputs.errorMessage) {
-            self.updateData(formInputs);
-          } else {
-            LOGIN_STORE.fetchData({
-              formInputs,
-            });
-          }
-        }
-      } catch (e) {
-        if (e.message !== `Permission denied to access property "id"`) {
-          throw e;
-        }
-      }
-    });
+		this.setClickEvents({
+			"login":loginHandler
+
+		});
+
+		this.setStore(LOGIN_STORE);
   }
 
-  retrieveAndValidateFormInputs(rootNode) {
-    const username = rootNode.getElementById(USERNAME_INPUT)?.value;
-    const password = rootNode.getElementById(PASSWORD_INPUT)?.value;
-    if (!username || !password) {
+  retrieveAndValidateFormInputs() {
+		console.log(document.getElementById("username-input"));
+    const username = document.getElementById("username-input")?.value;
+    const password = document.getElementById("password-input")?.value;
+		if (!username || !password) {
       return {
         errorMessage: "Enter a valid username and password",
       };
@@ -63,39 +52,4 @@ export class LoginComponent extends PresentationComponent {
     };
   }
 
-  render(data) {
-    const isNewUser = new URLSearchParams(document.location.search).get(
-      "newUser",
-    );
-
-    return `
-      <div class="container-xl" id="login-component-container">
-        <form id=${LOGIN_FORM_ID}>
-        ${isNewUser ? `<h2 class="success-message">Account successfully confirmed. Use this page to login. </h2>` : ``}
-          <div class="ui-input">
-            <div class="form-section">
-              <label class="required-field" id="email">Email</label>
-            <input        
-              id=${USERNAME_INPUT}
-              type="email"
-            />     
-            </input>    
-          </div>
-          <div class="form-section">
-          <label class="required-field">Password</label>
-            <input        
-              id=${PASSWORD_INPUT}
-              type="password"
-            />
-            </input> 
-          </div>
-        </div>       
-        <div id="component-buttons">
-          <button class="primary" type="submit" id=${LOGIN_BUTTON_ID}>Login</button>   
-          </div>
-            ${this.loginAttempted || this.registerAttempted ? `<div class="validation-error">${data.errorMessage}</div>` : ""}
-          </form>
-        </div>
-    `;
-  }
 }

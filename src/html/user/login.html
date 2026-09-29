@@ -12,7 +12,6 @@
     <script defer fetchpriority="low" type="module">
       import { LoginStatusComponent } from "../../ui/shared/LoginStatusComponent.js";
       import { LoginComponent } from "../../ui/user/LoginComponent.js";
-      import { LoginTemplateComponent } from "../../ui/user/LoginTemplateComponent.js";
 
       customElements.define("login-status-component", LoginStatusComponent);
       customElements.define("login-component", LoginComponent);
@@ -25,7 +24,6 @@
     {{>navbar}}
 
 			<login-component
-				data-store="login-store"	
 			>
 			  <div class="container-xl" data-template id="login-component-container">
 					<form id="login-form" onsubmit="return false">
@@ -43,7 +41,7 @@
 						<div class="form-section">
 						<label class="required-field">Password</label>
 							<input        
-								id="password-input>
+								id="password-input"
 								type="password"
 							/>
 							</input> 
@@ -57,7 +55,9 @@
 							id="login-button">Login
 						</button>   
 						</div>	
-						<div innerHTML={loginError}></div>
+						<div class="validation-error">
+							{loginError}
+						</div>
         </div>
 			</login-component>
 		
