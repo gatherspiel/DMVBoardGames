@@ -26,9 +26,6 @@ async function retrieveData(){
 	await LOGIN_STORE.fetchData();
 	const loginState = LOGIN_STORE.getStoreData();
 
-	console.log("Login state:");
-	console.log(loginState);
-
 	if(loginState.isLoggedIn){
 
 		await USER_DATA_STORE.fetchData();
@@ -45,7 +42,7 @@ async function retrieveData(){
 }
 
 
-const LOGIN_STATUS_STORE = DataStore.createWithCustomLoadSignal(
+export const LOGIN_STATUS_STORE = DataStore.createWithCustomLoadSignal(
 	{
 		"loadAction": retrieveData,
 		"presentationSignals": presentationSignals,
@@ -54,9 +51,4 @@ const LOGIN_STATUS_STORE = DataStore.createWithCustomLoadSignal(
 	}
 )
 
-export class LoginStatusComponent extends PresentationComponent {
-	constructor() {
-		super();
-		console.log("Init");
-	}
-}	
+	

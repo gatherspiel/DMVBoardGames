@@ -1459,7 +1459,9 @@ class PresentationComponent extends HTMLElement {
         };
         this.startLoadingIndicator();
       }
-
+		
+			console.log(this.nodeName);	
+			console.log(defaultStore);
       const dataStore = DataStore.getStore(defaultStore);
       this.#subscribedStore = DataStore.getStore(defaultStore);
       dataStore.subscribeComponent(this, this.#loadingAnimationStart);
