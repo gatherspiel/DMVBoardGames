@@ -1346,8 +1346,12 @@ class TemplateItem {
   }
 
   //TOOD: Fix bug related to this.#templateNode no longer being valid.
-  setSingleNode(node) {
-    this.#templateNode = document.querySelector("[data-template]");
+  setSingleNode(node, elem) {
+    this.#templateNode = elem.querySelector("[data-template]");
+
+		if(this.#templateNode === null){
+			this.#templateNode = elem;
+		}
     this.#templateNode.replaceChildren(node);
   }
 
@@ -1467,6 +1471,9 @@ class PresentationComponent extends HTMLElement {
 			}
     }
 
+		if(!defaultStore && !this.#subscribedStore){
+			throw new Error(`${this.nodeName} must be subscribed to a store`);
+		}
 		if(!defaultStore){
 			this.#subscribedStore.subscribeComponent(this);	
 		}
@@ -1562,13 +1569,16 @@ class PresentationComponent extends HTMLElement {
   }
 
   #setupTemplate() {
-
-		
-		console.log("Setting up template for:" +this.nodeName);	
+	
     let templateNode = this.querySelector("[data-template]");
 
-		console.log(templateNode);
-		console.log(templateNode.parentNode);
+		
+		if(!templateNode){
+			if(this.hasAttribute("data-template")){
+				templateNode = this;
+			}
+		}
+
     //Component does not have a temnplate
     if (!templateNode) {
       return;
@@ -1595,12 +1605,13 @@ class PresentationComponent extends HTMLElement {
     this.#templateItem.setupChangeEventHandlers(this.#changeTemplateEvents);
   }
 
+
   updateItem(state) {
 
-		console.log("Updating:"+this.nodeName);
     if (!this.#templateItem) {
       this.#setupTemplate();
     }
+
     const node = this.#templateItem.getFirstNode();
     const templateNode = this.#templateItem.getTemplateNode();
 
@@ -1609,6 +1620,7 @@ class PresentationComponent extends HTMLElement {
     if (!node) {
       const addNode = templateNode.cloneNode(true);
       const signals = this.#templateItem.getAllSignals();
+		
       for(let j=0;j<signals.length;j++){
 
         const signalConfig = signals[j]; 
@@ -1622,9 +1634,9 @@ class PresentationComponent extends HTMLElement {
       }
       //TODO: Refactor. Having addNode and appendNode can
       // be confusing.
+			
       this.#templateItem.addNode(0, addNode);
-      this.#templateItem.setSingleNode(addNode);
-			console.log(this.parentNode);
+			this.#templateItem.setSingleNode(addNode,this);
     } else {
 
       const signals = this.#templateItem.getAllSignals();
