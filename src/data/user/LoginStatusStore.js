@@ -35,12 +35,6 @@ async function retrieveData(){
 			console.error(`${data.status}: ${data.errorMessage}`);
 		}
 		else{
-
-			setTimeout(()=>{
-				console.log(LOGGED_OFF_STATUS_STORE);
-
-			},1000);
-
 			return { 
 				isLoggedIn: true,
 				userData: USER_DATA_STORE.getStoreData()
@@ -69,15 +63,20 @@ LOGIN_STATUS_STORE.fetchData();
 const logOffSignals = {
 	update: {
 		showIfLoggedOff(data){
-			console.log("Logged off");
-			console.log(data);
+
+			const loginStatus = data.loginStatus.isLoggedIn;
+			return loginStatus ? "display:none" : ""
+
 		}
 	}
 }
 
 export const LOGGED_OFF_STATUS_STORE = DataStore.createWithDataStoreSignals(
 	{
-		"storeSignals": [LOGIN_STATUS_STORE],
+		"storeSignals": [{
+			"fieldName":"loginStatus",
+			"store":LOGIN_STATUS_STORE
+		}],
 		"presentationSignals": logOffSignals,
 		"storeName": "logged-off-status-store"
 	
