@@ -24,15 +24,22 @@
       </li>
 
 			</div>	
+
 			<presentation-component
-				data-store = "login-status-store"
+				data-store="logged-off-status-store"
 				data-template
 			>
-				<div>
 					<div style="{showIfLoggedOut}">
 						<a class="btn secondary" href="/html/user/login.html">Login</a>
 						<a class="btn secondary" href="/html/user/createAccount.html">New account</a>
 					</div>
+			</presentation-component>
+
+			<presentation-component
+				data-store = "login-status-store"
+				data-template
+			>
+					
 				<div id="login-status-container" style="{showIfLoggedIn}">
 					<div class="btn secondary" id="sign-out-link-id">Sign out
 					</div>
@@ -41,7 +48,6 @@
 					<div id="user-image-container">
 						<img class="avatar" id="user-image-icon" src="${imageFilePath}"/>
 					</div>
-					</div>	
 				</div>
 			</presentation-component>				 
 			

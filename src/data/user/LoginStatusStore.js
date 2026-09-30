@@ -12,10 +12,6 @@ const presentationSignals = {
 				return state.userData.imageFilePath;
 			}
 		},
-		showIfLoggedOut: (state) =>{
-			return "";
-			return state.isLoggedIn ? "display:none" : "";
-		},
 		showIfLoggedIn: (state) =>{
 			return state.isLoggedIn ? "" : "display:none";
 		},
@@ -33,11 +29,22 @@ async function retrieveData(){
 
 	if(loginState.isLoggedIn){
 
-		await USER_DATA_STORE.fetchData();
+		const data = await USER_DATA_STORE.fetchData();
 
-		return { 
-			isLoggedIn: true,
-			userData: USER_DATA_STORE.getStoreData()
+		if(data.status && data.status!== 200){
+			console.error(`${data.status}: ${data.errorMessage}`);
+		}
+		else{
+
+			setTimeout(()=>{
+				console.log(LOGGED_OFF_STATUS_STORE);
+
+			},1000);
+
+			return { 
+				isLoggedIn: true,
+				userData: USER_DATA_STORE.getStoreData()
+			}
 		}
 	}
 
@@ -56,4 +63,27 @@ export const LOGIN_STATUS_STORE = DataStore.createWithCustomLoadSignal(
 )
 
 LOGIN_STATUS_STORE.fetchData();
+
+
+
+const logOffSignals = {
+	update: {
+		showIfLoggedOff(data){
+			console.log("Logged off");
+			console.log(data);
+		}
+	}
+}
+
+export const LOGGED_OFF_STATUS_STORE = DataStore.createWithDataStoreSignals(
+	{
+		"storeSignals": [LOGIN_STATUS_STORE],
+		"presentationSignals": logOffSignals,
+		"storeName": "logged-off-status-store"
+	
+	}
+)
+
+
+
 	

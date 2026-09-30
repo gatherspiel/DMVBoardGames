@@ -16,6 +16,7 @@ async function retrieveData(params) {
     if (authToken) {
       authData = JSON.parse(authToken);
     }
+
     if (authData && authData.expires_at * 1000 > new Date().getTime()) {
 			return {
 				isLoggedIn:true,
@@ -23,6 +24,12 @@ async function retrieveData(params) {
 
 			}
     }
+
+		if(!params.formInputs){
+			return {
+				isLoggedIn:false
+			}
+		}
 
     const data = await fetch(
       `${SUPABASE_CLIENT_URL}/auth/v1/token?grant_type=password`,

@@ -11,19 +11,21 @@
 
     <script defer fetchpriority="low" type="module">
       import { LoadingIndicatorComponent } from "../../shared/components/LoadingIndicatorComponent.js";
-      import { LoginStatusComponent } from "../../ui/shared/LoginStatusComponent.js";
+
+			import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore";
+			import {PresentationComponent} from "/lib/places-js-latest.js";
       import { MemberDataComponent } from "../../ui/user/MemberDataComponent.js";
 
       customElements.define(
         "loading-indicator-component",
         LoadingIndicatorComponent,
       );
-      customElements.define("login-status-component", LoginStatusComponent);
+      customElements.define("presentation-component", PresentationComponent);
       customElements.define("member-data-component", MemberDataComponent);
     </script>
   </head>
   <body>
     {{>navbar}}
-    <member-data-component> </member-data-component>
+    <!--<member-data-component> </member-data-component>-->
   </body>
 </html>
