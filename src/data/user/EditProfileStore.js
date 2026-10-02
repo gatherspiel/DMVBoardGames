@@ -19,7 +19,12 @@ const presentationSignals = {
       }
       return '';
     },
-    usernameInput: (data)=>data?.userData?.username,
+    usernameInput: (data)=>{
+      if(data?.userData?.username){
+        return data.userData.username;
+      }
+      return '';
+    },
     usernameError: (data)=>{
       if(data["username-error-text"]){
         return data["username-error-text"];

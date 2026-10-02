@@ -1323,7 +1323,8 @@ class TemplateItem {
     let template = document.createElement("template");
     template.innerHTML = templateArr.join("");
     this.#templateNode = template.content.firstChild;
- 
+
+    console.log(template.innerHTML);
     const handlerAttrs = ["data-click-id", "data-change-id"];
 		
     handlerAttrs.forEach((handlerAttr) => {
@@ -1357,6 +1358,8 @@ class TemplateItem {
         let node = template.content.querySelector(selector);
         let searchNode = node;
 
+        console.log("Starting node:");
+        console.log(searchNode);
         while (searchNode.parentNode.nodeName !== "#document-fragment") {
           for (let j = 0; j < searchNode.parentNode.childNodes.length; j++) {
             if (Object.is(searchNode.parentNode.childNodes[j], searchNode)) {
@@ -1364,6 +1367,11 @@ class TemplateItem {
             }
           }
           searchNode = searchNode.parentNode;
+        }
+
+        if(templateStr.includes("form")){
+          console.log(childNodePath);
+          console.log(template.innerHTML);
         }
 
         childNodePath = childNodePath.reverse();
@@ -1592,20 +1600,26 @@ class PresentationComponent extends HTMLElement {
         element = this.#selectorCache.get(cacheId);
       }
     }
-	
+
+    if(this.nodeName === "EDIT-PROFILE-COMPONENT"){
+      
+      console.log("Element root:");
+      console.log(elementRoot);
+      console.log("Element:");
+      console.log(element);
+    }
     if (attr === "textcontent") {
-      if(element === null){
-        console.log(elementRoot);
-        console.log(signalPath);
-       console.log(elementRoot.querySelector(signalPath));
-        console.log(this.nodeName);
-        console.log(params);
-      }
       element.innerText = signalData[fieldName];
     }
     else if (attr === "innerHTML") {
       element.innerHTML = signalData[fieldName];
     } else {
+      if(element === null){
+        console.log(this.nodeName);
+        console.log(fieldName);
+        console.log(elementRoot.innerHTML);
+        console.log(attr);
+      }
       element.setAttribute(attr, `${signalData[fieldName]}`);
     }
   }
@@ -1680,13 +1694,19 @@ class PresentationComponent extends HTMLElement {
  
     const node = this.#templateItem.getFirstNode();
     const templateNode = this.#templateItem.getTemplateNode();
-	
+
     if (!node) {
+    
       const addNode = templateNode.cloneNode(true);
       const signals = this.#templateItem.getAllSignals();
 	
       for(let j=0;j<signals.length;j++){
-					
+		
+        if(this.nodeName === "EDIT-PROFILE-COMPONENT"){
+          console.log(signals[j]);
+          console.log(addNode.innerHTML);
+        }
+
         const signalConfig = signals[j]; 
         this.#generateSignal({
           signalConfig: signalConfig,
@@ -1702,7 +1722,6 @@ class PresentationComponent extends HTMLElement {
       this.#templateItem.addNode(0, addNode);
 			this.#templateItem.setSingleNode(addNode,this);
     } else {
-
       const signals = this.#templateItem.getAllSignals();
       for(let i=0;i<signals.length;i++){
         const signalConfig = signals[i];
