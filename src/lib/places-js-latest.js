@@ -602,6 +602,7 @@ class DataStore {
   static #storeNameMap = new Map();
 
 	#dataStoreSubscribers = new Map();
+  #dataStoreSubscriberSelectors = new Map();
 
 	#fieldTypeMapping = {};
   #isLoading = false;
@@ -721,9 +722,8 @@ class DataStore {
 			dataStore = new DataStore(new DataStoreSignal(storeSignals), storeName);
 		}
 
-		
 		for(let i =0; i < storeSignals.length; i++){
-			storeSignals[i].store.subscribeDataStore(dataStore, storeSignals[i].fieldName);
+			storeSignals[i].store.subscribeDataStore(dataStore, storeSignals[i].fieldName,storeSignals[i].selector);
 		}
 		return dataStore;
   }
@@ -872,9 +872,18 @@ class DataStore {
 
 			if(this.#dataStoreSubscribers){
 				this.#dataStoreSubscribers.forEach((fieldName, subscriber)=>{
-					subscriber.updateStoreData({
-						[fieldName]: response
-					});
+
+          const selector = this.#dataStoreSubscriberSelectors.get(subscriber);
+          if(selector){
+            response = selector(response);
+          }
+          if(fieldName){
+            subscriber.updateStoreData({
+              [fieldName]: response
+            });
+          } else {
+            subscriber.updateStoreData(response);
+          }
 				});
 			}
 			
@@ -895,8 +904,9 @@ class DataStore {
 		this.#updateCallbacks.push(callback);
 	}
 
-	subscribeDataStore(dataStore,fieldName){
+	subscribeDataStore(dataStore,fieldName,selector){
 		this.#dataStoreSubscribers.set(dataStore, fieldName);
+    this.#dataStoreSubscriberSelectors.set(dataStore,selector);
 	}
 
   subscribeComponent(subscriber, loadingIndicatorStart) {	
@@ -1485,8 +1495,11 @@ class PresentationComponent extends HTMLElement {
         };
         this.startLoadingIndicator();
       }
-		
+	
       const dataStore = DataStore.getStore(defaultStore);
+      if(!dataStore){
+        console.error(`No store defined with name ${defaultStore}`);
+      }
       this.#subscribedStore = DataStore.getStore(defaultStore);
       dataStore.subscribeComponent(this, this.#loadingAnimationStart);
     }
@@ -1812,19 +1825,6 @@ class PresentationComponent extends HTMLElement {
   }
 }
 
-class ShadowDOMComponent extends HTMLElement {
-  connectedCallback() {
-    this.attachShadow({ mode: "open" });
-
-    this.shadowRoot;
-    const template = document.createElement("template");
-
-    template.innerHTML = this.getTemplateStyle() + `<div></div>`;
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-    this.shadowRoot.querySelector("div").innerHTML = this.render();
-  }
-}
-
 class StaticComponent extends HTMLElement {
   static #clickSplitRegex = new RegExp('onclick="{', "i");
   #handlerMap = {};
@@ -1864,4 +1864,4 @@ class StaticComponent extends HTMLElement {
   }
 }
 
-export { ApiLoadAction, CustomLoadSignal, DataStore, DataStoreSignal, ItemUpdater, ListUpdater, PresentationComponent, ShadowDOMComponent, StaticComponent, TemplateItem };
+export { ApiLoadAction, CustomLoadSignal, DataStore, DataStoreSignal, ItemUpdater, ListUpdater, PresentationComponent, StaticComponent, TemplateItem };

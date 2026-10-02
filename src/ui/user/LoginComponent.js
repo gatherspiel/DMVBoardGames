@@ -19,13 +19,11 @@ export class LoginComponent extends PresentationComponent {
 					LOGIN_STORE.fetchData({
 						formInputs,
 					}).then((response)=>{
-						console.log(response);
-						//if(response.errorMessage
-						console.log("asfd");
+            console.log("Login succeeded");
 					});
 				}
 			} catch(e){
-				console.log(e);
+				console.error(e);
 			}
 		}
 
