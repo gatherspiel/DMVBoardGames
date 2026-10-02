@@ -772,6 +772,7 @@ class DataStore {
 
   updateStoreData(storeUpdates) {
 
+    
     const updates = this.#updater.updateStoreData(
       storeUpdates,
       this.#presentationSubscribers,
@@ -877,12 +878,16 @@ class DataStore {
           if(selector){
             response = selector(response);
           }
+
+          if(!response){
+            response = {};
+          }
           if(fieldName){
             subscriber.updateStoreData({
-              [fieldName]: response
+              [fieldName]: structuredClone(response)
             });
           } else {
-            subscriber.updateStoreData(response);
+            subscriber.updateStoreData(structuredClone(response));
           }
 				});
 			}

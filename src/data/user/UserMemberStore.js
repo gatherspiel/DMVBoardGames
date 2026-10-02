@@ -12,29 +12,40 @@ export const USER_MEMBER_STORE = new DataStore(
   new ApiLoadAction(getUserMemberDataStore),
 );
 
+USER_MEMBER_STORE.fetchData();
 
 export const MODERATING_GROUPS_STORE = DataStore.createWithDataStoreSignals({
   presentationSignals:{
-    update: {
-      "groupNameUri":(data)=>encodeURIComponent(data.groupName)
+    data: {
+      update: {
+        "groupNameUri":(data)=>encodeURIComponent(data.name),
+        "groupName":(data)=>data.name
+      }
     }
   },
   storeSignals:[{
-    "selector": (data)=>data.moderatingGroups,
+    "fieldName": "data",
+    "selector": (data)=>{
+      return data.moderatingGroups;
+    },
     "store":USER_MEMBER_STORE,
   }],
   storeName:"moderating-groups-store"
 })
 
-
 export const MODERATING_EVENTS_STORE = DataStore.createWithDataStoreSignals({
   presentationSignals:{
-    update: {
-      "eventDayDisplay":(data)=>{
-        return convertDateAndDayToDisplayString(
-          data.startDate,
-          data.day
-        )
+    data: {
+      update: {
+        "eventId":(data)=>data.eventId,
+        "eventTimeDisplay":(data)=>{
+          console.log(data);
+          return convertDateAndDayToDisplayString(
+            data.startDate,
+            data.day
+          ) + data.startTime;
+        },
+        "groupId":(data)=>data.groupId
       }
     }
   },
@@ -47,8 +58,10 @@ export const MODERATING_EVENTS_STORE = DataStore.createWithDataStoreSignals({
 
 export const JOINED_GROUPS_STORE = DataStore.createWithDataStoreSignals({
   presentationSignals:{
-    update: {
-      "groupNameUri":(data)=>encodeURIComponent(data.groupName)
+    data:{
+      update: {
+        "groupNameUri":(data)=>encodeURIComponent(data.groupName)
+      }
     }
   },
   storeSignals:[{
@@ -61,13 +74,17 @@ export const JOINED_GROUPS_STORE = DataStore.createWithDataStoreSignals({
 
 export const ATTENDING_EVENTS_STORE = DataStore.createWithDataStoreSignals({
   presentationSignals:{
-    update: {
-      "eventDayDisplay":(data)=>{
-        return convertDateAndDayToDisplayString(
-          data.startDate,
-          data.day
-        )
-      }
+    data: {
+      update: { 
+        "eventId":(data)=>data.eventId,
+        "eventTimeDisplay":(data)=>{
+            return convertDateAndDayToDisplayString(
+              data.startDate,
+              data.day
+            ) + data.startTime;
+          } 
+        },
+        "groupId":(data)=>data.groupId
     }
   },
   storeSignals:[{

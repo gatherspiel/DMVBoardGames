@@ -35,33 +35,7 @@
           data-store="moderating-groups-store"
         >
           <h2>Moderating groups: </h2>
-          <ul data-template=moderatingGroups>
-
-            <li>
-              <a href="/html/groups/groups.html?name={groupNameUri}">
-                {groupName}
-              </a>
-            </li>`;
-          </ul>
-        </presentation-component>
-
-        <presentation-compnent
-          data-store="moderating-events-store"
-        >
-          <h2>Moderating events: </h2>
-          <ul data-template=moderatingEvents>
-            {eventDayDisplay} &#8729 at {startTime};
-            <a href="/html/groups/event.html?id={eventId}&groupId={groupId}">
-              {eventName}
-            </a>
-          </ul>
-        </presentation-component>
-
-        <presentation-component
-          data-store="joined-groups-store"
-        >
-          <h2>Joined groups:</h2>
-          <ul data-template=joinedGroups>
+          <ul data-template>
             <li>
               <a href="/html/groups/groups.html?name={groupNameUri}">
                 {groupName}
@@ -73,8 +47,36 @@
         <presentation-component
           data-store="attending-events-store"
         >
-          <h2>
-          <ul data-template=attendingEvents>
+          <h2>Moderating events:</h2>
+          <ul data-template>
+            <li>
+              <span>{eventTimeDisplay} </span>
+               <a href="/html/groups/event.html?id={eventId}&groupId={groupId}">
+                {eventName}
+              </a>
+            </li>
+          </ul>
+        </presentation-component>
+
+    
+        <presentation-component
+          data-store="joined-groups-store"
+        >
+          <h2>Joined groups:</h2>
+          <ul data-template>
+            <li>
+              <a href="/html/groups/groups.html?name={groupNameUri}">
+                {groupName}
+              </a>
+            </li>
+          </ul>
+        </presentation-component>
+
+        <presentation-component
+          data-store="attending-events-store"
+        >
+        <h2>Attending events:</h2>
+          <ul data-template>
             <li>
               {eventTimeDisplay}
  <a href="/html/groups/event.html?id={eventId}&groupId={groupId}">
