@@ -595,6 +595,8 @@ class DefaultUpdater {
     }
     return storeUpdates;
   }
+  
+ 
 }
 
 class DataStore {
@@ -608,6 +610,7 @@ class DataStore {
   #isLoading = false;
   #loadAction;
 
+  #pendingFetch;
 
   #presentationUpdates = {};
   #presentationSignals = {};
@@ -619,7 +622,7 @@ class DataStore {
 	#storeName;
 	#updateCallbacks = [];
 
-  #updater;
+  #presentationUpdater;
 
   constructor(loadAction, storeName, updater = new DefaultUpdater()) {
 
@@ -627,7 +630,7 @@ class DataStore {
     this.#presentationSubscribers = [];
     this.#requestStoreId = `store-${DataStore.#storeCount}`;
 
-    this.#updater = updater;
+    this.#presentationUpdater = updater;
 
     sessionStorage.setItem(this.#requestStoreId, JSON.stringify({}));
 
@@ -772,12 +775,14 @@ class DataStore {
 
   updateStoreData(storeUpdates) {
 
-    
-    const updates = this.#updater.updateStoreData(
-      storeUpdates,
-      this.#presentationSubscribers,
-      this.#storeData || [],
-    );
+    let updates = storeUpdates;
+    if(this.#presentationSubscribers.length >0){
+      updates = this.#presentationUpdater.updateStoreData(
+        storeUpdates,
+        this.#presentationSubscribers,
+        this.#storeData || [],
+      );
+    }
 
     if(!this.#storeData){
       this.#storeData = {};
@@ -849,11 +854,16 @@ class DataStore {
             dataStoreSubscribedComponents[i].lockComponent(dataStore);
           }
         }
-        response = await this.#loadAction.fetch(
-          params,
-          this.#requestStoreId,
-          requestKey,
-        );
+        this.#pendingFetch = new Promise(async(resolve,reject)=>{
+          const response = await this.#loadAction.fetch(
+            params,
+            this.#requestStoreId,
+            requestKey,
+          );
+          resolve(response);
+        });
+        
+        response = await this.#pendingFetch;
       }
 
       this.updateStoreData(response);
@@ -895,6 +905,10 @@ class DataStore {
 			
       return response;
     }
+
+
+    const data = await Promise.resolve(this.#pendingFetch);
+    return data; 
   }
 
   unsubscribeComponent(subscriber) {
@@ -915,8 +929,8 @@ class DataStore {
 	}
 
   subscribeComponent(subscriber, loadingIndicatorStart) {	
-		if(!loadingIndicatorStart){
-			this.#updater.updateWithState(subscriber,this.#storeData || {});
+    if(!loadingIndicatorStart && this.#presentationSubscribers.length >0){
+			this.#presentationUpdater.updateWithState(subscriber,this.#storeData || {});
 		}
     let i = 0;
     while (i < this.#presentationSubscribers.length) {
@@ -1570,7 +1584,7 @@ class PresentationComponent extends HTMLElement {
 		if (signalPath) {
       const cacheId = `${elementRoot.data_id}-${signalId}`;
 
-      if (!this.#selectorCache.has(cacheId)) {
+      if ( !this.#selectorCache.has(cacheId)) {
 
         element = element.querySelector(signalPath);
         this.#selectorCache.set(cacheId, element);
@@ -1578,8 +1592,15 @@ class PresentationComponent extends HTMLElement {
         element = this.#selectorCache.get(cacheId);
       }
     }
-		
+	
     if (attr === "textcontent") {
+      if(element === null){
+        console.log(elementRoot);
+        console.log(signalPath);
+       console.log(elementRoot.querySelector(signalPath));
+        console.log(this.nodeName);
+        console.log(params);
+      }
       element.innerText = signalData[fieldName];
     }
     else if (attr === "innerHTML") {
@@ -1656,7 +1677,7 @@ class PresentationComponent extends HTMLElement {
     if (!this.#templateItem) {
       this.#setupTemplate();
     }
-
+ 
     const node = this.#templateItem.getFirstNode();
     const templateNode = this.#templateItem.getTemplateNode();
 	

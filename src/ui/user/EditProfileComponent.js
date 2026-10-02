@@ -1,105 +1,63 @@
-import { ApiLoadAction, PresentationComponent } from "/lib/places-js-old.js";
-import {
-  SUCCESS_MESSAGE_KEY,
-  generateErrorMessage,
-  generateSuccessMessage,
-} from "../../shared/html/StatusIndicators.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
 
 import { API_ROOT } from "../shared/Params.js";
 import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
 import { USER_DATA_STORE } from "../../data/user/UserDataStore.js";
+import {EDIT_PROFILE_STORE} from "/data/user/EditProfileStore.js";
 
 customElements.define("image-upload-component", ImageUploadComponent);
 
-const UPDATE_USER_DATA_ID = "update-user-data";
-const USERNAME_INPUT = "username-input";
-const USERNAME_ERROR_TEXT_KEY = "username-error-text";
-
 export class EditProfileComponent extends PresentationComponent {
   constructor() {
-    super([
-      {
-        dataStore: USER_DATA_STORE,
-      },
-    ]);
+    super();
 
-    const self = this;
-    this.addEventListener("click", (event) => {
-      const targetId = event.target?.id;
+    const updateUserProfile = ()=> {
 
-      if (targetId === UPDATE_USER_DATA_ID) {
-        event.preventDefault();
+      const validationErrors = {};
+      const elements = this
+        .getRootNode()
+        .getElementById("update-user-form")?.elements;
+      
+      const imageForm = self.getRootNode().getElementById("image-upload-ui");
 
-        const validationErrors = {};
-        const elements = self
-          .getRootNode()
-          .getElementById("update-user-form")?.elements;
-        const imageForm = self.getRootNode().getElementById("image-upload-ui");
-
-        const username = elements.namedItem(USERNAME_INPUT)?.value;
-        if (!username || username.length === 0) {
-          validationErrors[USERNAME_ERROR_TEXT_KEY] =
-            "Name is a required field";
-        }
-        if (Object.keys(validationErrors).length > 0) {
-          self.updateData(validationErrors);
-          return;
-        }
-        const formData = {
-          username: username,
-          image: imageForm.getImage(),
-          imageFilePath: imageForm.getImageFilePath(),
-        };
-        ApiLoadAction.getResponseData({
-          body: JSON.stringify(formData),
-          method: "PUT",
-          url: API_ROOT + "/user",
-        }).then((response) => {
-          if (response.errorMessage) {
-            self.updateData({
-              ...formData,
-              errorMessage: response.errorMessage,
-              [SUCCESS_MESSAGE_KEY]: "",
-            });
-          } else {
-            self.updateData({
-              ...formData,
-              errorMessage: "",
-              [SUCCESS_MESSAGE_KEY]: "Successfully updated user",
-            });
-          }
+      const username = elements.namedItem(USERNAME_INPUT)?.value;
+      if (!username || username.length === 0) {
+        EDIT_PROFILE_STORE.updateStoreData({
+          "username-error-text":"Name is a required field"
         });
+        return;
       }
-    });
-  }
 
-  render(data) {
-    return `
-      <div class="container-xl"> 
-        <h1>Edit profile</h1>
-        <form id ="update-user-form" onsubmit="return false">
-          <div class="form-section">
-            ${generateSuccessMessage(data?.[SUCCESS_MESSAGE_KEY])}
-            ${generateErrorMessage(data?.errorMessage)}      
-            <label class=" required-field">Name</label>
-              <input
-                id=${USERNAME_INPUT}
-                name=${USERNAME_INPUT}
-                value="${data.username}"
-              >
-              ${generateErrorMessage(data[USERNAME_ERROR_TEXT_KEY])}
-          </div>      
-          <div class ="form-section" id="image-upload">
-            <image-upload-component
-              id="image-upload-ui"
-              image-path="${data.imageFilePath}"
-            ></image-upload-component>
-          </div>  
-          <button class="primary" id=${UPDATE_USER_DATA_ID} type="submit">
-            Submit
-          </button>
-        </form>
-      </div>
-    `;
+      const formData = {
+        username: username,
+        image: imageForm.getImage(),
+        imageFilePath: imageForm.getImageFilePath(),
+      };
+      ApiLoadAction.getResponseData({
+        body: JSON.stringify(formData),
+        method: "PUT",
+        url: API_ROOT + "/user",
+      }).then((response) => {
+        if (response.errorMessage) {
+          EDIT_PROFILE_STORE.updateStoreData({
+            errorMessage: response.errorMessage,
+            successMessage: ""
+          });
+        } else {
+          EDIT_PROFILE_STORE.updateStoreData({
+            errorMessage: "",
+            successmessage: "Successfully updated user"
+          });
+        }
+      });
+    }
+
+    this.setClickEvents({
+			"updateUserProfie":updateUserProfile
+		});
+
+		this.setStore(EDIT_PROFILE_STORE);
+
   }
+ 
 }
