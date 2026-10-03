@@ -980,6 +980,10 @@ class TemplateItem {
     }
   }
 
+  getEventHandlerCount() {
+    return this.#clickTemplateEvents.length + this.#changeTemplateEvents.length;
+  }
+
   setupChangeEventHandlers(events) {
     if (events) {
       this.#changeTemplateHandlers = events;
@@ -1321,15 +1325,15 @@ class TemplateItem {
     }
 
     let template = document.createElement("template");
-    template.innerHTML = templateArr.join("");
-    this.#templateNode = template.content.firstChild;
 
-    console.log(template.innerHTML);
+    const htmlToAdd = templateArr.join("");
+    template.innerHTML = htmlToAdd;
+    this.#templateNode = template.content.firstChild;
+ 
     const handlerAttrs = ["data-click-id", "data-change-id"];
 		
     handlerAttrs.forEach((handlerAttr) => {
       const attrSelector = `[${handlerAttr}]`;
-
 
       this.#templateNode.querySelectorAll(attrSelector).forEach((node) => {
         const clickNum = node.attributes[handlerAttr].value;
@@ -1358,8 +1362,6 @@ class TemplateItem {
         let node = template.content.querySelector(selector);
         let searchNode = node;
 
-        console.log("Starting node:");
-        console.log(searchNode);
         while (searchNode.parentNode.nodeName !== "#document-fragment") {
           for (let j = 0; j < searchNode.parentNode.childNodes.length; j++) {
             if (Object.is(searchNode.parentNode.childNodes[j], searchNode)) {
@@ -1369,10 +1371,7 @@ class TemplateItem {
           searchNode = searchNode.parentNode;
         }
 
-        if(templateStr.includes("form")){
-          console.log(childNodePath);
-          console.log(template.innerHTML);
-        }
+        if(templateStr.includes("form"));
 
         childNodePath = childNodePath.reverse();
         node.attributes.removeNamedItem(signal.signalPath);
@@ -1607,6 +1606,7 @@ class PresentationComponent extends HTMLElement {
       console.log(elementRoot);
       console.log("Element:");
       console.log(element);
+      console.log("Field name:"+fieldName);
     }
     if (attr === "textcontent") {
       element.innerText = signalData[fieldName];
@@ -1870,6 +1870,19 @@ class PresentationComponent extends HTMLElement {
   }
 }
 
+class ShadowDOMComponent extends HTMLElement {
+  connectedCallback() {
+    this.attachShadow({ mode: "open" });
+
+    this.shadowRoot;
+    const template = document.createElement("template");
+
+    template.innerHTML = this.getTemplateStyle() + `<div></div>`;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot.querySelector("div").innerHTML = this.render();
+  }
+}
+
 class StaticComponent extends HTMLElement {
   static #clickSplitRegex = new RegExp('onclick="{', "i");
   #handlerMap = {};
@@ -1909,4 +1922,4 @@ class StaticComponent extends HTMLElement {
   }
 }
 
-export { ApiLoadAction, CustomLoadSignal, DataStore, DataStoreSignal, ItemUpdater, ListUpdater, PresentationComponent, StaticComponent, TemplateItem };
+export { ApiLoadAction, CustomLoadSignal, DataStore, DataStoreSignal, ItemUpdater, ListUpdater, PresentationComponent, ShadowDOMComponent, StaticComponent, TemplateItem };
