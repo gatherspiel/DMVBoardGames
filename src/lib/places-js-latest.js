@@ -1039,6 +1039,7 @@ class TemplateItem {
         clickTemplateEvents,
         clickTemplateHandlers,
       ) {
+
         const getItemIdForEvent = ({ eventItem, key }) => {
           const depth = handlerDepthMap.get(key);
 
@@ -1061,7 +1062,9 @@ class TemplateItem {
               key: key,
             });
 
+            console.log(clickTemplateHandlers);
             const handlerName = clickTemplateEvents[clickId];
+            
             clickTemplateHandlers[handlerName]({
               componentId: componentId,
             });

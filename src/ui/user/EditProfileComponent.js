@@ -18,9 +18,9 @@ export class EditProfileComponent extends PresentationComponent {
         .getRootNode()
         .getElementById("update-user-form")?.elements;
       
-      const imageForm = self.getRootNode().getElementById("image-upload-ui");
+      const imageForm = this.getRootNode().getElementById("image-upload-ui");
 
-      const username = elements.namedItem(USERNAME_INPUT)?.value;
+      const username = elements.namedItem("username-input")?.value;
       if (!username || username.length === 0) {
         EDIT_PROFILE_STORE.updateStoreData({
           "username-error-text":"Name is a required field"
@@ -44,16 +44,17 @@ export class EditProfileComponent extends PresentationComponent {
             successMessage: ""
           });
         } else {
+          console.log("Hi");
           EDIT_PROFILE_STORE.updateStoreData({
             errorMessage: "",
-            successmessage: "Successfully updated user"
+            successMessage: "Successfully updated user"
           });
         }
       });
     }
 
     this.setClickEvents({
-			"updateUserProfie":updateUserProfile
+			"updateUserProfile":updateUserProfile
 		});
 
 		this.setStore(EDIT_PROFILE_STORE);

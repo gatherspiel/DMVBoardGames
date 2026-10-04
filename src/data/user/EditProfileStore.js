@@ -10,10 +10,10 @@ const presentationSignals = {
       return '';
     },
     imageFilePath: (data)=>{
-      console.log(data);
       return data?.userData?.imageFilePath;
     },
     successMessage: (data)=>{
+      console.log(data);
       if(data.successMessage){
         return data.successMessage;
       }
