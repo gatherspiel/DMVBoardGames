@@ -1590,9 +1590,6 @@ class PresentationComponent extends HTMLElement {
       return;
     }
 
-    //let element = elementRoot;
-  
-    console.log(elementRoot);
     let element;
 		if (signalPath) {
       const cacheId = `${elementRoot.data_id}-${signalId}`;

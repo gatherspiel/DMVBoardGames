@@ -19,7 +19,6 @@ const presentationSignals = {
       return data.groupNameErrorMessage;
     },
     notLoggedInMessage: (data)=>{
-      console.log(data);
       if(!data.isLoggedIn){
         console.log("Not logged in");
         return "You must log in to create a group";
