@@ -4,13 +4,13 @@ import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore.js";
 const presentationSignals = {
 	update: {
     displayStyle: (data)=>{
-      if(!data.loginStatus.loggedIn){
+      if(!data?.loginStatus?.loggedIn){
         return "display:none"
       }
       return '';
     },
-    errorMessage: (data)=>{
-      return data.errorMessage;
+    submitErrorMessage: (data)=>{
+      return data.submitErrorMessage;
     },
     groupDescriptionErrorMessage: (data)=>{
       return data.groupDescriptionErrorMessage;
@@ -19,7 +19,9 @@ const presentationSignals = {
       return data.groupNameErrorMessage;
     },
     notLoggedInMessage: (data)=>{
-      if(!data.loginStatus.loggedIn){
+      console.log(data);
+      if(!data.isLoggedIn){
+        console.log("Not logged in");
         return "You must log in to create a group";
       }
       return '';

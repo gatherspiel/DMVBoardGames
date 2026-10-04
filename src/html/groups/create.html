@@ -25,15 +25,17 @@
   </head>
   <body>
     {{>navbar}}
+
     <create-group-component> 
       <div class="container-xl" data-template>
-        <h1>Create group</h1>
+
+        <h1>Create group</h1> 
         <form 
           id="create-group-form" 
           onsubmit="return false" 
-          style={displayStyle}
+          {displayStyle}
         >
-          <div id="form-status-div">
+         <div id="form-status-div">
             <span class="callout success">{successMessage}</span>
             <span class="error-message">{errorMessage}</span>
           </div>
@@ -54,9 +56,7 @@
             <span class="error-message">{groupDescriptionErrorMessage}</span>
           </div>    
           <div id="image-upload-container">
-            <image-upload-component
-              id="image-upload-ui"
-            />
+            <image-upload-component id="image-upload-ui"/>
           </div>
           <div class="form-section">
             <label class="">Url(optional)</label>
@@ -65,26 +65,31 @@
               name="group-url-inpt"
               />
           </div>
-
-          {{>gameTypeTags}}
           <label 
             class="required" 
             for="agree-rules-id">
             I agree to the site rules listed below
           </label>
+          {{>gameTypeTags}}
           <input 
             id="agree-rules-id"  
+            onClick={agreeRules}
             type="checkbox" 
           >
 
-          <button class={submitButtonClass}>Create group</button>`
-          <site-rules-component></site-rules-component>
-          <faq-component></faq-component>
-        </form>
-         ${generateErrorMessage(data.errorMessage)}   
-         <p>{notLoggedInMessage}</p> 
-     </div> 
+          <span class="error-message">{submitErrorMessage}</span>
+          <button class="{submitButtonClass}" onClick={submitEvent}>Create group</button>
 
-      </create-group-component>
+          <p>{notLoggedInMessage}</p>
+        </form>
+        <site-rules-component></site-rules-component>
+        <faq-component></faq-component>
+
+      </div>
+    </create-group-component>
+   
+         
+
+      </div>
   </body>
 </html>

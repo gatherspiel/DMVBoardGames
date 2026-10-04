@@ -594,9 +594,7 @@ class DefaultUpdater {
       subscribers[i].updateFromSubscribedStores();
     }
     return storeUpdates;
-  }
-  
- 
+  } 
 }
 
 class DataStore {
@@ -612,6 +610,7 @@ class DataStore {
 
   #pendingFetch;
 
+  #presentationUpdater;
   #presentationUpdates = {};
   #presentationSignals = {};
   #presentationSubscribers = [];
@@ -622,7 +621,6 @@ class DataStore {
 	#storeName;
 	#updateCallbacks = [];
 
-  #presentationUpdater;
 
   constructor(loadAction, storeName, updater = new DefaultUpdater()) {
 
@@ -1593,7 +1591,8 @@ class PresentationComponent extends HTMLElement {
     }
 
     //let element = elementRoot;
-    
+  
+    console.log(elementRoot);
     let element;
 		if (signalPath) {
       const cacheId = `${elementRoot.data_id}-${signalId}`;
@@ -1621,10 +1620,10 @@ class PresentationComponent extends HTMLElement {
       //Code is temporarily here for debugging.
       if(element === null || element === undefined){
         console.log("Null element");
-        console.log(this.nodeName);
         console.log(fieldName);
-        console.log(elementRoot.innerHTML);
+        console.log("Element root html:"+elementRoot.innerHTML);
         console.log(signalPath);
+        console.log(attr);
       }
       element.setAttribute(attr, `${signalData[fieldName]}`);
     }
