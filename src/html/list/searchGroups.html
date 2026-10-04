@@ -6,9 +6,8 @@
       
       import { PresentationComponent} from "../../lib/places-js-latest.js";
       import { LoadingIndicatorComponent } from "../../shared/components/LoadingIndicatorComponent.js";
-      import { LoginStatusComponent } from "../../ui/shared/LoginStatusComponent.js";
       import { SearchComponent } from "../../ui/list/SearchComponent.js";
-      import { UserActionsComponent } from "../../ui/shared/UserActionsComponent.js";
+      import { UserActionsComponent } from "/ui/user/UserActionsComponent.js";
       import {searchWithDefaultParams} from
       "../../data/list/SearchResultsStore.js";
 		
@@ -19,7 +18,6 @@
         LoadingIndicatorComponent,
       );
 		
-      customElements.define("login-status-component", LoginStatusComponent);
       customElements.define("user-actions-component", UserActionsComponent);	
     </script>
     <meta charset="UTF-8" />

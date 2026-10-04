@@ -5,7 +5,7 @@ import {
   generateSuccessMessage,
 } from "../../shared/html/StatusIndicators.js";
 
-import { API_ROOT } from "../shared/Params.js";
+import { API_ROOT } from "/shared/Params.js";
 import { GROUP_NAME_INPUT } from "./Constants.js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
 

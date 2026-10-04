@@ -22,11 +22,10 @@ import {
   getTagSelectedState,
 } from "../../shared/html/SelectGenerator.js";
 
-import { API_ROOT } from "../shared/Params.js";
+import { API_ROOT } from "/shared/Params.js";
 
 import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
 import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js";
-import { LoginStatusComponent } from "../shared/LoginStatusComponent.js";
 import { RsvpComponent } from "./RsvpComponent.js";
 import { convertDayOfWeekForDisplay } from "../../shared/DisplayNameConversion.js";
 

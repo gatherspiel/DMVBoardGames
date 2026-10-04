@@ -1,12 +1,11 @@
 import { ApiLoadAction, PresentationComponent } from "/lib/places-js-old.js";
-import { LOGIN_FORM_ID, PASSWORD_INPUT, USERNAME_INPUT } from "./Constants.js";
 import {
   SUCCESS_MESSAGE_KEY,
   generateErrorMessage,
   generateSuccessMessage,
 } from "../../shared/html/StatusIndicators.js";
 
-import { API_ROOT } from "../shared/Params.js";
+import { API_ROOT } from "/shared/Params.js";
 import { FaqComponent } from "../static/FaqComponent.js";
 
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";

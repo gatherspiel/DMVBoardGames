@@ -5,7 +5,7 @@ import {
   generateErrorMessage,
   generateSuccessMessage,
 } from "../../shared/html/StatusIndicators.js";
-import { API_ROOT } from "../shared/Params.js";
+import { API_ROOT } from "/shared/Params.js";
 
 export class RsvpComponent extends PresentationComponent {
   #rsvpUrl;

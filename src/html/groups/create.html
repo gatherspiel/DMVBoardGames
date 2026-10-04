@@ -14,17 +14,77 @@
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
 
     <script type="module">
-      import { CreateGroupComponent } from "../../ui/groups/CreateGroupComponent.js";
-      import { LoginStatusComponent } from "../../ui/shared/LoginStatusComponent.js";
+      import { CreateGroupComponent } from "/ui/groups/CreateGroupComponent.js";
+      import { PresentationComponent} from "/lib/places-js-latest.js";
+      import { CREATE_GROUP_STORE} from "/data/groups/CreateGroupStore.js" 
+      import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore.js";
 
       customElements.define("create-group-component", CreateGroupComponent);
-      customElements.define("login-status-component", LoginStatusComponent);
+      customElements.define("presentation-component", PresentationComponent);
     </script>
   </head>
   <body>
-    <div id="container">
-      {{>navbar}}
-      <create-group-component class="ui-section"> </create-group-component>
-    </div>
+    {{>navbar}}
+    <create-group-component> 
+      <div class="container-xl" data-template>
+        <h1>Create group</h1>
+        <form 
+          id="create-group-form" 
+          onsubmit="return false" 
+          style={displayStyle}
+        >
+          <div id="form-status-div">
+            <span class="callout success">{successMessage}</span>
+            <span class="error-message">{errorMessage}</span>
+          </div>
+          <div class="form-section"> 
+            <label class=" required-field">Name</label>
+            <input
+              id="group-name-input"
+              name="group-name-input"
+              />
+            <span class="error-message">{groupNameErrorMessage}</span>
+          </div>  
+          <div class="form-section">
+            <label class=" required-field">Description</label>
+            <textarea
+              id="group-description-input"
+              name="group-description-input"
+            ></textarea>
+            <span class="error-message">{groupDescriptionErrorMessage}</span>
+          </div>    
+          <div id="image-upload-container">
+            <image-upload-component
+              id="image-upload-ui"
+            />
+          </div>
+          <div class="form-section">
+            <label class="">Url(optional)</label>
+            <input
+              id="group-url-input"
+              name="group-url-inpt"
+              />
+          </div>
+
+          {{>gameTypeTags}}
+          <label 
+            class="required" 
+            for="agree-rules-id">
+            I agree to the site rules listed below
+          </label>
+          <input 
+            id="agree-rules-id"  
+            type="checkbox" 
+          >
+
+          <button class={submitButtonClass}>Create group</button>`
+          <site-rules-component></site-rules-component>
+          <faq-component></faq-component>
+        </form>
+         ${generateErrorMessage(data.errorMessage)}   
+         <p>{notLoggedInMessage}</p> 
+     </div> 
+
+      </create-group-component>
   </body>
 </html>

@@ -78,8 +78,7 @@ export const LOGGED_OFF_STATUS_STORE = DataStore.createWithDataStoreSignals(
 			"store":LOGIN_STATUS_STORE
 		}],
 		"presentationSignals": logOffSignals,
-		"storeName": "logged-off-status-store"
-	
+		"storeName": "logged-off-status-store"	
 	}
 )
 

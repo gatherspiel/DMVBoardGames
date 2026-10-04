@@ -17,7 +17,7 @@ export class UserActionsComponent extends HTMLElement {
 			self.innerHTML = `
 				<div class="container-xl">
 					<div> 
-						<a class="btn secondary" href="$/htm/groups/create.html">Create group</a>
+						<a class="btn secondary" href="/html/groups/create.html">Create group</a>
 						<a class="btn secondary" href="/html/user/memberData.html">View my groups and events</a>
 					</div>	
 					<hr>

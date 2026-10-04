@@ -5,7 +5,7 @@ import {
   getDropdown,
 } from "/shared/html/SelectGenerator.js";
 
-import { API_ROOT } from "../../ui/shared/Params.js";
+import { API_ROOT } from "/shared/Params.js";
 import { LOGIN_STORE } from "../user/LoginStore.js";
 
 import { getDisplayName } from "/shared/DisplayNameConversion.js";

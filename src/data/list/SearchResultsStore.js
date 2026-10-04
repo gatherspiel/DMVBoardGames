@@ -1,4 +1,4 @@
-import { API_ROOT } from "../../ui/shared/Params.js";
+import { API_ROOT } from "/shared/Params.js";
 
 import { DEFAULT_SEARCH_PARAMETER } from "../../shared/html/SelectGenerator.js";
 import { DataStore } from "/lib/places-js-latest.js";

@@ -16,6 +16,7 @@ const tags = [
 ];
 
 export const DEFAULT_SEARCH_PARAMETER = "any";
+//Deprecated
 export function getDropdown(dropdownConfig) {
   return ` 
     ${dropdownConfig.state.map(
@@ -47,6 +48,7 @@ export function getDropdownHtml(dropdownConfig) {
     </select>`;
 }
 
+//Deprecated
 export function generateCheckedStateFromUrlParamArray(data) {
   let state = {};
 
@@ -62,6 +64,7 @@ export function generateCheckedStateFromUrlParamArray(data) {
 
 export const DAY_OF_WEEK_INPUT = "day-of-week";
 
+//Deprecated
 export function getDayOfWeekSelectHtml(dayOfWeek) {
   const selectedDayToDisplay =
     dayOfWeek && dayOfWeek.length > 1
@@ -78,6 +81,7 @@ export function getDayOfWeekSelectHtml(dayOfWeek) {
   return html;
 }
 
+//Deprecated
 export function getTagSelectedState(shadowRoot) {
   const selectedTags = {};
 

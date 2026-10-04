@@ -1,6 +1,6 @@
 import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
 
-import { API_ROOT } from "../shared/Params.js";
+import { API_ROOT } from "/shared/Params.js";
 import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
 import { USER_DATA_STORE } from "../../data/user/UserDataStore.js";
 import {EDIT_PROFILE_STORE} from "/data/user/EditProfileStore.js";

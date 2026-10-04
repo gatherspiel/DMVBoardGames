@@ -2,7 +2,7 @@ import {
   AUTH_TOKEN_KEY,
   SUPABASE_CLIENT_KEY,
   SUPABASE_CLIENT_URL,
-} from "../../ui/shared/Params.js";
+} from "/shared/Params.js";
 import { AuthResponse } from "../../ui/user/AuthResponse.js";
 import { CustomLoadSignal,DataStore } from "/lib/places-js-latest.js";
 

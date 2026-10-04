@@ -13,10 +13,9 @@
  
 		<script defer fetchpriority="low" type="module">
       import { FeedbackComponent } from "../ui/FeedbackComponent.js";
-      import { LoginStatusComponent } from "../ui/shared/LoginStatusComponent.js";
-
+      import { PresentationComponent } from "/lib/places-js-latest.js";
       customElements.define("feedback-component", FeedbackComponent);
-      customElements.define("login-status-component", LoginStatusComponent);
+      customElements.define("presentation-component", PresentationComponent);
 
       import { GetGameAdvice } from "../beta/getGameAdvice.js";
       GetGameAdvice();

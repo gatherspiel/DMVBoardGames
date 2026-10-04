@@ -1062,7 +1062,6 @@ class TemplateItem {
               key: key,
             });
 
-            console.log(clickTemplateHandlers);
             const handlerName = clickTemplateEvents[clickId];
             
             clickTemplateHandlers[handlerName]({

@@ -5,7 +5,7 @@ import {
   generateSuccessMessage,
 } from "../shared/html/StatusIndicators.js";
 
-import { API_ROOT } from "./shared/Params.js";
+import { API_ROOT } from "/shared/Params.js";
 
 const ENTER_NAME_INPUT_ID = "enter-name-input-id";
 const ENTER_EMAIL_INPUT_ID = "enter-email-input-id";

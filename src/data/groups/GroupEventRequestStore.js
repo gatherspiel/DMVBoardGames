@@ -1,5 +1,5 @@
 import { ApiLoadAction, DataStore } from "/lib/places-js-latest.js";
-import { API_ROOT } from "../../ui/shared/Params.js";
+import { API_ROOT } from "/shared/Params.js";
 
 function getEventRequestConfig() {
   return {

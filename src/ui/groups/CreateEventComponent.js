@@ -20,10 +20,9 @@ import {
   generateSuccessMessage,
 } from "../../shared/html/StatusIndicators.js";
 import { getEventDetailsFromForm, validate } from "./EventDetailsHandler.js";
-import { API_ROOT } from "../shared/Params.js";
+import { API_ROOT } from "/shared/Params.js";
 
 import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
-import { LoginStatusComponent } from "../shared/LoginStatusComponent.js";
 
 customElements.define("image-upload-component", ImageUploadComponent);
 customElements.define("login-status-component", LoginStatusComponent);
