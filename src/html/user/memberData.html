@@ -12,7 +12,7 @@
     <title>Member data</title>
 
     <script defer fetchpriority="low" type="module">
-      import { LoadingIndicatorComponent } from "../../shared/components/LoadingIndicatorComponent.js";
+      import { LoadingIndicatorComponent } from "/shared/components/LoadingIndicatorComponent.js";
 
 			import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore";
       import * as stores from "/data/user/UserMemberStore.js";
@@ -37,7 +37,7 @@
           <h2>Moderating groups: </h2>
           <ul data-template>
             <li>
-              <a href="/html/groups/groups.html?name={groupNameUri}">
+              <a href="{groupUrl}">
                 {groupName}
               </a>
             </li>

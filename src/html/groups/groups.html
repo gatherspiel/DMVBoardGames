@@ -11,22 +11,83 @@
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <title>GroupSearchResult Information</title>
     <script type="module">
-      import { GroupComponent } from "../../ui/groups/GroupComponent.js";
-      import { LoadingIndicatorComponent } from "../../shared/components/LoadingIndicatorComponent.js";
-
-      customElements.define("group-component", GroupComponent);
+      //import { GroupComponent } from "/ui/groups/GroupComponent.js";
+      import { LoadingIndicatorComponent } from "/shared/components/LoadingIndicatorComponent.js";
+      import * as stores from "/data/groups/GroupInfoStore.js"
+      import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore";
+      import {PresentationComponent} from "/lib/places-js-latest.js";
       customElements.define(
         "loading-indicator-component",
         LoadingIndicatorComponent,
       );
+      customElements.define("presentation-component", PresentationComponent);
       const params = new URLSearchParams(document.location.search);
       document.title = params.get("name");
     </script>
   </head>
   <body>
-    <div id="container">
-      {{>navbar}}
-      <group-component> </group-component>
+    {{>navbar}}
+
+    <div class="container-xl"> 
+      <group-user-actions-component>
+      </group-user-actions-component>
+
+      <presentation-component
+        data-template
+        data-store="group-summary-store" 
+      >  
+        <div class="fade-in-animation ui-section">
+        <h1 id="group-name-header">${groupName}</h1>
+        <a class="secondary btn" href=${groupUrl}">Group website</a>`
+         
+          <div>
+            {groupImage}
+          </div>
+          <div class="group-description">
+            <h2>Group description</h2>
+            <div id="group-description-text">
+              <span>{groupDescription}</span> 
+            </div>
+          </div>
+
+      </presentation-component>
+
+      <presentation-component
+        data-store = "group-weekly-event-store"
+        data-template
+      >
+      <div id=${key} class="event">
+        <a class="btn secondary" href="${url}">${eventData.name}</a> 
+        <rsvp-component
+          current-user-rsvp=${eventData.userHasRsvp}
+          event-id=${eventData.id}
+          rsvp-count=${eventData.rsvpCount}
+          user-can-update-rsvp=${eventData.permissions.userCanRsvp}
+        ></rsvp-component>
+        <p class="event-time">{eventTime}</p>
+        <p class="event-location">${eventData.location}</p>
+      </div>
+      <div class="section-separator-small"></div>
+    </presentation-component>
+   
+    <presentation-component
+      data-store="group-one-time-event-store"
+    >
+
+    </presentation-component>
+    <!--renderOneTimeEventData(eventData, groupId, key) {
+    const url = `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`;
+    return `
+      <div id=${key} class="event">
+        <a class="btn secondary" href=${url}>${eventData.name}</a>   
+        <p class = "event-time">${eventData.startDate} ${eventData.startTime}</p>
+        <p class = "event-location">Location: ${eventData.location}</p>
+      </div>
+      <div class="section-separator-small"></div>
+    `;
+  }
+    -->
+ 
     </div>
   </body>
 </html>
