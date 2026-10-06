@@ -173,13 +173,25 @@ class ItemUpdater {
 	}
 
   updateStoreData(storeUpdates, subscribers, prevStoreData) {
+
     let renderUpdates = {};
+
+    //Logic to support updating specific fields while making sure existing data
+    //for other fields is considered.
+    const stateToCompare = {};
+    Object.keys(prevStoreData).forEach((field)=>{
+      if(!storeUpdates.hasOwnProperty(field)){
+        stateToCompare[field] = prevStoreData[field];
+      }
+    });
+    Object.keys(storeUpdates).forEach((field)=>{
+      stateToCompare[field]=storeUpdates[field]; 
+    });
 
     for (let i = 0; i < this.#topLevelUpdateFields.length; i++) {
       const fieldName = this.#topLevelUpdateFields[i];
       const updateData =
-        this.#presentationSignals.update[fieldName](storeUpdates);
-
+        this.#presentationSignals.update[fieldName](stateToCompare);
       if (!prevStoreData || updateData !== prevStoreData[fieldName]) {
         renderUpdates[fieldName] = updateData;
       }
@@ -190,7 +202,7 @@ class ItemUpdater {
         subscribers[i].updateItem(renderUpdates);
       }
     }
-    return storeUpdates;
+    return stateToCompare;
   }
 }
 
@@ -772,7 +784,7 @@ class DataStore {
   }
 
   updateStoreData(storeUpdates) {
-
+  
     let updates = storeUpdates;
     if(this.#presentationSubscribers.length >0){
       updates = this.#presentationUpdater.updateStoreData(
@@ -1063,6 +1075,7 @@ class TemplateItem {
             const handlerName = clickTemplateEvents[clickId];
             
             clickTemplateHandlers[handlerName]({
+              eventData: e,
               componentId: componentId,
             });
           }
@@ -1653,8 +1666,7 @@ class PresentationComponent extends HTMLElement {
   #setupTemplate() {
 	
     let templateNode = this.querySelector("[data-template]");
-
-		
+	
 		if(!templateNode){
 			if(this.hasAttribute("data-template")){
 				templateNode = this;
@@ -1667,7 +1679,6 @@ class PresentationComponent extends HTMLElement {
     }
 
     templateNode.style.visibility = "inherit";
-
     let templateHTML = templateNode.innerHTML;
 
     templateNode.innerHTML = "";
@@ -1685,15 +1696,16 @@ class PresentationComponent extends HTMLElement {
 
     this.#templateItem.setupClickEventHandlers(this.#clickTemplateEvents);
     this.#templateItem.setupChangeEventHandlers(this.#changeTemplateEvents);
-  }
 
+    this.setAttribute("is-template-setup","true");
+  }
 
   updateItem(state) {
 
     if (!this.#templateItem) {
       this.#setupTemplate();
     }
- 
+
     const node = this.#templateItem.getFirstNode();
     const templateNode = this.#templateItem.getTemplateNode();
 

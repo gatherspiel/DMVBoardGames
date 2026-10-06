@@ -13,14 +13,19 @@ export class CreateGroupComponent extends PresentationComponent {
     
     super();
     
-    const agreeRulesEvent = (e) =>{
-      self.updateStoreData({
-        "agree-rules-id" : e.target.checked,
+    const agreeRules = (e) =>{
+      CREATE_GROUP_STORE.updateStoreData({
+        "agreeRules" : e.eventData.target.checked,
       })
     }
+ 
+    const createGroup = () =>{
 
-    
-    const createGroupEvent = () =>{
+      const data = CREATE_GROUP_STORE.getStoreData()
+      if(!data.agreeRules){
+        return;
+      }
+
       const elements = this
         .getRootNode()
         .getElementById("create-group-form")?.elements; 
@@ -31,28 +36,34 @@ export class CreateGroupComponent extends PresentationComponent {
         "submitErrorMessage":"",
         "submitSuccessMessage":""
       };
-           
+          
+      let fieldError = false;
       const groupName = elements.namedItem("group-name-input")?.value;
       if (!groupName || groupName.length === 0) {
         submitStatus["groupNameErrorMessage"] = "Name is a required field";
+        fieldError = true;
       }
  
       const groupDescription = elements.namedItem("group-description-input")?.value;
       if (!groupDescription || groupDescription.length === 0) {
         submitStatus["groupDescriptionErrorMessage"] = "Description is a required field";
+        fieldError = true;
       }
-      
+     
+      if(fieldError){
+        CREATE_GROUP_STORE.updateStoreData(submitStatus);
+        return;
+      }
+
       const requestBody =  
         JSON.stringify({
-          id: self.componentStore.id,
           name: groupName,
           description: groupDescription,
-          image: self
-            .getRootNode()
-            .getElementById("image-upload-ui")
+          image: this
+            .querySelector("#image-upload-ui")
             .getAttribute("image-path"),
           url: elements.namedItem("group-url-input")?.value,
-          gameTypeTags: Object.keys(getTagSelectedState(self.getRootNode())),
+          gameTypeTags: Object.keys(getTagSelectedState(this.getRootNode())),
         });
 
         
@@ -63,20 +74,18 @@ export class CreateGroupComponent extends PresentationComponent {
         }).then((data) => {
           if (data.errorMessage) {
             submitStatus["submitErrorMessage"]=data.errorMessage;
-            self.updateStoreData(submitStatus);
+            this.updateStoreData(submitStatus);
           } else {
-            submitStatus["successMessage"]=`
-              Successfully created group. A site admin will review the group information before the group is visible on
-    dmvboardgames.com. Email gulu@createthirdplaces.org if you have any questions or comments.           
+            submitStatus["successMessage"]=`Successfully created group. A site admin will review the group information before the group is visible on dmvboardgames.com.
             `;
-            self.updateStoreData(submitStatus);
+            CREATE_GROUP_STORE.updateStoreData(submitStatus);
         }
       });
     }
 
     this.setClickEvents({
-      "agreeRulesEvent": agreeRulesEvent,
-      "createGroupEvent":createGroupEvent
+      "agreeRules": agreeRules,
+      "createGroup":createGroup
     });
     this.setStore(CREATE_GROUP_STORE);
 

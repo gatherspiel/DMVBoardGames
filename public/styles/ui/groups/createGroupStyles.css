@@ -1,3 +1,7 @@
+create-group-component:not([is-template-setup="true"]) {
+  display:none;  
+}
+
 button {
   display: block;
 }

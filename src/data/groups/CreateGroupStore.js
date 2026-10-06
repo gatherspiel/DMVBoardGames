@@ -20,7 +20,6 @@ const presentationSignals = {
     },
     notLoggedInMessage: (data)=>{
       if(!data.isLoggedIn){
-        console.log("Not logged in");
         return "You must log in to create a group";
       }
       return '';
@@ -34,6 +33,11 @@ const presentationSignals = {
     successMessage: (data)=>{
       return data.successMessage;
     },
+    successMessageClass: (data)=>{
+      if(data.successMessage){
+        return "callout success";
+      }
+    }
 	}
 }
 export const CREATE_GROUP_STORE = DataStore.createWithDataStoreSignals({
