@@ -65,8 +65,7 @@ export class CreateGroupComponent extends PresentationComponent {
           url: elements.namedItem("group-url-input")?.value,
           gameTypeTags: Object.keys(getTagSelectedState(this.getRootNode())),
         });
-
-        
+ 
         ApiLoadAction.getResponseData({
           body: requestBody,
           method: "POST",

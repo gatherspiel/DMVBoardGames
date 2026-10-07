@@ -64,15 +64,18 @@ export const GROUP_WEEKLY_EVENT_STORE = DataStore.createWithDataStoreSignals({
           return `/html/groups/event.html?id=${eventId}&groupId=${groupId}`
         },
         "userCanRsvp": (data)=>data.permissions.userCanRsvp,
-        "userHasRsvp":(data)=>data.userHasRsvp,
-        
+        "userHasRsvp":(data)=>data.userHasRsvp,        
       }
     }
   },
   storeSignals:[{
     "fieldName": "data",
     "selector": (data)=>{
+
       const events = []
+      if(!data.weeklyEventData){
+        return events;
+      }
       data.weeklyEventData.forEach((event)=>{
         event.groupId = data.groupId;
         events.push(event);
@@ -115,6 +118,9 @@ export const GROUP_ONE_TIME_EVENT_STORE = DataStore.createWithDataStoreSignals({
     "fieldName": "data",
     "selector": (data)=>{
       const events = []
+      if(!data.oneTimeEventData){
+        return [];
+      }
       data.oneTimeEventData.forEach((event)=>{
         event.groupId = data.groupId;
         events.push(event);
@@ -144,13 +150,21 @@ export const USER_GROUP_ACTION_STORE = DataStore.createWithDataStoreSignals({
   storeName:"user-group-action-store"
 });
 
-
 export const EDIT_GROUP_STORE = DataStore.createWithDataStoreSignals({
   presentationSignals:{
     update: { 
       "groupDescriptionError":(data)=>data?.errors?.groupDescriptionError,
       "groupNameError":(data)=>data?.errors?.groupNameError,
-      
+      "saveErrorMessage":(data)=>data.saveErrorMessage,
+      "successStyle":(data)=>{
+        return data?.successMessage?.length>0 ? "callout success" : "";
+      },
+      "successMessage":(data)=>{
+        if(data.successMesasge){
+          return data.successMessage;
+        }
+        return '';
+      }
     }
   },
   storeSignals:[{

@@ -44,7 +44,6 @@ export class EditProfileComponent extends PresentationComponent {
             successMessage: ""
           });
         } else {
-          console.log("Hi");
           EDIT_PROFILE_STORE.updateStoreData({
             errorMessage: "",
             successMessage: "Successfully updated user"

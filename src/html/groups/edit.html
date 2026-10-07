@@ -6,20 +6,22 @@
 
     <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
     <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
-    <link rel="stylesheet" href="/styles/ui/groups/groupStyles.css" />
+    <link rel="stylesheet" href="/styles/ui/groups/editGroupStyles.css" />
 
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <script type="module">
       import { GroupEditComponent } from "/ui/groups/EditGroupComponent.js";
-      import { LoadingIndicatorComponent } from "/shared/components/LoadingIndicatorComponent.js";
-      import * as stores from "/data/groups/GroupInfoStore.js"
-      import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore";
+      import { ImageUploadComponent } from
+      "/shared/components/ImageUploadComponent.js";
+      import { LoadingIndicatorComponent } from "/shared/components/LoadingIndicatorComponent.js"; 
       import {PresentationComponent} from "/lib/places-js-latest.js";
-      customElements.define(
-        "loading-indicator-component",
-        LoadingIndicatorComponent,
-      );
+
+      import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore";
+      
+      import * as stores from "/data/groups/GroupInfoStore.js"
+      
       customElements.define("group-edit-component", GroupEditComponent);
+      customElements.define("image-upload-component", ImageUploadComponent);
       customElements.define("presentation-component", PresentationComponent);
 
       const params = new URLSearchParams(document.location.search);
@@ -34,23 +36,24 @@
       <h2>Edit group information</h2> 
       <group-edit-component
         data-template
-        data-store="edit-group-store"
       >
-      <form id="edit-group-form">
+      <form id="edit-group-form" onsubmit="return false">
+        <span class={successStyle}>{successMessage}</span>
+        <span class="error-message">{saveErrorMessage}</span>
         <div class="form-section">
           <label class="required-field">Name</label>
           <input
-            id="group-name-id"
-            value={groupName}
+            id="group-name-input"
+            value={name}
           />
           <span class="error-message">{groupNameError}</span>
         </div>
         <div class="form-section">
-          <label class=" required-field">Description</label>
+          <label class="required-field">Description</label>
           <textarea
               id="group-description-input"
           />
-            ${description}
+            {description}
           </textarea>    
           <span class="error-message">{groupDescriptionError}</span>
         </div>
@@ -70,8 +73,13 @@
           />
         </div>
         {{>gameTypeTags}}
-        <button class="primary" id="save-updates-button-id">Save</button>
-        <button class="primary" id="cancel-updates-button-id">Cancel</button> 
+        <button 
+          class="primary" 
+          id="save-updates-button-id"
+          onClick={updateGroup}
+        >
+          Save
+        </button>
       </form>`;
       </group-edit-component>
 

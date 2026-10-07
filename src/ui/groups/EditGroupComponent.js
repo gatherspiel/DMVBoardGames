@@ -3,216 +3,92 @@ import {
   DataStore,
   PresentationComponent,
 } from "/lib/places-js-latest.js";
-import {
-  ERROR_MESSAGE_KEY,
-  SUCCESS_MESSAGE_KEY,
-  generateErrorMessage,
-  generateSuccessMessage,
-} from "../../shared/html/StatusIndicators.js";
 
-import {
-  GROUP_DESCRIPTION,
-  GROUP_DESCRIPTION_INPUT,
-  GROUP_NAME_INPUT,
-  GROUP_URL_INPUT,
-} from "./Constants.js";
+import { API_ROOT } from "/shared/Params.js";
+
+import {EDIT_GROUP_STORE} from "/data/groups/GroupInfoStore.js"
 
 import {
   getGameTypeTagSelectHtml,
   getTagSelectedState,
-} from "../../shared/html/SelectGenerator.js";
+} from "/shared/html/SelectGenerator.js";
 
-import { API_ROOT } from "/shared/Params.js";
 
-import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
-import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js";
-import { RsvpComponent } from "./RsvpComponent.js";
-import { convertDayOfWeekForDisplay } from "../../shared/DisplayNameConversion.js";
-
-customElements.define("image-upload-component", ImageUploadComponent);
-
-const CANCEL_UPDATES_BUTTON_ID = "cancel-updates";
-const EDIT_GROUP_BUTTON_ID = "edit-group-button";
-const JOIN_GROUP_BUTTON_ID = "join-group-button";
-const SAVE_UPDATES_BUTTON_ID = "save-updates";
-
-const DESCRIPTION_ERROR_TEXT_KEY = "descriptionErrorText";
-const NAME_ERROR_TEXT_KEY = "nameErrorText";
-
-const groupDataStore = new DataStore(
-  new ApiLoadAction(() => {
-    const name =
-      new URLSearchParams(document.location.search).get("name") ?? "";
-    return {
-      url: API_ROOT + `/groups/?name=${encodeURIComponent(name)}`,
-    };
-  }),
-);
 export class GroupEditComponent extends PresentationComponent {
   constructor() {
-    super(
-      [
-        {
-          componentReducer: (groupData) => {
-            return {
-              ...groupData,
-              [SUCCESS_MESSAGE_KEY]: "",
-            };
-          },
-          dataStore: groupDataStore,
-        },
-      ],
-      LOADING_INDICATOR_CONFIG,
-    );
+    super();
 
-    groupDataStore.fetchData();
-    const self = this;
+    const updateGroup = ()=>{
 
-    this.addEventListener("click", (event) => {
-      const targetId = event.target?.id;
-
-      if (!event.target.type === "checkbox") {
-        event.preventDefault();
+      const elements = this
+        .getRootNode()
+        .getElementById("edit-group-form")?.elements; 
+      
+      const validationErrors = {};
+      const groupDescription = this
+        .getRootNode()
+        .getElementById("group-description-input")?.value.trim();
+     
+      console.log(groupDescription.length);
+      if (!groupDescription || groupDescription.length === 0) {
+        validationErrors["groupDescriptionError"] = "Description is a required field";
       }
 
-      if (targetId === JOIN_GROUP_BUTTON_ID) {
-        const userIsMember = self.componentStore.permissions?.userIsMember;
-        const apiMethod = userIsMember ? "DELETE" : "POST";
+      const groupName = this
+        .getRootNode()
+        .getElementById("group-name-input")?.value;
+      
+      if (!groupName || groupName.length === 0) {
+        validationErrors["groupNameError"] = "Name is a required field";
+      }
 
-        ApiLoadAction.getResponseData({
-          method: apiMethod,
-          url: API_ROOT + `/user/memberData/group/${self.componentStore.id}`,
-        }).then((response) => {
-          const error = response[ERROR_MESSAGE_KEY];
-          if (!error) {
-            let permissions = Object.assign(
-              {},
-              self.componentStore.permissions,
-            );
-            permissions.userIsMember = !userIsMember;
-            self.updateData({
-              [ERROR_MESSAGE_KEY]: "",
-              [SUCCESS_MESSAGE_KEY]: "",
-              permissions: permissions,
-            });
-          } else {
-            self.updateData({
-              [ERROR_MESSAGE_KEY]: error,
-              [SUCCESS_MESSAGE_KEY]: "",
-            });
-          }
+      if (Object.keys(validationErrors).length > 0) {
+        console.log("errors");
+        EDIT_GROUP_STORE.updateStoreData({
+          "errors":validationErrors
         });
-      } else if (targetId === EDIT_GROUP_BUTTON_ID) {
-        self.updateData({
-          isEditing: true,
-          [DESCRIPTION_ERROR_TEXT_KEY]: "",
-          [ERROR_MESSAGE_KEY]: "",
-          [NAME_ERROR_TEXT_KEY]: "",
-          [SUCCESS_MESSAGE_KEY]: "",
-        });
-      } else if (targetId === CANCEL_UPDATES_BUTTON_ID) {
-        self.updateData({
-          isEditing: false,
-        });
-      } else if (targetId === SAVE_UPDATES_BUTTON_ID) {
-        const validationErrorState = { [SUCCESS_MESSAGE_KEY]: "" };
-        const groupName = self
-          .getRootNode()
-          .getElementById(GROUP_NAME_INPUT)?.value;
-        if (!groupName || groupName.length === 0) {
-          validationErrorState[NAME_ERROR_TEXT_KEY] =
-            "Name is a required field";
-        }
-        const groupDescription = self
-          .getRootNode()
-          .getElementById(GROUP_DESCRIPTION_INPUT)?.value;
-        if (!groupDescription || groupDescription.length === 0) {
-          validationErrorState[DESCRIPTION_ERROR_TEXT_KEY] =
-            "Description is a required field";
-        }
+        return;
+      }
 
-        const imageForm = self.getRootNode().getElementById("image-upload-ui");
-        const params = {
-          description: groupDescription,
-          gameTypeTags: Object.keys(getTagSelectedState(self.getRootNode())),
-          image: imageForm.getImage(),
-          imageFilePath: imageForm.getImageFilePath(),
-          id: self.componentStore.id,
+      const storeData = EDIT_GROUP_STORE.getStoreData()
+      const params =  
+        JSON.stringify({
+          id: storeData.id,
           name: groupName,
-          url: self.getRootNode().getElementById(GROUP_URL_INPUT)?.value,
-        };
-        if (Object.keys(validationErrorState).length > 1) {
-          self.updateData({ ...validationErrorState, ...params });
-          return;
-        }
-        ApiLoadAction.getResponseData({
-          body: JSON.stringify(params),
-          method: "PUT",
-          url: API_ROOT + `/groups/?name=${encodeURIComponent(params.name)}`,
-        }).then((data) => {
-          if (!data.errorMessage) {
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
-            self.updateData({
-              ...params,
-              isEditing: false,
-              imagePath: params.image || params.imageFilePath,
-              [SUCCESS_MESSAGE_KEY]: "Group update successful",
-            });
-          } else {
-            self.updateData({
-              ...params,
-              [ERROR_MESSAGE_KEY]: data.errorMessage,
-            });
-          }
+          description: groupDescription,
+          image: this
+            .querySelector("#image-upload-ui")
+            .getAttribute("image-path"),
+          url: elements.namedItem("group-url-input")?.value,
+          gameTypeTags: Object.keys(getTagSelectedState(this.getRootNode())),
         });
-      }
-    });
-  }
 
-  
-  renderEditMode(groupData) {
-    return `
-      <h2>Edit group information</h2> 
-      <form id="edit-group-form">
-        <div class="form-section">
-          <label class=" required-field">Name</label>
-          <input
-            id=${GROUP_NAME_INPUT}
-            value="${groupData.name}"
-          />
-          ${generateErrorMessage(groupData[NAME_ERROR_TEXT_KEY])}
-        </div>
-        <div class="form-section">
-          <label class=" required-field">Description</label>
-          <textarea
-            id=${GROUP_DESCRIPTION_INPUT}
-          />${groupData.description}</textarea>    
-          ${generateErrorMessage(groupData[DESCRIPTION_ERROR_TEXT_KEY])}
-        </div>
+      console.log(encodeURIComponent(groupName));
+      ApiLoadAction.getResponseData({
+        body: params,
+        method: "PUT",
+        url: API_ROOT + `/groups/?name=${encodeURIComponent(groupName)}`,
+      }).then((data) => {
+        if (!data.errorMessage) {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+          EDIT_GROUP_STORE.updateStoreData({
+            "successMessage": "Group update successful"
+          });
+        } else {
+          EDIT_GROUP_STORE.updateStoreData({
+            "saveErrorMessage": data.errorMessage
+          });
+        }
+      });
+    }
 
-        <label class="">Image(optional)</label> 
-        <div class ="form-section" id="image-upload">
-          <image-upload-component
-            id="image-upload-ui"
-            image-path="${groupData.imagePath}"
-          ></image-upload-component>
-        </div>    
-        <div class="form-section">
-          <label class="">Url</label>
-          <input
-            id=${GROUP_URL_INPUT}
-            value="${groupData.url}"
-          />
-        </div>
+    this.setClickEvents({
+			"updateGroup":updateGroup
+		});
 
-        ${getGameTypeTagSelectHtml(groupData.gameTypeTags)}
-        <button class="primary" id=${SAVE_UPDATES_BUTTON_ID}>Save</button>
-        <button class="primary" id=${CANCEL_UPDATES_BUTTON_ID}>Cancel</button> 
-      </form>`;
-  }
-
- 
+		this.setStore(EDIT_GROUP_STORE);
+  }   
 }

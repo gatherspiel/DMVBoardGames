@@ -197,6 +197,13 @@ class ItemUpdater {
       }
     }
 
+    //Add non reactive fields.
+    Object.keys(storeUpdates).forEach((field)=>{
+      if(!renderUpdates[field]){
+        renderUpdates[field] = storeUpdates[field];
+      }
+    });
+
     if (Object.keys(storeUpdates).length > 0) {
       for (let i = 0; i < subscribers.length; i++) {
         subscribers[i].updateItem(renderUpdates);
@@ -1017,8 +1024,8 @@ class TemplateItem {
         templateRoot.addEventListener("change", (e) => {
           const changeId =
             e.target.getAttribute("data-change-id") ||
-            e.target.parentNode.getAttribute("data-change-id") ||
-            e.target.parentNode.parentNode.getAttribute("data-change-id");
+            e.target.parentNode?.getAttribute("data-change-id") ||
+            e.target.parentNode?.parentNode.getAttribute("data-change-id");
           if (changeId) {
             const key = "data-click-id_" + changeId;
             const componentId = getItemIdForEvent({
@@ -1064,8 +1071,8 @@ class TemplateItem {
         templateRoot.addEventListener("click", (e) => {
           const clickId =
             e.target.getAttribute("data-click-id") ||
-            e.target.parentNode.getAttribute("data-click-id") ||
-            e.target.parentNode.parentNode.getAttribute("data-click-id");
+            e.target.parentNode?.getAttribute("data-click-id") ||
+            e.target.parentNode?.parentNode.getAttribute("data-click-id");
 
           if (clickId) {
             const key = "data-click-id_" + clickId;
