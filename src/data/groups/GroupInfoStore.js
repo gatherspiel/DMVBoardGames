@@ -12,28 +12,30 @@ function getGroupDataConfig() {
 
 export const GROUP_STORE = new DataStore(
   new ApiLoadAction(getGroupDataConfig),
+  "group-store"
 );
 
 GROUP_STORE.fetchData();
 
 export const GROUP_SUMMARY_STORE = DataStore.createWithDataStoreSignals({
   presentationSignals:{
-    data: {
-      update: {
-        "groupDescription":(data)=>data.groupDescription,
-        "groupName":(data)=>data.groupName,
-        "groupUrl":(data)=>data.groupUrl, 
-        "groupImage":(data)=>{
-          if(data.imagePath){
-            return `<img id="group-image" src="${data.imagePath}"/>`
-          }
-          return "";
+    update: {
+      "description":(data)=>{
+        return data.description
+      },
+      "name":(data)=>{
+        return data.name;
+      },
+      "url":(data)=>data.groupUrl, 
+      "groupImage":(data)=>{
+        if(data.imagePath){
+          return `<img id="group-image" src="${data.imagePath}"/>`
         }
+        return "";
       }
     }
   },
   storeSignals:[{
-    "fieldName": "data",
     "store":GROUP_STORE,
   }],
   storeName:"group-summary-store"
@@ -70,7 +72,7 @@ export const GROUP_WEEKLY_EVENT_STORE = DataStore.createWithDataStoreSignals({
     "fieldName": "data",
     "selector": (data)=>{
       const events = []
-      data.events.forEach((event)=>{
+      data.weeklyEventData.forEach((event)=>{
         event.groupId = data.groupId;
         events.push(event);
       });
@@ -94,7 +96,7 @@ export const GROUP_ONE_TIME_EVENT_STORE = DataStore.createWithDataStoreSignals({
     "fieldName": "data",
     "selector": (data)=>{
       const events = []
-      data.oneTimeEvents.forEach((event)=>{
+      data.oneTimeEventData.forEach((event)=>{
         event.groupId = data.groupId;
         events.push(event);
       });

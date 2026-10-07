@@ -1,5 +1,9 @@
 }/* Styles that are shared with components */
 
+presentation-component:not([is-template-setup="true"]) {
+  display:none;  
+}
+
 #form-status-div {
   height: 2.5rem;
 }

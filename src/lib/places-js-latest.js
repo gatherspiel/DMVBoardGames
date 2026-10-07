@@ -202,6 +202,7 @@ class ItemUpdater {
         subscribers[i].updateItem(renderUpdates);
       }
     }
+
     return stateToCompare;
   }
 }
@@ -784,7 +785,7 @@ class DataStore {
   }
 
   updateStoreData(storeUpdates) {
-  
+ 
     let updates = storeUpdates;
     if(this.#presentationSubscribers.length >0){
       updates = this.#presentationUpdater.updateStoreData(
@@ -802,9 +803,8 @@ class DataStore {
       this.#storeData[field] = updates[field];
     });
 
-
 		for(let i=0; i < this.#updateCallbacks.length; i++){
-			this.#updateCallbacks[i](this.#storeData);
+			this.#updateCallbacks[i](structuredClone(this.#storeData));
 		}
   }
 
@@ -895,27 +895,29 @@ class DataStore {
 				this.#dataStoreSubscribers.forEach((fieldName, subscriber)=>{
 
           const selector = this.#dataStoreSubscriberSelectors.get(subscriber);
+
+          let storeUpdate = structuredClone(response);
+
           if(selector){
-            response = selector(response);
+            storeUpdate = selector(storeUpdate);
           }
 
-          if(!response){
-            response = {};
+          if(!storeUpdate){
+            storeUpdate = {};
           }
+
           if(fieldName){
             subscriber.updateStoreData({
-              [fieldName]: structuredClone(response)
+              [fieldName]: storeUpdate
             });
           } else {
-            subscriber.updateStoreData(structuredClone(response));
+            subscriber.updateStoreData(storeUpdate);
           }
 				});
 			}
-			
-			
+						
       return response;
     }
-
 
     const data = await Promise.resolve(this.#pendingFetch);
     return data; 

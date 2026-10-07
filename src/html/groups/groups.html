@@ -37,19 +37,18 @@
         data-store="group-summary-store" 
       >  
         <div class="fade-in-animation ui-section">
-        <h1 id="group-name-header">${groupName}</h1>
-        <a class="secondary btn" href=${groupUrl}">Group website</a>`
-         
+          <h1 id="group-name-header">{name}</h1>
+          <a class="secondary btn" href={url}>Group website</a>
           <div>
             {groupImage}
           </div>
           <div class="group-description">
             <h2>Group description</h2>
             <div id="group-description-text">
-              <span>{groupDescription}</span> 
+              <span>{description}</span> 
             </div>
           </div>
-
+        </div>
       </presentation-component>
 
       <presentation-component
