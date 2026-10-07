@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
+    <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
+    <link rel="stylesheet" href="/styles/ui/groups/groupStyles.css" />
+
+    <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
+    <script type="module">
+      import { GroupEditComponent } from "/ui/groups/EditGroupComponent.js";
+      import { LoadingIndicatorComponent } from "/shared/components/LoadingIndicatorComponent.js";
+      import * as stores from "/data/groups/GroupInfoStore.js"
+      import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore";
+      import {PresentationComponent} from "/lib/places-js-latest.js";
+      customElements.define(
+        "loading-indicator-component",
+        LoadingIndicatorComponent,
+      );
+      customElements.define("group-edit-component", GroupEditComponent);
+      customElements.define("presentation-component", PresentationComponent);
+
+      const params = new URLSearchParams(document.location.search);
+      document.title = "Editing group: "+params.get("name");
+    </script>
+  </head>
+  <body>
+    {{>navbar}}
+
+    <div class="container-xl"> 
+
+      <h2>Edit group information</h2> 
+      <group-edit-component
+        data-template
+        data-store="edit-group-store"
+      >
+      <form id="edit-group-form">
+        <div class="form-section">
+          <label class="required-field">Name</label>
+          <input
+            id="group-name-id"
+            value={groupName}
+          />
+          <span class="error-message">{groupNameError}</span>
+        </div>
+        <div class="form-section">
+          <label class=" required-field">Description</label>
+          <textarea
+              id="group-description-input"
+          />
+            ${description}
+          </textarea>    
+          <span class="error-message">{groupDescriptionError}</span>
+        </div>
+
+        <label class="">Image(optional)</label> 
+        <div class ="form-section" id="image-upload">
+          <image-upload-component
+            id="image-upload-ui"
+            image-path="{imagePath}"
+          ></image-upload-component>
+        </div>    
+        <div class="form-section">
+          <label class="">Url</label>
+          <input
+            id="group-url-input"
+            value={groupData.url}
+          />
+        </div>
+        {{>gameTypeTags}}
+        <button class="primary" id="save-updates-button-id">Save</button>
+        <button class="primary" id="cancel-updates-button-id">Cancel</button> 
+      </form>`;
+      </group-edit-component>
+
+ 
+    </div>
+  </body>
+</html>

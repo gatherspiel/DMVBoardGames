@@ -1,6 +1,6 @@
 import { ApiLoadAction, DataStore } from "/lib/places-js-latest.js";
 import { API_ROOT } from "/shared/Params.js";
-
+import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore";
 const name =
   new URLSearchParams(document.location.search).get("name") ?? "";
 
@@ -47,6 +47,7 @@ export const GROUP_WEEKLY_EVENT_STORE = DataStore.createWithDataStoreSignals({
     data: {
       update: {
         "eventTime":(data)=>{
+          console.log(data);
           const dayString = convertDayOfWeekForDisplay(data.day);
           return `${dayString}s from ${data.startTime} to ${data.endTime}`
         },
@@ -84,11 +85,29 @@ export const GROUP_WEEKLY_EVENT_STORE = DataStore.createWithDataStoreSignals({
 });
 
 
-//TODO: ADD updates here
 export const GROUP_ONE_TIME_EVENT_STORE = DataStore.createWithDataStoreSignals({
   presentationSignals:{
     data: {
       update: { 
+        "eventTime":(data)=>{
+          console.log(data);
+          const dayString = convertDayOfWeekForDisplay(data.day);
+          return `${dayString}s from ${data.startTime} to ${data.endTime}`
+        },
+        "key":(data)=>{
+          return `${data.groupId}-event-${data.id}`
+        },
+        "location":(data)=>{
+          return data.location
+        },
+        "rsvpCount": (data)=>data.rsvpCount,
+        "url": (data)=>{
+          const eventId = encodeUriComponent(data.id);
+          const groupId = encodeUriComponent(data.groupId);
+          return `/html/groups/event.html?id=${eventId}&groupId=${groupId}`
+        },
+        "userCanRsvp": (data)=>data.permissions.userCanRsvp,
+        "userHasRsvp":(data)=>data.userHasRsvp,
       }
     }
   },
@@ -105,4 +124,37 @@ export const GROUP_ONE_TIME_EVENT_STORE = DataStore.createWithDataStoreSignals({
     "store":GROUP_STORE
   }],
   storeName:"group-one-time-event-store"
+});
+
+
+export const USER_GROUP_ACTION_STORE = DataStore.createWithDataStoreSignals({
+  presentationSignals:{
+    update: { 
+      "encodedGroupName": (data)=>encodeURIComponent(data.name),    
+      "encodedId": (data)=>encodeURIComponent(data.id),
+      "joinGroupText":(data)=>data.permissions.userIsMember ? "Leave group": "Join group",
+      "loggedIn":(data)=>{
+        return data.permissions.userCanUpdateGroupMembership ? "visible" : "hidden"
+      }
+    }
+  },
+  storeSignals:[{
+    "store":GROUP_STORE
+  }],
+  storeName:"user-group-action-store"
+});
+
+
+export const EDIT_GROUP_STORE = DataStore.createWithDataStoreSignals({
+  presentationSignals:{
+    update: { 
+      "groupDescriptionError":(data)=>data?.errors?.groupDescriptionError,
+      "groupNameError":(data)=>data?.errors?.groupNameError,
+      
+    }
+  },
+  storeSignals:[{
+    "store":GROUP_STORE
+  }],
+  storeName:"edit-group-store"
 });

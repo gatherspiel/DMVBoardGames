@@ -29,9 +29,43 @@
     {{>navbar}}
 
     <div class="container-xl"> 
-      <group-user-actions-component>
-      </group-user-actions-component>
+      <presentation-component
+        data-template
+        data-store="user-group-action-store"
+      >
+        <div visibility={loggedIn}>
+          <a 
+            class="btn secondary"
+            href="/html/groups/editGroup.html?name={encodedGroupName}&groupId={encodedGroupId}"
+            id="edit-group-button-id"
+            visibility={canEdit}
+          >
+            Edit group information
+          </a>
+          <a 
+            class="btn secondary"
+            href="/html/groups/addEvent.html?name={encodedGroupName}&groupId={encodedGroupId}"
+            visibility={canEdit} 
+          >
+            Add event
+          </a>
+          <a 
+            class="btn secondary"
+            href="/html/groups/delete.html?name={encodedGroupName}&id={encodedGroupId}"
+            visibility="{canEdit}"
+          >
+            Delete group
+          </a>
+             
+          <a 
+            class="btn secondary" 
+            href="/html/groups/join.html?name={encodedGroupName}&id={encodedGroupId}"
+            id="join-group-id">
+              {joinGroupText}
+          </a>
+        </div> 
 
+      </presentation-component>
       <presentation-component
         data-template
         data-store="group-summary-store" 

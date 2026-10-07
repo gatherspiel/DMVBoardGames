@@ -19,7 +19,6 @@ export const MODERATING_GROUPS_STORE = DataStore.createWithDataStoreSignals({
     data: {
       update: {
         "groupUrl":(data)=>{
-          console.log(data);
           return `/html/groups/groups.html?name=${encodeURIComponent(data.name)}`
         },
         "groupName":(data)=>data.name
