@@ -132,13 +132,25 @@ export const GROUP_ONE_TIME_EVENT_STORE = DataStore.createWithDataStoreSignals({
   storeName:"group-one-time-event-store"
 });
 
-
-export const USER_GROUP_ACTION_STORE = DataStore.createWithDataStoreSignals({
+ export const USER_GROUP_ACTION_STORE = DataStore.createWithDataStoreSignals({
   presentationSignals:{
     update: { 
+      "addEventUrl":(data)=>{
+        return `/html/groups/addEvent.html?name=${encodeURIComponent(data.name)}&id=${encodeURIComponent(data.id)}`;
+      },
+      "deleteGroupUrl":(data)=>{
+        return `/html/groups/delete.html?name=${encodeURIComponent(data.name)}&id=${encodeURIComponent(data.id)}`;
+      },
+      "editGroupUrl":(data)=>{
+        return `/html/groups/edit.html?name=${encodeURIComponent(data.name)}&groupId=${encodeURIComponent(data.id)}`;
+      },
       "encodedGroupName": (data)=>encodeURIComponent(data.name),    
       "encodedId": (data)=>encodeURIComponent(data.id),
       "joinGroupText":(data)=>data.permissions.userIsMember ? "Leave group": "Join group",
+      "joinGroupUrl":(data)=>{
+        return `/html/groups/join.html?name=${encodeURIComponent(data.name)}&groupId=${encodeURIComponent(data.id)}`;
+
+      },
       "loggedIn":(data)=>{
         return data.permissions.userCanUpdateGroupMembership ? "visible" : "hidden"
       }

@@ -1,4 +1,4 @@
-import { ApiLoadAction, PresentationComponent } from "/lib/places-js-old.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
 import {
   SUCCESS_MESSAGE_KEY,
   generateErrorMessage,
@@ -11,62 +11,59 @@ import { LOGIN_STORE } from "../../data/user/LoginStore.js";
 
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 
+import {DELETE_GROUP_STORE} from "/data/groups/DeleteGroupStore.js";
+
 export class DeleteGroupComponent extends PresentationComponent {
   constructor() {
-    super([
-      {
-        dataStore: LOGIN_STORE,
-      },
-    ]);
+  
+    super();
+    const deleteGroup = ()=> { 
+      const groupName = self
+        .getRootNode()
+        .getElementById(GROUP_NAME_INPUT)
+        ?.value.trim();
+      
+      
+      if (groupName !== DELETE_GROUP_STORE.getStoreData().existingGroupName) {
+        DELETE_STORE_DATA.updateStoreData({
+          name: groupName,
+          errorMessage: "Group name not entered correctly",
+        });
+      } else {
+        const id =
+          new URLSearchParams(document.location.search).get("id") ?? "";
+        const params = {
+          method: "DELETE",
+          url: `${API_ROOT}/groups/?id=${id}`,
+        };
 
-    const self = this;
-    this.addEventListener("click", (event) => {
-      if (event.target.id === CONFIRM_DELETE_BUTTON_ID) {
-        const groupName = self
-          .getRootNode()
-          .getElementById(GROUP_NAME_INPUT)
-          ?.value.trim();
-
-        if (groupName !== this.componentStore.existingGroupName) {
-          self.updateData({
-            name: groupName,
-            errorMessage: "Group name not entered correctly",
-          });
-        } else {
-          const id =
-            new URLSearchParams(document.location.search).get("id") ?? "";
-          const params = {
-            method: "DELETE",
-            url: `${API_ROOT}/groups/?id=${id}`,
-          };
-
-          ApiLoadAction.getResponseData(params).then((response) => {
-            if (response.errorMessage) {
-              self.updateData({
-                errorMessage: response.errorMessage,
-                [SUCCESS_MESSAGE_KEY]: "",
-              });
-            } else {
-              self.updateData({
+        ApiLoadAction.getResponseData(params).then((response) => {
+          if (response.errorMessage) {
+            this.updateStoreData({
+              errorMessage: response.errorMessage,
+              "successMessage": "",
+            });
+          } else {
+            this.updateStoreData({
                 errorMessage: "",
-                [SUCCESS_MESSAGE_KEY]: "Successfully deleted group",
+                "successMessage": "Successfully deleted group",
               });
             }
           });
         }
       }
+
+    this.setClickEvents({
+      "deleteGroup":deleteGroup
     });
+    this.setStore(DELETE_GROUP_STORE);
   }
 
-  connectedCallback() {
-    const groupName =
-      new URLSearchParams(document.location.search).get("name") ?? "";
-    document.title = `Delete group ${groupName}?`;
-    this.updateData({
-      existingGroupName: groupName,
-      isVisible: true,
-    });
-  }
+  //TODO: Make sure store is initialized with data from here
+  /*DELETE_GROUP_STORE.updateStoreData({
+    existingGroupName: groupName,
+    isVisible: true,
+  });*/
 
   render(data) {
     return `

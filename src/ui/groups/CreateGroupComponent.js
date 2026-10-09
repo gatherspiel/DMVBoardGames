@@ -57,7 +57,7 @@ export class CreateGroupComponent extends PresentationComponent {
           } else {
             submitStatus["successMessage"]=`Successfully created group. A site admin will review the group information before the group is visible on dmvboardgames.com.
             `;
-            CREATE_GROUP_STORE.updateStoreData(submitStatus);
+            CREATE_GROUP_STORE.updateStoreDat(submitStatus);
         }
       });
     }

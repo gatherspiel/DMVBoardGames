@@ -12,11 +12,17 @@
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
 
     <script type="module">
+      
+      import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore";
+      import {PresentationComponent} from "/lib/places-js-latest.js";
+
       import { DeleteGroupComponent } from "../../ui/groups/DeleteGroupComponent.js";
       customElements.define(
         "delete-group-page-component",
         DeleteGroupComponent,
       );
+    customElements.define("presentation-component", PresentationComponent);
+
     </script>
   </head>
   <body>
