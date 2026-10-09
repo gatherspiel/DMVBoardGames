@@ -31,30 +31,10 @@ export class CreateGroupComponent extends PresentationComponent {
         .getElementById("create-group-form")?.elements; 
 
       const submitStatus ={
-        "groupDescriptionErrorMessage":"",
-        "groupNameErrorMessage":"",
-        "submitErrorMessage":"",
-        "submitSuccessMessage":""
+        "errorMessage":"",
+        "successMessage":""
       };
           
-      let fieldError = false;
-      const groupName = elements.namedItem("group-name-input")?.value;
-      if (!groupName || groupName.length === 0) {
-        submitStatus["groupNameErrorMessage"] = "Name is a required field";
-        fieldError = true;
-      }
- 
-      const groupDescription = elements.namedItem("group-description-input")?.value;
-      if (!groupDescription || groupDescription.length === 0) {
-        submitStatus["groupDescriptionErrorMessage"] = "Description is a required field";
-        fieldError = true;
-      }
-     
-      if(fieldError){
-        CREATE_GROUP_STORE.updateStoreData(submitStatus);
-        return;
-      }
-
       const requestBody =  
         JSON.stringify({
           name: groupName,
@@ -72,7 +52,7 @@ export class CreateGroupComponent extends PresentationComponent {
           url: API_ROOT + `/groups/`,
         }).then((data) => {
           if (data.errorMessage) {
-            submitStatus["submitErrorMessage"]=data.errorMessage;
+            submitStatus["errorMessage"]=data.errorMessage;
             this.updateStoreData(submitStatus);
           } else {
             submitStatus["successMessage"]=`Successfully created group. A site admin will review the group information before the group is visible on dmvboardgames.com.

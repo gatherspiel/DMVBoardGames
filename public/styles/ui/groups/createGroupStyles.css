@@ -2,14 +2,30 @@ create-group-component:not([is-template-setup="true"]) {
   display:none;  
 }
 
-button {
-  display: block;
+form:has(#group-name-input:placeholder-shown) {
+  #create-group-button{
+    display:none; 
+  }
+  #create-group-button-hidden {
+    display: block;
+  }
 }
+
+form:has(#group-description-input:placeholder-shown) {
+  #create-group-button{
+    display:none; 
+  }
+  #create-group-button-hidden {
+    display:block;
+  }
+}
+
 #group-name-input,
 #group-description-input,
 #group-url-input {
   display: block;
 }
+
 #create-group-container {
   padding-left: 1rem;
 }
@@ -34,6 +50,7 @@ button {
 #rules-content {
   margin-top: 1rem;
 }
+
 @media screen and (width < 32em) {
   #group-description-input {
     width: 330px;

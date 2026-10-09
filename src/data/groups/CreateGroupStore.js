@@ -12,12 +12,6 @@ const presentationSignals = {
     submitErrorMessage: (data)=>{
       return data.submitErrorMessage;
     },
-    groupDescriptionErrorMessage: (data)=>{
-      return data.groupDescriptionErrorMessage;
-    },
-    groupNameErrorMessage: (data)=>{
-      return data.groupNameErrorMessage;
-    },
     notLoggedInMessage: (data)=>{
       if(!data.isLoggedIn){
         return "You must log in to create a group";

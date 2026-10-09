@@ -40,7 +40,11 @@
           onsubmit="return false" 
         >
           <div id="form-status-div">
-            <span class={successMessageClass}>{successMessage}</span>
+            <span 
+              class="callout success" 
+              textContent={successMessage}
+            >
+            </span>
             <span class="error-message">{errorMessage}</span>
           </div>
           <div class="form-section"> 
@@ -48,16 +52,16 @@
             <input
               id="group-name-input"
               name="group-name-input"
+              placeholder="Enter group name"
               />
-            <span class="error-message">{groupNameErrorMessage}</span>
           </div>  
           <div class="form-section">
             <label class=" required-field">Description</label>
             <textarea
               id="group-description-input"
               name="group-description-input"
+              placeholder="Enter group description"
             ></textarea>
-            <span class="error-message">{groupDescriptionErrorMessage}</span>
           </div>    
           <div id="image-upload-container">
             <image-upload-component id="image-upload-ui"/>
@@ -82,9 +86,21 @@
             type="checkbox" 
           >
 
-          <span class="error-message">{submitErrorMessage}</span>
-          <button class="{submitButtonClass}" onClick={createGroup}>Create group</button>
-
+          <span class="error-message">{errorMessage}</span>
+          <button 
+            id="create-group-button"
+            class="primary"
+            onClick={createGroup}
+          >
+            Create group
+          </button>
+          <button
+            class="muted"
+            hidden="hidden"
+            id="create-group-button-hidden"
+          >
+            Create group 
+          </button>
           <p>{notLoggedInMessage}</p>
         </form>
         <site-rules-component></site-rules-component>
@@ -92,8 +108,7 @@
 
       </div>
     </create-group-component>
-   
-        
+         
     </div>
   </body>
 </html>
