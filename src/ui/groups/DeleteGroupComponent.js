@@ -17,34 +17,38 @@ export class DeleteGroupComponent extends PresentationComponent {
   constructor() {
   
     super();
+
+    const groupName = new URLSearchParams(document.location.search).get("name");
+    const groupId =
+          new URLSearchParams(document.location.search).get("id") ?? "";
+
+
     const deleteGroup = ()=> { 
-      const groupName = self
+      const enteredName = this
         .getRootNode()
-        .getElementById(GROUP_NAME_INPUT)
+        .getElementById("group-name-input")
         ?.value.trim();
-      
-      
-      if (groupName !== DELETE_GROUP_STORE.getStoreData().existingGroupName) {
-        DELETE_STORE_DATA.updateStoreData({
-          name: groupName,
+       
+      console.log(groupName+":"+enteredName);
+      if (groupName !== enteredName) {
+        DELETE_GROUP_STORE.updateStoreData({
           errorMessage: "Group name not entered correctly",
         });
       } else {
-        const id =
-          new URLSearchParams(document.location.search).get("id") ?? "";
+          
         const params = {
           method: "DELETE",
-          url: `${API_ROOT}/groups/?id=${id}`,
+          url: `${API_ROOT}/groups/?id=${groupId}`,
         };
-
+        
         ApiLoadAction.getResponseData(params).then((response) => {
           if (response.errorMessage) {
-            this.updateStoreData({
+            DELETE_GROUP_STORE.updateStoreData({
               errorMessage: response.errorMessage,
               "successMessage": "",
             });
           } else {
-            this.updateStoreData({
+            DELETE_GROUP_STORE.updateStoreData({
                 errorMessage: "",
                 "successMessage": "Successfully deleted group",
               });
@@ -58,32 +62,5 @@ export class DeleteGroupComponent extends PresentationComponent {
     });
     this.setStore(DELETE_GROUP_STORE);
   }
-
-  //TODO: Make sure store is initialized with data from here
-  /*DELETE_GROUP_STORE.updateStoreData({
-    existingGroupName: groupName,
-    isVisible: true,
-  });*/
-
-  render(data) {
-    return `
-      <div class="container-xl"> 
-        <h1>${document.title}</h1>
-        <form onsubmit="return false">
-          <div id="form-status-div">
-            ${generateErrorMessage(data.errorMessage)}
-            ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}      
-          </div>     
-          <div class = "form-section">
-            <label class="required-field">Enter group name to confirm deleting</label>
-            <input
-                id=${GROUP_NAME_INPUT}
-                value="${data.groupInput ?? ""}"
-             />
-           </div>
-           <button id=${CONFIRM_DELETE_BUTTON_ID}>Confirm delete</button>
-        </form>       
-      </div> 
-    `;
-  }
+ 
 }

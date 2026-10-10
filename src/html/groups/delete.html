@@ -18,18 +18,47 @@
 
       import { DeleteGroupComponent } from "../../ui/groups/DeleteGroupComponent.js";
       customElements.define(
-        "delete-group-page-component",
+        "delete-group-component",
         DeleteGroupComponent,
       );
-    customElements.define("presentation-component", PresentationComponent);
+      customElements.define("presentation-component", PresentationComponent);
 
     </script>
   </head>
   <body>
-    <div id="container">
-      {{>navbar}}
-      <delete-group-page-component class="ui-section">
+    {{>navbar}}
+
+      <delete-group-component
+        data-template
+      >
+        <div 
+          class="container-xl"
+        >      
+          <h1>{formTitle}</h1>
+          <form onsubmit="return false">
+            <div id="form-status-div">
+              <span 
+                 class={successStyle} 
+                textContent={successMessage}
+              >
+              </span>
+              <span class="error-message">{errorMessage}</span>
+            </div>     
+            <div class = "form-section">
+              <label class="required-field">Enter group name to confirm deleting</label>
+              <input
+                  id="group-name-input"
+               />
+            </div>
+              <button 
+                class="primary"
+                id="confirm-delete-button-id"
+                onClick={deleteGroup}
+              >
+               Confirm delete</button>
+          </form>       
+
+        </div>
       </delete-group-page-component>
-    </div>
   </body>
 </html>

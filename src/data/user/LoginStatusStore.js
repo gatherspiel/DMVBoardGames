@@ -5,8 +5,6 @@ import { USER_DATA_STORE } from "../../data/user/UserDataStore.js";
 
 const presentationSignals = {
 	update: {
-
-
 		imageFilePath: (state) => {
 			if(state.isLoggedIn){
 				return state.userData.imageFilePath;
@@ -57,8 +55,6 @@ export const LOGIN_STATUS_STORE = DataStore.createWithCustomLoadSignal(
 )
 
 LOGIN_STATUS_STORE.fetchData();
-
-
 
 const logOffSignals = {
 	update: {

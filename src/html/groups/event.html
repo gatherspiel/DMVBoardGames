@@ -14,17 +14,73 @@
     <script type="module">
       import { EventDetailsComponent } from "../../ui/groups/EventDetailsComponent.js";
       import { LoadingIndicatorComponent } from "../../shared/components/LoadingIndicatorComponent.js";
+      import {PresentationComponent} from "/lib/places-js-latest.js";
 
+      import * as stores from "/data/groups/GroupInfoStore.js"
+      import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore";
+
+      customElements.define(
+        "loading-indicator-component",
+        LoadingIndicatorComponent,
+      );
       customElements.define("event-details-component", EventDetailsComponent);
       customElements.define(
         "loading-indicator-component",
         LoadingIndicatorComponent,
       );
+      customElements.define("presentation-component", PresentationComponent);
     </script>
   </head>
   <body>
     {{>navbar}}
-    <event-details-component> </event-details-component>
+
+    <presentation-component
+      data-template
+      data-store="user-event-action-store"
+    >
+    </presentation-component>
+     
+
+    <presentation-component
+      data-store="event-summary-store"
+      data-template
+    > 
+      <div class="container-xl">
+        <h1>{name}</h1>
+        <a 
+          class="btn secondary event-website-link" 
+          href={url}
+          visibility={showUrl}
+        >
+          Event website
+        </a>
+
+        <img 
+          id="event-image" 
+          src="${data.imageFilePath}"
+          visibility={showImage}
+        />
+        <div 
+          innerHTML={moderatorHTML}
+        /div>
+        <span class="event-info">
+          <b>Location:</b> 
+          {location}
+        </span>
+        <span class="event-info">
+          <b>Time:</b>
+          {eventTime}
+        </span>  
+        <rsvp-component
+          current-user-rsvp={userHasRsvp}
+          event-id={id}
+          rsvp-count={rsvpCount}
+          user-can-update-rsvp={userCanRsvp}
+        ></rsvp-component>
+        <div id="event-description">{description}</div>
+      </div>
+
+    </event-details-component>
     {{>footer}}
   </body>
 </html>
