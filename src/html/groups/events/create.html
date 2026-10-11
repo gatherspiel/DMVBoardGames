@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
     <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
-    <link rel="stylesheet" href="/styles/ui/groups/eventDetailsStyles.css" />
+    <link rel="stylesheet" href="/styles/ui/groups/createEventStyles.css" />
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -68,12 +68,12 @@
            </div>
  
           <div class="form-section">
-            <label class=" required-field">Description</label>
+            <label class="required-field">Description</label>
             <textarea
               id="event-description-input"
               name="event-description-input"
             /></textarea>
-            <span class="error-message">{nameErrorMessage}</span>
+            <span class="error-message">{descriptionErrorMessage}</span>
           </div>   
           <image-upload-component
             id="image-upload-ui"
@@ -92,6 +92,7 @@
           >
             <label class=" required-field">Day of week</label>
             <fieldset
+              name="day-of-week-input"
               innerHTML={daysSelect}
             ></fieldset>
           </div>
@@ -119,7 +120,7 @@
               name="end-time-input"
               type="time"
             />
-            <span class="error-message">{startTimeErrorMessage}</span>
+            <span class="error-message">{endTimeErrorMessage}</span>
           </div>
           <div class="form-section">
             <label class=" required-field">Event address</label>

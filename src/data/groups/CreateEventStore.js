@@ -11,14 +11,29 @@ export const CREATE_EVENT_STORE = DataStore.createWithInitialState({
       "daysSelect":()=>{
         return getDaysOfWeekSelect();
       },
+      "descriptionErrorMessage":(data)=>{
+        return data?.formValidationErrors?.description;
+      },
+      "endTimeErrorMessage":(data)=>{
+        return data?.formValidationErrors?.["end-time-input"];
+      },
       "groupPageUrl":()=>{
         return `/html/groups/groups.html?name=${encodeURIComponent(groupName)}`;
       }, 
+      "nameErrorMessage":(data)=>{
+        return data?.formValidationErrors?.name;
+      },
       "showSuccess":(data)=>{
         if(data.successMessage){
           return "visible";
         }
         return "hidden";
+      },
+      "startDateErrorMessage":(data)=>{
+        return data?.formValidationErrors?.["start-date-input"];
+      },
+      "startTimeErrorMessage":(data)=>{
+        return data?.formValidationErrors?.["start-time-input"];
       },
       "title":()=>{
         return `Add event for group ${groupName}`;

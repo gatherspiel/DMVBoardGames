@@ -93,7 +93,5 @@ export function validate(formData) {
       errorMessages[EVENT_LOCATION_INPUT] = e.message;
     }
   }
-  return {
-    formValidationErrors: errorMessages,
-  };
+  return errorMessages;
 }
