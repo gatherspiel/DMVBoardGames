@@ -6,13 +6,13 @@ import {
   EVENT_URL_INPUT,
   START_DATE_INPUT,
   START_TIME_INPUT,
-} from "./Constants.js";
+} from "../Constants.js";
 import {
   combineDateAndTime,
   validateAddress,
   validateDateFormat,
-} from "../../shared/EventDataUtils.js";
-import { DAY_OF_WEEK_INPUT } from "../../shared/html/SelectGenerator.js";
+} from "/shared/EventDataUtils.js";
+import { DAY_OF_WEEK_INPUT } from "/shared/html/SelectGenerator.js";
 
 export function getEventDetailsFromForm(formData) {
   const startDate = formData[START_DATE_INPUT];

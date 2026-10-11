@@ -135,8 +135,8 @@ export const GROUP_ONE_TIME_EVENT_STORE = DataStore.createWithDataStoreSignals({
  export const USER_GROUP_ACTION_STORE = DataStore.createWithDataStoreSignals({
   presentationSignals:{
     update: { 
-      "addEventUrl":(data)=>{
-        return `/html/groups/addEvent.html?name=${encodeURIComponent(data.name)}&id=${encodeURIComponent(data.id)}`;
+      "createEventUrl":(data)=>{
+        return `/html/groups/events/create.html?name=${encodeURIComponent(data.name)}&id=${encodeURIComponent(data.id)}`;
       },
       "deleteGroupUrl":(data)=>{
         return `/html/groups/delete.html?name=${encodeURIComponent(data.name)}&id=${encodeURIComponent(data.id)}`;

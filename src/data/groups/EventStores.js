@@ -22,23 +22,23 @@ EVENT_STORE.fetchData();
 export const USER_EVENT_ACTION_STORE = DataStore.createWithDataStoreSignals({
   presentationSignals:{
     update: { 
-      "addEventText":()=>{
-        return "Add event"
+      "createEventText":()=>{
+        return "Create event"
       },
-      "deleteEventUrl":()=>{
-        return window.location.href.replace("event.html","/event/add.html");
+      "createEventUrl":()=>{
+        return window.location.href.replace("event.html","events/create.html");
       },
       "deleteEventText":()=>{
         return "Delete event"
       },
       "deleteEventUrl":()=>{
-        return window.location.href.replace("event.html","/event/delete.html");
+        return window.location.href.replace("event.html","event/delete.html");
       },
       "editEventText":()=>{
         return "Edit event";
       },
       "editEventUrl":()=>{
-        return window.location.href.replace("event.html","/event/edit.html");
+        return window.location.href.replace("event.html","event/edit.html");
       },
       "loggedIn":(data)=>{
         return data.permissions.userCanEdit ? "visible" : "hidden"
@@ -51,22 +51,6 @@ export const USER_EVENT_ACTION_STORE = DataStore.createWithDataStoreSignals({
   storeName:"user-event-action-store"
 });
 
-export const ADD_EVENT_STORE = DataStore.createWithDataStoreSignals({
-  presentationSignals:{
-    data: {
-      update: {
-      }
-    }
-  },
-  storeSignals:[{
-    "fieldName": "data",
-    "selector": (data)=>{
-
-    },
-    "store":EVENT_STORE
-  }],
-  storeName:"add-event-store"
-});
 
 const defaultUrl = "https://dmvboardgames.com/groups/event.html"
 

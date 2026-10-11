@@ -38,18 +38,18 @@
         <div visibility={loggedIn}>
           <a 
             class="btn secondary"
+            href={createEventUrl}
+            visibility={canEdit} 
+          >
+            Create event
+          </a>
+          <a 
+            class="btn secondary"
             href={editGroupUrl}
             id="edit-group-button-id"
             visibility={canEdit}
           >
             Edit group information
-          </a>
-          <a 
-            class="btn secondary"
-            href={addEventUrl}
-            visibility={canEdit} 
-          >
-            Add event
           </a>
           <a 
             class="btn secondary"
