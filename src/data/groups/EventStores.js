@@ -5,39 +5,43 @@ import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore";
 const name =
   new URLSearchParams(document.location.search).get("name") ?? "";
 
-
-/*
-function getGroupDataConfig() {
+function getEventRequestConfig() {
   return {
-    url: API_ROOT + `/groups/?name=${encodeURIComponent(name)}`,
+    url:
+      API_ROOT +
+      `/groups/events/${new URLSearchParams(document.location.search).get("id") ?? ""}/`,
   };
-}
-*/
-
-function getEventDataConfig(){
-  //TODO: Add logic here
 }
 
 export const EVENT_STORE = new DataStore(
-  new ApiLoadAction(getGroupDataConfig),
+  new ApiLoadAction(getEventRequestConfig),
   "event-store"
 );
 EVENT_STORE.fetchData();
 
- export const USER_EVENT_ACTION_STORE = DataStore.createWithDataStoreSignals({
+export const USER_EVENT_ACTION_STORE = DataStore.createWithDataStoreSignals({
   presentationSignals:{
     update: { 
-      "deleteEventText":()=>"Delete event"
+      "addEventText":()=>{
+        return "Add event"
+      },
+      "deleteEventUrl":()=>{
+        return window.location.href.replace("event.html","/event/add.html");
+      },
+      "deleteEventText":()=>{
+        return "Delete event"
+      },
       "deleteEventUrl":()=>{
         return window.location.href.replace("event.html","/event/delete.html");
       },
-      "editEventText":()=>"Edit event"
+      "editEventText":()=>{
+        return "Edit event";
+      },
       "editEventUrl":()=>{
         return window.location.href.replace("event.html","/event/edit.html");
       },
       "loggedIn":(data)=>{
-        console.log(data);  
-        return data.permissions.userCanUpdateGroupMembership ? "visible" : "hidden"
+        return data.permissions.userCanEdit ? "visible" : "hidden"
       }
     }
   },
@@ -59,15 +63,15 @@ export const ADD_EVENT_STORE = DataStore.createWithDataStoreSignals({
     "selector": (data)=>{
 
     },
-    "store"EVENT_STORE
+    "store":EVENT_STORE
   }],
-  storeName:"event-store"
+  storeName:"add-event-store"
 });
 
 const defaultUrl = "https://dmvboardgames.com/groups/event.html"
 
 const getUrl = (event)=>{
-  if(data.url && !data.url.startsWith(defaultUrl)){
+  if(event.url && !event.url.startsWith(defaultUrl)){
     return event.url;
   }
   return "";
@@ -75,20 +79,15 @@ const getUrl = (event)=>{
 
 export const VIEW_EVENT_STORE = DataStore.createWithDataStoreSignals({
   presentationSignals:{
-    data: {
       update: {
         "eventTime": (event)=>{
-          if(event.isRecurring){
-            return `${event.day}s from ${event.startTime} to ${event.endTime}`; 
+          if(event.data.isRecurring){
+            return `${event.data.day}s from ${event.data.startTime} to ${event.data.endTime}`; 
           }
-          return `${event.startData}, ${event.startTime}`;
+          return `${event.data.startData}, ${event.data.startTime}`;
         },
         "moderatorHTML": (event)=>{
-          return `
-            <div>
-              <p>Test to see if HTML will update</p>
-            </div>
-          `
+          //return `<div><p>Test to see if HTML will update</p></div>`
           if (!event.moderators || event.moderators.length === 0) {
             return ``;
           }
@@ -119,7 +118,9 @@ export const VIEW_EVENT_STORE = DataStore.createWithDataStoreSignals({
             `;
           });
           return html;
-
+        },
+        "name":(event)=>{
+          return event.data.name;
         },
        "showImage":(event)=>{
           if(event.imageFilePath){
@@ -140,19 +141,14 @@ export const VIEW_EVENT_STORE = DataStore.createWithDataStoreSignals({
           return getUrl(event); 
         }
       }
-    }
   },
   storeSignals:[{
-    "fieldName": "data",
-    "selector": (data)=>{
-
-    },
-    "store"EVENT_STORE
+    "fieldName":"data",
+    "store":EVENT_STORE
   }],
-  storeName:"event-store"
+  storeName:"event-summary-store"
 });
-
-
+VIEW_EVENT_STORE.fetchData();
 
 export const UPDATE_EVENT_STORE = DataStore.createWithDataStoreSignals({
   presentationSignals:{
@@ -166,9 +162,9 @@ export const UPDATE_EVENT_STORE = DataStore.createWithDataStoreSignals({
     "selector": (data)=>{
 
     },
-    "store"EVENT_STORE
+    "store":EVENT_STORE
   }],
-  storeName:"event-store"
+  storeName:"update-event-store"
 });
 
 export const DELETE_EVENT_STORE = DataStore.createWithDataStoreSignals({
@@ -183,7 +179,7 @@ export const DELETE_EVENT_STORE = DataStore.createWithDataStoreSignals({
     "selector": (data)=>{
 
     },
-    "store"EVENT_STORE
+    "store":EVENT_STORE
   }],
-  storeName:"event-store"
+  storeName:"delete-event-store"
 });

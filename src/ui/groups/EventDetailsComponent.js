@@ -25,15 +25,12 @@ import {
 import { getEventDetailsFromForm, validate } from "./EventDetailsHandler.js";
 
 import { API_ROOT } from "/shared/Params.js";
-import { GROUP_EVENT_REQUEST_STORE } from "../../data/groups/GroupEventRequestStore.js";
 import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
-import { LOADING_INDICATOR_CONFIG } from "../../shared/LoadingIndicatorConfig.js";
 import { RsvpComponent } from "./RsvpComponent.js";
 
 import { convertTimeTo24Hours } from "../../shared/EventDataUtils.js";
 
 customElements.define("image-upload-component", ImageUploadComponent);
-customElements.define("login-status-component", LoginStatusComponent);
 customElements.define("rsvp-component", RsvpComponent);
 
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";

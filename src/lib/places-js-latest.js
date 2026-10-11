@@ -865,6 +865,7 @@ class DataStore {
 
     let updates = storeUpdates;
     if(this.#presentationSubscribers.length >0){
+
       updates = this.#presentationUpdater.updateStoreData(
         storeUpdates,
         this.#presentationSubscribers,
@@ -972,7 +973,7 @@ class DataStore {
 				this.#dataStoreSubscribers.forEach((fieldName, subscriber)=>{
 
           const selector = this.#dataStoreSubscriberSelectors.get(subscriber);
-
+          
           let storeUpdate = structuredClone(response);
 
           if(selector){
@@ -991,8 +992,7 @@ class DataStore {
             subscriber.updateStoreData(storeUpdate);
           }
 				});
-			}
-						
+			}					
       return response;
     }
 
@@ -1019,7 +1019,6 @@ class DataStore {
 
   subscribeComponent(subscriber, loadingIndicatorStart) {	
     
-
     if(!loadingIndicatorStart && this.#presentationSubscribers.length >0){
 			this.#presentationUpdater.updateWithState(subscriber,this.#storeData || {});
 		}
@@ -1033,8 +1032,6 @@ class DataStore {
     }
 		
     this.#presentationSubscribers.push(subscriber);
-
-
     this.#initializer.initialize(this);
   }
 }
@@ -1428,7 +1425,7 @@ class TemplateItem {
     template.innerHTML = htmlToAdd;
     this.#templateNode = template.content.firstChild;
     const handlerAttrs = ["data-click-id", "data-change-id"];
-		
+	
     handlerAttrs.forEach((handlerAttr) => {
       const attrSelector = `[${handlerAttr}]`;
 
@@ -1458,7 +1455,7 @@ class TemplateItem {
         let childNodePath = [];
         let node = template.content.querySelector(selector);
         let searchNode = node;
-
+        
         while (searchNode.parentNode.nodeName !== "#document-fragment") {
           for (let j = 0; j < searchNode.parentNode.childNodes.length; j++) {
             if (Object.is(searchNode.parentNode.childNodes[j], searchNode)) {
@@ -1666,6 +1663,8 @@ class PresentationComponent extends HTMLElement {
   
     if (attr === "textcontent") {
       element.innerText = signalData[fieldName];
+    } else if (attr === "visibility"){
+      element.style.visibility = signalData[fieldName];
     }
     else if (attr === "innerHTML") {
       element.innerHTML = signalData[fieldName];
@@ -1706,6 +1705,9 @@ class PresentationComponent extends HTMLElement {
 
     if (attr === "textcontent") {
       element.innerText = signalData[fieldName];
+    }
+    else if (attr === "visibility"){
+      element.style.visibility = signalData[fieldName];
     }
     else if (attr === "innerHTML") {
       element.innerHTML = signalData[fieldName];

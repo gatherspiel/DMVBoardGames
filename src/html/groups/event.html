@@ -16,7 +16,7 @@
       import { LoadingIndicatorComponent } from "../../shared/components/LoadingIndicatorComponent.js";
       import {PresentationComponent} from "/lib/places-js-latest.js";
 
-      import * as stores from "/data/groups/GroupInfoStore.js"
+      import * as stores from "/data/groups/EventStores.js"
       import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore";
 
       customElements.define(
@@ -24,10 +24,6 @@
         LoadingIndicatorComponent,
       );
       customElements.define("event-details-component", EventDetailsComponent);
-      customElements.define(
-        "loading-indicator-component",
-        LoadingIndicatorComponent,
-      );
       customElements.define("presentation-component", PresentationComponent);
     </script>
   </head>
@@ -38,6 +34,26 @@
       data-template
       data-store="user-event-action-store"
     >
+      <div class="container-xl">
+        <h1>Actions</h1>
+        <div visibility={loggedIn}>
+          <a 
+            class="btn secondary"
+            href={addEventUrl}>
+            {addEventText}
+          </a>
+          <a 
+            class="btn secondary"
+            href={deleteEventUrl}>
+            {deleteEventText}
+          </a>
+          <a 
+            class="btn secondary"
+            href={editEventUrl}>
+            {editEventText}
+          </a>
+        </div>
+      </div>
     </presentation-component>
      
 
@@ -54,33 +70,38 @@
         >
           Event website
         </a>
-
-        <img 
+ <img 
           id="event-image" 
-          src="${data.imageFilePath}"
+          src={imageFilePath}
           visibility={showImage}
         />
-        <div 
-          innerHTML={moderatorHTML}
-        /div>
-        <span class="event-info">
+        <div class="event-info">
           <b>Location:</b> 
-          {location}
-        </span>
-        <span class="event-info">
+          <span>{location}</span>
+        </div>
+ 
+        <div class="event-info">
           <b>Time:</b>
-          {eventTime}
-        </span>  
+          <span>{eventTime}</span>
+        </div> 
+        <div innerHTML={moderatorHTML}>
+        </div>
         <rsvp-component
           current-user-rsvp={userHasRsvp}
           event-id={id}
           rsvp-count={rsvpCount}
           user-can-update-rsvp={userCanRsvp}
         ></rsvp-component>
+
         <div id="event-description">{description}</div>
       </div>
 
-    </event-details-component>
+    </presentation-component>
+        
+
+       
+            
+      </div>
     {{>footer}}
   </body>
 </html>
