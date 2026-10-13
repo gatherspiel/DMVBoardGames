@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Loading event</title>
+    <title>Event</title>
 
     <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
     <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
@@ -29,72 +29,66 @@
     {{>navbar}}
 
     <presentation-component
-      data-template
-      data-store="user-event-action-store"
-    >
-      <div class="container-xl">
-        <h1>Actions</h1>
-        <div visibility={loggedIn}>
-          <a 
-            class="btn secondary"
-            href={deleteEventUrl}>
-            {deleteEventText}
-          </a>
-          <a 
-            class="btn secondary"
-            href={editEventUrl}>
-            {editEventText}
-          </a>
-        </div>
-      </div>
-    </presentation-component>
+				data-template
+				data-store="user-event-action-store"
+			>
+				<div class="container-xl">
+					<h1>Actions</h1>
+					<div visibility={loggedIn}>
+						<a 
+							class="btn secondary"
+							href={deleteEventUrl}>
+							{deleteEventText}
+						</a>
+						<a 
+							class="btn secondary"
+							href={editEventUrl}>
+							{editEventText}
+						</a>
+					</div>
+				</div>
+			</presentation-component>
      
+			<presentation-component
+				data-store="event-summary-store"
+				data-template
+			> 
+				<div class="container-xl">
+					<h1>{name}</h1>
+					<a 
+						class="btn secondary event-website-link" 
+						href={url}
+						visibility={showUrl}
+					>
+						Event website
+					</a>
+	 <img 
+						id="event-image" 
+						src={imageFilePath}
+						visibility={showImage}
+					/>
+					<div class="event-info">
+						<b>Location:</b> 
+						<span>{location}</span>
+					</div>
+	 
+					<div class="event-info">
+						<b>Time:</b>
+						<span>{eventTime}</span>
+					</div> 
+					<div innerHTML={moderatorHTML}>
+					</div>
+					<rsvp-component
+						current-user-rsvp={userHasRsvp}
+						event-id={id}
+						rsvp-count={rsvpCount}
+						user-can-update-rsvp={userCanRsvp}
+					></rsvp-component>
 
-    <presentation-component
-      data-store="event-summary-store"
-      data-template
-    > 
-      <div class="container-xl">
-        <h1>{name}</h1>
-        <a 
-          class="btn secondary event-website-link" 
-          href={url}
-          visibility={showUrl}
-        >
-          Event website
-        </a>
- <img 
-          id="event-image" 
-          src={imageFilePath}
-          visibility={showImage}
-        />
-        <div class="event-info">
-          <b>Location:</b> 
-          <span>{location}</span>
-        </div>
- 
-        <div class="event-info">
-          <b>Time:</b>
-          <span>{eventTime}</span>
-        </div> 
-        <div innerHTML={moderatorHTML}>
-        </div>
-        <rsvp-component
-          current-user-rsvp={userHasRsvp}
-          event-id={id}
-          rsvp-count={rsvpCount}
-          user-can-update-rsvp={userCanRsvp}
-        ></rsvp-component>
+					<div id="event-description">{description}</div>
+				</div>
 
-        <div id="event-description">{description}</div>
-      </div>
-
-      </presentation-component>
-        
-
-       
-            
-      </div>
+      </presentation-component>          
     {{>footer}}
   </body>
 </html>

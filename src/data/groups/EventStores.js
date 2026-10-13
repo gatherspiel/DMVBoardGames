@@ -32,13 +32,13 @@ export const USER_EVENT_ACTION_STORE = DataStore.createWithDataStoreSignals({
         return "Delete event"
       },
       "deleteEventUrl":()=>{
-        return window.location.href.replace("event.html","event/delete.html");
+        return window.location.href.replace("event.html","events/delete.html");
       },
       "editEventText":()=>{
         return "Edit event";
       },
       "editEventUrl":()=>{
-        return window.location.href.replace("event.html","event/edit.html");
+        return window.location.href.replace("event.html","events/edit.html");
       },
       "loggedIn":(data)=>{
         return data.permissions.userCanEdit ? "visible" : "hidden"
@@ -71,7 +71,6 @@ export const VIEW_EVENT_STORE = DataStore.createWithDataStoreSignals({
           return `${event.data.startData}, ${event.data.startTime}`;
         },
         "moderatorHTML": (event)=>{
-          //return `<div><p>Test to see if HTML will update</p></div>`
           if (!event.moderators || event.moderators.length === 0) {
             return ``;
           }

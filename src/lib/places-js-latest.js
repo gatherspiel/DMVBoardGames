@@ -1666,6 +1666,9 @@ class PresentationComponent extends HTMLElement {
     } else if (attr === "visibility"){
       element.style.visibility = signalData[fieldName];
     }
+		else if (attr === "display"){
+      element.style.display = signalData[fieldName];
+    }
     else if (attr === "innerHTML") {
       element.innerHTML = signalData[fieldName];
     } else {
@@ -1708,6 +1711,9 @@ class PresentationComponent extends HTMLElement {
     }
     else if (attr === "visibility"){
       element.style.visibility = signalData[fieldName];
+    }
+		else if (attr === "display"){
+      element.style.display = signalData[fieldName];
     }
     else if (attr === "innerHTML") {
       element.innerHTML = signalData[fieldName];

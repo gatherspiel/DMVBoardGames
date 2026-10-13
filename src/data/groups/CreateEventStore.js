@@ -4,9 +4,7 @@ import {getDaysOfWeekSelect} from "/shared/html/SelectGenerator.js";
 
 const groupName = new URLSearchParams(document.location.search).get("name");
 
-export const CREATE_EVENT_STORE = DataStore.createWithInitialState({
-  initialState:{},
-  presentationSignals:{
+export const EVENT_FORM_PRESENTATION_SIGNALS = {
     update: {
       "daysSelect":()=>{
         return getDaysOfWeekSelect();
@@ -39,6 +37,10 @@ export const CREATE_EVENT_STORE = DataStore.createWithInitialState({
         return `Add event for group ${groupName}`;
       }
     }
-  },
+	};
+
+export const CREATE_EVENT_STORE = DataStore.createWithInitialState({
+  initialState:{},
+  presentationSignals:EVENT_FORM_PRESENTATION_SIGNALS,
   storeName:"create-event-store"
 });
