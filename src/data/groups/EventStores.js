@@ -149,20 +149,4 @@ export const UPDATE_EVENT_STORE = DataStore.createWithDataStoreSignals({
   }],
   storeName:"update-event-store"
 });
-
-export const DELETE_EVENT_STORE = DataStore.createWithDataStoreSignals({
-  presentationSignals:{
-    data: {
-      update: {
-      }
-    }
-  },
-  storeSignals:[{
-    "fieldName": "data",
-    "selector": (data)=>{
-
-    },
-    "store":EVENT_STORE
-  }],
-  storeName:"delete-event-store"
-});
+ 

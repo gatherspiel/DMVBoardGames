@@ -5,7 +5,7 @@ import {getDaysOfWeekSelect} from "/shared/html/SelectGenerator.js";
 const groupName = new URLSearchParams(document.location.search).get("name");
 
 export const EVENT_FORM_PRESENTATION_SIGNALS = {
-    update: {
+    survellianceupdate: {
       "daysSelect":()=>{
         return getDaysOfWeekSelect();
       },
