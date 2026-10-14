@@ -4,12 +4,12 @@
     <script async type="module">
       console.log("Starting to parse Javascript at:" + Date.now());
       
-      import { PresentationComponent} from "../../lib/places-js-latest.js";
-      import { LoadingIndicatorComponent } from "../../shared/components/LoadingIndicatorComponent.js";
-      import { SearchComponent } from "../../ui/list/SearchComponent.js";
+      import { PresentationComponent} from "/lib/places-js-latest.js";
+      import { LoadingIndicatorComponent } from "/shared/components/LoadingIndicatorComponent.js";
+			import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore.js"; 
+			import { SearchComponent } from "/ui/list/SearchComponent.js";
       import { UserActionsComponent } from "/ui/user/UserActionsComponent.js";
-      import {searchWithDefaultParams} from
-      "../../data/list/SearchResultsStore.js";
+      "/data/list/SearchResultsStore.js";
 		
       customElements.define("presentation-component", PresentationComponent);
       customElements.define("search-component", SearchComponent);
