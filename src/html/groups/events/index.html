@@ -7,15 +7,15 @@
 
     <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
     <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
-    <link rel="stylesheet" href="/styles/ui/groups/eventDetailsStyles.css" />
+    <link rel="stylesheet" href="/styles/ui/groups/events/index.css" />
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <script type="module">
-      import { LoadingIndicatorComponent } from "../../shared/components/LoadingIndicatorComponent.js";
+      import { LoadingIndicatorComponent } from "/shared/components/LoadingIndicatorComponent.js";
       import {PresentationComponent} from "/lib/places-js-latest.js";
 
-      import * as stores from "/data/groups/EventStores.js"
+      import * as stores from "/data/groups/events/EventStore.js"
       import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore";
 
       customElements.define(

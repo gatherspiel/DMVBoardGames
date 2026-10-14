@@ -3,7 +3,7 @@ import { API_ROOT } from "/shared/Params.js";
 
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 
-import {DELETE_EVENT_STORE} from "/data/groups/DeleteEventStore.js";
+import {DELETE_EVENT_STORE} from "/data/groups/events/DeleteEventStore.js";
 
 export class DeleteEventComponent extends PresentationComponent {
   constructor() {

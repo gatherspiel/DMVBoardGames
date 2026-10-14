@@ -72,7 +72,7 @@ const presentationSignals = {
         return `${convertLocationDataForDisplay(eventData.eventLocation)}`;
       },
       url: (eventData) => {
-        return `/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}`;
+        return `/html/groups/events/?id=${eventData.eventId}&groupId=${eventData.groupId}`;
       },
     },
   },

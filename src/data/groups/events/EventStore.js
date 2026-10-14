@@ -32,13 +32,13 @@ export const USER_EVENT_ACTION_STORE = DataStore.createWithDataStoreSignals({
         return "Delete event"
       },
       "deleteEventUrl":()=>{
-        return window.location.href.replace("event.html","events/delete.html");
+        return window.location.href.replace("?","delete.html?");
       },
       "editEventText":()=>{
         return "Edit event";
       },
       "editEventUrl":()=>{
-        return window.location.href.replace("event.html","events/edit.html");
+        return window.location.href.replace("?","edit.html?");
       },
       "loggedIn":(data)=>{
         return data.permissions.userCanEdit ? "visible" : "hidden"

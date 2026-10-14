@@ -34,11 +34,12 @@ export class CreateGroupComponent extends PresentationComponent {
         "errorMessage":"",
         "successMessage":""
       };
-          
+         
+			 
       const requestBody =  
         JSON.stringify({
-          name: groupName,
-          description: groupDescription,
+          name: elements.namedItem("group-name-input").value,
+          description: elements.namedItem("group-description-input").value,
           image: this
             .querySelector("#image-upload-ui")
             .getAttribute("image-path"),
@@ -53,11 +54,11 @@ export class CreateGroupComponent extends PresentationComponent {
         }).then((data) => {
           if (data.errorMessage) {
             submitStatus["errorMessage"]=data.errorMessage;
-            this.updateStoreData(submitStatus);
+            CREATE_GROUP_STORE.updateStoreData(submitStatus);
           } else {
             submitStatus["successMessage"]=`Successfully created group. A site admin will review the group information before the group is visible on dmvboardgames.com.
             `;
-            CREATE_GROUP_STORE.updateStoreDat(submitStatus);
+            CREATE_GROUP_STORE.updateStoreData(submitStatus);
         }
       });
     }

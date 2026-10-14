@@ -12,15 +12,15 @@
     <title>Login</title>
 
     <script defer fetchpriority="low" type="module">
-      import { LoginComponent } from "../../ui/user/LoginComponent.js";
+      import { LoginComponent } from "/ui/user/LoginComponent.js";
 			import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore";
 
 			import {PresentationComponent} from "/lib/places-js-latest.js";
       customElements.define("presentation-component", PresentationComponent);
       customElements.define("login-component", LoginComponent);
 
-      import { GetGameAdvice } from "../../beta/getGameAdvice.js";
-//      GetGameAdvice();
+      import { GetGameAdvice } from "/shared/bots/getGameAdvice.js";
+      GetGameAdvice();
     </script>
   </head>
   <body>

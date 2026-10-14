@@ -1,7 +1,7 @@
 import {ApiLoadAction,PresentationComponent} from "/lib/places-js-latest.js";
 import { getEventDetailsFromForm, validate } from "./EventDetailsHandler.js";
 import { API_ROOT } from "/shared/Params.js";
-import {EDIT_EVENT_STORE} from "/data/groups/EditEventStore.js"
+import {EDIT_EVENT_STORE} from "/data/groups/events/EditEventStore.js"
 
 export class EditEventComponent extends PresentationComponent{
   constructor(){

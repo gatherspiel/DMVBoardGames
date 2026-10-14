@@ -33,7 +33,7 @@ export default defineConfig({
         designers: resolve(__dirname, "src/html/static/designers.html"),
 
         editProfile: resolve(__dirname, "src/html/user/editProfile.html"),
-        event: resolve(__dirname, "src/html/groups/event.html"),
+        event: resolve(__dirname, "src/html/groups/events/index.html"),
 
         faq: resolve(__dirname, "src/html/static/faq.html"),
         feedback: resolve(__dirname, "src/html/feedback.html"),

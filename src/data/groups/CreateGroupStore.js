@@ -9,6 +9,13 @@ const presentationSignals = {
       }
       return '';
     },
+		isSuccess:(data)=>{
+			console.log(data.successMessage);
+			if(!data.successMessage){
+				return "none"
+			}
+			return "inherit";
+		},
     submitErrorMessage: (data)=>{
       return data.submitErrorMessage;
     },

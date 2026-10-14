@@ -5,7 +5,7 @@ import {getDaysOfWeekSelect} from "/shared/html/SelectGenerator.js";
 
 const groupName = new URLSearchParams(document.location.search).get("name");
 
-import {EVENT_STORE} from "./EventStores.js"
+import {EVENT_STORE} from "/data/groups/events/EventStore.js"
 
 export const EDIT_EVENT_STORE = DataStore.createWithDataStoreSignals({
   storeSignals:[{

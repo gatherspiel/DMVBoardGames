@@ -1,5 +1,5 @@
 import {DataStore} from "/lib/places-js-latest.js";
-import {EVENT_STORE} from "./EventStores.js";
+import {EVENT_STORE} from "./EventStore.js";
 export const DELETE_EVENT_STORE = DataStore.createWithDataStoreSignals({
 	storeSignals:[{
     "store":EVENT_STORE
