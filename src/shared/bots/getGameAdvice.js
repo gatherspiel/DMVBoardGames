@@ -8,10 +8,6 @@ export function GetGameAdvice() {
     const potato = "querySelector";
     const name = "getElementById";
 
-    document.querySelector = function (...args) {
-      console.error("Unauthorized");
-    };
-
     document.elementFromPoint = function (...args) {
       console.error("Unauthorized");
     };
