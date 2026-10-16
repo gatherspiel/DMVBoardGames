@@ -27,7 +27,6 @@ export const EDIT_EVENT_STORE = DataStore.createWithDataStoreSignals({
         return `/html/groups/groups.html?name=${encodeURIComponent(groupName)}`;
       }, 
 			"isOneTime":(data)=>{
-				console.log(data.isRecurring);
 				return data.isRecurring ? "none" : "visible";
 			},
 			"isRecurring":(data)=>{
@@ -56,6 +55,9 @@ export const EDIT_EVENT_STORE = DataStore.createWithDataStoreSignals({
       },
       "title":()=>{
         return `Add event for group ${groupName}`;
+      },
+      "pageTitleUpdate":(data)=>{
+        document.title = `Editing event: ${data.name}`;
       }
     }
   },

@@ -8,7 +8,6 @@ export class LoginComponent extends PresentationComponent {
 
 		const loginHandler = () => {
 		 const formInputs = this.retrieveAndValidateFormInputs();
-		 console.log(formInputs);
 			
 			try {
 				if (formInputs.errorMessage) {
@@ -27,10 +26,8 @@ export class LoginComponent extends PresentationComponent {
 			}
 		}
 
-
 		this.setClickEvents({
 			"login":loginHandler
-
 		});
 
 		this.setStore(LOGIN_STORE);

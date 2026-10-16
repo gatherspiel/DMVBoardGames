@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
     <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
-    <link rel="stylesheet" href="/styles/ui/groups/groupStyles.css" />
+    <link rel="stylesheet" href="/styles/ui/groups/index.css" />
 
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <title>GroupSearchResult Information</title>
@@ -35,7 +35,10 @@
         data-template
         data-store="user-group-action-store"
       >
-        <div visibility={loggedIn}>
+        <div 
+          id="group-actions-menu"
+          visibility={loggedIn}
+        >
           <a 
             class="btn secondary"
             href={createEventUrl}
@@ -91,16 +94,16 @@
         data-store = "group-weekly-event-store"
         data-template
       >
-      <div id=${key} class="event">
-        <a class="btn secondary" href="${url}">${eventData.name}</a> 
+      <div id={key} class="event">
+        <a class="btn secondary" href="{url}">${name}</a> 
         <rsvp-component
-          current-user-rsvp=${eventData.userHasRsvp}
-          event-id=${eventData.id}
-          rsvp-count=${eventData.rsvpCount}
-          user-can-update-rsvp=${eventData.permissions.userCanRsvp}
+          current-user-rsvp={eventData.userHasRsvp}
+          event-id={eventData.id}
+          rsvp-count={eventData.rsvpCount}
+          user-can-update-rsvp={eventData.permissions.userCanRsvp}
         ></rsvp-component>
         <p class="event-time">{eventTime}</p>
-        <p class="event-location">${eventData.location}</p>
+        <p class="event-location">{eventData.location}</p>
       </div>
       <div class="section-separator-small"></div>
     </presentation-component>

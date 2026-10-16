@@ -2,8 +2,9 @@ import { ApiLoadAction, DataStore } from "/lib/places-js-latest.js";
 import { API_ROOT } from "/shared/Params.js";
 import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore";
 
-const name =
-  new URLSearchParams(document.location.search).get("name") ?? "";
+const searchParams = new URLSearchParams(document.location.search);
+
+const name = searchParams.get("name") ?? "";
 
 function getEventRequestConfig() {
   return {
@@ -22,6 +23,9 @@ EVENT_STORE.fetchData();
 export const USER_EVENT_ACTION_STORE = DataStore.createWithDataStoreSignals({
   presentationSignals:{
     update: { 
+      "backToGroupUrl": (data)=>{
+        return window.location.href.split("events")[0]+`?name=${data.groupName}`;
+      },
       "createEventText":()=>{
         return "Create event"
       },
@@ -66,17 +70,20 @@ export const VIEW_EVENT_STORE = DataStore.createWithDataStoreSignals({
       update: {
         "eventTime": (event)=>{
           if(event.data.isRecurring){
-            return `${event.data.day}s from ${event.data.startTime} to ${event.data.endTime}`; 
+            return ` ${event.data.day}s from ${event.data.startTime} to ${event.data.endTime}`; 
           }
           return `${event.data.startData}, ${event.data.startTime}`;
         },
+        "location": (event)=>{
+          return " "+event.data.location;
+        },
         "moderatorHTML": (event)=>{
-          if (!event.moderators || event.moderators.length === 0) {
+          if (!event.data.moderators || event.data.moderators.length === 0) {
             return ``;
           }
           let moderatorHasUsername = false;
-          for (let i = 0; i < data.moderators.length; i++) {
-            if (data.moderators[i]?.userData?.username.length > 0) {
+          for (let i = 0; i < event.data.moderators.length; i++) {
+            if (event.data.moderators[i]?.userData?.username.length > 0) {
               moderatorHasUsername = true;
               break;
             }
@@ -86,7 +93,7 @@ export const VIEW_EVENT_STORE = DataStore.createWithDataStoreSignals({
           }
 
           let html = ``;
-          event.moderators.forEach((moderator) => {
+          event.data.moderators.forEach((moderator) => {
             html += `
               <div class ="user-data-div">
                 <div class="user-data-div-inner"> 

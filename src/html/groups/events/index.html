@@ -33,18 +33,29 @@
 				data-store="user-event-action-store"
 			>
 				<div class="container-xl">
-					<h1>Actions</h1>
-					<div visibility={loggedIn}>
+					<div 
+            id="event-page-actions-header"
+          >
 						<a 
 							class="btn secondary"
-							href={deleteEventUrl}>
+							href={deleteEventUrl} 
+              visibility={loggedIn}
+            >
 							{deleteEventText}
 						</a>
 						<a 
 							class="btn secondary"
-							href={editEventUrl}>
+							href={editEventUrl}
+              visibility={loggedIn}
+            >
 							{editEventText}
 						</a>
+            <a
+              class="btn secondary"
+              href={backToGroupUrl}
+            >
+              Back to group
+            </a>
 					</div>
 				</div>
 			</presentation-component>
@@ -68,7 +79,7 @@
 						visibility={showImage}
 					/>
 					<div class="event-info">
-						<b>Location:</b> 
+						<b>Location: </b> 
 						<span>{location}</span>
 					</div>
 	 

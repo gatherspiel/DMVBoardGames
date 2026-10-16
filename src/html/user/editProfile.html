@@ -10,13 +10,13 @@
     <link rel="stylesheet" href="/styles/designersAndLinks.css" />
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <script defer fetchpriority="low" type="module">
-      import { EditProfileComponent } from "../../ui/user/EditProfileComponent.js";
+      import { EditProfileComponent } from "/ui/user/EditProfileComponent.js";
       import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore.js"; 
       import { PresentationComponent} from "/lib/places-js-latest.js"
       
       customElements.define("edit-profile-component", EditProfileComponent);
       customElements.define("presentation-component", PresentationComponent);
-      import { GetGameAdvice } from "../../beta/getGameAdvice.js";
+      import { GetGameAdvice } from "/shared/bots/getGameAdvice.js";
       GetGameAdvice();
     </script>
   </head>

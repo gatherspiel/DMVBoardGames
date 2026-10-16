@@ -1,4 +1,7 @@
 import { ApiLoadAction, DataStore } from "/lib/places-js-latest.js";
+
+import {convertDayOfWeekForDisplay} from "/shared/DisplayNameConversion.js";
+
 import { API_ROOT } from "/shared/Params.js";
 import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore";
 const name =
@@ -26,7 +29,9 @@ export const GROUP_SUMMARY_STORE = DataStore.createWithDataStoreSignals({
       "name":(data)=>{
         return data.name;
       },
-      "url":(data)=>data.groupUrl, 
+      "url":(data)=>{
+        return data.groupUrl
+      },
       "groupImage":(data)=>{
         if(data.imagePath){
           return `<img id="group-image" src="${data.imagePath}"/>`
@@ -47,7 +52,6 @@ export const GROUP_WEEKLY_EVENT_STORE = DataStore.createWithDataStoreSignals({
     data: {
       update: {
         "eventTime":(data)=>{
-          console.log(data);
           const dayString = convertDayOfWeekForDisplay(data.day);
           return `${dayString}s from ${data.startTime} to ${data.endTime}`
         },
@@ -59,9 +63,10 @@ export const GROUP_WEEKLY_EVENT_STORE = DataStore.createWithDataStoreSignals({
         },
         "rsvpCount": (data)=>data.rsvpCount,
         "url": (data)=>{
-          const eventId = encodeUriComponent(data.id);
-          const groupId = encodeUriComponent(data.groupId);
-          return `/html/groups/event.html?id=${eventId}&groupId=${groupId}`
+          console.log(data);
+          const eventId = encodeURIComponent(data.id);
+          const groupId = encodeURIComponent(data.groupId);
+          return `/html/groups/events/?id=${eventId}&groupId=${groupId}`
         },
         "userCanRsvp": (data)=>data.permissions.userCanRsvp,
         "userHasRsvp":(data)=>data.userHasRsvp,        
@@ -77,7 +82,7 @@ export const GROUP_WEEKLY_EVENT_STORE = DataStore.createWithDataStoreSignals({
         return events;
       }
       data.weeklyEventData.forEach((event)=>{
-        event.groupId = data.groupId;
+        event.groupId = data.id;
         events.push(event);
       });
       return events;
