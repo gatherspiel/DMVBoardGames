@@ -43,7 +43,7 @@ export default defineConfig({
           __dirname,
           "src/html/list/gameRestaurants.html",
         ),
-        groups: resolve(__dirname, "src/html/groups/groups.html"),
+        groups: resolve(__dirname, "src/html/groups/index.html"),
 
         join: resolve(__dirname, "src/html/static/join.html"),
 
