@@ -3,7 +3,7 @@ import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
 import { API_ROOT } from "/shared/Params.js";
 import { ImageUploadComponent } from "../../shared/components/ImageUploadComponent.js";
 import { USER_DATA_STORE } from "../../data/user/UserDataStore.js";
-import {EDIT_PROFILE_STORE} from "/data/user/EditProfileStore.js";
+import { EDIT_PROFILE_STORE } from "/data/user/EditProfileStore.js";
 
 customElements.define("image-upload-component", ImageUploadComponent);
 
@@ -11,19 +11,17 @@ export class EditProfileComponent extends PresentationComponent {
   constructor() {
     super();
 
-    const updateUserProfile = ()=> {
-
+    const updateUserProfile = () => {
       const validationErrors = {};
-      const elements = this
-        .getRootNode()
-        .getElementById("update-user-form")?.elements;
-      
+      const elements =
+        this.getRootNode().getElementById("update-user-form")?.elements;
+
       const imageForm = this.getRootNode().getElementById("image-upload-ui");
 
       const username = elements.namedItem("username-input")?.value;
       if (!username || username.length === 0) {
         EDIT_PROFILE_STORE.updateStoreData({
-          "username-error-text":"Name is a required field"
+          "username-error-text": "Name is a required field",
         });
         return;
       }
@@ -41,23 +39,21 @@ export class EditProfileComponent extends PresentationComponent {
         if (response.errorMessage) {
           EDIT_PROFILE_STORE.updateStoreData({
             errorMessage: response.errorMessage,
-            successMessage: ""
+            successMessage: "",
           });
         } else {
           EDIT_PROFILE_STORE.updateStoreData({
             errorMessage: "",
-            successMessage: "Successfully updated user"
+            successMessage: "Successfully updated user",
           });
         }
       });
-    }
+    };
 
     this.setClickEvents({
-			"updateUserProfile":updateUserProfile
-		});
+      updateUserProfile: updateUserProfile,
+    });
 
-		this.setStore(EDIT_PROFILE_STORE);
-
+    this.setStore(EDIT_PROFILE_STORE);
   }
- 
 }

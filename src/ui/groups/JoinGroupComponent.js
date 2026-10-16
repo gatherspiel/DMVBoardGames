@@ -171,7 +171,4 @@ export class GroupEditComponent extends PresentationComponent {
       }
     });
   }
-
-  
-   
 }

@@ -12,12 +12,12 @@
     <title>GroupSearchResult Information</title>
     <script type="module">
       import { LoadingIndicatorComponent } from "/shared/components/LoadingIndicatorComponent.js";
-      import * as stores from "/data/groups/GroupInfoStore.js"
-      import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore";
-      import {PresentationComponent} from "/lib/places-js-latest.js";
+      import * as stores from "/data/groups/GroupInfoStore.js";
+      import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore";
+      import { PresentationComponent } from "/lib/places-js-latest.js";
 
       import { RsvpComponent } from "/ui/groups/RsvpComponent.js";
-      
+
       customElements.define(
         "loading-indicator-component",
         LoadingIndicatorComponent,
@@ -30,90 +30,75 @@
   <body>
     {{>navbar}}
 
-    <div class="container-xl"> 
+    <div class="container-xl">
       <presentation-component
         data-template
         data-store="user-group-action-store"
       >
-        <div 
-          id="group-actions-menu"
-          visibility={loggedIn}
-        >
-          <a 
+        <div id="group-actions-menu" visibility="{loggedIn}">
+          <a
             class="btn secondary"
-            href={createEventUrl}
-            visibility={canEdit} 
+            href="{createEventUrl}"
+            visibility="{canEdit}"
           >
             Create event
           </a>
-          <a 
+          <a
             class="btn secondary"
-            href={editGroupUrl}
+            href="{editGroupUrl}"
             id="edit-group-button-id"
-            visibility={canEdit}
+            visibility="{canEdit}"
           >
             Edit group information
           </a>
-          <a 
+          <a
             class="btn secondary"
-            href={deleteGroupUrl}
+            href="{deleteGroupUrl}"
             visibility="{canEdit}"
           >
             Delete group
           </a>
-             
-          <a 
-            class="btn secondary" 
-            href={joinGroupUrl}
-            id="join-group-id">
-              {joinGroupText}
-          </a>
-        </div> 
 
+          <a class="btn secondary" href="{joinGroupUrl}" id="join-group-id">
+            {joinGroupText}
+          </a>
+        </div>
       </presentation-component>
-      <presentation-component
-        data-template
-        data-store="group-summary-store" 
-      >  
+      <presentation-component data-template data-store="group-summary-store">
         <div class="fade-in-animation ui-section">
           <h1 id="group-name-header">{name}</h1>
-          <a class="secondary btn" href={url}>Group website</a>
-          <div>
-            {groupImage}
-          </div>
+          <a class="secondary btn" href="{url}">Group website</a>
+          <div>{groupImage}</div>
           <div class="group-description">
             <h2>Group description</h2>
             <div id="group-description-text">
-              <span>{description}</span> 
+              <span>{description}</span>
             </div>
           </div>
         </div>
       </presentation-component>
 
       <presentation-component
-        data-store = "group-weekly-event-store"
+        data-store="group-weekly-event-store"
         data-template
       >
-      <div id={key} class="event">
-        <a class="btn secondary" href="{url}">${name}</a> 
-        <rsvp-component
-          current-user-rsvp={eventData.userHasRsvp}
-          event-id={eventData.id}
-          rsvp-count={eventData.rsvpCount}
-          user-can-update-rsvp={eventData.permissions.userCanRsvp}
-        ></rsvp-component>
-        <p class="event-time">{eventTime}</p>
-        <p class="event-location">{eventData.location}</p>
-      </div>
-      <div class="section-separator-small"></div>
-    </presentation-component>
-   
-    <presentation-component
-      data-store="group-one-time-event-store"
-    >
+        <div id="{key}" class="event">
+          <a class="btn secondary" href="{url}">${name}</a>
+          <rsvp-component
+            current-user-rsvp="{eventData.userHasRsvp}"
+            event-id="{eventData.id}"
+            rsvp-count="{eventData.rsvpCount}"
+            user-can-update-rsvp="{eventData.permissions.userCanRsvp}"
+          ></rsvp-component>
+          <p class="event-time">{eventTime}</p>
+          <p class="event-location">{eventData.location}</p>
+        </div>
+        <div class="section-separator-small"></div>
+      </presentation-component>
 
-    </presentation-component>
-    <!--renderOneTimeEventData(eventData, groupId, key) {
+      <presentation-component data-store="group-one-time-event-store">
+      </presentation-component>
+      <!--renderOneTimeEventData(eventData, groupId, key) {
     const url = `/html/groups/event.html?id=${encodeURIComponent(eventData.id)}&groupId=${encodeURIComponent(groupId)}`;
     return `
       <div id=${key} class="event">
@@ -124,8 +109,6 @@
       <div class="section-separator-small"></div>
     `;
   }
-    -->
- 
-    </div>
+    --></div>
   </body>
 </html>

@@ -10,13 +10,17 @@ export class SearchComponent extends PresentationComponent {
   constructor() {
     super();
 
-		//Performance optimizaiton if the "api-url" attribute is available before connectedCallback is called.
-		const searchUrl = this.getAttribute("api-url") ?? (window.location.href.contains("searchGroups") ? "/searchGroups" : "/searchEvents");
-		SEARCH_COMPONENT_STORE.fetchData();
-    
-		searchWithDefaultParams(searchUrl);
-    
-		this.setAttribute("search-button-enabled", false);
+    //Performance optimizaiton if the "api-url" attribute is available before connectedCallback is called.
+    const searchUrl =
+      this.getAttribute("api-url") ??
+      (window.location.href.contains("searchGroups")
+        ? "/searchGroups"
+        : "/searchEvents");
+    SEARCH_COMPONENT_STORE.fetchData();
+
+    searchWithDefaultParams(searchUrl);
+
+    this.setAttribute("search-button-enabled", false);
 
     const checkboxUpdated = () => {
       this.setAttribute("search-button-enabled", true);
@@ -45,7 +49,6 @@ export class SearchComponent extends PresentationComponent {
         distance: document.getElementById(`select-distance`).value ?? "",
       };
 
-
       const baseUrl = window.location.origin.split("?");
       let updatedUrl = `${baseUrl}?`;
       updatedUrl += `location=${searchParams.location.replaceAll(" ", "_")}&`;
@@ -53,7 +56,6 @@ export class SearchComponent extends PresentationComponent {
       updatedUrl += `distance=${searchParams?.distance?.replaceAll(" ", "_") ?? ``}`;
 
       window.history.replaceState({}, "", updatedUrl);
-
 
       SEARCH_RESULTS_STORE.fetchData({
         ...searchParams,

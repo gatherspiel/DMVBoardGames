@@ -1,20 +1,22 @@
 #agree-rules-input {
-	font-weight:600;
+  font-weight: 600;
 }
 #component-buttons {
-	padding-top:0.5rem;
-} 
+  padding-top: 0.5rem;
+}
 
 #email {
-	display: inline-block;
-}
-	
-#ui-input input {
-	display: block;
+  display: inline-block;
 }
 
-#username-input,#password-input,#confirm-password-input {
-	width:20rem;
+#ui-input input {
+  display: block;
+}
+
+#username-input,
+#password-input,
+#confirm-password-input {
+  width: 20rem;
 }
 
 #agree-rules-input:not(:has(> input:checked)) ~ #create-account-button {
@@ -25,18 +27,17 @@
   display: none;
 }
 
-@media not screen and (width < 32em) { 
-	#email {
-		display: inline-block;
-	}
+@media not screen and (width < 32em) {
+  #email {
+    display: inline-block;
+  }
 }
 
 @media screen and (width < 32em) {
-	#login-component-container {
-		text-align: center;
-	}
-	.login-element {
-		font-size:1rem;
-	}
+  #login-component-container {
+    text-align: center;
+  }
+  .login-element {
+    font-size: 1rem;
+  }
 }
-

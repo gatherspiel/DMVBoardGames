@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/styles/ui/user/memberDataStyles.css" />
     <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
     <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
-    
+
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Member data</title>
@@ -14,9 +14,9 @@
     <script defer fetchpriority="low" type="module">
       import { LoadingIndicatorComponent } from "/shared/components/LoadingIndicatorComponent.js";
 
-			import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore";
+      import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore";
       import * as stores from "/data/user/UserMemberStore.js";
-			import {PresentationComponent} from "/lib/places-js-latest.js";
+      import { PresentationComponent } from "/lib/places-js-latest.js";
 
       customElements.define(
         "loading-indicator-component",
@@ -28,64 +28,51 @@
   <body>
     {{>navbar}}
 
-    <div class="container-xl"> 
-
+    <div class="container-xl">
       <h1>MemberData</h1>
-        <presentation-component
-          data-store="moderating-groups-store"
-        >
-          <h2>Moderating groups: </h2>
-          <ul data-template>
-            <li>
-              <a href="{groupUrl}">
-                {groupName}
-              </a>
-            </li>
-          </ul>
-        </presentation-component>
+      <presentation-component data-store="moderating-groups-store">
+        <h2>Moderating groups:</h2>
+        <ul data-template>
+          <li>
+            <a href="{groupUrl}"> {groupName} </a>
+          </li>
+        </ul>
+      </presentation-component>
 
-        <presentation-component
-          data-store="attending-events-store"
-        >
-          <h2>Moderating events:</h2>
-          <ul data-template>
-            <li>
-              <span>{eventTimeDisplay} </span>
-               <a href="/html/groups/event.html?id={eventId}&groupId={groupId}">
-                {eventName}
-              </a>
-            </li>
-          </ul>
-        </presentation-component>
-
-    
-        <presentation-component
-          data-store="joined-groups-store"
-        >
-          <h2>Joined groups:</h2>
-          <ul data-template>
-            <li>
-              <a href="/html/groups/groups.html?name={groupNameUri}">
-                {groupName}
-              </a>
-            </li>
-          </ul>
-        </presentation-component>
-
-        <presentation-component
-          data-store="attending-events-store"
-        >
-        <h2>Attending events:</h2>
-          <ul data-template>
-            <li>
-              {eventTimeDisplay}
- <a href="/html/groups/event.html?id={eventId}&groupId={groupId}">
+      <presentation-component data-store="attending-events-store">
+        <h2>Moderating events:</h2>
+        <ul data-template>
+          <li>
+            <span>{eventTimeDisplay} </span>
+            <a href="/html/groups/event.html?id={eventId}&groupId={groupId}">
               {eventName}
-            </li>
+            </a>
+          </li>
+        </ul>
+      </presentation-component>
 
-          </ul>
-        </presentation-component>
+      <presentation-component data-store="joined-groups-store">
+        <h2>Joined groups:</h2>
+        <ul data-template>
+          <li>
+            <a href="/html/groups/groups.html?name={groupNameUri}">
+              {groupName}
+            </a>
+          </li>
+        </ul>
+      </presentation-component>
 
+      <presentation-component data-store="attending-events-store">
+        <h2>Attending events:</h2>
+        <ul data-template>
+          <li>
+            <span>{eventTimeDisplay}</span>
+            <a href="/html/groups/event.html?id={eventId}&groupId={groupId}">
+              {eventName}
+            </a>
+          </li>
+        </ul>
+      </presentation-component>
     </div>
   </body>
 </html>

@@ -1,50 +1,48 @@
 presentation-component:not([is-template-setup="true"]) {
-  display:none;
+  display: none;
 }
 
-#edit-group-form {
-  margin-top:0.5rem;
-  margin-bottom:1rem;
-}
 #group-description-text {
-  margin-top:0.5rem;
-  margin-bottom:1rem;
-}  
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
 #group-name-header {
-  margin-bottom:0.5rem;
+  margin-bottom: 0.5rem;
   margin-top: 0.5rem;
 }
+#group-actions-menu a {
+  margin-right: 1rem;
+}
 #image-preview {
-  display:block;
+  display: block;
 }
 #other-events-header {
   margin-top: 0.5rem;
-} 
-.add-event-button {
-  margin-top:0.5rem;
 }
 .event {
   padding-top: 1rem;
   padding-bottom: 0.5rem;
 }
 .group-description a:hover {
-  background-color: var(--clr-very-light-blue)
+  background-color: var(--clr-very-light-blue);
 }
 .group-webpage-link {
   display: inline-block;
   margin-top: 0.5rem;
-}  
+}
 
 @media not screen and (width < 32em) {
   h2 {
-    margin-left:-1.5rem;
+    margin-left: -1.5rem;
     padding-left: 1.5rem;
   }
-#group-description-input} {
+}
+
+#group-description-input {
   display: block;
 }
-#group-name-input{
-  display:block;
+#group-name-input {
+  display: block;
   width: 600px;
 }
 #group-url-input {
@@ -52,29 +50,27 @@ presentation-component:not([is-template-setup="true"]) {
   width: 600px;
 }
 #group-image {
-  width:63rem;
+  width: 63rem;
 }
 #group-name-header {
-  margin-bottom:0.5rem;
-  margin-left:-1.5rem;
+  margin-bottom: 0.5rem;
+  margin-left: -1.5rem;
   margin-top: 0.5rem;
-  padding-left:1.5rem;
+  padding-left: 1.5rem;
 }
 
-}   
 @media screen and (width < 32em) {
   #group-description-input {
-    height:10rem;
+    height: 10rem;
   }
-  #group-image{
-    width:20rem;
+  #group-image {
+    width: 20rem;
   }
   .group-description {
-    font-size:1rem;
+    font-size: 1rem;
     padding: 0.5rem;
   }
   .delete-button {
     margin-top: 0.5rem;
-  }  
-}    
-
+  }
+}

@@ -13,15 +13,14 @@
  * All logic is inside the connectedCallback method to optimize for performance.
  */
 export class LoadingIndicatorComponent extends HTMLElement {
-  
-	constructor() {
-      super();
-      this.imagePath = this.getAttribute("image-path");
-    }
-  
-	connectedCallback() {
-      this.attachShadow({ mode: "open" });
-      const templateStyle = `      
+  constructor() {
+    super();
+    this.imagePath = this.getAttribute("image-path");
+  }
+
+  connectedCallback() {
+    this.attachShadow({ mode: "open" });
+    const templateStyle = `      
         <style>
           #meeple-one {
             position: absolute;
@@ -113,10 +112,11 @@ export class LoadingIndicatorComponent extends HTMLElement {
           transform: rotate(-1turn)
           }
         }</style>`;
-  
-      const template = document.createElement("template");
-      template.innerHTML =
-        templateStyle + `     
+
+    const template = document.createElement("template");
+    template.innerHTML =
+      templateStyle +
+      `     
           <div class="loader"> 
             <div class="meeple" id="meeple-one">  
                 <img src="${this.imagePath}">

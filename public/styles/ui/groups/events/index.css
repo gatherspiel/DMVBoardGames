@@ -18,12 +18,11 @@ h1 {
   color: var(--clr-darker-blue);
   text-align: left;
 }
-#event-details-header {
-  margin-top: 0.5rem;
+
+#event-page-actions-header a {
+  margin-right: 1rem;
 }
-.back-to-group-button {
-  margin-top: 0.5rem;
-}
+
 .event-info {
   display: block;
 }

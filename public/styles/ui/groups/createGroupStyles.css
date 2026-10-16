@@ -1,10 +1,10 @@
 create-group-component:not([is-template-setup="true"]) {
-  display:none;  
+  display: none;
 }
 
 form:has(#group-name-input:placeholder-shown) {
-  #create-group-button{
-    display:none; 
+  #create-group-button {
+    display: none;
   }
   #create-group-button-hidden {
     display: block;
@@ -12,11 +12,11 @@ form:has(#group-name-input:placeholder-shown) {
 }
 
 form:has(#group-description-input:placeholder-shown) {
-  #create-group-button{
-    display:none; 
+  #create-group-button {
+    display: none;
   }
   #create-group-button-hidden {
-    display:block;
+    display: block;
   }
 }
 

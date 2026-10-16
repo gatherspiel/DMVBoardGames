@@ -1,65 +1,66 @@
-import {DataStore} from "/lib/places-js-latest.js";
+import { DataStore } from "/lib/places-js-latest.js";
 
-import { convertTimeTo24Hours} from "/shared/EventDataUtils.js"
-import {getDaysOfWeekSelect} from "/shared/html/SelectGenerator.js";
+import { convertTimeTo24Hours } from "/shared/EventDataUtils.js";
+import { getDaysOfWeekSelect } from "/shared/html/SelectGenerator.js";
 
 const groupName = new URLSearchParams(document.location.search).get("name");
 
-import {EVENT_STORE} from "/data/groups/events/EventStore.js"
+import { EVENT_STORE } from "/data/groups/events/EventStore.js";
 
 export const EDIT_EVENT_STORE = DataStore.createWithDataStoreSignals({
-  storeSignals:[{
-    "store":EVENT_STORE
-  }],
-  presentationSignals:{
-
+  storeSignals: [
+    {
+      store: EVENT_STORE,
+    },
+  ],
+  presentationSignals: {
     update: {
-      "daysSelect":()=>{
+      daysSelect: () => {
         return getDaysOfWeekSelect();
       },
-      "descriptionErrorMessage":(data)=>{
+      descriptionErrorMessage: (data) => {
         return data?.formValidationErrors?.description;
       },
-      "endTimeErrorMessage":(data)=>{
+      endTimeErrorMessage: (data) => {
         return data?.formValidationErrors?.["end-time-input"];
       },
-      "groupPageUrl":()=>{
+      groupPageUrl: () => {
         return `/html/groups/groups.html?name=${encodeURIComponent(groupName)}`;
-      }, 
-			"isOneTime":(data)=>{
-				return data.isRecurring ? "none" : "visible";
-			},
-			"isRecurring":(data)=>{
-				return data.isRecurring ? "visible" : "none";
-			},
-      "nameErrorMessage":(data)=>{
+      },
+      isOneTime: (data) => {
+        return data.isRecurring ? "none" : "visible";
+      },
+      isRecurring: (data) => {
+        return data.isRecurring ? "visible" : "none";
+      },
+      nameErrorMessage: (data) => {
         return data?.formValidationErrors?.name;
       },
-      "showSuccess":(data)=>{
-        if(data.successMessage){
+      showSuccess: (data) => {
+        if (data.successMessage) {
           return "visible";
         }
         return "hidden";
       },
-      "startDateErrorMessage":(data)=>{
+      startDateErrorMessage: (data) => {
         return data?.formValidationErrors?.["start-date-input"];
       },
-			"startTime":(data)=>{
-				return convertTimeTo24Hours(data.startTime);
-			},
-			"endTime":(data)=>{
-				return convertTimeTo24Hours(data.endTime);
-			},
-      "startTimeErrorMessage":(data)=>{
+      startTime: (data) => {
+        return convertTimeTo24Hours(data.startTime);
+      },
+      endTime: (data) => {
+        return convertTimeTo24Hours(data.endTime);
+      },
+      startTimeErrorMessage: (data) => {
         return data?.formValidationErrors?.["start-time-input"];
       },
-      "title":()=>{
+      title: () => {
         return `Add event for group ${groupName}`;
       },
-      "pageTitleUpdate":(data)=>{
+      pageTitleUpdate: (data) => {
         document.title = `Editing event: ${data.name}`;
-      }
-    }
+      },
+    },
   },
-  storeName:"create-event-store"
+  storeName: "create-event-store",
 });

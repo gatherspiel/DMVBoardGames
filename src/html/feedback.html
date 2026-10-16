@@ -6,16 +6,15 @@
     <title>Share feedback</title>
     <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
     <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
-		<link rel="stylesheet" href="/styles/ui/feedbackStyles.css" />
-
+    <link rel="stylesheet" href="/styles/ui/feedbackStyles.css" />
 
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
- 
-		<script defer fetchpriority="low" type="module">
+
+    <script defer fetchpriority="low" type="module">
       import { FeedbackComponent } from "../ui/FeedbackComponent.js";
       import { PresentationComponent } from "/lib/places-js-latest.js";
-      import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore.js"; 
-      
+      import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore.js";
+
       customElements.define("feedback-component", FeedbackComponent);
       customElements.define("presentation-component", PresentationComponent);
 
@@ -24,72 +23,68 @@
     </script>
   </head>
   <body>
-      {{>navbar}}
-			<feedback-component data-template>
-        <div class="container-xl"> 
-          <h1>Share feedback</h1>
-          <form id="submit-feedback-form" onsubmit="return false">  
-            <span display={isSuccess} class="callout success">
-              {successMessage}
-            </span>
-              <span class="error-message">{errorMessage}</span>
-            <label class="section-label">Feedback:</label>
-            <textarea
-              id="feedback-text-input-id"
-              name="feedback-text-input-id"
-              ></textarea>
+    {{>navbar}}
+    <feedback-component data-template>
+      <div class="container-xl">
+        <h1>Share feedback</h1>
+        <form id="submit-feedback-form" onsubmit="return false">
+          <span display="{isSuccess}" class="callout success">
+            {successMessage}
+          </span>
+          <span class="error-message">{errorMessage}</span>
+          <label class="section-label">Feedback:</label>
+          <textarea
+            id="feedback-text-input-id"
+            name="feedback-text-input-id"
+          ></textarea>
 
-            <label class="section-label">(Optional)Enter name:</label>
-            <input
-              id="enter-name-input-id"
-              name="enter-name-input-id"
-            />
+          <label class="section-label">(Optional)Enter name:</label>
+          <input id="enter-name-input-id" name="enter-name-input-id" />
 
-            <label class="section-label">(Optional)Enter email:</label>
-            <input
-              id="enter-email-input-id"
-              name="enter-email-input-id"
-            />     
+          <label class="section-label">(Optional)Enter email:</label>
+          <input id="enter-email-input-id" name="enter-email-input-id" />
 
-            <label class="section-label" id="feedback-type-label">Feedback type:</label>  
-            <div id="feedback-type-select">
-              <div>
-                <label>General feedback</label> 
-                <input 
-                  type="radio"
-                  name="feedback-type"
-                  value="general_feedback"/>
-              </div>  
-              <div>
-                <label for="javascript">Bug report</label> 
-                <input name="feedback-type" type="radio" value="bug_report"/>
-              </div>  
-              <div>
-                <label>New feature</label>
-                <input 
-                  type="radio" 
-                  name="feedback-type"
-                  value="new_feature" />
-              </div>  
-              <div>
-                <label>Feature enhancement</label>
-                <input 
-                  type="radio" 
-                  name="feedback-type"
-                  value="feature_enhancement"/>
-              </div>
+          <label class="section-label" id="feedback-type-label"
+            >Feedback type:</label
+          >
+          <div id="feedback-type-select">
+            <div>
+              <label>General feedback</label>
+              <input
+                type="radio"
+                name="feedback-type"
+                value="general_feedback"
+              />
             </div>
-            <button 
-              class="primary" 
-              id="submit-feedback-id" 
-              onClick={submitFeedback}
-              type="submit">Submit</button> 
-          </form>
-        </div>
-
-      </feedback-component>
-    </div>
+            <div>
+              <label for="javascript">Bug report</label>
+              <input name="feedback-type" type="radio" value="bug_report" />
+            </div>
+            <div>
+              <label>New feature</label>
+              <input type="radio" name="feedback-type" value="new_feature" />
+            </div>
+            <div>
+              <label>Feature enhancement</label>
+              <input
+                type="radio"
+                name="feedback-type"
+                value="feature_enhancement"
+              />
+            </div>
+          </div>
+          <button
+            class="primary"
+            id="submit-feedback-id"
+            onClick="{submitFeedback}"
+            type="submit"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </feedback-component>
     <div id="bot-container"></div>
-		{{>footer}} 
-	</body>
+    {{>footer}}
+  </body>
 </html>

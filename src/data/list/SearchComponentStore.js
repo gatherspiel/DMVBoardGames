@@ -55,12 +55,12 @@ const getDaysSelect = () => {
 
 const getCitySelect = (state) => {
   const displayCities = [];
-	
-	if(state.cities){
-		Object.values(state.cities).forEach((city) => {
-			displayCities.push(getDisplayName(city));
-		});
-	}
+
+  if (state.cities) {
+    Object.values(state.cities).forEach((city) => {
+      displayCities.push(getDisplayName(city));
+    });
+  }
   displayCities.sort();
   displayCities.unshift(DEFAULT_SEARCH_PARAMETER);
   const cityList = getDropdown({

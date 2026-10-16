@@ -1,13 +1,15 @@
-import {ApiLoadAction,PresentationComponent } from "/lib/places-js-latest.js";
-import {FEEDBACK_STORE} from "/data/FeedbackStore.js"
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
+import { FEEDBACK_STORE } from "/data/FeedbackStore.js";
 import { API_ROOT } from "/shared/Params.js";
 
 export class FeedbackComponent extends PresentationComponent {
   constructor() {
     super();
 
-    const submitFeedback = ()=> {
-      const elements = this.getRootNode().getElementById("submit-feedback-form")?.elements;
+    const submitFeedback = () => {
+      const elements = this.getRootNode().getElementById(
+        "submit-feedback-form",
+      )?.elements;
       const feedbackText = elements.namedItem("feedback-text-input-id")?.value;
 
       if (feedbackText && feedbackText.length > 10000) {
@@ -24,7 +26,6 @@ export class FeedbackComponent extends PresentationComponent {
         return;
       }
 
-
       ApiLoadAction.getResponseData({
         body: JSON.stringify({
           email: elements.namedItem("enter-email-input-id")?.value,
@@ -38,21 +39,20 @@ export class FeedbackComponent extends PresentationComponent {
         if (data.errorMessage) {
           FEEDBACK_STORE.updateStoreData({
             errorMessage: data.errorMessage,
-            "successMessage": "",
+            successMessage: "",
           });
         } else {
           FEEDBACK_STORE.updateStoreData({
             errorMessage: "",
-            "successMessage": "Feedback submitted",
+            successMessage: "Feedback submitted",
           });
         }
       });
     };
-   
-    this.setClickEvents({
-			"submitFeedback":submitFeedback
-		});
-		this.setStore(FEEDBACK_STORE);
-  }
 
+    this.setClickEvents({
+      submitFeedback: submitFeedback,
+    });
+    this.setStore(FEEDBACK_STORE);
+  }
 }

@@ -5,7 +5,7 @@ import {
 } from "/shared/Params.js";
 
 import { AuthResponse } from "../../ui/user/AuthResponse.js";
-import { CustomLoadSignal,DataStore } from "/lib/places-js-latest.js";
+import { CustomLoadSignal, DataStore } from "/lib/places-js-latest.js";
 
 export const IS_LOGGED_IN_KEY = "loggedIn";
 
@@ -18,18 +18,17 @@ async function retrieveData(params) {
     }
 
     if (authData && authData.expires_at * 1000 > new Date().getTime()) {
-			return {
-				isLoggedIn:true,
-				"authData":authData
-
-			}
+      return {
+        isLoggedIn: true,
+        authData: authData,
+      };
     }
 
-		if(!params.formInputs){
-			return {
-				isLoggedIn:false
-			}
-		}
+    if (!params.formInputs) {
+      return {
+        isLoggedIn: false,
+      };
+    }
 
     const data = await fetch(
       `${SUPABASE_CLIENT_URL}/auth/v1/token?grant_type=password`,
@@ -56,19 +55,18 @@ async function retrieveData(params) {
         JSON.stringify(authTokenData),
       );
 
-			window.location.assign("/html/user/memberData.html");
+      window.location.assign("/html/user/memberData.html");
       return new AuthResponse(true, {
         ...authTokenData,
         username: authData?.username,
       });
+    } else {
+      const output = await data.json();
+      return {
+        isLoggedIn: false,
+        loginError: output.msg,
+      };
     }
-		else {
-			const output = await data.json();
-			return {	
-				isLoggedIn: false,
-				loginError: output.msg
-			}
-		}
   } catch (e) {
     if (e.message instanceof AuthResponse) {
       console.error("Authentication error");
@@ -78,36 +76,33 @@ async function retrieveData(params) {
         e.message.getErrorMessage().toString(),
       );
     } else {
-			return {
-				isLoggedIn: false,
-				loginError: e.message
-			}
+      return {
+        isLoggedIn: false,
+        loginError: e.message,
+      };
     }
   }
 }
 
 const loginStateSignals = {
-	update: {
-		newUserMessage:(state)=>{
-			
-			if(state.isNewUser){
-				return `<h2>Account successfully confirmed. Use this page to login</h2>`
-			}
-			return		``;
-		},
-		loginError:(data)=>{
-			if(data.loginError){
-				return data.loginError
-			}
-			return ""
-		}
-	}
-}
+  update: {
+    newUserMessage: (state) => {
+      if (state.isNewUser) {
+        return `<h2>Account successfully confirmed. Use this page to login</h2>`;
+      }
+      return ``;
+    },
+    loginError: (data) => {
+      if (data.loginError) {
+        return data.loginError;
+      }
+      return "";
+    },
+  },
+};
 
-export const LOGIN_STORE =
-	DataStore.createWithCustomLoadSignal({
-		"loadAction":retrieveData,
-		"storeName":"login-store",
-		"presentationSignals":loginStateSignals
-	});
-
+export const LOGIN_STORE = DataStore.createWithCustomLoadSignal({
+  loadAction: retrieveData,
+  storeName: "login-store",
+  presentationSignals: loginStateSignals,
+});

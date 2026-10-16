@@ -3,19 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Loading event</title>
+    <title>Creating event</title>
 
     <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
     <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
-    <link rel="stylesheet" href="/styles/ui/groups/createEventStyles.css" />
+    <link rel="stylesheet" href="/styles/ui/groups/events/create.css" />
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <script type="module">
-      import {CreateEventComponent} from "/ui/groups/events/CreateEventComponent.js"
+      import { CreateEventComponent } from "/ui/groups/events/CreateEventComponent.js";
       import { ImageUploadComponent } from "/shared/components/ImageUploadComponent.js";
-      import {PresentationComponent} from "/lib/places-js-latest.js";
-      import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore";
+      import { PresentationComponent } from "/lib/places-js-latest.js";
+      import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore";
 
       customElements.define("create-event-component", CreateEventComponent);
       customElements.define("image-upload-component", ImageUploadComponent);
@@ -25,126 +25,98 @@
   <body>
     {{>navbar}}
 
-    <create-event-component
-      data-template 
-    >
+    <create-event-component data-template>
       <div class="container-xl">
-        <h1>Create event</h1> 
-        <form id="create-event-form" onsubmit="return false">   
+        <h1>Create event</h1>
+        <form id="create-event-form" onsubmit="return false">
           <div id="form-status-div">
-            <span 
-              class="callout success" 
-              textContent={successMessage}
-              visibility={showSuccess}
+            <span
+              class="callout success"
+              textContent="{successMessage}"
+              visibility="{showSuccess}"
             >
             </span>
             <span class="error-message">{errorMessage}</span>
           </div>
-          <div 
-            class = "form-section"
-            id = "recurring-event-select"
-          >
+          <div class="form-section" id="recurring-event-select">
             <label> Recurring event</label>
-            <input 
+            <input
               id="recurring-event-input"
               name="recurring-event-input"
               type="checkbox"
             />
-          </div>  
-          <div class = "form-section">
-            <label>Enable RSVPs. Enable if you want to use this site to manage RSVPs instead of another website 
-            such as Meetup.com</label>
-            <input
-            type="checkbox"
-          >
-          </div> 
+          </div>
+          <div class="form-section">
+            <label
+              >Enable RSVPs. Enable if you want to use this site to manage RSVPs
+              instead of another website such as Meetup.com</label
+            >
+            <input type="checkbox" />
+          </div>
           <div class="form-section">
             <label class="required-field">Name</label>
-            <input
-              id="event-name-input"
-              name="event-name-input"
-             />
+            <input id="event-name-input" name="event-name-input" />
             <span class="error-message">{nameErrorMessage}</span>
-           </div>
- 
+          </div>
+
           <div class="form-section">
             <label class="required-field">Description</label>
             <textarea
               id="event-description-input"
               name="event-description-input"
-            /></textarea>
+            />
             <span class="error-message">{descriptionErrorMessage}</span>
-          </div>   
-          <image-upload-component
-            id="image-upload-ui"
-          >   
+          </div>
+          <image-upload-component id="image-upload-ui">
           </image-upload-component>
           <div class="form-section">
             <label class="">Event URL(optional)</label>
-            <input
-              name="event-url-input"
-              type="url"
-            />
-          </div> 
-          <div 
-            class="form-section"
-            id="day-of-week-select"
-          >
-            <label class=" required-field">Day of week</label>
+            <input name="event-url-input" type="url" />
+          </div>
+          <div class="form-section" id="day-of-week-select">
+            <label class="required-field">Day of week</label>
             <fieldset
               name="day-of-week-input"
-              innerHTML={daysSelect}
+              innerHTML="{daysSelect}"
             ></fieldset>
           </div>
-          <div 
-            class="form-section"
-            id="start-date-select">
-            <label class=" required-field">Start date</label>
-            <input
-              name="start-date-input"
-              type="date"
-            />  
+          <div class="form-section" id="start-date-select">
+            <label class="required-field">Start date</label>
+            <input name="start-date-input" type="date" />
             <span class="error-message">{startDateErrorMessage}</span>
-          </div> 
+          </div>
           <div class="form-section">
             <label class="required-field">Start time</label>
-            <input
-              name="start-time-input"
-              type="time"
-            />
+            <input name="start-time-input" type="time" />
             <span class="error-message">{startTimeErrorMessage}</span>
           </div>
           <div class="form-section">
-            <label class=" required-field">End time</label>
-            <input
-              name="end-time-input"
-              type="time"
-            />
+            <label class="required-field">End time</label>
+            <input name="end-time-input" type="time" />
             <span class="error-message">{endTimeErrorMessage}</span>
           </div>
           <div class="form-section">
-            <label class=" required-field">Event address</label>
-            <input
-              name="event-location-input"
-            />
+            <label class="required-field">Event address</label>
+            <input name="event-location-input" />
             <span class="error-message">{event-location-error-message}</span>
           </div>
-          <button 
-            class="primary" 
+          <button
+            class="primary"
             id="create-event-button-id"
-            onClick={createEvent}
+            onClick="{createEvent}"
             type="Submit"
           >
             Submit
           </button>
           <a
             class="btn secondary"
-            href="/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}">
+            href="/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}"
+          >
             Back to group
           </a>
         </form>
       </div>
-    </create-event-component> 
+    </create-event-component>
     {{>footer}}
   </body>
 </html>

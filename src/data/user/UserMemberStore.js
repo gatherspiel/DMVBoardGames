@@ -15,83 +15,90 @@ export const USER_MEMBER_STORE = new DataStore(
 USER_MEMBER_STORE.fetchData();
 
 export const MODERATING_GROUPS_STORE = DataStore.createWithDataStoreSignals({
-  presentationSignals:{
+  presentationSignals: {
     data: {
       update: {
-        "groupUrl":(data)=>{
-          return `/html/groups/?name=${encodeURIComponent(data.name)}`
+        groupUrl: (data) => {
+          return `/html/groups/?name=${encodeURIComponent(data.name)}`;
         },
-        "groupName":(data)=>data.name
-      }
-    }
-  },
-  storeSignals:[{
-    "fieldName": "data",
-    "selector": (data)=>{
-      return data.moderatingGroups;
+        groupName: (data) => data.name,
+      },
     },
-    "store":USER_MEMBER_STORE,
-  }],
-  storeName:"moderating-groups-store"
-})
+  },
+  storeSignals: [
+    {
+      fieldName: "data",
+      selector: (data) => {
+        return data.moderatingGroups;
+      },
+      store: USER_MEMBER_STORE,
+    },
+  ],
+  storeName: "moderating-groups-store",
+});
 
 export const MODERATING_EVENTS_STORE = DataStore.createWithDataStoreSignals({
-  presentationSignals:{
+  presentationSignals: {
     data: {
       update: {
-        "eventId":(data)=>data.eventId,
-        "eventTimeDisplay":(data)=>{
+        eventId: (data) => data.eventId,
+        eventTimeDisplay: (data) => {
           console.log(data);
-          return convertDateAndDayToDisplayString(
-            data.startDate,
-            data.day
-          ) + data.startTime;
+          return (
+            convertDateAndDayToDisplayString(data.startDate, data.day) +
+            data.startTime
+          );
         },
-        "groupId":(data)=>data.groupId
-      }
-    }
+        groupId: (data) => data.groupId,
+      },
+    },
   },
-  storeSignals:[{
-    "selector": (data)=>data.moderatingEvents,
-    "store":USER_MEMBER_STORE,
-  }],
-  storeName:"moderating-events-store"
-})
+  storeSignals: [
+    {
+      selector: (data) => data.moderatingEvents,
+      store: USER_MEMBER_STORE,
+    },
+  ],
+  storeName: "moderating-events-store",
+});
 
 export const JOINED_GROUPS_STORE = DataStore.createWithDataStoreSignals({
-  presentationSignals:{
-    data:{
+  presentationSignals: {
+    data: {
       update: {
-        "groupNameUri":(data)=>encodeURIComponent(data.groupName)
-      }
-    }
+        groupNameUri: (data) => encodeURIComponent(data.groupName),
+      },
+    },
   },
-  storeSignals:[{
-    "selector": (data)=>data.joinedGroups,
-    "store":USER_MEMBER_STORE
-  }],
-  storeName:"joined-groups-store"
-})
-
+  storeSignals: [
+    {
+      selector: (data) => data.joinedGroups,
+      store: USER_MEMBER_STORE,
+    },
+  ],
+  storeName: "joined-groups-store",
+});
 
 export const ATTENDING_EVENTS_STORE = DataStore.createWithDataStoreSignals({
-  presentationSignals:{
+  presentationSignals: {
     data: {
-      update: { 
-        "eventId":(data)=>data.eventId,
-        "eventTimeDisplay":(data)=>{
-            return convertDateAndDayToDisplayString(
-              data.startDate,
-              data.day
-            ) + data.startTime;
-          } 
+      update: {
+        eventId: (data) => data.eventId,
+        eventTimeDisplay: (data) => {
+          return (
+            convertDateAndDayToDisplayString(data.startDate, data.day) +
+            data.startTime
+          );
         },
-        "groupId":(data)=>data.groupId
-    }
+      },
+      groupId: (data) => data.groupId,
+    },
   },
-  storeSignals:[{
-    "selector": (data)=>data.joinedGroups,
-    "store":USER_MEMBER_STORE
-  }],
-  storeName:"attending-events-store"
-})
+  storeSignals: [
+    {
+      selector: (data) => data.joinedGroups,
+      store: USER_MEMBER_STORE,
+    },
+  ],
+  storeName: "attending-events-store",
+});

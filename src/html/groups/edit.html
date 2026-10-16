@@ -11,79 +11,67 @@
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <script type="module">
       import { GroupEditComponent } from "/ui/groups/EditGroupComponent.js";
-      import { ImageUploadComponent } from
-      "/shared/components/ImageUploadComponent.js";
-      import { LoadingIndicatorComponent } from "/shared/components/LoadingIndicatorComponent.js"; 
-      import {PresentationComponent} from "/lib/places-js-latest.js";
+      import { ImageUploadComponent } from "/shared/components/ImageUploadComponent.js";
+      import { LoadingIndicatorComponent } from "/shared/components/LoadingIndicatorComponent.js";
+      import { PresentationComponent } from "/lib/places-js-latest.js";
 
-      import { LOGIN_STATUS_STORE} from "/data/user/LoginStatusStore";
-      
-      import * as stores from "/data/groups/GroupInfoStore.js"
-      
+      import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore";
+
+      import * as stores from "/data/groups/GroupInfoStore.js";
+
       customElements.define("group-edit-component", GroupEditComponent);
       customElements.define("image-upload-component", ImageUploadComponent);
       customElements.define("presentation-component", PresentationComponent);
 
       const params = new URLSearchParams(document.location.search);
-      document.title = "Editing group: "+params.get("name");
+      document.title = "Editing group: " + params.get("name");
     </script>
   </head>
   <body>
     {{>navbar}}
 
-    <div class="container-xl"> 
-
-      <h2>Edit group information</h2> 
-      <group-edit-component
-        data-template
-      >
-      <form id="edit-group-form" onsubmit="return false">
-        <span class={successStyle}>{successMessage}</span>
-        <span class="error-message">{saveErrorMessage}</span>
-        <div class="form-section">
-          <label class="required-field">Name</label>
-          <input
-            id="group-name-input"
-            value={name}
-          />
-          <span class="error-message">{groupNameError}</span>
-        </div>
-        <div class="form-section">
-          <label class="required-field">Description</label>
-          <textarea
-              id="group-description-input"
-          />
+    <div class="container-xl">
+      <h2>Edit group information</h2>
+      <group-edit-component data-template>
+        <form id="edit-group-form" onsubmit="return false">
+          <span class="{successStyle}">{successMessage}</span>
+          <span class="error-message">{saveErrorMessage}</span>
+          <div class="form-section">
+            <label class="required-field">Name</label>
+            <input id="group-name-input" value="{name}" />
+            <span class="error-message">{groupNameError}</span>
+          </div>
+          <div class="form-section">
+            <label class="required-field">Description</label>
+            <textarea id="group-description-input">
             {description}
-          </textarea>    
-          <span class="error-message">{groupDescriptionError}</span>
-        </div>
+          </textarea
+            >
+            <span class="error-message">{groupDescriptionError}</span>
+          </div>
 
-        <label class="">Image(optional)</label> 
-        <div class ="form-section" id="image-upload">
-          <image-upload-component
-            id="image-upload-ui"
-            image-path="{imagePath}"
-          ></image-upload-component>
-        </div>    
-        <div class="form-section">
-          <label class="">Url</label>
-          <input
-            id="group-url-input"
-            value={groupData.url}
-          />
-        </div>
-        {{>gameTypeTags}}
-        <button 
-          class="primary" 
-          id="save-updates-button-id"
-          onClick={updateGroup}
-        >
-          Save
-        </button>
-      </form>`;
+          <label class="">Image(optional)</label>
+          <div class="form-section" id="image-upload">
+            <image-upload-component
+              id="image-upload-ui"
+              image-path="{imagePath}"
+            ></image-upload-component>
+          </div>
+          <div class="form-section">
+            <label class="">Url</label>
+            <input id="group-url-input" value="{groupData.url}" />
+          </div>
+          {{>gameTypeTags}}
+          <button
+            class="primary"
+            id="save-updates-button-id"
+            onClick="{updateGroup}"
+          >
+            Save
+          </button>
+        </form>
+        `;
       </group-edit-component>
-
- 
     </div>
   </body>
 </html>

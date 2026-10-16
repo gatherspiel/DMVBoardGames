@@ -4,6 +4,10 @@ textarea {
   display: block;
 }
 
+#create-event-button-id {
+  margin-right: 1rem;
+}
+
 #recurring-event-select:not(:has(> input:checked)) ~ #day-of-week-select {
   display: none;
 }

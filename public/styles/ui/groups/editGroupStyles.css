@@ -1,26 +1,26 @@
 group-edit-component:not([is-template-setup="true"]) {
-  display:none;
+  display: none;
 }
 
 #edit-group-form {
-  margin-top:0.5rem;
-  margin-bottom:1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 #image-preview {
-  display:block;
+  display: block;
 }
- 
+
 @media not screen and (width < 32em) {
   h2 {
-    margin-left:-1.5rem;
+    margin-left: -1.5rem;
     padding-left: 1.5rem;
   }
-  #group-description-input} {
+  #group-description-input {
     display: block;
   }
-  #group-name-input{
-    display:block;
+  #group-name-input {
+    display: block;
     width: 600px;
   }
   #group-url-input {
@@ -28,16 +28,15 @@ group-edit-component:not([is-template-setup="true"]) {
     width: 600px;
   }
   #group-image {
-    width:63rem;
+    width: 63rem;
   }
 }
 
 @media screen and (width < 32em) {
   #group-description-input {
-    height:10rem;
+    height: 10rem;
   }
-  #group-image{
-    width:20rem;
+  #group-image {
+    width: 20rem;
   }
-}    
-
+}

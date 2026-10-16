@@ -4,7 +4,7 @@ import {
   SUPABASE_CLIENT_URL,
 } from "/shared/Params.js";
 import { AuthResponse } from "../../ui/user/AuthResponse.js";
-import { CustomLoadSignal,DataStore } from "/lib/places-js-latest.js";
+import { CustomLoadSignal, DataStore } from "/lib/places-js-latest.js";
 
 async function retrieveData() {
   const authStr = window.localStorage.getItem(AUTH_TOKEN_KEY);
