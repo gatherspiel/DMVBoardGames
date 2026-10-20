@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loading event</title>
+
+    <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
+    <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
+    <link rel="stylesheet" href="/styles/ui/groups/events/create.css" />
+    <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script type="module">
+      import { EditEventComponent } from "/ui/groups/events/EditEventComponent.js";
+      import { ImageUploadComponent } from "/shared/components/ImageUploadComponent.js";
+      import { PresentationComponent } from "/lib/places-js-latest.js";
+      import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore";
+
+      customElements.define("edit-event-component", EditEventComponent);
+      customElements.define("image-upload-component", ImageUploadComponent);
+      customElements.define("presentation-component", PresentationComponent);
+    </script>
+  </head>
+  <body>
+    {{>navbar}}
+
+    <edit-event-component data-template>
+      <div class="container-xl">
+        <h1>Edit event</h1>
+        <form id="create-event-form" onsubmit="return false">
+          <div id="form-status-div">
+            <span
+              class="callout success"
+              textContent="{successMessage}"
+              visibility="{showSuccess}"
+            >
+            </span>
+            <span class="error-message">{errorMessage}</span>
+          </div>
+          <div class="form-section">
+            <label class="required-field">Name</label>
+            <input
+              id="event-name-input"
+              name="event-name-input"
+              value="{name}"
+            />
+            <span class="error-message">{nameErrorMessage}</span>
+          </div>
+
+          <div class="form-section">
+            <label class="required-field">Description</label>
+            <textarea
+              id="event-description-input"
+              name="event-description-input"
+            >
+							{description}
+						</textarea
+            >
+            <span class="error-message">{descriptionErrorMessage}</span>
+          </div>
+          <image-upload-component
+            id="image-upload-ui"
+            image-path="{imageFlePath}"
+          >
+          </image-upload-component>
+          <div class="form-section">
+            <label class="">Event URL(optional)</label>
+            <input name="event-url-input" type="url" value="{url}" />
+          </div>
+          <div
+            class="form-section"
+            display="{isRecurring}"
+            id="day-of-week-select"
+          >
+            <label class="required-field">Day of week</label>
+            <fieldset
+              name="day-of-week-input"
+              innerHTML="{daysSelect}"
+            ></fieldset>
+          </div>
+          <div
+            class="form-section"
+            display="{isOneTime}"
+            id="start-date-select"
+          >
+            <label class="required-field">Start date</label>
+            <input name="start-date-input" type="date" value="{startDate}" />
+            <span class="error-message">{startDateErrorMessage}</span>
+          </div>
+          <div class="form-section">
+            <label class="required-field">Start time</label>
+            <input name="start-time-input" type="time" value="{startTime}" />
+            <span class="error-message">{startTimeErrorMessage}</span>
+          </div>
+          <div class="form-section">
+            <label class="required-field">End time</label>
+            <input name="end-time-input" type="time" value="{endTime}" />
+            <span class="error-message">{endTimeErrorMessage}</span>
+          </div>
+          <div class="form-section">
+            <label class="required-field">Event address</label>
+            <input name="event-location-input" value="{location}" />
+            <span class="error-message">{event-location-error-message}</span>
+          </div>
+          <button
+            class="primary"
+            id="create-event-button-id"
+            onClick="{createEvent}"
+            type="Submit"
+          >
+            Submit
+          </button>
+          <a
+            class="btn secondary"
+            href="/html/groups/groups.html?name=${encodeURIComponent(data.groupName)}"
+          >
+            Back to group
+          </a>
+        </form>
+      </div>
+    </edit-event-component>
+    {{>footer}}
+  </body>
+</html>

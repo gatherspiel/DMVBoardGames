@@ -27,13 +27,13 @@ export default defineConfig({
         conventions: resolve(__dirname, "src/html/list/conventions.html"),
         create_account: resolve(__dirname, "src/html/user/createAccount.html"),
         create_groups: resolve(__dirname, "src/html/groups/create.html"),
-        create_event: resolve(__dirname, "src/html/groups/addEvent.html"),
+        create_event: resolve(__dirname, "src/html/groups/events/create.html"),
 
         delete_group: resolve(__dirname, "src/html/groups/delete.html"),
         designers: resolve(__dirname, "src/html/static/designers.html"),
 
         editProfile: resolve(__dirname, "src/html/user/editProfile.html"),
-        event: resolve(__dirname, "src/html/groups/event.html"),
+        event: resolve(__dirname, "src/html/groups/events/index.html"),
 
         faq: resolve(__dirname, "src/html/static/faq.html"),
         feedback: resolve(__dirname, "src/html/feedback.html"),
@@ -43,7 +43,7 @@ export default defineConfig({
           __dirname,
           "src/html/list/gameRestaurants.html",
         ),
-        groups: resolve(__dirname, "src/html/groups/groups.html"),
+        groups: resolve(__dirname, "src/html/groups/index.html"),
 
         join: resolve(__dirname, "src/html/static/join.html"),
 

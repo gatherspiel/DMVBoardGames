@@ -1,115 +1,90 @@
 <!doctype html>
 <html lang="en">
-  <head> 
-    <meta charset="UTF-8" /> 
-    <link
-			rel="stylesheet"
-      href="/styles/sharedHtmlAndComponentStyles.css"
-    />
-    <link
-			rel="stylesheet" 
-			href="/styles/sharedHtmlOnlyStyles.css"
-    />
-		<link
-			rel="stylesheet"
-			href="/styles/ui/list/searchStyles.css"
-		/>
-    <link
-			rel="stylesheet"
-			href="/styles/ui/list/eventListStyles.css"
-		/>
-		<link rel="preconnect" href="api.gatherspiel.com" />
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
+    <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
+    <link rel="stylesheet" href="/styles/ui/list/searchStyles.css" />
+    <link rel="stylesheet" href="/styles/ui/list/eventListStyles.css" />
+    <link rel="preconnect" href="api.gatherspiel.com" />
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       * [data-template] {
-        visibility:hidden;
+        visibility: hidden;
+      }
+      user-actions-component a {
+        margin-right: 1rem;
       }
       @media screen and (width < 32em) {
         header {
           margin-bottom: -2em;
         }
       }
-
     </style>
     <title>DMV Board Games</title>
-	  <script async type="module">
+    <script async type="module">
       console.log("Starting to parse Javascript at:" + Date.now());
 
-      import { PresentationComponent} from "./lib/places-js-latest.js";
+      import { PresentationComponent } from "./lib/places-js-latest.js";
       import { LoadingIndicatorComponent } from "./shared/components/LoadingIndicatorComponent.js";
-      import { LoginStatusComponent } from "./ui/shared/LoginStatusComponent.js";
+      import { LOGIN_STATUS_STORE } from "./data/user/LoginStatusStore.js";
       import { SearchComponent } from "./ui/list/SearchComponent.js";
-      import { UserActionsComponent } from "./ui/shared/UserActionsComponent.js";
-		
+      import { UserActionsComponent } from "./ui/user/UserActionsComponent.js";
+
       customElements.define("presentation-component", PresentationComponent);
       customElements.define("search-component", SearchComponent);
-			customElements.define(
+      customElements.define(
         "loading-indicator-component",
         LoadingIndicatorComponent,
       );
-		
-      customElements.define("login-status-component", LoginStatusComponent);
-      customElements.define("user-actions-component", UserActionsComponent);	
+
+      customElements.define("user-actions-component", UserActionsComponent);
     </script>
   </head>
   <body>
-		{{>navbar}}
-		<user-actions-component> </user-actions-component>
-		<search-component
+    {{>navbar}}
+    <user-actions-component> </user-actions-component>
+    <search-component
       api-url="/searchEvents"
-			data-store="search-component-store"
-			id="search-section" 
-		>
+      data-store="search-component-store"
+      id="search-section"
+    >
+      <div class="container-xl" data-template>
+        {#if isMobile}
+        <details>
+          <summary id="show-search-parameters" class="btn secondary">
+            Modify search parameters
+          </summary>
+          <form onsubmit="return false">{{>searchTemplate}}</form>
+        </details>
+        {else}
+        <form onsubmit="return false">
+          <h1>Search events</h1>
+          {{>searchTemplate}}
+        </form>
+        {/if}
+      </div>
+    </search-component>
 
-			<div class="container-xl" data-template>
-				{#if isMobile}
-            <details>
-              <summary id="show-search-parameters" class="btn secondary">Modify search parameters</summary>
-              <form
-                onsubmit="return false"
-              >		
-                {{>searchTemplate}}
-              </form>
-
-						</hr> 
-            </details>
-				{else}
-					<form
-						onsubmit="return false"
-					>	
-
-						<h1>Search events</h1>
-						{{>searchTemplate}}
-					</form>
-				{/if}
-			</div>
-		</search-component>
-		
-		<presentation-component
-		 data-store = "search-results-store"
-		 data-loading-indicator="loading-indicator-component"
-		 data-loading-image="/assets/images/meeple_small.png"
-     id="event-list-component"
-		>
-			<div class="container-xl fade-in-animation"> 
-				<p id="no-events-found">No events found</p>
-				<h1 id="search-results-header">Event search results</h1>
-				<ul data-template=data>
-					<li>
-						<a class="btn secondary" href="{url}">
-							{eventName}
-						</a>
-						<div class="event-time"> 
-							{eventTime}
-						</div>
-						<div class="event-location"> 
-							{location}
-						</div> 
-					</li>
-				</ul>
-			</div>
-		</presentation-component>
+    <presentation-component
+      data-store="search-results-store"
+      data-loading-indicator="loading-indicator-component"
+      data-loading-image="/assets/images/meeple_small.png"
+      id="event-list-component"
+    >
+      <div class="container-xl fade-in-animation">
+        <p id="no-events-found">No events found</p>
+        <h1 id="search-results-header">Event search results</h1>
+        <ul data-template>
+          <li>
+            <a class="btn secondary" href="{url}"> {eventName} </a>
+            <div class="event-time">{eventTime}</div>
+            <div class="event-location">{location}</div>
+          </li>
+        </ul>
+      </div>
+    </presentation-component>
 
     <div id="bot-container"></div>
     {{>footer}}

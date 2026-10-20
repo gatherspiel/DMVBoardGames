@@ -2,9 +2,9 @@ import {
   AUTH_TOKEN_KEY,
   SUPABASE_CLIENT_KEY,
   SUPABASE_CLIENT_URL,
-} from "../../ui/shared/Params.js";
+} from "/shared/Params.js";
 import { AuthResponse } from "../../ui/user/AuthResponse.js";
-import { DataStore } from "/lib/places-js-latest.js";
+import { CustomLoadSignal, DataStore } from "/lib/places-js-latest.js";
 
 async function retrieveData() {
   const authStr = window.localStorage.getItem(AUTH_TOKEN_KEY);
@@ -36,4 +36,4 @@ async function retrieveData() {
   }
 }
 
-export const LOGOUT_STORE = DataStore.createWithCustomLoadSignal(retrieveData);
+export const LOGOUT_STORE = new DataStore(new CustomLoadSignal(retrieveData));

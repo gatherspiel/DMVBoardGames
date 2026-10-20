@@ -1,11 +1,34 @@
-}/* Styles that are shared with components */
+/* Styles that are shared with components */
+
+presentation-component:not([is-template-setup="true"]) {
+  display: none;
+}
+
+#edit-profile-link {
+  margin-left: 1rem;
+}
 
 #form-status-div {
   height: 2.5rem;
 }
 
+header {
+}
+
+#new-account-link {
+  margin-left: 1rem;
+}
+
+#username-display {
+  margin-left: 1rem;
+}
+
 #user-actions-menu {
   padding-top: 1.5rem;
+}
+
+#user-image-container {
+  display: inline-block;
 }
 
 .error-message {
@@ -15,14 +38,8 @@
 }
 
 .fade-in-animation {
-  opacity:0;
-  animation: fadeIn 100ms forwards
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
+  opacity: 0;
+  animation: fadeIn 100ms forwards;
 }
 
 .form-section {
@@ -52,26 +69,29 @@
   font-weight: 600;
 }
 
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
 @media not screen and (width < 32em) {
   textarea {
     width: 63.5rem;
     height: 25rem;
   }
-  #user-actions-menu-raised {
-    display: inherit;
-  }
   .show-mobile {
-    display:none;
+    display: none;
   }
 }
 
-@media screen and (width < 32em) {   
+@media screen and (width < 32em) {
   textarea {
     width: 100%;
   }
   .hide-mobile {
     display: none;
-  } 
+  }
   .top-nav-secondary {
     display: grid;
     text-align: center;
@@ -90,14 +110,15 @@
 }
 
 @media print {
-  header,footer {
-    display:none;
+  header,
+  footer {
+    display: none;
   }
-  body{
-    margin:0px;
+  body {
+    margin: 0px;
   }
-  @page{
-    margin:0mm;
+  @page {
+    margin: 0mm;
   }
 }
 
@@ -105,15 +126,15 @@
   a {
     color: white;
     text-decoration: none;
-  } 
+  }
   .container-xl {
     margin-top: -1.5em;
   }
-  @media screen and (width < 32em) {	
+  @media screen and (width < 32em) {
     .container-xl > div {
-      display:flex;
-      justify-content:center;
-      align-items:center;		
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-  }	
+  }
 }

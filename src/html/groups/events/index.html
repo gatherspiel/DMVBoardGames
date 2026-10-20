@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event</title>
+
+    <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
+    <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
+    <link rel="stylesheet" href="/styles/ui/groups/events/index.css" />
+    <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script type="module">
+      import { LoadingIndicatorComponent } from "/shared/components/LoadingIndicatorComponent.js";
+      import { PresentationComponent } from "/lib/places-js-latest.js";
+
+      import * as stores from "/data/groups/events/EventStore.js";
+      import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore";
+
+      customElements.define(
+        "loading-indicator-component",
+        LoadingIndicatorComponent,
+      );
+      customElements.define("presentation-component", PresentationComponent);
+    </script>
+  </head>
+  <body>
+    {{>navbar}}
+
+    <presentation-component data-template data-store="user-event-action-store">
+      <div class="container-xl">
+        <div id="event-page-actions-header">
+          <a
+            class="btn secondary"
+            href="{deleteEventUrl}"
+            visibility="{loggedIn}"
+          >
+            {deleteEventText}
+          </a>
+          <a
+            class="btn secondary"
+            href="{editEventUrl}"
+            visibility="{loggedIn}"
+          >
+            {editEventText}
+          </a>
+          <a class="btn secondary" href="{backToGroupUrl}"> Back to group </a>
+        </div>
+      </div>
+    </presentation-component>
+
+    <presentation-component data-store="event-summary-store" data-template>
+      <div class="container-xl">
+        <h1>{name}</h1>
+        <a
+          class="btn secondary event-website-link"
+          href="{url}"
+          visibility="{showUrl}"
+        >
+          Event website
+        </a>
+        <img id="event-image" src="{imageFilePath}" visibility="{showImage}" />
+        <div class="event-info">
+          <b>Location: </b>
+          <span>{location}</span>
+        </div>
+
+        <div class="event-info">
+          <b>Time:</b>
+          <span>{eventTime}</span>
+        </div>
+        <div innerHTML="{moderatorHTML}"></div>
+        <rsvp-component
+          current-user-rsvp="{userHasRsvp}"
+          event-id="{id}"
+          rsvp-count="{rsvpCount}"
+          user-can-update-rsvp="{userCanRsvp}"
+        ></rsvp-component>
+
+        <div id="event-description">{description}</div>
+      </div>
+    </presentation-component>
+    {{>footer}}
+  </body>
+</html>

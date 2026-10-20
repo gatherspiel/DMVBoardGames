@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
     <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
+    <link rel="stylesheet" href="/styles/ui/user/createAccount.css" />
 
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,24 +12,66 @@
 
     <script defer fetchpriority="low" type="module">
       import { CreateAccountComponent } from "../../ui/user/CreateAccountComponent.js";
-      import { CreateAccountTemplateComponent } from "../../ui/user/CreateAccountTemplateComponent.js";
+      import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore.js";
+      import { PresentationComponent } from "/lib/places-js-latest.js";
+
+      import { FaqComponent } from "/ui/static/FaqComponent.js";
+      import { SiteRulesComponent } from "/ui/static/SiteRulesComponent.js";
 
       customElements.define("create-account-component", CreateAccountComponent);
-      customElements.define(
-        "create-account-template-component",
-        CreateAccountTemplateComponent,
-      );
-
-      import { GetGameAdvice } from "../../beta/getGameAdvice.js";
+      customElements.define("faq-component", FaqComponent);
+      customElements.define("site-rules-component", SiteRulesComponent);
+      customElements.define("presentation-component", PresentationComponent);
+      import { GetGameAdvice } from "/shared/bots/getGameAdvice.js";
       GetGameAdvice();
     </script>
   </head>
   <body>
-    <div id="container">
-      {{>navbar}}
+    {{>navbar}}
+    <create-account-component data-template>
+      <div class="container-xl" id="login-component-container">
+        <h1>Create account</h1>
+        <form id="create-account-form" onsubmit="return false">
+          <div id="ui-input">
+            <div class="form-section">
+              <label class="required-field" id="email">Email</label>
+              <input id="username-input" type="email" />
+            </div>
+            <div class="form-section">
+              <label class="required-field">Password</label>
+              <input id="password-input" type="password" />
+            </div>
 
-      <create-account-component class="ui-section"> </create-account-component>
-      <div id="bot-container"></div>
-    </div>
+            <div class="form-section">
+              <label class="required-field">Confirm password</label>
+              <input id="confirm-password-input" />
+            </div>
+          </div>
+
+          <span class="{successStyle}"> {successMessage} </span>
+
+          <span class="error-message">{error}</span>
+          <div id="agree-rules-input">
+            <label for="agree-rules-checkbox"
+              >I agree to the site rules listed below</label
+            >
+            <input type="checkbox" id="agree-rules-checkbox" />
+          </div>
+          <button
+            id="create-account-button"
+            onClick="{createAccount}"
+            class="primary"
+          >
+            Create account
+          </button>
+          <button id="create-account-button-disabled" class="neutral">
+            Create account
+          </button>
+
+          <site-rules-component></site-rules-component>
+          <faq-component></faq-component>
+        </form>
+      </div>
+    </create-account-component>
   </body>
 </html>

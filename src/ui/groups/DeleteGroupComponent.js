@@ -5,88 +5,57 @@ import {
   generateSuccessMessage,
 } from "../../shared/html/StatusIndicators.js";
 
-import { API_ROOT } from "../shared/Params.js";
+import { API_ROOT } from "/shared/Params.js";
 import { GROUP_NAME_INPUT } from "./Constants.js";
 import { LOGIN_STORE } from "../../data/user/LoginStore.js";
 
 const CONFIRM_DELETE_BUTTON_ID = "confirm-delete-button";
 
+import { DELETE_GROUP_STORE } from "/data/groups/DeleteGroupStore.js";
+
 export class DeleteGroupComponent extends PresentationComponent {
   constructor() {
-    super([
-      {
-        dataStore: LOGIN_STORE,
-      },
-    ]);
+    super();
 
-    const self = this;
-    this.addEventListener("click", (event) => {
-      if (event.target.id === CONFIRM_DELETE_BUTTON_ID) {
-        const groupName = self
-          .getRootNode()
-          .getElementById(GROUP_NAME_INPUT)
-          ?.value.trim();
+    const groupName = new URLSearchParams(document.location.search).get("name");
+    const groupId =
+      new URLSearchParams(document.location.search).get("id") ?? "";
 
-        if (groupName !== this.componentStore.existingGroupName) {
-          self.updateData({
-            name: groupName,
-            errorMessage: "Group name not entered correctly",
-          });
-        } else {
-          const id =
-            new URLSearchParams(document.location.search).get("id") ?? "";
-          const params = {
-            method: "DELETE",
-            url: `${API_ROOT}/groups/?id=${id}`,
-          };
+    const deleteGroup = () => {
+      const enteredName = this.getRootNode()
+        .getElementById("group-name-input")
+        ?.value.trim();
 
-          ApiLoadAction.getResponseData(params).then((response) => {
-            if (response.errorMessage) {
-              self.updateData({
-                errorMessage: response.errorMessage,
-                [SUCCESS_MESSAGE_KEY]: "",
-              });
-            } else {
-              self.updateData({
-                errorMessage: "",
-                [SUCCESS_MESSAGE_KEY]: "Successfully deleted group",
-              });
-            }
-          });
-        }
+      console.log(groupName + ":" + enteredName);
+      if (groupName !== enteredName) {
+        DELETE_GROUP_STORE.updateStoreData({
+          errorMessage: "Group name not entered correctly",
+        });
+      } else {
+        const params = {
+          method: "DELETE",
+          url: `${API_ROOT}/groups/?id=${groupId}`,
+        };
+
+        ApiLoadAction.getResponseData(params).then((response) => {
+          if (response.errorMessage) {
+            DELETE_GROUP_STORE.updateStoreData({
+              errorMessage: response.errorMessage,
+              successMessage: "",
+            });
+          } else {
+            DELETE_GROUP_STORE.updateStoreData({
+              errorMessage: "",
+              successMessage: "Successfully deleted group",
+            });
+          }
+        });
       }
-    });
-  }
+    };
 
-  connectedCallback() {
-    const groupName =
-      new URLSearchParams(document.location.search).get("name") ?? "";
-    document.title = `Delete group ${groupName}?`;
-    this.updateData({
-      existingGroupName: groupName,
-      isVisible: true,
+    this.setClickEvents({
+      deleteGroup: deleteGroup,
     });
-  }
-
-  render(data) {
-    return `
-      <div class="container-xl"> 
-        <h1>${document.title}</h1>
-        <form onsubmit="return false">
-          <div id="form-status-div">
-            ${generateErrorMessage(data.errorMessage)}
-            ${generateSuccessMessage(data[SUCCESS_MESSAGE_KEY])}      
-          </div>     
-          <div class = "form-section">
-            <label class="required-field">Enter group name to confirm deleting</label>
-            <input
-                id=${GROUP_NAME_INPUT}
-                value="${data.groupInput ?? ""}"
-             />
-           </div>
-           <button id=${CONFIRM_DELETE_BUTTON_ID}>Confirm delete</button>
-        </form>       
-      </div> 
-    `;
+    this.setStore(DELETE_GROUP_STORE);
   }
 }

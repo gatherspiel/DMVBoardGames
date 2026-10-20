@@ -3,48 +3,34 @@
   <head>
     <script async type="module">
       console.log("Starting to parse Javascript at:" + Date.now());
-      
-      import { PresentationComponent} from "../../lib/places-js-latest.js";
-      import { LoadingIndicatorComponent } from "../../shared/components/LoadingIndicatorComponent.js";
-      import { LoginStatusComponent } from "../../ui/shared/LoginStatusComponent.js";
-      import { SearchComponent } from "../../ui/list/SearchComponent.js";
-      import { UserActionsComponent } from "../../ui/shared/UserActionsComponent.js";
-      import {searchWithDefaultParams} from
-      "../../data/list/SearchResultsStore.js";
-		
+
+      import { PresentationComponent } from "/lib/places-js-latest.js";
+      import { LoadingIndicatorComponent } from "/shared/components/LoadingIndicatorComponent.js";
+      import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore.js";
+      import { SearchComponent } from "/ui/list/SearchComponent.js";
+      import { UserActionsComponent } from "/ui/user/UserActionsComponent.js";
+      ("/data/list/SearchResultsStore.js");
+
       customElements.define("presentation-component", PresentationComponent);
       customElements.define("search-component", SearchComponent);
-			customElements.define(
+      customElements.define(
         "loading-indicator-component",
         LoadingIndicatorComponent,
       );
-		
-      customElements.define("login-status-component", LoginStatusComponent);
-      customElements.define("user-actions-component", UserActionsComponent);	
+
+      customElements.define("user-actions-component", UserActionsComponent);
     </script>
     <meta charset="UTF-8" />
-    <link
-			rel="stylesheet"
-      href="/styles/sharedHtmlAndComponentStyles.css"
-			/>
-    <link
-			rel="stylesheet" 
-			href="/styles/sharedHtmlOnlyStyles.css"
-    />
-     <link
-			rel="stylesheet" 
-			href="/styles/ui/list/groupListStyles.css"
-    />
-		 <link
-			rel="stylesheet" 
-			href="/styles/ui/list/searchStyles.css"
-    />
+    <link rel="stylesheet" href="/styles/sharedHtmlAndComponentStyles.css" />
+    <link rel="stylesheet" href="/styles/sharedHtmlOnlyStyles.css" />
+    <link rel="stylesheet" href="/styles/ui/list/groupListStyles.css" />
+    <link rel="stylesheet" href="/styles/ui/list/searchStyles.css" />
 
-		<link rel="preconnect" href="api.gatherspiel.com" />
+    <link rel="preconnect" href="api.gatherspiel.com" />
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      @media screen and (width < 32em){
+      @media screen and (width < 32em) {
         header {
           margin-bottom: -2em;
         }
@@ -55,60 +41,46 @@
   <body>
     {{>navbar}}
 
-      <search-component
-        api-url="/searchGroups"
-        data-store="search-component-store"
-        id="search-section" 
-        search-text="Search groups"
-      >
-
-        <div class="container-xl" data-template>
-          {#if isMobile}
-            <details open>
-              <summary class="btn secondary">Modify search parameters</summary>
-              <form
-                id=${SEARCH_FORM_ID}
-                onsubmit="return false"
-              >		
-                {{>searchTemplate}}
-              </form>
-              </hr> 
-            </details>
-          {else}
-            <form
-              onsubmit="return false"
-            >	
-
-              <h1>Search events</h1>
-              {{>searchTemplate}}
-            </form>
-          {/if}
-        </div>
-      </search-component>
-      <presentation-component
-        data-store = "search-results-store"
-        data-laoding-indicator = "loading-indicator-component"
-        data-loading-image = "/assets/images/meeple_small.png"
-        id="group-list-component"
-      >
-
-        <div class="container-xl fade-in-animation"> 
-          <p id="no-groups-found">No events found</p>
-          <h1 id="search-results-header">Group search results</h1>
-          <ul data-template=data>
-            <li>
-              <a class="btn secondary" href="{url}">
-                {name}
-              </a>
-              <span class="group-search-details">{groupCitiesStr}</span>
-              <span innerHtml={recurringEventDays}></span>
-              <span innerHTML={gameTypeTags}></span>   
-            </li>
-          </ul>
-        </div>
-
-      </presentation-component>
-    </div>
+    <search-component
+      api-url="/searchGroups"
+      data-store="search-component-store"
+      id="search-section"
+    >
+      <div class="container-xl" data-template>
+        {#if isMobile}
+        <details open>
+          <summary class="btn secondary">Modify search parameters</summary>
+          <form id="${SEARCH_FORM_ID}" onsubmit="return false">
+            {{>searchTemplate}}
+          </form>
+        </details>
+        {else}
+        <form onsubmit="return false">
+          <h1>Search groups</h1>
+          {{>searchTemplate}}
+        </form>
+        {/if}
+      </div>
+    </search-component>
+    <presentation-component
+      data-store="search-results-store"
+      data-laoding-indicator="loading-indicator-component"
+      data-loading-image="/assets/images/meeple_small.png"
+      id="group-list-component"
+    >
+      <div class="container-xl fade-in-animation">
+        <p id="no-groups-found">No events found</p>
+        <h1 id="search-results-header">Group search results</h1>
+        <ul data-template="data">
+          <li>
+            <a class="btn secondary" href="{url}"> {name} </a>
+            <span class="group-search-details">{groupCitiesStr}</span>
+            <span innerHtml="{recurringEventDays}"></span>
+            <span innerHTML="{gameTypeTags}"></span>
+          </li>
+        </ul>
+      </div>
+    </presentation-component>
 
     <div id="bot-container"></div>
     {{>footer}}

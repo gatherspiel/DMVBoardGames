@@ -1,0 +1,37 @@
+input,
+select,
+textarea {
+  display: block;
+}
+
+#create-event-button-id {
+  margin-right: 1rem;
+}
+
+#recurring-event-select:not(:has(> input:checked)) ~ #day-of-week-select {
+  display: none;
+}
+
+#recurring-event-select:has(> input:checked) ~ #day-of-week-select {
+  display: visible;
+}
+
+#recurring-event-select:not(:has(> input:checked)) ~ #start-date-select {
+  display: visible;
+}
+
+#recurring-event-select:has(> input:checked) ~ #start-date-select {
+  display: none;
+}
+
+@media not screen and (width < 32em) {
+  #event-name-input,
+  #event-description-input {
+    width: 50rem;
+  }
+}
+@media screen and (width < 32em) {
+  #event-description-input {
+    height: 10rem;
+  }
+}

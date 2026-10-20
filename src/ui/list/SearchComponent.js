@@ -10,8 +10,16 @@ export class SearchComponent extends PresentationComponent {
   constructor() {
     super();
 
+    //Performance optimizaiton if the "api-url" attribute is available before connectedCallback is called.
+    const searchUrl =
+      this.getAttribute("api-url") ??
+      (window.location.href.contains("searchGroups")
+        ? "/searchGroups"
+        : "/searchEvents");
     SEARCH_COMPONENT_STORE.fetchData();
-    searchWithDefaultParams(this.getAttribute("api-url"));
+
+    searchWithDefaultParams(searchUrl);
+
     this.setAttribute("search-button-enabled", false);
 
     const checkboxUpdated = () => {
@@ -41,8 +49,6 @@ export class SearchComponent extends PresentationComponent {
         distance: document.getElementById(`select-distance`).value ?? "",
       };
 
-      console.log(searchParams);
-
       const baseUrl = window.location.origin.split("?");
       let updatedUrl = `${baseUrl}?`;
       updatedUrl += `location=${searchParams.location.replaceAll(" ", "_")}&`;
@@ -53,7 +59,7 @@ export class SearchComponent extends PresentationComponent {
 
       SEARCH_RESULTS_STORE.fetchData({
         ...searchParams,
-        ...{ apiUrl: this.getAttribute("api-url") ?? "" },
+        ...{ apiUrl: searchUrl ?? "" },
       });
     };
 

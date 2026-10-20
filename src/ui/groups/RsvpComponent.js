@@ -1,11 +1,11 @@
-import { ApiLoadAction, PresentationComponent } from "/lib/places-js-latest.js";
+import { ApiLoadAction, PresentationComponent } from "/lib/places-js-old.js";
 import {
   ERROR_MESSAGE_KEY,
   SUCCESS_MESSAGE_KEY,
   generateErrorMessage,
   generateSuccessMessage,
 } from "../../shared/html/StatusIndicators.js";
-import { API_ROOT } from "../shared/Params.js";
+import { API_ROOT } from "/shared/Params.js";
 
 export class RsvpComponent extends PresentationComponent {
   #rsvpUrl;

@@ -1,0 +1,43 @@
+#agree-rules-input {
+  font-weight: 600;
+}
+#component-buttons {
+  padding-top: 0.5rem;
+}
+
+#email {
+  display: inline-block;
+}
+
+#ui-input input {
+  display: block;
+}
+
+#username-input,
+#password-input,
+#confirm-password-input {
+  width: 20rem;
+}
+
+#agree-rules-input:not(:has(> input:checked)) ~ #create-account-button {
+  display: none;
+}
+
+#agree-rules-input:has(> input:checked) ~ #create-account-button-disabled {
+  display: none;
+}
+
+@media not screen and (width < 32em) {
+  #email {
+    display: inline-block;
+  }
+}
+
+@media screen and (width < 32em) {
+  #login-component-container {
+    text-align: center;
+  }
+  .login-element {
+    font-size: 1rem;
+  }
+}

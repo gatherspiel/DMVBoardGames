@@ -1,5 +1,5 @@
 import { GAME_STORE_DATA } from "../../data/list/LocationsStore.js";
-import { PresentationComponent } from "/lib/places-js-latest.js";
+import { PresentationComponent } from "/lib/places-js-old.js";
 
 export class GameStoreListComponent extends PresentationComponent {
   constructor() {

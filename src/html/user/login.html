@@ -11,22 +11,47 @@
     <title>Login</title>
 
     <script defer fetchpriority="low" type="module">
-      import { LoginStatusComponent } from "../../ui/shared/LoginStatusComponent.js";
-      import { LoginComponent } from "../../ui/user/LoginComponent.js";
-      import { LoginTemplateComponent } from "../../ui/user/LoginTemplateComponent.js";
+      import { LoginComponent } from "/ui/user/LoginComponent.js";
+      import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore";
 
-      customElements.define("login-status-component", LoginStatusComponent);
+      import { PresentationComponent } from "/lib/places-js-latest.js";
+      customElements.define("presentation-component", PresentationComponent);
       customElements.define("login-component", LoginComponent);
-      customElements.define("login-template-component", LoginTemplateComponent);
 
-      import { GetGameAdvice } from "../../beta/getGameAdvice.js";
+      import { GetGameAdvice } from "/shared/bots/getGameAdvice.js";
       GetGameAdvice();
     </script>
   </head>
   <body>
     {{>navbar}}
 
-    <login-template-component> </login-template-component>
+    <login-component>
+      <div class="container-xl" data-template id="login-component-container">
+        <form id="login-form" onsubmit="return false">
+          <div class="ui-input">
+            <div class="form-section">
+              <label class="required-field" id="email">Email</label>
+              <input id="username-input" type="email" />
+            </div>
+            <div class="form-section">
+              <label class="required-field">Password</label>
+              <input id="password-input" type="password" />
+            </div>
+          </div>
+          <div id="component-buttons">
+            <button
+              class="primary"
+              onclick="{login}"
+              type="submit"
+              id="login-button"
+            >
+              Login
+            </button>
+          </div>
+          <div class="validation-error">{loginError}</div>
+        </form>
+      </div>
+    </login-component>
     <div id="bot-container"></div>
   </body>
 </html>

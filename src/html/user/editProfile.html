@@ -10,21 +10,50 @@
     <link rel="stylesheet" href="/styles/designersAndLinks.css" />
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
     <script defer fetchpriority="low" type="module">
-      import { EditProfileComponent } from "../../ui/user/EditProfileComponent.js";
-      import { LoginStatusComponent } from "../../ui/shared/LoginStatusComponent.js";
+      import { EditProfileComponent } from "/ui/user/EditProfileComponent.js";
+      import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore.js";
+      import { PresentationComponent } from "/lib/places-js-latest.js";
 
       customElements.define("edit-profile-component", EditProfileComponent);
-      customElements.define("login-status-component", LoginStatusComponent);
-
-      import { GetGameAdvice } from "../../beta/getGameAdvice.js";
+      customElements.define("presentation-component", PresentationComponent);
+      import { GetGameAdvice } from "/shared/bots/getGameAdvice.js";
       GetGameAdvice();
     </script>
   </head>
   <body>
-    <div id="container">
-      {{>navbar}}
-      <edit-profile-component class="ui-section"> </edit-profile-component>
+    {{>navbar}}
+
+    <div class="container-xl">
+      <h1>Edit profile</h1>
+      <edit-profile-component>
+        <div data-template>
+          <form id="update-user-form" onsubmit="return false">
+            <div>
+              <span class="{successStyle}"> {successMessage} </span>
+              <span class="error-message">{errorMessage}</span>
+              <label class="required-field">Name</label>
+              <input id="username-input" name="username-input" />
+              <span class="error-message">{usernameError}</span>
+            </div>
+
+            <div class="form-section" id="image-upload">
+              <image-upload-component
+                id="image-upload-ui"
+                image-path="{imageFilePath}"
+              ></image-upload-component>
+            </div>
+            <button
+              class="primary"
+              id="update-user-profile"
+              onClick="{updateUserProfile}"
+              type="submit"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </edit-profile-component>
+      <div id="bot-container"></div>
     </div>
-    <div id="bot-container"></div>
   </body>
 </html>

@@ -1,4 +1,4 @@
-import { API_ROOT } from "../../ui/shared/Params.js";
+import { API_ROOT } from "/shared/Params.js";
 
 import { DEFAULT_SEARCH_PARAMETER } from "../../shared/html/SelectGenerator.js";
 import { DataStore } from "/lib/places-js-latest.js";
@@ -64,19 +64,15 @@ const presentationSignals = {
     update: {
       eventTime: (eventData) => {
         if (eventData.isRecurring) {
-          return `
-							${eventData.dayOfWeek}s at 
-							${eventData.nextEventTime}`;
+          return `${eventData.dayOfWeek}s at ${eventData.nextEventTime}`;
         }
-        return `
-						${eventData.nextEventDate} at 
-						${eventData.nextEventTime}`;
+        return `${eventData.nextEventDate} at ${eventData.nextEventTime}`;
       },
       location: (eventData) => {
         return `${convertLocationDataForDisplay(eventData.eventLocation)}`;
       },
       url: (eventData) => {
-        return `/html/groups/event.html?id=${eventData.eventId}&groupId=${eventData.groupId}`;
+        return `/html/groups/events/?id=${eventData.eventId}&groupId=${eventData.groupId}`;
       },
     },
   },
