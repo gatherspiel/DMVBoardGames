@@ -24,7 +24,6 @@ export default defineConfig({
         about: resolve(__dirname, "src/html/static/about.html"),
 
         code: resolve(__dirname, "src/html/static/code.html"),
-        conventions: resolve(__dirname, "src/html/list/conventions.html"),
         create_account: resolve(__dirname, "src/html/user/createAccount.html"),
         create_groups: resolve(__dirname, "src/html/groups/create.html"),
         create_event: resolve(__dirname, "src/html/groups/events/create.html"),
