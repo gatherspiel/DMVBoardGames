@@ -10,6 +10,8 @@ export const API_ROOT =
     ? `https://api.gatherspiel.com`
     : import.meta.env.VITE_LOCAL_API_ROOT;
 
+window.apiRoot = API_ROOT;
+
 export const SUPABASE_CLIENT_URL =
   IS_PRODUCTION || IS_TEST
     ? "https://karqyskuudnvfxohwkok.supabase.co"

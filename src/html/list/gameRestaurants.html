@@ -11,11 +11,11 @@
     <link rel="preconnect" href="api.gatherspiel.com" />
 
     <script type="module">
-      import { GameRestaurantListComponent } from "../../ui/list/GameRestaurantListComponent.js";
-      customElements.define(
-        "game-restaurant-list-component",
-        GameRestaurantListComponent,
-      );
+			import { LoadingIndicatorComponent } from "/shared/components/LoadingIndicatorComponent.js"; 
+			import { PresentationComponent } from "/lib/places-js-latest.js";
+
+			import { LOGIN_STATUS_STORE } from "/data/user/LoginStatusStore.js";
+      customElements.define("presentation-component", PresentationComponent);
     </script>
 
     <link rel="icon" type="image/ico" href="/assets/images/favicon.ico" />
@@ -25,7 +25,25 @@
   <body>
     {{>navbar}}
 
-    <game-restaurant-list-component> </game-restaurant-list-component>
-    {{>footer}}
+
+		<div class="container-xl"> 
+      <h1>Board Game Bars and Cafés</h1>
+			<presentation-component
+				data-api-path="/searchLocations?area=dmv&locationType=gameStores"
+				data-api-root={apiRoot}
+				data-template
+			> 
+				<ul>
+					<li class="game-resturant-list-item">
+						<a class="btn secondary" href={url}>
+							{id}
+						</a> 
+						<p>{location}</p>
+					</li>
+				</u>
+
+			</presentation-component>
+		</div>
+		{{>footer}}
   </body>
 </html>
