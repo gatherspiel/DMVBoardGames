@@ -12,14 +12,14 @@ export class UserActionsComponent extends HTMLElement {
   update(data) {
     if (data?.isLoggedIn) {
       self.innerHTML = `
-				<div class="container-xl">
-					<div> 
-						<a class="btn secondary" href="/html/groups/create.html">Create group</a>
-						<a class="btn secondary" href="/html/user/memberData.html">View my groups and events</a>
-					</div>	
-					<hr>
-				</div>
-			`;
+        <div class="container-xl">
+            <div> 
+              <a class="btn secondary" href="/html/groups/create.html">Create group</a>
+              <a class="btn secondary" href="/html/user/memberData.html">View my groups and events</a>
+            </div>	
+            <hr>
+        </div>
+      `;
     }
   }
 }
